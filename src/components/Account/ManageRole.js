@@ -112,7 +112,6 @@ toggleEdit=async (edit, key, item) => {
 
         let fields = this.state.fields;
         fields[field] = value;
-        console.log(value)
         this.setState({fields});
 
     }
@@ -142,7 +141,6 @@ toggleEdit=async (edit, key, item) => {
 
         }
 
-        console.log(fields)
 
         this.setState({fields});
 

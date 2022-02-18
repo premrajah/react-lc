@@ -167,7 +167,6 @@ class CompanyDetails extends Component {
             })
             .then(
                 (response) => {
-                   console.log(response)
 
                     if (this.props.hide)
                     this.props.hide()

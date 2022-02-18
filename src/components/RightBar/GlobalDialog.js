@@ -15,7 +15,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
      const { children } = props
 
     const handleClose = (event,reason) => {
-         console.log(reason)
 
         if (props.disableBackdropClick&&reason==="backdropClick"){
 

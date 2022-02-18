@@ -150,7 +150,6 @@ const UploadMultiSiteOrProduct = (props) => {
         let result = validateInputs(validations)
 
        setErrors(result.errors);
-       console.log("errorsLocal",result.errors)
         return result.formIsValid;
     }
 
@@ -507,11 +506,10 @@ const UploadMultiSiteOrProduct = (props) => {
 
             try {
                 const result = await axios.post(`${baseUrl}load/product`, payload);
-                console.log(result)
             }
             catch(e){
 
-                // console.log('>> ',e.response.data.errors[0].message)
+
                 if (e.response.data.errors&&e.response.data.errors.length>0) {
                    e.response.data.errors.forEach(item => {
                        uploadError.push(<div className="d-flex flex-column">
@@ -538,7 +536,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
 
                     // uploadError=e.response.data.errors.forEach(item => `${item.message}, `)
-                    // console.log(e.response.data.errors[0])
+
                     errorsFound.upload = {
                         error: true,
                         message: uploadError
@@ -617,7 +615,6 @@ const UploadMultiSiteOrProduct = (props) => {
 
                 const result = await axios.post(`${baseUrl}load/site`, payload);
 
-                console.log(result)
 
             }
             catch(e){

@@ -12,14 +12,11 @@ class LocationSearchAutocomplete extends React.Component {
     }
 
     handleChange = address => {
-        console.log("address")
-        console.log(address)
         this.setState({ address });
     };
 
     handleSelect = address => {
 
-        console.log(address)
         this.setState({
             address
         })
@@ -33,7 +30,6 @@ class LocationSearchAutocomplete extends React.Component {
                         longitude: latLng.lng,
                         latitude: latLng.lat}
                 )
-                console.log('Success', latLng)
 
             })
             .catch(error => console.error('Error', error));

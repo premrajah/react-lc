@@ -96,7 +96,6 @@ class ManageUser extends Component {
 
         let fields = this.state.fields;
         fields[field] = value;
-        console.log(value)
         this.setState({fields});
 
     }
@@ -126,7 +125,6 @@ class ManageUser extends Component {
 
         }
 
-        console.log(fields)
 
         this.setState({fields});
 

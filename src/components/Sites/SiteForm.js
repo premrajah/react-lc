@@ -142,8 +142,6 @@ class SiteForm extends Component {
 
 
     handleSearchAddress(value) {
-        console.log("handle address call")
-        console.log(value)
 
    try {
 
@@ -219,7 +217,6 @@ class SiteForm extends Component {
 
         let fields = this.state.fields;
         fields[field] = value;
-        console.log(value)
         this.setState({fields});
 
     }

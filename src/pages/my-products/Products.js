@@ -140,7 +140,6 @@ class Products extends Component {
 
     loadProductsWithoutParentPageWise= async (data) => {
 
-        console.log(data)
 
         if (data.reset){
 
@@ -188,7 +187,6 @@ class Products extends Component {
             }
         }
 
-        // console.log(result)
 
 
     }

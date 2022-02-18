@@ -219,7 +219,7 @@ class ManageUser extends Component {
 
                         {this.state.items.map((item,index)=>
                             <>  <hr/>
-                               <ManageUserItem item={item} index={index}/>
+                               <ManageUserItem refreshList={this.fetchUsers} item={item} index={index}/>
 
                             </>
 

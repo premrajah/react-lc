@@ -35,7 +35,8 @@ class ManageUserItem extends Component {
             selectedKey:null,
             editMode:false,
             allPerms:[],
-            selectedEditItem:null
+            selectedEditItem:null,
+            role:null
         };
 
     }
@@ -48,6 +49,23 @@ class ManageUserItem extends Component {
 
                     this.setState({
                         items: response.data.data,
+
+                    });
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
+
+    fetchRole=()=> {
+        axios
+            .get(baseUrl + "role/"+this.props.item.role_id.replace("Role/",""))
+            .then(
+                (response) => {
+
+                    this.setState({
+                        role: response.data.data,
 
                     });
                 },
@@ -77,6 +95,7 @@ class ManageUserItem extends Component {
     toggleEdit=async (edit, key, item) => {
 
 
+        if (item)
         await this.fetchRoles()
 
         this.setState({
@@ -99,7 +118,7 @@ class ManageUserItem extends Component {
     }
 
 
-    handleSubmit = (event) => {
+    handleSubmitUser = (event) => {
         event.preventDefault();
         event.stopPropagation();
 
@@ -124,7 +143,9 @@ class ManageUserItem extends Component {
             )
             .then((res) => {
 
-                this.fetchRoles()
+                this.toggleEdit()
+
+                this.fetchRole()
                 this.props.toggleRightBar()
                 this.props.showSnackbar({show: true, severity: "success", message: "User role updated successfully. Thanks"})
 
@@ -141,7 +162,7 @@ class ManageUserItem extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
-
+this.fetchRole()
     }
 
     fetchUsers=()=> {
@@ -174,14 +195,15 @@ class ManageUserItem extends Component {
 
                                     </div>
                                     <div className=" col-7 ">
-                                        <span className={"title-bold"}> {item.user.firstName} {item.user.lastName}</span>   <span className={"title-blue text-right"}>{item.role_id}</span> <br/>
-                                        <span className={"text-gray-light text-14"}>{item.user.email}</span>
+                                        <span className={"title-bold"}> {item.user.firstName} {item.user.lastName}</span> (<span className={" title-bold"}>{item.user.email}</span>) <br/>
+                                        <span className={"text-gray-light text-right"}>{this.state.role?this.state.role.name:item.role_id}</span>
+
 
                                     </div>
                                     <div className=" col-4 text-right ">
 
                                         {this.state.showEdit &&
-                                        <form className={"full-width-field"} onSubmit={this.handleSubmit}>
+                                        <form className={"full-width-field"} onSubmit={this.handleSubmitUser}>
 
                                             <div className="row no-gutters">
                                                 <div className="col-12 d-flex align-items-center justify-content-end flex-row">
@@ -192,21 +214,23 @@ class ManageUserItem extends Component {
                                                         initialValue={item.role_id}
 
                                                         option={"name"}
-                                                        valueKey={"_key"}
+                                                        valueKey={"_id"}
                                                         error={this.state.errors["role_id"]}
                                                         onChange={(value)=> {
                                                             this.handleChange(value,"role_id")
                                                         }}
 
-                                                        options={this.state.items.filter((item)=> item._key)}
+                                                        // options={this.state.items.filter((item)=> item._key)}
+                                                        options={this.state.items}
+
                                                         name={"role_id"}
 
                                                     />
 
-<div  className={"ml-2"}>
+                   <div  className={"ml-2"}>
                                                     <ActionIconBtn
 
-                                                        onClick={this.toggleEdit}
+
                                                         type={"submit"}
                                                         title={"Submit"}
                                                     >

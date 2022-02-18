@@ -240,6 +240,9 @@ class MyCampaigns extends Component {
 
     toggleRightBar=(item)=>{
 
+        this.setState({
+            toggleBar:!this.state.toggleBar
+        })
 
         if (item){
             this.setState({

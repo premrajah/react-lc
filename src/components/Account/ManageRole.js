@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import PageHeader from "../../components/PageHeader";
-import {Edit} from "@mui/icons-material";
+import {Edit, Delete} from "@mui/icons-material";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import RightSidebar from "../RightBar/RightSidebar";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
@@ -18,6 +18,7 @@ import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocompl
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {arrangeAlphabatically} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import CustomTransferList from "../FormsUI/ProductForm/CustomTransferList";
 
 class ManageRole extends Component {
     constructor(props) {
@@ -89,6 +90,11 @@ toggleEdit=async (edit, key, item) => {
     })
 }
 
+    toggleDelete=async (edit, key, item) => {
+
+
+    }
+
 
     handleValidation() {
 
@@ -116,35 +122,13 @@ toggleEdit=async (edit, key, item) => {
         this.setState({fields});
 
     }
-    handleChangeCheck(value,field ) {
+    handleChangeCheck(selected){
 
-        let fields = this.state.fields;
+            let fields = this.state.fields;
+            fields.perms=selected
+            console.log(fields)
+            this.setState({fields});
 
-        if (value){
-
-
-            if (fields.perms){
-                fields.perms.push(field);
-            }
-
-            else{
-                fields.perms=[field];
-            }
-
-
-        }else{
-
-            if (fields.perms){
-                let perms = fields.perms.filter((item)=> item!==field)
-                fields.perms=perms;
-            }
-
-
-        }
-
-        console.log(fields)
-
-        this.setState({fields});
 
     }
 
@@ -241,8 +225,8 @@ toggleEdit=async (edit, key, item) => {
                             subTitle="Manage User Roles"
                         />
                    <RightSidebar  toggleOpen={this.toggleEdit} open={this.state.showEdit} width={"70%"}>
-
-                       {this.state.showEdit&&     <div className="container  mb-150  pb-5 pt-4">
+                       {this.state.showEdit&&
+                       <div className="container  mb-150  pb-5 pt-4">
                             <div className="row   mb-2  ">
                                 <div className="col-12  ">
                                     <h4 className="blue-text text-heading">{this.state.editMode?"Edit Role":"Add New"}</h4>
@@ -251,8 +235,6 @@ toggleEdit=async (edit, key, item) => {
                         <div className="row   mb-2  ">
                             <div className="col-12  ">
                             <form className={"full-width-field"} onSubmit={this.handleSubmit}>
-
-
 
                                 <div className="row ">
                                     <div className="col-12 ">
@@ -265,7 +247,6 @@ toggleEdit=async (edit, key, item) => {
                                     </div>
                                 </div>
 
-
                                 <div className="row no-gutters">
                                     <div className="col-12 ">
 
@@ -277,48 +258,43 @@ toggleEdit=async (edit, key, item) => {
 
                                     </div>
                                 </div>
-                                <div className="row  ">
-                                    <div className="col-12  parent-checkbox-container-custom  justify-content-start align-items-center">
 
-                                    {this.state.allPerms.map((item=>
-
-                                            <div className="checkbox-container-custom">
-                                                <CheckboxWrapper
-                                                    initialValue={this.state.editMode&&this.state.selectedEditItem&&this.state.selectedEditItem.perms.includes(item)}
-                                                    onChange={(checked)=>this.handleChangeCheck(checked,    `${item}`)} color="primary"
-                                                    name={ `${item}`} title={item} />
-                                            </div>
-
-                                    ))}
+                                {this.state.allPerms.length>0 &&   <div className="row no-gutters ">
+                                    <div className="col-12  mb-2">
+                                        <CustomTransferList initialValue={this.state.selectedEditItem?this.state.selectedEditItem.perms:[]}  setSelected={(selected)=>this.handleChangeCheck(selected)} items={this.state.allPerms} />
                                     </div>
-                                </div>
 
+                                </div>}
+                                {/*<div className="row  ">*/}
+                                {/*    <div className="col-12  parent-checkbox-container-custom  justify-content-start align-items-center">*/}
+                                {/*        {this.state.allPerms.map((item=>*/}
 
-                                <div className="row no-gutters ">
-
-                                </div>
+                                {/*            <div className="checkbox-container-custom">*/}
+                                {/*                <CheckboxWrapper*/}
+                                {/*                    initialValue={this.state.editMode&&this.state.selectedEditItem&&this.state.selectedEditItem.perms.includes(item)}*/}
+                                {/*                    onChange={(checked)=>this.handleChangeCheck(checked,    `${item}`)} color="primary"*/}
+                                {/*                    name={ `${item}`} title={item} />*/}
+                                {/*            </div>*/}
+                                {/*    ))}*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
                                 <div className={"row"}>
                                     <div className="col-12  mb-2">
-
                                         <GreenButton
                                             type={"submit"}
                                             title={"Submit"}
-                                        >
-                                        </GreenButton>
-
+                                        ></GreenButton>
                                     </div>
                                 </div>
-
                             </form>
                             </div>
                         </div>
-                        </div>}
-
+                        </div>
+                       }
                   </RightSidebar>
                             <div className="row">
                                 <div className="col-12 text-right text-blue"> <IconBtn onClick={()=>this.toggleEdit(false,null,null)} />  </div>
                                 <div className="col-12">
-
 
                                     {this.state.items.map((item,index)=>
                                       <>  <hr/>
@@ -327,14 +303,18 @@ toggleEdit=async (edit, key, item) => {
                                                <span className={"title-bold"}>{index+1}. </span>
 
                                             </div>
-                                          <div className=" col-9 ">
+                                          <div className=" col-8 ">
                                               <span className={"title-bold"}> {item.name}</span><br/>
                                               <span className={"text-gray-light text-14"}>{item.description}</span>
-
                                           </div>
-                                             {item._key && <div className=" col-2 text-right ">
+                                             {item._key &&
+
+                                             <div className=" col-3 text-right ">
                                              <ActionIconBtn onClick={()=>this.toggleEdit(true,item._key,item)}><Edit/></ActionIconBtn>
-                                            </div>}
+
+                                              <ActionIconBtn onClick={()=>this.toggleDelete(true,item._key,item)}><Delete/></ActionIconBtn>
+                                             </div>}
+
                                         </div>
 
                                       </>
@@ -343,9 +323,6 @@ toggleEdit=async (edit, key, item) => {
 
                                 </div>
                             </div>
-
-
-
 
             </div>
 

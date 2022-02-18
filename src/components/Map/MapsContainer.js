@@ -67,7 +67,6 @@ class MapsContainer extends Component {
          const lat = latLng.lat();
          const lng = latLng.lng();
 
-         console.log(lat,lng)
 
          this.setState({
              markerLatitude:lat,
@@ -80,10 +79,6 @@ class MapsContainer extends Component {
           this.props.setLocation({latitude:lat,longitude: lng})
 
 
-        // console.log("market moved")
-        // console.log(value.map.getCenter().lat())
-        //  // console.log(value.onDragend())
-        //
         //  if (this.props.setLocation)
         //  this.props.setLocation({latitude:value.map.getCenter().lat(),longitude:value.map.getCenter().lng()})
     }

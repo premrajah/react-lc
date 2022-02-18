@@ -13,7 +13,7 @@ const SearchPlaceAutocomplete = (props) => {
     const [address, setAddress] = React.useState()
 
     const handleChange = (data) => {
-            console.log(data)
+
         setLatitude("")
         setLongitude("")
         setAddress("")

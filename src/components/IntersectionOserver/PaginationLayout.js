@@ -21,7 +21,7 @@ class PaginationLayout extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
 
         if (prevProps!=this.props) {
-            // console.log(this.props)
+
         }
     }
     componentDidMount() {
@@ -92,8 +92,6 @@ class PaginationLayout extends Component {
     handleSearch = (searchValue) => {
         searchValue= (searchValue.trim())
 
-
-        // console.log("keyword",searchValue)
         this.searchValue=searchValue
         this.setState({searchValue: searchValue});
 
@@ -106,7 +104,6 @@ class PaginationLayout extends Component {
 
         this.filterValue=filterValue
 
-        // console.log("active filter",filterValue)
         this.setState({filterValue: filterValue});
 
         if (this.state.searchValue) {

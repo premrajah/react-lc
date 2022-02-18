@@ -51,8 +51,6 @@ class SubSitesTab extends Component {
                         subSites:responseAll
                     })
 
-                    console.log("subsites")
-                    console.log(responseAll)
                 },
                 (error) => {
                     // this.setState({

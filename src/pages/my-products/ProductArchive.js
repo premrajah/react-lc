@@ -149,7 +149,6 @@ class ProductArchive extends Component {
 
     loadProductsWithoutParentPageWise= async (data) => {
 
-        console.log(data)
 
         if (data.reset){
 
@@ -197,7 +196,6 @@ class ProductArchive extends Component {
             }
         }
 
-        // console.log(result)
 
 
     }

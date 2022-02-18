@@ -75,7 +75,6 @@ class Header extends React.Component {
                         this.showDetailsPopUp()
                     }
 
-                   console.log(response)
                 }
             })
             .catch((error) => {});

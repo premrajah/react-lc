@@ -278,7 +278,6 @@ marteplace
 
     componentDidMount() {
 
-console.log(this.props.match)
         window.scrollTo(0, 0);
 
         this.setState({

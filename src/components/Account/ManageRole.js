@@ -75,20 +75,20 @@ class ManageRole extends Component {
             );
     }
 
-toggleEdit=async (edit, key, item) => {
+    toggleEdit=async (edit, key, item) => {
 
 
-     this.fetchAllPermissions()
+        this.fetchAllPermissions()
 
-    // this.props.toggleRightBar()
-    this.setState({
-        showEdit: !this.state.showEdit,
-        editMode: edit,
-        selectedKey: key,
-        selectedEditItem: item,
+        // this.props.toggleRightBar()
+        this.setState({
+            showEdit: !this.state.showEdit,
+            editMode: edit,
+            selectedKey: key,
+            selectedEditItem: item,
 
-    })
-}
+        })
+    }
 
     toggleDelete=async (edit, key, item) => {
 
@@ -124,10 +124,10 @@ toggleEdit=async (edit, key, item) => {
     }
     handleChangeCheck(selected){
 
-            let fields = this.state.fields;
-            fields.perms=selected
-            console.log(fields)
-            this.setState({fields});
+        let fields = this.state.fields;
+        fields.perms=selected
+        console.log(fields)
+        this.setState({fields});
 
 
     }
@@ -162,7 +162,7 @@ toggleEdit=async (edit, key, item) => {
                 .put(
                     baseUrl + "role",
 
-                     fields
+                    fields
                 )
                 .then((res) => {
                     this.toggleEdit()
@@ -220,109 +220,109 @@ toggleEdit=async (edit, key, item) => {
 
             <div className="container ">
 
-                        <PageHeader
-                            pageTitle="Manage Roles"
-                            subTitle="Manage User Roles"
-                        />
-                   <RightSidebar  toggleOpen={this.toggleEdit} open={this.state.showEdit} width={"70%"}>
-                       {this.state.showEdit&&
-                       <div className="container  mb-150  pb-5 pt-4">
-                            <div className="row   mb-2  ">
-                                <div className="col-12  ">
-                                    <h4 className="blue-text text-heading">{this.state.editMode?"Edit Role":"Add New"}</h4>
-                                </div>
-                            </div>
+                <PageHeader
+                    pageTitle="Manage Roles"
+                    subTitle="Manage User Roles"
+                />
+                <RightSidebar  toggleOpen={this.toggleEdit} open={this.state.showEdit} width={"70%"}>
+                    {this.state.showEdit&&
+                    <div className="container  mb-150  pb-5 pt-4">
                         <div className="row   mb-2  ">
                             <div className="col-12  ">
-                            <form className={"full-width-field"} onSubmit={this.handleSubmit}>
-
-                                <div className="row ">
-                                    <div className="col-12 ">
-                                        <TextFieldWrapper
-                                            initialValue={this.state.selectedEditItem?this.state.selectedEditItem.name:null}
-                                            onChange={(value)=>this.handleChange(value,"name")}
-                                            error={this.state.errors["name"]}
-                                            name="name" title="Name" />
-
-                                    </div>
-                                </div>
-
-                                <div className="row no-gutters">
-                                    <div className="col-12 ">
-
-                                        <TextFieldWrapper
-                                            initialValue={this.state.selectedEditItem?this.state.selectedEditItem.description:null}
-                                            onChange={(value)=>this.handleChange(value,"description")}
-                                            error={this.state.errors["description"]}
-                                            name="description" title="Description" />
-
-                                    </div>
-                                </div>
-
-                                {this.state.allPerms.length>0 &&   <div className="row no-gutters ">
-                                    <div className="col-12  mb-2">
-                                        <CustomTransferList initialValue={this.state.selectedEditItem?this.state.selectedEditItem.perms:[]}  setSelected={(selected)=>this.handleChangeCheck(selected)} items={this.state.allPerms} />
-                                    </div>
-
-                                </div>}
-                                {/*<div className="row  ">*/}
-                                {/*    <div className="col-12  parent-checkbox-container-custom  justify-content-start align-items-center">*/}
-                                {/*        {this.state.allPerms.map((item=>*/}
-
-                                {/*            <div className="checkbox-container-custom">*/}
-                                {/*                <CheckboxWrapper*/}
-                                {/*                    initialValue={this.state.editMode&&this.state.selectedEditItem&&this.state.selectedEditItem.perms.includes(item)}*/}
-                                {/*                    onChange={(checked)=>this.handleChangeCheck(checked,    `${item}`)} color="primary"*/}
-                                {/*                    name={ `${item}`} title={item} />*/}
-                                {/*            </div>*/}
-                                {/*    ))}*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
-                                <div className={"row"}>
-                                    <div className="col-12  mb-2">
-                                        <GreenButton
-                                            type={"submit"}
-                                            title={"Submit"}
-                                        ></GreenButton>
-                                    </div>
-                                </div>
-                            </form>
+                                <h4 className="blue-text text-heading">{this.state.editMode?"Edit Role":"Add New"}</h4>
                             </div>
                         </div>
-                        </div>
-                       }
-                  </RightSidebar>
-                            <div className="row">
-                                <div className="col-12 text-right text-blue"> <IconBtn onClick={()=>this.toggleEdit(false,null,null)} />  </div>
-                                <div className="col-12">
+                        <div className="row   mb-2  ">
+                            <div className="col-12  ">
+                                <form className={"full-width-field"} onSubmit={this.handleSubmit}>
 
-                                    {this.state.items.map((item,index)=>
-                                      <>  <hr/>
-                                      <div className="row d-flex flex-row mb-2  align-items-start">
-                                            <div className=" col-1 justify-content-start">
-                                               <span className={"title-bold"}>{index+1}. </span>
-
-                                            </div>
-                                          <div className=" col-8 ">
-                                              <span className={"title-bold"}> {item.name}</span><br/>
-                                              <span className={"text-gray-light text-14"}>{item.description}</span>
-                                          </div>
-                                             {item._key &&
-
-                                             <div className=" col-3 text-right ">
-                                             <ActionIconBtn onClick={()=>this.toggleEdit(true,item._key,item)}><Edit/></ActionIconBtn>
-
-                                              <ActionIconBtn onClick={()=>this.toggleDelete(true,item._key,item)}><Delete/></ActionIconBtn>
-                                             </div>}
+                                    <div className="row ">
+                                        <div className="col-12 ">
+                                            <TextFieldWrapper
+                                                initialValue={this.state.selectedEditItem?this.state.selectedEditItem.name:null}
+                                                onChange={(value)=>this.handleChange(value,"name")}
+                                                error={this.state.errors["name"]}
+                                                name="name" title="Name" />
 
                                         </div>
+                                    </div>
 
-                                      </>
+                                    <div className="row no-gutters">
+                                        <div className="col-12 ">
 
-                                    )}
+                                            <TextFieldWrapper
+                                                initialValue={this.state.selectedEditItem?this.state.selectedEditItem.description:null}
+                                                onChange={(value)=>this.handleChange(value,"description")}
+                                                error={this.state.errors["description"]}
+                                                name="description" title="Description" />
+
+                                        </div>
+                                    </div>
+
+                                    {this.state.allPerms.length>0 &&   <div className="row no-gutters ">
+                                        <div className="col-12  mb-2">
+                                            <CustomTransferList initialValue={this.state.selectedEditItem?this.state.selectedEditItem.perms:[]}  setSelected={(selected)=>this.handleChangeCheck(selected)} items={this.state.allPerms} />
+                                        </div>
+
+                                    </div>}
+                                    {/*<div className="row  ">*/}
+                                    {/*    <div className="col-12  parent-checkbox-container-custom  justify-content-start align-items-center">*/}
+                                    {/*        {this.state.allPerms.map((item=>*/}
+
+                                    {/*            <div className="checkbox-container-custom">*/}
+                                    {/*                <CheckboxWrapper*/}
+                                    {/*                    initialValue={this.state.editMode&&this.state.selectedEditItem&&this.state.selectedEditItem.perms.includes(item)}*/}
+                                    {/*                    onChange={(checked)=>this.handleChangeCheck(checked,    `${item}`)} color="primary"*/}
+                                    {/*                    name={ `${item}`} title={item} />*/}
+                                    {/*            </div>*/}
+                                    {/*    ))}*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
+                                    <div className={"row"}>
+                                        <div className="col-12  mb-2">
+                                            <GreenButton
+                                                type={"submit"}
+                                                title={"Submit"}
+                                            ></GreenButton>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </RightSidebar>
+                <div className="row">
+                    <div className="col-12 text-right text-blue"> <IconBtn onClick={()=>this.toggleEdit(false,null,null)} />  </div>
+                    <div className="col-12">
+
+                        {this.state.items.map((item,index)=>
+                            <>  <hr/>
+                                <div className="row d-flex flex-row mb-2  align-items-start">
+                                    <div className=" col-1 justify-content-start">
+                                        <span className={"title-bold"}>{index+1}. </span>
+
+                                    </div>
+                                    <div className=" col-8 ">
+                                        <span className={"title-bold"}> {item.name}</span><br/>
+                                        <span className={"text-gray-light text-14"}>{item.description}</span>
+                                    </div>
+                                    {item._key &&
+
+                                    <div className=" col-3 text-right ">
+                                        <ActionIconBtn onClick={()=>this.toggleEdit(true,item._key,item)}><Edit/></ActionIconBtn>
+
+                                        <ActionIconBtn onClick={()=>this.toggleDelete(true,item._key,item)}><Delete/></ActionIconBtn>
+                                    </div>}
 
                                 </div>
-                            </div>
+
+                            </>
+
+                        )}
+
+                    </div>
+                </div>
 
             </div>
 

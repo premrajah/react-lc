@@ -18,6 +18,7 @@ import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocompl
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {arrangeAlphabatically} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import CustomPopover from "../FormsUI/CustomPopover";
 
 class ManageUserItem extends Component {
     constructor(props) {
@@ -58,9 +59,9 @@ class ManageUserItem extends Component {
             );
     }
 
-    fetchRole=()=> {
+    fetchRole=(id)=> {
         axios
-            .get(baseUrl + "role/"+this.props.item.role_id.replace("Role/",""))
+            .get(baseUrl + "role/"+id.replace("Role/",""))
             .then(
                 (response) => {
 
@@ -75,22 +76,7 @@ class ManageUserItem extends Component {
             );
     }
 
-    fetchAllPermissions=()=> {
-        axios
-            .get(baseUrl + "role/perm")
-            .then(
-                (response) => {
 
-                    this.setState({
-                        allPerms: arrangeAlphabatically(response.data.data),
-
-                    });
-                },
-                (error) => {
-                    // var status = error.response.status
-                }
-            );
-    }
 
     toggleEdit=async (edit, key, item) => {
 
@@ -144,7 +130,7 @@ class ManageUserItem extends Component {
 
                 this.toggleEdit()
 
-                this.fetchRole()
+                this.fetchRole(role_id)
                 this.props.toggleRightBar()
                 this.props.showSnackbar({show: true, severity: "success", message: "User role updated successfully. Thanks"})
 
@@ -161,7 +147,7 @@ class ManageUserItem extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
-this.fetchRole()
+this.fetchRole(this.props.item.role_id)
     }
 
     fetchUsers=()=> {
@@ -227,21 +213,21 @@ this.fetchRole()
                                                     />
 
                    <div  className={"ml-2"}>
-                                                    <ActionIconBtn
+                                                   <CustomPopover text={"Save Role"}> <ActionIconBtn
 
 
                                                         type={"submit"}
                                                         title={"Submit"}
                                                     >
                                                         <Done/>
-                                                    </ActionIconBtn>
-                                                    <ActionIconBtn
+                                                    </ActionIconBtn></CustomPopover>
+                       <CustomPopover text={"Cancel"}>   <ActionIconBtn
                                                         onClick={this.toggleEdit}
                                                         type={"button"}
                                                         title={"Submit"}
                                                     >
                                                         <Close/>
-                                                    </ActionIconBtn>
+                       </ActionIconBtn></CustomPopover>
 </div>
 
                                                 </div>

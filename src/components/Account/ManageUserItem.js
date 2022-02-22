@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import PageHeader from "../../components/PageHeader";
-import {Edit, Close, Done} from "@mui/icons-material";
+import {Edit, Close, Done, Delete, Info} from "@mui/icons-material";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import RightSidebar from "../RightBar/RightSidebar";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
@@ -19,6 +19,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import {arrangeAlphabatically} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import CustomPopover from "../FormsUI/CustomPopover";
+import {OverlayTrigger} from "react-bootstrap";
 
 class ManageUserItem extends Component {
     constructor(props) {
@@ -172,16 +173,27 @@ this.fetchRole(this.props.item.role_id)
         const {item,index} = this.props
         return (
 
-
-
                                 <div className="row d-flex flex-row mb-2  align-items-start">
                                     <div className=" col-1 justify-content-start">
                                         <span className={"title-bold"}>{index+1}. </span>
 
                                     </div>
                                     <div className=" col-7 ">
-                                        <span className={"title-bold"}> {item.user.firstName} {item.user.lastName}</span> (<span className={" title-bold"}>{item.user.email}</span>) <br/>
-                                        <span className={"text-gray-light text-right"}>{this.state.role?this.state.role.name:item.role_id}</span>
+                                        <span className={`title-bold`}> {item.user.firstName} {item.user.lastName}</span> (<span className={" title-bold"}>{item.user.email}
+
+                                    </span>)
+                                        {item.user.email===this.props.userDetail.email&&<span  className={`text-pink ml-2 `}>Logged In User</span>}
+                                        <br/>
+                                        <span className={"text-gray-light text-right"}>
+                                            {this.state.role?this.state.role.name:item.role_id}
+                                            {this.state.role &&  <CustomPopover heading={this.state.role.name} text={this.state.role.perms.length>0?(this.state.role.perms.map((role)=> role+", ")):""}>
+                                                 <Info
+                                                     style={{ cursor: "pointer", color: "#EAEAEF" }}
+                                                     fontSize={"small"}
+                                                 />
+                                            </CustomPopover>}
+
+                                        </span>
 
 
                                     </div>
@@ -235,8 +247,13 @@ this.fetchRole(this.props.item.role_id)
 
                                         </form>}
 
-                                        {!this.state.showEdit &&   <ActionIconBtn
-                                            onClick={()=>this.toggleEdit(true,item._key,item)}><Edit/></ActionIconBtn>}
+                                        {!this.state.showEdit &&
+                                        <>
+                                        <ActionIconBtn
+                                            onClick={()=>this.toggleEdit(true,item._key,item)}><Edit/></ActionIconBtn>
+
+                                        <ActionIconBtn onClick={()=>this.props.toggleDeletePopUp(item.user._key,item.user)}><Delete/></ActionIconBtn>
+</>}
 
                                     </div>
                                 </div>

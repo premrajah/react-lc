@@ -19,6 +19,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import {arrangeAlphabatically} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import CustomTransferList from "../FormsUI/ProductForm/CustomTransferList";
+import GlobalDialog from "../RightBar/GlobalDialog";
 
 class ManageRole extends Component {
     constructor(props) {
@@ -36,7 +37,8 @@ class ManageRole extends Component {
             selectedKey:null,
             editMode:false,
             allPerms:[],
-            selectedEditItem:null
+            selectedEditItem:null,
+            showDeletePopUp: false,
         };
 
     }
@@ -75,25 +77,25 @@ class ManageRole extends Component {
             );
     }
 
-    toggleEdit=async (edit, key, item) => {
+
+  toggleEdit = async (edit, key, item) => {
 
 
-        this.fetchAllPermissions()
+            this.fetchAllPermissions()
 
-        // this.props.toggleRightBar()
-        this.setState({
-            showEdit: !this.state.showEdit,
-            editMode: edit,
-            selectedKey: key,
-            selectedEditItem: item,
-
-        })
-    }
-
-    toggleDelete=async (edit, key, item) => {
+            // this.props.toggleRightBar()
+            this.setState({
+                showEdit: !this.state.showEdit,
+                editMode: edit,
+                selectedKey: key,
+                selectedEditItem: item,
 
 
-    }
+
+            })
+        }
+
+
 
 
     handleValidation() {
@@ -207,6 +209,48 @@ class ManageRole extends Component {
 
     };
 
+    handleDelete = () => {
+
+
+        // return false
+
+        if (this.state.selectedEditItem) {
+            axios
+                .delete(
+                    baseUrl + "role/"+this.state.selectedEditItem._key
+
+                )
+                .then((res) => {
+                    this.toggleDeletePopUp()
+                    this.fetchRoles()
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "success",
+                        message: `Role  deleted successfully. Thanks`
+                    })
+
+
+                })
+                .catch((error) => {
+                    this.setState({isSubmitButtonPressed: false})
+                });
+
+        }
+
+
+
+
+
+    };
+
+    toggleDeletePopUp= (key, item) => {
+
+        this.setState({
+            selectedEditItem: item,
+            showDeletePopUp: !this.state.showDeletePopUp,
+
+        })
+    }
 
     componentDidMount() {
         window.scrollTo(0, 0);
@@ -217,6 +261,7 @@ class ManageRole extends Component {
     render() {
         return (
 
+            <>
 
             <div className="container ">
 
@@ -307,13 +352,16 @@ class ManageRole extends Component {
                                         <span className={"title-bold"}> {item.name}</span><br/>
                                         <span className={"text-gray-light text-14"}>{item.description}</span>
                                     </div>
-                                    {item._key &&
+                                    {!item.is_system_role &&
 
                                     <div className=" col-3 text-right ">
                                         <ActionIconBtn onClick={()=>this.toggleEdit(true,item._key,item)}><Edit/></ActionIconBtn>
+                                        <ActionIconBtn onClick={()=>this.toggleDeletePopUp(item._key,item)}><Delete/></ActionIconBtn>
 
-                                        <ActionIconBtn onClick={()=>this.toggleDelete(true,item._key,item)}><Delete/></ActionIconBtn>
+
                                     </div>}
+
+
 
                                 </div>
 
@@ -326,6 +374,48 @@ class ManageRole extends Component {
 
             </div>
 
+                <GlobalDialog size={"xs"} hide={this.toggleDeletePopUp} show={this.state.showDeletePopUp} heading={"Delete"} >
+                    <div
+                        className={"col-12 mb-3 text-left"}>
+                        Are you sure you want to delete ?
+                    </div>
+
+                        <div
+                            className={"col-6"}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <GreenButton
+
+                                onClick={
+                                    this.handleDelete
+                                }
+                                title={"Submit"}
+                                type={"button"}>
+
+                            </GreenButton>
+                        </div>
+                        <div
+                            className={"col-6"}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <BlueBorderButton
+                                type="button"
+
+                                title={"Cancel"}
+
+                                onClick={
+                                    this
+                                        .toggleDeletePopUp
+                                }
+                            >
+
+                            </BlueBorderButton>
+                        </div>
+
+                </GlobalDialog>
+</>
         );
     }
 }

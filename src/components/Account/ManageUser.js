@@ -19,6 +19,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import {arrangeAlphabatically} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import ManageUserItem from "./ManageUserItem";
+import GlobalDialog from "../RightBar/GlobalDialog";
 
 class ManageUser extends Component {
     constructor(props) {
@@ -36,7 +37,8 @@ class ManageUser extends Component {
             selectedKey:null,
             editMode:false,
             allPerms:[],
-            selectedEditItem:null
+            selectedEditItem:null,
+            showDeletePopUp: false,
         };
 
     }
@@ -200,9 +202,53 @@ class ManageUser extends Component {
             );
     }
 
+    handleDelete = () => {
+
+
+        // return false
+
+        if (this.state.selectedEditItem) {
+            axios
+                .delete(
+                    baseUrl + "org/user/"+this.state.selectedEditItem._key
+
+                )
+                .then((res) => {
+                    this.toggleDeletePopUp()
+                    this.fetchUsers()
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "success",
+                        message: `User  removed successfully. Thanks`
+                    })
+
+
+                })
+                .catch((error) => {
+                    this.setState({isSubmitButtonPressed: false})
+                });
+
+        }
+
+
+
+
+
+    };
+
+    toggleDeletePopUp= (key, item) => {
+
+     console.log(key,item)
+        this.setState({
+            selectedEditItem: item,
+            showDeletePopUp: !this.state.showDeletePopUp,
+
+        })
+    }
+
     render() {
         return (
-
+<>
 
             <div className="container ">
 
@@ -216,10 +262,11 @@ class ManageUser extends Component {
 
 
                         {this.state.items.map((item,index)=>
-                            <>  <hr/>
-                               <ManageUserItem refreshList={this.fetchUsers} item={item} index={index}/>
+                            <div key={index}>
+                            <hr/>
+                               <ManageUserItem toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)} refreshList={this.fetchUsers} item={item} index={index}/>
 
-                            </>
+                            </div>
 
                         )}
 
@@ -231,6 +278,49 @@ class ManageUser extends Component {
 
             </div>
 
+    <GlobalDialog size={"xs"} hide={this.toggleDeletePopUp} show={this.state.showDeletePopUp} heading={"Remove User"} >
+        <div
+            className={"col-12 mb-3 text-left"}>
+            Are you sure you want to remove this user ?
+        </div>
+
+        <div
+            className={"col-6"}
+            style={{
+                textAlign: "center",
+            }}>
+            <GreenButton
+
+                onClick={
+                    this.handleDelete
+                }
+                title={"Submit"}
+                type={"button"}>
+
+            </GreenButton>
+        </div>
+        <div
+            className={"col-6"}
+            style={{
+                textAlign: "center",
+            }}>
+            <BlueBorderButton
+                type="button"
+
+                title={"Cancel"}
+
+                onClick={
+                    this
+                        .toggleDeletePopUp
+                }
+            >
+
+            </BlueBorderButton>
+        </div>
+
+    </GlobalDialog>
+
+</>
         );
     }
 }

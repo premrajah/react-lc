@@ -16,10 +16,12 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import PhoneInput from "react-phone-input-2";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {arrangeAlphabatically} from "../../Util/GlobalFunctions";
+import {arrangeAlphabatically, arrangeObjectKeysAlphabatically} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import CustomTransferList from "../FormsUI/ProductForm/CustomTransferList";
 import GlobalDialog from "../RightBar/GlobalDialog";
+
+import Add from "@mui/icons-material/Add";
 
 class ManageRole extends Component {
     constructor(props) {
@@ -36,7 +38,8 @@ class ManageRole extends Component {
             showEdit:false,
             selectedKey:null,
             editMode:false,
-            allPerms:[],
+            allPerms:null,
+            allPermsKeys:[],
             selectedEditItem:null,
             showDeletePopUp: false,
         };
@@ -66,8 +69,13 @@ class ManageRole extends Component {
             .then(
                 (response) => {
 
+                    console.log(arrangeObjectKeysAlphabatically(response.data.data))
+
                     this.setState({
-                        allPerms: arrangeAlphabatically(response.data.data),
+
+                        allPerms: (response.data.data),
+                        allPermsKeys: arrangeObjectKeysAlphabatically(response.data.data),
+
 
                     });
                 },
@@ -107,6 +115,8 @@ class ManageRole extends Component {
         let validations = [
             validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
             validateFormatCreate("description", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("perms", [{check: Validators.required, message: 'Required'}], fields),
+
         ]
 
 
@@ -304,27 +314,23 @@ class ManageRole extends Component {
                                         </div>
                                     </div>
 
-                                    {this.state.allPerms.length>0 &&   <div className="row no-gutters ">
+                                    {this.state.allPermsKeys.length>0&&this.state.allPerms &&
+                                    <div className="row no-gutters ">
                                         <div className="col-12  mb-2">
-                                            <CustomTransferList initialValue={this.state.selectedEditItem?this.state.selectedEditItem.perms:[]}  setSelected={(selected)=>this.handleChangeCheck(selected)} items={this.state.allPerms} />
+
+                                            <CustomTransferList
+                                                error={this.state.errors["perms"]}
+                                                initialValue={this.state.selectedEditItem?this.state.selectedEditItem.perms:[]}
+                                                setSelected={(selected)=>this.handleChangeCheck(selected)}
+                                                keys={this.state.allPermsKeys}
+                                                items={this.state.allPerms}
+                                            />
                                         </div>
 
                                     </div>}
-                                    {/*<div className="row  ">*/}
-                                    {/*    <div className="col-12  parent-checkbox-container-custom  justify-content-start align-items-center">*/}
-                                    {/*        {this.state.allPerms.map((item=>*/}
 
-                                    {/*            <div className="checkbox-container-custom">*/}
-                                    {/*                <CheckboxWrapper*/}
-                                    {/*                    initialValue={this.state.editMode&&this.state.selectedEditItem&&this.state.selectedEditItem.perms.includes(item)}*/}
-                                    {/*                    onChange={(checked)=>this.handleChangeCheck(checked,    `${item}`)} color="primary"*/}
-                                    {/*                    name={ `${item}`} title={item} />*/}
-                                    {/*            </div>*/}
-                                    {/*    ))}*/}
-                                    {/*    </div>*/}
-                                    {/*</div>*/}
                                     <div className={"row"}>
-                                        <div className="col-12  mb-2">
+                                        <div className="col-12 mt-3 mb-2">
                                             <GreenButton
                                                 type={"submit"}
                                                 title={"Submit"}
@@ -338,19 +344,26 @@ class ManageRole extends Component {
                     }
                 </RightSidebar>
                 <div className="row">
-                    <div className="col-12 text-right text-blue"> <IconBtn onClick={()=>this.toggleEdit(false,null,null)} />  </div>
-                    <div className="col-12">
+                    <div className="col-12 text-right text-blue">
+                        <button onClick={()=>this.toggleEdit(false,null,null)} className=" btn-sm btn-gray-border  mr-2"><>
+                            <Add  style={{fontSize:"20px"}} />
+                            Add Role</></button>
+                    </div>
+
+
+                    <div className="col-12 pt-4">
 
                         {this.state.items.map((item,index)=>
-                            <>  <hr/>
-                                <div className="row d-flex flex-row mb-2  align-items-start">
+                            <div key={index}>
+                                {/*<hr/>*/}
+                                <div className="row d-flex flex-row pb-2 pt-2 min-row-height-90  hover-bg align-items-center border-top">
                                     <div className=" col-1 justify-content-start">
-                                        <span className={"title-bold"}>{index+1}. </span>
+                                        <span className={"text-blue"}>{index+1}. </span>
 
                                     </div>
                                     <div className=" col-8 ">
-                                        <span className={"title-bold"}> {item.name}</span><br/>
-                                        <span className={"text-gray-light text-14"}>{item.description}</span>
+                                        <span className={"text-blue text-capitalize"}> {item.name}</span>
+                                        <span className={"text-gray-light text-14"}> ({item.description})</span>
                                     </div>
                                     {!item.is_system_role &&
 
@@ -365,7 +378,7 @@ class ManageRole extends Component {
 
                                 </div>
 
-                            </>
+                            </div>
 
                         )}
 
@@ -429,6 +442,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
 
     };
 };

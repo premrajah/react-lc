@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import PageHeader from "../../components/PageHeader";
-import {Edit} from "@mui/icons-material";
+import {Close, Edit} from "@mui/icons-material";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import RightSidebar from "../RightBar/RightSidebar";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
@@ -16,10 +16,12 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import PhoneInput from "react-phone-input-2";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {arrangeAlphabatically} from "../../Util/GlobalFunctions";
+import {arrangeAlphabatically, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import ManageUserItem from "./ManageUserItem";
 import GlobalDialog from "../RightBar/GlobalDialog";
+import Add from "@mui/icons-material/Add";
+import CustomPopover from "../FormsUI/CustomPopover";
 
 class ManageUser extends Component {
     constructor(props) {
@@ -33,12 +35,14 @@ class ManageUser extends Component {
             errors: {},
             loading: false,
             items:[],
+            roles:[],
             showEdit:false,
             selectedKey:null,
             editMode:false,
             allPerms:[],
             selectedEditItem:null,
             showDeletePopUp: false,
+            showAddPopUp: false,
         };
 
     }
@@ -61,18 +65,16 @@ class ManageUser extends Component {
             );
     }
 
-    toggleEdit=async (edit, key, item) => {
+    toggleAddUser=async (loadRoles) => {
 
+        if (loadRoles)
+        this.fetchRoles()
 
-        await this.fetchAllPermissions()
-
-        this.props.toggleRightBar()
         this.setState({
-            editMode: edit,
-            selectedKey: key,
-            selectedEditItem: item,
-            showEdit: !this.state.showEdit,
+            showAddPopUp: !this.state.showAddPopUp,
         })
+
+
     }
 
 
@@ -83,8 +85,8 @@ class ManageUser extends Component {
 
 
         let validations = [
-            validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("description", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("role", [{check: Validators.required, message: 'Required'}], fields),
         ]
 
 
@@ -152,33 +154,59 @@ class ManageUser extends Component {
 
 
 
-        let fields= this.state.fields
-
-        fields.type="org_other"
-
         // return false
         axios
-            .put(
-                baseUrl + "role",
-
-                fields
+            .post(
+                baseUrl + "org/email/add",
+                {
+                    email:data.get("email"),
+                    role_id:data.get("role"),
+                }
 
             )
             .then((res) => {
 
-                this.fetchRoles()
-                this.props.toggleRightBar()
-                this.props.showSnackbar({show: true, severity: "success", message: "Role created successfully. Thanks"})
+                this.fetchUsers()
+                this.props.showSnackbar({show: true, severity: "success", message: "New user added successfully. Thanks"})
 
 
             })
             .catch((error) => {
                 this.setState({isSubmitButtonPressed: false})
-            });
+                this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+
+            }).finally(()=>{
+
+            this.toggleAddUser(false)
+        });
 
 
     };
+    fetchRoles=()=> {
 
+        this.setState({
+            btnLoading: true,
+
+        });
+        axios
+            .get(baseUrl + "role")
+            .then(
+                (response) => {
+
+                    this.setState({
+                        btnLoading: false,
+
+                    });
+                    this.setState({
+                        roles: response.data.data,
+
+                    });
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
 
     componentDidMount() {
         window.scrollTo(0, 0);
@@ -258,12 +286,20 @@ class ManageUser extends Component {
                 />
 
                 <div className="row">
-                    <div className="col-12">
+                    <div className="col-12 text-right text-blue">
+                        <button onClick={()=>this.toggleAddUser(true)} className=" btn-sm btn-gray-border  mr-2"><>
+                            <Add  style={{fontSize:"20px"}} />
+                            Add User</></button>
+                    </div>
+
+                    {/*<div className="col-12 text-right text-blue"><IconBtn onClick={()=>this.toggleAddUser(false,null,null)} />Add User</div>*/}
+
+                    <div className="col-12 mt-4">
 
 
                         {this.state.items.map((item,index)=>
                             <div key={index}>
-                            <hr/>
+
                                <ManageUserItem toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)} refreshList={this.fetchUsers} item={item} index={index}/>
 
                             </div>
@@ -320,6 +356,89 @@ class ManageUser extends Component {
 
     </GlobalDialog>
 
+    <GlobalDialog size={"xs"} hide={()=>this.toggleAddUser(false)} show={this.state.showAddPopUp} heading={"Add User"} >
+        <>
+            <form className={"full-width-field"} onSubmit={this.handleSubmit}>
+
+
+            <div className="col-12 ">
+
+        <div className="row no-gutters">
+            <div className="col-12 ">
+
+                <TextFieldWrapper
+                    onChange={(value)=>this.handleChange(value,"email")}
+                    error={this.state.errors["email"]}
+                    name="email" title="Email Address" />
+
+            </div>
+        </div>
+            <div className="row no-gutters">
+                <div
+                    className="col-12 ">
+
+                    <SelectArrayWrapper
+
+                        option={"name"}
+                        select={"Select"}
+                        valueKey={"_id"}
+                        error={this.state.errors["role"]}
+                        onChange={(value) => {
+                            this.handleChange(value, "role")
+                        }}
+                          title={"Assign Role"}
+                        options={this.state.roles}
+
+                        name={"role"}
+
+                    />
+
+
+
+
+                </div>
+            </div>
+
+        </div>
+                <div className="col-12 ">
+
+                    <div className="row mt-4 no-gutters">
+          <div  className={"col-6"}
+            style={{
+                textAlign: "center",
+            }}>
+            <GreenButton
+
+                title={"Submit"}
+                type={"submit"}>
+
+            </GreenButton>
+        </div>
+        <div
+            className={"col-6"}
+            style={{
+                textAlign: "center",
+            }}>
+            <BlueBorderButton
+                type="button"
+
+                title={"Cancel"}
+
+                onClick={()=>
+                    this
+                        .toggleAddUser(false)
+                }
+            >
+
+            </BlueBorderButton>
+        </div>
+                    </div>
+                </div>
+            </form>
+    </>
+    </GlobalDialog>
+
+
 </>
         );
     }
@@ -334,6 +453,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
 
     };
 };

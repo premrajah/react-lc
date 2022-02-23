@@ -19,7 +19,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import {arrangeAlphabatically} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import CustomPopover from "../FormsUI/CustomPopover";
-import {OverlayTrigger} from "react-bootstrap";
+import {OverlayTrigger, Spinner} from "react-bootstrap";
 
 class ManageUserItem extends Component {
     constructor(props) {
@@ -38,17 +38,27 @@ class ManageUserItem extends Component {
             editMode:false,
             allPerms:[],
             selectedEditItem:null,
-            role:null
+            role:null,
+            btnLoading:false
         };
 
     }
 
     fetchRoles=()=> {
+
+        this.setState({
+            btnLoading: true,
+
+        });
         axios
             .get(baseUrl + "role")
             .then(
                 (response) => {
 
+                    this.setState({
+                        btnLoading: false,
+
+                    });
                     this.setState({
                         items: response.data.data,
 
@@ -61,6 +71,7 @@ class ManageUserItem extends Component {
     }
 
     fetchRole=(id)=> {
+
         axios
             .get(baseUrl + "role/"+id.replace("Role/",""))
             .then(
@@ -70,6 +81,8 @@ class ManageUserItem extends Component {
                         role: response.data.data,
 
                     });
+
+
                 },
                 (error) => {
                     // var status = error.response.status
@@ -103,6 +116,52 @@ class ManageUserItem extends Component {
 
     }
 
+    handleChangeRole(value, field) {
+
+
+if (value) {
+    this.setState({
+        btnLoading: true,
+
+    });
+
+    axios
+        .post(
+            baseUrl + "org/email/add",
+
+            {
+                email: this.props.item.user.email,
+                role_id: value
+            }
+        )
+        .then((res) => {
+
+            this.toggleEdit()
+
+            this.fetchRole(value)
+            this.props.toggleRightBar()
+            this.props.showSnackbar({
+                show: true,
+                severity: "success",
+                message: "User role updated successfully. Thanks"
+            })
+
+
+        })
+        .catch((error) => {
+            this.setState({isSubmitButtonPressed: false})
+        }).finally(() => {
+
+            this.setState({
+                btnLoading: false,
+
+            });
+        }
+    );
+}
+
+    }
+
 
     handleSubmitUser = (event) => {
         event.preventDefault();
@@ -110,6 +169,7 @@ class ManageUserItem extends Component {
 
         this.setState({
             btnLoading: true,
+
         });
 
         const data = new FormData(event.target);
@@ -136,10 +196,20 @@ class ManageUserItem extends Component {
                 this.props.showSnackbar({show: true, severity: "success", message: "User role updated successfully. Thanks"})
 
 
+
+
             })
             .catch((error) => {
                 this.setState({isSubmitButtonPressed: false})
+            }).finally(()=>{
+
+            this.setState({
+                btnLoading: false,
+
             });
+            }
+
+        );
 
 
     };
@@ -173,88 +243,102 @@ this.fetchRole(this.props.item.role_id)
         const {item,index} = this.props
         return (
 
-                                <div className="row d-flex flex-row mb-2  align-items-start">
+                                <div className="row min-row-height-90 d-flex hover-bg flex-row pb-2 pt-2 border-top align-items-center justify-content-start">
                                     <div className=" col-1 justify-content-start">
-                                        <span className={"title-bold"}>{index+1}. </span>
+                                        <span className={"text-blue"}>{index+1}. </span>
 
                                     </div>
-                                    <div className=" col-7 ">
-                                        <span className={`title-bold`}> {item.user.firstName} {item.user.lastName}</span> (<span className={" title-bold"}>{item.user.email}
+                                    <div className=" col-5 ">
+                                        <span className={`text-blue text-capitalize`}> {item.user.firstName} {item.user.lastName}</span> (<span className={" text-blue"}>{item.user.email}
 
                                     </span>)
                                         {item.user.email===this.props.userDetail.email&&<span  className={`text-pink ml-2 `}>Logged In User</span>}
-                                        <br/>
-                                        <span className={"text-gray-light text-right"}>
-                                            {this.state.role?this.state.role.name:item.role_id}
-                                            {this.state.role &&  <CustomPopover heading={this.state.role.name} text={this.state.role.perms.length>0?(this.state.role.perms.map((role)=> role+", ")):""}>
-                                                 <Info
-                                                     style={{ cursor: "pointer", color: "#EAEAEF" }}
-                                                     fontSize={"small"}
-                                                 />
-                                            </CustomPopover>}
-
-                                        </span>
 
 
                                     </div>
-                                    <div className=" col-4 text-right ">
-
-                                        {this.state.showEdit &&
-                                        <form className={"full-width-field"} onSubmit={this.handleSubmitUser}>
-
-                                            <div className="row no-gutters">
-                                                <div className="col-12 d-flex align-items-center justify-content-end flex-row">
-
-                                                    <SelectArrayWrapper
+                                    <div className=" col-6 text-right ">
 
 
-                                                        initialValue={item.role_id}
+{this.state.btnLoading &&   <Spinner
+    className="mr-2"
+    as="span"
+    animation="border"
+    size="sm"
+    role="status"
+    aria-hidden="true"
+/>}
 
-                                                        option={"name"}
-                                                        valueKey={"_id"}
-                                                        error={this.state.errors["role_id"]}
-                                                        onChange={(value)=> {
-                                                            this.handleChange(value,"role_id")
-                                                        }}
-
-                                                        // options={this.state.items.filter((item)=> item._key)}
-                                                        options={this.state.items}
-
-                                                        name={"role_id"}
-
+                                        {!this.state.showEdit &&
+                                        <>
+                                            <span className={"text-gray-light text-right"}>
+                                            {this.state.role?this.state.role.name:item.role_id}
+                                                {this.state.role &&  <CustomPopover heading={this.state.role.name} text={this.state.role.perms.length>0?(this.state.role.perms.map((role)=> role+", ")):""}>
+                                                    <Info
+                                                        style={{ cursor: "pointer", color: "#EAEAEF" }}
+                                                        fontSize={"small"}
                                                     />
+                                                </CustomPopover>}
 
-                   <div  className={"ml-2"}>
-                                                   <CustomPopover text={"Save Role"}> <ActionIconBtn
+                                        </span>
+                                        <ActionIconBtn
+                                            className="ml-4"
+                                            onClick={()=>this.toggleEdit(true,item._key,item)}><Edit/></ActionIconBtn>
+
+                                        <ActionIconBtn onClick={()=>this.props.toggleDeletePopUp(item.user._key,item.user)}><Delete/></ActionIconBtn>
+</>}
+                                        {this.state.showEdit && !this.state.btnLoading &&
+                                        // <form className={"full-width-field"} onSubmit={this.handleSubmitUser}>
+
+                                        <div className="row no-gutters">
+                                            <div
+                                                className="col-12 d-flex align-items-center justify-content-end flex-row">
+
+                                                <SelectArrayWrapper
 
 
-                                                        type={"submit"}
-                                                        title={"Submit"}
-                                                    >
-                                                        <Done/>
-                                                    </ActionIconBtn></CustomPopover>
-                       <CustomPopover text={"Cancel"}>   <ActionIconBtn
+                                                    noBorder
+                                                    // initialValue={item.role_id}
+                                                    textAlignRight
+
+                                                    option={"name"}
+                                                    select={"Select"}
+                                                    valueKey={"_id"}
+                                                    error={this.state.errors["role_id"]}
+                                                    onChange={(value) => {
+                                                        this.handleChangeRole(value, "role_id")
+                                                    }}
+
+                                                    // options={this.state.items.filter((item)=> item._key)}
+                                                    options={this.state.items}
+
+                                                    name={"role_id"}
+
+                                                />
+
+                                                <div className={"ml-4 "}>
+                                                    {/*<CustomPopover text={"Save Role"}> <ActionIconBtn*/}
+
+
+                                                    {/*    type={"submit"}*/}
+                                                    {/*    title={"Submit"}*/}
+                                                    {/*>*/}
+                                                    {/*    <Done/>*/}
+                                                    {/*</ActionIconBtn></CustomPopover>*/}
+                                                    <CustomPopover text={"Cancel"}> <ActionIconBtn className={"mb-2"}
                                                         onClick={this.toggleEdit}
                                                         type={"button"}
                                                         title={"Submit"}
                                                     >
                                                         <Close/>
-                       </ActionIconBtn></CustomPopover>
-</div>
-
+                                                    </ActionIconBtn></CustomPopover>
                                                 </div>
+
+
                                             </div>
+                                        </div>
 
-                                        </form>}
-
-                                        {!this.state.showEdit &&
-                                        <>
-                                        <ActionIconBtn
-                                            onClick={()=>this.toggleEdit(true,item._key,item)}><Edit/></ActionIconBtn>
-
-                                        <ActionIconBtn onClick={()=>this.props.toggleDeletePopUp(item.user._key,item.user)}><Delete/></ActionIconBtn>
-</>}
-
+                                            // </form>}
+                                        }
                                     </div>
                                 </div>
 
@@ -273,6 +357,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
 
     };
 };

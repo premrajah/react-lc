@@ -68,6 +68,24 @@ export const arrangeAlphabatically=(items)=>{
 
 }
 
+export const arrangeObjectKeysAlphabatically=(obj)=>{
+
+
+    return   Object.keys(obj).sort(function(a, b){
+
+        if(a < b) { return -1; }
+        if(a > b) { return 1; }
+
+
+        return 0;
+    })
+
+
+
+
+
+}
+
 export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, filterType, extra)=>{
 
 

@@ -2887,7 +2887,13 @@ button.blue-btn-border
 
     text-transform: capitalize;
 }
+.text-capitalize{
 
+    text-transform: capitalize;
+}
+.select-text-right select{
+    text-align: right!important;
+}
 .qr-code-zoom{
 
     position: fixed;
@@ -4137,4 +4143,14 @@ input:active,input:focus{
     grid-column-gap: 10px;
     grid-row-gap: 10px;
 
+}
+.hover-bg:hover{
+    background: #f9fbfc;
+}
+.select-no-border select{
+    border: none!important;
+    background: none!important;
+}
+.min-row-height-90{
+    min-height: 90px;
 }

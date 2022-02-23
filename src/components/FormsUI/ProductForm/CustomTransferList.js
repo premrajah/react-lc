@@ -10,7 +10,9 @@ import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import {useEffect} from "react";
-
+import Box from '@mui/material/Box';
+import CustomPopover from "../CustomPopover";
+import {Info} from "@mui/icons-material";
 function not(a, b) {
     return a.filter((value) => b.indexOf(value) === -1);
 }
@@ -28,7 +30,8 @@ export default function CustomTransferList(props) {
 
 
     const [left, setLeft] = React.useState(props.initialValue&&props.initialValue.length>0?
-        props.items.filter((item)=>  !props.initialValue.includes(item)):props.items);
+        props.keys.filter((item)=>  !props.initialValue.includes(item)):props.keys);
+
     const [right, setRight] = React.useState(props.initialValue);
 
     const leftChecked = intersection(checked, left);
@@ -100,7 +103,7 @@ export default function CustomTransferList(props) {
             <Divider />
             <List
                 sx={{
-                    width: 200,
+                    width: "100%",
                     height: 230,
                     bgcolor: 'background.paper',
                     overflow: 'auto',
@@ -129,7 +132,7 @@ export default function CustomTransferList(props) {
                                     }}
                                 />
                             </ListItemIcon>
-                            <ListItemText id={labelId} primary={`${value}`} />
+                            <ListItemText id={labelId} primary={`${props.items[value]}`} />
                         </ListItem>
                     );
                 })}
@@ -139,9 +142,13 @@ export default function CustomTransferList(props) {
     );
 
     return (
+        <Box sx={{ width: '100%' }}>
+            <div style={{width:"100%"}} className={"custom-label text-bold text-blue mb-1"}>
+              Select Permissions
+            </div>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
-            <Grid item>{customList('Available Permissions', left)}</Grid>
-            <Grid item>
+            <Grid xs={5} item>{customList('Available Permissions', left)}</Grid>
+            <Grid xs={2} item>
                 <Grid container direction="column" alignItems="center">
                     <Button
                         sx={{ my: 0.5 }}
@@ -165,7 +172,10 @@ export default function CustomTransferList(props) {
                     </Button>
                 </Grid>
             </Grid>
-            <Grid item>{customList('Selected Permissions', right)}</Grid>
+            <Grid xs={5} item>{customList('Selected Permissions', right)}</Grid>
         </Grid>
+            {props.error && <span style={{color:"#f44336",fontSize:"12px!important"}} className='text-danger'>{props.error.message}</span>}
+
+        </Box>
     );
 }

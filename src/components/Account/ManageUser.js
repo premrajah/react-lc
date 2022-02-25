@@ -294,7 +294,7 @@ class ManageUser extends Component {
 
 
                                     {this.state.items.map((item,index)=>
-                                        <div key={index}>
+                                                             <div key={index}>
 
                                             <ManageUserItem toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)} refreshList={this.fetchUsers} item={item} index={index}/>
 

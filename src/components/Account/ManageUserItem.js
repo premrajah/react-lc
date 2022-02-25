@@ -208,7 +208,7 @@ class ManageUserItem extends Component {
 
                 {
                     user_id: this.state.user._key,
-                    role_id:role_id,
+                    role_id:role_id.replace("Role/"),
                     approve:true
                 }
 
@@ -518,19 +518,19 @@ class ManageUserItem extends Component {
                                     <div
                                         className="col-12 ">
 
+                                        {this.state.roles.length>0&&
                                         <SelectArrayWrapper
-
                                             option={"name"}
                                             select={"Select"}
-                                            valueKey={"_key"}
+                                            valueKey={"_id"}
                                             error={this.state.errors["role"]}
                                             onChange={(value) => {
                                                 this.handleChange(value, "role")
                                             }}
                                             title={"Assign Role"}
-                                            options={this.state.roles}
+                                            options={this.state.roles.filter((role)=> role.is_system_role)}
                                             name={"role"}
-                                        />
+                                        />}
 
                                     </div>
                                 </div>
@@ -539,7 +539,7 @@ class ManageUserItem extends Component {
                             <div className="col-12 ">
 
                                 <div className="row mt-4 no-gutters">
-                                    <div  className={"col-6"}
+                                    <div  className={"col-6 pr-1"}
                                           style={{
                                               textAlign: "center",
                                           }}>
@@ -551,7 +551,7 @@ class ManageUserItem extends Component {
                                         </GreenButton>
                                     </div>
                                     <div
-                                        className={"col-6"}
+                                        className={"col-6 pl-1"}
                                         style={{
                                             textAlign: "center",
                                         }}>

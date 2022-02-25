@@ -278,7 +278,6 @@ marteplace
 
     componentDidMount() {
 
-console.log(this.props.match)
         window.scrollTo(0, 0);
 
         this.setState({
@@ -352,7 +351,8 @@ console.log(this.props.match)
                                                                     }>
                                                                     {this.state.item.listing.name}
                                                                 </h4>
-                                                                <div className="top-right text-right">
+                                                                { this.props.isLoggedIn&&(this.state.item.org._id ===
+                                                                    this.props.userDetail.orgId) &&    <div className="top-right text-right">
                                                                     <MoreMenu
                                                                         triggerCallback={(action) =>
                                                                             this.callBackResult(action)
@@ -363,7 +363,7 @@ console.log(this.props.match)
                                                                         duplicate={false}
                                                                     />
 
-                                                                </div>
+                                                                </div>}
                                                             </div>
 
 

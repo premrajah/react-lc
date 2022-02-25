@@ -1059,7 +1059,6 @@ class CreateCampaign extends Component {
                                                 <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
 
-
                                                     <div className="row no-gutters mt-4">
                                                         <div className="col-3">
                                                             <div className={"custom-label text-bold text-blue mb-0"}>Property</div>
@@ -1125,10 +1124,12 @@ class CreateCampaign extends Component {
                                                                 <TextFieldWrapper
                                                                     error={this.state.errors[`valueAnd[${index}]`]}
 
-                                                                    initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].value:null}
+                                                                    initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].value:null
+                                                                    }
                                                                     onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}
                                                                     name={`valueAnd[${index}]`}
-                                                                    // title="Value"
+                                                                    value={((this.state.fields[`operatorAnd[${index}]`]==="equals"&&this.state.fields[`propertyAnd[${index}]`]==="brand")?this.props.userDetail.orgId:null)}
+
                                                                 />
                                                             </div>
 

@@ -52,7 +52,7 @@ import {
     SITE_FORM_SHOW,
     SHOW_MULTIPLE_POP_UP,
     PRODUCT_PAGE_RESET,
-    PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR,TOGGLE_GLOBAL_DIALOG
+    PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR, TOGGLE_GLOBAL_DIALOG, ORG_CACHE, USER_CONTEXT
 } from "../types";
 
 export const initialState = {
@@ -67,6 +67,10 @@ export const initialState = {
     isCustomer: false,
     token: {},
     userDetail: null,
+    firstLogin: false,
+    orgCache: null,
+    userContext: null,
+
     showProductPopUp: false,
     showCreateProduct: false,
     showCreateSubProduct: false,
@@ -122,6 +126,19 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_USER_DETAIL:
             newState.userDetail = action.value;
+            break;
+        case ORG_CACHE:
+
+            newState.orgCache = action.value;
+            if (action.value&&action.value.not_first_login==="true"){
+                newState.firstLogin=false
+            }else{
+                newState.firstLogin=true
+            }
+
+            break;
+        case USER_CONTEXT:
+            newState.userContext = action.value;
             break;
         case TOGGLE_RIGHTBAR:
             newState.showRightBar = !state.showRightBar;

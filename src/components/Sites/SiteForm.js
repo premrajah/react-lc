@@ -139,44 +139,9 @@ class SiteForm extends Component {
     }
 
 
-    handleValidation() {
 
-
-        let fields = this.state.fields;
-
-
-        let validations = [
-            validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("address", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("phone", [ {
-                check: Validators.number,
-                message: 'This field should be a number.'
-            }], fields),
-            validateFormatCreate("contact", [{check: Validators.required, message: 'Required'}], fields),
-
-
-        ]
-
-
-        let {formIsValid, errors} = validateInputs(validations)
-
-        this.setState({errors: errors});
-        return formIsValid;
-    }
-
-    handleChange(value, field) {
-
-        let fields = this.state.fields;
-        fields[field] = value;
-        console.log(value)
-        this.setState({fields});
-
-    }
 
     handleSearchAddress(value) {
-        console.log("handle address call")
-        console.log(value)
 
    try {
 
@@ -222,7 +187,39 @@ class SiteForm extends Component {
 
     }
 
+    handleValidation() {
 
+
+        let fields = this.state.fields;
+
+
+        let validations = [
+            validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("address", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("phone", [ {
+                check: Validators.number,
+                message: 'This field should be a number.'
+            }], fields),
+            validateFormatCreate("contact", [{check: Validators.required, message: 'Required'}], fields),
+
+
+        ]
+
+
+        let {formIsValid, errors} = validateInputs(validations)
+
+        this.setState({errors: errors});
+        return formIsValid;
+    }
+
+    handleChange(value, field) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({fields});
+
+    }
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -688,7 +685,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     </div>
 
                                     <div className="row no-gutters">
-                                        <div className="col-6 pr-1">
+                                        <div className="col-6 pr-2">
                                             <SelectArrayWrapper
 
                                                 initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
@@ -704,8 +701,12 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                         </div>
 
-                                        <div className="col-6 pl-1 ">
+                                        <div className="col-6 pl-2 ">
 
+
+                                            <div className="custom-label text-bold ellipsis-end text-blue mb-0">
+                                                Phone
+                                            </div>
                                             <PhoneInput
                                                 value={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
 
@@ -905,8 +906,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 <div className="col-6 pl-1 ">
 
                                     <SelectArrayWrapper
-
-                                        initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
+                                        initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key?this.props.showSiteForm.parent._key:this.props.showSiteForm.parent}
                                         option={"name"}
                                         valueKey={"_key"}
                                         error={this.state.errors["parent"]}

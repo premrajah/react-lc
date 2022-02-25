@@ -21,12 +21,9 @@ class CompanyInfo extends Component {
 
     render() {
         return (
-            <Layout>
 
-                    <div className="container pb-4 pt-4">
-                        <div>
-                            <Link to={"/account"}>Account </Link> > Company Info
-                        </div>
+
+                    <div className="container  ">
 
                         <PageHeader
                             pageTitle="Company Info"
@@ -37,7 +34,7 @@ class CompanyInfo extends Component {
                      <CompanyDetails  showImage />
                     </div>
 
-            </Layout>
+
         );
     }
 }

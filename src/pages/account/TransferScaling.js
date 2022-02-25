@@ -625,15 +625,9 @@ class TransferScaling extends Component {
 
     render() {
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper  ">
-                    <HeaderDark />
 
-                    <div className="container pb-4 pt-4">
-                        <div>
-                            <Link to={"/account"}>Account </Link> > Transfer Scaling
-                        </div>
+
+                    <div className="container ">
 
                         <PageHeader
                             pageTitle="Transfer Scaling"
@@ -884,8 +878,7 @@ class TransferScaling extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
         );
     }
 }

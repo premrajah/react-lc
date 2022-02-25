@@ -385,7 +385,7 @@ class MatchItemSeller extends Component {
                         {this.props.item.search.org.name}
                         <CompanyInfo item={this.props.item.search.org} />
                     </p>
-                    <p style={{ fontSize: "16px" }} className="text-mute mb-1">
+                    <p style={{ fontSize: "16px" }} className=" ellipsis-end mb-1">
                         {this.props.item.search.search.name}
                     </p>
                     <p style={{ fontSize: "16px" }} className=" mb-1">
@@ -692,11 +692,7 @@ class MatchItemSeller extends Component {
                     onHide={this.showPopUpInitiateAction}
                     animation={false}>
                     <ModalBody>
-                        {/*<div className={"row justify-content-center"}>*/}
-                        {/*<div className={"col-4 text-center"}>*/}
-                        {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
+
 
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
@@ -737,10 +733,6 @@ class MatchItemSeller extends Component {
                                 </div>
                             </div>
                         </div>
-
-                        {/*</>*/}
-
-                        {/*}*/}
                     </ModalBody>
                 </Modal>
             </div>

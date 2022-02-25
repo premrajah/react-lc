@@ -73,7 +73,7 @@ class SignUp extends Component {
 
     companyDetails = (detail) => {
 
-
+        let fields = this.state.fields
 
         if (detail.org) {
             this.setState({
@@ -83,13 +83,33 @@ class SignUp extends Component {
             this.setState({
                 isLoopCycleCompany:true
             })
-        } else {
+
+
+            fields.company = detail.org
+
+        } else if (detail.company) {
+
+
+            fields.company = detail.company
+
+
 
             this.setState({
                 isLoopCycleCompany:false,
                 companyNumber:detail.company
             })
+        }else{
+
+            fields.company = null
+
+
+
         }
+        this.setState({
+            fields: fields
+        })
+
+
     };
 
 
@@ -178,6 +198,8 @@ class SignUp extends Component {
 
         let validations=[
             validateFormatCreate("firstName", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("company", [{check: Validators.required, message: 'Required'}],fields),
+
             validateFormatCreate("lastName", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("email", [{check: Validators.required, message: 'Required'},{check: Validators.email, message: 'Required'}],fields),
             validateFormatCreate("phone", [{check: Validators.number, message: 'This field should be a number.'}],fields),
@@ -341,11 +363,14 @@ class SignUp extends Component {
                                     Select Company
                                 </div>
                                 <AutocompleteCustom
+
+                                    email={this.state.fields["email"]}
                                     orgs={true}
                                     companies={true}
                                     suggestions={this.state.orgNames}
                                     selectedCompany={(action) => this.companyDetails(action)}
                                 />
+                                { this.state.errors["company"] &&<span style={{color: "rgb(244, 67, 54)"}} className="text-danger">Required</span>}
 
 
                             </div>

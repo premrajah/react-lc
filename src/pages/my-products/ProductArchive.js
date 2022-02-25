@@ -149,7 +149,6 @@ class ProductArchive extends Component {
 
     loadProductsWithoutParentPageWise= async (data) => {
 
-        console.log(data)
 
         if (data.reset){
 
@@ -197,7 +196,6 @@ class ProductArchive extends Component {
             }
         }
 
-        // console.log(result)
 
 
     }
@@ -227,7 +225,7 @@ class ProductArchive extends Component {
                                     Products
                                 </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border">
+                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border mr-2">
                                     Tracked
                                 </Link>
                                 <Link to="/issues" className=" btn-sm btn-gray-border ml-2-desktop ">

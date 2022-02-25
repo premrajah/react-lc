@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SelectArrayWrapper = (props) => {
 
-    const {label,title,option,initialValue,detailsHeading,details,placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
+    const {label,title,option,initialValue,detailsHeading,details,noBorder,textAlignRight,placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
 
     const [value, setValue] = React.useState();
     const classes = useStyles();
@@ -54,7 +54,7 @@ const SelectArrayWrapper = (props) => {
                 style={{width:"100%"}}
                 disabled={disabled}
                 name={name}
-                className={error&&"border-red-error"}
+                className={` ${error&&"border-red-error"}  ${textAlignRight&&"select-text-right"}  ${noBorder&&"select-no-border"} `}
                 // defaultValue={defaultValue ? defaultValue : ""}
             >
                 {select&&

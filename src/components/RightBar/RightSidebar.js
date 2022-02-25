@@ -38,8 +38,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     return (
         <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={props.showRightBar}
-            // onClick={handleDrawerClose}
+            open={props.open}
+            // onClick={props.toggleOpen}
         >
         <Box sx={{ display: 'flex' }} >
 
@@ -54,10 +54,10 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
                 variant="persistent"
                 anchor="right"
-                open={props.showRightBar}
+                open={props.open}
             >
                 <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
+                    <IconButton onClick={props.toggleOpen}>
                         <ChevronRight />
                     </IconButton>
 
@@ -76,7 +76,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const mapStateToProps = (state) => {
     return {
-        showRightBar: state.showRightBar,
+        // showRightBar: state.showRightBar,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,

@@ -6,6 +6,7 @@ import history from "../../History/history";
 import TextField from "@mui/material/TextField";
 import axios from "axios/index";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import GreenBorderButton from "../../components/FormsUI/Buttons/GreenBorderButton";
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -187,14 +188,10 @@ class ForgotPassword extends Component {
                             </div>
 
                             <div className="col-12 mt-4 mb-4">
-                                <BlueBorderButton
-
+                                <GreenBorderButton
                                     title={"Submit Email"}
-                                    type={"submit"}
-                                    fullWidth
-
-                                >
-                                </BlueBorderButton>
+                                    type={"submit"}>
+                                </GreenBorderButton>
 
                             </div>
                         </div>

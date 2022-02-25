@@ -18,6 +18,8 @@ import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import Layout from "../../components/Layout/Layout";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import GreenBorderButton from "../FormsUI/Buttons/GreenBorderButton";
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
+import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
 
 class CompanyDetails extends Component {
     constructor(props) {
@@ -52,9 +54,10 @@ class CompanyDetails extends Component {
             units: [],
             croppedImageData:null,
             showCropper:false,
-            files:[]
-
-
+            files:[],
+            industries:["Commercial kitchen equipment","Commercial laundry equipment","Hospitality","Healthcare"],
+            reasons:["Register new products","Access Marketplace"],
+            businessFields:["Manufacturer","Dealer","Operator"],
 
         };
 
@@ -159,12 +162,11 @@ class CompanyDetails extends Component {
 
         axios
             .post(`${baseUrl}org/cache`, {
-                key: "first_login",
-                value: "false",
+                key: "not_first_login",
+                value: "true",
             })
             .then(
                 (response) => {
-                   console.log(response)
 
                     if (this.props.hide)
                     this.props.hide()
@@ -227,7 +229,7 @@ class CompanyDetails extends Component {
         let validations=[
 
             validateFormatCreate("companyName", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'Invalid Input'},{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'Invalid Input'}],fields),
         ]
 
 
@@ -338,7 +340,7 @@ class CompanyDetails extends Component {
 
                                 "industry": data.get("industry"),
                                 "sector": data.get("businessField"),
-                                "no_of_staff": data.get("no_of_staff")
+                                "no_of_staff": data.get("no_of_staff")?data.get("no_of_staff"):0
                             }
                         // },
                     }
@@ -654,10 +656,11 @@ class CompanyDetails extends Component {
 
                         <div className="row no-gutters">
 
-                            <div style={{display: "flex",position:"relative"}} className="col-md-12 col-6 ">
+                            <div style={{display: "flex",position:"relative"}} className="col-md-12  col-6 ">
                                 <div className={"img-box"}  style={{position:"relative"}}>
                                 {this.state.orgImage||this.state.file ? (
                                     <img
+                                        className={"rad-8"}
                                         // src={this.state.orgImage}
                                         src={this.state.orgImage? this.state.orgImage:URL.createObjectURL(this.state.file.file)}
                                         // src={this.state.orgImage? this.state.orgImage:this.state.croppedImageData}
@@ -666,13 +669,14 @@ class CompanyDetails extends Component {
                                         style={{ maxHeight: "150px", objectFit:"contain" }}
                                     />
                                 ) : <img
+                                    className={"rad-8"}
                                     src={PlaceholderImg}
                                     alt="logo"
                                     style={{ maxHeight: "150px" , objectFit:"contain"}}
                                 />}
 
                                     <label
-                                        className={"edit-icon"}
+                                        className={"edit-icon d-flex"}
                                         htmlFor="fileInput-2">
 
                                         <EditIcon className={""} style={{
@@ -692,31 +696,31 @@ class CompanyDetails extends Component {
                                         )}
                                     />
                                 </div>
-                                <div className={"pl-2"}>
+                                <div className={"pl-3"}>
                                 {this.state.org && this.state.org.company && (
                                     <>
-                                        <h5 className={"text-bold"}>
-                                            Company Registration Details
+                                        <h5 className={"title-bold"}>
+                                            Registration Details
                                         </h5>
                                         <div>
-                                            <div className="text-bold text-blue">
-                                                <span className="mr-1">Name:</span>
-                                                <span>{this.state.org.company.company_name}</span>
+                                            <div className=" text-blue">
+                                                <span className="   text-blue mb-1 mr-1">Name:</span>
+                                                <span className={"text-gray-light"}>{this.state.org.company.company_name}</span>
                                             </div>
 
                                             <div>
-                                                <span className="mr-1">Company Number:</span>
-                                                <span>{this.state.org.company.company_number}</span>
+                                                <span className="   text-blue mb-1 mr-1">Company Number:</span>
+                                                <span className={"text-gray-light"}>{this.state.org.company.company_number}</span>
                                             </div>
 
 
                                             <div>
-                                                <span className="mr-1">Registered Address:</span>
-                                                <span className="mr-1">{
+                                                <span className="   text-blue mb-1 mr-1">Registered Address:</span>
+                                                <span className="mr-1 text-gray-light">{
                                                     this.state.org.company.registered_office_address
                                                         .address_line_1
                                                 },</span>
-                                                <span>{
+                                                <span className={"text-gray-light"}>{
                                                     this.state.org.company.registered_office_address
                                                         .address_line_2
                                                 }</span>
@@ -724,12 +728,12 @@ class CompanyDetails extends Component {
 
 
                                             <div>
-                                                <span className="mr-1">Locality:</span>
-                                                <span className="mr-1">{
+                                                <span className="   text-blue mb-1 mr-1">Locality:</span>
+                                                <span className="mr-1 text-gray-light">{
                                                     this.state.org.company.registered_office_address
                                                         .locality
                                                 },</span>
-                                                <span>{
+                                                <span className={"text-gray-light"}>{
                                                     this.state.org.company.registered_office_address
                                                         .country
                                                 }</span>
@@ -752,6 +756,7 @@ class CompanyDetails extends Component {
                                             <div className="col-6  mt-3">
 
                                                 <TextFieldWrapper
+                                                    disabled={true}
                                                     initialValue={this.state.companyName}
                                                     onChange={(value)=>this.handleChange(value,"companyName")}
                                                     error={this.state.errors["companyName"]}
@@ -774,21 +779,38 @@ class CompanyDetails extends Component {
 
                                             <div className="col-6 mt-3">
 
-                                                <TextFieldWrapper
+                                                {/*<TextFieldWrapper*/}
+
+                                                {/*    initialValue={this.state.industry}*/}
+                                                {/*    onChange={(value)=>this.handleChange(value,"industry")}*/}
+                                                {/*    error={this.state.errors["industry"]}*/}
+                                                {/*    name="industry" title="Industry" />*/}
+
+                                                <AutoCompleteComboBox
                                                     initialValue={this.state.industry}
+                                                    name="industry"
                                                     onChange={(value)=>this.handleChange(value,"industry")}
-                                                    error={this.state.errors["industry"]}
-                                                    name="industry" title="Industry" />
+                                                    options={this.state.industries}
+                                                    title="Industry"
+                                                />
 
 
                                             </div>
                                             <div className="col-6 mt-3">
 
-                                                <TextFieldWrapper
+                                                <AutoCompleteComboBox
                                                     initialValue={this.state.sector}
+                                                    name="businessField"
                                                     onChange={(value)=>this.handleChange(value,"businessField")}
-                                                    error={this.state.errors["businessField"]}
-                                                    name="businessField" title="Field of Business" />
+                                                    options={this.state.businessFields}
+                                                    title="Field of Business"
+                                                />
+
+                                                {/*<TextFieldWrapper*/}
+                                                {/*    initialValue={this.state.sector}*/}
+                                                {/*    onChange={(value)=>this.handleChange(value,"businessField")}*/}
+                                                {/*    error={this.state.errors["businessField"]}*/}
+                                                {/*    name="businessField" title="Field of Business" />*/}
 
 
                                             </div>

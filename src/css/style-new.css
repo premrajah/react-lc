@@ -22,7 +22,21 @@
     background: #EAEAEF;
     border-radius: 50%;
 }
+.MuiTabs-root button{
+    font-size: 16px!important;
+    font-family: var(--primary-heading);
+}
+.MuiTabs-indicator{
+    border-radius: 2px!important;
+}
+.alert.alert-success.show{
+    background: #b8ddd1;
+    color: #07ad89;
 
+}
+.alert.show{
+    border: none;
+}
 /*padding: 10px 45px !important;*/
 
 .hourglass{
@@ -1179,7 +1193,7 @@ p,span{
 /* avatar */
 
 .avatar {
-    border-radius: 50%;
+    border-radius: 10%;
     display: inline-block;
     margin: 0px auto;
     background-color: #ffffff;
@@ -1544,18 +1558,24 @@ pre {
     text-decoration: none;
 }
 
-.green-border-btn,
-.green-border-btn:hover {
+.green-border-btn {
     color: #07ab88;
     background: transparent;
-    font-size: 16px;
-    padding: .375rem .75rem;
+
     border-radius: 24px !important;
-    height: 48px;
-    min-width: 14.000em;
     border: 2px solid #07ab88;
 
-
+    font-size: 12px !important;
+    height: 48px;
+    min-width: 14.000em;
+    text-transform: uppercase!important;
+    font-weight: 700 !important;
+    letter-spacing: 1px;
+    padding: 0em 2.500em;
+    line-height: 1.4em;
+}
+.green-border-btn :hover{
+    color: #07ab88;
 }
 
 .white-border-btn,
@@ -1829,31 +1849,37 @@ button.blue-btn-border
     color: #fff;
     text-decoration: none !important;
     border-radius: 24px;
+
+    /*transition: color .5s ease, background-color .5s ease, border-color .5s ease;*/
+    font-style: normal;
+
+    font-size: 12px !important;
     height: 48px;
     min-width: 14.000em;
-    /*transition: color .5s ease, background-color .5s ease, border-color .5s ease;*/
+    text-transform: uppercase;
     font-weight: 700 !important;
-    font-style: normal;
-    font-size: 16px !important;
-    line-height: 1.4em;
     letter-spacing: 1px;
-    height: 48px;
-
-
-
-    padding: .375rem .75rem;
-
+    padding: 0em 2.500em;
+    line-height: 1.4em;
 }
 
 .btn-green {
     background: #07ad88;
     color: white;
     border: 2px solid #07ad88;
-    font-size: 16px;
-    padding: .375rem .75rem;
+    font-size: 12px;
+    /*padding: .375rem .75rem;*/
     border-radius: 24px !important;
     height: 48px;
     min-width: 14.000em;
+    text-transform: uppercase;
+    font-weight: 700 !important;
+    letter-spacing: 1px;
+    padding: 0em 2.500em;
+    line-height: 1.4em;
+
+
+
 
 }
 
@@ -2200,7 +2226,7 @@ button.blue-btn-border
 .btn-gray-border-small{
 
     border-radius: 5px;
-    height: 25px;
+    /*height: 25px;*/
     border: 2px solid #e5e5eb;
     color: #000000;
     font-size: 14px;
@@ -2619,6 +2645,22 @@ button.blue-btn-border
     text-overflow: ellipsis;
 }
 
+.custom-autocomplete{
+    background: white;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%!important;
+
+}
+.custom-autocomplete input{
+
+    border-radius: 4px;
+
+    padding: 18.5px 14px!important;
+}
+
+
 .text-blue {
     color: #27245c;
 }
@@ -2850,7 +2892,13 @@ button.blue-btn-border
 
     text-transform: capitalize;
 }
+.text-capitalize{
 
+    text-transform: capitalize;
+}
+.select-text-right select{
+    text-align: right!important;
+}
 .qr-code-zoom{
 
     position: fixed;
@@ -3137,7 +3185,8 @@ background: white;
     /*font-size: 20px;*/
 }
 .text-label{
-    font-size: 18px;
+    font-size: 16px!important;
+    font-weight: 700;
 }
 /*.MuiTimelineContent-root {*/
 /*flex: 1;*/
@@ -3895,8 +3944,10 @@ input:active,input:focus{
 }
 
 .message-row{
-    height: 600px;
+    /*height: 600px;*/
+    height: auto;
 }
+
 .message-column {
 
     flex: 1;
@@ -4072,4 +4123,39 @@ input:active,input:focus{
 .react-tel-input input{
     height: 60px!important;
     width: 100%!important;
+}
+.custom-vertical-tabs button{
+    align-items: baseline;
+    text-transform: capitalize;
+    border: 1px solid transparent;
+}
+.custom-vertical-tabs{
+    /*border: 1px solid #eee;*/
+    background: white;
+    border-radius: 8px!important;
+}
+.custom-vertical-tabs button.Mui-selected{
+    align-items: baseline;
+    text-transform: capitalize;
+    background: #f9fbfc;
+    border: 1px solid #eee;
+
+}
+.parent-checkbox-container-custom{
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+
+}
+.hover-bg:hover{
+    background: #f9fbfc;
+}
+.select-no-border select{
+    border: none!important;
+    background: none!important;
+}
+.min-row-height-90{
+    min-height: 90px;
 }

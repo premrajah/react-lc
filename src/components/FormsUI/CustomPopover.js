@@ -12,7 +12,7 @@ class CustomPopover extends React.Component {
         <Popover >
             <div className={"p-2 text-sentence "}>
 
-                {this.props.heading &&  <span className={"title-bold"} style={{ textTransform: "capitalize" }}>{this.props.heading}</span>}
+                {this.props.heading &&  <div className={"title-bold"} style={{ textTransform: "capitalize" }}>{this.props.heading}</div>}
                 {this.props.text && (
                     <>
 

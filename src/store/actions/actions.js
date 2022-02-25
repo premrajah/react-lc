@@ -35,10 +35,26 @@ import {
     MESSAGE_ALERT,
     NOTIFICATION_ALERT,
     UNREAD_MESSAGES,
-    UNREAD_NOTIFICATIONS, LOCAL_STORAGE_MESSAGE_TIMESTAMP, LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
-    PRODUCT_REGISTER, PRODUCT_RELEASE, SERVICE_AGENT_REQUEST, SHOW_SNACKBAR, CURRENT_PRODUCT,
-    GET_LISTINGS, PRODUCT_NPARENT_LIST_PAGE, CURRENT_SITE, PRODUCT_NPARENT_NO_LIST, SHOW_MULTIPLE_POP_UP,
-    SITE_FORM_SHOW, PRODUCT_PAGE_RESET, PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR, TOGGLE_GLOBAL_DIALOG
+    UNREAD_NOTIFICATIONS,
+    LOCAL_STORAGE_MESSAGE_TIMESTAMP,
+    LOCAL_STORAGE_NOTIFICATION_TIMESTAMP,
+    PRODUCT_REGISTER,
+    PRODUCT_RELEASE,
+    SERVICE_AGENT_REQUEST,
+    SHOW_SNACKBAR,
+    CURRENT_PRODUCT,
+    GET_LISTINGS,
+    PRODUCT_NPARENT_LIST_PAGE,
+    CURRENT_SITE,
+    PRODUCT_NPARENT_NO_LIST,
+    SHOW_MULTIPLE_POP_UP,
+    SITE_FORM_SHOW,
+    PRODUCT_PAGE_RESET,
+    PRODUCT_NOT_FOUND,
+    TOGGLE_RIGHTBAR,
+    TOGGLE_GLOBAL_DIALOG,
+    USER_CONTEXT,
+    ORG_CACHE
 } from "../types";
 import {load} from "dotenv";
 
@@ -252,7 +268,7 @@ export const loadParentSitesSync = (data) => (dispatch) => {
             // dispatch({ type: "PRODUCT_LIST", value: [] })
         }
     )
-    .catch(error => {});
+        .catch(error => {});
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
@@ -267,26 +283,26 @@ export const loadCurrentProduct = (data) => {
 export const loadCurrentProductSync = (data) => (dispatch) => {
 
     try{
-    axios
-        .get(baseUrl + "product/" + encodeUrl(data) + "/expand?agg"
-        )
-        .then(
-            (response) => {
-                let responseAll = response.data;
+        axios
+            .get(baseUrl + "product/" + encodeUrl(data) + "/expand?agg"
+            )
+            .then(
+                (response) => {
+                    let responseAll = response.data;
 
-                dispatch({ type: CURRENT_PRODUCT, value: responseAll.data });
+                    dispatch({ type: CURRENT_PRODUCT, value: responseAll.data });
 
 
-            },
-            (error) => {
-                // this.setState({
-                //     notFound: true,
-                // });
+                },
+                (error) => {
+                    // this.setState({
+                    //     notFound: true,
+                    // });
 
-                dispatch({ type: PRODUCT_NOT_FOUND , value:true});
+                    dispatch({ type: PRODUCT_NOT_FOUND , value:true});
 
-            }
-        );
+                }
+            );
 
     } catch(e) {
         console.log(e)
@@ -356,7 +372,7 @@ export const loadProductsSync = (data) => (dispatch) => {
             });
 
     } catch(e) {
-console.log(e)
+        console.log(e)
 
 
     }
@@ -470,15 +486,16 @@ export const logInSync = (data) => (dispatch) => {
     axios
         .post(baseUrl + "user/login", { email: data.email, password: data.password })
         .then((res) => {
-            // saveUserToken(res.data.data);
-            // dispatch(getUserDetail(data));
 
             document.body.classList.add("search-body");
 
             if (res.status === 200) {
-                saveUserToken(res.data.data);
+                saveUserToken(res.data.data.token);
 
                 saveKey("user", res.data.data);
+
+
+
                 dispatch({ type: LOGIN, value: res.data.data });
 
                 ReactGA.initialize(gaTID, {
@@ -487,9 +504,13 @@ export const logInSync = (data) => (dispatch) => {
                     }
                 });
                 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
+                dispatch(orgCache())
+                dispatch(userContext())
 
                 getMessages();
                 getNotifications();
+
+
             } else {
                 //
                 // dispatch({ type: "LOGIN_ERROR", value: res.errors[0].message })
@@ -498,17 +519,70 @@ export const logInSync = (data) => (dispatch) => {
         .catch((error) => {
 
             if (error.response)
-            dispatch((
-                { type: LOGIN_ERROR, value: error.response&&error.response.data?error.response.data.errors[0].message:error.response.status+": "+error.response.statusText}
-               ));
+                dispatch((
+                    { type: LOGIN_ERROR, value: error.response&&error.response.data?error.response.data.errors[0].message:error.response.status+": "+error.response.statusText}
+                ));
+        });
+};
 
-            // dispatch({ type: LOGIN_ERROR, value: error.response
-            //                                         ? error.response.data.errors
-            //                                         : "Login Error"
-            //             ? error.response
-            //                 ? error.response.data.errors[0].message
-            //                 : "Login Error"
-            //             : '' });
+
+
+export const userContext = (data) => {
+    return (dispatch) => {
+
+        dispatch(userContextSync(data));
+    };
+};
+
+export const userContextSync = (data) => (dispatch) => {
+    axios
+        .get(baseUrl + "user/context")
+        .then((res) => {
+
+
+            if (res.status === 200) {
+
+                dispatch({ type: USER_CONTEXT, value: res.data.data });
+
+
+
+            } else {
+                //
+                // dispatch({ type: "LOGIN_ERROR", value: res.errors[0].message })
+            }
+        })
+        .catch((error) => {
+
+        });
+};
+
+export const orgCache = (data) => {
+
+    return (dispatch) => {
+
+        dispatch(orgCacheSync(data));
+    };
+};
+
+export const orgCacheSync = (data) => (dispatch) => {
+
+    axios
+        .get(baseUrl + "org/cache")
+        .then((res) => {
+
+
+            if (res.status === 200) {
+
+                dispatch({ type: ORG_CACHE, value: res.data.data });
+
+            } else {
+                //
+                // dispatch({ type: "LOGIN_ERROR", value: res.errors[0].message })
+            }
+        })
+        .catch((error) => {
+
+
         });
 };
 
@@ -531,14 +605,7 @@ export const signUpHostSync = (data) => (dispatch) => {
         .post(
             baseUrl + "hosts.json",
             data
-            // ,{
-            //     headers:
-            //
-            //         { 'Content-Type': 'multipart/form-data' }
-            //
-            //
-            // }
-            //
+
         )
         .then((res) => {
             dispatch(getUserDetail({ username: res.data.email }));
@@ -597,10 +664,12 @@ export const setUserDetail = (data) => {
 export const loadUserDetail = (data) => {
     let userDetials = getKey("user");
 
-    //
-    //
     return { type: LOAD_USER_DETAIL, value: userDetials };
 };
+
+
+
+
 
 export const getListings = (data) => {
     return (dispatch) => {

@@ -21,8 +21,8 @@ class InfoTabContent extends Component {
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className=" text-bold text-blue mb-1">
+
+                                className=" text-label text-blue mb-1">
                                 Reference ID
                             </p>
                             <p
@@ -40,8 +40,8 @@ class InfoTabContent extends Component {
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className=" text-bold text-blue mb-1">
+
+                                className=" text-label text-blue mb-1">
                                 Email
                             </p>
                             <p
@@ -59,8 +59,8 @@ class InfoTabContent extends Component {
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className=" text-bold text-blue mb-1">
+
+                                className=" text-label text-blue mb-1">
                                 Phone
                             </p>
                             <p
@@ -78,8 +78,8 @@ class InfoTabContent extends Component {
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className=" text-bold text-blue mb-1">
+
+                                className=" text-label text-blue mb-1">
                                 Contact
                             </p>
                             <p
@@ -95,8 +95,8 @@ class InfoTabContent extends Component {
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className=" text-bold text-blue mb-1">
+
+                                className=" text-label text-blue mb-1">
                                 Address
                             </p>
                             <p
@@ -113,8 +113,8 @@ class InfoTabContent extends Component {
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
-                                style={{ fontSize: "18px" }}
-                                className=" text-bold text-blue mb-1">
+
+                                className=" text-label text-blue mb-1">
                                 Other
                             </p>
                             <p

@@ -344,7 +344,9 @@ class Notifications extends Component {
                     <PaginationLayout
                         loadingResults={this.state.loadingResults}
                         lastPageReached={this.state.lastPageReached}
-                        loadMore={this.getNotifications}>
+                        loadMore={this.getNotifications}
+                        hideSearch
+                    >
                         {this.state.allNotifications.length > 0
                             ? this.state.allNotifications.map((item, index) => {
                                   return this.checkNotifications(item, index);

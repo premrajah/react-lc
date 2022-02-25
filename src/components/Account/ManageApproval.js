@@ -334,12 +334,12 @@ class ManageApproval extends Component {
 
     </GlobalDialog>
 
-    <GlobalDialog size={"xs"} hide={()=>this.toggleAddUser(false)} show={this.state.showAddPopUp} heading={"Add User"} >
-        <>
-            <form className={"full-width-field"} onSubmit={this.handleSubmit}>
+    <GlobalDialog size={"sm"} hide={()=>this.toggleAddUser(false)} show={this.state.showAddPopUp} heading={"Add User"} >
+        <div className="col-12 ">
+
+        <form className={"full-width-field "} onSubmit={this.handleSubmit}>
 
 
-            <div className="col-12 ">
 
         <div className="row no-gutters">
             <div className="col-12 ">
@@ -377,8 +377,9 @@ class ManageApproval extends Component {
                 </div>
             </div>
 
-        </div>
-                <div className="col-12 ">
+            <div className="row ">
+
+            <div className="col-12 ">
 
                     <div className="row mt-4 no-gutters">
           <div  className={"col-6"}
@@ -412,8 +413,9 @@ class ManageApproval extends Component {
         </div>
                     </div>
                 </div>
+            </div>
             </form>
-    </>
+    </div>
     </GlobalDialog>
 
 

@@ -162,8 +162,8 @@ class CompanyDetails extends Component {
 
         axios
             .post(`${baseUrl}org/cache`, {
-                key: "first_login",
-                value: "false",
+                key: "not_first_login",
+                value: "true",
             })
             .then(
                 (response) => {
@@ -656,10 +656,11 @@ class CompanyDetails extends Component {
 
                         <div className="row no-gutters">
 
-                            <div style={{display: "flex",position:"relative"}} className="col-md-12 col-6 ">
+                            <div style={{display: "flex",position:"relative"}} className="col-md-12  col-6 ">
                                 <div className={"img-box"}  style={{position:"relative"}}>
                                 {this.state.orgImage||this.state.file ? (
                                     <img
+                                        className={"rad-8"}
                                         // src={this.state.orgImage}
                                         src={this.state.orgImage? this.state.orgImage:URL.createObjectURL(this.state.file.file)}
                                         // src={this.state.orgImage? this.state.orgImage:this.state.croppedImageData}
@@ -668,6 +669,7 @@ class CompanyDetails extends Component {
                                         style={{ maxHeight: "150px", objectFit:"contain" }}
                                     />
                                 ) : <img
+                                    className={"rad-8"}
                                     src={PlaceholderImg}
                                     alt="logo"
                                     style={{ maxHeight: "150px" , objectFit:"contain"}}
@@ -694,31 +696,31 @@ class CompanyDetails extends Component {
                                         )}
                                     />
                                 </div>
-                                <div className={"pl-2"}>
+                                <div className={"pl-3"}>
                                 {this.state.org && this.state.org.company && (
                                     <>
-                                        <h5 className={"text-bold"}>
-                                            Company Registration Details
+                                        <h5 className={"title-bold"}>
+                                            Registration Details
                                         </h5>
                                         <div>
-                                            <div className="text-bold text-blue">
-                                                <span className="mr-1">Name:</span>
-                                                <span>{this.state.org.company.company_name}</span>
+                                            <div className=" text-blue">
+                                                <span className="   text-blue mb-1 mr-1">Name:</span>
+                                                <span className={"text-gray-light"}>{this.state.org.company.company_name}</span>
                                             </div>
 
                                             <div>
-                                                <span className="mr-1">Company Number:</span>
-                                                <span>{this.state.org.company.company_number}</span>
+                                                <span className="   text-blue mb-1 mr-1">Company Number:</span>
+                                                <span className={"text-gray-light"}>{this.state.org.company.company_number}</span>
                                             </div>
 
 
                                             <div>
-                                                <span className="mr-1">Registered Address:</span>
-                                                <span className="mr-1">{
+                                                <span className="   text-blue mb-1 mr-1">Registered Address:</span>
+                                                <span className="mr-1 text-gray-light">{
                                                     this.state.org.company.registered_office_address
                                                         .address_line_1
                                                 },</span>
-                                                <span>{
+                                                <span className={"text-gray-light"}>{
                                                     this.state.org.company.registered_office_address
                                                         .address_line_2
                                                 }</span>
@@ -726,12 +728,12 @@ class CompanyDetails extends Component {
 
 
                                             <div>
-                                                <span className="mr-1">Locality:</span>
-                                                <span className="mr-1">{
+                                                <span className="   text-blue mb-1 mr-1">Locality:</span>
+                                                <span className="mr-1 text-gray-light">{
                                                     this.state.org.company.registered_office_address
                                                         .locality
                                                 },</span>
-                                                <span>{
+                                                <span className={"text-gray-light"}>{
                                                     this.state.org.company.registered_office_address
                                                         .country
                                                 }</span>

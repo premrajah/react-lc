@@ -9,12 +9,11 @@ import axios from "axios";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import CompanyInfo from "../../pages/account/CompanyInfo";
 import CompanyDetails from "../Account/CompanyDetails";
+import {getKey, saveKey} from "../../LocalStorage/user-session";
 
 class Header extends React.Component {
     constructor(props) {
         super(props);
-
-
 
         this.state = {
             timerEnd: false,
@@ -61,43 +60,16 @@ class Header extends React.Component {
     };
 
 
-    getOrgCache = () => {
-
-        let url = `${baseUrl}org/cache`;
-        axios
-            .get(url)
-            .then(response => {
-                if (response.status === 200) {
-
-
-                    let orgCache=response.data.data
-                    if (!(orgCache&&orgCache.first_login)){
-                        this.showDetailsPopUp()
-                    }
-
-                }
-            })
-            .catch((error) => {});
-    };
-
-
-
 
     componentDidMount() {
         if (this.props.isLoggedIn) {
-            this.getOrgCache()
+
             this.getArtifactForOrg()
 
         }
     }
 
 
-    showDetailsPopUp=()=>{
-
-        this.setState({
-            showDetails:!this.state.showDetails
-        })
-    }
 
     render() {
         return (
@@ -111,21 +83,7 @@ class Header extends React.Component {
 
 
 
-                <GlobalDialog
-                    hideClose
-                    disableBackdropClick
-                    heading={"Organisation Details"}
-                    show={this.state.showDetails}
-                    hide={this.showDetailsPopUp}
-                    size="md"
-                >
-                    <>
-                        <div className={"col-12 "}>
 
-                            <CompanyDetails  hide={this.showDetailsPopUp} trackFirstLogin showSkip showImage />
-                        </div>
-                    </>
-                </GlobalDialog>
 
                 </>
         );

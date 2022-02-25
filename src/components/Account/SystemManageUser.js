@@ -22,13 +22,8 @@ import ManageUserItem from "./ManageUserItem";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import Add from "@mui/icons-material/Add";
 import CustomPopover from "../FormsUI/CustomPopover";
-import Box from "@mui/material/Box";
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import Tab from "@mui/material/Tab";
-import TabPanel from "@mui/lab/TabPanel";
 
-class ManageUser extends Component {
+class SystemManageUser extends Component {
     constructor(props) {
         super(props);
 
@@ -220,7 +215,7 @@ class ManageUser extends Component {
 
     fetchUsers=()=> {
         axios
-            .get(baseUrl + "org/user")
+            .get(baseUrl + "org/approval/all")
             .then(
                 (response) => {
 
@@ -236,6 +231,9 @@ class ManageUser extends Component {
     }
 
     handleDelete = () => {
+
+
+        // return false
 
         if (this.state.selectedEditItem) {
             axios
@@ -276,39 +274,41 @@ class ManageUser extends Component {
         })
     }
 
+
+
     render() {
         return (
 <>
 
+            <div className="container ">
+
+                <PageHeader
+                    pageTitle="Approve Users"
+                    subTitle="Approve users registering on the platform"
+                />
+
+                <div className="row">
+
+                    <div className="col-12 mt-4">
 
 
-                <div className="row mt-4">
-                    <div className="col-12 text-right text-blue">
-                        <button onClick={()=>this.toggleAddUser(true)} className=" btn-sm btn-gray-border  mr-2"><>
-                            <Add  style={{fontSize:"20px"}} />
-                            Add User</></button>
-                    </div>
+                        {this.state.items.map((item,index)=>
+                            <div key={index}>
 
+                               <ManageUserItem approveType toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)}
+                                               refreshList={this.fetchUsers} item={item} index={index}/>
 
-                                <div className="col-12 mt-4">
+                            </div>
 
-
-                                    {this.state.items.map((item,index)=>
-                                        <div key={index}>
-
-                                            <ManageUserItem toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)} refreshList={this.fetchUsers} item={item} index={index}/>
-
-                                        </div>
-
-                                    )}
-
-                                </div>
+                        )}
 
                     </div>
+                </div>
 
 
 
 
+            </div>
 
     <GlobalDialog size={"xs"} hide={this.toggleDeletePopUp} show={this.state.showDeletePopUp} heading={"Remove User"} >
         <div
@@ -384,9 +384,7 @@ class ManageUser extends Component {
                         }}
                           title={"Assign Role"}
                         options={this.state.roles}
-
                         name={"role"}
-
                     />
 
 
@@ -453,4 +451,4 @@ const mapDispatchToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ManageUser);
+export default connect(mapStateToProps, mapDispatchToProps)(SystemManageUser);

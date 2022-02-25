@@ -28,7 +28,7 @@ import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 
-class ManageUser extends Component {
+class ManageApproval extends Component {
     constructor(props) {
         super(props);
 
@@ -220,7 +220,7 @@ class ManageUser extends Component {
 
     fetchUsers=()=> {
         axios
-            .get(baseUrl + "org/user")
+            .get(baseUrl + "org/approval")
             .then(
                 (response) => {
 
@@ -279,36 +279,18 @@ class ManageUser extends Component {
     render() {
         return (
 <>
-
-
-
                 <div className="row mt-4">
-                    <div className="col-12 text-right text-blue">
-                        <button onClick={()=>this.toggleAddUser(true)} className=" btn-sm btn-gray-border  mr-2"><>
-                            <Add  style={{fontSize:"20px"}} />
-                            Add User</></button>
-                    </div>
-
-
-                                <div className="col-12 mt-4">
-
+                        <div className="col-12 text-right text-blue">
 
                                     {this.state.items.map((item,index)=>
                                         <div key={index}>
 
-                                            <ManageUserItem toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)} refreshList={this.fetchUsers} item={item} index={index}/>
+                                            <ManageUserItem approveType toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)} refreshList={this.fetchUsers} item={{user:item}} index={index}/>
 
                                         </div>
-
                                     )}
-
-                                </div>
-
                     </div>
-
-
-
-
+            </div>
 
     <GlobalDialog size={"xs"} hide={this.toggleDeletePopUp} show={this.state.showDeletePopUp} heading={"Remove User"} >
         <div
@@ -453,4 +435,4 @@ const mapDispatchToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ManageUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageApproval);

@@ -271,7 +271,7 @@ class ChangePassword extends Component {
                                             />
                                         </div>
 
-                                        <div className="col-md-3 pt-2">
+                                        <div className="col-md-4 pt-2">
                                             <BlueBorderButton
                                                 title={this.state.loading ? "Wait.." : "Update Password"}
                                                 loading={this.state.loading}

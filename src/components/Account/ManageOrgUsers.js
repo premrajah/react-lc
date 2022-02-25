@@ -27,8 +27,10 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
+import ManageApproval from "./ManageApproval";
+import ManageUser from "./ManageUser";
 
-class ManageUser extends Component {
+class ManageOrgUsers extends Component {
     constructor(props) {
         super(props);
 
@@ -48,7 +50,19 @@ class ManageUser extends Component {
             selectedEditItem:null,
             showDeletePopUp: false,
             showAddPopUp: false,
+            activeKey:"1",
         };
+
+    }
+
+
+    setActiveKey=(event,key)=>{
+
+
+        this.setState({
+            activeKey:key
+        })
+
 
     }
 
@@ -73,12 +87,11 @@ class ManageUser extends Component {
     toggleAddUser=async (loadRoles) => {
 
         if (loadRoles)
-        this.fetchRoles()
+            this.fetchRoles()
 
         this.setState({
             showAddPopUp: !this.state.showAddPopUp,
         })
-
 
     }
 
@@ -214,7 +227,10 @@ class ManageUser extends Component {
     }
 
     componentDidMount() {
+
         window.scrollTo(0, 0);
+        this.setActiveKey(null,"1")
+
         this.fetchUsers();
     }
 
@@ -268,7 +284,7 @@ class ManageUser extends Component {
 
     toggleDeletePopUp= (key, item) => {
 
-     console.log(key,item)
+        console.log(key,item)
         this.setState({
             selectedEditItem: item,
             showDeletePopUp: !this.state.showDeletePopUp,
@@ -278,164 +294,64 @@ class ManageUser extends Component {
 
     render() {
         return (
-<>
+            <>
 
 
+                <div className="container ">
 
-                <div className="row mt-4">
-                    <div className="col-12 text-right text-blue">
-                        <button onClick={()=>this.toggleAddUser(true)} className=" btn-sm btn-gray-border  mr-2"><>
-                            <Add  style={{fontSize:"20px"}} />
-                            Add User</></button>
-                    </div>
-
-
-                                <div className="col-12 mt-4">
-
-
-                                    {this.state.items.map((item,index)=>
-                                        <div key={index}>
-
-                                            <ManageUserItem toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)} refreshList={this.fetchUsers} item={item} index={index}/>
-
-                                        </div>
-
-                                    )}
-
-                                </div>
-
-                    </div>
-
-
-
-
-
-    <GlobalDialog size={"xs"} hide={this.toggleDeletePopUp} show={this.state.showDeletePopUp} heading={"Remove User"} >
-        <div
-            className={"col-12 mb-3 text-left"}>
-            Are you sure you want to remove this user ?
-        </div>
-
-        <div
-            className={"col-6"}
-            style={{
-                textAlign: "center",
-            }}>
-            <GreenButton
-
-                onClick={
-                    this.handleDelete
-                }
-                title={"Submit"}
-                type={"button"}>
-
-            </GreenButton>
-        </div>
-        <div
-            className={"col-6"}
-            style={{
-                textAlign: "center",
-            }}>
-            <BlueBorderButton
-                type="button"
-
-                title={"Cancel"}
-
-                onClick={
-                    this
-                        .toggleDeletePopUp
-                }
-            >
-
-            </BlueBorderButton>
-        </div>
-
-    </GlobalDialog>
-
-    <GlobalDialog size={"xs"} hide={()=>this.toggleAddUser(false)} show={this.state.showAddPopUp} heading={"Add User"} >
-        <>
-            <form className={"full-width-field"} onSubmit={this.handleSubmit}>
-
-
-            <div className="col-12 ">
-
-        <div className="row no-gutters">
-            <div className="col-12 ">
-
-                <TextFieldWrapper
-                    onChange={(value)=>this.handleChange(value,"email")}
-                    error={this.state.errors["email"]}
-                    name="email" title="Email Address" />
-
-            </div>
-        </div>
-            <div className="row no-gutters">
-                <div
-                    className="col-12 ">
-
-                    <SelectArrayWrapper
-
-                        option={"name"}
-                        select={"Select"}
-                        valueKey={"_id"}
-                        error={this.state.errors["role"]}
-                        onChange={(value) => {
-                            this.handleChange(value, "role")
-                        }}
-                          title={"Assign Role"}
-                        options={this.state.roles}
-
-                        name={"role"}
-
+                    <PageHeader
+                        pageTitle="Manage Users"
+                        subTitle="Assign roles to your team"
                     />
+                    <div className="row">
+                                                <div className="col-12 text-right text-blue">
+                                <Box sx={{ width: '100%', typography: 'body1' }}>
+                                    <TabContext value={this.state.activeKey}>
+                                        <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                            <TabList
+
+                                                allowScrollButtonsMobile
+                                                variant="centered"
+
+                                                scrollButtons="auto"
+                                                textColor={"#27245C"}
+                                                TabIndicatorProps={{
+                                                    style: {
+                                                        backgroundColor: "#27245C",
+                                                        padding: '2px',
+                                                    }
+                                                }}
+                                                onChange={this.setActiveKey}
 
 
+                                                aria-label="lab API tabs example">
+
+                                                <Tab label="Manage Users" value="1" />
+
+                                                <Tab label="Manage Approvals" value="2"/>
+
+                                            </TabList>
+                                        </Box>
+
+                                        <TabPanel value="1">
+                                            <ManageUser/>
+
+                                        </TabPanel>
+
+                                        <TabPanel value="2">
+                                            <ManageApproval/>
+
+                                        </TabPanel>
+                                    </TabContext>
+                                </Box>
+                            </div>
 
 
-                </div>
-            </div>
-
-        </div>
-                <div className="col-12 ">
-
-                    <div className="row mt-4 no-gutters">
-          <div  className={"col-6"}
-            style={{
-                textAlign: "center",
-            }}>
-            <GreenButton
-
-                title={"Submit"}
-                type={"submit"}>
-
-            </GreenButton>
-        </div>
-        <div
-            className={"col-6"}
-            style={{
-                textAlign: "center",
-            }}>
-            <BlueBorderButton
-                type="button"
-
-                title={"Cancel"}
-
-                onClick={()=>
-                    this
-                        .toggleAddUser(false)
-                }
-            >
-
-            </BlueBorderButton>
-        </div>
                     </div>
                 </div>
-            </form>
-    </>
-    </GlobalDialog>
 
 
-</>
+            </>
         );
     }
 }
@@ -453,4 +369,4 @@ const mapDispatchToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ManageUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageOrgUsers);

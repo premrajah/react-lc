@@ -1558,18 +1558,24 @@ pre {
     text-decoration: none;
 }
 
-.green-border-btn,
-.green-border-btn:hover {
+.green-border-btn {
     color: #07ab88;
     background: transparent;
-    font-size: 16px;
-    padding: .375rem .75rem;
+
     border-radius: 24px !important;
-    height: 48px;
-    min-width: 14.000em;
     border: 2px solid #07ab88;
 
-
+    font-size: 12px !important;
+    height: 48px;
+    min-width: 14.000em;
+    text-transform: uppercase!important;
+    font-weight: 700 !important;
+    letter-spacing: 1px;
+    padding: 0em 2.500em;
+    line-height: 1.4em;
+}
+.green-border-btn :hover{
+    color: #07ab88;
 }
 
 .white-border-btn,
@@ -1843,20 +1849,18 @@ button.blue-btn-border
     color: #fff;
     text-decoration: none !important;
     border-radius: 24px;
+
+    /*transition: color .5s ease, background-color .5s ease, border-color .5s ease;*/
+    font-style: normal;
+
+    font-size: 12px !important;
     height: 48px;
     min-width: 14.000em;
-    /*transition: color .5s ease, background-color .5s ease, border-color .5s ease;*/
+    text-transform: uppercase;
     font-weight: 700 !important;
-    font-style: normal;
-    font-size: 16px !important;
-    line-height: 1.4em;
     letter-spacing: 1px;
-    height: 48px;
-
-
-
-    padding: .375rem .75rem;
-
+    padding: 0em 2.500em;
+    line-height: 1.4em;
 }
 
 .btn-green {
@@ -1865,14 +1869,15 @@ button.blue-btn-border
     border: 2px solid #07ad88;
     font-size: 12px;
     /*padding: .375rem .75rem;*/
-    padding: 0em 2.500em;
     border-radius: 24px !important;
     height: 48px;
     min-width: 14.000em;
     text-transform: uppercase;
     font-weight: 700 !important;
-    line-height: 1.4em;
     letter-spacing: 1px;
+    padding: 0em 2.500em;
+    line-height: 1.4em;
+
 
 
 

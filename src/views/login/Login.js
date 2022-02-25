@@ -267,6 +267,7 @@ class Login extends Component {
                                     title={"Log In"}
                                     type={"submit"}
 
+
                                     disabled={!this.state.formValid}
 
                                   >

@@ -1,9 +1,6 @@
-import React, {Component} from "react";
+import React from "react";
 import {connect} from "react-redux";
 import SettingsWhite from "../../img/icons/settings-blue.png";
-import {Link} from "react-router-dom";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import * as actionCreator from "../../store/actions/actions";
 import PageHeader from "../../components/PageHeader";
 import Layout from "../../components/Layout/Layout";
 import PropTypes from 'prop-types';
@@ -16,7 +13,6 @@ import CompanyInfo from "./CompanyInfo";
 import TransferScaling from "./TransferScaling";
 import Statistics from "../../views/loop-cycle/Statistics";
 import ChangePassword from "../../components/Account/ChangePassword";
-import ManageUser from "../../components/Account/ManageUser";
 import ManageRole from "../../components/Account/ManageRole";
 import SystemManageUser from "../../components/Account/SystemManageUser";
 import ManageOrgUsers from "../../components/Account/ManageOrgUsers";

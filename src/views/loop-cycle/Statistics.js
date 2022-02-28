@@ -11,6 +11,7 @@ import SearchGray from "@mui/icons-material/Search";
 import PageHeader from "../../components/PageHeader";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
+import {connect} from "react-redux";
 
 class Statistics extends Component {
     constructor(props) {
@@ -31,7 +32,7 @@ class Statistics extends Component {
 
                     <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
                         <embed
-                            src={`https://dash.makealoop.io?token=${this.props.userDetail}`}
+                            src={`https://dash-dev.makealoop.io?token=${this.props.token}`}
                             style={{ width: "100%", minHeight: "800px", height: "auto" }}
                         />
                     </div>
@@ -129,4 +130,24 @@ function PieChart(props) {
     return <Doughnut data={data} options={options} />;
 }
 
-export default Statistics;
+const mapStateToProps = (state) => {
+    return {
+        // age: state.age,
+        // cartItems: state.cartItems,
+        loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        userDetail: state.userDetail,
+        token: state.token,
+
+        userContext: state.userContext,
+
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Statistics);
+

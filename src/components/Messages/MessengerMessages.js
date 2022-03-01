@@ -1,20 +1,18 @@
-import React, { Component, useEffect, useRef, useState } from "react";
+import React, {Component} from "react";
 import axios from "axios";
-import { baseUrl, createMarkup } from "../../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl, createMarkup} from "../../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import { Button, TextField, Tooltip } from "@mui/material";
-import { Autocomplete } from "@mui/lab";
+import {Button, TextField, Tooltip} from "@mui/material";
+import {Autocomplete} from "@mui/lab";
 import AddIcon from "@mui/icons-material/AddCircle";
 import ExplicitIcon from "@mui/icons-material/Explicit";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import SendIcon from "@mui/icons-material/Send";
 import moment from "moment/moment";
-import { makeStyles } from "@mui/styles";
 import WysiwygEditor from "./WysiwygEditor";
 import MessageEntityDialog from "./MessageEntityDialog";
 import MessageGroupSingleArtifactDialog from "./MessageGroupSingleArtifactDialog";
-import { forEach } from "react-bootstrap/ElementChildren";
 import MessageGroupItem from "./MessageGroupItem";
 
 class MessengerMessages extends Component {
@@ -342,7 +340,6 @@ class MessengerMessages extends Component {
 
     render() {
         return (
-            <>
                 <>
                     <div className="row bg-white rad-8 gray-border  message-row no-gutters mb-5">
                         <div
@@ -680,7 +677,7 @@ class MessengerMessages extends Component {
                         </div>
                     </div>
                 </>
-            </>
+
         );
     }
 }

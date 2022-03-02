@@ -4159,3 +4159,10 @@ input:active,input:focus{
 .min-row-height-90{
     min-height: 90px;
 }
+.assumerole-btn{
+
+    position: fixed;
+    bottom: 2%;
+    right: 5%;
+    z-index: 111;
+}

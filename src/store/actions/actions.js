@@ -63,6 +63,7 @@ import {load} from "dotenv";
 // --- START
 import ReactGA from "react-ga";
 import {baseUrl, gaTID, REACT_APP_BRANCH_ENV} from "../../Util/Constants";
+import {getUserToken} from "../../LocalStorage/user-session";
 // -- END
 
 export const loadingSpinner = () => {
@@ -490,8 +491,8 @@ export const logInSync = (data) => (dispatch) => {
             document.body.classList.add("search-body");
 
             if (res.status === 200) {
-                saveUserToken(res.data.data.token);
 
+                saveKey("token",res.data.data.token);
                 saveKey("user", res.data.data);
 
 
@@ -662,9 +663,13 @@ export const setUserDetail = (data) => {
 };
 
 export const loadUserDetail = (data) => {
-    let userDetials = getKey("user");
 
-    return { type: LOAD_USER_DETAIL, value: userDetials };
+    let userDetials = getKey("user");
+    let token = getKey("token");
+
+
+
+    return { type: LOAD_USER_DETAIL, value: {userDetials:userDetials,token:token }};
 };
 
 
@@ -702,8 +707,10 @@ export const getUserDetailSync = (data) => (dispatch) => {
     axios
         .get(url)
         .then((res) => {
+
             dispatch({ type: USER_DETAIL, value: res.data[0] });
             saveUserData(res.data[0]);
+
         })
         .catch((error) => {
             // dispatch(stopLoading())

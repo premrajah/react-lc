@@ -23,6 +23,7 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import Add from "@mui/icons-material/Add";
 import CustomPopover from "../FormsUI/CustomPopover";
 import MenuDropdown from "../FormsUI/MenuDropdown";
+import {getKey, removeKey, saveKey, saveUserToken} from "../../LocalStorage/user-session";
 
 class AssumeRoles extends Component {
     constructor(props) {
@@ -45,6 +46,7 @@ class AssumeRoles extends Component {
             showDeletePopUp: false,
             showAddPopUp: false,
             roleBy:"Email",
+            assumeRoles:[]
 
         };
 
@@ -134,8 +136,31 @@ class AssumeRoles extends Component {
 
             )
             .then((res) => {
+                console.log("user",getKey("user"))
+
+                console.log("token",getKey("token"))
+                removeKey("token")
+                // removeKey("user")
+                saveKey("assumedRole",true)
+                saveKey("roleName",this.state.fields["value"])
+
+                let usrObject=res.data.data
+
+                // delete usrObject["token"]
+
+                saveKey("token",JSON.stringify(res.data.data.token)+"")
+
+                // saveKey("user",usrObject)
+                // console.log("token",getKey("token"))
+                // console.log("user",getKey("user"))
 
                 this.props.showSnackbar({show: true, severity: "success", message: "User assumed successfully. Thanks"})
+
+                setTimeout(function() {
+
+                    window.location.href=("/")
+
+                }, 1000);
 
 
             })
@@ -153,6 +178,25 @@ class AssumeRoles extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+
+        let roles=[]
+
+        if(this.props.userDetail.perms.includes("LcAssumeUserRole")){
+            roles.push("Email")
+        }
+        if(this.props.userDetail.perms.includes("LcAssumeOrgRole")){
+            roles.push("Org Id")
+        }
+        if(this.props.userDetail.perms.includes("LcAssumeUserRole")){
+            roles.push("User Id")
+        }
+
+        this.setState({
+
+            assumeRoles:roles
+
+        })
+
     }
 
 
@@ -167,19 +211,21 @@ class AssumeRoles extends Component {
                     subTitle="Assume roles of users from different companies"
                 />
 
+                {this.state.assumeRoles&&this.state.assumeRoles.length > 0 &&
                 <div className="row d-flex align-items-center">
 
                     <div className="col-3 mt-4">
 
-                        <MenuDropdown heigt={"60px"} setSelection={(value)=> this.setState({
-                            roleBy:value
-                        })} options={["Email","User Id","Org Id"]}/>
+                        <MenuDropdown heigt={"60px"} setSelection={(value) => this.setState({
+                            roleBy: value
+                        })} options={this.state.assumeRoles}
+                        />
 
                     </div>
                     <div className="col-4 mt-4">
 
                         <TextFieldWrapper
-                            onChange={(value)=>this.handleChange(value,"value")}
+                            onChange={(value) => this.handleChange(value, "value")}
                             error={this.state.errors["value"]}
                             name="value"
 
@@ -200,7 +246,7 @@ class AssumeRoles extends Component {
                     </div>
                 </div>
 
-
+                }
 
 
             </div>
@@ -221,6 +267,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+        logOut:(data) => dispatch(actionCreator.logOut(data)),
 
     };
 };

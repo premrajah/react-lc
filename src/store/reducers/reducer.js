@@ -188,15 +188,17 @@ const reducer = (state = initialState, action) => {
             newState.reviewBoxOpen = action.value;
             break;
         case LOAD_USER_DETAIL:
-            if (action.value) {
+            console.log("login",action.value)
+            if (action.value&&action.value["token"]&&action.value["userDetials"]) {
+
                 newState.loginFailed = false;
                 newState.isLoggedIn = true;
                 newState.loading = false;
-                newState.token = action.value.token;
-                newState.userDetail = action.value;
+                newState.token = action.value["token"];
+                newState.userDetail = action.value["userDetials"];
 
-                //
             } else {
+
                 newState.isLoggedIn = false;
                 newState.loading = false;
             }

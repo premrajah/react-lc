@@ -1138,6 +1138,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
     };
 };
 

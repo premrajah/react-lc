@@ -1061,6 +1061,7 @@ this.setState({
                             <AutocompleteCustom
                                 hideAddNew
                                 orgs={true}
+                                // companies={true}
                                 suggestions={this.state.orgNames}
                                 selectedCompany={(action) =>
 

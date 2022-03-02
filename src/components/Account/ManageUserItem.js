@@ -209,7 +209,7 @@ class ManageUserItem extends Component {
                     user_id: this.state.user._key,
                     role_id:role_id.replace("Role/",""),
                     approve:true,
-                    org_id: this.props.item.org_id.replace("Org/",""),
+                    org_id: this.props.item.org_id?this.props.item.org_id.replace("Org/",""):null,
                 }
 
             )

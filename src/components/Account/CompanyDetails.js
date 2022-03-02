@@ -120,11 +120,11 @@ class CompanyDetails extends Component {
 
                 this.props.showSnackbar({show: true, severity: "success", message: "Org changed successfully. Thanks"})
 
-                setTimeout(function() {
-
-                    window.location.href=("/")
-
-                }, 1000);
+                // setTimeout(function() {
+                //
+                //     window.location.href=("/")
+                //
+                // }, 1000);
 
             })
             .catch((error) => {
@@ -824,7 +824,7 @@ this.setState({
 
 
                                 <div className={"pl-3"}>
-                                       <div  className="row no-gutters d-flex align-items-center   ">
+                                       <div  className="row  d-flex align-items-center   ">
 
                                            {this.state.orgs.length>1 &&      <>
                                     <div  className="col-md-2   ">
@@ -841,11 +841,14 @@ this.setState({
 
                                     </div>
                                             </>}
-                                           <div  className="col-md-6 text-right ">
+                                           <div  className="col-md-6 d-flex text-right ">
 
-                                               <button onClick={this.addCompany} className=" btn-sm btn-gray-border  mr-2"><>
-                                                   <Add  style={{fontSize:"20px"}} />
-                                                   Add Company</></button>
+                                               <button onClick={this.addCompany} className="  btn-gray-border  ">
+                                                   <>
+                                                       <Add  style={{fontSize:"20px"}} />
+                                                       Add Company
+                                                   </>
+                                               </button>
 
                                            </div>
 

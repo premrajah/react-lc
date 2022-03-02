@@ -11,7 +11,7 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import Cancel from '@mui/icons-material/Cancel';
+import Cancel from '@mui/icons-material/Logout';
 import {getKey} from "../../LocalStorage/user-session";
 
 

@@ -91,7 +91,7 @@ function a11yProps(index) {
                                         <Tab key={0} label="Personal Info" value={(0)} />
                                         <Tab key={1} label="Company Info" value={(1)} />
                                                 <Tab key={2} label="Change Password" value={(2)} />
-                                        <Tab key={3} label="Transfer Scaling" value={(4)} />
+                                        <Tab key={3} label="Transfer Scaling" value={(3)} />
                                         <Tab key={4} label="Statistics" value={(4)} />
 
 

@@ -646,7 +646,7 @@ class MessengerMessages extends Component {
                             <div className="editor-bottom-container col-12  ">
                                 <div className="wysiwyg-editor-container">
                                     <div className="row no-gutters">
-                                        <div className="col-12">
+                                        <div className="col-10">
                                             <WysiwygEditor
                                                 allOrgs={this.state.allOrgs}
                                                 ref={this.resetDraftRef}
@@ -655,14 +655,15 @@ class MessengerMessages extends Component {
                                                 }
                                             />
                                         </div>
-                                        <div className="send-button-left">
+                                        <div className="col-2 d-flex justify-content-center align-content-center">
                                             <Button
+                                                className="btn btn-block d-flex justify-content-center align-content-center"
                                                 type="button"
                                                 disabled={this.state.messageText ? false : true}
                                                 fullWidth
                                                 onClick={() => this.handleSendMessage()}>
                                                 <SendIcon
-                                                    fontSize="large"
+                                                    sx={{fontSize: 48}}
                                                     style={{
                                                         color: this.state.messageText
                                                             ? "var(--lc-pink)"

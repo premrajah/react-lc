@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
-import {ContentState, EditorState, convertToRaw} from "draft-js";
+import {ContentState, convertToRaw, EditorState} from "draft-js";
 import {Editor} from "react-draft-wysiwyg"
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import {convertToHTML} from "draft-convert";
 import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
-import styles from './MessengerMessage.module.css';
-
-
 
 
 function uploadImageCallBack(file) {

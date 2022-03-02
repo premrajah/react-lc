@@ -23,6 +23,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+import Add from "@mui/icons-material/Add";
+import GlobalDialog from "../RightBar/GlobalDialog";
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 
 
 
@@ -62,9 +66,11 @@ class CompanyDetails extends Component {
             croppedImageData:null,
             showCropper:false,
             files:[],
+            showAddCompany:false,
             industries:["Commercial kitchen equipment","Commercial laundry equipment","Hospitality","Healthcare"],
             reasons:["Register new products","Access Marketplace"],
             businessFields:["Manufacturer","Dealer","Operator"],
+            orgId:null
 
         };
 
@@ -96,6 +102,13 @@ class CompanyDetails extends Component {
     }
 
 
+    addCompany=()=>{
+
+        this.setState({
+            showAddCompany:!this.state.showAddCompany
+        })
+    }
+
 
     switchOrg = (value) => {
 
@@ -107,6 +120,11 @@ class CompanyDetails extends Component {
 
                 this.props.showSnackbar({show: true, severity: "success", message: "Org changed successfully. Thanks"})
 
+                setTimeout(function() {
+
+                    window.location.href=("/")
+
+                }, 1000);
 
             })
             .catch((error) => {
@@ -658,6 +676,65 @@ this.setState({
         })
     }
 
+
+
+    handleAddCompany = (event) => {
+
+
+        if (!this.state.orgId){
+
+            this.setState({
+                errorCompany:true
+            })
+
+            return
+        }else{
+            this.setState({
+                errorCompany:false
+            })
+        }
+
+
+        // return false
+        axios
+            .post(
+                baseUrl + "user/org",
+
+                {
+
+                    org_id: this.state.orgId,
+                }
+
+            )
+            .then((res) => {
+
+                this.addCompany()
+
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Join request sent to the company successfully. Thanks"
+                })
+
+
+
+
+            })
+            .catch((error) => {
+                this.setState({isSubmitButtonPressed: false})
+            }).finally(()=>{
+
+                this.setState({
+                    btnLoading: false,
+
+                });
+            }
+
+        );
+
+
+    };
+
     render() {
         return (
 
@@ -704,7 +781,7 @@ this.setState({
                         <div className="row no-gutters">
 
 
-                            <div style={{display: "flex",position:"relative"}} className="col-md-10   ">
+                            <div style={{display: "flex",position:"relative"}} className="col-md-12   ">
                                 <div className={"img-box"}  style={{position:"relative"}}>
                                 {this.state.orgImage||this.state.file ? (
                                     <img
@@ -747,11 +824,35 @@ this.setState({
 
 
                                 <div className={"pl-3"}>
+                                       <div  className="row no-gutters d-flex align-items-center   ">
+
+                                           {this.state.orgs.length>1 &&      <>
+                                    <div  className="col-md-2   ">
+
+                                         Company:
+                                    </div>
+                                        <div  className="col-md-4   ">
+
+                                     <MenuDropdown
+
+                                            setSelection={this.switchOrg}
+
+                                            initialValue={this.props.userDetail.orgId} options={this.state.orgs}/>
+
+                                    </div>
+                                            </>}
+                                           <div  className="col-md-6 text-right ">
+
+                                               <button onClick={this.addCompany} className=" btn-sm btn-gray-border  mr-2"><>
+                                                   <Add  style={{fontSize:"20px"}} />
+                                                   Add Company</></button>
+
+                                           </div>
+
+                                    </div>
                                 {this.state.org && this.state.org.company && (
                                     <>
-                                        {/*<h5 className={"title-bold"}>*/}
-                                        {/*    Registration Details*/}
-                                        {/*</h5>*/}
+
 
                                         <div className={"p-1"}>
                                             <div className=" text-blue">
@@ -794,17 +895,8 @@ this.setState({
                                 )}
                                 </div>
                             </div>
-                            <div style={{display: "flex",position:"relative"}} className="col-md-2   ">
 
-                            {this.state.orgs.length>1 && <span  className={"p-0"}>
-                                        <MenuDropdown
 
-                                            setSelection={this.switchOrg}
-
-                                            initialValue={this.props.userDetail.orgId} options={this.state.orgs}/>
-                                        </span>}
-
-                            </div>
 
                         </div>
 
@@ -843,12 +935,6 @@ this.setState({
 
                                             <div className="col-6 mt-3">
 
-                                                {/*<TextFieldWrapper*/}
-
-                                                {/*    initialValue={this.state.industry}*/}
-                                                {/*    onChange={(value)=>this.handleChange(value,"industry")}*/}
-                                                {/*    error={this.state.errors["industry"]}*/}
-                                                {/*    name="industry" title="Industry" />*/}
 
                                                 <AutoCompleteComboBox
                                                     initialValue={this.state.industry}
@@ -926,6 +1012,7 @@ this.setState({
                                 <div className="row mb-5 pb-5">
                                     <div className="col-12 mt-3">
                                         <AutocompleteCustom
+
                                             companies={true}
                                             suggestions={this.state.orgNames}
                                             selectedCompany={(action) =>
@@ -955,7 +1042,84 @@ this.setState({
                         )}
                             </div>
                         </div>
-    </>
+
+
+
+
+
+
+    <GlobalDialog size={"xs"} hide={this.addCompany} show={this.state.showAddCompany} heading={"Add Company"} >
+        <>
+
+                <div className="col-12 ">
+
+
+                    <div className="row no-gutters">
+                        <div
+                            className="col-12 ">
+
+                            <AutocompleteCustom
+                                hideAddNew
+                                orgs={true}
+                                suggestions={this.state.orgNames}
+                                selectedCompany={(action) =>
+
+                                    this.setState({
+                                        orgId:action.org
+                                    })
+                                }
+                            />
+                            {this.state.errorCompany &&
+                            <span style={{color: "rgb(244, 67, 54)"}} className="text-danger">Required</span>
+                            }
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div className="col-12 ">
+
+                    <div className="row mt-4 no-gutters">
+                        <div  className={"col-6 pr-1"}
+                              style={{
+                                  textAlign: "center",
+                              }}>
+                            <GreenButton
+                                onClick={()=>
+                                    this
+                                        .handleAddCompany()
+                                }
+
+                                title={"Submit"}
+                                type={"submit"}>
+
+                            </GreenButton>
+                        </div>
+                        <div
+                            className={"col-6 pl-1"}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <BlueBorderButton
+                                type="button"
+
+                                title={"Cancel"}
+
+                                onClick={()=>
+                                    this
+                                        .addCompany()
+                                }
+                            >
+
+                            </BlueBorderButton>
+                        </div>
+                    </div>
+                </div>
+        </>
+    </GlobalDialog>
+
+</>
 
 
 

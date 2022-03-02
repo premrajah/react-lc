@@ -74,7 +74,8 @@ function a11yProps(index) {
                         <div className="row">
                             <div className="col-md-12">
 
-                                { props.userContext &&         <div className="row">
+                                { props.userContext &&
+                                <div className="row">
                                         <div className="col-md-3">
 
                                             <Tabs

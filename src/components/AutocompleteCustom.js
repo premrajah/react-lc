@@ -384,14 +384,14 @@ class AutocompleteCustom extends Component {
             if (filteredSuggestions.length) {
                 suggestionsListComponent = (
                     <ul class="suggestions">
-                        <li>
+                        {!this.props.hideAddNew && <li>
                             <div  className=" no-gutters row">
 
                                 <div className="col-12 text-right">
                                     <div onClick={this.toggleCompanyCreateForm} className="text-blue text-bold">Add Company <IconBtn  /> </div>
                                 </div>
                             </div>
-                        </li>
+                        </li>}
 
                         {filteredSuggestions.map((suggestion, index) => {
                             let className;

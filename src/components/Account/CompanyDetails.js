@@ -120,11 +120,11 @@ class CompanyDetails extends Component {
 
                 this.props.showSnackbar({show: true, severity: "success", message: "Org changed successfully. Thanks"})
 
-                setTimeout(function() {
-
-                    window.location.href=("/")
-
-                }, 1000);
+                // setTimeout(function() {
+                //
+                //     window.location.href=("/")
+                //
+                // }, 1000);
 
             })
             .catch((error) => {

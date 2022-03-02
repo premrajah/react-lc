@@ -168,7 +168,7 @@ class Products extends Component {
             this.setState({
                 items: this.state.items.concat(result.data?result.data.data:[]),
                 loadingResults: false,
-                lastPageReached: (result.data.data.length === 0 ? true : false),
+                lastPageReached: (result.data?(result.data.data.length === 0 ? true : false):true),
                 offset: newOffset + this.state.pageSize
 
             })
@@ -180,6 +180,7 @@ class Products extends Component {
                 this.setState({
 
                     loadingResults: false,
+                    lastPageReached:true
 
                 })
 

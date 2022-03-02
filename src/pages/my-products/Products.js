@@ -128,9 +128,8 @@ class Products extends Component {
         let result = await seekAxiosGet(url)
 
 
-
         this.setState({
-            count: result.data.data,
+            count: result.data?result.data.data:0,
 
         })
 
@@ -167,7 +166,7 @@ class Products extends Component {
             this.state.offset= newOffset + this.state.pageSize
 
             this.setState({
-                items: this.state.items.concat(result.data.data),
+                items: this.state.items.concat(result.data?result.data.data:[]),
                 loadingResults: false,
                 lastPageReached: (result.data.data.length === 0 ? true : false),
                 offset: newOffset + this.state.pageSize

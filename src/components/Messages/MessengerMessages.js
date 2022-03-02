@@ -643,7 +643,7 @@ class MessengerMessages extends Component {
                                 </div>
                             </div>
 
-                            <div className="editor-bottom-container col-12  ">
+                            <div className="col-12 mb-3">
                                 <div className="wysiwyg-editor-container">
                                     <div className="row no-gutters">
                                         <div className="col-10">
@@ -655,9 +655,9 @@ class MessengerMessages extends Component {
                                                 }
                                             />
                                         </div>
-                                        <div className="col-2 d-flex justify-content-center align-content-center">
+                                        <div className="col-2 d-flex align-items-end">
                                             <Button
-                                                className="btn btn-block d-flex justify-content-center align-content-center"
+                                                className="d-flex justify-content-center align-content-center"
                                                 type="button"
                                                 disabled={this.state.messageText ? false : true}
                                                 fullWidth

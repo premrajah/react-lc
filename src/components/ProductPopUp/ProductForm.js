@@ -749,7 +749,7 @@ class ProductForm extends Component {
                             <div className="row ">
                                 <div className="col-12 mt-2">
 
-                                   <TextFieldWrapper  details="the name of your product"
+                                   <TextFieldWrapper  details="The name of a product"
                                      initialValue={this.props.item&&this.props.item.product.name}
                                      onChange={(value)=>this.handleChangeProduct(value,"title")}
                                      error={this.state.errors["title"]}
@@ -764,7 +764,7 @@ class ProductForm extends Component {
                                 <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
-                                        details="do you wish to list your product now or in the future ?"
+                                        details="When listed, product will appear in the marketplace searches"
                                         initialValue={this.props.item&&this.props.item.product.is_listable}
                                         onChange={(checked)=>this.checkListable(checked)} color="primary"
                                         name={"is_listable"} title="List for sale" />
@@ -773,7 +773,7 @@ class ProductForm extends Component {
 
                                 <div className="col-md-8 col-sm-12">
 
-                                    <SelectArrayWrapper  details="Which category is your product associated with"
+                                    <SelectArrayWrapper  details="Materials or category a product belongs to Type"
                                         initialValue={this.props.item&&this.props.item.product.category}
                                         option={"name"}
                                         valueKey={"name"}
@@ -817,7 +817,6 @@ class ProductForm extends Component {
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
                                     <SelectArrayWrapper
-                                        details="What is your product?"
                                         initialValue={this.props.item&&this.props.item.product.type}
                                         option={"name"}
                                         valueKey={"name"}
@@ -850,7 +849,7 @@ class ProductForm extends Component {
 
 
 
-                                    <SelectArrayWrapper  details="What is the functionality of your product? "
+                                    <SelectArrayWrapper
                                         initialValue={this.props.item&&this.props.item.product.state}
                                         onChange={(value)=>this.handleChangeProduct(value,"state")}
                                         error={this.state.errors["state"]}
@@ -862,8 +861,7 @@ class ProductForm extends Component {
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
-                                    <SelectArrayWrapper  details="What condition is your product currently? "
-
+                                    <SelectArrayWrapper
                                         initialValue={this.props.item&&capitalize(this.props.item.product.condition)}
                                         onChange={(value)=>this.handleChangeProduct(value,"condition")}
                                         error={this.state.errors["condition"]}
@@ -882,10 +880,10 @@ class ProductForm extends Component {
                                     <div className="row camera-grids      ">
                                         <div className="col-md-4 col-sm-12 col-xs-12  ">
 
-                                            <SelectArrayWrapper  detailsHeading="What is the purpose of your product?"  details="
-                                            Defined – A product as a whole,
-                                            Aggregate – A product made up of aggregates (other products),
-                                            Prototype – A prototype product"
+                                            <SelectArrayWrapper  detailsHeading="What is the purpose of your product?"
+                                                details="Defined: a whole product,
+                                                Aggregate: a product made up from other products,
+                                                Prototype: a first version of a product"
 
                                                 initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
                                                 onChange={(value)=> {
@@ -896,7 +894,7 @@ class ProductForm extends Component {
 
                                         </div>
                                         <div className="col-md-4 col-sm-12 col-xs-12  ">
-                                        <TextFieldWrapper  details="Who the product is made by?"
+                                        <TextFieldWrapper  details="The brand name of a product"
                                             initialValue={this.props.item&&this.props.item.product.sku.brand}
                                             onChange={(value)=>this.handleChangeProduct(value,"brand")}
                                             error={this.state.errors["title"]}
@@ -904,8 +902,8 @@ class ProductForm extends Component {
                                         </div>
                                         <div className="col-md-4 col-sm-12 col-xs-12 ">
 
-                                            <SelectArrayWrapper  details="Select the site where your product is currently located. If the site is not found, please create below using ‘Add New Address’"
-
+                                            <SelectArrayWrapper
+                                                details="Select product’s location from the existing sites or add new address below"
                                                 initialValue={this.props.item&&this.props.item.site._key}
                                                 option={"name"}
                                                 valueKey={"_key"}
@@ -916,7 +914,7 @@ class ProductForm extends Component {
 
                                                                 }} select={"Select"}
                                                 options={this.props.siteList} name={"deliver"}
-                                                title="Dispatch/Collection Address"/>
+                                                title="Dispatch / Collection Address"/>
 
 
                                             <p style={{ marginTop: "10px" }}>
@@ -927,8 +925,8 @@ class ProductForm extends Component {
                                                         " forgot-password-link ellipsis-end"
                                                     }>
                                                     {this.state.showSubmitSite
-                                                        ? "Hide add site"
-                                                        : "Add new address"}
+                                                        ? "Hide Add Site"
+                                                        : "Add New Address"}
                                                 </span>
                                             </p>
 
@@ -949,7 +947,7 @@ class ProductForm extends Component {
                                             </div>
 
                                             <div className="col-md-4 col-xs-12 ">
-                                                <SelectArrayWrapper  details="The units the product is measured in"
+                                                <SelectArrayWrapper  details="A measurement chosen as a standard"
                                                     select={"Select"}
                                                     initialValue={this.props.item&&this.props.item.product.units}
                                                     onChange={(value)=>this.handleChangeProduct(value,"units")}
@@ -960,7 +958,8 @@ class ProductForm extends Component {
                                             </div>
                                             <div className="col-md-4 col-xs-12 ">
 
-                                                {!this.state.disableVolume&&   <TextFieldWrapper  details="The number of units there are of the product"
+                                                {!this.state.disableVolume&&   <TextFieldWrapper
+                                                    details="The number of units"
                                                     // readonly ={this.state.disableVolume}
                                                     initialValue={this.props.item&&this.props.item.product.volume+""}
                                                     // value={this.state.disableVolume?"0":""}
@@ -976,7 +975,7 @@ class ProductForm extends Component {
                             <div className="row  mt-2">
                                 <div className="col-12">
 
-                                    <TextFieldWrapper  details="Give your product a description "
+                                    <TextFieldWrapper  details="Describe the product your adding"
                                         initialValue={this.props.item&&this.props.item.product.description}
                                         onChange={(value)=>this.handleChangeProduct(value,"description")}
                                         error={this.state.errors["description"]}
@@ -996,17 +995,15 @@ class ProductForm extends Component {
                                                 " forgot-password-link"
                                             }>
                                             {this.state.moreDetail
-                                                ? "Hide details"
-                                                : "Add more details"} <CustomPopover text={"Optional fields for the product "}><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                                ? "Hide Details"
+                                                : "Add More Details"} <CustomPopover text="Optional details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                         </span>
                                     </span>
                                 </div>
                             </div>
                             <div className={`row  ${this.state.moreDetail?"mt-2":"d-none"}`}>
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <SelectArrayWrapper  details="Select when the product was manufactured "
-
-
+                                                <SelectArrayWrapper
                                                     initialValue={this.props.item&&this.props.item.product.year_of_making}
                                                     select={"Select"}
                                                     onChange={(value)=> {
@@ -1018,27 +1015,40 @@ class ProductForm extends Component {
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
 
-                                                <TextFieldWrapper  details="Model number of the product "   initialValue={this.props.item&&this.props.item.product.sku.model} name="model" title="Model" />
+                                                <TextFieldWrapper
+                                                    initialValue={this.props.item&&this.props.item.product.sku.model}
+                                                    name="model"
+                                                    title="Model" />
 
                                             </div>
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  details="Serial number of the product "   initialValue={this.props.item&&this.props.item.product.sku.serial} name="serial" title="Serial Number" />
+                                                <TextFieldWrapper
+                                                    initialValue={this.props.item&&this.props.item.product.sku.serial}
+                                                    name="serial"
+                                                    title="Serial Number" />
 
                                             </div>
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  details="The Stock Keeping Unit of the product"   initialValue={this.props.item&&this.props.item.product.sku.sku} name="sku" title="Sku" />
+                                                <TextFieldWrapper
+                                                    details="Stock Keeping Unit"
+                                                    initialValue={this.props.item&&this.props.item.product.sku.sku}
+                                                    name="sku"
+                                                    title="Sku" />
 
                                             </div>
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  details="The Universal Product Code of the product"    initialValue={this.props.item&&this.props.item.product.sku.upc} name="upc" title="UPC" />
+                                                <TextFieldWrapper
+                                                    details="Universal Product Code"
+                                                    initialValue={this.props.item&&this.props.item.product.sku.upc} name="upc" title="UPC" />
 
                                             </div>
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  details=" The part number of the product"   initialValue={this.props.item&&this.props.item.product.sku.part_no} name="part_no" title="Part No." />
+                                                <TextFieldWrapper
+                                                    initialValue={this.props.item&&this.props.item.product.sku.part_no} name="part_no" title="Part No." />
 
                                             </div>
                                             <div className="col-md-4 col-sm-6 col-xs-6">
@@ -1051,9 +1061,7 @@ class ProductForm extends Component {
 <div className={"row"}>
                             <div className="col-12 mt-2">
                                 <div className={"custom-label text-bold text-blue mb-3"}>
-                                   Add Attachments <CustomPopover text={"Any images, videos, documents or external links you wish to add to the product. \n" +
-                                "\n" +
-                                "Files that can be uploaded are: png, jpeg, jpg, .doc, .csv"}><InfoIcon/></CustomPopover>
+                                   Add Attachments <CustomPopover text="Add images, videos, manuals and other documents or external links (png, jpeg, jpg, doc, csv)"><InfoIcon/></CustomPopover>
                                 </div>
 
                                 <div className="container-fluid  pb-3 ">

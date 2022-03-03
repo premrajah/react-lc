@@ -12,6 +12,7 @@ import PageHeader from "../../components/PageHeader";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
 import {connect} from "react-redux";
+import {dashboardUrl} from "../../Util/Constants";
 
 class Statistics extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class Statistics extends Component {
 
                     <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
                         <embed
-                            src={`https://dash-dev.makealoop.io?token=${this.props.token}`}
+                            src={`${dashboardUrl}?token=${this.props.token}`}
                             style={{ width: "100%", minHeight: "800px", height: "auto" }}
                         />
                     </div>

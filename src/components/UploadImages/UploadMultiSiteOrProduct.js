@@ -798,11 +798,11 @@ const UploadMultiSiteOrProduct = (props) => {
                                             }}
                                             select={"Select"}
                                             options={props.siteList} name={"deliver"}
-                                            title="Dispatch/Collection Address"/>
+                                            title="Dispatch / Collection Address"/>
 
 
                                         <p style={{ marginTop: "10px" }} className="text-right">
-                                            <span className="mr-1 text-gray-light">Do not see your address?</span>
+                                            <span className="mr-1 text-gray-light">Don’t see your address?</span>
                                             <span
                                                 onClick={handleShowHideSite}
                                                 className={

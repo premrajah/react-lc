@@ -161,6 +161,7 @@ class SystemManageUser extends Component {
                 {
                     email:data.get("email"),
                     role_id:data.get("role"),
+
                 }
 
             )

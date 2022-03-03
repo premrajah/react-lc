@@ -780,7 +780,6 @@ class ProductDetailContent extends Component {
                                                 </h4>
                                                 <div className="top-right text-right">
                                                     <div className="d-flex flex-row align-items-center justify-content-center ">
-
                                                         {this.state.item.org._id ===
                                                         this.props.userDetail.orgId
                                                             ?  <span onClick={this.showReleaseProductPopUp} className="click-item d-flex flex-row align-items-center">

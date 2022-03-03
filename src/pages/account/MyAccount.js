@@ -1,9 +1,6 @@
-import React, {Component} from "react";
+import React from "react";
 import {connect} from "react-redux";
 import SettingsWhite from "../../img/icons/settings-blue.png";
-import {Link} from "react-router-dom";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import * as actionCreator from "../../store/actions/actions";
 import PageHeader from "../../components/PageHeader";
 import Layout from "../../components/Layout/Layout";
 import PropTypes from 'prop-types';
@@ -16,10 +13,10 @@ import CompanyInfo from "./CompanyInfo";
 import TransferScaling from "./TransferScaling";
 import Statistics from "../../views/loop-cycle/Statistics";
 import ChangePassword from "../../components/Account/ChangePassword";
-import ManageUser from "../../components/Account/ManageUser";
 import ManageRole from "../../components/Account/ManageRole";
 import SystemManageUser from "../../components/Account/SystemManageUser";
 import ManageOrgUsers from "../../components/Account/ManageOrgUsers";
+import AssumeRoles from "../../components/Account/AssumeRoles";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -77,7 +74,8 @@ function a11yProps(index) {
                         <div className="row">
                             <div className="col-md-12">
 
-                                { props.userContext &&         <div className="row">
+                                { props.userContext &&
+                                <div className="row">
                                         <div className="col-md-3">
 
                                             <Tabs
@@ -93,13 +91,14 @@ function a11yProps(index) {
                                         <Tab key={0} label="Personal Info" value={(0)} />
                                         <Tab key={1} label="Company Info" value={(1)} />
                                                 <Tab key={2} label="Change Password" value={(2)} />
-                                        <Tab key={3} label="Transfer Scaling" value={(4)} />
+                                        <Tab key={3} label="Transfer Scaling" value={(3)} />
                                         <Tab key={4} label="Statistics" value={(4)} />
 
 
                                                 {props.userContext.perms.includes("OrgAdminWrite") &&<Tab key={5} label="Manage Users" value={5} />}
                                                 {props.userContext.perms.includes("OrgAdminWrite") &&    <Tab key={6} label="Manage Roles" value={(6)} />}
                                                 {props.userContext.perms.includes("AdminWrite") &&<Tab key={7} label="System Users" value={(7)} />}
+                                                {props.userContext.perms.includes("AdminWrite") &&<Tab key={8} label="Assume Users" value={8} />}
 
                                           }
 
@@ -128,9 +127,11 @@ function a11yProps(index) {
                                             {props.userContext.perms.includes("OrgAdminWrite") &&   <TabPanel value={value} index={6}>
                                         <ManageRole/>
                                     </TabPanel>}
-
                                             {props.userContext.perms.includes("AdminWrite") &&        <TabPanel value={value} index={7}>
                                                 <SystemManageUser/>
+                                            </TabPanel>}
+                                            {props.userContext.perms.includes("AdminWrite") &&        <TabPanel value={value} index={8}>
+                                                <AssumeRoles/>
                                             </TabPanel>}
 
 

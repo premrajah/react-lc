@@ -153,9 +153,8 @@ class ManageUserItem extends Component {
             axios
                 .post(
                     baseUrl + "org/email/add",
-
                     {
-                        email: this.props.this.state.user.email,
+                        email: this.state.user.email,
                         role_id: value
                     }
                 )
@@ -208,8 +207,9 @@ class ManageUserItem extends Component {
 
                 {
                     user_id: this.state.user._key,
-                    role_id:role_id.replace("Role/"),
-                    approve:true
+                    role_id:role_id.replace("Role/",""),
+                    approve:true,
+                    org_id: this.props.item.org_id?this.props.item.org_id.replace("Org/",""):null,
                 }
 
             )
@@ -251,6 +251,7 @@ class ManageUserItem extends Component {
 
                 {
                     user_id: this.state.user._key,
+                    org_id: this.props.item.org_id,
                     role_id: role_id,
                     approve:approve
                 }
@@ -355,7 +356,8 @@ class ManageUserItem extends Component {
                                             <span className={"text-gray-light text-right"}>
                                             {this.state.role?this.state.role.name:this.props.item.role_id?this.props.item.user.role_id:""}
                                                 {this.state.role &&
-                                                <CustomPopover heading={this.state.role.name} text={this.state.role.perms.length>0?(this.state.role.perms.map((role)=> role+", ")):""}>
+                                                <CustomPopover heading={this.state.role.name}
+                                                               text={this.state.role.perms.length>0?(this.state.role.perms.map((role)=> role+", ")):""}>
                                                     <Info
                                                         style={{ cursor: "pointer", color: "#EAEAEF" }}
                                                         fontSize={"small"}
@@ -389,7 +391,7 @@ class ManageUserItem extends Component {
                                         }}
 
                                         // options={this.state.items.filter((item)=> item._key)}
-                                        options={this.state.items}
+                                        options={this.state.roles}
 
                                         name={"role_id"}
 

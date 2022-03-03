@@ -114,6 +114,13 @@ export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, fil
 
 
 
+export const  ifOwner=  (userDetail,orgId)=> {
+
+
+    return   userDetail.orgId===orgId
+
+}
+
 
 export const  seekAxiosGet=  (url)=> {
 

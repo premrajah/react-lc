@@ -1,12 +1,10 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
-import {Alert, Modal, ModalBody, Spinner} from "react-bootstrap";
+import {Alert, Modal, ModalBody} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
-import PageHeader from "../../components/PageHeader";
 import PlaceholderImg from "../../img/sq_placeholder.png";
 import EditIcon from "@mui/icons-material/Edit";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
@@ -14,12 +12,23 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import _ from "lodash";
 import ImageCropper from "../../components/Cropper/ImageCropper";
 import Close from "@mui/icons-material/Close";
-import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
-import Layout from "../../components/Layout/Layout";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import GreenBorderButton from "../FormsUI/Buttons/GreenBorderButton";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
+import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import MenuDropdown from "../FormsUI/MenuDropdown";
+import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+import Add from "@mui/icons-material/Add";
+import GlobalDialog from "../RightBar/GlobalDialog";
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+
+
 
 class CompanyDetails extends Component {
     constructor(props) {
@@ -34,6 +43,7 @@ class CompanyDetails extends Component {
             companyName: "",
             description: "",
             orgImage: "",
+
             orgImageKey: "",
             loading: false,
             base64Data: null,
@@ -50,14 +60,17 @@ class CompanyDetails extends Component {
             stateSelected: null,
             states: [],
             sites: [],
+            orgs: [],
             page: 1,
             units: [],
             croppedImageData:null,
             showCropper:false,
             files:[],
+            showAddCompany:false,
             industries:["Commercial kitchen equipment","Commercial laundry equipment","Hospitality","Healthcare"],
             reasons:["Register new products","Access Marketplace"],
             businessFields:["Manufacturer","Dealer","Operator"],
+            orgId:null
 
         };
 
@@ -89,6 +102,42 @@ class CompanyDetails extends Component {
     }
 
 
+    addCompany=()=>{
+
+        this.setState({
+            showAddCompany:!this.state.showAddCompany
+        })
+    }
+
+
+    switchOrg = (value) => {
+
+        axios
+            .get(
+                `${baseUrl}user/context?org_id=${value}`,
+            )
+            .then((res) => {
+
+                this.props.showSnackbar({show: true, severity: "success", message: "Org changed successfully. Thanks"})
+
+                // setTimeout(function() {
+                //
+                //     window.location.href=("/")
+                //
+                // }, 1000);
+
+            })
+            .catch((error) => {
+
+
+            }).finally(()=>{
+
+        });
+
+
+    };
+
+
     setCropData=(data,name)=>{
         this.setState({
             croppedImageData:data
@@ -114,6 +163,21 @@ class CompanyDetails extends Component {
                             response.data.data[0].blob_url
                         );
                     }
+                }
+            })
+            .catch((error) => {});
+    };
+    getOrgsForUser = () => {
+        let url = `${baseUrl}user/org`;
+        axios
+            .get(url)
+            .then((response) => {
+                if (response.status === 200) {
+
+this.setState({
+    orgs:response.data.data
+
+})
                 }
             })
             .catch((error) => {});
@@ -437,6 +501,7 @@ class CompanyDetails extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        this.getOrgsForUser()
         this.companyInfo();
         this.getFiltersCategories()
     }
@@ -611,6 +676,65 @@ class CompanyDetails extends Component {
         })
     }
 
+
+
+    handleAddCompany = (event) => {
+
+
+        if (!this.state.orgId){
+
+            this.setState({
+                errorCompany:true
+            })
+
+            return
+        }else{
+            this.setState({
+                errorCompany:false
+            })
+        }
+
+
+        // return false
+        axios
+            .post(
+                baseUrl + "user/org",
+
+                {
+
+                    org_id: this.state.orgId,
+                }
+
+            )
+            .then((res) => {
+
+                this.addCompany()
+
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Join request sent to the company successfully. Thanks"
+                })
+
+
+
+
+            })
+            .catch((error) => {
+                this.setState({isSubmitButtonPressed: false})
+            }).finally(()=>{
+
+                this.setState({
+                    btnLoading: false,
+
+                });
+            }
+
+        );
+
+
+    };
+
     render() {
         return (
 
@@ -656,7 +780,8 @@ class CompanyDetails extends Component {
 
                         <div className="row no-gutters">
 
-                            <div style={{display: "flex",position:"relative"}} className="col-md-12  col-6 ">
+
+                            <div style={{display: "flex",position:"relative"}} className="col-md-12   ">
                                 <div className={"img-box"}  style={{position:"relative"}}>
                                 {this.state.orgImage||this.state.file ? (
                                     <img
@@ -696,13 +821,43 @@ class CompanyDetails extends Component {
                                         )}
                                     />
                                 </div>
+
+
                                 <div className={"pl-3"}>
+                                       <div  className="row  d-flex align-items-center   ">
+
+                                           {this.state.orgs.length>1 &&      <>
+                                    <div  className="col-md-2   ">
+
+                                         Company:
+                                    </div>
+                                        <div  className="col-md-4   ">
+
+                                     <MenuDropdown
+
+                                            setSelection={this.switchOrg}
+
+                                            initialValue={this.props.userDetail.orgId} options={this.state.orgs}/>
+
+                                    </div>
+                                            </>}
+                                           <div  className="col-md-6 d-flex text-right ">
+
+                                               <button onClick={this.addCompany} className="  btn-gray-border  ">
+                                                   <>
+                                                       <Add  style={{fontSize:"20px"}} />
+                                                       Add Company
+                                                   </>
+                                               </button>
+
+                                           </div>
+
+                                    </div>
                                 {this.state.org && this.state.org.company && (
                                     <>
-                                        <h5 className={"title-bold"}>
-                                            Registration Details
-                                        </h5>
-                                        <div>
+
+
+                                        <div className={"p-1"}>
                                             <div className=" text-blue">
                                                 <span className="   text-blue mb-1 mr-1">Name:</span>
                                                 <span className={"text-gray-light"}>{this.state.org.company.company_name}</span>
@@ -743,6 +898,9 @@ class CompanyDetails extends Component {
                                 )}
                                 </div>
                             </div>
+
+
+
                         </div>
 
                         <div className={"row"}>
@@ -750,6 +908,7 @@ class CompanyDetails extends Component {
 
                         {this.state.org && (
                             <div className={"row"}>
+
                                 <div className={"col-12"}>
                                     <form onSubmit={this.handleSubmitSite}>
                                         <div className="row  justify-content-start ">
@@ -779,12 +938,6 @@ class CompanyDetails extends Component {
 
                                             <div className="col-6 mt-3">
 
-                                                {/*<TextFieldWrapper*/}
-
-                                                {/*    initialValue={this.state.industry}*/}
-                                                {/*    onChange={(value)=>this.handleChange(value,"industry")}*/}
-                                                {/*    error={this.state.errors["industry"]}*/}
-                                                {/*    name="industry" title="Industry" />*/}
 
                                                 <AutoCompleteComboBox
                                                     initialValue={this.state.industry}
@@ -862,6 +1015,7 @@ class CompanyDetails extends Component {
                                 <div className="row mb-5 pb-5">
                                     <div className="col-12 mt-3">
                                         <AutocompleteCustom
+
                                             companies={true}
                                             suggestions={this.state.orgNames}
                                             selectedCompany={(action) =>
@@ -891,7 +1045,85 @@ class CompanyDetails extends Component {
                         )}
                             </div>
                         </div>
-    </>
+
+
+
+
+
+
+    <GlobalDialog size={"xs"} hide={this.addCompany} show={this.state.showAddCompany} heading={"Add Company"} >
+        <>
+
+                <div className="col-12 ">
+
+
+                    <div className="row no-gutters">
+                        <div
+                            className="col-12 ">
+
+                            <AutocompleteCustom
+                                hideAddNew
+                                orgs={true}
+                                // companies={true}
+                                suggestions={this.state.orgNames}
+                                selectedCompany={(action) =>
+
+                                    this.setState({
+                                        orgId:action.org
+                                    })
+                                }
+                            />
+                            {this.state.errorCompany &&
+                            <span style={{color: "rgb(244, 67, 54)"}} className="text-danger">Required</span>
+                            }
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div className="col-12 ">
+
+                    <div className="row mt-4 no-gutters">
+                        <div  className={"col-6 pr-1"}
+                              style={{
+                                  textAlign: "center",
+                              }}>
+                            <GreenButton
+                                onClick={()=>
+                                    this
+                                        .handleAddCompany()
+                                }
+
+                                title={"Submit"}
+                                type={"submit"}>
+
+                            </GreenButton>
+                        </div>
+                        <div
+                            className={"col-6 pl-1"}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <BlueBorderButton
+                                type="button"
+
+                                title={"Cancel"}
+
+                                onClick={()=>
+                                    this
+                                        .addCompany()
+                                }
+                            >
+
+                            </BlueBorderButton>
+                        </div>
+                    </div>
+                </div>
+        </>
+    </GlobalDialog>
+
+</>
 
 
 
@@ -910,6 +1142,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
     };
 };
 

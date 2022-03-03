@@ -4,6 +4,15 @@ import {useEffect, useRef} from "react";
 export const { REACT_APP_BRANCH_ENV } = process.env;
 
 
+export const dashboardUrl =
+    REACT_APP_BRANCH_ENV === "master"
+        ? "https://dash-stage.makealoop.io/"
+        : REACT_APP_BRANCH_ENV === "stage"
+        ? "https://dash-stage.makealoop.io/"
+        : REACT_APP_BRANCH_ENV === "local"
+            ? "https://dash-dev.makealoop.io/"
+            : "https://dash-dev.makealoop.io/";
+
 export const baseUrl =
     REACT_APP_BRANCH_ENV === "master"
         ? "https://graph.makealoop.io/api/2/"

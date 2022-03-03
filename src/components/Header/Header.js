@@ -6,10 +6,14 @@ import history from "../../History/history";
 import Sidebar from "../Sidebar/Sidebar";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios";
-import GlobalDialog from "../RightBar/GlobalDialog";
-import CompanyInfo from "../../pages/account/CompanyInfo";
-import CompanyDetails from "../Account/CompanyDetails";
-import {getKey, saveKey} from "../../LocalStorage/user-session";
+import Box from '@mui/material/Box';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Cancel from '@mui/icons-material/Logout';
+import {getKey} from "../../LocalStorage/user-session";
+
 
 class Header extends React.Component {
     constructor(props) {
@@ -65,7 +69,6 @@ class Header extends React.Component {
         if (this.props.isLoggedIn) {
 
             this.getArtifactForOrg()
-
         }
     }
 
@@ -81,15 +84,29 @@ class Header extends React.Component {
 
                 </div>
 
-
-
-
+                {this.props.isLoggedIn&&getKey("assumedRole") && <AssumeRoleFloatingActionBtn logOut={()=>this.props.logOut()}/>}
 
                 </>
         );
     }
 }
 
+
+
+
+ function AssumeRoleFloatingActionBtn(props) {
+    return (
+        <Box className={"assumerole-btn"} sx={{ '& > :not(style)': { m: 1 } }}>
+
+            <Fab onClick={props.logOut} variant="extended">
+                <Cancel sx={{ mr: 1 }} />
+                {getKey("roleName")}
+
+            </Fab>
+
+        </Box>
+    );
+}
 const mapStateToProps = (state) => {
     return {
         // age: state.age,
@@ -108,6 +125,7 @@ const mapStateToProps = (state) => {
 const mapDispachToProps = (dispatch) => {
     return {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
+        logOut: (data) => dispatch(actionCreator.logOut(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(Header);

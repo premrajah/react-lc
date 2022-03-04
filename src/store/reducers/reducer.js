@@ -188,7 +188,6 @@ const reducer = (state = initialState, action) => {
             newState.reviewBoxOpen = action.value;
             break;
         case LOAD_USER_DETAIL:
-            console.log("login",action.value)
             if (action.value&&action.value["token"]&&action.value["userDetials"]) {
 
                 newState.loginFailed = false;

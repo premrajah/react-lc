@@ -34,7 +34,6 @@ class Statistics extends Component {
                         style={{ width: "100%", minHeight: "800px", height: "auto" }}
                     />
                 </div>
-                {console.log('url test ', dashboardUrl, this.props.token)}
             </div>
         );
     }

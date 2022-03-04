@@ -11,8 +11,8 @@ import SearchGray from "@mui/icons-material/Search";
 import PageHeader from "../../components/PageHeader";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
-import {connect} from "react-redux";
-import {dashboardUrl} from "../../Util/Constants";
+import { connect } from "react-redux";
+import { dashboardUrl } from "../../Util/Constants";
 
 class Statistics extends Component {
     constructor(props) {
@@ -27,18 +27,15 @@ class Statistics extends Component {
 
     render() {
         return (
-
-
-                    <div className="container ">
-
-                    <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
-                        <embed
-                            src={`${dashboardUrl}?token=${this.props.token}`}
-                            style={{ width: "100%", minHeight: "800px", height: "auto" }}
-                        />
-                    </div>
-
-                    </div>
+            <div className="container ">
+                <div className="row  justify-content-center filter-row   mb-3 pt-3 pb-4">
+                    <embed
+                        src={`${dashboardUrl}?token=${this.props.token}`}
+                        style={{ width: "100%", minHeight: "800px", height: "auto" }}
+                    />
+                </div>
+                {console.log('url test ', dashboardUrl, this.props.token)}
+            </div>
         );
     }
 }
@@ -141,14 +138,10 @@ const mapStateToProps = (state) => {
         token: state.token,
 
         userContext: state.userContext,
-
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-
-    };
+    return {};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Statistics);
-

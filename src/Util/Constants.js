@@ -49,10 +49,10 @@ export const gaTID =
                 ? "UA-216464174-3"
                 : "UA-216464174-3";
 
-console.log("REACT_APP_BRANCH_ENV" + REACT_APP_BRANCH_ENV);
-console.log("baseUrl" + baseUrl);
-console.log("baseImgUrl" + baseImgUrl);
-console.log("frontEndUrl" + frontEndUrl);
+console.log(`REACT_APP_BRANCH_ENV ${REACT_APP_BRANCH_ENV}`);
+console.log(`baseUrl ${baseUrl}, dashboardUrl ${dashboardUrl}`);
+console.log(`baseImgUrl ${baseImgUrl}`);
+console.log(`frontEndUrl ${frontEndUrl}`);
 
 export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";

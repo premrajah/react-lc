@@ -9,6 +9,13 @@ import MoreMenu from "../../components/MoreMenu";
 import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
 import {capitalize} from "../../Util/GlobalFunctions";
+import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import BlueBorderLink from "../../components/FormsUI/Buttons/BlueBorderLink";
+import GrayBorderBtn from "../../components/FormsUI/Buttons/GrayBorderBtn";
+import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
+import OrgComponent from "../../components/Org/OrgComponent";
+import MatchItemBuyer from "../../components/MatchItemBuyer";
 class ResourceItem extends Component {
     constructor(props) {
         super(props);
@@ -83,6 +90,7 @@ class ResourceItem extends Component {
 
                         {/*<Link to={"/"+ this.props.item.listing.listing._key }>*/}
                         <div
+                            key={this.props.index}
                             onClick={this.goToPage}
                             className="row no-gutters justify-content-center mt-4 mb-4  pb-4 click-item">
                             <div className={"col-md-2 col-xs-12 col-sm-12"}>
@@ -95,11 +103,12 @@ class ResourceItem extends Component {
 
 
                             </div>
+
                             <div className={"col-4 pl-3 content-box-listing"}>
-                                <p style={{ fontSize: "18px" }} className=" mb-1 list-title">
+                                <p style={{ fontSize: "18px" }} className=" mb-1 list-title width-80">
                                     {this.props.item.listing.listing.name}
                                 </p>
-                                <p style={{ fontSize: "16px" }} className=" mb-1 ">
+                                <p style={{ fontSize: "16px" }} className=" mb-1 width-80 ">
                                     {this.props.item.product && (
                                         <>Product: {this.props.item.listing.product.name} </>
                                     )}
@@ -147,8 +156,13 @@ class ResourceItem extends Component {
                 ) : (
                     <>
 
+                        {/*Listing for search marches*/}
 
-                        <Link to={"/"+ this.props.item.listing._key }>
+
+                        <Link
+                            // to={`${"/"+!this.props.disableLink?this.props.item.listing._key:null}`}
+                            to={this.props.disableLink?"#":`/${this.props.item.listing._key}`}
+                        >
 
                         <div
                             // onClick={this.goToPage}
@@ -165,9 +179,12 @@ class ResourceItem extends Component {
                                 <p  className="text-capitlize mb-1 title-bold width-75">
                                     {this.props.item.listing.name}
                                 </p>
-                                <p  className=" mb-1 text-gray-light mt-1 mb-1 width-75 ">
+                                {/*{this.props.matchedItem && <div className={"text-gray-light text-capitalize mt-1 mb-1 width-75"}>*/}
+                                {/*    Stage: <span className={"text-blue text-bold"}>{this.props.stage }</span>*/}
+                                {/*</div>}*/}
+                                <p  className=" mb-1 text-gray-light mt-1 mb-1 width-80  ellipses-end">
                                     {this.props.item.product && (
-                                        <>Product: <span className={"text-blue"}>{this.props.item.product.name}</span> </>
+                                        <>Product: <span className={"text-blue width-75"}>{this.props.item.product.name}</span> </>
                                     )}
                                 </p>
 
@@ -188,6 +205,24 @@ class ResourceItem extends Component {
 
                                     </span>
                                 </div>
+                                {this.props.item.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>
+                                    <OrgComponent org={this.props.item.org }/>
+                                </div>}
+
+
+
+                                {(this.props.fromSearch ||this.props.matchedItem) &&
+                                <div className={"bottom-btn-box mt-1 mb-1 "}>
+
+                                    <GrayBorderBtn title={"View Details"} onClick={()=> this.props.showDetails(this.props.item.listing._key)} />
+
+                                    {!this.props.matchedItem && <GreenSmallBtn onClick={()=> this.props.requestMatch(this.props.item.listing)} title={"Request a match"}/>}
+
+                                    {this.props.matchedItem&&
+                                    <span className={"text-capitalize text-gray-light"}>Stage: <span className={"title-bold"}>{this.props.stage}</span></span>
+                                    }
+                               </div>
+                                }
 
 <div className={"add-top-button  pl-3-desktop"}>
     <p className={"text-blue text-bold text-center"}>
@@ -199,10 +234,15 @@ class ResourceItem extends Component {
         )}
     </p>
                                 <p className={"  status text-right"}>
-                                <span className={this.props.item.listing.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
+
+
+                                    <span className={this.props.item.listing.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.listing.stage}
                                 </span>
                                 </p>
+
+
+
                                 <p  className={" text-gray-light text-14 text-right"}>  {!this.props.hideMoreMenu&&  <MoreMenu
                                     triggerCallback={(action) => this.callBackResult(action)}
                                     delete={true}
@@ -220,9 +260,19 @@ class ResourceItem extends Component {
                             </div>
 
 
+                            {this.props.matchedItem&&
+                            <div className={"col-md-12 col-xs-12 col-sm-12"}>
 
+                                <MatchItemBuyer
+                                    actionOffer={this.props.actionOffer}
+                                    makeOffer={this.props.makeOffer}
+                                    hideStage
+                                    showImage={false}
+                                    showInfo={false}
+                                    item={this.props.matchedItem}
+                                />
 
-
+                            </div>}
 
                         </div>
                         </Link>

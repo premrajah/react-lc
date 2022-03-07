@@ -41,8 +41,8 @@ class ItemDetailMatch extends Component {
 
         this.getPreviewImage = this.getPreviewImage.bind(this);
 
-        this.listing = props.match.params.listing;
-        this.search = props.match.params.search;
+        // this.listing = props.match.params.listing;
+        // this.search = props.match.params.search;
 
         this.getResources = this.getResources.bind(this);
         this.requestMatch = this.requestMatch.bind(this);
@@ -210,7 +210,23 @@ class ItemDetailMatch extends Component {
     }
 
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        if (prevProps!==this.props) {
+
+            this.listing = this.props.listingId;
+            this.search = this.props.searchId;
+            this.checkMatch();
+            this.getResources();
+
+        }
+    }
+
     componentDidMount() {
+
+
+        this.listing = this.props.listingId;
+        this.search = this.props.searchId;
         this.checkMatch();
         this.getResources();
     }
@@ -220,7 +236,7 @@ class ItemDetailMatch extends Component {
         const classesBottom = withStyles();
 
         return (
-            <Layout>
+            <>
 
 
                     {this.state.item && (
@@ -527,7 +543,7 @@ class ItemDetailMatch extends Component {
                         </>
                     )}
 
-            </Layout>
+            </>
         );
     }
 }
@@ -562,40 +578,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function BottomAppBar(props) {
-    const classes = useStyles();
-
-    return (
-        <React.Fragment>
-
-
-            <div >
-
-                    <div
-                        className="row  justify-content-center search-container "
-                        style={{ margin: "auto" }}>
-                        <div className="col-auto">
-                            <Link
-                                to={"/message-seller/" + props.slug}
-                                type="button"
-                                className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                Message Seller
-                            </Link>
-                        </div>
-                        <div className="col-auto">
-                            <Link
-                                to={"/make-offer/" + props.slug}
-                                type="button"
-                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                Make Offer
-                            </Link>
-                        </div>
-                    </div>
-
-            </div>
-        </React.Fragment>
-    );
-}
 
 const mapStateToProps = (state) => {
     return {

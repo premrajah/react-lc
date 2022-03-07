@@ -8,6 +8,13 @@ import GrayLoop from "../img/icons/gray-loop.png";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import CompanyInfo from "./CompanyInfo";
+import OrgComponent from "./Org/OrgComponent";
+import GreenButton from "./FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
+import GlobalDialog from "./RightBar/GlobalDialog";
+import TextFieldWrapper from "./FormsUI/ProductForm/TextField";
+import GrayBorderBtn from "./FormsUI/Buttons/GrayBorderBtn";
+import {getActionName} from "../Util/GlobalFunctions";
 
 class MatchItemSeller extends Component {
     constructor(props) {
@@ -58,14 +65,14 @@ class MatchItemSeller extends Component {
             );
     }
 
-    editPopUp(event) {
+    editPopUp(editOfferKey,action) {
         this.setState({
             editPopUp: !this.state.editPopUp,
         });
 
         this.setState({
-            editOfferKey: event.currentTarget.dataset.id,
-            action: event.currentTarget.dataset.action,
+            editOfferKey:editOfferKey,
+            action: action,
         });
     }
 
@@ -75,13 +82,13 @@ class MatchItemSeller extends Component {
         });
     }
 
-    showPopUpInitiateAction(event) {
+    showPopUpInitiateAction(type) {
         this.setState({
             showPopUpInitiateAction: !this.state.showPopUpInitiateAction,
         });
 
         this.setState({
-            initiateAction: event.currentTarget.dataset.action,
+            initiateAction: type,
         });
     }
 
@@ -119,9 +126,12 @@ class MatchItemSeller extends Component {
                 }
             )
             .then((res) => {
+
                 this.setState({
                     showPopUpInitiateAction: false,
                 });
+
+
             })
             .catch((error) => {});
     }
@@ -134,16 +144,12 @@ class MatchItemSeller extends Component {
                     offer_id: event.currentTarget.dataset.id,
                     new_stage: "accepted",
                 },
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
+
             )
             .then((res) => {
-                this.setState({
-                    showPopUp: true,
-                });
+
+                this.showPopUp()
+
             })
             .catch((error) => {
                 // this.setState({
@@ -193,9 +199,8 @@ class MatchItemSeller extends Component {
                 }
             )
             .then((res) => {
-                this.setState({
-                    editPopUp: false,
-                });
+
+                this.editPopUp()
             })
             .catch((error) => {
                 // this.setState({
@@ -375,22 +380,26 @@ class MatchItemSeller extends Component {
 
     render() {
         return (
-            <div className="row no-gutters  mt-4 mb-4  p-4 border-light">
+            <div className="row no-gutters rad-8 bg-white mt-4 mb-4  p-4 border-light">
                 {/*<div className={"col-1  content-box-listing"}>*/}
                 {/*<p style={{ fontSize: "18px" }} className="text-bold mb-1"> {this.props.index+1}.</p>*/}
                 {/*</div>*/}
-                <div className={"col-4  content-box-listing"}>
+                <div className={"col-6  content-box-listing"}>
                     {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
-                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">
-                        {this.props.item.search.org.name}
-                        <CompanyInfo item={this.props.item.search.org} />
-                    </p>
-                    <p style={{ fontSize: "16px" }} className=" ellipsis-end mb-1">
+
+                    <p style={{ fontSize: "16px" }} className="title-bold ellipsis-end mb-1 width-75">
                         {this.props.item.search.search.name}
                     </p>
-                    <p style={{ fontSize: "16px" }} className=" mb-1">
-                        Stage: {this.props.item.match.stage}
+                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">
+
+                        <OrgComponent org={this.props.item.search.org} />
                     </p>
+                    <p  className=" mb-1 text-gray-light">
+                        Stage: <span className={"text-blue text-capitalize"}> {this.props.item.match.stage}</span>
+                    </p>
+
+                </div>
+                <div style={{ textAlign: "right" }} className={"col-6"}>
                     {this.state.cycle && (
                         <p>
                             <Link
@@ -401,30 +410,29 @@ class MatchItemSeller extends Component {
                             </Link>
                         </p>
                     )}
-                </div>
-                <div style={{ textAlign: "right" }} className={"col-8"}>
+
                     {this.props.item.match.stage === "created" &&
                         this.props.item.listing.org._id === this.props.userDetail.orgId && (
                             <div className={"row"}>
-                                <div className="col-auto">
-                                    <button
+                                <div className="col-6">
+                                    <GreenButton
+                                        title={"Accept"}
                                         data-action="accept"
-                                        onClick={this.showPopUpInitiateAction}
+                                        onClick={()=>this.showPopUpInitiateAction("accept")}
                                         type="button"
-                                        className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue"
-                                        style={{ height: "42px" }}>
-                                        Accept
-                                    </button>
+                                    >
+
+                                    </GreenButton>
                                 </div>
-                                <div className="col-auto">
-                                    <button
+                                <div className="col-6">
+                                    <BlueBorderButton
+                                        title={"Reject"}
                                         data-action="reject"
-                                        onClick={this.showPopUpInitiateAction}
+                                        onClick={()=>this.showPopUpInitiateAction("reject")}
                                         type="button"
-                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                        style={{ height: "42px" }}>
-                                        Reject
-                                    </button>
+                                    >
+
+                                    </BlueBorderButton>
                                 </div>
                             </div>
                         )}
@@ -446,65 +454,90 @@ class MatchItemSeller extends Component {
                 </div>
 
                 <div style={{ textAlign: "left" }} className={"col-12"}>
-                    {this.props.item.match.stage === "offered" && (
-                        <div className={"row  "}>
+                    {/*{this.props.item.match.stage === "offered" && (*/}
+
+                        <>
+                            {this.state.offers.length>0 &&
+                                <>
+
+                            <div className={"row  mt-4 "}>
+                                <div className={"col-1 text-bold "}>
+                                </div>
+                                <div className={"col-3 text-bold "}>
+                                    Offer
+                                </div>
+                                <div className={"col-6 text-bold "}>
+                                    Actions
+                                </div>
+                                <div className={"col-2 text-bold "}>
+                                    Stage
+                                </div>
+                            </div>
+
+                                    </>
+                            }
+
                             {this.state.offers.map((item, index) => (
-                                <div
-                                    className={
-                                        this.state.offers.length > index + 1
-                                            ? "col-12 listing-row-border mb-2 "
-                                            : "col-12  mb-2 "
-                                    }>
-                                    <span
-                                        style={{ fontSize: "18px" }}
-                                        className=" mb-1 list-title text-bold ">
-                                        Offer Stage: {item.offer.stage}
-                                    </span>
-                                    <br />
-                                    <span
-                                        style={{ fontSize: "18px" }}
-                                        className=" mb-1 list-title text-bold text-blue">
+                                <>
+                                <hr/>
+                        <div className={"row  "}>
+
+
+
+
+
+                                    <div className={"col-1 text-bold "}>
+                                        {index + 1}.
+                                    </div>
+                                    <div className={"col-3 text-blue "}>
                                         GBP {item.offer.amount.value}
-                                    </span>
+                                    </div>
+
+
+                                <div
+                                    className={"col-6  "
+                                    }>
 
 
                                     {item.next_action.is_mine && (
                                         <>
                                             {item.next_action.possible_actions.map((actionName) => (
-                                                <>
-                                                    <button
+                                                <span className={"mr-1"}>
+                                                    <GrayBorderBtn
+                                                        title={getActionName(actionName)}
                                                         data-id={item.offer._key}
                                                         data-action={actionName}
-                                                        onClick={this.editPopUp.bind(this)}
+                                                        onClick={()=>this.editPopUp(item.offer._key,actionName)}
                                                         type="button"
-                                                        className={
-                                                            actionName === "accepted"
-                                                                ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"
-                                                                : actionName === "cancelled"
-                                                                ? "shadow-sm mr-2 btn btn-link  ml-3 mt-2 mb-2 orange-btn-border"
-                                                                : actionName === "rejected"
-                                                                ? "shadow-sm mr-2 btn btn-link ml-3 mt-2 mb-2 orange-btn-border"
-                                                                : actionName === "declined"
-                                                                ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 orange-btn-border"
-                                                                : actionName === "progress"
-                                                                ? "shadow-sm mr-2 btn btn-link ml-3 mt-2 mb-2 green-btn-border"
-                                                                : actionName === "completed"
-                                                                ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"
-                                                                : actionName === "counter"
-                                                                ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 blue-btn-border"
-                                                                : "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"
-                                                        }>
-                                                        {actionName === "accepted" && "Accept"}
-                                                        {actionName === "cancelled" && "Cancel"}
-                                                        {actionName === "rejected" && "Reject"}
-                                                        {actionName === "declined" && "Decline"}
-                                                        {actionName === "confirmed" && "Confirm"}
-                                                        {actionName === "progress" && "Progress"}
-                                                        {actionName === "completed" && "Complete"}
-                                                        {actionName === "withdrawn" && "Withdraw"}
-                                                        {actionName === "counter" &&
-                                                            "Counter Offer"}
-                                                    </button>
+                                                        // className={
+                                                        //     actionName === "accepted"
+                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"
+                                                        //         : actionName === "cancelled"
+                                                        //         ? "shadow-sm mr-2 btn btn-link  ml-3 mt-2 mb-2 orange-btn-border"
+                                                        //         : actionName === "rejected"
+                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3 mt-2 mb-2 orange-btn-border"
+                                                        //         : actionName === "declined"
+                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 orange-btn-border"
+                                                        //         : actionName === "progress"
+                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3 mt-2 mb-2 green-btn-border"
+                                                        //         : actionName === "completed"
+                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"
+                                                        //         : actionName === "counter"
+                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 blue-btn-border"
+                                                        //         : "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"
+                                                        // }
+                                                    >
+                                                        {/*{actionName === "accepted" && "Accept"}*/}
+                                                        {/*{actionName === "cancelled" && "Cancel"}*/}
+                                                        {/*{actionName === "rejected" && "Reject"}*/}
+                                                        {/*{actionName === "declined" && "Decline"}*/}
+                                                        {/*{actionName === "confirmed" && "Confirm"}*/}
+                                                        {/*{actionName === "progress" && "Progress"}*/}
+                                                        {/*{actionName === "completed" && "Complete"}*/}
+                                                        {/*{actionName === "withdrawn" && "Withdraw"}*/}
+                                                        {/*{actionName === "counter" &&*/}
+                                                        {/*    "Counter Offer"}*/}
+                                                    </GrayBorderBtn>
 
                                                     {/*<button data-id={item.offer._key} data-action={actionName} onClick={this.editPopUp.bind(this)}*/}
                                                     {/*type="button"*/}
@@ -514,71 +547,56 @@ class MatchItemSeller extends Component {
                                                     {/**/}
 
                                                     {/*</button>*/}
-                                                </>
+                                                </span>
                                             ))}
                                         </>
                                     )}
                                 </div>
-                            ))}
+
+                                    <div className={"col-2 text-capitalize text-blue"}>
+                                        {item.offer.stage}
+                                    </div>
+
+
+
+
                         </div>
-                    )}
+                                </>
+                            ))}
+
+                        </>
+                    {/*)}*/}
                 </div>
 
-                {this.props.item.match.stage === "converted" && (
-                    <div className={"row"}>
-                        {this.state.offers.map((item, index) => (
-                            <div
-                                className={
-                                    this.state.offers.length > index + 1
-                                        ? "col-12 listing-row-border mb-2 "
-                                        : "col-12  mb-2 pb-2"
-                                }>
-                                {index + 1}.
-                                <span
-                                    style={{ fontSize: "18px" }}
-                                    className=" mb-1 list-title text-bold text-blue">
-                                    GBP {item.offer.amount.value}
-                                </span>
-                                , Offer Stage: {item.offer.stage}
-                            </div>
-                        ))}
-                    </div>
-                )}
+                {/*{this.props.item.match.stage === "converted" && (*/}
+                {/*    <div className={"row"}>*/}
+                {/*        {this.state.offers.map((item, index) => (*/}
+                {/*            <div*/}
+                {/*                className={*/}
+                {/*                    this.state.offers.length > index + 1*/}
+                {/*                        ? "col-12 listing-row-border mb-2 "*/}
+                {/*                        : "col-12  mb-2 pb-2"*/}
+                {/*                }>*/}
+                {/*                {index + 1}.*/}
+                {/*                <span*/}
+                {/*                    style={{ fontSize: "18px" }}*/}
+                {/*                    className=" mb-1 list-title text-bold text-blue">*/}
+                {/*                    GBP {item.offer.amount.value}*/}
+                {/*                </span>*/}
+                {/*                , Offer Stage: {item.offer.stage}*/}
+                {/*            </div>*/}
+                {/*        ))}*/}
+                {/*    </div>*/}
+                {/*)}*/}
 
-                <Modal
-                    className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                    show={this.state.editPopUp}
-                    onHide={this.editPopUp}
-                    animation={false}>
-                    <ModalBody>
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-4 text-center"}>
-                                <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                            </div>
-                        </div>
 
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-10 text-center"}>
-                                <p className={"text-bold"}>
-                                    {this.state.action === "accepted"
-                                        ? "Accept"
-                                        : this.state.action === "cancelled"
-                                        ? "Cancel"
-                                        : this.state.action === "declined"
-                                        ? "Decline"
-                                        : this.state.action === "counter"
-                                        ? "Counter"
-                                        : this.state.action === "widthdraw"
-                                        ? "Widthdraw"
-                                        : ""}
-                                    Offer
-                                </p>
-                                <p>Are you sure you want to proceed ?</p>
-                            </div>
-                        </div>
+                        <GlobalDialog size={"xs"}
+                                      hide={this.editPopUp}
+                                      show={this.state.editPopUp}
+                                      heading={`${getActionName(this.state.action)} Offer`} >
+                            <>
 
+                                <div className={"col-12"}>
                         <form onSubmit={this.actionOffer}>
                             <div className={"row justify-content-center"}>
                                 {this.state.action === "counter" && (
@@ -596,44 +614,38 @@ class MatchItemSeller extends Component {
                                 <div className={"col-12 text-center mt-2"}>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-6"} style={{ textAlign: "center" }}>
-                                            <button
-                                                className={
-                                                    "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                }
+                                            <GreenButton
+
+                                                title={"Submit"}
                                                 type={"submit"}>
-                                                Submit
-                                            </button>
+
+                                            </GreenButton>
                                         </div>
                                         <div className={"col-6"} style={{ textAlign: "center" }}>
-                                            <p
+                                            <BlueBorderButton
+                                                title={"Cancel"}
                                                 onClick={this.editPopUp}
-                                                className={
-                                                    "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                }>
-                                                Cancel
-                                            </p>
+
+                                            >
+
+                                            </BlueBorderButton>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
-                    </ModalBody>
-                </Modal>
+                                </div>
 
-                <Modal
-                    className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                    show={this.state.showPopUp}
-                    onHide={this.showPopUp}
-                    animation={false}>
-                    <ModalBody>
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-4 text-center"}>
-                                <img className={"ring-pop-pup"} src={GrayLoop} alt="" />
-                            </div>
-                        </div>
+                                </>
+                        </GlobalDialog>
 
+
+
+                        <GlobalDialog size={"xs"}
+                                      hide={this.showPopUp}
+                                      show={this.state.showPopUp}
+                                      heading={`Match Request: ${this.state.initiateAction}`} >
+                            <>
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
                                 <p className={"text-bold"}>Make an offer</p>
@@ -678,63 +690,51 @@ class MatchItemSeller extends Component {
                             </div>
                         </form>
 
-                        {/*</>*/}
-
-                        {/*}*/}
-                    </ModalBody>
-                </Modal>
-
-                <Modal
-                    className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                    show={this.state.showPopUpInitiateAction}
-                    onHide={this.showPopUpInitiateAction}
-                    animation={false}>
-                    <ModalBody>
+                        </>
+                        </GlobalDialog>
 
 
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-10 text-center"}>
-                                <p style={{ textTransform: "uppercase" }} className={"text-bold"}>
-                                    Match: {this.state.initiateAction}
-                                </p>
-                                <p>Are you sure you want to {this.state.initiateAction} ? </p>
-                            </div>
-                        </div>
 
-                        <div className={"row justify-content-center"}>
+
+
+                        <GlobalDialog size={"xs"}
+                                      hide={this.showPopUpInitiateAction}
+                                      show={this.state.showPopUpInitiateAction}
+                                      heading={`Match Request: ${this.state.initiateAction}`} >
+                            <>
+
+
+
                             <div className={"col-12 text-center mt-2"}>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <button
+                                        <GreenButton
+
+                                            title={"Submit"}
                                             onClick={
                                                 this.state.initiateAction === "accept"
                                                     ? this.acceptMatch
                                                     : this.rejectMatch
                                             }
-                                            style={{ minWidth: "120px" }}
-                                            className={
-                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                            }
+
                                             type={"submit"}>
-                                            Yes
-                                        </button>
+
+                                        </GreenButton>
                                     </div>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <p
+                                        <BlueBorderButton
                                             onClick={this.showPopUpInitiateAction}
-                                            className={
-                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                            }>
-                                            Cancel
-                                        </p>
+                                           title={"Cancel"}
+                                            type={"button"}
+                                        >
+                                        </BlueBorderButton>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </ModalBody>
-                </Modal>
+
+                            </>
+                        </GlobalDialog>
+
             </div>
         );
     }

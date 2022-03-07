@@ -329,9 +329,7 @@ class ManageUserItem extends Component {
                     <div className=" col-5 ">
                         {this.state.user &&   <>
                             <span className={`text-blue text-capitalize`}> {this.state.user.firstName} {this.state.user.lastName}</span>
-                            (<span className={" text-blue"}>{this.state.user.email}
-
-                                    </span></>}
+                            <span className={" text-blue"}>({this.state.user.email})</span></>}
                         {this.state.user &&   this.state.user.email===this.props.userDetail.email&&
                         <span  className={`text-pink ml-2 `}>Logged In User</span>}
 

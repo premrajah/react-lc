@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import CloseIcon from '@mui/icons-material/Close';
 import {ChevronRight} from "@mui/icons-material";
 import Backdrop from '@mui/material/Backdrop';
+import PageHeader from "../PageHeader";
 
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -44,6 +45,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
         <Box sx={{ display: 'flex' }} >
 
             <Drawer
+                className={"right-bar-custom"}
                 sx={{
                     // width: props.width,
                     flexShrink: 0,
@@ -56,10 +58,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
                 anchor="right"
                 open={props.open}
             >
-                <DrawerHeader>
-                    <IconButton onClick={props.toggleOpen}>
+                <DrawerHeader className={"align-items-center d-flex"}>
+                    <IconButton onClick={props.toggleOpen} className={"mr-4"}>
                         <ChevronRight />
                     </IconButton>
+
+                    <h4 className="blue-text text-heading m-0">{props.heading}</h4>
 
                 </DrawerHeader>
                 <Divider />

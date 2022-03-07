@@ -32,7 +32,19 @@ import SearchItem from "../../components/Searches/search-item";
 import ResourceItem from "./ResourceItem";
 import ArtifactProductsTab from "../../components/Products/ArtifactProductsTab";
 import InfoTabContent from "../../components/Searches/InfoTabContent";
-
+import Badge from '@mui/material/Badge';
+import RightSidebar from "../../components/RightBar/RightSidebar";
+import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
+import CustomTransferList from "../../components/FormsUI/ProductForm/CustomTransferList";
+import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
+import SearchMatches from "./search-matches";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import ItemDetailMatch from "./ItemDetailMatch";
+import ListingDetail from "../../components/Listings/ListingDetail";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
+import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import {fetchErrorMessage, getActionName} from "../../Util/GlobalFunctions";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 const useStyles = makeStyles((theme) => ({
     root: {
         "& > *": {
@@ -98,6 +110,18 @@ class ViewSearch extends Component {
             notFound: false,
             previewImage: null,
             showEdit: false,
+            showMatches:false,
+            matchesView:true,
+            showListing:false,
+            requestMatch:false,
+            listingId:null,
+            listingSelected:null,
+            matchSelected:null,
+            acceptOffer:false,
+            showActionOffer:false,
+            headingOffer:"",
+            offerSelected:null,
+            offerAction:null
         };
 
         this.getPreviewImage = this.getPreviewImage.bind(this);
@@ -116,13 +140,13 @@ class ViewSearch extends Component {
         this.loadMatches = this.loadMatches.bind(this);
         this.getSite = this.getSite.bind(this);
         this.toggleSite = this.toggleSite.bind(this);
-        this.showProductSelection = this.showProductSelection.bind(this);
-        this.toggleDateOpen = this.toggleDateOpen.bind(this);
         this.makeActive = this.makeActive.bind(this);
         this.selectCreateSearch = this.selectCreateSearch.bind(this);
         this.callBackResult = this.callBackResult.bind(this);
         this.showEdit = this.showEdit.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
+
+
     }
 
 
@@ -142,6 +166,243 @@ class ViewSearch extends Component {
             this.deleteItem();
         }
     }
+
+
+    toggleMatches = async () => {
+
+
+        this.setState({
+            showMatches: !this.state.showMatches,
+            // editMode: edit,
+            // selectedKey: key,
+            // selectedEditItem: item,
+        })
+
+    }
+
+
+    toggleRequestMatch = async (listing) => {
+
+        this.setState({
+
+            requestMatch: !this.state.requestMatch,
+            listingSelected:listing,
+            showListing: false,
+            showMatches: false,
+            // editMode: edit,
+            // selectedKey: key,
+            // selectedEditItem: item,
+        })
+
+    }
+
+    toggleMakeOffer = async (matchSelected,acceptOffer,headingOffer) => {
+
+        console.log(matchSelected)
+
+        this.setState({
+            showMakeOffer: !this.state.showMakeOffer,
+            matchSelected: matchSelected,
+            acceptOffer:acceptOffer,
+            headingOffer:headingOffer
+        })
+
+    }
+
+    toggleActionOffer = async (offer,actionName) => {
+
+
+        this.setState({
+            showActionOffer: !this.state.showActionOffer,
+            offerSelected:offer,
+            offerAction:actionName
+            // matchSelected: matchSelected,
+            // acceptOffer:acceptOffer,
+            // headingOffer:headingOffer,
+            // showActionOffer:showActionOffer
+        })
+
+    }
+
+    submitActionOffer=(event)=> {
+
+        event.preventDefault();
+
+        const form = event.currentTarget;
+
+        const formData = new FormData(event.target);
+
+        const price = formData.get("price");
+        const offer = formData.get("offer");
+
+        var data;
+
+        if (this.state.offerAction !== "counter") {
+            data = {
+                offer_id: offer,
+                new_stage: this.state.offerAction,
+            };
+        } else {
+
+            if (!this.handleValidationOffer()) {
+                return
+            }
+
+            data = {
+                offer_id:offer,
+                new_stage: "counter",
+                new_price: {
+                    value: price,
+                    currency: "gbp",
+                },
+            };
+        }
+
+        axios
+            .post(
+                baseUrl + "offer/stage",
+                data,
+            )
+            .then((res) => {
+
+               this.toggleActionOffer()
+
+                this.props.showSnackbar({show:true,severity:"success",message:"Offer updated successfully. Thanks"})
+
+
+            })
+            .catch((error) => {
+                // this.setState({
+                //
+                //     showPopUp: true,
+                //     loopError: error.response.data.content.message
+                // })
+                this.toggleActionOffer()
+                this.props.showSnackbar({show:true,severity:"warning",message:fetchErrorMessage(error)})
+
+            });
+    }
+
+
+    requestMatch= (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        let parentId;
+
+        if (!this.handleValidation()) {
+            return
+        }
+
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+
+        axios
+            .post(
+                baseUrl + "match",
+                {
+                    listing_id: this.state.listingSelected._key,
+                    search_id: this.state.createSearchData.search._key,
+                },
+            )
+            .then((res) => {
+
+                // this.setState({
+                //     showPopUp: false,
+                //     matchExist: true,
+                // });
+                //
+                // this.checkMatch();
+
+                this.toggleRequestMatch()
+
+                // this.getResources()
+            })
+            .catch((error) => {
+                //
+
+                this.setState({
+                    showPopUp: true,
+                    // loopError: error.response.data.data.message
+                });
+            });
+    }
+
+
+    submitOffer= (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        let parentId;
+
+        if ((!this.state.acceptOffer)&&!this.handleValidationOffer()) {
+            return
+        }
+
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+
+        axios
+            .put(
+                baseUrl + "offer",
+                {
+                    match_id: this.state.matchSelected,
+
+                    offer: {
+                        amount: {
+                            value: data.get("price"),
+                            currency: "gbp",
+                        },
+                    },
+                },
+
+            )
+            .then((res) => {
+
+                this.props.showSnackbar({show:true,severity:"success",message:this.state.acceptOffer?"Offer accepted successfully.":"Offer created successfully. Thanks"})
+
+                this.toggleMakeOffer()
+
+
+
+            })
+            .catch((error) => {
+                // this.setState({
+                //
+                //     showPopUp: true,
+                //     loopError: error.response.data.content.message
+                // })
+                this.toggleMakeOffer()
+
+                this.props.showSnackbar({show:true,severity:"warning",message:fetchErrorMessage(error)})
+
+            });
+
+
+    }
+
+
+
+
+    toggleListingView = async (id) => {
+
+
+        this.setState({
+            showListing: !this.state.showListing,
+            listingId:id
+            // editMode: edit,
+            // selectedKey: key,
+            // selectedEditItem: item,
+        })
+
+    }
+
 
     deleteItem() {
         axios
@@ -194,75 +455,9 @@ class ViewSearch extends Component {
         this.props.history.push("/search-form");
     }
 
-    showProductSelection() {
-        this.setState({
-            productSelection: !this.state.productSelection,
-        });
-    }
 
-    handleValidationProduct() {
-        let fields = this.state.fieldsProduct;
-        let errors = {};
-        let formIsValid = true;
 
-        //Name
-        if (!fields["purpose"]) {
-            formIsValid = false;
-            errors["purpose"] = "Required";
-        }
-        if (!fields["title"]) {
-            formIsValid = false;
-            errors["title"] = "Required";
-        }
 
-        if (!fields["description"]) {
-            formIsValid = false;
-            errors["description"] = "Required";
-        }
-        if (!fields["category"]) {
-            formIsValid = false;
-            errors["category"] = "Required";
-        }
-
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
-
-        this.setState({ errorsProduct: errors });
-        return formIsValid;
-    }
-
-    handleChangeProduct(field, e) {
-        let fields = this.state.fieldsProduct;
-        fields[field] = e.target.value;
-        this.setState({ fields });
-    }
-
-    toggleDateOpen() {
-        this.setState({
-            requiredDateOpen: true,
-        });
-    }
-
-    toggleDateClose() {
-        this.setState({
-            requiredDateOpen: false,
-        });
-    }
 
     makeActive(event) {
         var active = event.currentTarget.dataset.active;
@@ -467,6 +662,52 @@ class ViewSearch extends Component {
     }
 
 
+
+
+    handleValidation() {
+
+
+        let fields = this.state.fields;
+
+
+        let validations = [
+            // validateFormatCreate("message", [{check: Validators.required, message: 'Required'}], fields),
+        ]
+
+
+        let {formIsValid, errors} = validateInputs(validations)
+
+        this.setState({errors: errors});
+        return formIsValid;
+    }
+
+    handleValidationOffer() {
+
+
+        let fields = this.state.fields;
+
+
+        let validations = [
+            validateFormatCreate("price", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'Invalid input!'}], fields),
+        ]
+
+
+        let {formIsValid, errors} = validateInputs(validations)
+
+        this.setState({errors: errors});
+        console.log(errors)
+        return formIsValid;
+    }
+
+
+    handleChange(value, field) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({fields});
+
+    }
+
     componentDidMount() {
         window.scrollTo(0, 0);
         this.getSearch();
@@ -477,11 +718,9 @@ class ViewSearch extends Component {
         })
     }
 
-    classes = useStylesSelect;
 
     render() {
-        const classes = withStyles();
-        const classesBottom = withStyles();
+
 
         return (
             <Layout>
@@ -608,6 +847,8 @@ class ViewSearch extends Component {
                                                                             <Tab label="Linked Product" value="1" />
 
                                                                             <Tab label="Site" value="2" />
+
+                                                                            <Tab label={<Badge color={"primary"} badgeContent={this.state.matches.length}>Active Matches</Badge>} value="3" />
                                                                         </TabList>
                                                                     </Box>
 
@@ -661,6 +902,46 @@ class ViewSearch extends Component {
                                                                     </TabPanel>}
 
 
+                                                                    <TabPanel value="3">
+                                                                        <>
+                                                                            <div className="row mt-3">
+                                                                                <div className="col-12 ">
+
+                                                                            {this.state.matches
+                                                                                // .filter((item)=> item.match.stage!="created")
+                                                                                .map((item,index) => (
+                                                                                <>
+
+                                                                                    <ResourceItem
+
+                                                                                        makeOffer={this.toggleMakeOffer}
+                                                                                        actionOffer={this.toggleActionOffer}
+
+                                                                                        key={index}
+
+                                                                                        showDetails={(data)=> this.toggleListingView(data)}
+                                                                                        onClick
+                                                                                        hideStage
+
+                                                                                        matchedItem={item}
+                                                                                        stage={item.match.stage}
+
+                                                                                        history={this.props.history}
+                                                                                        disableLink
+                                                                                        searchId={this.slug}
+                                                                                        item={item.listing}
+                                                                                        hideMoreMenu
+                                                                                    />
+
+
+                                                                                </>
+                                                                            ))}
+                                                                                </div>
+                                                                            </div>
+                                                                            </>
+                                                                    </TabPanel>
+
+
                                                                 </TabContext>
                                                             </Box>
 
@@ -701,168 +982,278 @@ class ViewSearch extends Component {
 
                         {this.state.createSearchData && (
                             <React.Fragment>
-                                <CssBaseline />
+
 
                                 <div
-                                    position="fixed"
+
                                     color="#ffffff"
                                     className={ "custom-bottom-fixed-appbar  custom-bottom-appbar"}>
-                                    <Toolbar>
+
                                         <div
                                             className="row  justify-content-center search-container "
                                             style={{ margin: "auto" }}>
+
                                             <div className="col-auto">
-                                                <button
-                                                    type="button"
-                                                    onClick={this.selectCreateSearch}
+
+                                                <BlueBorderButton
+                                                    // to={"/matches/" + this.slug}
+                                                    // type="button"
+                                                    onClick={this.toggleMatches}
                                                     className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                                    Create New
-                                                </button>
-                                            </div>
-                                            <div className="col-auto">
-                                                <Link
-                                                    to={"/matches/" + this.slug}
-                                                    type="button"
-                                                    // onClick={this.handleNext}
-                                                    className="shadow-sm mr-2 btn btn-link blue-btn-border mt-2 mb-2 btn-blue">
-                                                    View (
-                                                    {this.state.matchesCount +
-                                                        this.state.matches.length}
-                                                    ) Matches
-                                                </Link>
+                                                    <Badge className={""} anchorOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'right',
+                                                    }} badgeContent= {
+                                                        this.state.matchesCount
+                                                    //+ this.state.matches.length
+                                                    } color="primary">
+                                                         View All Matches
+                                                    </Badge>
+                                                </BlueBorderButton>
+
+
                                             </div>
                                         </div>
-                                    </Toolbar>
+
                                 </div>
                             </React.Fragment>
                         )}
+
+                        <RightSidebar heading={"Matches"} subTitle={"Your search matches"} toggleOpen={this.toggleMatches} open={this.state.showMatches} width={"70%"}>
+
+                            <>
+                            {this.state.matchesView &&
+                            <SearchMatches
+                                hideConfirmed
+                                slug={this.slug}
+                                           requestMatch={this.toggleRequestMatch}
+                                           showDetails={(data)=> this.toggleListingView(data)}/>
+                            }
+
+                            </>
+                        </RightSidebar>
+
+                        <RightSidebar heading={"Listing Details"}  toggleOpen={()=>this.toggleListingView(null)} open={this.state.showListing} width={"70%"}>
+
+                            <>
+
+                                {this.state.listingId &&
+                                <>
+                                        <ListingDetail
+
+                                            requestMatch={this.toggleRequestMatch}
+                                            hideSearches
+                                            hideBreadcrumbs
+                                            type={"search"}
+                                            searchId={this.state.createSearchData.search._key}
+                                            listingId={this.state.listingId}
+                                        />
+                              </>}
+
+                            </>
+                        </RightSidebar>
+
+
+                        <GlobalDialog size={"xs"} hide={this.toggleRequestMatch} show={this.state.requestMatch} heading={"Request Match"} >
+                            <>
+                                <form className={"full-width-field"} onSubmit={this.requestMatch}>
+
+
+                                    <div className="col-12 ">
+
+                                        <div className="row no-gutters">
+                                            <div className="col-12 ">
+
+                                                <TextFieldWrapper
+                                                    onChange={(value)=>this.handleChange(value,"message")}
+                                                    error={this.state.errors["message"]}
+                                                    name="message" title="Message(Optional)" />
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div className="col-12 ">
+
+                                        <div className="row mt-4 no-gutters">
+                                            <div  className={"col-6 pr-2"}
+                                                  style={{
+                                                      textAlign: "center",
+                                                  }}>
+                                                <GreenButton
+
+                                                    title={"Submit"}
+                                                    type={"submit"}>
+
+                                                </GreenButton>
+                                            </div>
+                                            <div
+                                                className={"col-6 pl-2"}
+                                                style={{
+                                                    textAlign: "center",
+                                                }}>
+                                                <BlueBorderButton
+                                                    type="button"
+
+                                                    title={"Cancel"}
+
+                                                    onClick={()=>
+                                                        this
+                                                            .toggleRequestMatch()
+                                                    }
+                                                >
+
+                                                </BlueBorderButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </>
+                        </GlobalDialog>
+
+                        <GlobalDialog
+                                      size={"xs"}
+                                      hide={this.toggleMakeOffer}
+                                      show={this.state.showMakeOffer}
+                                      heading={this.state.headingOffer}
+                        >
+                            <>
+                                <form className={"full-width-field"} onSubmit={this.submitOffer}>
+
+
+                                    {!this.state.acceptOffer && <div className="col-12 ">
+
+                                        <div className="row no-gutters">
+                                            <div className="col-12 ">
+
+                                                <TextFieldWrapper
+                                                    onChange={(value) => this.handleChange(value, "price")}
+                                                    error={this.state.errors["price"]}
+                                                    name="price" title="Price"/>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>}
+                                    <div className="col-12 ">
+
+                                        <div className="row mt-4 no-gutters">
+                                            <div  className={"col-6 pr-2"}
+                                                  style={{
+                                                      textAlign: "center",
+                                                  }}>
+                                                <GreenButton
+
+                                                    title={"Submit"}
+                                                    type={"submit"}>
+
+                                                </GreenButton>
+                                            </div>
+                                            <div
+                                                className={"col-6 pl-2"}
+                                                style={{
+                                                    textAlign: "center",
+                                                }}>
+                                                <BlueBorderButton
+                                                    type="button"
+
+                                                    title={"Cancel"}
+
+                                                    onClick={()=>
+                                                        this
+                                                            .toggleMakeOffer()
+                                                    }
+                                                >
+
+                                                </BlueBorderButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </>
+                        </GlobalDialog>
+
+                        <GlobalDialog
+                            size={"xs"}
+                            hide={this.toggleActionOffer}
+                                      show={this.state.showActionOffer}
+                                      heading={getActionName(this.state.offerAction)+" Offer"} >
+                            <>
+                                <form
+                                    className={"full-width-field"}
+                                      onSubmit={this.submitActionOffer}>
+
+                                    <input type={"hidden"} name={"offer"} value={this.state.offerSelected}/>
+
+
+                                    {this.state.offerAction==="counter" &&
+                                    <div className="col-12 ">
+
+                                        <div className="row no-gutters">
+                                            <div className="col-12 ">
+
+                                                <TextFieldWrapper
+                                                    onChange={(value)=>this.handleChange(value,"price")}
+                                                    error={this.state.errors["price"]}
+                                                    name="price" title="Price" />
+
+                                            </div>
+                                        </div>
+                                    </div>}
+
+                                    <div className="col-12 ">
+
+                                        <div className="row mt-4 no-gutters">
+                                            <div  className={"col-6 pr-2"}
+                                                  style={{
+                                                      textAlign: "center",
+                                                  }}>
+                                                <GreenButton
+
+                                                    title={"Submit"}
+                                                    type={"submit"}>
+
+                                                </GreenButton>
+                                            </div>
+                                            <div
+                                                className={"col-6 pl-2"}
+                                                style={{
+                                                    textAlign: "center",
+                                                }}>
+                                                <BlueBorderButton
+                                                    type="button"
+
+                                                    title={"Cancel"}
+
+                                                    onClick={()=>
+                                                        this
+                                                            .toggleActionOffer()
+                                                    }
+                                                >
+
+                                                </BlueBorderButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </>
+                        </GlobalDialog>
+
                     </>
+
+
+
                 )}
             </Layout>
         );
     }
 }
 
-const useStylesBottomBar = makeStyles((theme) => ({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-    },
-    paper: {
-        paddingBottom: 50,
-    },
-    list: {
-        marginBottom: theme.spacing(2),
-    },
-    subheader: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        top: "auto",
-        bottom: 0,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    fabButton: {
-        position: "absolute",
-        zIndex: 1,
-        top: -30,
-        left: 0,
-        right: 0,
-        margin: "0 auto",
-    },
-}));
 
 
-function UnitSelect(props) {
-    const classes = useStylesSelect();
-    const [state, setState] = React.useState({
-        unit: "",
-        name: "hai",
-    });
 
-    const handleChange = (event) => {
-        const name = event.target.name;
-        setState({
-            ...state,
-            [name]: event.target.value,
-        });
-    };
-
-    return (
-        <div>
-            <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel htmlFor="outlined-age-native-simple">Unit</InputLabel>
-                <Select
-                    name={"unit"}
-                    native
-                    value={state.age}
-                    onChange={handleChange}
-                    inputProps={{
-                        name: "unit",
-                        id: "outlined-age-native-simple",
-                    }}>
-                    {props.units.map((item) => (
-                        <option value={"Kg"}>{item}</option>
-                    ))}
-                </Select>
-            </FormControl>
-        </div>
-    );
-}
-
-function SiteSelect(props) {
-    const classes = useStylesSelect();
-    const [state, setState] = React.useState({
-        unit: "",
-        name: "hai",
-    });
-
-    const handleChange = (event) => {
-        const name = event.target.name;
-        setState({
-            ...state,
-            [name]: event.target.value,
-        });
-    };
-
-    return (
-        <div>
-            <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel htmlFor="outlined-age-native-simple">Deliver To</InputLabel>
-                <Select
-                    inputVariant="outlined"
-                    variant={"outlined"}
-                    name={"site"}
-                    native
-                    value={state}
-                    onChange={handleChange}
-                    label="Age"
-                    inputProps={{
-                        name: "unit",
-                        id: "outlined-age-native-simple",
-                    }}>
-                    <option value={null}>Select</option>
-
-                    {props.sites.map((item) => (
-                        <option value={item.id}>{item.name + "(" + item.address + ")"}</option>
-                    ))}
-                </Select>
-            </FormControl>
-        </div>
-    );
-}
-
-const useStylesSelect = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(0),
-        width: "100%",
-        // minWidth: auto,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(0),
-    },
-}));
 
 const mapStateToProps = (state) => {
     return {
@@ -886,6 +1277,7 @@ const mapDispachToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ViewSearch);

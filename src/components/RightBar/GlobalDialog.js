@@ -43,7 +43,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
                 <div className=" row  justify-content-center align-items-center">
                     <div className="col-10">
-                        <h4 className={"blue-text text-heading ellipsis-end mb-0"}>{props.heading}</h4>
+                        <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>{props.heading}</h4>
                     </div>
                     <div className="col-2 text-right">
                         {!props.hideClose && <CloseButtonPopUp onClick={handleClose}/>}

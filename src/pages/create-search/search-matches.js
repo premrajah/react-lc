@@ -24,6 +24,7 @@ import InfoTabContent from "../../components/Sites/InfoTabContent";
 import SubSitesTab from "../../components/Sites/SubSitesTab";
 import SubProductsTab from "../../components/Sites/SubProductsTab";
 import TabPanel from '@mui/lab/TabPanel';
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 const useStyles = makeStyles((theme) => ({
     root: {
         "& > *": {
@@ -104,7 +105,7 @@ class SearchMatches extends Component {
             listingsForSearch: [],
         };
 
-        this.slug = props.match.params.slug;
+        // this.slug = props.match.params.slug;
 
         this.loadMatches = this.loadMatches.bind(this);
         this.getListingForSearch = this.getListingForSearch.bind(this);
@@ -112,11 +113,7 @@ class SearchMatches extends Component {
 
         loadMatches() {
         axios
-            .get(baseUrl + "match/search/" + this.slug, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "match/search/" + this.slug, )
             .then(
                 (response) => {
                     var responseAll = response.data.data;
@@ -156,9 +153,16 @@ class SearchMatches extends Component {
 
 
     componentDidMount() {
-        this.setActiveKey(null,"1")
-        this.loadMatches();
-        this.getListingForSearch();
+
+
+        if (this.props.slug){
+            this.slug=this.props.slug
+
+            this.setActiveKey(null,"1")
+            this.loadMatches();
+            this.getListingForSearch();
+        }
+
     }
 
     goToSignIn() {
@@ -183,18 +187,18 @@ class SearchMatches extends Component {
     }
 
 
+
+
     render() {
 
 
         return (
-            <Layout>
 
-                <div className="container  pb-4 pt-4">
-                    <PageHeader pageTitle="Matches"
-                                subTitle="Your search matches" />
+                <div className="container ">
+
 
                     <div className="row justify-content-start pb-3  tabs-detail">
-                        <div className="col-12 mt-2">
+                        <div className="col-12 ">
                             <Box sx={{ width: '100%', typography: 'body1' }}>
                                 <TabContext value={this.state.activeKey}>
                                     <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
@@ -213,7 +217,7 @@ class SearchMatches extends Component {
 
                                             <Tab label="Suggested" value="1"/>
 
-                                            <Tab label="Confirmed" value="2" />
+                                            {!this.props.hideConfirmed &&      <Tab label="Confirmed" value="2" />}
 
 
                                         </TabList>
@@ -221,7 +225,8 @@ class SearchMatches extends Component {
 
 
                                     <TabPanel value="1">
-
+                                        <div className="row mt-3">
+                                            <div className="col-12 ">
                                         {this.state.listingsForSearch.length==0&&
                                         <div className="row text-center">
                                             <div className={"col-12 pt-4"}>
@@ -232,18 +237,27 @@ class SearchMatches extends Component {
                                                 {/*<Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>*/}
 
                                                 <ResourceItem
+
+                                                    showDetails={this.props.showDetails}
+                                                    requestMatch={this.props.requestMatch}
+                                                    fromSearch
+
                                                     history={this.props.history}
-                                                    link={"/match/" + this.slug + "/" + item.listing.listing._key}
+                                                    disableLink
                                                     searchId={this.slug}
-                                                    item={item}
+                                                    item={item.listing}
+                                                    hideMoreMenu
                                                 />
 
                                                 {/* </Link>*/}
                                             </>
                                         ))}
-
+                                        </div>
+                                        </div>
                                     </TabPanel>
-                                    <TabPanel value="2">
+                                    {!this.props.hideConfirmed &&  <TabPanel value="2">
+                                        <div className="row mt-3">
+                                            <div className="col-12 ">
                                         {this.state.matches.length==0&&
                                         <div className="row text-center">
                                             <div className={"col-12 pt-4"}>
@@ -251,13 +265,32 @@ class SearchMatches extends Component {
                                         }
                                         {this.state.matches.map((item) => (
                                             <>
-                                                <Link to={"/matched/" + item.match._key}>
-                                                    <MatchItem item={item} />
-                                                </Link>
+                                                {/*<Link to={"/matched/" + item.match._key}>*/}
+                                                {/*    <MatchItem item={item} />*/}
+                                                {/*</Link>*/}
+
+
+                                                <ResourceItem
+
+                                                    showDetails={this.props.showDetails}
+
+                                                    matchedItem
+                                                    stage={item.match.stage}
+
+                                                    history={this.props.history}
+                                                    disableLink
+                                                    searchId={this.slug}
+                                                    item={item.listing}
+                                                    hideMoreMenu
+                                                />
+
+
                                             </>
                                         ))}
+                                            </div>
+                                        </div>
 
-                                    </TabPanel>
+                                    </TabPanel>}
 
 
 
@@ -278,7 +311,7 @@ class SearchMatches extends Component {
                     {/*    </div>*/}
                     {/*</div>*/}
                 </div>
-            </Layout>
+
         );
     }
 }

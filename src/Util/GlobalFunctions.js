@@ -135,3 +135,54 @@ export const  seekAxiosGet=  (url)=> {
     });
 
 }
+
+
+
+export const getActionName=(actionName)=>{
+
+
+
+    if (actionName==="withdrawn"){
+
+        return "Withdraw"
+    }
+  else  if (actionName==="cancelled"){
+
+        return "Cancel"
+    }
+    else  if (actionName==="rejected"){
+
+        return "Rejected"
+    }
+    else  if (actionName==="accepted"){
+
+        return "Accept"
+    }
+    else  if (actionName==="declined"){
+
+        return "Decline"
+    }
+    else  if (actionName==="counter"){
+
+        return "Counter Offer"
+    }
+    else  if (actionName==="confirmed"){
+
+        return "Confirm"
+    }
+    else  if (actionName==="completed"){
+
+        return "complete"
+    }
+    else  if (actionName==="progress"){
+
+        return "Progress"
+    }
+
+
+    else{
+
+        return  actionName
+    }
+
+}

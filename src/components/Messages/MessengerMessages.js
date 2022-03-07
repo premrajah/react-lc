@@ -394,9 +394,8 @@ class MessengerMessages extends Component {
                                             </>
                                         )}
                                         {this.state.filteredMessageGroups.map((group, i) => (
-                                            <>
+                                            <React.Fragment key={group._key + "_item"}>
                                                 <MessageGroupItem
-                                                    key={group._key + "_item"}
                                                     selectedItem={this.state.selectedItem}
                                                     index={i}
                                                     handleGroupClick={(group, i, orgs) =>
@@ -404,7 +403,7 @@ class MessengerMessages extends Component {
                                                     }
                                                     item={group}
                                                 />
-                                            </>
+                                            </React.Fragment>
                                         ))}
                                     </div>
                                 ) : (
@@ -474,7 +473,7 @@ class MessengerMessages extends Component {
                                         <div className={`click-item p-3 message-group-item `}>
                                             <span className={"thumbnail-box"}>
                                                 {this.state.selectedOrgs.map((item, index) => (
-                                                    <>
+                                                    <React.Fragment key={index}>
                                                         <span
                                                             className={`text-caps company-thumbnails ${
                                                                 index > 0 &&
@@ -482,15 +481,15 @@ class MessengerMessages extends Component {
                                                             } `}>
                                                             {item.name.substr(0, 2)}
                                                         </span>
-                                                    </>
+                                                    </React.Fragment>
                                                 ))}
                                             </span>
                                             <span className={"ml-2 group-names text-capitlize "}>
                                                 {this.state.selectedOrgs.map((item, index) => (
-                                                    <>
+                                                    <React.Fragment key={index}>
                                                         {index > 0 && ","}
                                                         {item.name}
-                                                    </>
+                                                    </React.Fragment>
                                                 ))}
                                             </span>
                                         </div>
@@ -521,7 +520,7 @@ class MessengerMessages extends Component {
                                     {this.state.selectedMsgGroup.length > 0 ? (
                                         <div className="message-window p-3 ">
                                             {this.state.selectedMsgGroup.map((m, i) => (
-                                                <>
+                                                <React.Fragment key={i}>
                                                     <div
                                                         key={i}
                                                         className={`d-flex ${
@@ -633,7 +632,7 @@ class MessengerMessages extends Component {
                                                                 )}></div>
                                                         </div>
                                                     </div>
-                                                </>
+                                                </React.Fragment>
                                             ))}
                                             <div className="dummy" ref={this.messagesEndRef} />
                                         </div>

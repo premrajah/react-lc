@@ -59,7 +59,7 @@ class MessageGroupItem extends Component {
                         id={this.props.item._key + "_thumbnails"}
                         className={"thumbnail-box"}>
                         {this.state.allOrgs.map((item, index) => (
-                            <>
+                            <React.Fragment key={index}>
                                 {index < 3 && (
                                     <span
                                         className={`text-caps company-thumbnails ${
@@ -74,7 +74,7 @@ class MessageGroupItem extends Component {
                                         +{this.state.allOrgs.length - 3}
                                     </span>
                                 )}
-                            </>
+                            </React.Fragment>
                         ))}
                     </span>
                     <span
@@ -82,9 +82,9 @@ class MessageGroupItem extends Component {
                         id={this.props.item._key + "_thumbnails_name"}
                         className={"ml-2 group-names text-capitlize "}>
                         {this.state.allOrgs.map((item, index) => (
-                            <>
+                            <React.Fragment key={index}>
                                 {index > 0 && ","} {item.name}
-                            </>
+                            </React.Fragment>
                         ))}
                     </span>
                 </div>

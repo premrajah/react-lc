@@ -361,7 +361,7 @@ class MessengerMessages extends Component {
                                         className={"search-input full-width-field m-3"}
                                     />
                                 </div>
-                                <div className="col-md-2 text-center  justify-content-center align-items-center">
+                                <div className="col-md-2 text-center">
                                     <Tooltip title="New Message">
                                         <AddIcon
                                             onClick={() => this.handleOrgSearchButton()}
@@ -503,7 +503,7 @@ class MessengerMessages extends Component {
                                     overflow: "auto",
                                     borderRight: "1px solid var(--lc-bg-gray)",
                                 }}>
-                                <div className="col">
+                                <div className="col" style={{minHeight: '400px'}}>
                                     {this.state.selectedMsgGroup.length <= 0 &&
                                     this.state.allMessageGroups.length > 0 &&
                                     this.state.allMessageGroups[0].id !== "0" ? (

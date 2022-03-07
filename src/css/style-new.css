@@ -2211,6 +2211,22 @@ button.blue-btn-border
 
     border-radius: 4px;
 }
+
+
+.btn-green-small{
+
+    border-radius: 5px;
+    height: 36px;
+    border:2px solid var(--lc-green);
+    background: var(--lc-green);
+    line-height: 24px;
+    color: #fff!important;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 5px 12px;
+    /*transition: color .5s ease, background-color .5s ease, border-color .5s ease;*/
+}
+
 .btn-gray-border{
     border-radius: 5px;
     height: 36px;
@@ -2287,7 +2303,9 @@ button.blue-btn-border
 }
 @media only screen and (max-width: 991px) {
 
-
+    .right-bar-custom>div{
+        width: 95%!important;
+    }
     .desktop-right{
         text-align: left;
     }
@@ -4170,4 +4188,17 @@ input:active,input:focus{
     bottom: 2%;
     right: 5%;
     z-index: 111;
+}
+.disabledCursor {
+    cursor: default;
+}
+.bottom-btn-box{
+
+    position: absolute;
+    bottom: 0px;
+}
+
+.bottom-btn-box button{
+
+    margin-right: 20px;
 }

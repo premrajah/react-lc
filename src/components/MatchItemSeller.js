@@ -8,6 +8,11 @@ import GrayLoop from "../img/icons/gray-loop.png";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import CompanyInfo from "./CompanyInfo";
+import OrgComponent from "./Org/OrgComponent";
+import GreenButton from "./FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
+import GlobalDialog from "./RightBar/GlobalDialog";
+import TextFieldWrapper from "./FormsUI/ProductForm/TextField";
 
 class MatchItemSeller extends Component {
     constructor(props) {
@@ -375,21 +380,22 @@ class MatchItemSeller extends Component {
 
     render() {
         return (
-            <div className="row no-gutters  mt-4 mb-4  p-4 border-light">
+            <div className="row no-gutters rad-8 bg-white mt-4 mb-4  p-4 border-light">
                 {/*<div className={"col-1  content-box-listing"}>*/}
                 {/*<p style={{ fontSize: "18px" }} className="text-bold mb-1"> {this.props.index+1}.</p>*/}
                 {/*</div>*/}
-                <div className={"col-4  content-box-listing"}>
+                <div className={"col-6  content-box-listing"}>
                     {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
-                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">
-                        {this.props.item.search.org.name}
-                        <CompanyInfo item={this.props.item.search.org} />
-                    </p>
-                    <p style={{ fontSize: "16px" }} className=" ellipsis-end mb-1">
+
+                    <p style={{ fontSize: "16px" }} className="title-bold ellipsis-end mb-1">
                         {this.props.item.search.search.name}
                     </p>
-                    <p style={{ fontSize: "16px" }} className=" mb-1">
-                        Stage: {this.props.item.match.stage}
+                    <p style={{ fontSize: "18px" }} className="text-bold mb-1">
+
+                        <OrgComponent org={this.props.item.search.org} />
+                    </p>
+                    <p  className=" mb-1 text-gray-light">
+                        Stage: <span className={"text-blue text-capitalize"}> {this.props.item.match.stage}</span>
                     </p>
                     {this.state.cycle && (
                         <p>
@@ -402,29 +408,29 @@ class MatchItemSeller extends Component {
                         </p>
                     )}
                 </div>
-                <div style={{ textAlign: "right" }} className={"col-8"}>
+                <div style={{ textAlign: "right" }} className={"col-6"}>
                     {this.props.item.match.stage === "created" &&
                         this.props.item.listing.org._id === this.props.userDetail.orgId && (
                             <div className={"row"}>
-                                <div className="col-auto">
-                                    <button
+                                <div className="col-6">
+                                    <GreenButton
+                                        title={"Accept"}
                                         data-action="accept"
                                         onClick={this.showPopUpInitiateAction}
                                         type="button"
-                                        className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue"
-                                        style={{ height: "42px" }}>
-                                        Accept
-                                    </button>
+                                    >
+
+                                    </GreenButton>
                                 </div>
-                                <div className="col-auto">
-                                    <button
+                                <div className="col-6">
+                                    <BlueBorderButton
+                                        title={"Reject"}
                                         data-action="reject"
                                         onClick={this.showPopUpInitiateAction}
                                         type="button"
-                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                        style={{ height: "42px" }}>
-                                        Reject
-                                    </button>
+                                    >
+
+                                    </BlueBorderButton>
                                 </div>
                             </div>
                         )}
@@ -684,57 +690,54 @@ class MatchItemSeller extends Component {
                     </ModalBody>
                 </Modal>
 
-                <Modal
-                    className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                    show={this.state.showPopUpInitiateAction}
-                    onHide={this.showPopUpInitiateAction}
-                    animation={false}>
-                    <ModalBody>
 
 
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-10 text-center"}>
-                                <p style={{ textTransform: "uppercase" }} className={"text-bold"}>
-                                    Match: {this.state.initiateAction}
-                                </p>
-                                <p>Are you sure you want to {this.state.initiateAction} ? </p>
-                            </div>
-                        </div>
+                        <GlobalDialog size={"xs"}
+                                      hide={this.showPopUpInitiateAction}
+                                      show={this.state.showPopUpInitiateAction}
+                                      heading={`Request Match: ${this.state.initiateAction}`} >
+                            <>
 
-                        <div className={"row justify-content-center"}>
+
+                        {/*<div className={"row justify-content-center"}>*/}
+                        {/*    <div className={"col-10 text-center"}>*/}
+                        {/*        <p style={{ textTransform: "uppercase" }} className={"text-bold"}>*/}
+                        {/*            Match here: {this.state.initiateAction}*/}
+                        {/*        </p>*/}
+                        {/*        <p>Are you sure you want to {this.state.initiateAction} ? </p>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+
                             <div className={"col-12 text-center mt-2"}>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <button
+                                        <GreenButton
+
+                                            title={"Accept"}
                                             onClick={
                                                 this.state.initiateAction === "accept"
                                                     ? this.acceptMatch
                                                     : this.rejectMatch
                                             }
-                                            style={{ minWidth: "120px" }}
-                                            className={
-                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                            }
+
                                             type={"submit"}>
-                                            Yes
-                                        </button>
+
+                                        </GreenButton>
                                     </div>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <p
+                                        <BlueBorderButton
                                             onClick={this.showPopUpInitiateAction}
-                                            className={
-                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                            }>
-                                            Cancel
-                                        </p>
+                                           title={"Cancel"}
+                                            type={"button"}
+                                        >
+                                        </BlueBorderButton>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </ModalBody>
-                </Modal>
+
+                            </>
+                        </GlobalDialog>
+
             </div>
         );
     }

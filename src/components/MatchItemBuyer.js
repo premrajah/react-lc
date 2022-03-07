@@ -6,6 +6,13 @@ import * as actionCreator from "../store/actions/actions";
 import { Modal, ModalBody } from "react-bootstrap";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
+import GreenButton from "./FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
+import BlueButton from "./FormsUI/Buttons/BlueButton";
+import BlueBorderLink from "./FormsUI/Buttons/BlueBorderLink";
+import GreenSmallBtn from "./FormsUI/Buttons/GreenSmallBtn";
+import {getActionName} from "../Util/GlobalFunctions";
+import GrayBorderBtn from "./FormsUI/Buttons/GrayBorderBtn";
 
 class MatchItemBuyer extends Component {
     constructor(props) {
@@ -25,7 +32,6 @@ class MatchItemBuyer extends Component {
 
         this.acceptMatch = this.acceptMatch.bind(this);
         this.rejectMatch = this.rejectMatch.bind(this);
-        this.makeOfferMatch = this.makeOfferMatch.bind(this);
 
         this.editPopUp = this.editPopUp.bind(this);
 
@@ -194,7 +200,8 @@ class MatchItemBuyer extends Component {
             });
     }
 
-    makeOfferMatch = (event) => {
+    makeOfferMatchNew = (event) => {
+
         event.preventDefault();
 
         const form = event.currentTarget;
@@ -395,7 +402,7 @@ class MatchItemBuyer extends Component {
             }
 
             this.getOffer();
-        }, 5000);
+        }, 15000);
     }
 
     componentWillUnmount() {
@@ -404,13 +411,13 @@ class MatchItemBuyer extends Component {
 
     render() {
         return (
-            <div className="row no-gutters justify-content-center mt-4 mb-4  border-light p-2">
+            <div className="row no-gutters justify-content-center mt-4  ">
                 <div style={{ textAlign: "center" }} className={"col-12"}>
-                    <p>
+                    {!this.props.hideStage && <p>
                         Match Stage: <span className={"text-blue img-list text-bold text-caps"}>
                             {this.props.item.match.stage}
                         </span>
-                    </p>
+                    </p>}
 
                     {this.state.cycle && (
                         <p>
@@ -424,90 +431,127 @@ class MatchItemBuyer extends Component {
                     )}
                 </div>
 
-                <div style={{ textAlign: "right" }} className={"col-12"}>
+                <div style={{ textAlign: "right" }} className={"col-12 mb-4"}>
 
 
                     {(this.props.item.match.stage === "accepted" ||
                         this.props.item.match.stage === "offered") &&
                     this.props.item.listing.org._id !== this.props.userDetail.orgId && (
-                        <div className={"row justify-content-center"}>
-                            <div className="col-auto ">
-                                <button
-                                    onClick={()=> this.showPopUp(true)}
+                        // <div className={"row justify-content-center"}>
+                            <span className="mr-2 ">
+                                <GreenButton
+
+
+                                    onClick={()=>this.props.makeOffer(this.props.item.match._key,true,"Accept Listed Price")}
+                                    title={"Accept Seller's Offer"}
+                                    // onClick={()=> this.showPopUp(true)}
                                     type="button"
-                                    className="mr-2 btn btn-link blue-btn-border mt-2 mb-2">
-                                  Accept Seller's Offer
-                                </button>
-                            </div>
-                        </div>
+                                   >
+
+                                </GreenButton>
+                             </span>
+                        // </div>
                     )}
-                </div>
-                <div style={{ textAlign: "right" }} className={"col-12"}>
+                {/*</div>*/}
+                {/*<div style={{ textAlign: "right" }} className={"col-12"}>*/}
 
 
                     {(this.props.item.match.stage === "accepted" ||
                         this.props.item.match.stage === "offered") &&
                         this.props.item.listing.org._id !== this.props.userDetail.orgId && (
-                            <div className={"row justify-content-center"}>
-                                <div className="col-auto ">
-                                    <button
-                                        onClick={()=> this.showPopUp(false)}
+                            // <div className={"row justify-content-center"}>
+                            //     <div className="col-auto ">
+                                    <BlueBorderButton
+                                        // onClick={()=> this.showPopUp(false)}
+
+                                        onClick={()=>this.props.makeOffer(this.props.item.match._key,false,"Make an offer")}
+
                                         type="button"
-                                        className=" mr-2 btn btn-link btn-green mt-2 mb-2 ">
-                                        Make an Offer
-                                    </button>
-                                </div>
-                            </div>
+                                        title={"Make an Offer"}
+                                        >
+
+                                    </BlueBorderButton>
+                            //     </div>
+                            // </div>
                         )}
                 </div>
 
-                {this.props.item.match.stage === "offered" && (
+
+
+                {/*{this.props.item.match.stage === "offered" && (*/}
                     <>
+                    {this.state.offers&& this.state.offers.length>0 &&    <>
+                    <div className="col-1 ">
+
+                    </div>
+                    <div className="col-3 text-bold">
+                        Offer
+
+                    </div>
+                        <div className="text-bold col-6 ">
+                            Actions
+                        </div>
+                        <div className="text-bold col-2 ">
+                            Stage
+                        </div>
+                            </>}
+
                         {this.state.offers.map((item, index) => (
                             <div
                                 className={
-                                    this.state.offers.length > index + 1
-                                        ? "col-12 listing-row-border "
-                                        : "col-12"
+
+                                        "col-12"
                                 }>
-                                <div className={"row text-left mb-2 mt-2"}>
-                                    <div className="col-12 ">
-                                        Stage:
-                                        <span className={"text-caps"}>{item.offer.stage}</span>
-                                        <br />
+                                <hr/>
+                                <div className={"row no-gutters text-left mb-2 mt-2"}>
+                                    <div className="col-1 ">
+                                        <span className={"text-blue text-bold"}>{index+1}.</span>
+                                    </div>
+                                    <div className="col-3 ">
+
                                         <span
-                                            style={{ fontSize: "18px" }}
-                                            className="  mb-1 list-title text-bold text-blue">
-                                            Offer: GBP {item.offer.amount.value}
+
+                                            className="  mb-1 list-title  text-blue">
+                                             GBP {item.offer.amount.value}
                                         </span>
-                                        <br />
+                                    </div>
+                                    <div className="col-6 ">
+
                                         {item.next_action.is_mine && (
                                             <>
                                                 {item.next_action.possible_actions.map(
                                                     (actionName) => (
                                                         <>
-                                                            <button
+                                                           <span className={"mr-1"}>
+                                                               <GrayBorderBtn
+                                                                title={getActionName(actionName)}
                                                                 data-id={item.offer._key}
                                                                 data-action={actionName}
-                                                                onClick={this.editPopUp.bind(this)}
+                                                                // onClick={this.editPopUp.bind(this)}
+
+                                                                onClick={()=>this.props.actionOffer(item.offer._key,actionName)}
+
+
                                                                 type="button"
-                                                                className={
-                                                                    actionName === "accepted"
-                                                                        ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                        : actionName === "cancelled"
-                                                                        ? "shadow-sm mr-2 btn btn-link  ml-1 mt-2 mb-2 orange-btn-border"
-                                                                        : actionName === "rejected"
-                                                                        ? "shadow-sm mr-2 btn btn-link mt-2 mb-2 orange-btn-border"
-                                                                        : actionName === "declined"
-                                                                        ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
-                                                                        : actionName === "progress"
-                                                                        ? "shadow-sm mr-2 btn btn-link mt-2 mb-2 green-btn-border"
-                                                                        : actionName === "completed"
-                                                                        ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                        : actionName === "counter"
-                                                                        ? "shadow-sm mr-2 btn btn-link ml-1  mt-2 mb-2 blue-btn-border"
-                                                                        : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                }>
+
+                                                                // className={
+                                                                //     actionName === "accepted"
+                                                                //         ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                //         : actionName === "cancelled"
+                                                                //         ? "shadow-sm mr-2 btn btn-link  ml-1 mt-2 mb-2 orange-btn-border"
+                                                                //         : actionName === "rejected"
+                                                                //         ? "shadow-sm mr-2 btn btn-link mt-2 mb-2 orange-btn-border"
+                                                                //         : actionName === "declined"
+                                                                //         ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                //         : actionName === "progress"
+                                                                //         ? "shadow-sm mr-2 btn btn-link mt-2 mb-2 green-btn-border"
+                                                                //         : actionName === "completed"
+                                                                //         ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                //         : actionName === "counter"
+                                                                //         ? "shadow-sm mr-2 btn btn-link ml-1  mt-2 mb-2 blue-btn-border"
+                                                                //         : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                // }
+                                                            >
                                                                 {actionName === "accepted" &&
                                                                     "Accept"}
                                                                 {actionName === "cancelled" &&
@@ -526,7 +570,8 @@ class MatchItemBuyer extends Component {
                                                                     "Withdraw"}
                                                                 {actionName === "counter" &&
                                                                     "Counter Offer"}
-                                                            </button>
+                                                            </GrayBorderBtn>
+                                                               </span>
 
                                                             {/*<button data-id={item.offer._key} data-action={actionItem} onClick={this.editPopUp.bind(this)} type="button"*/}
                                                             {/*className=" text-caps ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
@@ -537,12 +582,17 @@ class MatchItemBuyer extends Component {
                                                 )}
                                             </>
                                         )}
+
                                     </div>
+                                    <div className="col-2 ">
+                                        <span className={"text-caps"}>{item.offer.stage}</span>
+                                    </div>
+
                                 </div>
                             </div>
                         ))}
                     </>
-                )}
+                {/*)}*/}
 
                 {this.props.item.match.stage === "converted" && (
                     <div className={"row"}>
@@ -648,12 +698,12 @@ class MatchItemBuyer extends Component {
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
                                 <p className={"text-bold"}>{this.state.price?"Accept Seller's Offer":"Make an offer"}</p>
-                                {/*<p>Make an offer</p>*/}
+
                             </div>
                         </div>
 
 
-                        <form onSubmit={this.makeOfferMatch}>
+                        <form onSubmit={()=>this.makeOfferMatchNew()}>
                             <div className={"row justify-content-center"}>
                                 <div className={"col-12 text-center"}>
                                     <TextField
@@ -670,22 +720,21 @@ class MatchItemBuyer extends Component {
                                 <div className={"col-12 text-center mt-2"}>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-6"} style={{ textAlign: "center" }}>
-                                            <button
-                                                className={
-                                                    "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                }
-                                                type={"submit"}>
-                                                Submit
-                                            </button>
+                                            <GreenButton
+                                               title={"Submit"}
+                                                type={"submit"}
+                                            >
+
+                                            </GreenButton>
                                         </div>
                                         <div className={"col-6"} style={{ textAlign: "center" }}>
-                                            <p
+                                            <BlueBorderButton
+                                                title={"Cancel"}
                                                 onClick={this.showPopUp}
-                                                className={
-                                                    "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                }>
-                                                Cancel
-                                            </p>
+                                             type={"button"}
+                                            >
+
+                                            </BlueBorderButton>
                                         </div>
                                     </div>
                                 </div>

@@ -305,7 +305,7 @@ class ViewSearch extends Component {
                 baseUrl + "match",
                 {
                     listing_id: this.state.listingSelected._key,
-                    search_id: this.search,
+                    search_id: this.state.createSearchData.search._key,
                 },
             )
             .then((res) => {

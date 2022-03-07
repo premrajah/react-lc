@@ -120,11 +120,11 @@ class CompanyDetails extends Component {
 
                 this.props.showSnackbar({show: true, severity: "success", message: "Org changed successfully. Thanks"})
 
-                // setTimeout(function() {
-                //
-                //     window.location.href=("/")
-                //
-                // }, 1000);
+                setTimeout(function() {
+
+                    window.location.href=("/")
+
+                }, 1000);
 
             })
             .catch((error) => {
@@ -837,7 +837,7 @@ this.setState({
 
                                             setSelection={this.switchOrg}
 
-                                            initialValue={this.props.userDetail.orgId} options={this.state.orgs}/>
+                                            initialValue={this.props.userContext.orgId} options={this.state.orgs}/>
 
                                     </div>
                                             </>}
@@ -1136,6 +1136,7 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,
         orgImage: state.orgImage,
+        userContext: state.userContext,
     };
 };
 

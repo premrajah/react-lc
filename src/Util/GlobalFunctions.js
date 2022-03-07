@@ -164,19 +164,25 @@ export const getActionName=(actionName)=>{
     }
     else  if (actionName==="counter"){
 
-        return "Counter"
+        return "Counter Offer"
     }
-    else  if (actionName==="withdrawn"){
+    else  if (actionName==="confirmed"){
 
-        return "Withdraw"
+        return "Confirm"
     }
-    else  if (actionName==="withdrawn"){
+    else  if (actionName==="completed"){
 
-        return "Withdraw"
+        return "complete"
     }
-    else  if (actionName==="withdrawn"){
+    else  if (actionName==="progress"){
 
-        return "Withdraw"
+        return "Progress"
+    }
+
+
+    else{
+
+        return  actionName
     }
 
 }

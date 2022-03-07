@@ -29,13 +29,13 @@ class FindResourcePage extends Component {
     }
 
     componentWillUnmount() {
-        clearInterval(this.interval);
+        // clearInterval(this.interval);
     }
 
     updateNotifications() {
-        this.interval = setInterval(() => {
+        // this.interval = setInterval(() => {
             this.props.dispatchListings();
-        }, 10000);
+        // }, 10000);
     }
 
     handleSearch = (searchValue) => {

@@ -81,11 +81,7 @@ class MatchItemBuyer extends Component {
 
     getOffer() {
         axios
-            .get(baseUrl + "offer/match/" + this.props.item.match._key, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "offer/match/" + this.props.item.match._key,)
             .then(
                 (response) => {
                     var responseAll = response.data;
@@ -594,22 +590,22 @@ class MatchItemBuyer extends Component {
                     </>
                 {/*)}*/}
 
-                {this.props.item.match.stage === "converted" && (
-                    <div className={"row"}>
-                        {this.state.offers.map((item, index) => (
-                            <div className="col-12">
-                                {index + 1}.
-                                <span
-                                    style={{ fontSize: "18px" }}
-                                    className=" mb-1 list-title text-bold text-blue">
-                                    GBP {item.offer.amount.value}
-                                </span>
-                                , Offer Stage:
-                                <span className={"text-caps"}>{item.offer.stage}</span>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                {/*{this.props.item.match.stage === "converted" && (*/}
+                {/*    <div className={"row"}>*/}
+                {/*        {this.state.offers.map((item, index) => (*/}
+                {/*            <div className="col-12">*/}
+                {/*                {index + 1}.*/}
+                {/*                <span*/}
+                {/*                    style={{ fontSize: "18px" }}*/}
+                {/*                    className=" mb-1 list-title text-bold text-blue">*/}
+                {/*                    GBP {item.offer.amount.value}*/}
+                {/*                </span>*/}
+                {/*                , Offer Stage:*/}
+                {/*                <span className={"text-caps"}>{item.offer.stage}</span>*/}
+                {/*            </div>*/}
+                {/*        ))}*/}
+                {/*    </div>*/}
+                {/*)}*/}
 
                 <Modal
                     className={"loop-popup"}

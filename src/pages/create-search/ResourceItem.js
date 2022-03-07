@@ -105,10 +105,10 @@ class ResourceItem extends Component {
                             </div>
 
                             <div className={"col-4 pl-3 content-box-listing"}>
-                                <p style={{ fontSize: "18px" }} className=" mb-1 list-title">
+                                <p style={{ fontSize: "18px" }} className=" mb-1 list-title width-80">
                                     {this.props.item.listing.listing.name}
                                 </p>
-                                <p style={{ fontSize: "16px" }} className=" mb-1 ">
+                                <p style={{ fontSize: "16px" }} className=" mb-1 width-80 ">
                                     {this.props.item.product && (
                                         <>Product: {this.props.item.listing.product.name} </>
                                     )}
@@ -182,9 +182,9 @@ class ResourceItem extends Component {
                                 {/*{this.props.matchedItem && <div className={"text-gray-light text-capitalize mt-1 mb-1 width-75"}>*/}
                                 {/*    Stage: <span className={"text-blue text-bold"}>{this.props.stage }</span>*/}
                                 {/*</div>}*/}
-                                <p  className=" mb-1 text-gray-light mt-1 mb-1 width-75 ">
+                                <p  className=" mb-1 text-gray-light mt-1 mb-1 width-80  ellipses-end">
                                     {this.props.item.product && (
-                                        <>Product: <span className={"text-blue"}>{this.props.item.product.name}</span> </>
+                                        <>Product: <span className={"text-blue width-75"}>{this.props.item.product.name}</span> </>
                                     )}
                                 </p>
 

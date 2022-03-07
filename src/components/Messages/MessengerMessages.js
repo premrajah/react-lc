@@ -14,6 +14,7 @@ import WysiwygEditor from "./WysiwygEditor";
 import MessageEntityDialog from "./MessageEntityDialog";
 import MessageGroupSingleArtifactDialog from "./MessageGroupSingleArtifactDialog";
 import MessageGroupItem from "./MessageGroupItem";
+import MessageNameThumbnail from "./MessageNameThumbnail";
 
 class MessengerMessages extends Component {
     constructor(props) {
@@ -470,24 +471,16 @@ class MessengerMessages extends Component {
                                         borderBottom: "1px solid var(--lc-bg-gray)",
                                     }}>
                                     <div className="col-12">
-                                        <div className={`click-item p-3 message-group-item `}>
+                                        <div className={`click-item p-3 message-group-item d-flex flex-column`}>
                                             <span className={"thumbnail-box"}>
                                                 {this.state.selectedOrgs.map((item, index) => (
-                                                    <React.Fragment key={index}>
-                                                        <span
-                                                            className={`text-caps company-thumbnails ${
-                                                                index > 0 &&
-                                                                " thumbnail-margin-left"
-                                                            } `}>
-                                                            {item.name.substr(0, 2)}
-                                                        </span>
-                                                    </React.Fragment>
+                                                    <MessageNameThumbnail key={index} index={index} item={item} allOrgs={this.state.selectedOrgs} />
                                                 ))}
                                             </span>
-                                            <span className={"ml-2 group-names text-capitlize "}>
+                                            <span className={"ml-2 group-names text-capitlize"} style={{fontSize: '0.8em'}}>
                                                 {this.state.selectedOrgs.map((item, index) => (
                                                     <React.Fragment key={index}>
-                                                        {index > 0 && ","}
+                                                        {index > 0 && ", "}
                                                         {item.name}
                                                     </React.Fragment>
                                                 ))}
@@ -665,7 +658,7 @@ class MessengerMessages extends Component {
                                                     sx={{fontSize: 48}}
                                                     style={{
                                                         color: this.state.messageText
-                                                            ? "var(--lc-pink)"
+                                                            ? "var(--lc-purple)"
                                                             : "var(--lc-bg-gray)",
                                                     }}
                                                 />

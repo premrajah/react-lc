@@ -1,6 +1,8 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
+import MessageNameThumbnail from "./MessageNameThumbnail";
+import {BorderBottom} from "@mui/icons-material";
 
 class MessageGroupItem extends Component {
     constructor(props) {
@@ -44,51 +46,36 @@ class MessageGroupItem extends Component {
 
     render() {
         return (
-            <>
-                <div
-                    key={this.props.item._key}
-                    id={this.props.item._key}
-                    className={
-                        this.props.selectedItem === this.props.index
-                            ? `click-item p-3 message-group-item selected`
-                            : `click-item p-3 message-group-item`
-                    }
-                    onClick={this.handleClick}>
-                    <span
-                        key={this.props.item._key + "_thumbnails"}
-                        id={this.props.item._key + "_thumbnails"}
-                        className={"thumbnail-box"}>
-                        {this.state.allOrgs.map((item, index) => (
-                            <React.Fragment key={index}>
-                                {index < 3 && (
-                                    <span
-                                        className={`text-caps company-thumbnails ${
-                                            index > 0 && " thumbnail-margin-left"
-                                        } `}>
-                                        {item.name.substr(0, 2)}
-                                    </span>
-                                )}
-
-                                {index == 3 && this.state.allOrgs.length - 3 !== 0 && (
-                                    <span className={"more-items-thumbnail "}>
-                                        +{this.state.allOrgs.length - 3}
-                                    </span>
-                                )}
-                            </React.Fragment>
-                        ))}
-                    </span>
-                    <span
-                        key={this.props.item._key + "_thumbnails_name"}
-                        id={this.props.item._key + "_thumbnails_name"}
-                        className={"ml-2 group-names text-capitlize "}>
-                        {this.state.allOrgs.map((item, index) => (
-                            <React.Fragment key={index}>
+            <div
+                className={`${
+                    this.props.selectedItem === this.props.index
+                        ? "click-item p-3 message-group-item selected"
+                        : "click-item p-3 message-group-item"
+                } border-bottom`}
+                onClick={this.handleClick}>
+                <span id={this.props.item._key + "_thumbnails"} className={"thumbnail-box"}>
+                    {this.state.allOrgs.map((item, index) => (
+                        <MessageNameThumbnail
+                            key={index}
+                            index={index}
+                            item={item}
+                            allOrgs={this.state.allOrgs}
+                        />
+                    ))}
+                </span>
+                <span
+                    id={this.props.item._key + "_thumbnails_name"}
+                    className={"ml-2 group-names text-capitlize "}
+                    style={{ fontSize: "0.7em" }}>
+                    {this.state.allOrgs.map((item, index) => (
+                        <React.Fragment key={index}>
+                            <span>
                                 {index > 0 && ","} {item.name}
-                            </React.Fragment>
-                        ))}
-                    </span>
-                </div>
-            </>
+                            </span>
+                        </React.Fragment>
+                    ))}
+                </span>
+            </div>
         );
     }
 }

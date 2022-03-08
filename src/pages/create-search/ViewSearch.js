@@ -319,6 +319,8 @@ class ViewSearch extends Component {
 
                 this.toggleRequestMatch()
 
+                this.loadMatches()
+
                 // this.getResources()
             })
             .catch((error) => {

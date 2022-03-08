@@ -4,6 +4,8 @@ import HeaderDark from "../header/HeaderDark";
 import Sidebar from "../menu/Sidebar";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
+import PageHeader from "../../components/PageHeader";
+import CubeBlue from "../../img/icons/product-icon-big.png";
 
 class NotFound extends Component {
 
@@ -48,9 +50,27 @@ class NotFound extends Component {
                                     </Link>
                                 </div>:
                                 <div className="col-lg-8">
-                                    <h1>404</h1>
+                                    {/*<h1>404</h1>*/}
+                                    <PageHeader
+                                        paddingLeftZero
+                                        pageIcon={CubeBlue}
+                                        pageTitle="Product Details (Provenance)"
+                                        subTitle="See product details and provenance"
+                                    />
+                                    <div className="row   pb-4  justify-content-start">
+                                        <div className="text-left pl-0   col-sm-12 col-xs-12 breadcrumb-row">
+                                            {/*<Link*/}
+                                            {/*    onClick={this.showLoginPopUp}*/}
+                                            {/*    to={this.props.isLoggedIn && `/product/${this.props.item.product._key}`}*/}
+
+                                            {/*>Product Detail</Link>*/}
+                                            {/*<span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span>*/}
+                                            {/*<span className={"text-capitalize text-breadcrumb-light"}> {this.props.item.product.name}</span>*/}
+                                        </div>
+                                    </div>
                                     <p>
-                                        Oops! This product you are looking for could not be found.
+                                        Oops! This product  you are looking for could not be found.
+
                                     </p>
                                     {this.props.isLoggedIn ?
                                         <>

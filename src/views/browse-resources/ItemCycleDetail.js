@@ -222,10 +222,10 @@ class ItemCycleDetail extends Component {
     render() {
         return (
 
-            <>
+            <Layout>
             {this.state.notFoundError ? (
                 <NotFound slug={this.slug} qrCodeNotFound={true} />
-                ) :  <Layout hideFooter={false}>
+                ) :
                     <div className={"container pb-5 mb-5"}>
                         {this.state.item && (
                             <>
@@ -236,7 +236,7 @@ class ItemCycleDetail extends Component {
                             </>
                         )}
                     </div>
-                </Layout>
+
             }
 
 
@@ -267,7 +267,7 @@ class ItemCycleDetail extends Component {
             {/*    </div>*/}
             {/*</div>*/}
 
-                </>
+                </Layout>
         );
     }
 }

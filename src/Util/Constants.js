@@ -6,7 +6,7 @@ export const { REACT_APP_BRANCH_ENV } = process.env;
 
 export const dashboardUrl =
     REACT_APP_BRANCH_ENV === "master"
-        ? "https://dash-stage.makealoop.io/"
+        ? "https://dash.makealoop.io/"
         : REACT_APP_BRANCH_ENV === "stage"
         ? "https://dash-stage.makealoop.io/"
         : REACT_APP_BRANCH_ENV === "local"

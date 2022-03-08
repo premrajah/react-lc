@@ -843,7 +843,7 @@ this.setState({
                                             </>}
                                            <div  className="col-md-6 d-flex text-right ">
 
-                                               <button onClick={this.addCompany} className="  btn-gray-border  ">
+                                               <button style={{minWidth:"180px"}} onClick={this.addCompany} className="  btn-gray-border  ">
                                                    <>
                                                        <Add  style={{fontSize:"20px"}} />
                                                        Add Company
@@ -1012,7 +1012,7 @@ this.setState({
 
                         {this.state.org && !this.state.org.company && (
                             <>
-                                <div className="row mb-5 pb-5">
+                                <div className="d-none row mb-5 pb-5">
                                     <div className="col-12 mt-3">
                                         <AutocompleteCustom
 

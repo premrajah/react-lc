@@ -618,7 +618,7 @@ class ProductDetailCycle extends Component {
                 <PageHeader
                     paddingLeftZero
                     pageIcon={CubeBlue}
-                    pageTitle="Product Details (Provenance)"
+                    pageTitle="Product Provenance"
                     subTitle="See product details and provenance"
                 />
               <div className="row   pb-4  justify-content-start">

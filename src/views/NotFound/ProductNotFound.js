@@ -37,9 +37,9 @@ class ProductNotFound extends Component {
         return (
             <>
 
-                <section className="not-found ">
 
-                    <div className="container mt-4 pt-4">
+
+                    <div className="container pb-4 pt-4">
                         <PageHeader
                             paddingLeftZero
                             pageIcon={CubeBlue}
@@ -51,63 +51,47 @@ class ProductNotFound extends Component {
                                 <div className="col-lg-12 text-center">
 
                                     <p className={"text-gray-light"}>
-                                       The product you are looking for could not be found. But you can create add new product by login or registering on our platform.
-                                    </p>
+                                        An open cyclecode!   <br/>This product has no details yet.
+                                        <br/>
 
-                                    {this.props.isLoggedIn ?
+                                        Click add product to register these details.
+
+                                        You will only be able to add the product details if you are logged in.                                    </p>
+
+
                                         <>
                                             <div className="row justify-content-center pb-3 pt-3 ">
-                                                <div className="col-3 ">
+                                                <div className="col-md-3 mt-3 ">
                                                     <GreenButton
                                                         title={"Add Product"}
-                                                        onClick={this.showProductSelection}
-                                                        to={this.props.isLoggedIn && "/my-products"}
+                                                        onClick={this.props.isLoggedIn?this.showProductSelection:this.showLoginPopUp}
+                                                        to={this.props.isLoggedIn?"/my-products":"#"}
 
                                                     >
 
                                                     </GreenButton>
                                                 </div>
-                                                <div className="col-3 ">
+                                                <div className="col-md-3 mt-3">
                                                     <BlueBorderLink
                                                         title={"View Products"}
-                                                        to={"/my-products"}
-                                                        // onClick={this.showRegister}
+                                                        onClick={this.props.isLoggedIn?"":this.showLoginPopUp}
 
+                                                        to={this.props.isLoggedIn?"/my-products":"#"}
+                                                        // onClick={this.showRegister}
                                                     >
 
                                                     </BlueBorderLink>
                                                 </div>
                                             </div>
 
-                                        </>:
-                                        <>
-                                            <div className="row justify-content-center pb-3 pt-3 ">
-                                                <div className="col-3 ">
-                                                    <GreenButton
-                                                        title={"Sign Up"}
-                                                        onClick={this.showSignUpPopUp}
-                                                        to={this.props.isLoggedIn && "/my-products"}
-                                                       >
-
-                                                    </GreenButton>
-                                                </div>
-                                                <div className="col-3">
-                                                    <BlueBorderButton
-                                                      title={"Log in"}
-                                                        onClick={this.showLoginPopUp}
-
-                                                    >
-                                                    </BlueBorderButton>
-                                                </div>
-                                            </div>
                                         </>
-                                    }
+
 
                                 </div>
 
                         </div>
                     </div>
-                </section>
+
             </>
         );
     }

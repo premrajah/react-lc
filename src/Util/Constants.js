@@ -159,3 +159,8 @@ export const randomColorGen = () => {
     const randomColor = Math.floor(Math.random()*16777215).toString(16);
     return `#${randomColor}`;
 }
+
+export const randomRGBAGen = () => {
+    let o = Math.round, r = Math.random, s = 255;
+    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+}

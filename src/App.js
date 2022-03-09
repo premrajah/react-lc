@@ -184,7 +184,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/code" component={CycleCode} />
                         <Route exact path="/find-resources" component={FindResourcePage} />
                         <LoggedInRoute exact path="/resource/:slug" component={ResourceItem} />
-                        <LoggedInRoute exact path="/account" component={MyAccount} />
+                        <Route exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/help" component={Help} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exaedit-accountct path="/edit-account" component={EditAccount} />

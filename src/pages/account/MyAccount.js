@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import SettingsWhite from "../../img/icons/settings-blue.png";
 import PageHeader from "../../components/PageHeader";
@@ -52,11 +52,32 @@ function a11yProps(index) {
 }
 
   function MyAccount(props) {
-    const [value, setValue] = React.useState(0);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+      const [value, setValue] = React.useState(0);
+      const handleChange = (event, newValue) => {
+          setValue(newValue);
+      };
+
+      useEffect(() => {
+
+          console.log(props)
+
+
+          if (props.location.search.includes("approvals")){
+
+              setValue(5)
+
+
+          }else  if (props.location.search.includes("system-users")) {
+              setValue(7)
+
+          }else{
+
+          }
+
+      },[])
+
+
 
 
 
@@ -74,7 +95,7 @@ function a11yProps(index) {
                         <div className="row">
                             <div className="col-md-12">
 
-                                { props.userContext &&
+                                {props.isLoggedIn&& props.userContext &&
                                 <div className="row">
                                         <div className="col-md-3">
 
@@ -133,8 +154,6 @@ function a11yProps(index) {
                                             {props.userContext.perms.includes("AdminWrite") &&        <TabPanel value={value} index={8}>
                                                 <AssumeRoles/>
                                             </TabPanel>}
-
-
                                         </div>
                                     </div>}
 

@@ -780,11 +780,7 @@ class ProductDetailContent extends Component {
                                                 </h4>
                                                 <div className="top-right text-right">
                                                     <div className="d-flex flex-row align-items-center justify-content-center ">
-                                                        {this.state.item.org._id ===
-                                                        this.props.userDetail.orgId
-                                                            ?  <span onClick={this.showReleaseProductPopUp} className="click-item d-flex flex-row align-items-center">
-                                                <ReportIcon className="click-Item mr-1" /> Release
-                                                </span>:""}
+
                                                     { (this.state.item.org._id ===
                                                         this.props.userDetail.orgId) &&
                                                     <MoreMenu
@@ -824,6 +820,13 @@ class ProductDetailContent extends Component {
                                         <div className="row">
                                             <div className="col-7">
                                                 <OrgComponent org={this.state.item.org} />
+                                            </div>
+                                            <div className="col-5 text-right justify-content-end d-flex">
+                                                {this.state.item.org._id ===
+                                                this.props.userDetail.orgId
+                                                    ?  <span onClick={this.showReleaseProductPopUp} className="click-item d-flex flex-row align-items-center">
+                                               Release   <ReportIcon className="click-Item mr-1 text-blue" />
+                                                </span>:""}
                                             </div>
                                         </div>
                                     </div>

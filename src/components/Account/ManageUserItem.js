@@ -321,22 +321,22 @@ class ManageUserItem extends Component {
         return (
             <>
 
-                <div className="row min-row-height-90 d-flex hover-bg flex-row pb-2 pt-2 border-top align-items-center justify-content-start">
-                    <div className=" col-1 justify-content-start">
+                <div className="row no-gutters min-row-height-90 d-flex hover-bg flex-row pb-2 pt-2 border-top align-items-start justify-content-start">
+                    <div className=" col-1  align-items-start d-flex ">
                         <span className={"text-blue"}>{index+1}. </span>
 
                     </div>
-                    <div className=" col-5 ">
+                    <div className=" col-6 text-left  ">
                         {this.state.user &&   <>
-                            <span className={`text-blue text-capitalize`}> {this.state.user.firstName} {this.state.user.lastName}</span>
-                            <span className={" text-blue"}>({this.state.user.email})</span></>}
+                            <p className={`text-blue text-capitalize mb-0`}> {this.state.user.firstName} {this.state.user.lastName}</p>
+                            <p className={" text-gray-light mb-0"}>({this.state.user.email})</p></>}
                         {this.state.user &&   this.state.user.email===this.props.userDetail.email&&
-                        <span  className={`text-pink ml-2 `}>Logged In User</span>}
+                        <p  className={`text-pink ml-2 `}>Logged In User</p>}
 
 
                     </div>
                     {!this.props.approveType ?
-                        <div className=" col-6 text-right ">
+                        <div className=" col-5 text-right ">
 
 
                             {this.state.btnLoading &&
@@ -422,7 +422,7 @@ class ManageUserItem extends Component {
 
 
 
-                        <div className=" col-6 text-right ">
+                        <div className=" col-5 text-right ">
 
                             {this.state.status.show &&  <p className={"  status text-right"}>
                                 <span className={this.state.status.type=="Approved"?" active text-capitlize":"text-capitlize waiting "}>

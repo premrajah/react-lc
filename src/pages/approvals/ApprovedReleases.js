@@ -31,7 +31,7 @@ class ApprovedReleases extends Component {
                             bottomLine={<hr />}
                         />
 
-                        <div className="row mt-3 mb-5">
+                        <div className="row mt-3 mb-3">
                             <div className="col-12 d-flex justify-content-end">
                                 <Link to="/approve" className="btn btn-sm blue-btn mr-2">
                                     Approvals

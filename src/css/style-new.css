@@ -1680,6 +1680,7 @@ a.blue-btn-border
     letter-spacing: 1px;
     height: 48px;
     background: transparent;
+    display: inline-block;
 }
 
 button.blue-btn-border svg{

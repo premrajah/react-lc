@@ -46,7 +46,7 @@ class ApprovedReleases extends Component {
                                         {this.props.productReleaseRequests.length !== 0 ? this.props.productReleaseRequests.filter(r => r.Release.stage !== "requested").map((item, index) => (
                                             <div className="row" key={index}>
                                                 <div className="col">
-                                                    <Link to={`/product/${item.product.product._key}`}>
+                                                    <Link to={`/product/${item.product_id}`}>
                                                         <RequestReleaseItem
                                                             history={this.props.history}
                                                             item={item}

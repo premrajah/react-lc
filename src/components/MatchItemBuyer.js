@@ -131,9 +131,12 @@ class MatchItemBuyer extends Component {
                 }
             )
             .then((res) => {
+
                 this.setState({
                     showPopUp: true,
                 });
+
+
             })
             .catch((error) => {
                 // this.setState({
@@ -388,9 +391,14 @@ class MatchItemBuyer extends Component {
             });
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
 
+        if (prevProps!==this.props) {
+            this.getOffer();
+        }
+    }
     componentDidMount() {
-        this.getOffer();
+
 
         this.interval = setInterval(() => {
             if (this.props.item.match.stage) {
@@ -398,7 +406,7 @@ class MatchItemBuyer extends Component {
             }
 
             this.getOffer();
-        }, 15000);
+        }, 5000);
     }
 
     componentWillUnmount() {

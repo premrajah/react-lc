@@ -14,6 +14,7 @@ import PageHeader from "../../components/PageHeader";
 import NotFound from "../NotFound";
 import Layout from "../../components/Layout/Layout";
 import ProductDetailContent from "../../components/Products/ProductDetailContent";
+import ProductNotFound from "../NotFound/ProductNotFound";
 
 class ItemCycleDetail extends Component {
     slug;
@@ -222,10 +223,10 @@ class ItemCycleDetail extends Component {
     render() {
         return (
 
-            <>
+            <Layout>
             {this.state.notFoundError ? (
-                <NotFound slug={this.slug} qrCodeNotFound={true} />
-                ) :  <Layout hideFooter={false}>
+                <ProductNotFound slug={this.slug} qrCodeNotFound={true} />
+                ) :
                     <div className={"container pb-5 mb-5"}>
                         {this.state.item && (
                             <>
@@ -236,7 +237,7 @@ class ItemCycleDetail extends Component {
                             </>
                         )}
                     </div>
-                </Layout>
+
             }
 
 
@@ -267,7 +268,7 @@ class ItemCycleDetail extends Component {
             {/*    </div>*/}
             {/*</div>*/}
 
-                </>
+                </Layout>
         );
     }
 }

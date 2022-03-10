@@ -1667,17 +1667,20 @@ a.blue-btn-border
     /*min-width: 150px;*/
     /*line-height: 30px;*/
 
-    padding: 1.250em 2.500em;
+    /*padding: 1.250em 2.500em;*/
+    padding: 0em 2.500em;
+    line-height: 46px;
     min-width: 14.000em;
     transition: color .5s ease, background-color .5s ease, border-color .5s ease;
     font-weight: 700 !important;
     font-style: normal;
-    font-size: 12px !important;
+    font-size: 11px !important;
     text-transform: uppercase;
-    line-height: 1.4em;
+    /*line-height: 1.4em;*/
     letter-spacing: 1px;
     height: 48px;
     background: transparent;
+    display: inline-block;
 }
 
 button.blue-btn-border svg{

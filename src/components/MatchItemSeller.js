@@ -66,6 +66,7 @@ class MatchItemSeller extends Component {
     }
 
     editPopUp(editOfferKey,action) {
+
         this.setState({
             editPopUp: !this.state.editPopUp,
         });
@@ -191,16 +192,12 @@ class MatchItemSeller extends Component {
             .post(
                 baseUrl + "offer/stage",
                 data,
-
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
             )
             .then((res) => {
 
                 this.editPopUp()
+
+
             })
             .catch((error) => {
                 // this.setState({

@@ -844,10 +844,10 @@ this.setState({
                                            <div  className="col-md-6 d-flex text-right ">
 
                                                <button style={{minWidth:"180px"}} onClick={this.addCompany} className="  btn-gray-border  ">
-                                                   <>
+
                                                        <Add  style={{fontSize:"20px"}} />
-                                                       Add Company
-                                                   </>
+                                                       Join Company
+
                                                </button>
 
                                            </div>

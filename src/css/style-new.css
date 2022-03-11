@@ -85,6 +85,28 @@
     border: 1px solid var(--lc-bg-gray);
 }
 
+.wysiwyg-toolbar{
+    background: var(--lc-bg-gray) !important;
+}
+
+.rdw-dropdown-wrapper,
+.rdw-inline-dropdown,
+.rdw-block-wrapper,
+.rdw-fontsize-wrapper,
+.rdw-fontfamily-wrapper,
+.rdw-link-wrapper,
+.rdw-colorpicker-wrapper,
+.rdw-option-wrapper,
+.rdw-emoji-wrapper,
+.rdw-remove-wrapper,
+.rdw-dropdown-wrapper,
+.rdw-history-dropdown
+{
+    height: 30px !important;
+    max-height: 30px !important;
+    min-width: 40px !important;
+}
+
 .text-pink-heading{
 
     color: var(--lc-pink);
@@ -1663,11 +1685,7 @@ a.blue-btn-border
     color: #3c3972;
     text-decoration: none!important;
     border-radius: 24px;
-    /*height: 48px;*/
-    /*min-width: 150px;*/
-    /*line-height: 30px;*/
 
-    /*padding: 1.250em 2.500em;*/
     padding: 0em 2.500em;
     line-height: 46px;
     min-width: 14.000em;
@@ -1698,8 +1716,6 @@ button.blue-btn-border
     text-decoration: none!important;
     border-radius: 24px;
     height: 48px;
-    /*min-width: 150px;*/
-    /*line-height: 30px;*/
 
     padding: 0em 2.500em;
     min-width: 14.000em;
@@ -4019,9 +4035,7 @@ input:active,input:focus{
     background: #e9f3ff!important;
 }
 
-.wysiwyg-toolbar{
-    background: #eeeeee!important;
-}
+
 
 .search-input{
     height: 45px;
@@ -4076,7 +4090,7 @@ input:active,input:focus{
 
 .message-group-item{
 
-    white-space: nowrap;
+    /*white-space: nowrap;*/
     overflow: hidden;
     text-overflow: ellipsis;
 }

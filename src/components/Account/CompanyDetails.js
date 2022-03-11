@@ -15,20 +15,11 @@ import Close from "@mui/icons-material/Close";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import GreenBorderButton from "../FormsUI/Buttons/GreenBorderButton";
 import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
-import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import MenuDropdown from "../FormsUI/MenuDropdown";
-import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import Add from "@mui/icons-material/Add";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
-
-
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 
 class CompanyDetails extends Component {
     constructor(props) {
@@ -51,8 +42,8 @@ class CompanyDetails extends Component {
             uploadedImgType: "",
             companyNumber: null,
             submitSuccess: false,
-            file:null,
-            errorCompany:null,
+            file: null,
+            errorCompany: null,
             categories: [],
             subCategories: [],
             catSelected: {},
@@ -63,25 +54,25 @@ class CompanyDetails extends Component {
             orgs: [],
             page: 1,
             units: [],
-            croppedImageData:null,
-            showCropper:false,
-            files:[],
-            showAddCompany:false,
-            industries:["Commercial kitchen equipment","Commercial laundry equipment","Hospitality","Healthcare"],
-            reasons:["Register new products","Access Marketplace"],
-            businessFields:["Manufacturer","Dealer","Operator"],
-            orgId:null
-
+            croppedImageData: null,
+            showCropper: false,
+            files: [],
+            showAddCompany: false,
+            industries: [
+                "Commercial kitchen equipment",
+                "Commercial laundry equipment",
+                "Hospitality",
+                "Healthcare",
+            ],
+            reasons: ["Register new products", "Access Marketplace"],
+            businessFields: ["Manufacturer", "Dealer", "Operator"],
+            orgId: null,
         };
 
         this.companyInfo = this.companyInfo.bind(this);
     }
 
-
-
-    setArtifactOrg=(org_id,artifact_id)=>{
-
-
+    setArtifactOrg = (org_id, artifact_id) => {
         const artifactData = {
             org_id: this.state.org._id,
             artifact_ids: [artifact_id],
@@ -89,64 +80,48 @@ class CompanyDetails extends Component {
         axios
             .post(`${baseUrl}org/artifact`, artifactData)
             .then((resposne) => {
-
                 this.companyInfo(); // get company info
-
             })
             .catch((error) => {});
 
         this.setState({
             loading: false,
         });
-
-    }
-
-
-    addCompany=()=>{
-
-        this.setState({
-            showAddCompany:!this.state.showAddCompany
-        })
-    }
-
-
-    switchOrg = (value) => {
-
-        axios
-            .get(
-                `${baseUrl}user/context?org_id=${value}`,
-            )
-            .then((res) => {
-
-                this.props.showSnackbar({show: true, severity: "success", message: "Org changed successfully. Thanks"})
-
-                setTimeout(function() {
-
-                    window.location.href=("/")
-
-                }, 1000);
-
-            })
-            .catch((error) => {
-
-
-            }).finally(()=>{
-
-        });
-
-
     };
 
-
-    setCropData=(data,name)=>{
+    addCompany = () => {
         this.setState({
-            croppedImageData:data
-        })
+            showAddCompany: !this.state.showAddCompany,
+        });
+    };
 
-        this.toggleCropper()
+    switchOrg = (value) => {
+        axios
+            .get(`${baseUrl}user/context?org_id=${value}`)
+            .then((res) => {
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Org changed successfully. Thanks",
+                });
 
-        this.uploadCroppedImage(data,name)
-    }
+                setTimeout(function () {
+                    window.location.href = "/account";
+                }, 1000);
+            })
+            .catch((error) => {})
+            .finally(() => {});
+    };
+
+    setCropData = (data, name) => {
+        this.setState({
+            croppedImageData: data,
+        });
+
+        this.toggleCropper();
+
+        this.uploadCroppedImage(data, name);
+    };
     getArtifactForOrg = () => {
         let url = `${baseUrl}org/${encodeURIComponent(this.state.org._id)}/artifact`;
         axios
@@ -155,13 +130,9 @@ class CompanyDetails extends Component {
                 if (response.status === 200) {
                     if (response.data.data.length > 0) {
                         this.setState({
-                            orgImage: `${
-                                response.data.data[0].blob_url
-                            }&v=${Date.now()}`,
+                            orgImage: `${response.data.data[0].blob_url}&v=${Date.now()}`,
                         });
-                        this.props.setOrgImage(
-                            response.data.data[0].blob_url
-                        );
+                        this.props.setOrgImage(response.data.data[0].blob_url);
                     }
                 }
             })
@@ -173,11 +144,9 @@ class CompanyDetails extends Component {
             .get(url)
             .then((response) => {
                 if (response.status === 200) {
-
-this.setState({
-    orgs:response.data.data
-
-})
+                    this.setState({
+                        orgs: response.data.data,
+                    });
                 }
             })
             .catch((error) => {});
@@ -203,27 +172,23 @@ this.setState({
                     this.setState({
                         loading: false,
                         submitSuccess: true,
-                        errorCompany:null
+                        errorCompany: null,
                     });
 
                     let responseAll = response.data.data;
 
                     this.companyInfo();
-
                 },
                 (error) => {
-
                     this.setState({
                         loading: false,
-                        errorCompany:error.response.data.errors[0].message
+                        errorCompany: error.response.data.errors[0].message,
                     });
                 }
             );
     };
 
-
     submitFirstLogin = () => {
-
         axios
             .post(`${baseUrl}org/cache`, {
                 key: "not_first_login",
@@ -231,14 +196,9 @@ this.setState({
             })
             .then(
                 (response) => {
-
-                    if (this.props.hide)
-                    this.props.hide()
-
+                    if (this.props.hide) this.props.hide();
                 },
-                (error) => {
-
-                }
+                (error) => {}
             );
     };
 
@@ -252,11 +212,18 @@ this.setState({
                     org: responseOrg.data,
                     companyName: responseOrg.data.name,
                     description: responseOrg.data.description,
-                    industry: responseOrg.data.details&&responseOrg.data.details.industry?responseOrg.data.details.industry:null,
-                    sector: responseOrg.data.details&&responseOrg.data.details.sector?responseOrg.data.details.sector:null,
-                    no_of_staff:  responseOrg.data.details&&responseOrg.data.details.no_of_staff?responseOrg.data.details.no_of_staff:null,
-
-
+                    industry:
+                        responseOrg.data.details && responseOrg.data.details.industry
+                            ? responseOrg.data.details.industry
+                            : null,
+                    sector:
+                        responseOrg.data.details && responseOrg.data.details.sector
+                            ? responseOrg.data.details.sector
+                            : null,
+                    no_of_staff:
+                        responseOrg.data.details && responseOrg.data.details.no_of_staff
+                            ? responseOrg.data.details.no_of_staff
+                            : null,
                 });
 
                 this.getArtifactForOrg();
@@ -285,87 +252,105 @@ this.setState({
     }
 
     handleValidation() {
-
-
         let fields = this.state.fields;
 
+        let validations = [
+            validateFormatCreate(
+                "companyName",
+                [{ check: Validators.required, message: "Required" }],
+                fields
+            ),
+            validateFormatCreate(
+                "no_of_staff",
+                [{ check: Validators.number, message: "Invalid Input" }],
+                fields
+            ),
+        ];
 
-        let validations=[
-
-            validateFormatCreate("companyName", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'Invalid Input'}],fields),
-        ]
-
-
-
-        let {formIsValid,errors}= validateInputs(validations)
+        let { formIsValid, errors } = validateInputs(validations);
 
         this.setState({ errors: errors });
         return formIsValid;
     }
     getFiltersCategories() {
-        axios
-            .get(baseUrl + "category")
-            .then(
-                (response) => {
-                    let   responseAll=[]
-                    responseAll = _.sortBy(response.data.data, ["name"]);
+        axios.get(baseUrl + "category").then(
+            (response) => {
+                let responseAll = [];
+                responseAll = _.sortBy(response.data.data, ["name"]);
 
+                this.setState({
+                    categories: responseAll,
+                });
+
+                if (responseAll.length > 0 && this.props.item) {
                     this.setState({
-                        categories: responseAll,
+                        subCategories: responseAll.filter(
+                            (item) => item.name === this.props.item.product.category
+                        )[0].types,
+                        states: responseAll
+                            .filter((item) => item.name === this.props.item.product.category)[0]
+                            .types.filter((item) => item.name === this.props.item.product.type)[0]
+                            .state,
+                        units: responseAll
+                            .filter((item) => item.name === this.props.item.product.category)[0]
+                            .types.filter((item) => item.name === this.props.item.product.type)[0]
+                            .units,
                     });
-
-                    if (responseAll.length>0&&this.props.item){
-
-                        this.setState({
-                            subCategories:responseAll.filter((item) => item.name === this.props.item.product.category)[0].types,
-                            states : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state,
-                            units : responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units
-                        })
-
-                    }
-
-                },
-                (error) => {}
-            );
+                }
+            },
+            (error) => {}
+        );
     }
 
-
     handleValidationScaling() {
-
-
         let fields = this.state.fields;
 
+        let validations = [
+            validateFormatCreate(
+                "category",
+                [{ check: Validators.required, message: "Required" }],
+                fields
+            ),
+            validateFormatCreate(
+                "type",
+                [{ check: Validators.required, message: "Required" }],
+                fields
+            ),
+            validateFormatCreate(
+                "state",
+                [{ check: Validators.required, message: "Required" }],
+                fields
+            ),
+            validateFormatCreate(
+                "units",
+                [{ check: Validators.required, message: "Required" }],
+                fields
+            ),
+        ];
 
-        let validations=[
-
-            validateFormatCreate("category", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("type", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("state", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("units", [{check: Validators.required, message: 'Required'}],fields),
-
-        ]
-
-        if (!this.state.disableVolume){
-            validations.push( validateFormatCreate("factor", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a number.'}],fields),
-            )
+        if (!this.state.disableVolume) {
+            validations.push(
+                validateFormatCreate(
+                    "factor",
+                    [
+                        { check: Validators.required, message: "Required" },
+                        { check: Validators.decimal, message: "This field should be a number." },
+                    ],
+                    fields
+                )
+            );
         }
 
-
-
-        let {formIsValid,errors}= validateInputs(validations)
+        let { formIsValid, errors } = validateInputs(validations);
         this.setState({ errors: errors });
         return formIsValid;
     }
 
-    handleChange(value,field ) {
-
+    handleChange(value, field) {
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
     }
-
-
 
     _handleReaderLoaded = (readerEvent) => {
         let binaryString = readerEvent.target.result;
@@ -375,13 +360,10 @@ this.setState({
     handleSubmitSite = (event) => {
         event.preventDefault();
 
-
         if (this.handleValidation()) {
-
             this.setState({
                 loading: true,
             });
-
 
             const form = event.currentTarget;
 
@@ -390,128 +372,110 @@ this.setState({
             });
 
             const data = new FormData(event.target);
-            const name =data.get("companyName");
-            const description = data.get("description")
+            const name = data.get("companyName");
+            const description = data.get("description");
 
             axios
-                .post(`${baseUrl}org`,
-                    {
-                        // id: this.state.org._key,
-                        // update: {
-                            name: name,
-                            description: description,
-                            details:{
-
-                                "industry": data.get("industry"),
-                                "sector": data.get("businessField"),
-                                "no_of_staff": data.get("no_of_staff")?data.get("no_of_staff"):0
-                            }
-                        // },
-                    }
-                )
+                .post(`${baseUrl}org`, {
+                    // id: this.state.org._key,
+                    // update: {
+                    name: name,
+                    description: description,
+                    details: {
+                        industry: data.get("industry"),
+                        sector: data.get("businessField"),
+                        no_of_staff: data.get("no_of_staff") ? data.get("no_of_staff") : 0,
+                    },
+                    // },
+                })
                 .then((res) => {
-                    if(res.status === 200) {
+                    if (res.status === 200) {
                         this.setState({
                             loading: false,
                             submitSuccess: true,
                         });
                         this.getArtifactForOrg();
 
-                        if (this.props.trackFirstLogin){
-                            this.submitFirstLogin()
+                        if (this.props.trackFirstLogin) {
+                            this.submitFirstLogin();
                         }
                     }
                 })
                 .catch((error) => {
-
                     this.setState({
                         loading: false,
-
                     });
                 });
-
         }
     };
-
 
     addTransferScaling = (event) => {
         event.preventDefault();
 
-
         event.preventDefault();
-        if (!this.handleValidationScaling()){
-
-            return
-
+        if (!this.handleValidationScaling()) {
+            return;
         }
 
         this.setState({
             loading: true,
         });
 
-            const form = event.currentTarget;
+        const form = event.currentTarget;
 
-            this.setState({
-                btnLoading: true,
-            });
+        this.setState({
+            btnLoading: true,
+        });
 
-            const data = new FormData(event.target);
-            const category = data.get("category");
-            const type = data.get("type");
-            const units = data.get("units");
-            const factor = data.get("factor");
-            const state = data.get("state");
+        const data = new FormData(event.target);
+        const category = data.get("category");
+        const type = data.get("type");
+        const units = data.get("units");
+        const factor = data.get("factor");
+        const state = data.get("state");
 
-            axios
-                .post(`${baseUrl}org`,
-                    {
-                        id: "Org/"+this.state.org._key,
-                        update: {
-                            transfer_scaling:[{
-
-                                org_id:  "Org/"+this.state.org._key,
-                                category: category,
-                                type: type,
-                                state: state,
-                                units: units,
-                                factor: factor
-                            }]
+        axios
+            .post(`${baseUrl}org`, {
+                id: "Org/" + this.state.org._key,
+                update: {
+                    transfer_scaling: [
+                        {
+                            org_id: "Org/" + this.state.org._key,
+                            category: category,
+                            type: type,
+                            state: state,
+                            units: units,
+                            factor: factor,
                         },
-                    }
-                )
-                .then((res) => {
-                    if(res.status === 200) {
-                        this.setState({
-                            loading: false,
-                            submitSuccess: true,
-                        });
-
-                    }
-                })
-                .catch((error) => {
-
+                    ],
+                },
+            })
+            .then((res) => {
+                if (res.status === 200) {
                     this.setState({
                         loading: false,
-
+                        submitSuccess: true,
                     });
+                }
+            })
+            .catch((error) => {
+                this.setState({
+                    loading: false,
                 });
-
-
+            });
     };
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.getOrgsForUser()
+        this.getOrgsForUser();
         this.companyInfo();
-        this.getFiltersCategories()
+        this.getFiltersCategories();
     }
 
-    handleChangeProduct(value,field ) {
-
+    handleChangeProduct(value, field) {
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
-
     }
     handleChangeFile(event) {
         let file = this.state.file;
@@ -520,19 +484,18 @@ this.setState({
         let newFile = null;
 
         for (var i = 0; i < event.target.files.length; i++) {
-            file=({ file: event.target.files[i], status: 0, id: null });
-            newFile =({ file: event.target.files[i], status: 0, id: null });
+            file = { file: event.target.files[i], status: 0, id: null };
+            newFile = { file: event.target.files[i], status: 0, id: null };
         }
-
 
         this.setState({
             file: file,
-            files: event.target.files
+            files: event.target.files,
         });
 
         // this.uploadImage(file);
 
-        this.toggleCropper()
+        this.toggleCropper();
     }
 
     handleCancel(e) {
@@ -593,107 +556,85 @@ this.setState({
 
     uploadImage(file) {
         if (file) {
+            let imgFile = file;
 
-                let imgFile = file;
+            this.getImageAsBytes(imgFile.file)
+                .then((data) => {
+                    const payload = data;
 
-                this.getImageAsBytes(imgFile.file)
-                    .then(data => {
-                        const payload = data;
-
-                        try {
-                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name}`, payload)
-                                .then(res => {
-
-                                    this.setArtifactOrg(this.state.org._id, res.data.data._key)
-                                    this.setState({
-                                        orgImage: res.data.data.blob_url,
-                                    });
-
-                                })
-                                .catch(error => {
-
-                                })
-
-                        } catch (e) {
-                            console.log('catch Error ', e);
-                        }
-
-                    })
-                    .catch(error => {
-                        console.log('image upload error ', error);
-                    })
-
-            }
-
+                    try {
+                        axios
+                            .post(`${baseUrl}artifact/load?name=${imgFile.file.name}`, payload)
+                            .then((res) => {
+                                this.setArtifactOrg(this.state.org._id, res.data.data._key);
+                                this.setState({
+                                    orgImage: res.data.data.blob_url,
+                                });
+                            })
+                            .catch((error) => {});
+                    } catch (e) {
+                        console.log("catch Error ", e);
+                    }
+                })
+                .catch((error) => {
+                    console.log("image upload error ", error);
+                });
+        }
     }
 
-
-     _base64ToArrayBuffer=(base64) =>{
+    _base64ToArrayBuffer = (base64) => {
         let binary_string = window.atob(base64);
-         let len = binary_string.length;
-         let bytes = new Uint8Array(len);
+        let len = binary_string.length;
+        let bytes = new Uint8Array(len);
         for (let i = 0; i < len; i++) {
             bytes[i] = binary_string.charCodeAt(i);
         }
         return bytes;
-    }
+    };
 
-     getJpegBytes(base64Data)
-    {
-        base64Data = base64Data.replace('data:image/png;base64,', '');
+    getJpegBytes(base64Data) {
+        base64Data = base64Data.replace("data:image/png;base64,", "");
 
         return this._base64ToArrayBuffer(base64Data);
     }
 
-    uploadCroppedImage(base64Data,name) {
-
-                try {
-                    axios.post(`${baseUrl}artifact/load?name=${name.toLowerCase()}`, this.getJpegBytes(base64Data))
-                        .then(res => {
-
-                            this.setArtifactOrg(this.state.org._id, res.data.data._key)
-                            this.setState({
-                                orgImage: res.data.data.blob_url,
-                            });
-
-                        })
-                        .catch(error => {
-
-                        })
-
-                } catch (e) {
-                    console.log('catch Error ', e);
-                }
-
+    uploadCroppedImage(base64Data, name) {
+        try {
+            axios
+                .post(
+                    `${baseUrl}artifact/load?name=${name.toLowerCase()}`,
+                    this.getJpegBytes(base64Data)
+                )
+                .then((res) => {
+                    this.setArtifactOrg(this.state.org._id, res.data.data._key);
+                    this.setState({
+                        orgImage: res.data.data.blob_url,
+                    });
+                })
+                .catch((error) => {});
+        } catch (e) {
+            console.log("catch Error ", e);
         }
-
-
-    toggleCropper=()=>{
-
-        this.setState({
-
-            showCropper:!this.state.showCropper
-        })
     }
 
-
+    toggleCropper = () => {
+        this.setState({
+            showCropper: !this.state.showCropper,
+        });
+    };
 
     handleAddCompany = (event) => {
-
-
-        if (!this.state.orgId){
-
+        if (!this.state.orgId) {
             this.setState({
-                errorCompany:true
-            })
+                errorCompany: true,
+            });
 
-            return
-        }else{
+            return;
+        } else {
             this.setState({
-                errorCompany:false
-            })
+                errorCompany: false,
+            });
         }
-
 
         // return false
         axios
@@ -701,260 +642,260 @@ this.setState({
                 baseUrl + "user/org",
 
                 {
-
                     org_id: this.state.orgId,
                 }
-
             )
             .then((res) => {
-
-                this.addCompany()
+                this.addCompany();
 
                 this.props.showSnackbar({
                     show: true,
                     severity: "success",
-                    message: "Join request sent to the company successfully. Thanks"
-                })
-
-
-
-
+                    message: "Join request sent to the company successfully. Thanks",
+                });
             })
             .catch((error) => {
-                this.setState({isSubmitButtonPressed: false})
-            }).finally(()=>{
-
+                this.setState({ isSubmitButtonPressed: false });
+            })
+            .finally(() => {
                 this.setState({
                     btnLoading: false,
-
                 });
-            }
-
-        );
-
-
+            });
     };
 
     render() {
         return (
-
-<>
-                      <Modal
-                            className={"loop-popup"}
-                            aria-labelledby="contained-modal-title-vcenter"
-                            show={this.state.showCropper}
-                            centered
-                            onHide={this.toggleCropper}
-                            animation={false}>
-                            <ModalBody>
-                                <div style={{    position: "absolute",
-                                    background: "white",
-                                    zIndex: 1,
-                                    borderRadius: "50%",
-                                    padding: "1px",
-                                    marginTop: "15px",
-                                    marginLeft: "5px"
-                                }} className=" text-right web-only">
-                                    <Close
-                                        onClick={this.toggleCropper}
-                                        className="blue-text click-item"
-                                        style={{ fontSize: 32 }}
-                                    />
-                                </div>
+            <>
+                <Modal
+                    className={"loop-popup"}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    show={this.state.showCropper}
+                    centered
+                    onHide={this.toggleCropper}
+                    animation={false}>
+                    <ModalBody>
+                        <div
+                            style={{
+                                position: "absolute",
+                                background: "white",
+                                zIndex: 1,
+                                borderRadius: "50%",
+                                padding: "1px",
+                                marginTop: "15px",
+                                marginLeft: "5px",
+                            }}
+                            className=" text-right web-only">
+                            <Close
+                                onClick={this.toggleCropper}
+                                className="blue-text click-item"
+                                style={{ fontSize: 32 }}
+                            />
+                        </div>
                         <div className="row no-gutters">
-
-                            <div style={{display: "flex",position:"relative"}} className="col-12 ">
-
-                            <ImageCropper files={this.state.files} setCropData={(data,name)=>this.setCropData(data,name)} />
-
+                            <div
+                                style={{ display: "flex", position: "relative" }}
+                                className="col-12 ">
+                                <ImageCropper
+                                    files={this.state.files}
+                                    setCropData={(data, name) => this.setCropData(data, name)}
+                                />
                             </div>
                         </div>
-                            </ModalBody>
-                        </Modal>
+                    </ModalBody>
+                </Modal>
 
-                        {this.state.submitSuccess && (
-                            <Alert key={"alert"} variant={"success"}>
-                                {"Company information updated successfully"}
-                            </Alert>
-                        )}
+                {this.state.submitSuccess && (
+                    <Alert key={"alert"} variant={"success"}>
+                        {"Company information updated successfully"}
+                    </Alert>
+                )}
 
-                        <div className="row no-gutters">
-
-
-                            <div style={{display: "flex",position:"relative"}} className="col-md-12   ">
-                                <div className={"img-box"}  style={{position:"relative"}}>
-                                {this.state.orgImage||this.state.file ? (
-                                    <img
-                                        className={"rad-8"}
-                                        // src={this.state.orgImage}
-                                        src={this.state.orgImage? this.state.orgImage:URL.createObjectURL(this.state.file.file)}
-                                        // src={this.state.orgImage? this.state.orgImage:this.state.croppedImageData}
-                                        // src={this.state.croppedImageData? this.state.croppedImageData:this.state.orgImage}
-                                        alt="logo"
-                                        style={{ maxHeight: "150px", objectFit:"contain" }}
-                                    />
-                                ) : <img
+                <div className="row no-gutters">
+                    <div style={{ display: "flex", position: "relative" }} className="col-md-12   ">
+                        <div className={"img-box"} style={{ position: "relative" }}>
+                            {this.state.orgImage || this.state.file ? (
+                                <img
+                                    className={"rad-8"}
+                                    // src={this.state.orgImage}
+                                    src={
+                                        this.state.orgImage
+                                            ? this.state.orgImage
+                                            : URL.createObjectURL(this.state.file.file)
+                                    }
+                                    // src={this.state.orgImage? this.state.orgImage:this.state.croppedImageData}
+                                    // src={this.state.croppedImageData? this.state.croppedImageData:this.state.orgImage}
+                                    alt="logo"
+                                    style={{ maxHeight: "150px", objectFit: "contain" }}
+                                />
+                            ) : (
+                                <img
                                     className={"rad-8"}
                                     src={PlaceholderImg}
                                     alt="logo"
-                                    style={{ maxHeight: "150px" , objectFit:"contain"}}
-                                />}
+                                    style={{ maxHeight: "150px", objectFit: "contain" }}
+                                />
+                            )}
 
-                                    <label
-                                        className={"edit-icon d-flex"}
-                                        htmlFor="fileInput-2">
+                            <label className={"edit-icon d-flex"} htmlFor="fileInput-2">
+                                <EditIcon
+                                    className={""}
+                                    style={{
+                                        fontSize: 22,
+                                        color: "#07ad88",
+                                        margin: "auto",
+                                    }}
+                                />
+                            </label>
+                            <input
+                                accept={MIME_TYPES_ACCEPT}
+                                style={{ display: "none" }}
+                                id="fileInput-2"
+                                className={""}
+                                type="file"
+                                onChange={this.handleChangeFile.bind(this)}
+                            />
+                        </div>
 
-                                        <EditIcon className={""} style={{
-                                            fontSize: 22,
-                                            color: "#07ad88",
-                                            margin: "auto",
-                                        }} />
-                                    </label>
-                                    <input
-                                        accept={MIME_TYPES_ACCEPT}
-                                        style={{ display: "none" }}
-                                        id="fileInput-2"
-                                        className={""}
-                                        type="file"
-                                        onChange={this.handleChangeFile.bind(
-                                            this
-                                        )}
-                                    />
-                                </div>
-
-
-                                <div className={"pl-3"}>
-                                       <div  className="row  d-flex align-items-center   ">
-
-                                           {this.state.orgs.length>1 &&      <>
-                                    <div  className="col-md-2   ">
-
-                                         Company:
-                                    </div>
-                                        <div  className="col-md-4   ">
-
-                                     <MenuDropdown
-
-                                            setSelection={this.switchOrg}
-
-                                            initialValue={this.props.userContext.orgId} options={this.state.orgs}/>
-
-                                    </div>
-                                            </>}
-                                           <div  className="col-md-6 d-flex text-right ">
-
-                                               <button style={{minWidth:"180px"}} onClick={this.addCompany} className="  btn-gray-border  ">
-                                                   <>
-                                                       <Add  style={{fontSize:"20px"}} />
-                                                       Add Company
-                                                   </>
-                                               </button>
-
-                                           </div>
-
-                                    </div>
-                                {this.state.org && this.state.org.company && (
+                        <div className={"pl-3"}>
+                            <div className="row  d-flex align-items-center   ">
+                                {this.state.orgs.length > 1 && (
                                     <>
-
-
-                                        <div className={"p-1"}>
-                                            <div className=" text-blue">
-                                                <span className="   text-blue mb-1 mr-1">Name:</span>
-                                                <span className={"text-gray-light"}>{this.state.org.company.company_name}</span>
-                                            </div>
-
-                                            <div>
-                                                <span className="   text-blue mb-1 mr-1">Company Number:</span>
-                                                <span className={"text-gray-light"}>{this.state.org.company.company_number}</span>
-                                            </div>
-
-
-                                            <div>
-                                                <span className="   text-blue mb-1 mr-1">Registered Address:</span>
-                                                <span className="mr-1 text-gray-light">{
-                                                    this.state.org.company.registered_office_address
-                                                        .address_line_1
-                                                },</span>
-                                                <span className={"text-gray-light"}>{
-                                                    this.state.org.company.registered_office_address
-                                                        .address_line_2
-                                                }</span>
-                                            </div>
-
-
-                                            <div>
-                                                <span className="   text-blue mb-1 mr-1">Locality:</span>
-                                                <span className="mr-1 text-gray-light">{
-                                                    this.state.org.company.registered_office_address
-                                                        .locality
-                                                },</span>
-                                                <span className={"text-gray-light"}>{
-                                                    this.state.org.company.registered_office_address
-                                                        .country
-                                                }</span>
-                                            </div>
+                                        <div className="col-md-2   ">Company:</div>
+                                        <div className="col-md-4   ">
+                                            <MenuDropdown
+                                                setSelection={this.switchOrg}
+                                                initialValue={this.props.userContext.orgId}
+                                                options={this.state.orgs}
+                                                option={"name"}
+                                                valueKey={"_key"}
+                                            />
                                         </div>
                                     </>
                                 )}
+                                <div className="col-md-6 d-flex text-right ">
+                                    <button
+                                        style={{ minWidth: "180px" }}
+                                        onClick={this.addCompany}
+                                        className="  btn-gray-border  ">
+                                        <Add style={{ fontSize: "20px" }} />
+                                        Join Company
+                                    </button>
                                 </div>
                             </div>
+                            {this.state.org && this.state.org.company && (
+                                <>
+                                    <div className={"p-1"}>
+                                        <div className=" text-blue">
+                                            <span className="   text-blue mb-1 mr-1">Name:</span>
+                                            <span className={"text-gray-light"}>
+                                                {this.state.org.company.company_name}
+                                            </span>
+                                        </div>
 
+                                        <div>
+                                            <span className="   text-blue mb-1 mr-1">
+                                                Company Number:
+                                            </span>
+                                            <span className={"text-gray-light"}>
+                                                {this.state.org.company.company_number}
+                                            </span>
+                                        </div>
 
+                                        <div>
+                                            <span className="   text-blue mb-1 mr-1">
+                                                Registered Address:
+                                            </span>
+                                            <span className="mr-1 text-gray-light">
+                                                {
+                                                    this.state.org.company.registered_office_address
+                                                        .address_line_1
+                                                }
+                                                ,
+                                            </span>
+                                            <span className={"text-gray-light"}>
+                                                {
+                                                    this.state.org.company.registered_office_address
+                                                        .address_line_2
+                                                }
+                                            </span>
+                                        </div>
 
+                                        <div>
+                                            <span className="   text-blue mb-1 mr-1">
+                                                Locality:
+                                            </span>
+                                            <span className="mr-1 text-gray-light">
+                                                {
+                                                    this.state.org.company.registered_office_address
+                                                        .locality
+                                                }
+                                                ,
+                                            </span>
+                                            <span className={"text-gray-light"}>
+                                                {
+                                                    this.state.org.company.registered_office_address
+                                                        .country
+                                                }
+                                            </span>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                         </div>
+                    </div>
+                </div>
 
-                        <div className={"row"}>
-                            <div className={"col-12 text-left"}>
-
+                <div className={"row"}>
+                    <div className={"col-12 text-left"}>
                         {this.state.org && (
                             <div className={"row"}>
-
                                 <div className={"col-12"}>
                                     <form onSubmit={this.handleSubmitSite}>
                                         <div className="row  justify-content-start ">
                                             <div className="col-6  mt-3">
-
                                                 <TextFieldWrapper
                                                     disabled={true}
                                                     initialValue={this.state.companyName}
-                                                    onChange={(value)=>this.handleChange(value,"companyName")}
+                                                    onChange={(value) =>
+                                                        this.handleChange(value, "companyName")
+                                                    }
                                                     error={this.state.errors["companyName"]}
-                                                    name="companyName" title="Company Name"
+                                                    name="companyName"
+                                                    title="Company Name"
                                                 />
-
-
                                             </div>
 
                                             <div className="col-6 mt-3">
-
                                                 <TextFieldWrapper
                                                     initialValue={this.state.description}
-                                                    onChange={(value)=>this.handleChange(value,"description")}
+                                                    onChange={(value) =>
+                                                        this.handleChange(value, "description")
+                                                    }
                                                     error={this.state.errors["description"]}
-                                                    name="description" title="Description" />
-
-
+                                                    name="description"
+                                                    title="Description"
+                                                />
                                             </div>
 
                                             <div className="col-6 mt-3">
-
-
                                                 <AutoCompleteComboBox
                                                     initialValue={this.state.industry}
                                                     name="industry"
-                                                    onChange={(value)=>this.handleChange(value,"industry")}
+                                                    onChange={(value) =>
+                                                        this.handleChange(value, "industry")
+                                                    }
                                                     options={this.state.industries}
                                                     title="Industry"
                                                 />
-
-
                                             </div>
                                             <div className="col-6 mt-3">
-
                                                 <AutoCompleteComboBox
                                                     initialValue={this.state.sector}
                                                     name="businessField"
-                                                    onChange={(value)=>this.handleChange(value,"businessField")}
+                                                    onChange={(value) =>
+                                                        this.handleChange(value, "businessField")
+                                                    }
                                                     options={this.state.businessFields}
                                                     title="Field of Business"
                                                 />
@@ -964,18 +905,17 @@ this.setState({
                                                 {/*    onChange={(value)=>this.handleChange(value,"businessField")}*/}
                                                 {/*    error={this.state.errors["businessField"]}*/}
                                                 {/*    name="businessField" title="Field of Business" />*/}
-
-
                                             </div>
                                             <div className="col-6 mt-3">
-
                                                 <TextFieldWrapper
                                                     initialValue={this.state.no_of_staff}
-                                                    onChange={(value)=>this.handleChange(value,"no_of_staff")}
+                                                    onChange={(value) =>
+                                                        this.handleChange(value, "no_of_staff")
+                                                    }
                                                     error={this.state.errors["no_of_staff"]}
-                                                    name="no_of_staff" title="No of staff" />
-
-
+                                                    name="no_of_staff"
+                                                    title="No of staff"
+                                                />
                                             </div>
                                         </div>
 
@@ -985,26 +925,19 @@ this.setState({
                                                     title={this.state.loading ? "Wait.." : "Update"}
                                                     type={"submit"}
                                                     loading={this.state.loading}
-
-                                                    fullWidth
-                                                >
-                                                </GreenButton>
-
-
+                                                    fullWidth></GreenButton>
                                             </div>
-                                            {this.props.showSkip &&<div className="col-8 justify-content-end mt-3 text-right">
-                                                <GreenBorderButton
-                                                    type={"button"}
-                                                    title={"Skip"}
-                                                    onClick={this.submitFirstLogin}
-
-                                                >
-                                                </GreenBorderButton>
-
-
-                                            </div>}
+                                            {this.props.showSkip && (
+                                                <div className="col-8 justify-content-end mt-3 text-right">
+                                                    <GreenBorderButton
+                                                        type={"button"}
+                                                        title={"Skip"}
+                                                        onClick={
+                                                            this.submitFirstLogin
+                                                        }></GreenBorderButton>
+                                                </div>
+                                            )}
                                         </div>
-
                                     </form>
                                 </div>
                             </div>
@@ -1015,7 +948,6 @@ this.setState({
                                 <div className="d-none row mb-5 pb-5">
                                     <div className="col-12 mt-3">
                                         <AutocompleteCustom
-
                                             companies={true}
                                             suggestions={this.state.orgNames}
                                             selectedCompany={(action) =>
@@ -1026,107 +958,80 @@ this.setState({
 
                                     <div className="col-12 mt-3">
                                         <GreenButton
-                                            title={this.state.loading ?"Wait.." : "Submit "}
+                                            title={this.state.loading ? "Wait.." : "Submit "}
                                             onClick={this.submitCompanyNumber}
-                                            loading={this.state.loading}
-
-                                        >
-                                        </GreenButton>
+                                            loading={this.state.loading}></GreenButton>
                                     </div>
                                     <div className="col-12 mt-3">
-                                    {this.state.errorCompany && (
-                                        <Alert key={"alert"} variant={"danger"}>
-                                            { this.state.errorCompany}
-                                        </Alert>
-                                    )}
+                                        {this.state.errorCompany && (
+                                            <Alert key={"alert"} variant={"danger"}>
+                                                {this.state.errorCompany}
+                                            </Alert>
+                                        )}
                                     </div>
                                 </div>
                             </>
                         )}
+                    </div>
+                </div>
+
+                <GlobalDialog
+                    size={"xs"}
+                    hide={this.addCompany}
+                    show={this.state.showAddCompany}
+                    heading={"Add Company"}>
+                    <>
+                        <div className="col-12 ">
+                            <div className="row no-gutters">
+                                <div className="col-12 ">
+                                    <AutocompleteCustom
+                                        hideAddNew
+                                        orgs={true}
+                                        // companies={true}
+                                        suggestions={this.state.orgNames}
+                                        selectedCompany={(action) =>
+                                            this.setState({
+                                                orgId: action.org,
+                                            })
+                                        }
+                                    />
+                                    {this.state.errorCompany && (
+                                        <span
+                                            style={{ color: "rgb(244, 67, 54)" }}
+                                            className="text-danger">
+                                            Required
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         </div>
-
-
-
-
-
-
-    <GlobalDialog size={"xs"} hide={this.addCompany} show={this.state.showAddCompany} heading={"Add Company"} >
-        <>
-
-                <div className="col-12 ">
-
-
-                    <div className="row no-gutters">
-                        <div
-                            className="col-12 ">
-
-                            <AutocompleteCustom
-                                hideAddNew
-                                orgs={true}
-                                // companies={true}
-                                suggestions={this.state.orgNames}
-                                selectedCompany={(action) =>
-
-                                    this.setState({
-                                        orgId:action.org
-                                    })
-                                }
-                            />
-                            {this.state.errorCompany &&
-                            <span style={{color: "rgb(244, 67, 54)"}} className="text-danger">Required</span>
-                            }
-
-
+                        <div className="col-12 ">
+                            <div className="row mt-4 no-gutters">
+                                <div
+                                    className={"col-6 pr-1"}
+                                    style={{
+                                        textAlign: "center",
+                                    }}>
+                                    <GreenButton
+                                        onClick={() => this.handleAddCompany()}
+                                        title={"Submit"}
+                                        type={"submit"}></GreenButton>
+                                </div>
+                                <div
+                                    className={"col-6 pl-1"}
+                                    style={{
+                                        textAlign: "center",
+                                    }}>
+                                    <BlueBorderButton
+                                        type="button"
+                                        title={"Cancel"}
+                                        onClick={() => this.addCompany()}></BlueBorderButton>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                </div>
-                <div className="col-12 ">
-
-                    <div className="row mt-4 no-gutters">
-                        <div  className={"col-6 pr-1"}
-                              style={{
-                                  textAlign: "center",
-                              }}>
-                            <GreenButton
-                                onClick={()=>
-                                    this
-                                        .handleAddCompany()
-                                }
-
-                                title={"Submit"}
-                                type={"submit"}>
-
-                            </GreenButton>
-                        </div>
-                        <div
-                            className={"col-6 pl-1"}
-                            style={{
-                                textAlign: "center",
-                            }}>
-                            <BlueBorderButton
-                                type="button"
-
-                                title={"Cancel"}
-
-                                onClick={()=>
-                                    this
-                                        .addCompany()
-                                }
-                            >
-
-                            </BlueBorderButton>
-                        </div>
-                    </div>
-                </div>
-        </>
-    </GlobalDialog>
-
-</>
-
-
-
+                    </>
+                </GlobalDialog>
+            </>
         );
     }
 }
@@ -1144,7 +1049,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
-
     };
 };
 

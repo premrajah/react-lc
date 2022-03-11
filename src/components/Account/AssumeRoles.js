@@ -24,6 +24,7 @@ import Add from "@mui/icons-material/Add";
 import CustomPopover from "../FormsUI/CustomPopover";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import {getKey, removeKey, saveKey, saveUserToken} from "../../LocalStorage/user-session";
+import AutocompleteCustom from "../AutocompleteCustom";
 
 class AssumeRoles extends Component {
     constructor(props) {
@@ -216,13 +217,18 @@ class AssumeRoles extends Component {
 
                     <div className="col-3 mt-4">
 
-                        <MenuDropdown heigt={"60px"} setSelection={(value) => this.setState({
+                        <MenuDropdown heigt={"60px"}
+                                      // initialValue={"Org Id"}
+                                      setSelection={(value) => this.setState({
                             roleBy: value
                         })} options={this.state.assumeRoles}
                         />
 
                     </div>
-                    <div className="col-4 mt-4">
+                    {(this.state.roleBy==="Email"||this.state.roleBy==="User Id")&&
+
+                        <>
+                    <div className="col-5    mt-4">
 
                         <TextFieldWrapper
                             onChange={(value) => this.handleChange(value, "value")}
@@ -231,7 +237,30 @@ class AssumeRoles extends Component {
 
                         />
 
+
+
                     </div>
+                    <div className="col-4    mt-4">
+                    </div>
+                    </>
+                    }
+                    {(this.state.roleBy==="Org Id") &&
+                    <div className="col-9    mt-4">
+
+                    <AutocompleteCustom
+                        hideAddNew
+                        orgs={true}
+                        suggestions={this.state.orgNames}
+                        selectedCompany={(action) => {
+                            let fields=this.state.fields
+                            fields.value=action.org
+                            this.setState({
+                                fields:fields
+                            })
+                        }}
+                    />
+                    </div>
+                    }
                     <div className="col-3 mt-4">
 
                         <BlueButton

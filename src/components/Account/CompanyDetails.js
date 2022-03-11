@@ -106,7 +106,7 @@ class CompanyDetails extends Component {
                 });
 
                 setTimeout(function () {
-                    window.location.href = "/";
+                    window.location.href = "/account";
                 }, 1000);
             })
             .catch((error) => {})

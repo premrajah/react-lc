@@ -139,6 +139,7 @@ const reducer = (state = initialState, action) => {
             break;
         case USER_CONTEXT:
             newState.userContext = action.value;
+            newState.userDetail=action.value;
             break;
         case TOGGLE_RIGHTBAR:
             newState.showRightBar = !state.showRightBar;

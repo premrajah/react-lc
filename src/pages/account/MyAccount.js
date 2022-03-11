@@ -119,7 +119,8 @@ function a11yProps(index) {
                                                 {props.userContext.perms.includes("OrgAdminWrite") &&<Tab key={5} label="Manage Users" value={5} />}
                                                 {props.userContext.perms.includes("OrgAdminWrite") &&    <Tab key={6} label="Manage Roles" value={(6)} />}
                                                 {props.userContext.perms.includes("AdminWrite") &&<Tab key={7} label="System Users" value={(7)} />}
-                                                {props.userContext.perms.includes("AdminWrite") &&<Tab key={8} label="Assume Users" value={8} />}
+                                                 {props.userContext.perms.includes("AdminWrite") &&
+                                                        (props.userContext.perms.includes("LcAssumeUserRole") || props.userContext.perms.includes("LcAssumeOrgRole")  )  &&<Tab key={8} label="Assume Users" value={8} />}
 
                                           }
 
@@ -156,9 +157,12 @@ function a11yProps(index) {
                                             <TabPanel value={value} index={8}>
                                                 <AssumeRoles/>
                                             </TabPanel>}
+
+
                                         </div>
                                     </div>}
 
+                                    
 
                             </div>
                         </div>

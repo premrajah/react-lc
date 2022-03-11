@@ -85,6 +85,28 @@
     border: 1px solid var(--lc-bg-gray);
 }
 
+.wysiwyg-toolbar{
+    background: var(--lc-bg-gray) !important;
+}
+
+.rdw-dropdown-wrapper,
+.rdw-inline-dropdown,
+.rdw-block-wrapper,
+.rdw-fontsize-wrapper,
+.rdw-fontfamily-wrapper,
+.rdw-link-wrapper,
+.rdw-colorpicker-wrapper,
+.rdw-option-wrapper,
+.rdw-emoji-wrapper,
+.rdw-remove-wrapper,
+.rdw-dropdown-wrapper,
+.rdw-history-dropdown
+{
+    height: 30px !important;
+    max-height: 30px !important;
+    min-width: 40px !important;
+}
+
 .text-pink-heading{
 
     color: var(--lc-pink);
@@ -4019,9 +4041,7 @@ input:active,input:focus{
     background: #e9f3ff!important;
 }
 
-.wysiwyg-toolbar{
-    background: #eeeeee!important;
-}
+
 
 .search-input{
     height: 45px;

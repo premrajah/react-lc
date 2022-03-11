@@ -216,7 +216,9 @@ class AssumeRoles extends Component {
 
                     <div className="col-3 mt-4">
 
-                        <MenuDropdown heigt={"60px"} setSelection={(value) => this.setState({
+                        <MenuDropdown heigt={"60px"}
+                                      // initialValue={"Org Id"}
+                                      setSelection={(value) => this.setState({
                             roleBy: value
                         })} options={this.state.assumeRoles}
                         />

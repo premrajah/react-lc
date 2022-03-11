@@ -19,6 +19,7 @@ import MenuDropdown from "../FormsUI/MenuDropdown";
 import Add from "@mui/icons-material/Add";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 
 class CompanyDetails extends Component {
     constructor(props) {
@@ -766,6 +767,8 @@ class CompanyDetails extends Component {
                                                 setSelection={this.switchOrg}
                                                 initialValue={this.props.userContext.orgId}
                                                 options={this.state.orgs}
+                                                option={"name"}
+                                                valueKey={"_key"}
                                             />
                                         </div>
                                     </>

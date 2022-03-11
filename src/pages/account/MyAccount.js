@@ -151,7 +151,9 @@ function a11yProps(index) {
                                             {props.userContext.perms.includes("AdminWrite") &&        <TabPanel value={value} index={7}>
                                                 <SystemManageUser/>
                                             </TabPanel>}
-                                            {props.userContext.perms.includes("AdminWrite") &&        <TabPanel value={value} index={8}>
+                                            {props.userContext.perms.includes("AdminWrite") &&
+                                            (props.userContext.perms.includes("LcAssumeUserRole") || props.userContext.perms.includes("LcAssumeOrgRole")  )  &&
+                                            <TabPanel value={value} index={8}>
                                                 <AssumeRoles/>
                                             </TabPanel>}
                                         </div>

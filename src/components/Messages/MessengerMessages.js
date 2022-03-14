@@ -357,16 +357,16 @@ class MessengerMessages extends Component {
                             className="row d-flex no-gutters">
                             <div className="col-md-10">
                                 <input
-                                    placeholder={"Filter conversations"}
+                                    placeholder="Filter conversations"
                                     onChange={this.filterGroups}
-                                    className={"search-input full-width-field m-3"}
+                                    className="search-input full-width-field m-3"
                                 />
                             </div>
                             <div className="col-md-2 text-center">
                                 <Tooltip title="New Message">
                                     <AddIcon
                                         onClick={() => this.handleOrgSearchButton()}
-                                        className={"text-blue  click-item"}
+                                        className="text-blue  click-item"
                                         style={{ fontSize: "24px" }}
                                     />
                                 </Tooltip>

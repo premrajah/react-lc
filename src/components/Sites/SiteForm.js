@@ -56,7 +56,8 @@ class SiteForm extends Component {
             latitude:null,
             longitude:null,
             phoneNumberInValid:false,
-            showMapSelection:false
+            showMapSelection:false,
+            showAddressField:false
 
         };
 
@@ -118,6 +119,14 @@ class SiteForm extends Component {
 
         });
     }
+    toggleAddressField = (show) => {
+
+        this.setState({
+            showAddressField: show,
+
+        });
+    }
+
 
     showSubmitSite = () => {
         this.setState({
@@ -146,6 +155,8 @@ class SiteForm extends Component {
    try {
 
     if (value && value.latitude && value.longitude && value.address) {
+
+        this.toggleAddressField(true)
 
         this.setState({
             searchAddress: value.address
@@ -247,9 +258,10 @@ class SiteForm extends Component {
                 address: data.get("address"),
                 contact: data.get("contact"),
                 others: data.get("other"),
-                phone: data.get("phone"),
+                phone:  data.get("phone").trim().length<=4?"":data.get("phone"),
                 is_head_office: this.state.isHeadOffice,
                 parent_id: data.get("parent"),
+                is_deletable:true,
 
             "geo_codes": [
             {
@@ -292,8 +304,6 @@ class SiteForm extends Component {
             .then((res) => {
 
 
-
-
                 if (!this.props.submitCallback) {
                     if (parentId) {
 
@@ -310,17 +320,29 @@ class SiteForm extends Component {
                     // for product form callback
                      this.props.submitCallback()
                 }
-
-                this.props.loadSites()
-                this.props.loadParentSites()
-                this.hidePopUp()
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
+
+                if (this.props.loadSites())
+                this.props.loadSites()
+
+                if (this.props.loadParentSites())
+                this.props.loadParentSites()
+
+
 
 
             })
             .catch((error) => {
                 this.setState({isSubmitButtonPressed: false})
-            });
+            })
+            .finally(()=>
+            {
+                this.hidePopUp()
+                this.props.refreshPage(true)
+
+            }
+
+        );
 
 
     };
@@ -421,10 +443,13 @@ class SiteForm extends Component {
             })
             .then((res) => {
 
+                if (this.props.loadSites())
                     this.props.loadSites()
 
                    if (currentSite)
                     this.props.loadCurrentSite(currentSite)
+
+                this.hidePopUp()
 
 
             })
@@ -464,6 +489,21 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 addExisting:false
             })
 
+            if (this.props.showSiteForm.type==="new") {
+                this.setState({
+                    createNew: !this.state.createNew,
+                    showMapSelection: true,
+                    showAddressField: false
+                })
+            }else{
+
+                this.setState({
+                    createNew: !this.state.createNew,
+                    showMapSelection: false,
+                    showAddressField: true
+                })
+            }
+
             if (this.props.showSiteForm.type==="link-product"){
 
                 // alert("load products")
@@ -484,11 +524,14 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         this.props.loadSites();
 
 
-
         if (this.props.showSiteForm.type==="new")
         this.setState({
-            createNew:!this.state.createNew
+            createNew:!this.state.createNew,
+            showMapSelection:true,
+            showAddressField:true
         })
+
+
 
 
        // else if (this.props.showSiteForm.type==="link-product"){
@@ -620,6 +663,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
             <>
 
 
+                {/*product site popup*/}
 
 
                 {this.props.removePopUp?
@@ -753,8 +797,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                         <div className="col-12">
                                             <TextFieldWrapper
-
-
                                                 initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
                                                 onChange={(value)=>this.handleChange(value,"address")}
                                                 error={this.state.errors["address"]}
@@ -763,26 +805,23 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                 name="address" title="Address"
 
                                             />
-                                            <span onClick={this.toggleMapSelection} className="forgot-password-link ">Search address</span>
+                                            {/*<span onClick={this.toggleMapSelection} className="forgot-password-link ">Search address</span>*/}
 
-                                            {this.state.showMapSelection && <SearchPlaceAutocomplete
+                                            {/*{this.state.showMapSelection && */}
+                                            <SearchPlaceAutocomplete
+                                                title="Address"
                                                 initialValue={this.props.showSiteForm.item}
                                                 onChange={(value)=>this.handleSearchAddress(value)}
                                                 error={this.state.errors["address"]}
-                                            />}
+                                            />
+
+                                            // }
 
 
 
                                         </div>
                                     </div>
-                                    <div className="row no-gutters ">
-                                        <div className="col-12">
 
-
-
-
-                                        </div>
-                                    </div>
                                     <div className="row no-gutters ">
 
                                     </div>
@@ -806,12 +845,18 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             </div>
 
 </>:
+
+
+
                     <Modal
                     // size="lg"
                     centered
                     show={this.props.showSiteForm.show}
                     onHide={this.hidePopUp}
                     className={"custom-modal-popup popup-form"}>
+
+                        {/*edit site popup*/}
+
                         <div className="row   justify-content-end">
                             <div className="col-auto mr-2 mt-2">
                                 <CloseButtonPopUp onClick={this.hidePopUp}>
@@ -970,18 +1015,20 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             <div className="row no-gutters ">
                                 <div className="col-12">
 
+
                                     <TextFieldWrapper
-
-
+                                        type={this.state.showAddressField?"text":"hidden"}
                                         initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
                                         onChange={(value)=>this.handleChange(value,"address")}
                                         error={this.state.errors["address"]}
                                         value={this.state.fields["address"]?this.state.fields["address"]:this.state.searchAddress?this.state.searchAddress:null}
 
-                                        name="address" title="Address"
+                                        name="address"
+                                        title={this.state.showAddressField?"Alternate name for address":"Address"}
 
                                     />
-                                    <span onClick={this.toggleMapSelection} className="forgot-password-link ">{this.state.showMapSelection?"Hide Search":"Search address on map"}</span>
+
+                                    {this.props.showSiteForm.item && <span onClick={this.toggleMapSelection} className="forgot-password-link ">{this.state.showMapSelection?"Hide Search":"Search address on map"}</span>}
 
                                     {this.state.showMapSelection &&
 
@@ -989,7 +1036,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         initialValue={this.props.showSiteForm.item}
                                         onChange={(value)=>this.handleSearchAddress(value)}
                                         error={this.state.errors["address"]}
-                                    />}
+                                    />
+                                    }
 
 
                                 </div>
@@ -1344,6 +1392,9 @@ const mapDispachToProps = (dispatch) => {
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
         loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
         loadParentSites: (data) => dispatch(actionCreator.loadParentSites(data)),
+
+        refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+
 
 
     };

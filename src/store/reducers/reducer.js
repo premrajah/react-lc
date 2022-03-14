@@ -52,7 +52,7 @@ import {
     SITE_FORM_SHOW,
     SHOW_MULTIPLE_POP_UP,
     PRODUCT_PAGE_RESET,
-    PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR, TOGGLE_GLOBAL_DIALOG, ORG_CACHE, USER_CONTEXT
+    PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR, TOGGLE_GLOBAL_DIALOG, ORG_CACHE, USER_CONTEXT, REFRESH_PAGE
 } from "../types";
 
 export const initialState = {
@@ -89,6 +89,7 @@ export const initialState = {
     showSitePopUp: false,
     orgImage: null,
     messages: [],
+    refresh:false,
     notifications: [],
     messageAlert: false,
     notificationAlert: false,
@@ -141,6 +142,10 @@ const reducer = (state = initialState, action) => {
             newState.userContext = action.value;
             newState.userDetail=action.value;
             break;
+        case REFRESH_PAGE:
+            newState.refresh = action.value;
+            break;
+
         case TOGGLE_RIGHTBAR:
             newState.showRightBar = !state.showRightBar;
             break;

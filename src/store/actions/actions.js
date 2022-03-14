@@ -54,7 +54,8 @@ import {
     TOGGLE_RIGHTBAR,
     TOGGLE_GLOBAL_DIALOG,
     USER_CONTEXT,
-    ORG_CACHE
+    ORG_CACHE,
+    REFRESH_PAGE
 } from "../types";
 import {load} from "dotenv";
 
@@ -87,6 +88,16 @@ export const toggleRightBar = () => {
 export const toggleGlobalDialog = () => {
     return {
         type: TOGGLE_GLOBAL_DIALOG,
+    };
+};
+
+
+
+export const refreshPage = (data) => {
+
+    return {
+        type: REFRESH_PAGE,
+        value: data,
     };
 };
 
@@ -341,6 +352,9 @@ export const loadCurrentSiteSync = (data) => (dispatch) => {
                 // this.setState({
                 //     notFound: true,
                 // });
+
+                dispatch({ type: CURRENT_SITE, value: null });
+
             }
         );
 

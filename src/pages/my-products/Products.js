@@ -137,6 +137,34 @@ class Products extends Component {
 
     }
 
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+
+        if (prevProps!==this.props) {
+
+            if (this.props.refresh){
+
+                this.props.refreshPage(false)
+
+                this.setState({
+                    items:[],
+                    currentOffset:0,
+                })
+
+
+                if (this.state.currentOffset==0){
+
+                    this.loadProductsWithoutParentPageWise();
+                }
+
+
+            }
+        }
+
+    }
+
+
     loadProductsWithoutParentPageWise= async (data) => {
 
 
@@ -390,6 +418,8 @@ class Products extends Component {
 
     }
 
+
+
     render() {
         const classesBottom = withStyles();
         const headers = ["Name", "Description", "Category", "Condition", "Purpose", "Units", "Volume", "Site Name", "Site Address", "Service Agent", "QRCode Name", "QRCode Link"];
@@ -612,6 +642,8 @@ const mapStateToProps = (state) => {
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset:state.productPageOffset,
         pageSize:state.pageSize,
+        refresh:state.refresh
+
     };
 };
 
@@ -634,6 +666,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+        refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

@@ -6,7 +6,10 @@ const MessageNameThumbnail = ({ item, allOrgs, index }) => {
     return (
         <React.Fragment>
             {index < 3 && (
-                <Tooltip title={item && item.name}>
+                <Tooltip title={<React.Fragment>
+                    <div>{item.name && item.name}</div>
+                    <div>{item.email && item.email}</div>
+                </React.Fragment>}>
                     <span
                         style={{color: randomColorGen()}}
                         className={`text-caps company-thumbnails ${

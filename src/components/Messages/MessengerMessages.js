@@ -376,7 +376,7 @@ class MessengerMessages extends Component {
                         {this.state.allMessageGroups.length === 0 && (
                             <div className={"text-center"}>No chats active. </div>
                         )}
-                        <div className="message-groups  text-capitalize" style={{}}>
+                        <div className="message-groups  text-capitalize">
                             {this.state.filteredMessageGroups.length > 0 ? (
                                 <div className={"message-item-c"}>
                                     {this.state.showHideOrgSearch && (

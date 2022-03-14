@@ -320,7 +320,6 @@ class SiteForm extends Component {
                     // for product form callback
                      this.props.submitCallback()
                 }
-                this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
 
                 if (this.props.loadSites())
                 this.props.loadSites()
@@ -339,6 +338,7 @@ class SiteForm extends Component {
             {
                 this.hidePopUp()
                 this.props.refreshPage(true)
+                this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
 
             }
 
@@ -349,9 +349,11 @@ class SiteForm extends Component {
 
 
     updateSite = (event) => {
+        event.preventDefault();
+
         let item=this.props.showSiteForm.item
 
-        event.preventDefault();
+
         if (!this.handleValidation()) {
 
             return
@@ -401,6 +403,9 @@ class SiteForm extends Component {
                 ]
             }
         };
+
+
+
         axios.post(`${baseUrl}site`,formData)
             .then(res => {
                 if (res.status === 200) {
@@ -425,13 +430,20 @@ class SiteForm extends Component {
             })
             .catch(error => {
 
-            })
+            }) .finally(()=>
+        {
+            this.hidePopUp()
+            this.props.refreshPage(true)
+            this.props.showSnackbar({show: true, severity: "success", message: "Site updated successfully. Thanks"})
+
+        });
     }
 
 
     promisesCall = []
 
     updateParentSite = (parent, site,currentSite,removeParent) => {
+
 
 
         if (!removeParent&&parent&&site){
@@ -497,6 +509,15 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 })
             }else{
 
+                try {
+                    this.setState({
+                        latitude: this.props.showSiteForm.item.geo_codes[0].address_info.geometry.location.lat,
+                        longitude: this.props.showSiteForm.item.geo_codes[0].address_info.geometry.location.lng,
+                    })
+                }catch (error){
+
+
+                }
                 this.setState({
                     createNew: !this.state.createNew,
                     showMapSelection: false,
@@ -524,12 +545,13 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         this.props.loadSites();
 
 
-        if (this.props.showSiteForm.type==="new")
-        this.setState({
-            createNew:!this.state.createNew,
-            showMapSelection:true,
-            showAddressField:true
-        })
+        if (this.props.showSiteForm.type==="new") {
+            this.setState({
+                createNew: !this.state.createNew,
+                showMapSelection: true,
+                showAddressField: true
+            })
+        }
 
 
 
@@ -1392,6 +1414,7 @@ const mapDispachToProps = (dispatch) => {
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
         loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
         loadParentSites: (data) => dispatch(actionCreator.loadParentSites(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
 
         refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
 

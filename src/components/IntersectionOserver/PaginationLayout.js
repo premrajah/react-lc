@@ -16,6 +16,11 @@ class PaginationLayout extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps != this.props) {
+
+            if (this.props.refresh){
+
+            }
+
         }
     }
     componentDidMount() {

@@ -82,7 +82,7 @@ const SearchPlaceAutocomplete = (props) => {
 
 
                  <div className={"text-gray-light  mb-0 ellipsis-end"}>
-                    Search for your location by typing name or postal code.
+                    Search for your location by name or postal code.<br/> (Min of 4 characters required.)
                 </div>
                 <LocationSearchAutocomplete setLocation={handleChange} />
 

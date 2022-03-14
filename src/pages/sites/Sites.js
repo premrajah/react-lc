@@ -61,6 +61,32 @@ class Sites extends Component {
         this.getTotalCount()
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+
+        if (prevProps!==this.props) {
+
+            if (this.props.refresh){
+
+                this.props.refreshPage(false)
+
+                this.setState({
+                    items:[],
+                    currentOffset:0,
+                })
+
+
+                if (this.state.currentOffset==0){
+                    this.getTotalCount()
+
+                    this.loadProductsWithoutParentPageWise();
+                }
+
+
+            }
+        }
+
+        }
 
 
     getTotalCount=()=>{
@@ -262,7 +288,9 @@ const mapStateToProps = (state) => {
         productPageSize:state.productPageSize,
         siteList: state.siteList,
         siteParentList: state.siteParentList,
-        lastPageReached:state.lastPageReached
+        lastPageReached:state.lastPageReached,
+        refresh:state.refresh
+
     };
 };
 
@@ -284,6 +312,8 @@ const mapDispatchToProps = (dispatch) => {
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
         loadParentSites: (data) => dispatch(actionCreator.loadParentSites(data)),
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
+        refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Sites);

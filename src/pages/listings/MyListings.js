@@ -26,6 +26,7 @@ class MyListings extends Component {
             items: [],
             searchValue: '',
             filterValue: '',
+
         };
 
         this.getItems = this.getItems.bind(this);
@@ -41,6 +42,11 @@ class MyListings extends Component {
     }
 
     getItems() {
+
+
+        let url="seek?name=Listing&relation=belongs_to&count=true&offset=0&size=20&or=name~Hi&or=description~Hi&find-also-to=Product:listing_of:description~AA&find-also-to=Product:listing_of:name~Nestle%20Coffee%20Mate%20Packaging"
+
+
         this.props.showLoading(true);
         axios
             .get(`${baseUrl}listing`)

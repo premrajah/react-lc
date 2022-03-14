@@ -14,7 +14,7 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {capitalize} from "../../Util/GlobalFunctions";
+import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import SiteForm from "../Sites/SiteForm";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
@@ -517,6 +517,8 @@ class ProductForm extends Component {
                             });
                         }
 
+                        this.props.refreshPage(true)
+
                         this.props.showSnackbar({show:true,severity:"success",message:title+" created successfully. Thanks"})
 
                         this.showProductSelection();
@@ -528,6 +530,9 @@ class ProductForm extends Component {
                     })
                     .catch((error) => {
                         this.setState({isSubmitButtonPressed: false})
+                        this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
+
+
                     });
             }
 
@@ -1341,6 +1346,8 @@ const mapDispachToProps = (dispatch) => {
         loadProductsWithoutParentPagination: (data) =>
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+        refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductForm);

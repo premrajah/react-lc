@@ -594,6 +594,8 @@ const UploadMultiSiteOrProduct = (props) => {
 
             let listItem = list[k]
 
+
+
             let payload = {
                 "match_strategy": match_strategy,
                 "merge_strategy": merge_strategy,
@@ -606,14 +608,19 @@ const UploadMultiSiteOrProduct = (props) => {
                     "phone": listItem.phone,
                     "email": listItem.email,
                     "others": listItem.others,
-                    "is_head_office": Boolean(listItem.is_head_office),
+                    "is_head_office": listItem.is_head_office.toLowerCase()==="true"?true:false,
 
                 }
             }
 
             try {
 
-                const result = await axios.post(`${baseUrl}load/site`, payload);
+
+                console.log(payload)
+
+                
+
+                // const result = await axios.post(`${baseUrl}load/site`, payload);
 
 
             }

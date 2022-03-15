@@ -16,7 +16,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
-import BlueButton from "../FormsUI/Buttons/BlueButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 let productProperties=[
@@ -54,11 +53,7 @@ let siteProperties=[
 ]
 
 
-// const getField=(field,required)=>{
-//
-//     return ({"field":field,required:required})
-//
-// }
+
 
 const UploadMultiSiteOrProduct = (props) => {
 
@@ -120,15 +115,6 @@ const UploadMultiSiteOrProduct = (props) => {
     }
 
     const [progress, setProgress] = useState(0);
-
-    // React.useEffect(() => {
-    //     const timer = setInterval(() => {
-    //         setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-    //     }, 800);
-    //     return () => {
-    //         clearInterval(timer);
-    //     };
-    // }, []);
 
 
     const handleValidation=()=> {
@@ -330,12 +316,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
             }
         }
-        // prepare columns list from headers
-
-
-
-        // setData(list);
-        // setColumns(columns);
+     
     }
 
 
@@ -379,7 +360,6 @@ const UploadMultiSiteOrProduct = (props) => {
                 postArtifact(data, artifact, match_strategy, merge_strategy, siteId);
             })
             .catch(error => {
-                console.log('Convert as bytes error ', error.message);
                 setIsDisabled(false);
             });
 
@@ -458,7 +438,6 @@ const UploadMultiSiteOrProduct = (props) => {
 
             })
             .catch(error => {
-                console.log('artifact upload error ', error.message)
                 setUploadArtifactError(<span className="text-warning"><b>Unable to upload at this time, (try different Match or Merge Strategy) or please try again later</b></span>);
                 setIsDisabled(false);
             })
@@ -500,7 +479,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     "upc": listItem.upc,
                     "part_no": listItem.part_no,
                     "line": listItem.line,
-                    "is_listable": Boolean(listItem.is_listable.toLowerCase())
+                    "is_listable": listItem.is_listable.toLowerCase()==="true"?true:false,
                 }
             }
 
@@ -545,20 +524,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
 
             }
-            // const {data}=await  result
 
-            // const getData = async () => {
-            //     await axios.post(`${baseUrl}load/product`,payload)
-            //         .then(res => {
-            //             console.log(res)
-            //
-            //
-            //         })
-            //         .catch(err => {
-            //             console.log(err)
-            //         });
-            // }
-            // getData()
 
             newProgress= newProgress + parseInt(100/list.length)
             setProgress(newProgress )
@@ -615,13 +581,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
             try {
 
-
-                console.log(payload)
-
-                
-
-                // const result = await axios.post(`${baseUrl}load/site`, payload);
-
+                const result = await axios.post(`${baseUrl}load/site`, payload);
 
             }
             catch(e){
@@ -634,7 +594,6 @@ const UploadMultiSiteOrProduct = (props) => {
                     })
                 }else{
 
-                    // alert(e.response.status)
                     if (e.response.status===400) {
 
                         uploadError.push(<div className="d-flex flex-column">
@@ -650,8 +609,7 @@ const UploadMultiSiteOrProduct = (props) => {
                 }
 
 
-                // uploadError=e.response.data.errors.forEach(item => `${item.message}, `)
-                // console.log(e.response.data.errors[0])
+
                 errorsFound.upload = {
                     error: true,
                     message: uploadError
@@ -709,7 +667,7 @@ const UploadMultiSiteOrProduct = (props) => {
             })
             .catch(error => {
                 // alert(" errror found")
-                console.log("multi site upload error ", error.message);
+                // console.log("multi site upload error ", error.message);
                 setUploadSitesError(<span className="text-warning"><b>Unable to upload at this time, (try different Match or Merge Strategy) or please try again later</b></span>);
                 setIsDisabled(false)
             })

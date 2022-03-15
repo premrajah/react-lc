@@ -11,7 +11,6 @@ const MessageNameThumbnail = ({ item, allOrgs, index }) => {
                     <div>{item.email && item.email}</div>
                 </React.Fragment>}>
                     <span
-                        style={{color: randomColorGen()}}
                         className={`text-caps company-thumbnails ${
                             index > 0 && "thumbnail-margin-left"
                         } `}>

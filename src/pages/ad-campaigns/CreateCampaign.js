@@ -238,13 +238,23 @@ class CreateCampaign extends Component {
         })
 
 
-        this.callStrategy()
+            if (this.timeout) clearTimeout(this.timeout);
+
+            this.timeout = setTimeout(() => {
+                this.callStrategy()
+            }, 1000);
+
+
 
         // dispatch({ type: "PRODUCT_LIST", value: [] })
     };
 
 
     callStrategy=()=>{
+
+
+
+
 
 
         axios
@@ -1128,7 +1138,7 @@ class CreateCampaign extends Component {
                                                                     }
                                                                     onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}
                                                                     name={`valueAnd[${index}]`}
-                                                                    value={((this.state.fields[`operatorAnd[${index}]`]==="equals"&&this.state.fields[`propertyAnd[${index}]`]==="brand")?this.props.userDetail.orgId:null)}
+                                                                    // value={((this.state.fields[`operatorAnd[${index}]`]==="equals"&&this.state.fields[`propertyAnd[${index}]`]==="brand")?this.props.userDetail.orgId:null)}
 
                                                                 />
                                                             </div>

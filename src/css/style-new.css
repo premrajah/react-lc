@@ -2698,6 +2698,14 @@ button.blue-btn-border
     padding: 18.5px 14px!important;
 }
 
+.bottom-editor{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    right: 0;
+
+}
 
 .text-blue {
     color: #27245c;
@@ -4097,7 +4105,15 @@ input:active,input:focus{
 .add-top-button{
     position: absolute;top: 0;right: 0;
 }
+.bg-transparent{
+    background: transparent;
+    border: none;
+}
+.send-bottom-button{
 
+    position: absolute;bottom: 5px;right: 5px;
+    z-index: 1;
+}
 .icon-title{
 
     font-weight: 600;

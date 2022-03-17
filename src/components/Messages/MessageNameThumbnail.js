@@ -1,26 +1,24 @@
 import React from "react";
 import {Tooltip} from "@mui/material";
 import {randomColorGen} from "../../Util/Constants";
+import CustomPopover from "../FormsUI/CustomPopover";
 
-const MessageNameThumbnail = ({ item, allOrgs, index }) => {
+const MessageNameThumbnail = ({ item, allOrgs, index ,showCount}) => {
     return (
         <React.Fragment>
-            {index < 3 && (
-                <Tooltip title={<React.Fragment>
-                    <div>{item.name && item.name}</div>
-                    <div>{item.email && item.email}</div>
-                </React.Fragment>}>
+            {(index < showCount) && (
+                <CustomPopover  text={item.name}>
                     <span
                         className={`text-caps company-thumbnails ${
                             index > 0 && "thumbnail-margin-left"
                         } `}>
                         {item.name && item.name.substr(0, 2)}
                     </span>
-                </Tooltip>
+                </CustomPopover>
             )}
 
-            {index === 3 && allOrgs.length - 3 !== 0 && (
-                <span className="more-items-thumbnail">+{allOrgs.length - 3}</span>
+            {index === showCount && allOrgs.length - showCount !== 0 && (
+                <span className="more-items-thumbnail">+{allOrgs.length - showCount}</span>
             )}
         </React.Fragment>
     );

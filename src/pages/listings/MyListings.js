@@ -258,7 +258,11 @@ class MyListings extends Component {
                                         history={this.props.history}
                                         link={"/" + item.Listing._key}
                                         item={{listing:item.Listing}}
-                                     MySe
+                                        product={item.ListingToProduct[0]?item.ListingToProduct[0].entries[0]
+                                            ?item.ListingToProduct[0].entries[0].Product:null:null}
+
+                                        org={item.ListingToOrg[0]?item.ListingToOrg[0].entries[0]
+                                            ?item.ListingToOrg[0].entries[0].Org:null:null}
                                         // org={item.Org}
                                         key={index}
                                     />

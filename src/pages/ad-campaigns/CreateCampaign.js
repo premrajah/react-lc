@@ -173,27 +173,27 @@ class CreateCampaign extends Component {
 
 
     }
-    componentDidMount() {
+    async componentDidMount() {
 
         this.setState({
             conditionAll: [],
             conditionAny: [],
-            addCountAll:[],
-            addCountAny:[],
-            countAll:0,
-            countAny:0,
+            addCountAll: [],
+            addCountAny: [],
+            countAll: 0,
+            countAny: 0,
         })
 
 
-        if (this.props.item){
+        if (this.props.item) {
 
-            this.loadSavedValues()
+            await this.loadSavedValues()
             this.callStrategy()
 
             this.loadImages()
             this.setState({
-                startDate:this.props.item.campaign.start_ts,
-                endDate:this.props.item.campaign.end_ts
+                startDate: this.props.item.campaign.start_ts,
+                endDate: this.props.item.campaign.end_ts
             })
         }
     }

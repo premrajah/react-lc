@@ -93,7 +93,6 @@ class MyCampaigns extends Component {
     componentDidMount() {
 
 
-
         this.loadCampaigns()
 
     }
@@ -360,16 +359,28 @@ this.props.toggleRightBar()
 
                 <div className="wrapper">
 
-                    <RightSidebar  toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
+                    <RightSidebar heading={this.state.campaignMode ==1?"Create Campaign":this.state.campaignMode ==2?"Campaign Details":"Edit Campaign"} toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
 
                         {this.state.campaignMode ==1 && <CreateCampaign  refreshData={
 
-                            ()=> {this.loadCampaigns()
+                            ()=> {
+                                this.toggleRightBar()
+                                this.loadCampaigns()
                                 this.setState({
                                     campaignMode:0
                                 });
                             }} />}
-                        {this.state.campaignMode ==3 &&  this.state.editItem&& <CreateCampaign item={this.state.editItem} refreshData={()=> this.loadCampaigns()} />}
+                        {this.state.campaignMode ==3 &&  this.state.editItem&& <CreateCampaign item={this.state.editItem}
+                                                                                               refreshData={
+
+                                                                                                   ()=> {
+                                                                                                       this.toggleRightBar()
+                                                                                                       this.loadCampaigns()
+                                                                                                       this.setState({
+                                                                                                           campaignMode:0
+                                                                                                       });
+                                                                                                   }}
+                        />}
 
                         {this.state.campaignMode ==2 && this.state.editItem && <CampaignDetailContent toggleEditMode={this.toggleEditMode} item={this.state.editItem} />}
 

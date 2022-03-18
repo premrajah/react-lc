@@ -504,7 +504,7 @@ class CreateCampaign extends Component {
                     // }
 
                     // this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
-                    this.props.toggleRightBar()
+                    // this.props.toggleRightBar()
 
 
                 })
@@ -911,11 +911,11 @@ class CreateCampaign extends Component {
 
 
                     <div className="container  mb-150  pb-5 pt-4">
-                        <PageHeader
-                            pageIcon={CubeBlue}
-                            pageTitle={this.props.item?"Edit Campaign":"Create an Ad Campaign"}
-                            // subTitle="Define campaign parameters here"
-                        />
+                        {/*<PageHeader*/}
+                        {/*    pageIcon={CubeBlue}*/}
+                        {/*    pageTitle={this.props.item?"Edit Campaign":"Create an Ad Campaign"}*/}
+                        {/*    // subTitle="Define campaign parameters here"*/}
+                        {/*/>*/}
 
                         <div className={classes.root}>
                             <Stepper className={"mb-4 p-0"} style={{background:"transparent"}} activeStep={this.state.activeStep}>

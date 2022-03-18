@@ -174,8 +174,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
                         <LoggedInRoute exact path="/list-form" component={ListFormNew} />
                         <LoggedInRoute exact path="/my-campaigns" component={MyCampaigns} />
-                        <LoggedInRoute exact path="/campaign/:slug" component={CampaignDetailContent} />
-                        <LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />
+                        {/*<LoggedInRoute exact path="/campaign/:slug" component={CampaignDetailContent} />*/}
+                        {/*<LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />*/}
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedOutRoute exact path="/sign-up" component={SignUpPage} />

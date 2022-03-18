@@ -16,6 +16,7 @@ import MessageGroupSingleArtifactDialog from "./MessageGroupSingleArtifactDialog
 import MessageGroupItem from "./MessageGroupItem";
 import MessageNameThumbnail from "./MessageNameThumbnail";
 import CustomPopover from "../FormsUI/CustomPopover";
+import {fetchErrorMessage, sortArraysByKey} from "../../Util/GlobalFunctions";
 
 class MessengerMessages extends Component {
     constructor(props) {
@@ -53,7 +54,10 @@ class MessengerMessages extends Component {
 
     }
 
-    getAllMessageGroups = () => {
+    getAllMessageGroups = async () => {
+
+
+
         axios
             .get(`${baseUrl}message-group`)
             .then((response) => {
@@ -64,44 +68,53 @@ class MessengerMessages extends Component {
 
 
 
-                this.setState({
-                    allMessageGroups: data,
-                    filteredMessageGroups: data,
-                });
+                // this.setState({
+                //     allMessageGroups: data,
+                //     filteredMessageGroups: data,
+                // });
+                //
+                // for (let i=0;i<data.length;i++){
+                //
+                //     this.getOrgsForGroup(data[i]._key,i)
+                // }
 
-                for (let i=0;i<data.length;i++){
+                // return
 
-                    this.getOrgsForGroup(data[i]._key,i)
-                }
 
-                return
-                data.map((d) => {
+                data.map((d,index) => {
+                    console.log(index)
                     axios
                         .get(
-                            encodeURI(
-                                `${baseUrl}seek/to?name=MessageGroup&id=${d._key}
-                                &to=Message&relation=&count=true&filters=type:message`
+                            (
+                                `${baseUrl}seek/to?name=MessageGroup&id=${d._key}&to=Message&relation=&count=true&filters=type:message`
                             )
                         )
                         .then((res) => {
                             const rData = res.data.data;
 
-                            if (rData > 0) {
-                                returnedData.push(d);
-                            }
-                        })
-                        .then(() => {
+                            if (rData > 0){
+                                let group=d
+
+                                group.index=index
+
+
+                            // let sortedData= sortArraysByKey(returnedData.push(group),"index");
+                            //     let sortedData=
+                                    returnedData.push(group);
+
+                                let sortedData=sortArraysByKey(returnedData,"index")
+                                    console.log(sortedData)
 
                             this.setState({
-                                allMessageGroups: returnedData,
-                                filteredMessageGroups: returnedData,
-                            });
+                                    allMessageGroups: sortedData,
+                                    filteredMessageGroups: sortedData,
+                                });
 
 
+                                this.getOrgsForGroup(d._key,index)
 
-                            console.log("in group mesage count")
+                            }
 
-                            // this.getGroupMessageWithId
                         })
                         .catch((error) => {
                             this.props.showSnackbar({
@@ -113,15 +126,17 @@ class MessengerMessages extends Component {
                 });
 
 
-                // this.setState({
-                //     allMessageGroups: data,
-                //     filteredMessageGroups: data,
-                // });
 
-                for (let i=0;i<returnedData.length;i++){
 
-                    this.getOrgsForGroup(returnedData[i]._key,i)
-                }
+                console.log("group len ",returnedData.length)
+
+
+
+                // for (let i=0;i<returnedData.length;i++){
+                //     console.log("org messa: ",i)
+                //
+                //     this.getOrgsForGroup(returnedData[i]._key,i)
+                // }
 
 
 
@@ -299,23 +314,25 @@ class MessengerMessages extends Component {
 
     };
 
-    handleGroupClick = (group, selectedIndex) => {
+    handleGroupClick = (groupdId, orgs, selectedIndex) => {
         this.updateSelected(selectedIndex);
 
-        if (group) {
+        if (groupdId) {
+
             this.setState({
-                selectedGroupId: group._id,
-                selectedGroupKey: group._key,
+                selectedGroupId: groupdId,
+                selectedGroupKey: groupdId,
                 showHideOrgSearch: false,
                 showHideGroupFilter: false,
                 selectedMsgGroup: [],
             });
-            this.getGroupMessageWithId(group._key);
+            this.getGroupMessageWithId(groupdId);
 
             this.setState({
-                selectedOrgs: group.group?group.group:[],
+                selectedOrgs: orgs,
             });
         } else {
+
             this.getGroupMessageWithId(null);
             this.setState({
                 selectedOrgs: [],
@@ -336,7 +353,7 @@ class MessengerMessages extends Component {
             showHideOrgSearch: !this.state.showHideOrgSearch,
         });
 
-        this.handleGroupClick(null, -1, []);
+        this.handleGroupClick(null, [],-1);
     };
 
     updateSelected = (selectedIndex) => {
@@ -384,17 +401,17 @@ class MessengerMessages extends Component {
                         text: text,
                     },
                     to_org_ids: [],
-                    message_group_id: messageGroupId,
+                    message_group_id: messageGroupId._key,
                 };
                 break;
             default:
                 return;
         }
 
-        this.postMessage(payload, messageType);
+        this.postMessage(payload, messageType,messageGroupId._key);
     };
 
-    postMessage = (payload, messageType) => {
+    postMessage = (payload, messageType,messageGroupId) => {
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
@@ -410,7 +427,10 @@ class MessengerMessages extends Component {
                         this.getAllMessageGroups();
 
                     } else {
-                        this.handleGroupClick(data.message_group, this.state.selectedItem);
+
+                        this.handleGroupClick(messageGroupId,this.state.selectedOrgs, this.state.selectedItem);
+
+
                     }
 
                     this.resetDraftRef.current.resetDraft(); // clear draftjs text field
@@ -514,7 +534,7 @@ class MessengerMessages extends Component {
                                                 selectedItem={this.state.selectedItem}
                                                 index={i}
                                                 handleGroupClick={(group, i, orgs) =>
-                                                    this.handleGroupClick(group, i, orgs)
+                                                    this.handleGroupClick(group._key,orgs, i, )
                                                 }
                                                 item={group}
                                             />

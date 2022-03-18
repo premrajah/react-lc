@@ -23,6 +23,10 @@ class PaginationLayout extends Component {
 
         }
     }
+
+
+    searchValue= ""
+    filterValue= ""
     componentDidMount() {
         this.loadNewPageSetUp();
     }
@@ -64,8 +68,8 @@ class PaginationLayout extends Component {
 
     loadMore = (reset) => {
         this.props.loadMore({
-            searchValue: this.state.searchValue,
-            searchFilter: this.state.filterValue,
+            searchValue: this.searchValue,
+            searchFilter: this.filterValue,
             reset: reset,
         });
     };
@@ -81,19 +85,19 @@ class PaginationLayout extends Component {
         searchValue = searchValue.trim();
 
         this.searchValue = searchValue;
-        this.setState({ searchValue: searchValue });
+        // this.setState({ searchValue: searchValue });
 
-        if (this.state.searchValue) {
+        this.searchValue=searchValue
             this.timeoutSearch();
-        }
+
     };
 
     handleSearchFilter = (filterValue) => {
         this.filterValue = filterValue;
 
-        this.setState({ filterValue: filterValue });
 
-        if (this.state.searchValue) {
+
+        if (this.searchValue) {
             this.loadMore(true);
         }
     };
@@ -119,7 +123,7 @@ class PaginationLayout extends Component {
                     <div className="row  justify-content-center filter-row  pb-3">
                         <div className="col">
                             <p className="text-gray-light ml-2 ">
-                                Showing {this.props.visibleCount} of {this.props.count} Products
+                                Showing {this.props.visibleCount} of {this.props.count}
                             </p>
                         </div>
                     </div>

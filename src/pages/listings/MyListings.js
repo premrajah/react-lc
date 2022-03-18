@@ -1,186 +1,288 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
+import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
-import {makeStyles} from "@mui/styles";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchGray from "@mui/icons-material/Search";
-import {baseUrl, LISTING_FILTER_VALUES} from "../../Util/Constants";
-import axios from "axios/index";
-import ResourceItem from "../create-search/ResourceItem";
 import {withStyles} from "@mui/styles/index";
-import ProductBlue from "../../img/icons/product-128.svg";
 import PageHeader from "../../components/PageHeader";
-import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
+import {baseUrl, LISTING_FILTER_VALUES} from "../../Util/Constants";
 import Layout from "../../components/Layout/Layout";
-import SearchBar from "../../components/SearchBar";
+import axios from "axios";
+import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
+import {seekAxiosGet} from "../../Util/GlobalFunctions";
+import ResourceItem from "../create-search/ResourceItem";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 class MyListings extends Component {
+
     constructor(props) {
         super(props);
-
         this.state = {
-            timerEnd: false,
-            count: 0,
-            nextIntervalFlag: false,
-            items: [],
-            searchValue: '',
-            filterValue: '',
 
-        };
+            selectedProducts: [],
+            showMultiUpload: false,
+            isIntersecting:false,
+            intersectionRatio:0,
+            mapData:[],
+            showMap:false,
+            showDownloadQrCodes:false,
+            fields: {},
+            errors: {},
+            loading:false,
+            items:[],
+            lastPageReached:false,
+            offset:0,
+            pageSize:50,
+            loadingResults:false,
+            count:0,
+            url:baseUrl+"seek?name=Listing&relation=belongs_to&include-to=Product:listing_of&include-to=Org:any",
+            searchUrl:baseUrl+"seek?name=Listing&relation=belongs_to&include-to=Product:listing_of&include-to=Org:any"
 
-        this.getItems = this.getItems.bind(this);
-        this.callBackResult = this.callBackResult.bind(this);
+
+        }
+
+        this.showProductSelection = this.showProductSelection.bind(this);
+    }
+    filters=[]
+    searchValue=''
+    filterValue= ''
+    offset=0
+    pageSize=50
+
+
+
+
+    showProductSelection() {
+        this.props.showProductPopUp({ type: "create_product", show: true });
     }
 
-    callBackResult(action) {
-        this.getItems();
+
+
+
+    clearList=()=>{
+
+        this.setState({
+            offset:0,
+            items:[],
+            lastPageReached:false,
+            loadingResults: false,
+        })
+    }
+
+    setFilters=(data)=>{
+
+
+
+        let searchValue= data.searchValue
+        let activeFilter= data.searchFilter
+
+        console.log(data)
+
+
+        if (searchValue){
+
+
+            if (activeFilter){
+
+                console.log(activeFilter)
+
+                if (activeFilter=="name")
+                this.setState({
+
+                    searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%`)
+                })
+
+                if (activeFilter=="product_name")
+                    this.setState({
+
+                        searchUrl:this.state.url+(`&find-also-to=Product:listing_of:description~${searchValue}&find-also-to=Product:listing_of:name~${searchValue}`)
+                    })
+
+            }else{
+
+
+                this.setState({
+
+                    searchUrl:this.state.url+(`&or=name~${searchValue}&or=description~${searchValue}&find-also-to=Product:listing_of:description~${searchValue}&find-also-to=Product:listing_of:name~${searchValue}`)
+                })
+
+            }
+        }else{
+            this.setState({
+
+                searchUrl:this.state.url
+            })
+        }
+
+
+
+    }
+
+    handleChange(value,field ) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+
+    }
+
+
+    seekCount=async () => {
+
+
+
+        let result = await seekAxiosGet(this.state.searchUrl+"&count=true&offset="+this.state.offset+"&size="+this.state.pageSize)
+
+
+        this.setState({
+            count: result.data?result.data.data:0,
+
+        })
+
+
+
+    }
+
+
+    loadProductsWithoutParentPageWise= async (data) => {
+
+
+        if (data.reset){
+
+            this.clearList()
+        }
+      await  this.setFilters(data)
+
+        this.seekCount()
+
+        this.setState({
+
+            loadingResults: true
+        })
+
+        let newOffset = this.state.offset
+
+        let result = await seekAxiosGet(this.state.searchUrl+"&count=false&offset="+this.state.offset+"&size="+this.state.pageSize)
+
+
+        if (result && result.data && result.data.data) {
+
+            this.state.offset= newOffset + this.state.pageSize
+
+            this.setState({
+                items: this.state.items.concat(result.data?result.data.data:[]),
+                loadingResults: false,
+                lastPageReached: (result.data?(result.data.data.length === 0 ? true : false):true),
+                offset: newOffset + this.state.pageSize
+
+            })
+        }else{
+
+            if (result) {
+                this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+
+                this.setState({
+
+                    loadingResults: false,
+                    lastPageReached:true
+
+                })
+
+            }
+        }
+
+
+
     }
 
     componentDidMount() {
-        this.getItems();
+
     }
 
-    getItems() {
 
 
-        let url="seek?name=Listing&relation=belongs_to&count=true&offset=0&size=20&or=name~Hi&or=description~Hi&find-also-to=Product:listing_of:description~AA&find-also-to=Product:listing_of:name~Nestle%20Coffee%20Mate%20Packaging"
-
-
-        this.props.showLoading(true);
-        axios
-            .get(`${baseUrl}listing`)
-            .then(
-                (response) => {
-
-                    this.props.showLoading(false);
-
-                    this.setState({
-                        items: response.data.data,
-                    });
-                },
-                (error) => {
-                    console.log("listing error ", error.message)
-                    this.props.showLoading(false);
-                }
-            );
-    }
-
-    handleSearch = (searchValue) => {
-        this.setState({searchValue: searchValue});
-    }
-
-    handleSearchFilter = (filterValue) => {
-        this.setState({filterValue: filterValue});
+    UNSAFE_componentWillMount() {
+        window.scrollTo(0, 0);
     }
 
 
     render() {
-        const classes = withStyles();
         const classesBottom = withStyles();
+        const headers = ["Name", "Description", "Category", "Condition", "Purpose", "Units", "Volume", "Site Name", "Site Address", "Service Agent", "QRCode Name", "QRCode Link"];
+
 
         return (
             <Layout>
-                    <div className="container  pb-4 pt-4">
+
+                <>
+
+
+
+                    <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
-                            pageIcon={ProductBlue}
+
+                            pageIcon={CubeBlue}
                             pageTitle="Listings"
                             subTitle="All your listings can be found here. You can accept or decline a match to start a loop"
                         />
 
-                        <div className="row ">
-                            <div className="col-12 d-flex justify-content-start">
+                        <div className="row">
+                            <div className="col-md-12 btn-rows">
                                 <Link to="/my-listing-record" className="btn btn-sm btn-gray-border">
                                     Listing Record
                                 </Link>
                             </div>
-                        </div>
 
-                        <div className="row  justify-content-center search-container  pt-3 ">
-                            <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={LISTING_FILTER_VALUES} />
-                            </div>
-                        </div>
-
-
-                        <div className="row  justify-content-center filter-row  pt-3 pb-3">
-                            <div className="col">
-                                <p  className="text-gray-light ml-2 ">
-                                    {this.state.items&&this.state.items.filter((site)=>
-                                        this.state.filterValue?( this.state.filterValue==="name"?
-                                            site.listing.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                            this.state.filterValue==="product name"? site.product.name
-                                                &&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-
-                                                null):
-                                            (site.listing.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                                site.product.name&&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase())
-                                               )
-
-                                    ).filter(l => l.listing.stage.toLowerCase() !== "agreed" ).length
-
-                                    }
-                                    <span className="ml-1 text-gray-light"> Listing Found</span>
-                                </p>
-                            </div>
 
 
                         </div>
 
 
+                        <PaginationLayout
 
-                            {this.state.items&&this.state.items.filter((site)=>
-                                    this.state.filterValue?( this.state.filterValue==="name"?
-                                        site.listing.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                        this.state.filterValue==="product name"? site.product.name
-                                            &&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
+                            dropDownValues={LISTING_FILTER_VALUES}
+                            count={this.state.count}
+                            visibleCount={this.state.items.length}
+                            loadingResults={this.state.loadingResults}
+                            lastPageReached={this.state.lastPageReached}
+                            loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)} >
 
-                                            null):
-                                        (site.listing.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                            site.product.name&&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase())
-                                        )
+                            {this.state.items.map((item, index) => (
+                                <>
+                                <ErrorBoundary skip>
+                                <div id={item.Listing._key} key={item.Listing._key}>
+                                    <ResourceItem
 
-                                ).filter(l => l.listing.stage.toLowerCase() !== "agreed").map((item, index) => (
-                            <>
-                                <ResourceItem
-                                    triggerCallback={() => this.callBackResult()}
-                                    history={this.props.history}
-                                    link={"/" + item.listing._key}
-                                    item={item}
-                                    key={index}
-                                />
-                            </>
-                        ))}
+                                        triggerCallback={() => this.callBackResult()}
+                                        history={this.props.history}
+                                        link={"/" + item.Listing._key}
+                                        item={{listing:item.Listing}}
+                                     MySe
+                                        // org={item.Org}
+                                        key={index}
+                                    />
+
+
+                                </div>
+                                </ErrorBoundary>
+                                </>
+                            ))}
+
+                        </PaginationLayout>
+
                     </div>
+
+
+                </>
+
+
             </Layout>
         );
     }
 }
 
-const useStylesTabs = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
 
-function SearchField() {
-    const classes = useStylesTabs();
-
-    return (
-        <CustomizedInput
-            className={" full-width-field"}
-            id="input-with-icon-textfield"
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
-                    </InputAdornment>
-                ),
-            }}
-        />
-    );
-}
 
 const mapStateToProps = (state) => {
     return {
@@ -191,16 +293,36 @@ const mapStateToProps = (state) => {
         showLoginPopUp: state.showLoginPopUp,
         userDetail: state.userDetail,
         loginPopUpStatus: state.loginPopUpStatus,
+        productWithoutParentListPage: state.productWithoutParentListPage,
+        productWithoutParentList: state.productWithoutParentList,
+        productPageOffset:state.productPageOffset,
+        pageSize:state.pageSize,
+        refresh:state.refresh
+
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
+        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        dispatchLoadProductsWithoutParentPage: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
+        // resetProductPageOffset: (data) =>
+        //     dispatch(actionCreator.resetProductPageOffset(data)),
+
+        setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
+        dispatchLoadProductsWithoutParent: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParent(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+        refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(MyListings);
+export default connect(mapStateToProps, mapDispatchToProps)(MyListings);

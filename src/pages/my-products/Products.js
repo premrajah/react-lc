@@ -84,7 +84,7 @@ class Products extends Component {
         let subFilter=[]
 
         let searchValue= data.searchValue
-        let activeFilter= data.filterValue
+        let activeFilter= data.searchFilter
 
         if (searchValue){
 

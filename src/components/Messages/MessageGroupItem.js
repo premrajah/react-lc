@@ -119,6 +119,7 @@ class MessageGroupItem extends Component {
                         />
                     ))}
                 </span>
+                <p>{this.props.item.index}</p>
                 <span
                     id={this.props.item._key + "_thumbnails_name"}
                     className={`ml-2 group-names text-capitlize `}

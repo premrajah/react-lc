@@ -122,6 +122,9 @@ class SearchItem extends Component {
                             {this.props.item.product && (
                                 <>Product: <span className={"text-blue"}>{this.props.item.product.name}</span> </>
                             )}
+                            {this.props.product && (
+                                <>Product: <span className={"text-blue"}>{this.props.product.name}</span> </>
+                            )}
                         </p>
                         <div className={"text-gray-light mt-1 mb-1 width-75 "}>
                             Category:

@@ -25,7 +25,8 @@ class ResourceItem extends Component {
             count: 0,
             nextIntervalFlag: false,
             image: null,
-            artifacts:[]
+            artifacts:[],
+
         };
 
         this.callBackResult = this.callBackResult.bind(this);
@@ -36,8 +37,50 @@ class ResourceItem extends Component {
 
     componentDidMount() {
 
+
+        if (this.props.item.artifacts) {
+            this.setState({
+                artifacts:this.props.item.artifacts
+            })
+
+
+
+        }
+       else if (this.props.artifacts) {
+
+            this.setState({
+                artifacts:this.props.artifacts
+            })
+
+        }
+
+        else{
+
+            if (this.props.product){
+                this.getArtifacts(this.props.product._key)
+            }
+
+
+        }
+
     }
 
+    getArtifacts=(id) =>{
+        axios
+            .get(baseUrl + "product/" + id+"/artifact")
+            .then(
+                (response) => {
+                    var res = response.data.data;
+
+                    this.setState({
+                        images: res,
+                    });
+                },
+                (error) => {
+                    // var status = error.response.status;
+                }
+            );
+    }
 
     goToPage(event) {
         event.stopPropagation();
@@ -85,78 +128,9 @@ class ResourceItem extends Component {
     render() {
         return (
             <>
-                {this.props.item.listing.listing ? (
+
                     <>
 
-                        {/*<Link to={"/"+ this.props.item.listing.listing._key }>*/}
-                        <div
-                            key={this.props.index}
-                            onClick={this.goToPage}
-                            className="row no-gutters justify-content-center mt-4 mb-4  pb-4 click-item">
-                            <div className={"col-md-2 col-xs-12 col-sm-12"}>
-                                {this.props.item.listing.artifacts &&
-                                this.props.item.listing.artifacts.length > 0 ? (
-                                    <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.props.item.listing.artifacts} />
-                                ) : (
-                                    <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
-                                )}
-
-
-                            </div>
-
-                            <div className={"col-4 pl-3 content-box-listing"}>
-                                <p style={{ fontSize: "18px" }} className=" mb-1 list-title width-80">
-                                    {this.props.item.listing.listing.name}
-                                </p>
-                                <p style={{ fontSize: "16px" }} className=" mb-1 width-80 ">
-                                    {this.props.item.product && (
-                                        <>Product: {this.props.item.listing.product.name} </>
-                                    )}
-                                </p>
-                                <p style={{ fontSize: "16px" }} className="text-capitlize mb-1">
-                                    {this.props.item.listing.listing.category}, {this.props.item.listing.listing.type}, {this.props.item.listing.listing.state}
-                                </p>
-                                <p style={{ fontSize: "16px" }} className="text-capitlize mb-1">
-
-                                    {this.props.item.listing.listing.volume}
-                                    {this.props.item.listing.listing.units}
-                                </p>
-                            </div>
-
-                            <div className={"col-2 text-right"}>
-                                <p className={"green-text text-capitlize"}>
-                                    {this.props.item.listing.listing.price &&
-                                    this.props.item.listing.listing.price.value ? (
-                                        <> GBP {this.props.item.listing.listing.price.value}</>
-                                    ) : (
-                                        "Free"
-                                    )}
-
-                                    {/*{this.props.item.listing.listing.price.value ? <> {this.props.item.listing.listing.price.value}</> : "Free"}*/}
-                                </p>
-                            </div>
-
-                            <div className={"col-2 text-right"}>
-                                <p className={"green-text text-capitlize"}>
-                                    {this.props.item.listing.listing.stage}
-                                </p>
-                            </div>
-
-                            <div className={"col-2 text-right"}>
-                                <p className={" text-capitlize"}>
-                                    {moment(this.props.item.listing.listing._ts_epoch_ms).format(
-                                        "DD MMM YYYY"
-                                    )}
-                                </p>
-                            </div>
-                        </div>
-
-                        {/*</Link>*/}
-                    </>
-                ) : (
-                    <>
-
-                        {/*Listing for search marches*/}
 
 
                         <Link
@@ -168,15 +142,17 @@ class ResourceItem extends Component {
                             // onClick={this.goToPage}
                             className="row no-gutters justify-content-center p-3 bg-white rad-8 click-item mb-3">
                             <div className={"col-md-2 col-xs-12 col-sm-12"}>
-                                {this.props.item.artifacts &&
-                                this.props.item.artifacts.length > 0 ?
-                                    <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.props.item.artifacts} />:
-                                    this.props.artifacts && this.props.artifacts.length > 0?<ImageOnlyThumbnail images={this.props.artifacts} />:
+                                {this.state.artifacts &&
+                                this.state.artifacts.length > 0 ?
+                                    <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.state.artifacts} />:
+
                                     <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
                                 }
+
+
                             </div>
                             <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
-                                <p  className="text-capitlize mb-1 title-bold width-75">
+                                <p  className="text-capitlize mb-1 title-bold width-80 ">
                                     {this.props.item.listing.name}
                                 </p>
                                 {/*{this.props.matchedItem && <div className={"text-gray-light text-capitalize mt-1 mb-1 width-75"}>*/}
@@ -185,6 +161,9 @@ class ResourceItem extends Component {
                                 <p  className=" mb-1 text-gray-light mt-1 mb-1 width-80  ellipses-end">
                                     {this.props.item.product && (
                                         <>Product: <span className={"text-blue width-75"}>{this.props.item.product.name}</span> </>
+                                    )}
+                                    {this.props.product && (
+                                        <>Product: <span className={"text-blue width-75"}>{this.props.product.name}</span> </>
                                     )}
                                 </p>
 
@@ -208,7 +187,9 @@ class ResourceItem extends Component {
                                 {this.props.item.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>
                                     <OrgComponent org={this.props.item.org }/>
                                 </div>}
-
+                                {this.props.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>
+                                    <OrgComponent org={this.props.org }/>
+                                </div>}
 
 
                                 {(this.props.fromSearch ||this.props.matchedItem) &&
@@ -277,7 +258,7 @@ class ResourceItem extends Component {
                         </div>
                         </Link>
                     </>
-                )}
+
             </>
         );
     }

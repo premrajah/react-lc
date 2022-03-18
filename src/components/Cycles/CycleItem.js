@@ -21,171 +21,12 @@ class CycleItem extends Component {
             offers: [],
         };
 
-        this.acceptMatch = this.acceptMatch.bind(this);
-        this.rejectMatch = this.rejectMatch.bind(this);
-        this.makeOfferMatch = this.makeOfferMatch.bind(this);
-        this.showPopUp = this.showPopUp.bind(this);
-        this.getOffer = this.getOffer.bind(this);
     }
 
-    showPopUp() {
-        this.setState({
-            showPopUp: !this.state.showPopUp,
-        });
-    }
 
-    getOffer() {
-        axios
-            .get(baseUrl + "offer/match/" + this.props.item.match._key, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
-            .then(
-                (response) => {
-                    var responseAll = response.data;
-
-                    this.setState({
-                        offers: responseAll.data,
-                    });
-                },
-                (error) => {}
-            );
-    }
-
-    acceptMatch() {
-        axios
-            .post(
-                baseUrl + "match/stage/accept",
-                {
-                    match_id: this.props.item.match._key,
-                    note: "Accepted",
-                },
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
-            )
-            .then((res) => {
-                this.setState({
-                    showPopUp: true,
-                });
-            })
-            .catch((error) => {
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
-            });
-    }
-
-    acceptOffer(event) {
-        axios
-            .post(
-                baseUrl + "offer/stage",
-                {
-                    // match_id:this.props.item.match._key,
-                    // note:"Accepted"
-
-                    offer_id: event.currentTarget.dataset.id,
-                    new_stage: "accepted",
-                },
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
-            )
-            .then((res) => {
-                this.setState({
-                    showPopUp: true,
-                });
-            })
-            .catch((error) => {
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
-            });
-    }
-
-    makeOfferMatch = (event) => {
-        event.preventDefault();
-
-        const form = event.currentTarget;
-
-
-        const data = new FormData(event.target);
-
-        const username = data.get("price");
-
-        axios
-            .put(
-                baseUrl + "offer",
-                {
-                    match_id: this.props.item.match._key,
-
-                    offer: {
-                        amount: {
-                            value: 0.0,
-                            currency: "gbp",
-                        },
-                    },
-                },
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
-            )
-            .then((res) => {
-                this.setState({
-                    showPopUp: false,
-                });
-            })
-            .catch((error) => {
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
-            });
-    };
-
-    rejectMatch() {
-        axios
-            .post(
-                baseUrl + "match/stage/decline",
-                {
-                    match_id: this.props.item.match._key,
-                    note: "Accepted",
-                },
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
-            )
-            .then((res) => {
-                this.setState({
-                    showPopUp: true,
-                });
-            })
-            .catch((error) => {
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
-            });
-    }
 
 
     componentDidMount() {
-        this.getOffer();
     }
 
     render() {
@@ -194,8 +35,8 @@ class CycleItem extends Component {
                 <div className={"col-md-2 col-sm-12 col-xs-12 text-left"}>
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
-                            {this.props.item.product.artifacts.length > 0 ? (
-                                <ImageOnlyThumbnail images={this.props.item.product.artifacts} />
+                            {this.props.product.artifacts&&this.props.product.artifacts.length > 0 ? (
+                                <ImageOnlyThumbnail images={this.props.product.artifacts} />
                             ) : (
                                 <img className={"img-fluid img-list"} src={Paper} alt="" />
                             )}
@@ -209,18 +50,18 @@ class CycleItem extends Component {
                             {/*    {this.props.item.listing.name}*/}
                             {/*</p>*/}
                             <p  className=" mb-1 text-gray-light  ">
-                                {this.props.item.product && (
-                                    <>Listing: <span className={"text-blue"}>{this.props.item.listing.name}</span> </>
+                                {this.props.listing && (
+                                    <>Listing: <span className={"text-blue"}>{this.props.listing.name}</span> </>
                                 )}
                             </p>
                             <p  className=" mb-1 text-gray-light mt-1 mb-1 ">
-                                {this.props.item.product && (
-                                    <>Search: <span className={"text-blue"}>{this.props.item.search.name}</span> </>
+                                {this.props.search && (
+                                    <>Search: <span className={"text-blue"}>{this.props.search.name}</span> </>
                                 )}
                             </p>
                             <p  className=" mb-1 text-gray-light mt-1 mb-1 ">
-                                {this.props.item.product && (
-                                    <>Product: <span className={"text-blue"}>{this.props.item.product.product.name}</span> </>
+                                {this.props.product && (
+                                    <>Product: <span className={"text-blue"}>{this.props.product.name}</span> </>
                                 )}
                             </p>
 
@@ -230,13 +71,13 @@ class CycleItem extends Component {
 
                                     className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
-                                                                {capitalize(this.props.item.listing.category)}
+                                                                {capitalize(this.props.product.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
                                         <span className=" text-capitlize">
-                                                                {capitalize(this.props.item.listing.type)}
+                                                                {capitalize(this.props.product.type)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
                                         <span className="  text-capitlize">
-                                                                {capitalize(this.props.item.listing.state)}
+                                                                {capitalize(this.props.product.state)}
                                                             </span>
 
 
@@ -248,15 +89,15 @@ class CycleItem extends Component {
                     </Link>
 
                     <div  className=" mt-1 mb-1">
-                        <OrgComponent org={this.props.item.sender} /> →
-                        <OrgComponent org={this.props.item.receiver} />
+                        {this.props.sender &&  <OrgComponent org={this.props.sender} />} →
+                        {this.props.receiver && <OrgComponent org={this.props.receiver} />}
                     </div>
 
                     <div  className={"add-top-button pl-3-desktop"}>
                         <p className="text-gray-light mb-1 ">
                             Offer: <span className={"text-bold text-pink"}>
 
-                            GBP {this.props.item.offer.amount.value}
+                            GBP {this.props.offer.amount.value}
                         </span>
                         </p>
 

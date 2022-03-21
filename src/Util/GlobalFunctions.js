@@ -80,8 +80,16 @@ export const arrangeObjectKeysAlphabatically=(obj)=>{
         return 0;
     })
 
+}
 
 
+export const sortArraysByKey=(array,key)=>{
+
+    return   array.sort(function(a, b){
+        if(a[key] < b[key]) { return -1; }
+        if(a[key]> b[key]) { return 1; }
+        return 0;
+    })
 
 
 }
@@ -121,6 +129,13 @@ export const  ifOwner=  (userDetail,orgId)=> {
 
 }
 
+
+export const  ownerCheck=  (userDetail,orgId)=> {
+
+
+    return   userDetail.orgId===orgId
+
+}
 
 export const  seekAxiosGet=  (url)=> {
 

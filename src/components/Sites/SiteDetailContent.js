@@ -18,6 +18,7 @@ import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import SiteReleaseDialog from "./SiteReleaseDialog";
+import {ownerCheck} from "../../Util/GlobalFunctions";
 
 
 class SiteDetailContent extends Component {
@@ -522,7 +523,7 @@ class SiteDetailContent extends Component {
                                                 </h4>
                                             </div>
 
-                                            <div className="col-4 text-right">
+                                            {this.props.isLoggedIn  &&<div className="col-4 text-right">
                                                 <MoreMenu
                                                     triggerCallback={(action) =>
                                                         this.callBackResult(action)
@@ -531,7 +532,7 @@ class SiteDetailContent extends Component {
                                                     edit={true}
 
                                                 />
-                                            </div>
+                                            </div>}
                                         </div>
                                     </div>
 

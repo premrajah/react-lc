@@ -1,196 +1,351 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import clsx from "clsx";
-import SearchIcon from "../../img/icons/search-128px.svg";
-import { Link } from "react-router-dom";
-import HeaderDark from "../../views/header/HeaderDark";
-import Sidebar from "../../views/menu/Sidebar";
-import AppBar from "@mui/material/AppBar";
-import { makeStyles } from "@mui/styles";
-import InputAdornment from "@mui/material/InputAdornment";
-import TextField from "@mui/material/TextField";
-import SearchGray from "@mui/icons-material/Search";
-import {baseUrl, LISTING_FILTER_VALUES} from "../../Util/Constants";
-import axios from "axios/index";
-import SearchItem from "../../components/Searches/search-item";
-import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
-import { withStyles } from "@mui/styles/index";
+import {connect} from "react-redux";
+import CubeBlue from "../../img/icons/product-icon-big.png";
+import {Link} from "react-router-dom";
+import {withStyles} from "@mui/styles/index";
+import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
-import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
-import Layout from "../../components/Layout/Layout";
 import SearchBar from "../../components/SearchBar";
+import {baseUrl, LISTING_FILTER_VALUES, PRODUCTS_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
+import DownloadIcon from '@mui/icons-material/GetApp';
+import MapIcon from '@mui/icons-material/Map';
+import {CSVLink} from "react-csv";
+import {Modal, ModalBody} from "react-bootstrap";
+import Layout from "../../components/Layout/Layout";
+import axios from "axios";
+import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
+import {ProductsGoogleMap} from "../../components/Map/ProductsMapContainer";
+import Close from "@mui/icons-material/Close";
+import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import CustomPopover from "../../components/FormsUI/CustomPopover";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
+import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
+import ResourceItem from "../create-search/ResourceItem";
+import SearchItem from "../../components/Searches/search-item";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 class MySearch extends Component {
+
     constructor(props) {
         super(props);
-
         this.state = {
-            timerEnd: false,
-            count: 0,
-            nextIntervalFlag: false,
-            items: [],
-            searchValue: '',
-            filterValue: '',
-        };
 
-        this.getItems = this.getItems.bind(this);
-        this.callBackResult = this.callBackResult.bind(this);
+            selectedProducts: [],
+            showMultiUpload: false,
+            isIntersecting:false,
+            intersectionRatio:0,
+            mapData:[],
+            showMap:false,
+            showDownloadQrCodes:false,
+            fields: {},
+            errors: {},
+            loading:false,
+            items:[],
+            lastPageReached:false,
+            offset:0,
+            pageSize:50,
+            loadingResults:false,
+            count:0,
+            url:baseUrl+"seek?name=Search&relation=belongs_to&include-to=Product:search_for&include-to=Org:any",
+            searchUrl:baseUrl+"seek?name=Search&relation=belongs_to&include-to=Product:search_for&include-to=Org:any",
+
+
+        }
+
+        this.showProductSelection = this.showProductSelection.bind(this);
+    }
+    filters=[]
+    searchValue=''
+    filterValue= ''
+    offset=0
+    pageSize=50
+
+
+
+
+    showProductSelection() {
+        this.props.showProductPopUp({ type: "create_product", show: true });
     }
 
-    callBackResult(action) {
-        this.getItems();
+
+
+
+    clearList=()=>{
+
+        this.setState({
+            offset:0,
+            items:[],
+            lastPageReached:false,
+            loadingResults: false,
+        })
+    }
+
+    setFilters=(data)=>{
+
+
+
+        let searchValue= data.searchValue
+        let activeFilter= data.searchFilter
+
+        console.log(data)
+
+
+        if (searchValue){
+
+
+            if (activeFilter){
+
+                console.log(activeFilter)
+
+                if (activeFilter=="name")
+                    this.setState({
+
+                        searchUrl:this.state.url+encodeURI(`&or=name~${searchValue}&or=description~${searchValue}`)
+                    })
+
+                if (activeFilter=="product_name")
+                    this.setState({
+
+                        searchUrl:this.state.url+encodeURI(`&find-also-to=Product:listing_of:description~${searchValue}&find-also-to=Product:listing_of:name~${searchValue}`)
+                    })
+
+            }else{
+
+
+                this.setState({
+
+                    searchUrl:this.state.url+encodeURI(`&or=name~${searchValue}&or=description~${searchValue}&find-also-to=Product:listing_of:description~${searchValue}&find-also-to=Product:listing_of:name~${searchValue}`)
+                })
+
+            }
+        }else{
+            this.setState({
+
+                searchUrl:this.state.url
+            })
+        }
+
+
+
+    }
+
+    handleChange(value,field ) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+
+    }
+
+
+    seekCount=async () => {
+
+
+        let result = await seekAxiosGet(this.state.searchUrl+"&count=true&offset="+this.state.offset+"&size="+this.state.pageSize)
+
+
+
+        this.setState({
+            count: result.data?result.data.data:0,
+
+        })
+
+
+
+    }
+
+
+    loadProductsWithoutParentPageWise= async (data) => {
+
+
+        if (data.reset){
+
+            this.clearList()
+        }
+        this.setFilters(data)
+
+        this.seekCount()
+
+        this.setState({
+
+            loadingResults: true
+        })
+
+        let newOffset = this.state.offset
+
+
+
+
+        let result = await seekAxiosGet(this.state.searchUrl+"&count=false&offset="+this.state.offset+"&size="+this.state.pageSize)
+
+
+        if (result && result.data && result.data.data) {
+
+            this.state.offset= newOffset + this.state.pageSize
+
+            this.setState({
+                items: this.state.items.concat(result.data?result.data.data:[]),
+                loadingResults: false,
+                lastPageReached: (result.data?(result.data.data.length === 0 ? true : false):true),
+                offset: newOffset + this.state.pageSize
+
+            })
+        }else{
+
+            if (result) {
+                this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+
+                this.setState({
+
+                    loadingResults: false,
+                    lastPageReached:true
+
+                })
+
+            }
+        }
+
+
+
     }
 
     componentDidMount() {
-        this.getItems();
+
+
     }
 
-    handleSearch = (searchValue) => {
-        this.setState({searchValue: searchValue});
+
+
+    UNSAFE_componentWillMount() {
+        window.scrollTo(0, 0);
     }
 
-    handleSearchFilter = (filterValue) => {
-        this.setState({filterValue: filterValue});
-    }
 
-    getItems() {
-        this.props.showLoading(true);
-        axios
-            .get(`${baseUrl}search/expand`)
-            .then(
-                (response) => {
-                    this.setState({items: response.data.data,});
-                    this.props.showLoading(false);
-                },
-                (error) => {
-                    this.props.showLoading(false);
-                }
-            );
-    }
+
 
 
     render() {
-        const classes = withStyles();
         const classesBottom = withStyles();
+        const headers = ["Name", "Description", "Category", "Condition", "Purpose", "Units", "Volume", "Site Name", "Site Address", "Service Agent", "QRCode Name", "QRCode Link"];
+
 
         return (
             <Layout>
-                    <div className="container  pb-4 pt-4">
+
+                <>
+
+
+
+                    <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
-                            subTitle="All your searches can be found here. You can accept or decline a match to start a loop"
+
+                            pageIcon={CubeBlue}
                             pageTitle="Searches"
-                            pageIcon={SearchIcon}
+                            subTitle="All your searches can be found here. You can accept or decline a match to start a loop"
                         />
-                        <div className="row ">
-                            <div className="col-12 d-flex justify-content-start">
+
+                        <div className="row">
+                            <div className="col-md-12 btn-rows">
                                 <Link to="/search-records" className="btn btn-sm btn-gray-border">
                                     Search Records
                                 </Link>
                             </div>
-                        </div>
-                        <div className="row pt-3 justify-content-center search-container   ">
-                            <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={LISTING_FILTER_VALUES} />
-                            </div>
-                        </div>
-                        <div className="row  justify-content-center filter-row  pt-3 pb-3">
-                            <div className="col">
-                                <p  className="text-gray-light ml-2 ">
-                                    {this.state.items&&this.state.items.filter((site)=>
-                                        this.state.filterValue?( this.state.filterValue==="name"?
-                                            site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                            this.state.filterValue==="product name"? site.product&&site.product.name
-                                                &&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
 
-                                                null):
-                                            (site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                                site.product&& site.product.name&&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase())
-                                            )
-
-                                    ).filter(l => l.search.stage.toLowerCase() !== "agreed" && l.search.stage !== "expired").length
-
-                                    }
-                                    <span className="ml-1 text-gray-light"> Search Found</span>
-                                </p>
-                            </div>
 
 
                         </div>
 
-                        {this.state.items&&this.state.items.filter((site)=>
-                                this.state.filterValue?( this.state.filterValue==="name"?
-                                    site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                    this.state.filterValue==="product name"? site.product&&site.product.name
-                                        &&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase()): null):
-                                    (site.search.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.product&& site.product.name&&site.product.name.toLowerCase().includes(this.state.searchValue.toLowerCase())
-                                    )
 
-                            ).filter(l => l.search.stage.toLowerCase() !== "agreed" && l.search.stage !== "expired").map((item, index) => (
-                            <SearchItem
-                                showMoreMenu={true}
-                                triggerCallback={() => this.callBackResult()}
-                                item={item}
-                                key={index}
-                            />
-                        ))}
+                        <PaginationLayout
+
+                            dropDownValues={LISTING_FILTER_VALUES}
+                            count={this.state.count}
+                            visibleCount={this.state.items.length}
+                            loadingResults={this.state.loadingResults}
+                            lastPageReached={this.state.lastPageReached}
+                            loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)} >
+
+                            {this.state.items.map((item, index) =>
+                                <>
+                                <ErrorBoundary skip>
+                                <div id={item.Search._key} key={item.Search._key}>
+                                    <SearchItem
+                                        item={{search:item.Search}}
+                                        product={item.SearchToProduct[0]?item.SearchToProduct[0].entries[0]
+                                            ?item.SearchToProduct[0].entries[0].Product:null:null}
+                                        org={item.SearchToOrg[0]?item.SearchToOrg[0].entries[0]
+                                            ?item.SearchToOrg[0].entries[0].Org:null:null}
+                                        showMoreMenu={true}
+                                        triggerCallback={() => this.callBackResult()}
+                                        key={index}
+
+                                    />
+
+
+                                </div>
+
+                                </ErrorBoundary>
+                                </>
+                            )}
+
+                        </PaginationLayout>
+
                     </div>
+
+
+                </>
+
+
+
             </Layout>
         );
     }
 }
 
-const useStylesTabs = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
 
-function SearchField() {
-    const classes = useStylesTabs();
-
-    return (
-        <CustomizedInput
-
-            className={" full-width-field"}
-            id="input-with-icon-textfield"
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <SearchGray style={{ fontSize: 24, color: "#B2B2B2" }} />
-                    </InputAdornment>
-                ),
-            }}
-        />
-    );
-}
 
 const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
+        productWithoutParentListPage: state.productWithoutParentListPage,
+        productWithoutParentList: state.productWithoutParentList,
+        productPageOffset:state.productPageOffset,
+        pageSize:state.pageSize,
+        refresh:state.refresh
+
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
+        loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
+        dispatchLoadProductsWithoutParentPage: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
+        // resetProductPageOffset: (data) =>
+        //     dispatch(actionCreator.resetProductPageOffset(data)),
+
+        setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
+        dispatchLoadProductsWithoutParent: (data) =>
+            dispatch(actionCreator.loadProductsWithoutParent(data)),
+        loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+        refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(MySearch);
+export default connect(mapStateToProps, mapDispatchToProps)(MySearch);

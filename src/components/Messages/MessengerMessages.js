@@ -15,6 +15,8 @@ import MessageEntityDialog from "./MessageEntityDialog";
 import MessageGroupSingleArtifactDialog from "./MessageGroupSingleArtifactDialog";
 import MessageGroupItem from "./MessageGroupItem";
 import MessageNameThumbnail from "./MessageNameThumbnail";
+import CustomPopover from "../FormsUI/CustomPopover";
+import {fetchErrorMessage, sortArraysByKey} from "../../Util/GlobalFunctions";
 
 class MessengerMessages extends Component {
     constructor(props) {
@@ -41,39 +43,78 @@ class MessengerMessages extends Component {
             showHideOrgSearch: false,
             openEntityDialog: false,
             openSingleArtifactDialog: false,
+            allGroupsDetails:[]
         };
     }
 
     componentDidMount() {
         this.getAllMessageGroups();
+        this.updateSelected(0)
+
+
     }
 
-    getAllMessageGroups = () => {
+    getAllMessageGroups = async () => {
+
+
+
         axios
             .get(`${baseUrl}message-group`)
             .then((response) => {
                 const data = response.data.data;
+
+
                 let returnedData = [];
 
-                data.map((d) => {
+
+
+                // this.setState({
+                //     allMessageGroups: data,
+                //     filteredMessageGroups: data,
+                // });
+                //
+                // for (let i=0;i<data.length;i++){
+                //
+                //     this.getOrgsForGroup(data[i]._key,i)
+                // }
+
+                // return
+
+
+                data.map((d,index) => {
+                    console.log(index)
                     axios
                         .get(
-                            encodeURI(
+                            (
                                 `${baseUrl}seek/to?name=MessageGroup&id=${d._key}&to=Message&relation=&count=true&filters=type:message`
                             )
                         )
                         .then((res) => {
                             const rData = res.data.data;
 
-                            if (rData > 0) {
-                                returnedData.push(d);
-                            }
-                        })
-                        .then(() => {
+                            if (rData > 0){
+                                let group=d
+
+                                group.index=index
+
+
+                            // let sortedData= sortArraysByKey(returnedData.push(group),"index");
+                            //     let sortedData=
+                                    returnedData.push(group);
+
+                                let sortedData=sortArraysByKey(returnedData,"index")
+                                    console.log(sortedData)
+
                             this.setState({
-                                allMessageGroups: returnedData,
-                                filteredMessageGroups: returnedData,
-                            });
+                                    allMessageGroups: sortedData,
+                                    filteredMessageGroups: sortedData,
+                                });
+
+
+                                this.getOrgsForGroup(d._key,index)
+
+                            }
+
                         })
                         .catch((error) => {
                             this.props.showSnackbar({
@@ -83,13 +124,86 @@ class MessengerMessages extends Component {
                             });
                         });
                 });
+
+
+
+
+                console.log("group len ",returnedData.length)
+
+
+
+                // for (let i=0;i<returnedData.length;i++){
+                //     console.log("org messa: ",i)
+                //
+                //     this.getOrgsForGroup(returnedData[i]._key,i)
+                // }
+
+
+
             })
             .catch((error) => {
-                this.props.showSnackbar({
-                    show: true,
-                    severity: "warning",
-                    message: `Message group error ${error.message}`,
-                });
+                // this.props.showSnackbar({
+                //     show: true,
+                //     severity: "warning",
+                //     message: `Message group error ${error.message}`,
+                // });
+            });
+    };
+
+
+    getOrgsForGroup = (id,index) => {
+        axios
+            .get(`${baseUrl}message-group/${id}/org`)
+            .then((response) => {
+                const data = response.data.data;
+
+                let groupDetail=data
+
+                let allGroups=this.state.allMessageGroups
+
+
+                if (index==0){
+
+                    this.handleGroupClick(this.state.allMessageGroups[0], 0);
+                    this.setState({
+                        selectedOrgs: groupDetail
+                    })
+
+                    this.getGroupMessageWithId(this.state.allMessageGroups[0]._key)
+
+                }
+
+                for (let i=0;i<allGroups.length;i++){
+
+                    if (allGroups[i]._key==id){
+
+                        allGroups[i].group=groupDetail
+
+                        allGroups[i].search=" "+groupDetail.map((item)=> item.name+" ")
+                    }
+
+                }
+
+                console.log(allGroups)
+
+                // let allGroupsDetails=this.state.filteredMessageGroups
+                this.setState({
+
+                    allMessageGroups: allGroups,
+                    filteredMessageGroups: allGroups,
+                })
+
+                // let allGroupsDetails=this.state.allGroupsDetails
+                //
+                // allGroupsDetails.push({key:id, value:groupDetail})
+                // this.setState({
+                //     allGroupsDetails: allGroupsDetails,
+                // });
+
+
+            })
+            .catch((error) => {
+                console.log("message-group-error ", error.message);
             });
     };
 
@@ -162,15 +276,19 @@ class MessengerMessages extends Component {
         const { value } = e.target;
 
         if (value) {
-            this.setState({
-                filteredMessageGroups: this.state.allMessageGroups.filter((val) => {
-                    if (val.name) {
-                        if (val.name.toLowerCase().includes(value.toLowerCase())) {
-                            return val;
-                        }
-                    }
-                }),
-            });
+
+            this.updateSelected(-1)
+
+            if (this.state.allGroupsDetails){
+                this.setState({
+                    filteredMessageGroups: this.state.allMessageGroups.filter((group) =>
+
+                        group.search.toLowerCase().includes(value.toLowerCase())
+
+                    ),
+                });
+            }
+
         } else {
             this.setState({
                 filteredMessageGroups: this.state.allMessageGroups,
@@ -191,27 +309,37 @@ class MessengerMessages extends Component {
         this.setState({
             autoCompleteOrg: value,
         });
+
+
+
     };
 
-    handleGroupClick = (group, selectedIndex, orgs) => {
+    handleGroupClick = (groupdId, orgs, selectedIndex) => {
         this.updateSelected(selectedIndex);
 
-        if (group) {
+        if (groupdId) {
+
             this.setState({
-                selectedGroupId: group._id,
-                selectedGroupKey: group._key,
+                selectedGroupId: groupdId,
+                selectedGroupKey: groupdId,
                 showHideOrgSearch: false,
                 showHideGroupFilter: false,
                 selectedMsgGroup: [],
             });
-            this.getGroupMessageWithId(group._key);
+            this.getGroupMessageWithId(groupdId);
+
+            this.setState({
+                selectedOrgs: orgs,
+            });
         } else {
+
             this.getGroupMessageWithId(null);
+            this.setState({
+                selectedOrgs: [],
+            });
         }
 
-        this.setState({
-            selectedOrgs: orgs,
-        });
+
     };
 
     handleRichTextCallback = (value) => {
@@ -225,7 +353,7 @@ class MessengerMessages extends Component {
             showHideOrgSearch: !this.state.showHideOrgSearch,
         });
 
-        this.handleGroupClick(null, -1, []);
+        this.handleGroupClick(null, [],-1);
     };
 
     updateSelected = (selectedIndex) => {
@@ -273,17 +401,17 @@ class MessengerMessages extends Component {
                         text: text,
                     },
                     to_org_ids: [],
-                    message_group_id: messageGroupId,
+                    message_group_id: messageGroupId._key,
                 };
                 break;
             default:
                 return;
         }
 
-        this.postMessage(payload, messageType);
+        this.postMessage(payload, messageType,messageGroupId._key);
     };
 
-    postMessage = (payload, messageType) => {
+    postMessage = (payload, messageType,messageGroupId) => {
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
@@ -291,13 +419,18 @@ class MessengerMessages extends Component {
                     const data = response.data.data;
 
                     if (messageType === "new_message") {
+
                         this.setState({
                             showHideOrgSearch: false,
                         });
 
                         this.getAllMessageGroups();
+
                     } else {
-                        this.handleGroupClick(data.message_group, this.state.selectedItem);
+
+                        this.handleGroupClick(messageGroupId,this.state.selectedOrgs, this.state.selectedItem);
+
+
                     }
 
                     this.resetDraftRef.current.resetDraft(); // clear draftjs text field
@@ -342,7 +475,7 @@ class MessengerMessages extends Component {
     render() {
         return (
             <>
-                <div className="row bg-white rad-8 gray-border  message-row no-gutters mb-5">
+                <div className="row bg-white rad-8 gray-border   message-row no-gutters mb-5">
                     <div
                         className="col-md-4 message-column"
                         style={{
@@ -357,16 +490,16 @@ class MessengerMessages extends Component {
                             className="row d-flex no-gutters">
                             <div className="col-md-10">
                                 <input
-                                    placeholder={"Filter conversations"}
+                                    placeholder="Filter conversations"
                                     onChange={this.filterGroups}
-                                    className={"search-input full-width-field m-3"}
+                                    className="search-input full-width-field m-3"
                                 />
                             </div>
                             <div className="col-md-2 text-center">
                                 <Tooltip title="New Message">
                                     <AddIcon
                                         onClick={() => this.handleOrgSearchButton()}
-                                        className={"text-blue  click-item"}
+                                        className="text-blue  click-item"
                                         style={{ fontSize: "24px" }}
                                     />
                                 </Tooltip>
@@ -376,7 +509,7 @@ class MessengerMessages extends Component {
                         {this.state.allMessageGroups.length === 0 && (
                             <div className={"text-center"}>No chats active. </div>
                         )}
-                        <div className="message-groups  text-capitalize" style={{}}>
+                        <div className="message-groups  text-capitalize">
                             {this.state.filteredMessageGroups.length > 0 ? (
                                 <div className={"message-item-c"}>
                                     {this.state.showHideOrgSearch && (
@@ -394,14 +527,19 @@ class MessengerMessages extends Component {
                                     )}
                                     {this.state.filteredMessageGroups.map((group, i) => (
                                         <React.Fragment key={group._key + "_item"}>
+                                         <>
+
                                             <MessageGroupItem
+
                                                 selectedItem={this.state.selectedItem}
                                                 index={i}
                                                 handleGroupClick={(group, i, orgs) =>
-                                                    this.handleGroupClick(group, i, orgs)
+                                                    this.handleGroupClick(group._key,orgs, i, )
                                                 }
                                                 item={group}
                                             />
+
+                                            </>
                                         </React.Fragment>
                                     ))}
                                 </div>
@@ -472,6 +610,7 @@ class MessengerMessages extends Component {
                                         <span className={"thumbnail-box"}>
                                             {this.state.selectedOrgs.map((item, index) => (
                                                 <MessageNameThumbnail
+                                                    showCount={20}
                                                     key={index}
                                                     index={index}
                                                     item={item}
@@ -481,7 +620,8 @@ class MessengerMessages extends Component {
                                         </span>
                                         <span
                                             className={"ml-2 group-names text-capitlize"}
-                                            style={{ fontSize: "0.8em" }}>
+                                            // style={{ fontSize: "0.8em" }}
+                                        >
                                             {this.state.selectedOrgs.map((item, index) => (
                                                 <React.Fragment key={index}>
                                                     {index > 0 && ", "}
@@ -634,11 +774,12 @@ class MessengerMessages extends Component {
                                 )}
                             </div>
                         </div>
-
-                        <div className="col-12 mb-3">
+                        <div
+                            className="row no-gutters bottom-editor">
+                        <div className="col-12 ">
                             <div className="wysiwyg-editor-container">
                                 <div className="row no-gutters">
-                                    <div className="col-10">
+                                    <div className="col-12">
                                         <WysiwygEditor
                                             allOrgs={this.state.allOrgs}
                                             ref={this.resetDraftRef}
@@ -646,10 +787,9 @@ class MessengerMessages extends Component {
                                                 this.handleRichTextCallback(value)
                                             }
                                         />
-                                    </div>
-                                    <div className="col-2 d-flex align-items-end">
-                                        <Button
-                                            className="d-flex justify-content-center align-content-center"
+
+                                        <button
+                                            className=" send-bottom-button bg-transparent justify-content-center align-content-center"
                                             type="button"
                                             disabled={this.state.messageText ? false : true}
                                             fullWidth
@@ -662,10 +802,14 @@ class MessengerMessages extends Component {
                                                         : "var(--lc-bg-gray)",
                                                 }}
                                             />
-                                        </Button>
+                                        </button>
                                     </div>
+                                    {/*<div className="col-2 d-flex align-items-end">*/}
+                                    {/*  */}
+                                    {/*</div>*/}
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

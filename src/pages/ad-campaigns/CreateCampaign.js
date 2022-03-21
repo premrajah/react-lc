@@ -173,27 +173,27 @@ class CreateCampaign extends Component {
 
 
     }
-    componentDidMount() {
+    async componentDidMount() {
 
         this.setState({
             conditionAll: [],
             conditionAny: [],
-            addCountAll:[],
-            addCountAny:[],
-            countAll:0,
-            countAny:0,
+            addCountAll: [],
+            addCountAny: [],
+            countAll: 0,
+            countAny: 0,
         })
 
 
-        if (this.props.item){
+        if (this.props.item) {
 
-            this.loadSavedValues()
+            await this.loadSavedValues()
             this.callStrategy()
 
             this.loadImages()
             this.setState({
-                startDate:this.props.item.campaign.start_ts,
-                endDate:this.props.item.campaign.end_ts
+                startDate: this.props.item.campaign.start_ts,
+                endDate: this.props.item.campaign.end_ts
             })
         }
     }
@@ -238,13 +238,23 @@ class CreateCampaign extends Component {
         })
 
 
-        this.callStrategy()
+            if (this.timeout) clearTimeout(this.timeout);
+
+            this.timeout = setTimeout(() => {
+                this.callStrategy()
+            }, 1000);
+
+
 
         // dispatch({ type: "PRODUCT_LIST", value: [] })
     };
 
 
     callStrategy=()=>{
+
+
+
+
 
 
         axios
@@ -494,7 +504,7 @@ class CreateCampaign extends Component {
                     // }
 
                     // this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
-                    this.props.toggleRightBar()
+                    // this.props.toggleRightBar()
 
 
                 })
@@ -901,11 +911,11 @@ class CreateCampaign extends Component {
 
 
                     <div className="container  mb-150  pb-5 pt-4">
-                        <PageHeader
-                            pageIcon={CubeBlue}
-                            pageTitle={this.props.item?"Edit Campaign":"Create an Ad Campaign"}
-                            // subTitle="Define campaign parameters here"
-                        />
+                        {/*<PageHeader*/}
+                        {/*    pageIcon={CubeBlue}*/}
+                        {/*    pageTitle={this.props.item?"Edit Campaign":"Create an Ad Campaign"}*/}
+                        {/*    // subTitle="Define campaign parameters here"*/}
+                        {/*/>*/}
 
                         <div className={classes.root}>
                             <Stepper className={"mb-4 p-0"} style={{background:"transparent"}} activeStep={this.state.activeStep}>
@@ -1128,7 +1138,7 @@ class CreateCampaign extends Component {
                                                                     }
                                                                     onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}
                                                                     name={`valueAnd[${index}]`}
-                                                                    value={((this.state.fields[`operatorAnd[${index}]`]==="equals"&&this.state.fields[`propertyAnd[${index}]`]==="brand")?this.props.userDetail.orgId:null)}
+                                                                    // value={((this.state.fields[`operatorAnd[${index}]`]==="equals"&&this.state.fields[`propertyAnd[${index}]`]==="brand")?this.props.userDetail.orgId:null)}
 
                                                                 />
                                                             </div>

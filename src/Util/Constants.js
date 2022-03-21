@@ -54,6 +54,23 @@ console.log(`baseUrl ${baseUrl}, dashboardUrl ${dashboardUrl}`);
 console.log(`baseImgUrl ${baseImgUrl}`);
 console.log(`frontEndUrl ${frontEndUrl}`);
 
+
+export const checkImage=(artifacts)=> {
+
+    // let artifactsArray=[]
+    // for (let i = 0; i < artifacts.length; i++) {
+    //     //
+    //     if (
+    //         artifacts[i].mime_type === "image/jpeg" ||
+    //         artifacts[i].mime_type === "image/png"
+    //     ) {
+    //         imagesArray.push({
+    //             original: imagesArray.images[i].blob_url,
+    //             thumbnail: artifacts[i].blob_url,
+    //         });
+    //     }
+    // }
+}
 export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
@@ -92,11 +109,11 @@ export const SITES_FILTER_VALUES = [
     ];
 export const LISTING_FILTER_VALUES = [
     {key:"name",label:"Name" },
-    {key:"product name",label:"Product Name" },];
+    {key:"product_name",label:"Product Name" },];
 export const CYCLE_FILTER_VALUES = [
-    {key:"search name",label:"Search Name" },
-    {key:"listing name",label:"Listing Name" },
-    {key:"product Name",label:"Product Name" },
+    {key:"search_name",label:"Search Name" },
+    {key:"listing_name",label:"Listing Name" },
+    {key:"product_name",label:"Product Name" },
    ];
 
 export const MATCH_STRATEGY_OPTIONS = ["exact_match", "partial_p90", "partial_p80", "partial_p75"];

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import MessageNameThumbnail from "./MessageNameThumbnail";
-import {BorderBottom} from "@mui/icons-material";
 
 class MessageGroupItem extends Component {
     constructor(props) {
@@ -14,34 +13,90 @@ class MessageGroupItem extends Component {
     }
 
     componentDidMount() {
-        this.getOrgs();
+        // this.getOrgs();
+
+        // if (this.props.allGroupsDetails.length>0){
+        //
+        //     let allOrgs=this.props.allGroupsDetails.filter((item)=>item.key===this.props.item._key)
+        //
+        //     if (allOrgs.length>0){
+
+        // if (this.props.allOrgs) {
+        //     this.setState({
+        //
+        //         allOrgs: this.props.allOrgs
+        //     })
+        // }
+
+        // }
+
+        // if (this.props.item.group){
+        //
+        //     this.setState({
+        //                 allOrgs: this.props.item.group
+        //             })
+        // }
+
+
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
+
+
         if (prevProps !== this.props) {
+
+            // if (this.props.allGroupsDetails.length>0){
+            //
+            //     let allOrgs=this.props.allGroupsDetails.filter((item)=>item.key===this.props.item._key)
+            //
+            //     if (allOrgs.length>0){
+            //
+            //         this.setState({
+            //
+            //             allOrgs: allOrgs[0]
+            //         })
+            //
+            //     }
+            // }
+
+            if (this.props.allOrgs) {
+                // this.setState({
+                //
+                //     allOrgs: this.props.allOrgs.value
+                // })
+
+                console.log(this.props.allOrgs)
+
+            }
+
         }
     }
 
     getOrgs = () => {
-        axios
-            .get(`${baseUrl}message-group/${this.props.item._key}/org`)
-            .then((response) => {
-                const data = response.data.data;
 
-                this.setState({
-                    allOrgs: data,
-                });
+        // axios
+        //     .get(`${baseUrl}message-group/${this.props.item._key}/org`)
+        //     .then((response) => {
+        //         const data = response.data.data;
+        //
+        //         this.setState({
+        //             allOrgs: data,
+        //         });
+        //
+        //
+        //
+        //         if (this.props.index === 0) {
+        //             this.props.handleGroupClick(this.props.item, this.props.index, data);
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.log("message-group-error ", error.message);
+        //     });
 
-                if (this.props.index === 0) {
-                    this.props.handleGroupClick(this.props.item, this.props.index, data);
-                }
-            })
-            .catch((error) => {
-                console.log("message-group-error ", error.message);
-            });
+
     };
 
     handleClick = () => {
-        this.props.handleGroupClick(this.props.item, this.props.index, this.state.allOrgs);
+        this.props.handleGroupClick(this.props.item, this.props.index, this.props.item.group);
     };
 
     render() {
@@ -51,23 +106,26 @@ class MessageGroupItem extends Component {
                     this.props.selectedItem === this.props.index
                         ? "click-item p-3 message-group-item selected"
                         : "click-item p-3 message-group-item"
-                } border-bottom`}
+                } border-bottom  ${this.props.showAll?"": "ellipsis-end"}`}
                 onClick={this.handleClick}>
                 <span id={this.props.item._key + "_thumbnails"} className={"thumbnail-box"}>
-                    {this.state.allOrgs.map((item, index) => (
+                    {this.props.item.group&&this.props.item.group.map((item, index) => (
                         <MessageNameThumbnail
+                            showCount={3}
                             key={index}
                             index={index}
                             item={item}
-                            allOrgs={this.state.allOrgs}
+                            allOrgs={this.props.item.group}
                         />
                     ))}
                 </span>
+                <p>{this.props.item.index}</p>
                 <span
                     id={this.props.item._key + "_thumbnails_name"}
-                    className={"ml-2 group-names text-capitlize "}
-                    style={{ fontSize: "0.7em" }}>
-                    {this.state.allOrgs.map((item, index) => (
+                    className={`ml-2 group-names text-capitlize `}
+                    // style={{ fontSize: "0.7em" }}
+                >
+                    {this.props.item.group&&this.props.item.group.map((item, index) => (
                         <React.Fragment key={index}>
                             <span>
                                 {index > 0 && ","} {item.name}

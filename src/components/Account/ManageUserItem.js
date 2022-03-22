@@ -321,7 +321,7 @@ class ManageUserItem extends Component {
         return (
             <>
 
-                <div className="row no-gutters min-row-height-90 d-flex hover-bg flex-row pb-2 pt-2 border-top align-items-start justify-content-start">
+                <div key={index} className="row no-gutters min-row-height-90 d-flex hover-bg flex-row pb-2 pt-2 border-top align-items-start justify-content-start">
                     <div className=" col-1  align-items-start d-flex ">
                         <span className={"text-blue"}>{index+1}. </span>
 

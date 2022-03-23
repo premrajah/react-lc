@@ -104,9 +104,9 @@ class CampaignItem extends Component {
                             {this.state.item.artifacts && this.state.item.artifacts.map((artifact, i) =>
                                 <li key={i}>
                                     <>
-                                    <div className="d-flex justify-content-center align-items-center"
+                                    <div className="d-flex justify-content-center "
                                          style={{width: "60px", height: "60px"}}>
-                                        <div className="d-flex justify-content-center align-items-center"
+                                        <div className="d-flex justify-content-center "
                                              style={{width: "50%", height: "50%"}}>
 
 

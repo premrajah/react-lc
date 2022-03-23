@@ -82,7 +82,6 @@ class MessengerMessages extends Component {
 
 
                 data.map((d,index) => {
-                    console.log(index)
                     axios
                         .get(
                             (
@@ -103,7 +102,7 @@ class MessengerMessages extends Component {
                                     returnedData.push(group);
 
                                 let sortedData=sortArraysByKey(returnedData,"index")
-                                    console.log(sortedData)
+
 
                             this.setState({
                                     allMessageGroups: sortedData,
@@ -125,18 +124,6 @@ class MessengerMessages extends Component {
                         });
                 });
 
-
-
-
-                console.log("group len ",returnedData.length)
-
-
-
-                // for (let i=0;i<returnedData.length;i++){
-                //     console.log("org messa: ",i)
-                //
-                //     this.getOrgsForGroup(returnedData[i]._key,i)
-                // }
 
 
 
@@ -184,7 +171,6 @@ class MessengerMessages extends Component {
 
                 }
 
-                console.log(allGroups)
 
                 // let allGroupsDetails=this.state.filteredMessageGroups
                 this.setState({

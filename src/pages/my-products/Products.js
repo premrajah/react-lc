@@ -78,6 +78,15 @@ class Products extends Component {
         })
     }
 
+
+    handleChange(value,field ) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+
+    }
+
     setFilters=(data)=>{
 
         let filters= []
@@ -109,15 +118,6 @@ class Products extends Component {
         this.filters= filters
 
     }
-
-    handleChange(value,field ) {
-
-        let fields = this.state.fields;
-        fields[field] = value;
-        this.setState({ fields });
-
-    }
-
 
     seekCount=async () => {
 

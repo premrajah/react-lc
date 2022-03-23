@@ -3,345 +3,147 @@ import PlaceholderImg from "../../img/place-holder-lc.png";
 import MoreMenu from "../MoreMenu";
 
 import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
+import {baseUrl, checkImage} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import {Modal, ModalBody} from "react-bootstrap";
 import moment from "moment/moment";
 import {Link} from "react-router-dom";
 import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
+import Attachment from "@mui/icons-material/Attachment";
 
 class CampaignItem extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            timerEnd: false,
-            count: 0,
-            nextIntervalFlag: false,
-            offers: [],
-            images: [],
-            showSubmitSite: false,
-            errorRegister: false,
-            siteSelected: null,
-            showProductEdit: false,
-            productDuplicate: false,
-            showProductHide: false,
-            showTrackPopUp:false
+
+            artifacts: [],
+            item: null,
+            message_tempalte: null
+
         };
 
-        this.showPopUp = this.showPopUp.bind(this);
-        this.getSites = this.getSites.bind(this);
-        this.showSubmitSite = this.showSubmitSite.bind(this);
-        this.showProductEdit = this.showProductEdit.bind(this);
-        this.showProductDuplicate = this.showProductDuplicate.bind(this);
 
-        this.callBackResult = this.callBackResult.bind(this);
-        this.deleteItem = this.deleteItem.bind(this);
-        this.removeItem = this.removeItem.bind(this);
-
-        this.callBackSubmit = this.callBackSubmit.bind(this);
-        this.showProductHide = this.showProductHide.bind(this);
-        this.goToProduct = this.goToProduct.bind(this);
     }
 
     componentDidMount() {
-        this.getArtifacts()
-    }
 
-    callBackSubmit() {
+    let item=this.props.item
+
+        console.log( item.CampaignToMessage[0].entries[0].Message)
+
+        if (item.CampaignToMessage && item.CampaignToMessage[0] && item.CampaignToMessage[0].entries
+            && item.CampaignToMessage[0].entries[0] && item.CampaignToMessage[0].entries[0].Message) {
+
+            let message=item.CampaignToMessage[0].entries[0].Message
+
+            item.Campaign.message_template=message
+            console.log(item)
+
+
+            axios
+                .get(baseUrl + "message/" + message._key + "/artifact")
+                .then(
+                    (response) => {
+                        var res = response.data.data;
+
+
+                        item.artifacts=res
+
+                        console.log(item)
+
+
+                    },
+                    (error) => {
+                        // var status = error.response.status;
+                    }
+                );
+        }
+
+
+
+
         this.setState({
-            showProductEdit: !this.state.showProductEdit,
-        });
-
-        this.props.loadProductsWithoutParent(this.props.userDetail.token);
-    }
-
-    callBackHide() {
-        this.showProductHide();
-    }
-
-    showProductHide() {
-        this.setState({
-            showProductHide: !this.state.showProductHide,
-        });
-    }
-
-    goToProduct(event) {
-        if (this.props.goToLink) {
-            //
-            //     this.props.history.push(this.props.item&&this.props.item.product?"/product/"+this.props.item.product._key:"/product/"+this.props.item._key)
-        } else {
-            event.preventDefault();
-            this.showProductHide();
-        }
-    }
-
-    getSites() {
-        axios
-            .get(`${baseUrl}site`)
-            .then((response) => {
-                this.setState({ sites: response.data.data });
-            })
-            .catch((error) => {});
-    }
-
-    callBackResult(action) {
-        if (!action) return;
-
-        if (action === "edit") {
-            this.showProductEdit();
-        } else if (action === "delete") {
-            this.deleteItem();
-        } else if (action === "duplicate") {
-            // this.showProductDuplicate()
-            this.submitDuplicateProduct();
-        }
-        else if (action === "remove") {
-            this.removeItem();
-        }
-
-        else if (action === "untrack") {
-
-    this.toggleTrackPopUp()
-
-
-
-        }
-    }
-
-
-    toggleTrackPopUp=()=>{
-        this.setState({
-            showTrackPopUp:!this.state.showTrackPopUp
-
+            item: this.props.item
         })
 
     }
 
-     handleUnTrackProduct = () => {
-
-        axios.delete(`${baseUrl}product/track/${ this.props.item._key}`)
-            .then(res => {
-
-                this.props.reload()
-
-            })
-            .catch(error => {
-
-            })
-    }
 
 
-
-    submitDuplicateProduct = (event) => {
-        axios
-            .post(baseUrl + "product/" + this.props.item.product._key + "/duplicate", {})
-            .then((res) => {
-                this.props.loadProductsWithoutParent(this.props.userDetail.token);
-            })
-            .catch((error) => {});
-    };
-
-    triggerCallback() {
-        this.props.triggerCallback();
-    }
-
-
-    getArtifacts=() =>{
-        axios
-            .get(baseUrl + "product/" + this.props.item._key+"/artifact", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
-            .then(
-                (response) => {
-                    var res = response.data.data;
-
-                    this.setState({
-                        images: res,
-                    });
-                },
-                (error) => {
-                    // var status = error.response.status;
-                }
-            );
-    }
-    removeItem() {
-        let data = {
-            product_id: this.props.parentId,
-            sub_products_ids: [
-                this.props.item && this.props.item.product
-                    ? this.props.item.product._key
-                    : this.props.item._key,
-            ],
-        };
-
-        axios
-            .post(baseUrl + "product/sub-product/remove", data)
-            .then((response) => {
-                // let responseAll = response.data.data;
-                // this.props.history.push("/my-products")
-                // this.props.loadProducts()
-            })
-            .catch((error) => {});
-    }
-
-    deleteItem() {
-        axios
-            .delete(baseUrl + "listing/" + this.props.item.listing._key)
-            .then((response) => {
-                // let responseAll = response.data.data;
-                // this.props.history.push("/my-products")
-                // this.props.loadProducts()
-            })
-            .catch((error) => {});
-    }
-
-    showProductEdit() {
-        this.setState({
-            showProductEdit: !this.state.showProductEdit,
-            productDuplicate: false,
-        });
-    }
-
-    showProductDuplicate() {
-        this.setState({
-            showProductEdit: !this.state.showProductEdit,
-            productDuplicate: true,
-        });
-    }
-
-    showSubmitSite() {
-        this.setState({
-            errorRegister: null,
-            showSubmitSite: !this.state.showSubmitSite,
-        });
-    }
-
-    showPopUp() {
-        this.setState({
-            showPopUp: !this.state.showPopUp,
-        });
-    }
-
-    handleAddToProductList = (item) => {
-
-
-        this.props.listOfProducts(item)
-    }
 
     render() {
+
+        const {index} = this.props
+
         return (
             <>
-                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center mt-4 mb-4  pb-4">
+                {this.state.item &&
+                <tr className="" role="alert">
 
-                                <div key={this.props.item._key+"-campaign-item-box"} className={"col-2 "}>
-                                    <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
-                                        <>
-                                    {this.state.images.length > 0 ? (
-                                        <ImageOnlyThumbnail images={this.state.images} />
-                                    ) : (
-                                        <img className={"img-fluid"} src={PlaceholderImg} alt="" />
-                                    )}
-                                    </>
-                                    </Link>
-                                </div>
-                                <div className={"col-6 pl-2  content-box-listing"}>
+                    <td>{index + 1}</td>
 
-                                        <p style={{ fontSize: "18px" }} className="text-caps mb-1">
-                                            <Link  to={"/campaign/" + this.props.item._key}> {this.props.item.name}</Link>
-                                      </p>
+                    <td className="d-flex align-items-center">
 
-                                    <p style={{ fontSize: "16px" }} className="text-mute mb-1 text-caps">
-                                        {this.props.item.purpose}
-                                    </p>
-                                    <p style={{ fontSize: "16px" }} className="text-mute text-caps mb-1">
-                                        <span className="mr-1">{this.props.item.stage}</span><br/>
-                                        <span className="mr-1">{this.props.item.description}</span>
-
-                                    </p>
-
-                                </div>
-                                <div style={{ textAlign: "right" }} className={"col-2"}>
-                                    <p className={"text-gray-light small"}>
-                                        {moment(this.props.item.start_ts).format("DD MMM YYYY")}
-
-                                    </p>
-
-                                </div>
-                    <div style={{ textAlign: "right" }} className={"col-2"}>
-                        <p className={"text-gray-light small"}>
-                            {moment(this.props.item.end_ts).format("DD MMM YYYY")}
-
-                        </p>
-
-
-                        <MoreMenu
-                            triggerCallback={(action) => this.callBackResult(action)}
-                            edit={this.props.edit}
-
-                        />
-
-                    </div>
-                            </div>
-
-
-
-
-
-                <Modal
-                    className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                    show={this.state.showTrackPopUp}
-                    onHide={this.toggleTrackPopUp}
-                    animation={false}>
-                    <ModalBody>
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-10 text-center"}>
-                                <p className={"text-bold"}>Untrack Product</p>
-                                <p>Are you sure you want to untrack ?</p>
-                            </div>
+                        <div className="pl-3 email">
+                            <span
+                                className={"title-bold text-blue text-capitlize"}>{this.state.item.Campaign.name}</span>
+                            <span
+                                className={"text-gray-light"}>{moment(this.state.item.Campaign._ts_epoch_ms).format("DD MMM YYYY")}</span>
                         </div>
+                    </td>
+                    <td className={"text-gray-light"}>{moment(this.state.item.Campaign.start_ts).format("DD MMM YYYY")} - {moment(this.state.item.Campaign.end_ts).format("DD MMM YYYY")}</td>
+                    <td className="status text-capitlize"><span
+                        className={this.state.item.Campaign.stage === "active" ? "active" : "waiting"}>{this.state.item.Campaign.stage}</span>
+                    </td>
 
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-12 text-center mt-2"}>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <button
-                                            onClick={()=>{
-                                                this.toggleTrackPopUp()
-                                                this.handleUnTrackProduct()
+                    <td className={""}>
+                        <ul className="persons">
 
-                                            }}
-                                            className={
-                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                            }
-                                            type={"submit"}>
-                                            Submit
-                                        </button>
+                            {this.state.item.artifacts && this.state.item.artifacts.map((artifact, i) =>
+                                <li key={i}>
+                                    <>
+                                    <div className="d-flex justify-content-center align-items-center"
+                                         style={{width: "60px", height: "60px"}}>
+                                        <div className="d-flex justify-content-center align-items-center"
+                                             style={{width: "50%", height: "50%"}}>
+
+
+                                            {checkImage(artifact.blob_url)? <img
+                                                src={artifact ? artifact.blob_url : ""}
+                                                className="img-fluid w-100 h-100"
+                                                alt={artifact.name}
+                                                style={{borderRadius: "50%", objectFit: "contain"}}
+                                            />:
+                                                <Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />}
+                                        </div>
                                     </div>
-                                    <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <p
-                                            onClick={this.toggleTrackPopUp}
-                                            className={
-                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                            }>
-                                            Cancel
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ModalBody>
-                </Modal>
+
+                                        </>
+                                </li>
+                            )}
+
+                        </ul>
+                    </td>
+                    <td>
+                        {/*<EditIcon onClick={()=>this.toggleRightBar(item)}  />*/}
+
+                        <span className={"text-bold"} style={{cursor: "pointer"}}
+                              onClick={() => {
+
+                                  this.props.toggleRightBar({campaign: this.state.item.Campaign})
+
+                              }}> View Details</span>
+                    </td>
+
+                </tr>}
             </>
         );
+
+
     }
 }
-
 const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,

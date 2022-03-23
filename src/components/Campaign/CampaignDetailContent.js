@@ -26,12 +26,7 @@ class CampaignDetailContent extends Component {
 
     toggleEditMode=(item)=> {
 
-this.setState({
-    editMode:!this.state.editMode
-})
-
-
-        this.props.toggleEditMode()
+        this.props.toggleEditMode(this.state.item)
 
     }
 

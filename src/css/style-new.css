@@ -4230,8 +4230,30 @@ input:active,input:focus{
     position: absolute;
     bottom: 0px;
 }
+.attachment-icon{
+    position: absolute!important;
+    left: 0!important;
+    right:0!important;
+    top: 0!important;
+    bottom: 0!important;
+    margin: auto!important;
+    color: #27245c!important;
+    padding: 10px!important;
+    background: #ccc!important;
+    width: 100%!important;
+    height: 100%!important;
+
+}
 
 .bottom-btn-box button{
 
     margin-right: 20px;
+}
+.allow-overflow>.MuiDialog-container>.MuiDialog-paper{
+    overflow: unset;
+
+}
+.allow-overflow>.MuiDialog-container>.MuiDialog-paper>.MuiDialogContent-root{
+    overflow: unset!important;
+
 }

@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
-import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import {baseUrl, checkImage, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 // import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DatePicker from '@mui/lab/DatePicker';
+import Attachment from "@mui/icons-material/FilePresent";
 
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
@@ -130,9 +131,6 @@ class CreateCampaign extends Component {
     }
 
     addCountAll = () => {
-
-
-
 
         let arrayCount = this.state.addCountAll;
         arrayCount.push(this.state.countAll+1)
@@ -253,10 +251,6 @@ class CreateCampaign extends Component {
     callStrategy=()=>{
 
 
-
-
-
-
         axios
             .post(campaignStrategyUrl, {
                 all_of:this.state.conditionAll,
@@ -282,7 +276,6 @@ class CreateCampaign extends Component {
 
 
     loadSavedValues=()=> {
-
 
 
 
@@ -1410,10 +1403,15 @@ class CreateCampaign extends Component {
                                                                                                     }
 
                                                                                                     style={{
-                                                                                                        backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
+                                                                                                        backgroundImage: `url("${item.imgUrl ? checkImage(item.imgUrl)?item.imgUrl:"" : URL.createObjectURL(item.file)}")`
 
                                                                                                     }}
                                                                                                 >
+                                                                                                    {/*{console.log(item.file)}*/}
+                                                                                                    {item.file&&(!checkImage(item.file.name))?<Attachment className={"attachment-icon file"}/>:null}
+
+
+                                                                                                    {item.imgUrl&&(!checkImage(item.imgUrl))?<Attachment className={"attachment-icon image"}/>:null}
                                                                                                     {item.status ===
                                                                                                     0 && (
                                                                                                         <Spinner

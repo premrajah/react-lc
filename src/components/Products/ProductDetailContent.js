@@ -994,6 +994,7 @@ class ProductDetailContent extends Component {
                         </Modal>
 
                         <GlobalDialog
+                            allowOverflow
                             heading={"Release Product: "+ this.state.item.product.name}
                             show={this.state.showReleaseProduct}
                             hide={this.showReleaseProductPopUp}
@@ -1233,7 +1234,6 @@ class ProductDetailContent extends Component {
                                                                                                         .showReleaseProductPopUp
                                                                                                 }
                                                                                             >
-                                                                                                Cancel
                                                                                             </BlueBorderButton>
                                                                                         </div>
                                                                                     </div>

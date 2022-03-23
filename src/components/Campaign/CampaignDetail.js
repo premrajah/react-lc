@@ -102,7 +102,7 @@ class CampaignDetail extends Component {
     callBackResult(action) {
         if (action === "edit") {
 
-            this.props.toggleEditMode()
+            this.props.toggleEditMode(this.props.item)
 
             // this.setState({
             //     editMode:true

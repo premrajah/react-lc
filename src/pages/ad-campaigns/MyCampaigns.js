@@ -5,7 +5,7 @@ import CubeBlue from "../../img/icons/product-icon-big.png";
 import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
-import {baseUrl, CAMPAIGN_FILTER_VALUES} from "../../Util/Constants";
+import {baseUrl, CAMPAIGN_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import moment from "moment/moment";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
@@ -16,6 +16,9 @@ import AddIcon from '@mui/icons-material/Add';
 import CreateCampaign from "./CreateCampaign";
 import RightSidebar from "../../components/RightBar/RightSidebar";
 import CampaignDetailContent from "../../components/Campaign/CampaignDetailContent";
+import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
+import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
+import CampaignItem from "../../components/Campaign/CampaignItem";
 
 class MyCampaigns extends Component {
 
@@ -38,7 +41,13 @@ class MyCampaigns extends Component {
             createNew:false,
             toggleBar:false,
             editItem:null,
-            campaignMode:0// 0 nothing,1- create,2-view,3 -edit
+            campaignMode:0,// 0 nothing,1- create,2-view,3 -edit,
+            lastPageReached:false,
+            offset:0,
+            pageSize:50,
+            loadingResults:false,
+            count:0,
+            selectedItem:null
 
         }
 
@@ -93,14 +102,123 @@ class MyCampaigns extends Component {
     componentDidMount() {
 
 
-        this.loadCampaigns()
+        // this.loadCampaigns()
+
+    }
+
+
+
+    setFilters=(data)=>{
+
+        let filters= []
+        let subFilter=[]
+
+        let searchValue= data.searchValue
+        let activeFilter= data.searchFilter
+
+        if (searchValue){
+
+            if (activeFilter){
+
+                subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
+
+            }else{
+
+                PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
+                    subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
+                )
+
+
+            }
+        }
+
+
+        filters.push({filters:subFilter,operator:"||"})
+
+
+        this.filters= filters
+
+    }
+
+    seekCount=async () => {
+
+
+        let url = baseUrl+"seek?name=Campaign&count=true"
+
+
+        let result = await seekAxiosGet(url)
+
+
+        this.setState({
+            count: result.data?result.data.data:0,
+
+        })
+
+
+
+    }
+
+
+
+    refreshList=()=>{
+        this.setState({
+            items:[],
+            offset:0
+        })
+
+        this.loadCampaignsPageWise({data:{reset:true}})
+    }
+    loadCampaignsPageWise=async (data) => {
+
+
+        this.seekCount()
+
+        this.setState({
+
+            loadingResults: true
+        })
+
+        let newOffset = this.state.offset
+
+        let url = `${baseUrl}seek?name=Campaign&relation=belongs_to&include-to=Message:any&count=false&offset=${data.reset?0:this.state.offset}&size=${this.state.pageSize}`
+
+        // let url = createSeekURL("Campaign", false, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
+
+        //let url = createSeekURL("campaign")
+
+        let result = await seekAxiosGet(url)
+
+
+        if (result && result.data && result.data.data) {
+
+            this.state.offset = newOffset + this.state.pageSize
+
+            this.setState({
+                items: this.state.items.concat(result.data ? result.data.data : []),
+                loadingResults: false,
+                lastPageReached: (result.data ? (result.data.data.length === 0 ? true : false) : true),
+                offset: newOffset + this.state.pageSize
+
+            })
+        } else {
+
+            if (result) {
+                this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+
+                this.setState({
+
+                    loadingResults: false,
+                    lastPageReached: true
+
+                })
+
+            }
+        }
 
     }
 
 
      loadCampaigns = ()  => {
-
-
 
         axios
             .get(createCampaignUrl, {
@@ -343,7 +461,9 @@ this.props.toggleRightBar()
 
     toggleEditMode=(item)=> {
 
+        console.log(item)
         this.setState({
+            selectedItem:item,
             campaignMode:3
         })
 
@@ -359,30 +479,29 @@ this.props.toggleRightBar()
 
                 <div className="wrapper">
 
-                    <RightSidebar heading={this.state.campaignMode ==1?"Create Campaign":this.state.campaignMode ==2?"Campaign Details":"Edit Campaign"} toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
+                    <RightSidebar heading={this.state.campaignMode ==1? "Create Campaign":this.state.campaignMode ==2?"Campaign Details":"Edit Campaign"} toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
 
                         {this.state.campaignMode ==1 && <CreateCampaign  refreshData={
 
                             ()=> {
                                 this.toggleRightBar()
-                                this.loadCampaigns()
+                                this.refreshList()
                                 this.setState({
                                     campaignMode:0
                                 });
                             }} />}
-                        {this.state.campaignMode ==3 &&  this.state.editItem&& <CreateCampaign item={this.state.editItem}
-                                                                                               refreshData={
-
-                                                                                                   ()=> {
-                                                                                                       this.toggleRightBar()
-                                                                                                       this.loadCampaigns()
-                                                                                                       this.setState({
-                                                                                                           campaignMode:0
-                                                                                                       });
-                                                                                                   }}
+                        {this.state.campaignMode ==3 && this.state.selectedItem&&
+                        <CreateCampaign item={this.state.selectedItem}
+                              refreshData={ ()=> { this.toggleRightBar()
+                                        this.refreshList()
+                                         this.setState({
+                                         campaignMode:0
+                                                     });
+                                                }}
                         />}
 
-                        {this.state.campaignMode ==2 && this.state.editItem && <CampaignDetailContent toggleEditMode={this.toggleEditMode} item={this.state.editItem} />}
+                        {this.state.campaignMode ==2
+                        && this.state.editItem && <CampaignDetailContent toggleEditMode={this.toggleEditMode} item={this.state.editItem} />}
 
                     </RightSidebar>
                     <div className="container  mb-150  pb-4 pt-4">
@@ -425,38 +544,7 @@ this.props.toggleRightBar()
                         <CreateCampaign />
                         }
 
-                        <div className="row d-none  justify-content-center search-container  pt-3 pb-4">
-                            <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={CAMPAIGN_FILTER_VALUES} />
-                            </div>
-                        </div>
-                        <div className={"d-none listing-row-border "}></div>
 
-                        <div className="row d-none justify-content-center filter-row    pt-3 pb-3">
-                            <div className="col-8">
-                                <p style={{ fontSize: "18px" }} className="text-mute mb-1">
-                                    {this.state.items.filter((site)=>
-                                            this.state.filterValue?( this.state.filterValue==="name"?
-                                                site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                this.state.filterValue==="description"?site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                    null):
-                                                (site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                                   site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()))
-
-                                        ).length
-
-                                    }
-                                    <span className="ml-1">Campaigns Found</span>
-                                </p>
-                            </div>
-                            <div className="text-mute col-2 pl-0 text-right">
-                                <span style={{ fontSize: "18px" }}>Start Data</span>
-                            </div>
-                            <div className="text-mute col-2 pl-0 text-right">
-                                <span style={{ fontSize: "18px" }}>End Date</span>
-                            </div>
-                        </div>
-                        <div className={" d-none listing-row-border mb-3"}></div>
 
                         <div className="row">
                                 <div className="col-md-12">
@@ -473,73 +561,36 @@ this.props.toggleRightBar()
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {
-                                                this.state.items.filter((site)=>
-                                                    this.state.filterValue?( this.state.filterValue==="name"?
-                                                        site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                        this.state.filterValue==="description"?site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                            null):
-                                                        (site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                                           site.campaign.description&&site.description.toLowerCase().includes(this.state.searchValue.toLowerCase()))
 
-                                                )
+
+                                            <PaginationLayout
+                                                hideSearch
+                                                hideCount
+
+                                                dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
+                                                count={this.state.count}
+                                                visibleCount={this.state.items.length}
+                                                loadingResults={this.state.loadingResults}
+                                                lastPageReached={this.state.lastPageReached}
+                                                loadMore={(data)=>this.loadCampaignsPageWise(data)} >
+
+                                            </PaginationLayout>
+
+
+                                            {this.state.items
                                                     .map((item, index) => (
 
 
-                                                            <tr className="" role="alert">
-
-                                                                <td>{index+1}</td>
-
-                                                <td className="d-flex align-items-center">
-
-                                                    {/*<Link to={"/campaign/"+item.campaign._key}>*/}
-                                                        <div className="pl-3 email">
-                                                        <span className={"title-bold text-blue text-capitlize"}>{item.campaign.name}</span>
-                                                        <span className={"text-gray-light"}>{moment(item.campaign._ts_epoch_ms).format("DD MMM YYYY")}</span>
-                                                    </div>
-                                                    {/*</Link>*/}
-                                                </td>
-                                                <td className={"text-gray-light"}>{moment(item.campaign.start_ts).format("DD MMM YYYY")} - {moment(item.campaign.end_ts).format("DD MMM YYYY")}</td>
-                                                <td className="status text-capitlize"><span className={item.campaign.stage==="active"?"active":"waiting"}>{item.campaign.stage}</span></td>
-
-                                                                <td>
-                                                                    <ul className="persons">
-
-                                                                        {item.artifacts && item.artifacts.map((artifact, i)=>
-                                                                            <li key={i}>
-                                                                                <div className="d-flex justify-content-center align-items-center" style={{width: "60px", height: "60px"}}>
-                                                                                    <div className="d-flex justify-content-center align-items-center" style={{  width: "50%", height: "50%"}}>
-                                                                                        <img
-                                                                                            src={artifact ? artifact.blob_url : ""}
-                                                                                            className="img-fluid w-100 h-100"
-                                                                                            alt={artifact.name}
-                                                                                            style={{borderRadius: "50%", objectFit: "contain"}}
-                                                                                        />
-                                                                                    </div>
-                                                                                </div>
-                                                                            </li>
-                                                                        )}
-
-                                                                    </ul>
-                                                                </td>
-                                                       <td>
-                                                           {/*<EditIcon onClick={()=>this.toggleRightBar(item)}  />*/}
-
-                                                           <span className={"text-bold"} style={{cursor: "pointer"}} onClick={()=>
-                                                           {
-
-                                                           this.setState({
-                                                               campaignMode:2
-                                                           });
-                                                               this.toggleRightBar(item)
-
-                                                           } } >
-                                                           View Details</span>
-                                                </td>
-
-                                            </tr>
-
-                                                            ))}
+                                                         <CampaignItem item={item} index={index}
+                                                         toggleRightBar={(data)=>{
+                                                             this.setState({
+                                                                 campaignMode:2
+                                                             });
+                                                             this.toggleRightBar(data);
+                                                         }}
+                                                         />
+)
+                                                            )}
 
                                             </tbody>
                                         </table>
@@ -548,40 +599,6 @@ this.props.toggleRightBar()
                             </div>
                         </div>
 
-
-
-                        {this.state.items.filter((site)=>
-                                this.state.filterValue?( this.state.filterValue==="name"?
-                                    site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                    this.state.filterValue==="condition"? site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                        this.state.filterValue==="brand"? site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                            this.state.filterValue==="category"? site.category.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                this.state.filterValue==="type"? site.type.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                    this.state.filterValue==="state"? site.state.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                        this.state.filterValue==="year of manufacture"? site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase()) :
-                                                            this.state.filterValue==="model"? site.sku.model&&site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-                                                                this.state.filterValue==="serial no."?site.sku.serial&& site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()) :
-
-
-                                                                    null):
-                                    (site.campaign.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.condition&&site.condition.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.sku.brand.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.category.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.type.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.state.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.year_of_making&&site.year_of_making.toString().includes(this.state.searchValue.toLowerCase())||
-                                        site.sku.model&& site.sku.model.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                        site.sku.serial&&site.sku.serial.toLowerCase().includes(this.state.searchValue.toLowerCase()))
-
-                            ).length===0&&
-                            <div className="row  justify-content-center filter-row    pt-3 pb-3">
-                                <div   className="col">
-                                    <div>No campaigns found!</div>
-                                </div>
-                            </div>
-
-                        }
 
                     </div>
 
@@ -632,7 +649,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
         toggleRightBar: (data) => dispatch(actionCreator.toggleRightBar(data)),
-
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MyCampaigns);

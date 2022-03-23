@@ -30,12 +30,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
             <Dialog
+
                 open={props.show}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
                 maxWidth={props.size?props.size:"sm"}
-                // className="p-3"
+                    className={`${props.allowOverflow?" allow-overflow":""}`}
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogContent>

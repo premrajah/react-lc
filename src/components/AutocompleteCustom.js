@@ -382,7 +382,8 @@ class AutocompleteCustom extends Component {
 
         if (showSuggestions && userInput) {
             if (filteredSuggestions.length) {
-                suggestionsListComponent = (
+                suggestionsListComponent =(
+                    <div className={"suggestions-box"}>
                     <ul class="suggestions">
                         {!this.props.hideAddNew && <li>
                             <div  className=" no-gutters row">
@@ -436,6 +437,7 @@ class AutocompleteCustom extends Component {
 
 
                     </ul>
+                    </div>
                 );
             }
             // else {

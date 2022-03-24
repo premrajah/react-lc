@@ -296,7 +296,7 @@ class SystemManageUser extends Component {
                         {this.state.items.map((item,index)=>
                             <div key={index}>
 
-                               <ManageUserItem approveType toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)}
+                               <ManageUserItem systemUser approveType toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)}
                                                refreshList={this.fetchUsers} item={item} index={index}/>
 
                             </div>

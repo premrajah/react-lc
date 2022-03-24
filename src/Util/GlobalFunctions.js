@@ -152,6 +152,10 @@ export const  seekAxiosGet=  (url)=> {
 }
 
 
+export const   isEmptyHtml=( el )=>{
+    // return trim(el.html())
+}
+
 
 export const getActionName=(actionName)=>{
 

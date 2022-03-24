@@ -4141,7 +4141,7 @@ input:active,input:focus{
 
 }
 .icon-holder>img{
-    margin-top: 10%;
+    margin-top: 13%;
     height: 100px;
 }
 .icon-container h3{
@@ -4255,5 +4255,14 @@ input:active,input:focus{
 }
 .allow-overflow>.MuiDialog-container>.MuiDialog-paper>.MuiDialogContent-root{
     overflow: unset!important;
+
+}
+.bg-light{
+
+    background: #f9fbfc;
+}
+.pb-20{
+
+    padding-bottom: 5rem !important;
 
 }

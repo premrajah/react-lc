@@ -85,7 +85,7 @@ const SubproductItem = (props) => {
                 }
             </div>
 
-            <div className="col-8 pl-2">
+            <div className="col-10 pl-2">
                 <div>
                     <Link  to={props.noLinking?"#":`/product/${item._key}`}>
                         <span className={"title-bold"}>{item.name}</span>
@@ -128,17 +128,22 @@ const SubproductItem = (props) => {
                 }
                 </>
                 }
+
+                <div className={"text-gray-light date-bottom "}>
+                    {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
+                </div>
+                {!props.aggregate &&(!props.hideMoreMenu)&&
+
+                <div className={"top-right"}>
+
+                     <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />
+                </div>
+
+                }
             </div>
 
-            {!props.aggregate &&
-            <div className="col-2 d-flex justify-content-end">
-                <div>
-                    <div className={"text-gray-light date-bottom "}>
-                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
-                    </div>
-                    {(!props.hideMoreMenu)&& <MoreMenu remove={remove} triggerCallback={(action) => removeProduct(action)} />}
-                </div>
-            </div>}
+
+
         </div>
     </>
 }

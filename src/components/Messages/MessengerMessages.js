@@ -16,7 +16,12 @@ import MessageGroupSingleArtifactDialog from "./MessageGroupSingleArtifactDialog
 import MessageGroupItem from "./MessageGroupItem";
 import MessageNameThumbnail from "./MessageNameThumbnail";
 import CustomPopover from "../FormsUI/CustomPopover";
-import {fetchErrorMessage, sortArraysByKey} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, isEmptyHtml, sortArraysByKey} from "../../Util/GlobalFunctions";
+import GlobalDialog from "../RightBar/GlobalDialog";
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import SubproductItem from "../Products/Item/SubproductItem";
 
 class MessengerMessages extends Component {
     constructor(props) {
@@ -43,7 +48,10 @@ class MessengerMessages extends Component {
             showHideOrgSearch: false,
             openEntityDialog: false,
             openSingleArtifactDialog: false,
-            allGroupsDetails:[]
+            allGroupsDetails:[],
+            msgLoading:false,
+            entityObj: {},
+            showEntity:false
         };
     }
 
@@ -97,14 +105,14 @@ class MessengerMessages extends Component {
                                 group.index=index
 
 
-                            // let sortedData= sortArraysByKey(returnedData.push(group),"index");
-                            //     let sortedData=
-                                    returnedData.push(group);
+                                // let sortedData= sortArraysByKey(returnedData.push(group),"index");
+                                //     let sortedData=
+                                returnedData.push(group);
 
                                 let sortedData=sortArraysByKey(returnedData,"index")
 
 
-                            this.setState({
+                                this.setState({
                                     allMessageGroups: sortedData,
                                     filteredMessageGroups: sortedData,
                                 });
@@ -151,7 +159,7 @@ class MessengerMessages extends Component {
 
                 if (index==0){
 
-                    this.handleGroupClick(this.state.allMessageGroups[0], 0);
+                    this.handleGroupClick(this.state.allMessageGroups[0]._key,[], 0);
                     this.setState({
                         selectedOrgs: groupDetail
                     })
@@ -193,6 +201,59 @@ class MessengerMessages extends Component {
             });
     };
 
+
+    toggleEntity=async (entity,entityType) => {
+
+
+
+        this.setState({
+            showEntity: !this.state.showEntity,
+            entityObj:{entity:entity,type:entityType}
+
+        })
+    }
+
+    processMessages = (messages) => {
+
+        let processedMessages=[]
+
+        for (let i=0;i<messages.length;i++){
+
+            let completeMessage=messages[i]
+            let messageObj=completeMessage.message
+
+            const text=messageObj.text
+            const time=messageObj._ts_epoch_ms
+
+            let orgFrom=completeMessage.orgs.find((item)=> (item.actor==="message_from"))
+
+            let orgName=orgFrom.org.org.name
+
+            let isOwner=orgFrom.org.org._id===this.props.userDetail.orgId?true:false
+
+
+            processedMessages.push({
+                text:text,
+                time:time,
+                orgName:orgName,
+                isOwner:isOwner,
+                entityType:messageObj.entity_type,
+                entityAsJson:messageObj.entity_as_json?messageObj.entity_as_json:null,
+                entityKey:messageObj.entity_key,
+
+
+            })
+
+        }
+
+
+        return processedMessages
+
+
+
+    };
+
+
     getGroupMessageWithId = (id) => {
         if (!id) {
             this.setState({
@@ -201,21 +262,35 @@ class MessengerMessages extends Component {
             return;
         }
 
+        this.setState({
+            msgLoading:true
+        })
         axios
             .get(`${baseUrl}message-group/${id}/message`)
 
             .then((response) => {
+
+
+                let processedMessages=this.processMessages(response.data.data)
+
+
                 this.setState({
-                    selectedMsgGroup: response.data.data,
+                    selectedMsgGroup: processedMessages,
                 });
+
             })
             .catch((error) => {
-                this.props.showSnackbar({
-                    show: true,
-                    severity: "warning",
-                    message: `Group message error ${error.message}`,
-                });
-            });
+                // this.props.showSnackbar({
+                //     show: true,
+                //     severity: "warning",
+                //     message: `Group message error ${error.message}`,
+                // });
+            }).finally(()=>{
+
+            this.setState({
+                msgLoading:false
+            })
+        });
     };
 
     handleEntityDialogOpen = () => {
@@ -300,18 +375,29 @@ class MessengerMessages extends Component {
 
     };
 
-    handleGroupClick = (groupdId, orgs, selectedIndex) => {
+
+
+
+    handleGroupClick = (groupdId, orgs, selectedIndex,showLoading) => {
         this.updateSelected(selectedIndex);
 
         if (groupdId) {
 
             this.setState({
+                selectedIndex:selectedIndex,
                 selectedGroupId: groupdId,
                 selectedGroupKey: groupdId,
                 showHideOrgSearch: false,
                 showHideGroupFilter: false,
+
+            });
+
+            if (showLoading)
+            this.setState({
+
                 selectedMsgGroup: [],
             });
+
             this.getGroupMessageWithId(groupdId);
 
             this.setState({
@@ -366,6 +452,15 @@ class MessengerMessages extends Component {
     };
 
     sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
+
+
+        console.log(text, toOrgIds, messageGroupId, linkedMessageId, messageType)
+
+        // if (isEmptyHtml(text)){
+        //
+        //     alert("emoty")
+        //     return
+        // }
         if (!text) return;
 
         let payload = {};
@@ -387,17 +482,19 @@ class MessengerMessages extends Component {
                         text: text,
                     },
                     to_org_ids: [],
-                    message_group_id: messageGroupId._key,
+                    message_group_id: messageGroupId,
                 };
                 break;
             default:
                 return;
         }
 
-        this.postMessage(payload, messageType,messageGroupId._key);
+        this.postMessage(payload, messageType,messageGroupId);
     };
 
     postMessage = (payload, messageType,messageGroupId) => {
+
+
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
@@ -414,7 +511,9 @@ class MessengerMessages extends Component {
 
                     } else {
 
-                        this.handleGroupClick(messageGroupId,this.state.selectedOrgs, this.state.selectedItem);
+
+                        // console.log(messageGroupId,this.state.selectedOrgs, this.state.selectedIndex)
+                        this.handleGroupClick(messageGroupId,this.state.selectedOrgs, this.state.selectedIndex, false);
 
 
                     }
@@ -432,10 +531,26 @@ class MessengerMessages extends Component {
     };
 
     handleSendMessage = () => {
+
+
+        // console.log(this.state.selectedGroupId)
+
         if (this.state.messageText && this.state.newMsgOrgs.length > 0) {
-            this.sendMessage(this.state.messageText, this.state.newMsgOrgs, "", "", "new_message");
-        } else if (this.state.messageText && this.state.selectedMsgGroup.length > 0) {
+
+            let newMsgOrgs=this.state.newMsgOrgs
+            this.setState({
+                newMsgOrgs:[]
+            })
+
+            this.sendMessage(this.state.messageText, newMsgOrgs,
+                "", "", "new_message");
+
+
+        }
+        else if (this.state.messageText && this.state.selectedMsgGroup.length > 0) {
             if (this.state.selectedGroupId) {
+
+
                 this.sendMessage(
                     this.state.messageText,
                     [],
@@ -462,6 +577,7 @@ class MessengerMessages extends Component {
         return (
             <>
                 <div className="row bg-white rad-8 gray-border   message-row no-gutters mb-5">
+
                     <div
                         className="col-md-4 message-column"
                         style={{
@@ -513,17 +629,17 @@ class MessengerMessages extends Component {
                                     )}
                                     {this.state.filteredMessageGroups.map((group, i) => (
                                         <React.Fragment key={group._key + "_item"}>
-                                         <>
+                                            <>
 
-                                            <MessageGroupItem
+                                                <MessageGroupItem
 
-                                                selectedItem={this.state.selectedItem}
-                                                index={i}
-                                                handleGroupClick={(group, i, orgs) =>
-                                                    this.handleGroupClick(group._key,orgs, i, )
-                                                }
-                                                item={group}
-                                            />
+                                                    selectedItem={this.state.selectedItem}
+                                                    index={i}
+                                                    handleGroupClick={(group, orgs,i) =>
+                                                        this.handleGroupClick(group._key,orgs, i,true)
+                                                    }
+                                                    item={group}
+                                                />
 
                                             </>
                                         </React.Fragment>
@@ -627,98 +743,72 @@ class MessengerMessages extends Component {
                                 borderRight: "1px solid var(--lc-bg-gray)",
                             }}>
                             <div className="col" style={{ minHeight: "400px" }}>
-                                {this.state.selectedMsgGroup.length <= 0 &&
-                                this.state.allMessageGroups.length > 0 &&
-                                this.state.allMessageGroups[0].id !== "0" ? (
+
                                     <>
-                                        {!this.state.showHideOrgSearch && (
+                                        {!this.state.showHideOrgSearch && this.state.msgLoading &&(
                                             <div className={"text-center p-3"}>
                                                 Loading conversation...
                                             </div>
                                         )}
                                     </>
-                                ) : (
-                                    <div></div>
-                                )}
-                                {this.state.selectedMsgGroup.length > 0 ? (
-                                    <div className="message-window p-3 ">
+
+
+                                    <div className="message-window pr-3 pl-5 pt-5 mb-5 pb-20 ">
                                         {this.state.selectedMsgGroup.map((m, i) => (
+
+
                                             <React.Fragment key={i}>
                                                 <div
                                                     key={i}
-                                                    className={`d-flex ${
-                                                        this.checkWhoseMessage(m.orgs)
-                                                            ? "justify-content-start msg-light"
-                                                            : "justify-content-end msg-dark"
+                                                    className={`d-flex  ${
+                                                        m.isOwner
+                                                            ? "justify-content-end "
+                                                            : "justify-content-start msg-light"
                                                     }`}>
+
                                                     <div
-                                                        className="w-75 p-2 mb-3 chat-msg-box border-rounded text-blue gray-border"
-                                                        style={{
-                                                            background: this.checkWhoseMessage(
-                                                                m.orgs
-                                                            )
-                                                                ? "#ffffff"
-                                                                : "#ffffff",
-                                                        }}>
+                                                        className="w-75 pr-2 pl-2 mb-3 chat-msg-box border-rounded text-blue gray-border"
+
+                                                    >
                                                         <div className="d-flex justify-content-between">
                                                             <div>
-                                                                <small>
+                                                                <span>
                                                                     <small
-                                                                        className="mr-1"
-                                                                        style={{
-                                                                            opacity: "0.8",
-                                                                        }}>
-                                                                        {m.orgs[0].org.org.name}
-                                                                        {this.checkWhoseMessage(
-                                                                            m.orgs
-                                                                        )
-                                                                            ? m.orgs[0].org.org.name
-                                                                            : ""}
+                                                                        className="mr-2"
+                                                                    >
+                                                                        {m.orgName}
+
                                                                     </small>
                                                                     <small
                                                                         className={
                                                                             "text-gray-light"
                                                                         }
-                                                                        style={{
-                                                                            opacity: "0.5",
-                                                                        }}>
+
+                                                                    >
                                                                         {moment(
-                                                                            m.message._ts_epoch_ms
+                                                                            m.time
                                                                         ).fromNow()}
                                                                     </small>
-                                                                </small>
+                                                                </span>
                                                             </div>
                                                             <div>
-                                                                {m.message.entity_as_json && (
+                                                                {m.entityAsJson && (
                                                                     <small
-                                                                        className="mr-2"
+                                                                        className="mr-2 d-none"
                                                                         style={{
                                                                             cursor: "pointer",
                                                                         }}>
                                                                         <ExplicitIcon
                                                                             fontSize="small"
-                                                                            onClick={
+                                                                            onClick={()=>
                                                                                 this
-                                                                                    .handleEntityDialogOpen
+                                                                                    .toggleEntity(m.entityAsJson,m.entityType)
                                                                             }
                                                                         />
-                                                                        <MessageEntityDialog
-                                                                            entity={
-                                                                                m.message
-                                                                                    .entity_as_json
-                                                                            }
-                                                                            open={
-                                                                                this.state
-                                                                                    .openEntityDialog
-                                                                            }
-                                                                            onClose={
-                                                                                this
-                                                                                    .handleEntityDialogClose
-                                                                            }
-                                                                        />
+
                                                                     </small>
                                                                 )}
-                                                                {m.artifacts.length > 0 && (
+                                                                {m.artifacts&&m.artifacts.length > 0 && (
                                                                     <small
                                                                         style={{
                                                                             cursor: "pointer",
@@ -730,75 +820,124 @@ class MessengerMessages extends Component {
                                                                                     .handleSingleArtifactDialogOpen
                                                                             }
                                                                         />
-                                                                        <MessageGroupSingleArtifactDialog
-                                                                            artifacts={m.artifacts}
-                                                                            open={
-                                                                                this.state
-                                                                                    .openSingleArtifactDialog
-                                                                            }
-                                                                            onClose={
-                                                                                this
-                                                                                    .handleSingleArtifactDialogClose
-                                                                            }
-                                                                        />
+
                                                                     </small>
                                                                 )}
                                                             </div>
                                                         </div>
+
+                                                         {m.entityAsJson &&<span  onClick={()=>
+                                                             this
+                                                                 .toggleEntity(m.entityAsJson,m.entityType)
+                                                         }>{m.entityType}: <span className={"forgot-password-link"}>{m.entityAsJson.name}</span></span> }
                                                         <div
                                                             dangerouslySetInnerHTML={createMarkup(
-                                                                m.message.text
+                                                                m.text
                                                             )}></div>
                                                     </div>
                                                 </div>
                                             </React.Fragment>
                                         ))}
                                         <div className="dummy" ref={this.messagesEndRef} />
+
                                     </div>
-                                ) : (
-                                    <div></div>
-                                )}
+
                             </div>
                         </div>
                         <div
                             className="row no-gutters bottom-editor">
-                        <div className="col-12 ">
-                            <div className="wysiwyg-editor-container">
-                                <div className="row no-gutters">
-                                    <div className="col-12">
-                                        <WysiwygEditor
-                                            allOrgs={this.state.allOrgs}
-                                            ref={this.resetDraftRef}
-                                            richTextHandleCallback={(value) =>
-                                                this.handleRichTextCallback(value)
-                                            }
-                                        />
-
-                                        <button
-                                            className=" send-bottom-button bg-transparent justify-content-center align-content-center"
-                                            type="button"
-                                            disabled={this.state.messageText ? false : true}
-                                            fullWidth
-                                            onClick={() => this.handleSendMessage()}>
-                                            <SendIcon
-                                                sx={{ fontSize: 48 }}
-                                                style={{
-                                                    color: this.state.messageText
-                                                        ? "var(--lc-purple)"
-                                                        : "var(--lc-bg-gray)",
-                                                }}
+                            <div className="col-12 ">
+                                <div className="wysiwyg-editor-container">
+                                    <div className="row no-gutters">
+                                        <div className="col-12">
+                                            <WysiwygEditor
+                                                allOrgs={this.state.allOrgs}
+                                                ref={this.resetDraftRef}
+                                                richTextHandleCallback={(value) =>
+                                                    this.handleRichTextCallback(value)
+                                                }
                                             />
-                                        </button>
+
+                                            <button
+                                                className=" send-bottom-button bg-transparent justify-content-center align-content-center"
+                                                type="button"
+                                                disabled={this.state.messageText ? false : true}
+                                                fullWidth
+                                                onClick={() => this.handleSendMessage()}>
+                                                <SendIcon
+                                                    sx={{ fontSize: 48 }}
+                                                    style={{
+                                                        color: this.state.messageText
+                                                            ? "var(--lc-purple)"
+                                                            : "var(--lc-bg-gray)",
+                                                    }}
+                                                />
+                                            </button>
+                                        </div>
+                                        {/*<div className="col-2 d-flex align-items-end">*/}
+                                        {/*  */}
+                                        {/*</div>*/}
                                     </div>
-                                    {/*<div className="col-2 d-flex align-items-end">*/}
-                                    {/*  */}
-                                    {/*</div>*/}
                                 </div>
                             </div>
                         </div>
-                        </div>
                     </div>
                 </div>
+
+
+
+                <GlobalDialog size={"xl"} hide={()=>this.toggleEntity(null,null)} show={this.state.showEntity} heading={this.state.entityObj?this.state.entityObj.type:""} >
+                    <>
+
+                            <div className="col-12 ">
+
+                                {this.state.entityObj&&this.state.entityObj.type==="Product" &&
+                                <SubproductItem
+                                    hideMoreMenu
+                                    smallImage={true}
+                                item={this.state.entityObj.entity}
+                                />
+                                }
+
+                            </div>
+                            <div className="col-12 d-none ">
+
+                                <div className="row mt-4 no-gutters">
+                                    <div  className={"col-6 pr-1"}
+                                          style={{
+                                              textAlign: "center",
+                                          }}>
+                                        <GreenButton
+
+                                            title={"View Details"}
+                                            type={"submit"}>
+
+                                        </GreenButton>
+                                    </div>
+                                    <div
+                                        className={"col-6 pl-1"}
+                                        style={{
+                                            textAlign: "center",
+                                        }}>
+                                        <BlueBorderButton
+                                            type="button"
+
+                                            title={"Close"}
+
+                                            onClick={()=>
+                                                this
+                                                    .toggleEntity(null,null)
+                                            }
+                                        >
+
+                                        </BlueBorderButton>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </>
+                </GlobalDialog>
+
             </>
         );
     }

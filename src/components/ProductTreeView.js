@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import ProductTreeItemView from "./ProductTreeItemView";
 import TextField from "@mui/material/TextField";
 import {Spinner} from "react-bootstrap";
+import TextFieldWrapper from "./FormsUI/ProductForm/TextField";
 
 class ProductTreeView extends Component {
     constructor(props) {
@@ -157,22 +158,30 @@ class ProductTreeView extends Component {
         );
     }
 
-    handleSearch(field, e) {
+    handleSearch(value, field) {
         // let fields = this.state.fieldsSite;
         // fields[field] = e.target.value;
         // this.setState({ fields: fields });
+if (value) {
+    let products = this.state.tree.filter((item) => {
+        // if (value === 0) {
+        //     return item;
+        // } else
+            if (item.name.toLowerCase().includes(value.toLowerCase())) {
+            return item;
+        }
+    });
 
-        let products = this.state.tree.filter((item) => {
-            if (e.target.value.length === 0) {
-                return item;
-            } else if (item.name.toLowerCase().includes(e.target.value.toLowerCase())) {
-                return item;
-            }
-        });
+    this.setState({
+        filteredList: products,
+    });
 
-        this.setState({
-            filteredList: products,
-        });
+}else{
+
+    this.setState({
+        filteredList: this.state.tree,
+    });
+}
     }
 
     getSubProducts() {
@@ -203,13 +212,19 @@ class ProductTreeView extends Component {
                     <div className="col-md-12 col-sm-6 col-xs-12 ">
                         <div className={"row tree-menu-container "}>
                             <div className={"col-12"}>
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Search products here .... "
-                                    variant="outlined"
-                                    fullWidth={true}
-                                    name={"name"}
-                                    onChange={this.handleSearch.bind(this, "name")}
+                                <TextFieldWrapper
+                                    // initialValue={this.props.item&&this.props.item.product.name}
+                                    onChange={(value)=>this.handleSearch(value,"name")}
+                                    // error={this.state.errors["title"]}
+                                    // name="title"
+                                    // title="Search products here ...."
+
+                                    // id="outlined-basic"
+                                    // // label="Search products here .... "
+                                    // variant="outlined"
+                                    // fullWidth={true}
+                                    // name={"name"}
+                                    // onChange={(value)=>this.handleSearch(value, "name")}
                                 />
 
                             </div>

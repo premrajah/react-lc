@@ -26,7 +26,7 @@ import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInpu
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
-import {capitalize} from "../../Util/GlobalFunctions";
+import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import Layout from "../../components/Layout/Layout";
 import TextField from "@mui/material/TextField";
 import clsx from "clsx";
@@ -96,7 +96,8 @@ class ListFormNew extends Component {
             selectedLoading:false,
             createListingError:null,
             activeStep:0,
-            showFieldErrors:false
+            showFieldErrors:false,
+            items:[]
         };
 
         this.handleBack = this.handleBack.bind(this);
@@ -835,9 +836,29 @@ class ListFormNew extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
-        this.props.loadProductsWithoutParentNoListing()
+        // this.props.loadProductsWithoutParentNoListing()
+        this.getProductsNoParentNoListingNoRelease();
 
         this.props.loadSites(this.props.userDetail.token);
+    }
+
+
+    getProductsNoParentNoListingNoRelease=async () => {
+
+        const url = baseUrl + "seek?name=Product&relation=&count=false&offset=0&size=20&no-from-relation=Listing:listing_of&no-from-relation=ProductRelease:release_for";
+
+
+        let items = await axios.get(url).catch((error) => {
+
+             fetchErrorMessage(error)
+
+        });
+
+
+        if (items)
+        this.setState({
+            items: items.data.data
+        })
     }
 
     classes = useStylesSelect;
@@ -1025,8 +1046,6 @@ class ListFormNew extends Component {
                                                     error={this.state.showFieldErrors&&this.state.errors["title"]}
                                                     name="title"
                                                     title="Title"
-                                                    id="outlined-basic"
-                                                    variant="outlined"
                                                     fullWidth={true}
                                                 />
 
@@ -1048,13 +1067,14 @@ class ListFormNew extends Component {
 
                                             </div>
 
-                                            <div className="col-12 mt-4 mb-4">
+                                            <div className="col-12 mt-2 mb-4">
 
                                                 <div
                                                     className={
                                                         "custom-label text-bold text-blue mb-1"
                                                     }>
                                                     Link a product
+
                                                     <span onClick={this.showProductSelection}
                                                         style={{float:"right"}}
                                                         className={
@@ -1063,12 +1083,13 @@ class ListFormNew extends Component {
                                                     Add New product
                                                 </span>
                                                 </div>
+                                                <span className={"text-gray-light"}>Search Products.... </span>
 
                                                 <div className="row">
                                                     <div className="col-4">
-                                                {this.props.productWithoutParentNoList&&this.props.productWithoutParentNoList.length>0&&
+                                                {this.state.items&&this.state.items.length>0&&
                                                 <ProductTreeView
-                                                    items={this.props.productWithoutParentNoList}
+                                                    items={this.state.items}
                                                     triggerCallback={(productId) => {
                                                         this.productSelected(productId)
                                                         this.handleChange(productId,"product")

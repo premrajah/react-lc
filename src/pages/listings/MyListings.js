@@ -7,7 +7,6 @@ import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import {baseUrl, LISTING_FILTER_VALUES} from "../../Util/Constants";
 import Layout from "../../components/Layout/Layout";
-import axios from "axios";
 import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {seekAxiosGet} from "../../Util/GlobalFunctions";
@@ -96,7 +95,7 @@ class MyListings extends Component {
                 if (activeFilter=="product_name")
                     this.setState({
 
-                        searchUrl:this.state.url+(`&find-also-to=Product:listing_of:description~${searchValue}&find-also-to=Product:listing_of:name~${searchValue}`)
+                        searchUrl:this.state.url+(`&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
                     })
 
             }else{
@@ -104,7 +103,7 @@ class MyListings extends Component {
 
                 this.setState({
 
-                    searchUrl:this.state.url+(`&or=name~${searchValue}&or=description~${searchValue}&find-also-to=Product:listing_of:description~${searchValue}&find-also-to=Product:listing_of:name~${searchValue}`)
+                    searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
                 })
 
             }

@@ -16,6 +16,8 @@ const CheckboxWrapper = ({name, title,details,detailsHeading,onChange, legend,in
         const { checked } = e.target;
         setField(checked);
 
+        alert(checked)
+
         if (onChange)
         onChange(checked)
     };
@@ -39,8 +41,10 @@ const CheckboxWrapper = ({name, title,details,detailsHeading,onChange, legend,in
         </div>
             <span style={{width:"100%"}} className={""}>
 
-            <Checkbox  className={error?"border-red-error":""} checked={field} onChange={handleChange} {...configCheckbox} />
+            <Checkbox
+                className={error?"border-red-error":""} checked={field} onChange={handleChange} {...configCheckbox} />
             </span>
+
 
         </>
     )

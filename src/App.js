@@ -7,7 +7,7 @@ import Home from "./pages/home/Home";
 import LoginPopUp from "./views/login/LoginPopUp";
 import CompanyPage from "./views/loop-cycle/company-page";
 import MySearch from "./pages/search/MySearch";
-import MyListingsOld from "./pages/listings/MyListings";
+import MyListings from "./pages/listings/MyListings";
 import ItemDetail from "./pages/listings/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
 import ProductsNew from "./pages/my-products/Products";
@@ -145,7 +145,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
                         <LoggedInRoute exact path="/search-records" component={SearchRecords} />
-                        <LoggedInRoute exact path="/my-listings" component={MyListingsOld} />
+                        <LoggedInRoute exact path="/my-listings" component={MyListings} />
                         <LoggedInRoute exact path="/my-listing-record" component={ListingRecord} />
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
@@ -170,8 +170,6 @@ class App extends Component {
                         <LoggedInRoute exact path="/search-form" component={SearchForm} />
                         <LoggedInRoute exact path="/list-form" component={ListFormNew} />
                         <LoggedInRoute exact path="/my-campaigns" component={MyCampaigns} />
-                        {/*<LoggedInRoute exact path="/campaign/:slug" component={CampaignDetailContent} />*/}
-                        {/*<LoggedInRoute exact path="/create-campaign" component={CreateCampaign} />*/}
                         <LoggedInRoute exact path="/add-detail" component={AddDetail} />
                         <LoggedInRoute exact path="/delivery-resource" component={DeliveryResource} />
                         <LoggedOutRoute exact path="/sign-up" component={SignUpPage} />

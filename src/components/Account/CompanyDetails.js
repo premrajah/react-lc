@@ -705,14 +705,34 @@ class CompanyDetails extends Component {
                     </ModalBody>
                 </Modal>
 
+
+                <div className="row mt-4 mb-4 d-flex align-items-center no-gutters   ">
+                    {this.state.orgs.length > 1 && (
+                        <>
+                            <div className="col-md-3 ">Switch Company:</div>
+                            <div className="col-md-9 ">
+                                <MenuDropdown
+                                    setSelection={this.switchOrg}
+                                    initialValue={this.props.userContext.orgId}
+                                    options={this.state.orgs}
+                                    option={"name"}
+                                    valueKey={"_key"}
+                                />
+                            </div>
+                        </>
+                    )}
+                </div>
                 {this.state.submitSuccess && (
                     <Alert key={"alert"} variant={"success"}>
                         {"Company information updated successfully"}
                     </Alert>
                 )}
 
-                <div className="row no-gutters">
-                    <div style={{ display: "flex", position: "relative" }} className="col-md-12   ">
+
+
+
+                <div className="row no-gutters bg-light border-box align-items-center">
+                    <div style={{ display: "flex", position: "relative" }} className="col-md-12 align-items-center  ">
                         <div className={"img-box"} style={{ position: "relative" }}>
                             {this.state.orgImage || this.state.file ? (
                                 <img
@@ -758,31 +778,6 @@ class CompanyDetails extends Component {
                         </div>
 
                         <div className={"pl-3"}>
-                            <div className="row  d-flex align-items-center   ">
-                                {this.state.orgs.length > 1 && (
-                                    <>
-                                        <div className="col-md-2   ">Company:</div>
-                                        <div className="col-md-4   ">
-                                            <MenuDropdown
-                                                setSelection={this.switchOrg}
-                                                initialValue={this.props.userContext.orgId}
-                                                options={this.state.orgs}
-                                                option={"name"}
-                                                valueKey={"_key"}
-                                            />
-                                        </div>
-                                    </>
-                                )}
-                                <div className="col-md-6 d-flex text-right ">
-                                    <button
-                                        style={{ minWidth: "180px" }}
-                                        onClick={this.addCompany}
-                                        className="  btn-gray-border  ">
-                                        <Add style={{ fontSize: "20px" }} />
-                                        Join Company
-                                    </button>
-                                </div>
-                            </div>
                             {this.state.org && this.state.org.company && (
                                 <>
                                     <div className={"p-1"}>
@@ -843,6 +838,23 @@ class CompanyDetails extends Component {
                                 </>
                             )}
                         </div>
+
+
+
+                    </div>
+
+                </div>
+
+                <div className="row mt-4 mb-4 d-flex align-items-center justify-content-end   ">
+
+                    <div className="col-md-12  text-right ">
+                        <button
+                            // style={{ minWidth: "180px" }}
+                            onClick={this.addCompany}
+                            className="  btn-gray-border  ">
+                            <Add style={{ fontSize: "20px" }} />
+                            Join New Company
+                        </button>
                     </div>
                 </div>
 

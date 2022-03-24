@@ -96,7 +96,7 @@ class MessageGroupItem extends Component {
     };
 
     handleClick = () => {
-        this.props.handleGroupClick(this.props.item, this.props.index, this.props.item.group);
+        this.props.handleGroupClick(this.props.item, this.props.item.group,this.props.index);
     };
 
     render() {

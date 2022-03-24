@@ -335,6 +335,9 @@ class ManageUserItem extends Component {
 
 
                     </div>
+
+                    {!((this.state.user &&   this.state.user.email===this.props.userDetail.email)&&this.props.systemUser)&&
+                    <>
                     {!this.props.approveType ?
                         <div className=" col-5 text-right ">
 
@@ -504,6 +507,8 @@ class ManageUserItem extends Component {
 
                             }
                         </div>}
+
+                        </>}
                 </div>
 
 

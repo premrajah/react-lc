@@ -81,6 +81,13 @@ class CampaignDetail extends Component {
             window.location.href = blob_url
 
         }
+
+         if (action === "edit") {
+
+             this.props.toggleEditMode()
+
+
+         }
     }
 
 

@@ -151,13 +151,8 @@ class MyCampaigns extends Component {
 
         this.setState({
             count: result.data?result.data.data:0,
-
         })
-
-
-
     }
-
 
 
     refreshList=()=>{
@@ -501,7 +496,8 @@ this.props.toggleRightBar()
                         />}
 
                         {this.state.campaignMode ==2
-                        && this.state.editItem && <CampaignDetailContent toggleEditMode={this.toggleEditMode} item={this.state.editItem} />}
+                        && this.state.editItem &&
+                        <CampaignDetailContent toggleEditMode={this.toggleEditMode} item={this.state.editItem} />}
 
                     </RightSidebar>
                     <div className="container  mb-150  pb-4 pt-4">

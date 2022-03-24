@@ -26,6 +26,8 @@ class CampaignDetailContent extends Component {
 
     toggleEditMode=(item)=> {
 
+        alert("edit")
+
         this.props.toggleEditMode(this.state.item)
 
     }
@@ -529,7 +531,7 @@ class CampaignDetailContent extends Component {
                     <>
 
                             <>
-                                <CampaignDetail refreshData={this.props.refreshData} toggleEditMode={this.toggleEditMode} item={this.state.item} />
+                                <CampaignDetail refreshData={this.props.refreshData} toggleEditMode={()=>this.props.toggleEditMode(this.state.item)} item={this.state.item} />
                             </>
                    </>
                 ) : (

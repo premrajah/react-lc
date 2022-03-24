@@ -11,6 +11,7 @@ import moment from "moment/moment";
 import {Link} from "react-router-dom";
 import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
 import Attachment from "@mui/icons-material/Attachment";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 class CampaignItem extends Component {
     constructor(props) {
@@ -99,24 +100,30 @@ class CampaignItem extends Component {
                     </td>
 
                     <td className={""}>
-                        <ul className="persons">
+                        <ul className="persons  align-items-start d-flex">
 
                             {this.state.item.artifacts && this.state.item.artifacts.map((artifact, i) =>
                                 <li key={i}>
                                     <>
                                     <div className="d-flex justify-content-center "
-                                         style={{width: "60px", height: "60px"}}>
+                                         style={{width: "40px", height: "40px"}}>
                                         <div className="d-flex justify-content-center "
-                                             style={{width: "50%", height: "50%"}}>
+                                             // style={{width: "50%", height: "50%"}}
+                                        >
 
 
                                             {checkImage(artifact.blob_url)? <img
                                                 src={artifact ? artifact.blob_url : ""}
-                                                className="img-fluid w-100 h-100"
+                                                className="img-fluid "
                                                 alt={artifact.name}
-                                                style={{borderRadius: "50%", objectFit: "contain"}}
+                                                style={{ objectFit: "contain",width: "32px", height: "32px",background:"#EAEAEF",padding:"2px"}}
                                             />:
-                                                <Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />}
+                                                <>
+                                                    <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
+                                                {/*<Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />*/}
+                                                </>
+                                                }
+
                                         </div>
                                     </div>
 

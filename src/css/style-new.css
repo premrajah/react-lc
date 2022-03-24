@@ -3824,7 +3824,7 @@ background: white;
     margin: 0; }
 .custom-table tbody .persons li {
     padding: 0;
-    margin: 0 0 0 -15px;
+    margin: 0 0 0 2px;
     list-style: none;
     display: inline-block; }
 .custom-table tbody .persons li a {
@@ -4240,7 +4240,7 @@ input:active,input:focus{
     top: 0!important;
     bottom: 0!important;
     margin: auto!important;
-    color: #27245c!important;
+    /*color: #27245c!important;*/
     padding: 10px!important;
     background: #ccc!important;
     width: 100%!important;

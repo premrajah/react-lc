@@ -22,6 +22,8 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import SubproductItem from "../Products/Item/SubproductItem";
+import DescriptionIcon from "@mui/icons-material/Description";
+import MoreMenu from "../MoreMenu";
 
 class MessengerMessages extends Component {
     constructor(props) {
@@ -237,6 +239,7 @@ class MessengerMessages extends Component {
                 time:time,
                 orgName:orgName,
                 isOwner:isOwner,
+                artifacts:completeMessage.artifacts,
                 entityType:messageObj.entity_type,
                 entityAsJson:messageObj.entity_as_json?messageObj.entity_as_json:null,
                 entityKey:messageObj.entity_key,
@@ -374,6 +377,18 @@ class MessengerMessages extends Component {
 
 
     };
+
+
+    callBackResult=(action,key,blob_url) =>{
+
+
+        if (action === "edit") {
+
+            this.props.toggleEditMode()
+
+
+        }
+    }
 
 
 
@@ -808,23 +823,74 @@ class MessengerMessages extends Component {
 
                                                                     </small>
                                                                 )}
-                                                                {m.artifacts&&m.artifacts.length > 0 && (
-                                                                    <small
-                                                                        style={{
-                                                                            cursor: "pointer",
-                                                                        }}>
-                                                                        <PhotoLibraryIcon
-                                                                            fontSize="small"
-                                                                            onClick={
-                                                                                this
-                                                                                    .handleSingleArtifactDialogOpen
-                                                                            }
-                                                                        />
+                                                                {/*{m.artifacts&&m.artifacts.length > 0 && (*/}
+                                                                {/*    <small*/}
+                                                                {/*        style={{*/}
+                                                                {/*            cursor: "pointer",*/}
+                                                                {/*        }}>*/}
+                                                                {/*        <PhotoLibraryIcon*/}
+                                                                {/*            fontSize="small"*/}
+                                                                {/*            onClick={*/}
+                                                                {/*                this*/}
+                                                                {/*                    .handleSingleArtifactDialogOpen*/}
+                                                                {/*            }*/}
+                                                                {/*        />*/}
 
-                                                                    </small>
-                                                                )}
+                                                                {/*    </small>*/}
+                                                                {/*)}*/}
                                                             </div>
                                                         </div>
+
+                                                        {m.artifacts&&m.artifacts.length > 0 && (
+                                                            m.artifacts.map((artifact, index) => {
+
+                                                                    return (
+
+                                                                        <>
+
+                                                                            <div key={index} className="mt-3 mb-3 text-left pt-3 pb-3  row">
+
+                                                                                <div className={"col-10"}>
+
+                                                                                    <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.5rem"}} className={" p-1 rad-4"} />
+                                                                                    <span
+
+                                                                                        className="ml-4  text-blue text-bold"
+                                                                                        // href={artifact.blob_url}
+                                                                                        target="_blank"
+                                                                                        rel="noopener noreferrer">
+                                            {artifact.name}
+                                        </span>
+
+                                                                                </div>
+                                                                                <div className={"col-2"}>
+
+
+                                                                                    <MoreMenu
+
+                                                                                        triggerCallback={(action) =>
+                                                                                            this.callBackResult(action,artifact._key,artifact.blob_url)
+                                                                                        }
+
+                                                                                        download={
+                                                                                            true
+                                                                                        }
+
+
+                                                                                    />
+
+
+
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                        </>
+                                                                    );
+
+                                                            })
+                                                        ) }
+
 
                                                          {m.entityAsJson &&<span  onClick={()=>
                                                              this

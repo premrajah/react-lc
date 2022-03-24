@@ -34,6 +34,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import TextField from "@mui/material/TextField";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import {validateDate} from "@mui/lab/internal/pickers/date-utils";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 class CreateCampaign extends Component {
 
@@ -1407,11 +1408,14 @@ class CreateCampaign extends Component {
 
                                                                                                     }}
                                                                                                 >
-                                                                                                    {/*{console.log(item.file)}*/}
-                                                                                                    {item.file&&(!checkImage(item.file.name))?<Attachment className={"attachment-icon file"}/>:null}
+
+                                                                                                    {item.file&&(!checkImage(item.file.name))?
+
+                                                                                                        <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={"attachment-icon file p-1 rad-4"} />
+                                                                                                        :null}
 
 
-                                                                                                    {item.imgUrl&&(!checkImage(item.imgUrl))?<Attachment className={"attachment-icon image"}/>:null}
+                                                                                                    {item.imgUrl&&(!checkImage(item.imgUrl))? <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={"attachment-icon file p-1 rad-4"} />:null}
                                                                                                     {item.status ===
                                                                                                     0 && (
                                                                                                         <Spinner

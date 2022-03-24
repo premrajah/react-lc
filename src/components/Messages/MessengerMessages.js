@@ -841,55 +841,6 @@ class MessengerMessages extends Component {
                                                             </div>
                                                         </div>
 
-                                                        {m.artifacts&&m.artifacts.length > 0 && (
-                                                            m.artifacts.map((artifact, index) => {
-
-                                                                    return (
-
-                                                                        <>
-
-                                                                            <div key={index} className="mt-3 mb-3 text-left pt-3 pb-3  row">
-
-                                                                                <div className={"col-10"}>
-
-                                                                                    <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.5rem"}} className={" p-1 rad-4"} />
-                                                                                    <span
-
-                                                                                        className="ml-4  text-blue text-bold"
-                                                                                        // href={artifact.blob_url}
-                                                                                        target="_blank"
-                                                                                        rel="noopener noreferrer">
-                                            {artifact.name}
-                                        </span>
-
-                                                                                </div>
-                                                                                <div className={"col-2"}>
-
-
-                                                                                    <MoreMenu
-
-                                                                                        triggerCallback={(action) =>
-                                                                                            this.callBackResult(action,artifact._key,artifact.blob_url)
-                                                                                        }
-
-                                                                                        download={
-                                                                                            true
-                                                                                        }
-
-
-                                                                                    />
-
-
-
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                        </>
-                                                                    );
-
-                                                            })
-                                                        ) }
 
 
                                                          {m.entityAsJson &&<span  onClick={()=>
@@ -900,6 +851,56 @@ class MessengerMessages extends Component {
                                                             dangerouslySetInnerHTML={createMarkup(
                                                                 m.text
                                                             )}></div>
+                                                        {m.artifacts&&m.artifacts.length > 0 && (
+                                                            m.artifacts.map((artifact, index) => {
+
+                                                                return (
+
+                                                                    <>
+
+                                                                        <div key={index} className="mt-3 mb-3 text-left pt-3 pb-3  row">
+
+                                                                            <div className={"col-10"}>
+
+                                                                                <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.5rem"}} className={" p-1 rad-4"} />
+                                                                                <span
+
+                                                                                    className="ml-4  text-blue text-bold"
+                                                                                    // href={artifact.blob_url}
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer">
+                                            {artifact.name}
+                                        </span>
+
+                                                                            </div>
+                                                                            <div className={"col-2"}>
+
+
+                                                                                <MoreMenu
+
+                                                                                    triggerCallback={(action) =>
+                                                                                        this.callBackResult(action,artifact._key,artifact.blob_url)
+                                                                                    }
+
+                                                                                    download={
+                                                                                        true
+                                                                                    }
+
+
+                                                                                />
+
+
+
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </>
+                                                                );
+
+                                                            })
+                                                        ) }
+
                                                     </div>
                                                 </div>
                                             </React.Fragment>

@@ -4018,7 +4018,10 @@ input:active,input:focus{
 }
 .msg-light .chat-msg-box{
     color: black!important;
-    background: #e9ecf5!important;
+    /*background: #e9ecf5!important;*/
+
+    background: #f3f3f3!important;
+
 }
 .message-window{
     display: flex;

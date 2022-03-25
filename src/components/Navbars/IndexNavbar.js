@@ -316,7 +316,7 @@ class ComponentsNavbar extends React.Component {
                                                                     style={{
                                                                         maxHeight: "30px",
                                                                         maxWidth: "30px",
-                                                                        objectFit: "cover",
+                                                                        objectFit: "contain",
                                                                         width: "30px",
                                                                         height: "30px",
                                                                     }}

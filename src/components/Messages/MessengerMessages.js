@@ -858,7 +858,7 @@ class MessengerMessages extends Component {
 
                                                                     <>
 
-                                                                        <div key={index} className="mt-3 mb-3 text-left pt-3 pb-3  row">
+                                                                        <div key={index} className="mt-1 mb-1 text-left pt-3 pb-3  row">
 
                                                                             <div className={"col-10"}>
 

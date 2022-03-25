@@ -16,7 +16,7 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import PhoneInput from "react-phone-input-2";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {arrangeAlphabatically, arrangeObjectKeysAlphabatically} from "../../Util/GlobalFunctions";
+import {arrangeAlphabatically, arrangeObjectKeysAlphabatically, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import CustomTransferList from "../FormsUI/ProductForm/CustomTransferList";
 import GlobalDialog from "../RightBar/GlobalDialog";
@@ -243,6 +243,13 @@ class ManageRole extends Component {
                 })
                 .catch((error) => {
                     this.setState({isSubmitButtonPressed: false})
+                    this.toggleDeletePopUp()
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "error",
+                        message: fetchErrorMessage(error)
+                    })
+
                 });
 
         }

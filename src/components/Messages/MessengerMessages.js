@@ -1,10 +1,10 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import axios from "axios";
-import {baseUrl, createMarkup} from "../../Util/Constants";
-import {connect} from "react-redux";
+import { baseUrl, createMarkup } from "../../Util/Constants";
+import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import {TextField, Tooltip} from "@mui/material";
-import {Autocomplete} from "@mui/lab";
+import { TextField, Tooltip } from "@mui/material";
+import { Autocomplete } from "@mui/lab";
 import AddIcon from "@mui/icons-material/AddCircle";
 import ExplicitIcon from "@mui/icons-material/Explicit";
 import SendIcon from "@mui/icons-material/Send";
@@ -12,7 +12,7 @@ import moment from "moment/moment";
 import WysiwygEditor from "./WysiwygEditor";
 import MessageGroupItem from "./MessageGroupItem";
 import MessageNameThumbnail from "./MessageNameThumbnail";
-import {sortArraysByKey} from "../../Util/GlobalFunctions";
+import { sortArraysByKey } from "../../Util/GlobalFunctions";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
@@ -45,24 +45,19 @@ class MessengerMessages extends Component {
             showHideOrgSearch: false,
             openEntityDialog: false,
             openSingleArtifactDialog: false,
-            allGroupsDetails:[],
-            msgLoading:false,
+            allGroupsDetails: [],
+            msgLoading: false,
             entityObj: {},
-            showEntity:false
+            showEntity: false,
         };
     }
 
     componentDidMount() {
         this.getAllMessageGroups();
-        this.updateSelected(0)
-
-
+        this.updateSelected(0);
     }
 
     getAllMessageGroups = async () => {
-
-
-
         axios
             .get(`${baseUrl}message-group`)
             .then((response) => {
@@ -70,32 +65,28 @@ class MessengerMessages extends Component {
 
                 let returnedData = [];
 
-                data.map((d,index) => {
+                data.map((d, index) => {
                     axios
                         .get(`${baseUrl}seek/to?name=MessageGroup&id=${d._key}&to=Message&relation=&count=true&filters=type:message`)
                         .then((res) => {
                             const rData = res.data.data;
 
-                            if (rData > 0){
-                                let group=d
+                            if (rData > 0) {
+                                let group = d;
 
-                                group.index=index
+                                group.index = index;
 
                                 returnedData.push(group);
 
-                                let sortedData=sortArraysByKey(returnedData,"index")
-
+                                let sortedData = sortArraysByKey(returnedData, "index");
 
                                 this.setState({
                                     allMessageGroups: sortedData,
                                     filteredMessageGroups: sortedData,
                                 });
 
-
-                                this.getOrgsForGroup(d._key,index)
-
+                                this.getOrgsForGroup(d._key, index);
                             }
-
                         })
                         .catch((error) => {
                             // this.props.showSnackbar({
@@ -105,10 +96,6 @@ class MessengerMessages extends Component {
                             // });
                         });
                 });
-
-
-
-
             })
             .catch((error) => {
                 // this.props.showSnackbar({
@@ -119,102 +106,80 @@ class MessengerMessages extends Component {
             });
     };
 
-
-    getOrgsForGroup = (id,index) => {
+    getOrgsForGroup = (id, index) => {
         axios
             .get(`${baseUrl}message-group/${id}/org`)
             .then((response) => {
                 const data = response.data.data;
 
-                let groupDetail=data
+                let groupDetail = data;
 
-                let allGroups=this.state.allMessageGroups
+                let allGroups = this.state.allMessageGroups;
 
-
-                if (index==0){
-
-                    this.handleGroupClick(this.state.allMessageGroups[0]._key,[], 0);
+                if (index == 0) {
+                    this.handleGroupClick(this.state.allMessageGroups[0]._key, [], 0);
                     this.setState({
-                        selectedOrgs: groupDetail
-                    })
+                        selectedOrgs: groupDetail,
+                    });
 
-                    this.getGroupMessageWithId(this.state.allMessageGroups[0]._key)
-
+                    this.getGroupMessageWithId(this.state.allMessageGroups[0]._key);
                 }
 
-                for (let i=0;i<allGroups.length;i++){
+                for (let i = 0; i < allGroups.length; i++) {
+                    if (allGroups[i]._key == id) {
+                        allGroups[i].group = groupDetail;
 
-                    if (allGroups[i]._key==id){
-
-                        allGroups[i].group=groupDetail
-
-                        allGroups[i].search=" "+groupDetail.map((item)=> item.name+" ")
+                        allGroups[i].search = " " + groupDetail.map((item) => item.name + " ");
                     }
-
                 }
 
                 this.setState({
                     allMessageGroups: allGroups,
                     filteredMessageGroups: allGroups,
-                })
-
+                });
             })
             .catch((error) => {
                 console.log("message-group-error ", error.message);
             });
     };
 
-
-    toggleEntity=async (entity,entityType) => {
-
-
-
+    toggleEntity = async (entity, entityType) => {
         this.setState({
             showEntity: !this.state.showEntity,
-            entityObj:{entity:entity,type:entityType}
-
-        })
-    }
-
-    processMessages = (messages) => {
-
-        let processedMessages=[]
-
-        for (let i=0;i<messages.length;i++){
-
-            let completeMessage=messages[i]
-            let messageObj=completeMessage.message
-
-            const text=messageObj.text
-            const time=messageObj._ts_epoch_ms
-
-            let orgFrom=completeMessage.orgs.find((item)=> (item.actor==="message_from"))
-
-            let orgName=orgFrom.org.org.name
-
-            let isOwner=orgFrom.org.org._id===this.props.userDetail.orgId?true:false
-
-
-            processedMessages.push({
-                text:text,
-                time:time,
-                orgName:orgName,
-                isOwner:isOwner,
-                artifacts:completeMessage.artifacts,
-                entityType:messageObj.entity_type,
-                entityAsJson:messageObj.entity_as_json?messageObj.entity_as_json:null,
-                entityKey:messageObj.entity_key,
-
-
-            })
-
-        }
-
-
-        return processedMessages
-
+            entityObj: { entity: entity, type: entityType },
+        });
     };
 
+    processMessages = (messages) => {
+        let processedMessages = [];
+
+        for (let i = 0; i < messages.length; i++) {
+            let completeMessage = messages[i];
+            let messageObj = completeMessage.message;
+
+            const text = messageObj.text;
+            const time = messageObj._ts_epoch_ms;
+
+            let orgFrom = completeMessage.orgs.find((item) => item.actor === "message_from");
+
+            let orgName = orgFrom.org.org.name;
+
+            let isOwner = orgFrom.org.org._id === this.props.userDetail.orgId ? true : false;
+
+            processedMessages.push({
+                text: text,
+                time: time,
+                orgName: orgName,
+                isOwner: isOwner,
+                artifacts: completeMessage.artifacts,
+                entityType: messageObj.entity_type,
+                entityAsJson: messageObj.entity_as_json ? messageObj.entity_as_json : null,
+                entityKey: messageObj.entity_key,
+            });
+        }
+
+        return processedMessages;
+    };
 
     getGroupMessageWithId = (id) => {
         if (!id) {
@@ -225,21 +190,17 @@ class MessengerMessages extends Component {
         }
 
         this.setState({
-            msgLoading:true
-        })
+            msgLoading: true,
+        });
         axios
             .get(`${baseUrl}message-group/${id}/message`)
 
             .then((response) => {
-
-
-                let processedMessages=this.processMessages(response.data.data)
-
+                let processedMessages = this.processMessages(response.data.data);
 
                 this.setState({
                     selectedMsgGroup: processedMessages,
                 });
-
             })
             .catch((error) => {
                 // this.props.showSnackbar({
@@ -247,12 +208,12 @@ class MessengerMessages extends Component {
                 //     severity: "warning",
                 //     message: `Group message error ${error.message}`,
                 // });
-            }).finally(()=>{
-
-            this.setState({
-                msgLoading:false
             })
-        });
+            .finally(() => {
+                this.setState({
+                    msgLoading: false,
+                });
+            });
     };
 
     handleEntityDialogOpen = () => {
@@ -299,19 +260,15 @@ class MessengerMessages extends Component {
         const { value } = e.target;
 
         if (value) {
+            this.updateSelected(-1);
 
-            this.updateSelected(-1)
-
-            if (this.state.allGroupsDetails){
+            if (this.state.allGroupsDetails) {
                 this.setState({
                     filteredMessageGroups: this.state.allMessageGroups.filter((group) =>
-
                         group.search.toLowerCase().includes(value.toLowerCase())
-
                     ),
                 });
             }
-
         } else {
             this.setState({
                 filteredMessageGroups: this.state.allMessageGroups,
@@ -332,45 +289,30 @@ class MessengerMessages extends Component {
         this.setState({
             autoCompleteOrg: value,
         });
-
-
-
     };
 
-
-    callBackResult=(action,key,blob_url) =>{
-
-
+    callBackResult = (action, key, blob_url) => {
         if (action === "edit") {
-
-            this.props.toggleEditMode()
-
-
+            this.props.toggleEditMode();
         }
-    }
+    };
 
-
-
-
-    handleGroupClick = (groupdId, orgs, selectedIndex,showLoading) => {
+    handleGroupClick = (groupdId, orgs, selectedIndex, showLoading) => {
         this.updateSelected(selectedIndex);
 
         if (groupdId) {
-
             this.setState({
-                selectedIndex:selectedIndex,
+                selectedIndex: selectedIndex,
                 selectedGroupId: groupdId,
                 selectedGroupKey: groupdId,
                 showHideOrgSearch: false,
                 showHideGroupFilter: false,
-
             });
 
             if (showLoading)
-            this.setState({
-
-                selectedMsgGroup: [],
-            });
+                this.setState({
+                    selectedMsgGroup: [],
+                });
 
             this.getGroupMessageWithId(groupdId);
 
@@ -378,14 +320,11 @@ class MessengerMessages extends Component {
                 selectedOrgs: orgs,
             });
         } else {
-
             this.getGroupMessageWithId(null);
             this.setState({
                 selectedOrgs: [],
             });
         }
-
-
     };
 
     handleRichTextCallback = (value) => {
@@ -399,7 +338,7 @@ class MessengerMessages extends Component {
             showHideOrgSearch: !this.state.showHideOrgSearch,
         });
 
-        this.handleGroupClick(null, [],-1);
+        this.handleGroupClick(null, [], -1);
     };
 
     updateSelected = (selectedIndex) => {
@@ -426,10 +365,7 @@ class MessengerMessages extends Component {
     };
 
     sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
-
-
-        console.log(text, toOrgIds, messageGroupId, linkedMessageId, messageType)
-
+        console.log(text, toOrgIds, messageGroupId, linkedMessageId, messageType);
 
         if (!text) return;
 
@@ -459,12 +395,10 @@ class MessengerMessages extends Component {
                 return;
         }
 
-        this.postMessage(payload, messageType,messageGroupId);
+        this.postMessage(payload, messageType, messageGroupId);
     };
 
-    postMessage = (payload, messageType,messageGroupId) => {
-
-
+    postMessage = (payload, messageType, messageGroupId) => {
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
@@ -472,20 +406,19 @@ class MessengerMessages extends Component {
                     const data = response.data.data;
 
                     if (messageType === "new_message") {
-
                         this.setState({
                             showHideOrgSearch: false,
                         });
 
                         this.getAllMessageGroups();
-
                     } else {
-
-
                         // console.log(messageGroupId,this.state.selectedOrgs, this.state.selectedIndex)
-                        this.handleGroupClick(messageGroupId,this.state.selectedOrgs, this.state.selectedIndex, false);
-
-
+                        this.handleGroupClick(
+                            messageGroupId,
+                            this.state.selectedOrgs,
+                            this.state.selectedIndex,
+                            false
+                        );
                     }
 
                     this.resetDraftRef.current.resetDraft(); // clear draftjs text field
@@ -501,26 +434,17 @@ class MessengerMessages extends Component {
     };
 
     handleSendMessage = () => {
-
-
         // console.log(this.state.selectedGroupId)
 
         if (this.state.messageText && this.state.newMsgOrgs.length > 0) {
-
-            let newMsgOrgs=this.state.newMsgOrgs
+            let newMsgOrgs = this.state.newMsgOrgs;
             this.setState({
-                newMsgOrgs:[]
-            })
+                newMsgOrgs: [],
+            });
 
-            this.sendMessage(this.state.messageText, newMsgOrgs,
-                "", "", "new_message");
-
-
-        }
-        else if (this.state.messageText && this.state.selectedMsgGroup.length > 0) {
+            this.sendMessage(this.state.messageText, newMsgOrgs, "", "", "new_message");
+        } else if (this.state.messageText && this.state.selectedMsgGroup.length > 0) {
             if (this.state.selectedGroupId) {
-
-
                 this.sendMessage(
                     this.state.messageText,
                     [],
@@ -547,7 +471,6 @@ class MessengerMessages extends Component {
         return (
             <>
                 <div className="row bg-white rad-8 gray-border   message-row no-gutters mb-5">
-
                     <div
                         className="col-md-4 message-column"
                         style={{
@@ -600,17 +523,19 @@ class MessengerMessages extends Component {
                                     {this.state.filteredMessageGroups.map((group, i) => (
                                         <React.Fragment key={group._key + "_item"}>
                                             <>
-
                                                 <MessageGroupItem
-
                                                     selectedItem={this.state.selectedItem}
                                                     index={i}
-                                                    handleGroupClick={(group, orgs,i) =>
-                                                        this.handleGroupClick(group._key,orgs, i,true)
+                                                    handleGroupClick={(group, orgs, i) =>
+                                                        this.handleGroupClick(
+                                                            group._key,
+                                                            orgs,
+                                                            i,
+                                                            true
+                                                        )
                                                     }
                                                     item={group}
                                                 />
-
                                             </>
                                         </React.Fragment>
                                     ))}
@@ -713,161 +638,133 @@ class MessengerMessages extends Component {
                                 borderRight: "1px solid var(--lc-bg-gray)",
                             }}>
                             <div className="col" style={{ minHeight: "400px" }}>
+                                <>
+                                    {!this.state.showHideOrgSearch && this.state.msgLoading && (
+                                        <div className={"text-center p-3"}>
+                                            Loading conversation...
+                                        </div>
+                                    )}
+                                </>
 
-                                    <>
-                                        {!this.state.showHideOrgSearch && this.state.msgLoading &&(
-                                            <div className={"text-center p-3"}>
-                                                Loading conversation...
-                                            </div>
-                                        )}
-                                    </>
-
-
-                                    <div className="message-window pr-3 pl-5 pt-5 mb-5 pb-20 ">
-                                        {this.state.selectedMsgGroup.map((m, i) => (
-
-
-                                            <React.Fragment key={i}>
-                                                <div
-                                                    key={i}
-                                                    className={`d-flex  ${
-                                                        m.isOwner
-                                                            ? "justify-content-end "
-                                                            : "justify-content-start msg-light"
-                                                    }`}>
-
-                                                    <div
-                                                        className="w-75 pr-2 pl-2 mb-3 chat-msg-box border-rounded text-blue gray-border"
-
-                                                    >
-                                                        <div className="d-flex justify-content-between">
-                                                            <div>
-                                                                <span>
-                                                                    <small
-                                                                        className="mr-2"
-                                                                    >
-                                                                        {m.orgName}
-
-                                                                    </small>
-                                                                    <small
-                                                                        className={
-                                                                            "text-gray-light"
-                                                                        }
-
-                                                                    >
-                                                                        {moment(
-                                                                            m.time
-                                                                        ).fromNow()}
-                                                                    </small>
-                                                                </span>
-                                                            </div>
-                                                            <div>
-                                                                {m.entityAsJson && (
-                                                                    <small
-                                                                        className="mr-2 d-none"
-                                                                        style={{
-                                                                            cursor: "pointer",
-                                                                        }}>
-                                                                        <ExplicitIcon
-                                                                            fontSize="small"
-                                                                            onClick={()=>
-                                                                                this
-                                                                                    .toggleEntity(m.entityAsJson,m.entityType)
-                                                                            }
-                                                                        />
-
-                                                                    </small>
-                                                                )}
-                                                                {/*{m.artifacts&&m.artifacts.length > 0 && (*/}
-                                                                {/*    <small*/}
-                                                                {/*        style={{*/}
-                                                                {/*            cursor: "pointer",*/}
-                                                                {/*        }}>*/}
-                                                                {/*        <PhotoLibraryIcon*/}
-                                                                {/*            fontSize="small"*/}
-                                                                {/*            onClick={*/}
-                                                                {/*                this*/}
-                                                                {/*                    .handleSingleArtifactDialogOpen*/}
-                                                                {/*            }*/}
-                                                                {/*        />*/}
-
-                                                                {/*    </small>*/}
-                                                                {/*)}*/}
-                                                            </div>
+                                <div className="message-window pr-3 pl-5 pt-5 mb-5 pb-20 ">
+                                    {this.state.selectedMsgGroup.map((m, i) => (
+                                        <React.Fragment key={i}>
+                                            <div
+                                                key={i}
+                                                className={`d-flex  ${
+                                                    m.isOwner
+                                                        ? "justify-content-end "
+                                                        : "justify-content-start msg-light"
+                                                }`}>
+                                                <div className="w-75 pr-2 pl-2 mb-3 chat-msg-box border-rounded text-blue gray-border">
+                                                    <div className="d-flex justify-content-between">
+                                                        <div>
+                                                            <span>
+                                                                <small className="mr-2">
+                                                                    {m.orgName}
+                                                                </small>
+                                                                <small
+                                                                    className={"text-gray-light"}>
+                                                                    {moment(m.time).fromNow()}
+                                                                </small>
+                                                            </span>
                                                         </div>
-
-
-
-                                                         {m.entityAsJson &&<span  onClick={()=>
-                                                             this
-                                                                 .toggleEntity(m.entityAsJson,m.entityType)
-                                                         }>{m.entityType}: <span className={"forgot-password-link"}>{m.entityAsJson.name}</span></span> }
-                                                        <div
-                                                            dangerouslySetInnerHTML={createMarkup(
-                                                                m.text
-                                                            )}></div>
-                                                        {m.artifacts&&m.artifacts.length > 0 && (
-                                                            m.artifacts.map((artifact, index) => {
-
-                                                                return (
-
-                                                                    <>
-
-                                                                        <div key={index} className="mt-1 mb-1 text-left pt-3 pb-3  row">
-
-                                                                            <div className={"col-10"}>
-
-                                                                                <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.5rem"}} className={" p-1 rad-4"} />
-                                                                                <span
-
-                                                                                    className="ml-4  text-blue text-bold"
-                                                                                    // href={artifact.blob_url}
-                                                                                    target="_blank"
-                                                                                    rel="noopener noreferrer">
-                                            {artifact.name}
-                                        </span>
-
-                                                                            </div>
-                                                                            <div className={"col-2"}>
-
-
-                                                                                <MoreMenu
-
-                                                                                    triggerCallback={(action) =>
-                                                                                        this.callBackResult(action,artifact._key,artifact.blob_url)
-                                                                                    }
-
-                                                                                    download={
-                                                                                        true
-                                                                                    }
-
-
-                                                                                />
-
-
-
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                    </>
-                                                                );
-
-                                                            })
-                                                        ) }
-
+                                                        <div>
+                                                            {m.entityAsJson && (
+                                                                <small
+                                                                    className="mr-2 d-none"
+                                                                    style={{
+                                                                        cursor: "pointer",
+                                                                    }}>
+                                                                    <ExplicitIcon
+                                                                        fontSize="small"
+                                                                        onClick={() =>
+                                                                            this.toggleEntity(
+                                                                                m.entityAsJson,
+                                                                                m.entityType
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                </small>
+                                                            )}
+                                                        </div>
                                                     </div>
+
+                                                    {m.entityAsJson && (
+                                                        <span
+                                                            onClick={() =>
+                                                                this.toggleEntity(
+                                                                    m.entityAsJson,
+                                                                    m.entityType
+                                                                )
+                                                            }>
+                                                            {m.entityType}:
+                                                            <span
+                                                                className={"forgot-password-link"}>
+                                                                {m.entityAsJson.name}
+                                                            </span>
+                                                        </span>
+                                                    )}
+                                                    <div
+                                                        dangerouslySetInnerHTML={createMarkup(
+                                                            m.text
+                                                        )}></div>
+                                                    {m.artifacts &&
+                                                        m.artifacts.length > 0 &&
+                                                        m.artifacts.map((artifact, index) => {
+                                                            return (
+                                                                <>
+                                                                    <div
+                                                                        key={index}
+                                                                        className="mt-1 mb-1 text-left pt-3 pb-3  row">
+                                                                        <div className={"col-10"}>
+                                                                            <DescriptionIcon
+                                                                                style={{
+                                                                                    background:
+                                                                                        "#EAEAEF",
+                                                                                    opacity: "0.5",
+                                                                                    fontSize:
+                                                                                        " 2.5rem",
+                                                                                }}
+                                                                                className={
+                                                                                    " p-1 rad-4"
+                                                                                }
+                                                                            />
+                                                                            <span
+                                                                                className="ml-4  text-blue text-bold"
+                                                                                // href={artifact.blob_url}
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer">
+                                                                                {artifact.name}
+                                                                            </span>
+                                                                        </div>
+                                                                        <div className={"col-2"}>
+                                                                            <MoreMenu
+                                                                                triggerCallback={(
+                                                                                    action
+                                                                                ) =>
+                                                                                    this.callBackResult(
+                                                                                        action,
+                                                                                        artifact._key,
+                                                                                        artifact.blob_url
+                                                                                    )
+                                                                                }
+                                                                                download={true}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            );
+                                                        })}
                                                 </div>
-                                            </React.Fragment>
-                                        ))}
-                                        <div className="dummy" ref={this.messagesEndRef} />
-
-                                    </div>
-
+                                            </div>
+                                        </React.Fragment>
+                                    ))}
+                                    <div className="dummy" ref={this.messagesEndRef} />
+                                </div>
                             </div>
                         </div>
-                        <div
-                            className="row no-gutters bottom-editor">
+                        <div className="row no-gutters bottom-editor">
                             <div className="col-12 ">
                                 <div className="wysiwyg-editor-container">
                                     <div className="row no-gutters">
@@ -903,60 +800,48 @@ class MessengerMessages extends Component {
                     </div>
                 </div>
 
-
-
-                <GlobalDialog size={"xl"} hide={()=>this.toggleEntity(null,null)} show={this.state.showEntity} heading={this.state.entityObj?this.state.entityObj.type:""} >
+                <GlobalDialog
+                    size={"xl"}
+                    hide={() => this.toggleEntity(null, null)}
+                    show={this.state.showEntity}
+                    heading={this.state.entityObj ? this.state.entityObj.type : ""}>
                     <>
-
-                            <div className="col-12 ">
-
-                                {this.state.entityObj&&this.state.entityObj.type==="Product" &&
+                        <div className="col-12 ">
+                            {this.state.entityObj && this.state.entityObj.type === "Product" && (
                                 <SubproductItem
                                     hideMoreMenu
                                     smallImage={true}
-                                item={this.state.entityObj.entity}
+                                    item={this.state.entityObj.entity}
                                 />
-                                }
-
-                            </div>
-                            <div className="col-12 d-none ">
-
-                                <div className="row mt-4 no-gutters">
-                                    <div  className={"col-6 pr-1"}
-                                          style={{
-                                              textAlign: "center",
-                                          }}>
-                                        <GreenButton
-
-                                            title={"View Details"}
-                                            type={"submit"}>
-
-                                        </GreenButton>
-                                    </div>
-                                    <div
-                                        className={"col-6 pl-1"}
-                                        style={{
-                                            textAlign: "center",
-                                        }}>
-                                        <BlueBorderButton
-                                            type="button"
-
-                                            title={"Close"}
-
-                                            onClick={()=>
-                                                this
-                                                    .toggleEntity(null,null)
-                                            }
-                                        >
-
-                                        </BlueBorderButton>
-                                    </div>
+                            )}
+                        </div>
+                        <div className="col-12 d-none ">
+                            <div className="row mt-4 no-gutters">
+                                <div
+                                    className={"col-6 pr-1"}
+                                    style={{
+                                        textAlign: "center",
+                                    }}>
+                                    <GreenButton
+                                        title={"View Details"}
+                                        type={"submit"}></GreenButton>
+                                </div>
+                                <div
+                                    className={"col-6 pl-1"}
+                                    style={{
+                                        textAlign: "center",
+                                    }}>
+                                    <BlueBorderButton
+                                        type="button"
+                                        title={"Close"}
+                                        onClick={() =>
+                                            this.toggleEntity(null, null)
+                                        }></BlueBorderButton>
                                 </div>
                             </div>
-
+                        </div>
                     </>
                 </GlobalDialog>
-
             </>
         );
     }

@@ -365,7 +365,6 @@ class MessengerMessages extends Component {
     };
 
     sendMessage = (text, toOrgIds, messageGroupId, linkedMessageId, messageType) => {
-        console.log(text, toOrgIds, messageGroupId, linkedMessageId, messageType);
 
         if (!text) return;
 
@@ -412,7 +411,6 @@ class MessengerMessages extends Component {
 
                         this.getAllMessageGroups();
                     } else {
-                        // console.log(messageGroupId,this.state.selectedOrgs, this.state.selectedIndex)
                         this.handleGroupClick(
                             messageGroupId,
                             this.state.selectedOrgs,
@@ -434,7 +432,6 @@ class MessengerMessages extends Component {
     };
 
     handleSendMessage = () => {
-        // console.log(this.state.selectedGroupId)
 
         if (this.state.messageText && this.state.newMsgOrgs.length > 0) {
             let newMsgOrgs = this.state.newMsgOrgs;

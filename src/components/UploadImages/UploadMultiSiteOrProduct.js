@@ -740,7 +740,7 @@ const UploadMultiSiteOrProduct = (props) => {
                                 </div>}
 
                             </div>
-                    {showCompletion&&<div className={"text-blue text-center"}>CSV bulk upload completed.</div>}
+                    {showCompletion&&<div className={"text-pink text-bold mt-2 text-center"}>CSV bulk upload completed.</div>}
                     <p style={{color: "rgb(244, 67, 54)"}} className="text-danger">{errors["artifact"]&&errors["artifact"].message}</p>
                     <div style={{color: "rgb(244, 67, 54)"}} className="text-danger">{errors["upload"]&&errors["upload"].message}</div>
 

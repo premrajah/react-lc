@@ -497,7 +497,6 @@ const UploadMultiSiteOrProduct = (props) => {
                    })
                 }else{
 
-                    // alert(e.response.status)
                     if (e.response.status===400) {
 
                             uploadError.push(<div className="d-flex flex-column">
@@ -668,8 +667,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
             })
             .catch(error => {
-                // alert(" errror found")
-                // console.log("multi site upload error ", error.message);
+
                 setUploadSitesError(<span className="text-warning"><b>Unable to upload at this time, (try different Match or Merge Strategy) or please try again later</b></span>);
                 setIsDisabled(false)
             })

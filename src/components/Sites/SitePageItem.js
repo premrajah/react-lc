@@ -67,10 +67,10 @@ const SitePageItem = (  props) => {
      const removeSiteSelection=(event)=> {
 
 
-        // alert(props.parentId)
+
         axios.delete(`${baseUrl}site/${props.item._key}/parent`)
             .then(res => {
-// alert(this.props.parentId)
+
                     props.loadCurrentSite(props.parentId)
                     props.showSnackbar({show: true, severity: "success", message: "Site removed successfully. Thanks"})
 

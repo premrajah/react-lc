@@ -39,7 +39,7 @@ export default function MenuDropdown(props) {
                 props.setSelection(options[index]);
             }
         }
-        // alert(options[index])
+
     };
 
     const handleClose = () => {

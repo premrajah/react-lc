@@ -527,8 +527,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
             if (this.props.showSiteForm.type==="link-product"){
 
-                // alert("load products")
-                // this.props.loadProductsWithoutParent()
                 this.props.loadProductsWithoutParent()
 
 

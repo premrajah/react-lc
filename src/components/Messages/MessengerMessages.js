@@ -471,11 +471,7 @@ class MessengerMessages extends Component {
 
         console.log(text, toOrgIds, messageGroupId, linkedMessageId, messageType)
 
-        // if (isEmptyHtml(text)){
-        //
-        //     alert("emoty")
-        //     return
-        // }
+
         if (!text) return;
 
         let payload = {};

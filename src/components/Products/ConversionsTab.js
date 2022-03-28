@@ -29,7 +29,7 @@ class ConversionsTab extends Component {
 
     updateUnitConversions=(type,units,factor,state)=>{
 
-        // alert(type+units+factor+state)
+
         this.setState({
             conversionPopUp:!this.state.conversionPopUp,
             selectedUnit:units,

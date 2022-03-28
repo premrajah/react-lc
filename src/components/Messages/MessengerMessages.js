@@ -68,31 +68,11 @@ class MessengerMessages extends Component {
             .then((response) => {
                 const data = response.data.data;
 
-
                 let returnedData = [];
-
-
-
-                // this.setState({
-                //     allMessageGroups: data,
-                //     filteredMessageGroups: data,
-                // });
-                //
-                // for (let i=0;i<data.length;i++){
-                //
-                //     this.getOrgsForGroup(data[i]._key,i)
-                // }
-
-                // return
-
 
                 data.map((d,index) => {
                     axios
-                        .get(
-                            (
-                                `${baseUrl}seek/to?name=MessageGroup&id=${d._key}&to=Message&relation=&count=true&filters=type:message`
-                            )
-                        )
+                        .get(`${baseUrl}seek/to?name=MessageGroup&id=${d._key}&to=Message&relation=&count=true&filters=type:message`)
                         .then((res) => {
                             const rData = res.data.data;
 
@@ -101,9 +81,6 @@ class MessengerMessages extends Component {
 
                                 group.index=index
 
-
-                                // let sortedData= sortArraysByKey(returnedData.push(group),"index");
-                                //     let sortedData=
                                 returnedData.push(group);
 
                                 let sortedData=sortArraysByKey(returnedData,"index")
@@ -176,21 +153,10 @@ class MessengerMessages extends Component {
 
                 }
 
-
-                // let allGroupsDetails=this.state.filteredMessageGroups
                 this.setState({
-
                     allMessageGroups: allGroups,
                     filteredMessageGroups: allGroups,
                 })
-
-                // let allGroupsDetails=this.state.allGroupsDetails
-                //
-                // allGroupsDetails.push({key:id, value:groupDetail})
-                // this.setState({
-                //     allGroupsDetails: allGroupsDetails,
-                // });
-
 
             })
             .catch((error) => {
@@ -246,8 +212,6 @@ class MessengerMessages extends Component {
 
 
         return processedMessages
-
-
 
     };
 
@@ -932,9 +896,6 @@ class MessengerMessages extends Component {
                                                 />
                                             </button>
                                         </div>
-                                        {/*<div className="col-2 d-flex align-items-end">*/}
-                                        {/*  */}
-                                        {/*</div>*/}
                                     </div>
                                 </div>
                             </div>

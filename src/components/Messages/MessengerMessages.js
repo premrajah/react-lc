@@ -126,11 +126,11 @@ class MessengerMessages extends Component {
 
                         })
                         .catch((error) => {
-                            this.props.showSnackbar({
-                                show: true,
-                                severity: "warning",
-                                message: `Message data check error ${error.message}`,
-                            });
+                            // this.props.showSnackbar({
+                            //     show: true,
+                            //     severity: "warning",
+                            //     message: `Message data check error ${error.message}`,
+                            // });
                         });
                 });
 
@@ -328,11 +328,11 @@ class MessengerMessages extends Component {
                 selectOrgs: data.orgs,
             });
         } catch (error) {
-            this.props.showSnackbar({
-                show: true,
-                severity: "warning",
-                message: `Org search error ${error.message}`,
-            });
+            // this.props.showSnackbar({
+            //     show: true,
+            //     severity: "warning",
+            //     message: `Org search error ${error.message}`,
+            // });
         }
     };
 
@@ -537,11 +537,11 @@ class MessengerMessages extends Component {
                 }
             })
             .catch((error) => {
-                this.props.showSnackbar({
-                    show: true,
-                    severity: "warning",
-                    message: `Post message error ${error.message}`,
-                });
+                // this.props.showSnackbar({
+                //     show: true,
+                //     severity: "warning",
+                //     message: `Post message error ${error.message}`,
+                // });
             });
     };
 

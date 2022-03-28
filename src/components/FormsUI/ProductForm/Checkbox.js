@@ -16,8 +16,6 @@ const CheckboxWrapper = ({name, title,details,detailsHeading,onChange, legend,in
         const { checked } = e.target;
         setField(checked);
 
-        alert(checked)
-
         if (onChange)
         onChange(checked)
     };

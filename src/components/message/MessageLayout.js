@@ -136,9 +136,9 @@ class MessageLayout extends Component {
                                                             <button type="button">
                                                                 <i
                                                                     className="fa fa-search"
-                                                                    aria-hidden="true"></i>{" "}
+                                                                    aria-hidden="true"></i>
                                                             </button>
-                                                        </span>{" "}
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -163,7 +163,7 @@ class MessageLayout extends Component {
                                                             </div>
                                                             <div className="chat_ib">
                                                                 <h5>
-                                                                    {item.from}{" "}
+                                                                    {item.from}
                                                                     <span className="chat_date">
                                                                         {item.messages[0].time}
                                                                     </span>
@@ -199,7 +199,6 @@ class MessageLayout extends Component {
                                                                         <div className="received_withd_msg">
                                                                             <p>{item.content}</p>
                                                                             <span className="time_date">
-                                                                                {" "}
                                                                                 {item.time}
                                                                             </span>
                                                                         </div>

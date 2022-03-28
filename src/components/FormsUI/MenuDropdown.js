@@ -80,8 +80,6 @@ export default function MenuDropdown(props) {
                 {options.map((option, index) => (
                     <MenuItem
                         key={props.valueKey ? props.valueKey : option}
-                        // disabled={option === props.initialValue}
-                        // selected={props.initialValue?props.initialValue:index === selectedIndex}
                         onClick={(event) => handleMenuItemClick(event, index)}>
                         {option.name ? option.name : option}
                     </MenuItem>

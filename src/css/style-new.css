@@ -83,6 +83,8 @@
 .wysiwyg-editor {
     padding: 0 1em;
     border: 1px solid var(--lc-bg-gray);
+    max-height: 120px;
+    line-height: 0.8;
 }
 
 .wysiwyg-toolbar{

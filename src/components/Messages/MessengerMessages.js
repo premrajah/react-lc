@@ -653,7 +653,7 @@ class MessengerMessages extends Component {
                                                         ? "justify-content-end "
                                                         : "justify-content-start msg-light"
                                                 }`}>
-                                                <div className="w-75 pr-2 pl-2 mb-3 chat-msg-box border-rounded text-blue gray-border">
+                                                <div className="w-75 pr-2 pl-2 pb-2 mb-3 chat-msg-box border-rounded text-blue gray-border">
                                                     <div className="d-flex justify-content-between">
                                                         <div>
                                                             <span>
@@ -705,7 +705,7 @@ class MessengerMessages extends Component {
                                                     <div
                                                         dangerouslySetInnerHTML={createMarkup(
                                                             m.text
-                                                        )}></div>
+                                                        )} style={{lineHeight: '0.8'}}></div>
                                                     {m.artifacts &&
                                                         m.artifacts.length > 0 &&
                                                         m.artifacts.map((artifact, index) => {

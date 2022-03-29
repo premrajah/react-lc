@@ -711,9 +711,8 @@ class MessengerMessages extends Component {
                                                         m.artifacts.length > 0 &&
                                                         m.artifacts.map((artifact, index) => {
                                                             return (
-                                                                <>
+                                                                <React.Fragment key={index}>
                                                                     <div
-                                                                        key={index}
                                                                         className="mt-1 mb-1 text-left pt-3 pb-3  row">
                                                                         <div className={"col-10"}>
                                                                             <DescriptionIcon
@@ -751,7 +750,7 @@ class MessengerMessages extends Component {
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                </>
+                                                                </React.Fragment>
                                                             );
                                                         })}
                                                 </div>

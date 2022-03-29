@@ -576,6 +576,7 @@ class MessengerMessages extends Component {
                                                 ? this.state.selectOrgs
                                                 : []
                                         }
+                                        noOptionsText="Enter company name to search"
                                         variant={"standard"}
                                         getOptionLabel={(option) => option.name}
                                         renderInput={(params) => (

@@ -265,7 +265,7 @@ class MessengerMessages extends Component {
             if (this.state.allGroupsDetails) {
                 this.setState({
                     filteredMessageGroups: this.state.allMessageGroups.filter((group) =>
-                        group.search.toLowerCase().includes(value.toLowerCase())
+                        group.search && group.search.toLowerCase().includes(value.toLowerCase())
                     ),
                 });
             }

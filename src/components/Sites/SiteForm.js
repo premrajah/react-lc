@@ -18,7 +18,10 @@ import AddIcon from "@mui/icons-material/Add";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
+import { geocodeByPlaceId } from 'react-google-places-autocomplete';
+import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
@@ -875,14 +878,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                     onHide={this.hidePopUp}
                     className={"custom-modal-popup popup-form"}>
 
-                        <div className="row   justify-content-end">
-                            <div className="col-auto mr-2 mt-2">
-                                <CloseButtonPopUp onClick={this.hidePopUp}>
-                                    <Close />
-                                </CloseButtonPopUp>
 
-                            </div>
-                        </div>
                         <div className="row   justify-content-end">
                             <div className="col-auto mr-2 mt-2">
                                 <CloseButtonPopUp onClick={this.hidePopUp}>

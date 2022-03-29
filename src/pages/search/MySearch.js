@@ -89,13 +89,13 @@ class MySearch extends Component {
                 if (activeFilter=="name")
                     this.setState({
 
-                        searchUrl:this.state.url+encodeURI(`&or=name~%${searchValue}%&or=description~%${searchValue}%`)
+                        searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%`)
                     })
 
                 if (activeFilter=="product_name")
                     this.setState({
 
-                        searchUrl:this.state.url+encodeURI(`&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
+                        searchUrl:this.state.url+(`&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
                     })
 
             }else{
@@ -103,7 +103,7 @@ class MySearch extends Component {
 
                 this.setState({
 
-                    searchUrl:this.state.url+encodeURI(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
+                    searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
                 })
 
             }

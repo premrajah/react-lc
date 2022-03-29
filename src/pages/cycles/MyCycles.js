@@ -86,27 +86,27 @@ class MyCycles extends Component {
                 if (activeFilter=="listing_name")
                     this.setState({
 
-                        searchUrl:this.state.url+encodeURI(`&find-also-to=Listing:listing_of:description~%${searchValue}%&find-also-to=Listing:listing_of:name~%${searchValue}%`)
+                        searchUrl:this.state.url+(`&find-also-to=Listing:listing_of:description~%${searchValue}%&find-also-to=Listing:listing_of:name~%${searchValue}%`)
                     })
 
 
                 if (activeFilter=="search_name")
                     this.setState({
 
-                        searchUrl:this.state.url+encodeURI(`&find-also-to=Search:search_for:description~%${searchValue}%&find-also-to=Search:search_for:name~%${searchValue}%`)
+                        searchUrl:this.state.url+(`&find-also-to=Search:search_for:description~%${searchValue}%&find-also-to=Search:search_for:name~%${searchValue}%`)
                     })
 
                 if (activeFilter=="product_name")
                     this.setState({
 
-                        searchUrl:this.state.url+encodeURI(`&find-also-to=Product:product_of:description~%${searchValue}%&find-also-to=Product:product_of:name~%${searchValue}%`)
+                        searchUrl:this.state.url+(`&find-also-to=Product:product_of:description~%${searchValue}%&find-also-to=Product:product_of:name~%${searchValue}%`)
                     })
             }else{
 
 
                 this.setState({
 
-                    searchUrl:this.state.url+encodeURI(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
+                    searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
                 })
 
             }

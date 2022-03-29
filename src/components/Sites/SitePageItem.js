@@ -157,7 +157,7 @@ const SitePageItem = (  props) => {
                            <div className="d-flex align-items-center">
                                <IconButton className={"mr-1"}><MapIcon  fontSize="24px" onClick={() => handleMapModal()} /></IconButton>
                                {props.showEdit &&
-                               <IconButton> <EditIcon className={" "}  fontSize="24px" onClick={() => editSiteSelection()} /></IconButton>}
+                               <IconButton> <EditIcon  fontSize="24px" onClick={() => editSiteSelection()} /></IconButton>}
                                {props.moreMenu&& <MoreMenu
                                    triggerCallback={(action) =>
                                        callBackResult(action)

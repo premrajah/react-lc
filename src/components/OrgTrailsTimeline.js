@@ -57,7 +57,7 @@ function OrgTrailsTimeline(props) {
                                         component="p"
                                         // style={{ color: "#05AD88" }}
                                     >
-                                        <span className={" "}>
+                                        <span>
                                             <span className={"text-caps sub-title-text-pink"}>  {item.org.name}</span>
                                             <br/>
                                             <span className={" text-capitlize text-gray-light"}>{item.org.description}</span>

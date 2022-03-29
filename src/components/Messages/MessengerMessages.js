@@ -4,7 +4,7 @@ import { baseUrl, createMarkup } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import { TextField, Tooltip } from "@mui/material";
-import { Autocomplete } from "@mui/lab";
+import { Autocomplete } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddCircle";
 import ExplicitIcon from "@mui/icons-material/Explicit";
 import SendIcon from "@mui/icons-material/Send";
@@ -265,7 +265,7 @@ class MessengerMessages extends Component {
             if (this.state.allGroupsDetails) {
                 this.setState({
                     filteredMessageGroups: this.state.allMessageGroups.filter((group) =>
-                        group.search.toLowerCase().includes(value.toLowerCase())
+                        group.search && group.search.toLowerCase().includes(value.toLowerCase())
                     ),
                 });
             }
@@ -480,7 +480,7 @@ class MessengerMessages extends Component {
                                 alignItems: "center",
                             }}
                             className="row d-flex no-gutters">
-                            <div className="col-md-10">
+                            <div className="col-md-10 filter-conversations-data" data-filter-conversations={this.state.filteredMessageGroups.length}>
                                 <input
                                     placeholder="Filter conversations"
                                     onChange={this.filterGroups}
@@ -778,7 +778,6 @@ class MessengerMessages extends Component {
                                                 className=" send-bottom-button bg-transparent justify-content-center align-content-center"
                                                 type="button"
                                                 disabled={this.state.messageText ? false : true}
-                                                fullWidth
                                                 onClick={() => this.handleSendMessage()}>
                                                 <SendIcon
                                                     sx={{ fontSize: 48 }}

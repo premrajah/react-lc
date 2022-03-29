@@ -109,6 +109,15 @@
     min-width: 40px !important;
 }
 
+.filter-conversations-data::after {
+    position: absolute;
+    right: 0px;
+    top: 30%;
+    content: attr(data-filter-conversations);
+    pointer-events: none;
+    opacity: 0.6;
+}
+
 .text-pink-heading{
 
     color: var(--lc-pink);

@@ -196,7 +196,6 @@ class App extends Component {
                             path="/sub-product-view/:slug"
                             component={SubProductView}
                         />
-                        {/*<LoggedInRoute exact path="/product-view/:slug" component={ProductView} />*/}
                         <LoggedInRoute
                             exact
                             path="/message-seller/:slug"

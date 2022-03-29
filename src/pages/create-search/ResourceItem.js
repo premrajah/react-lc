@@ -1,21 +1,19 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import moment from "moment";
 import MoreMenu from "../../components/MoreMenu";
 import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
 import {capitalize} from "../../Util/GlobalFunctions";
-import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
-import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
-import BlueBorderLink from "../../components/FormsUI/Buttons/BlueBorderLink";
 import GrayBorderBtn from "../../components/FormsUI/Buttons/GrayBorderBtn";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 import OrgComponent from "../../components/Org/OrgComponent";
 import MatchItemBuyer from "../../components/MatchItemBuyer";
+
 class ResourceItem extends Component {
     constructor(props) {
         super(props);

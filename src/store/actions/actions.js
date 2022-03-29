@@ -627,12 +627,10 @@ export const signUpHostSync = (data) => (dispatch) => {
             dispatch({ type: SIGN_UP, value: res.data });
         })
         .catch((error) => {
-            // dispatch(stopLoading())
 
             dispatch(loginFailed());
 
-            // dispatch({ type: AUTH_FAILED });
-            // dispatch({ type: ERROR, payload: error.data.error.message });
+
         });
 };
 
@@ -926,11 +924,9 @@ export const fetchRegisterRequestSync = () => (dispatch) => {
 
             dispatch({ type: PRODUCT_REGISTER , value: responseAll });
 
-            // dispatch()
         },
         (error) => {
-            // let status = error.response.status
-            // dispatch({ type: "PRODUCT_LIST", value: [] })
+
         }
     )
         .catch(error => {});

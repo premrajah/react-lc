@@ -18,10 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
-import { geocodeByPlaceId } from 'react-google-places-autocomplete';
-import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
-import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
@@ -179,6 +176,10 @@ class SiteForm extends Component {
     //         console.log(e)
 }
     }
+
+
+
+
 
 
 
@@ -869,14 +870,19 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
                     <Modal
-                    // size="lg"
                     centered
                     show={this.props.showSiteForm.show}
                     onHide={this.hidePopUp}
                     className={"custom-modal-popup popup-form"}>
 
-                        {/*edit site popup*/}
+                        <div className="row   justify-content-end">
+                            <div className="col-auto mr-2 mt-2">
+                                <CloseButtonPopUp onClick={this.hidePopUp}>
+                                    <Close />
+                                </CloseButtonPopUp>
 
+                            </div>
+                        </div>
                         <div className="row   justify-content-end">
                             <div className="col-auto mr-2 mt-2">
                                 <CloseButtonPopUp onClick={this.hidePopUp}>
@@ -895,7 +901,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                         {/*link existing or new site*/}
 
-                        {this.props.showSiteForm.type==="link"  && !this.state.createNew&& <p style={{margin: "10px 0px"}} className="  small">
+                        {this.props.showSiteForm.type==="link"
+                        && !this.state.createNew&& <p style={{margin: "10px 0px"}} className="  small">
                                 <span onClick={this.toggleCreateNew} className="btn-gray-border click-item mr-2 "
                                       data-parent="cWkY0KVYEM"><AddIcon /> Create New</span><span
                             onClick={this.toggleAddExisting}

@@ -5,7 +5,6 @@ import axios from "axios/index";
 import {Alert} from "react-bootstrap";
 import PageHeader from "../../components/PageHeader";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
-import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 
 class ChangePassword extends Component {

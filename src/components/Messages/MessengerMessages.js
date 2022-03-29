@@ -4,7 +4,7 @@ import { baseUrl, createMarkup } from "../../Util/Constants";
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import { TextField, Tooltip } from "@mui/material";
-import { Autocomplete } from "@mui/lab";
+import { Autocomplete } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddCircle";
 import ExplicitIcon from "@mui/icons-material/Explicit";
 import SendIcon from "@mui/icons-material/Send";
@@ -778,7 +778,6 @@ class MessengerMessages extends Component {
                                                 className=" send-bottom-button bg-transparent justify-content-center align-content-center"
                                                 type="button"
                                                 disabled={this.state.messageText ? false : true}
-                                                fullWidth
                                                 onClick={() => this.handleSendMessage()}>
                                                 <SendIcon
                                                     sx={{ fontSize: 48 }}

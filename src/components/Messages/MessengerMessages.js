@@ -480,7 +480,7 @@ class MessengerMessages extends Component {
                                 alignItems: "center",
                             }}
                             className="row d-flex no-gutters">
-                            <div className="col-md-10">
+                            <div className="col-md-10 filter-conversations-data" data-filter-conversations={this.state.filteredMessageGroups.length}>
                                 <input
                                     placeholder="Filter conversations"
                                     onChange={this.filterGroups}

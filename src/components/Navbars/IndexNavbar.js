@@ -319,6 +319,7 @@ class ComponentsNavbar extends React.Component {
                                                                         objectFit: "contain",
                                                                         width: "30px",
                                                                         height: "30px",
+                                                                        border: "2px solid var(--lc-yellow)"
                                                                     }}
                                                                 />
                                                             </div>

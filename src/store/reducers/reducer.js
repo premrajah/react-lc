@@ -47,6 +47,7 @@ import {
     SERVICE_AGENT_REQUEST,
     SHOW_SNACKBAR,
     CURRENT_PRODUCT,
+    EMPTY_CURRENT,
     CURRENT_SITE,
     GET_LISTINGS,
     SITE_FORM_SHOW,
@@ -166,11 +167,24 @@ const reducer = (state = initialState, action) => {
 
             break;
         case CURRENT_PRODUCT:
-            newState.productNotFound = false;
 
+            console.log("curent")
+            newState.loading=false
+            newState.productNotFound = false;
             newState.currentProduct = action.value;
 
             break;
+
+
+        case EMPTY_CURRENT:
+console.log("empty")
+            newState.loading=true
+            newState.currentProduct = null;
+            newState.currentSite = null;
+
+            break;
+
+
         case PRODUCT_NOT_FOUND:
             newState.productNotFound = action.value;
             break;
@@ -252,6 +266,7 @@ const reducer = (state = initialState, action) => {
 
             break;
         case CURRENT_SITE:
+            newState.loading=false
             newState.currentSite = action.value;
 
             break;
@@ -413,9 +428,13 @@ const reducer = (state = initialState, action) => {
         case SHOW_LOADING:
             newState.loading = action.value;
 
+
             break;
         case LOADING:
-            newState.loading = true;
+
+            newState.loading = action.value?action.value:false
+
+
             break;
         case SLIDES_LOAD:
             newState.slides = action.value;

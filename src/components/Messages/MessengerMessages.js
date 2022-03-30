@@ -520,6 +520,7 @@ class MessengerMessages extends Component {
                                     {this.state.filteredMessageGroups.map((group, i) => (
                                         <React.Fragment key={group._key + "_item"}>
                                             <>
+
                                                 <MessageGroupItem
                                                     selectedItem={this.state.selectedItem}
                                                     index={i}

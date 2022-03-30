@@ -67,7 +67,7 @@ class Site extends Component {
         return (
             <Layout hideFooter={true}>
 
-                    {this.state.notFound ? (
+                    {!this.props.loading&&!this.props.currentSite ? (
                         <NotFound />
                     ) : (
                         <div className={"container pb-4 mb-4"}>

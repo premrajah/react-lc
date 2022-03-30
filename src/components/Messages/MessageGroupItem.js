@@ -108,6 +108,7 @@ class MessageGroupItem extends Component {
                         : "click-item p-3 message-group-item"
                 } border-bottom  ${this.props.showAll?"": "ellipsis-end"}`}
                 onClick={this.handleClick}>
+
                 <span id={this.props.item._key + "_thumbnails"} className={"thumbnail-box"}>
                     {this.props.item.group&&this.props.item.group.map((item, index) => (
                         <MessageNameThumbnail

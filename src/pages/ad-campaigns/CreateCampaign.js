@@ -69,6 +69,9 @@ class CreateCampaign extends Component {
             properties: [ "brand","category", "type","state","model","serial","sku","upc","part_no","line","condition","stage",
                 "purpose","units","year_of_making"],
             operators: [
+
+            ],
+            operatorsAll: [
                 {name:"Equals",value:"equals"},
                 {name:"Not Equal",value:"not_equals"},
                 {name:"Less Than Equal To",value:"less_than_equals"},
@@ -152,17 +155,48 @@ class CreateCampaign extends Component {
             this.setState({
                 startDate:value
             })
-        }else if(field==="endDate"){
+        }
+        else if(field==="endDate"){
             this.setState({
                 endDate:value
             })
 
         }
 
+
+
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
 
+
+        if (["brand","category", "type","state","model",
+            "serial","sku","upc","part_no","line","condition","stage",
+            "purpose","units"].includes(value)){
+           this.setState({
+               // operators:this.state.operatorsAll
+
+               operators:this.state.operatorsAll.filter((item)=> !(item.value.includes("greater")||item.value.includes("less") )  )
+           })
+        }
+
+        else if (["year_of_making"]
+            .includes(value)){
+            this.setState({
+                // operators:this.state.operatorsAll
+
+                operators:this.state.operatorsAll.filter((item)=> (item.value.includes("greater")||item.value.includes("less")||item.value.includes("equal") )  )
+            })
+        }
+
+
+        else {
+
+            this.setState({
+                operators:this.state.operatorsAll
+
+            })
+        }
 
 
         if (this.state.activeStep===1){

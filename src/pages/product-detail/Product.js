@@ -9,6 +9,7 @@ import Layout from "../../components/Layout/Layout";
 import ProductDetailContent from "../../components/Products/ProductDetailContent";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
+import {CURRENT_PRODUCT, PRODUCT_NOT_FOUND} from "../../store/types";
 
 class ProductView extends Component {
     slug;
@@ -24,7 +25,8 @@ class ProductView extends Component {
             item: null,
             showPopUp: false,
             subProducts: [],
-
+            currentProduct:null,
+            loading:false,
             notFound: false,
         };
 
@@ -58,7 +60,10 @@ class ProductView extends Component {
 
 
 
+
     componentDidMount() {
+
+
 
         if (this.props.location.search.includes("r=true")&&this.props.userDetail.is_org_admin ){
 
@@ -66,40 +71,41 @@ class ProductView extends Component {
                 (response) => {
                     let responseAll = response.data;
 
-                    this.props.loadCurrentProduct(encodeUrl(this.slug));
+                    this.props.loadCurrentProduct(encodeUrl(this.slug),true);
                 },
                 (error) => {}
             );
         }else {
 
-            this.props.loadCurrentProduct(encodeUrl(this.slug));
+            this.props.loadCurrentProduct(encodeUrl(this.slug),true);
         }
     }
 
     render() {
-        const classes = withStyles();
-        const classesBottom = withStyles();
+
 
         return (
 
-                <>
-                    {this.props.productNotFound ? (
-                        <NotFound />
-                    ) :  <Layout hideFooter={true}>
-                        <div className={"container pb-5 mb-5"}>
-                            {this.props.currentProduct && (
-                                <>
-                                 <ProductDetailContent
-                                        history={this.props.history}
-                                        hideRegister={true}
-                                        item={this.props.currentProduct}
-                                    />
-                                </>
-                            )}
-                        </div>
-                    </Layout>
-                    }
-                </>
+            <>
+
+                {!this.props.loading &&
+                !this.props.currentProduct ? (
+                    <NotFound />
+                ) :  <Layout hideFooter={true}>
+                    <div className={"container pb-5 mb-5"}>
+                        {this.props.currentProduct &&
+                        <ProductDetailContent
+                            history={this.props.history}
+                            hideRegister={true}
+                            item={this.props.currentProduct}
+                        />}
+
+                    </div>
+                </Layout>
+                }
+
+
+            </>
 
         );
     }

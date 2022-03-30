@@ -55,7 +55,7 @@ import {
     TOGGLE_GLOBAL_DIALOG,
     USER_CONTEXT,
     ORG_CACHE,
-    REFRESH_PAGE
+    REFRESH_PAGE, EMPTY_CURRENT
 } from "../types";
 import {load} from "dotenv";
 
@@ -73,10 +73,14 @@ export const loadingSpinner = () => {
     };
 };
 
-export const loading = () => {
+export const loading = (data) => {
+
+
     return {
         type: LOADING,
+        value: data,
     };
+
 };
 
 export const toggleRightBar = () => {
@@ -285,11 +289,28 @@ export const loadParentSitesSync = (data) => (dispatch) => {
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
 
-export const loadCurrentProduct = (data) => {
+export const loadCurrentProduct = (data,refresh) => {
     return (dispatch) => {
-        dispatch(loading());
+
+
+
+        if (refresh) {
+            dispatch(emptyCurrent());
+        }
         dispatch(loadCurrentProductSync(data));
     };
+};
+
+
+
+
+export const emptyCurrent = (data) => {
+
+    return {
+        type: EMPTY_CURRENT,
+        value: data,
+    };
+
 };
 
 export const loadCurrentProductSync = (data) => (dispatch) => {
@@ -328,9 +349,13 @@ export const resetProductPageOffset = () => {
     return { type: PRODUCT_PAGE_RESET };
 };
 
-export const loadCurrentSite = (data) => {
+export const loadCurrentSite = (data,refresh) => {
     return (dispatch) => {
-        dispatch(loading());
+
+
+        if (refresh)
+       dispatch(emptyCurrent());
+
         dispatch(loadCurrentSiteSync(data));
     };
 };

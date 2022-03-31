@@ -19,8 +19,8 @@ import TabPanel from "@mui/lab/TabPanel";
 import CustomPopover from "../FormsUI/CustomPopover";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {CheckCircle} from "@mui/icons-material";
-import Badge from '@mui/material/Badge';
-import Chip from '@mui/material/Chip';
+
+
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 const ORG_REGEX = /(Org\/[\w\d-]+)/g;
 const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
@@ -30,7 +30,9 @@ const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
 const PRODUCT_REGISTRATION = /ProductRegistration\/([\w\d]+)/g;
 const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
 const BRACKETS_REGEX = /[(\[)(\])]/g;
-const ATAG_REGEX = /\<a(.*)\<\/a\>"/g;
+const A_TAG_REGEX = /\<a(.*)\<\/a\>"/g;
+const LISTING_REGEX = /Listing\/([\w\d]+)/g;
+const SEARCH_REGEX = /Search\/([\w\d]+)/g;
 
 class Notifications extends Component {
     state = {
@@ -215,7 +217,7 @@ class Notifications extends Component {
                     key={i + Math.random() * 101}
                     to={`product/${match}`}
                     onClick={() => this.messageRead(messageId)}>
-                    <u className="forgot-password-link">View Product</u>
+                    View Product
                 </Link>
             </>
         ));
@@ -225,7 +227,7 @@ class Notifications extends Component {
                 key={i + Math.random() * 102}
                 to={`cycle/${match}`}
                 onClick={() => this.messageRead(messageId)}>
-                <u className="blue-text">Cycle</u>
+                Cycle
             </Link>
         ));
 
@@ -234,7 +236,7 @@ class Notifications extends Component {
                 key={i + Math.random() * 103}
                 to={`matched/${match}`}
                 onClick={() => this.messageRead(messageId)}>
-                <u className="blue-text">Match</u>
+                Match
             </Link>
         ));
 
@@ -243,7 +245,7 @@ class Notifications extends Component {
                 key={i + Math.random() * 104}
                 to="/approve?tab=0"
                 onClick={() => this.messageRead(messageId)}>
-                <u className="blue-text">To Approvals Page</u>
+                To Approvals Page
             </Link>
         ));
 
@@ -252,7 +254,7 @@ class Notifications extends Component {
                 key={i + Math.random() * 105}
                 to="/approve?tab=2"
                 onClick={() => this.messageRead(messageId)}>
-                <u className="blue-text">To Approvals Page</u>
+                To Approvals Page
             </Link>
         ));
 
@@ -261,18 +263,36 @@ class Notifications extends Component {
                 key={i + Math.random() * 106}
                 to="/approve?tab=1"
                 onClick={() => this.messageRead(messageId)}>
-                <u className="blue-text">To Approvals Page</u>
+                To Approvals Page
             </Link>
         ));
 
-        text = reactStringReplace(text, ATAG_REGEX, (match, i) => (
+        text = reactStringReplace(text, A_TAG_REGEX, (match, i) => (
             <Link
                 key={i + Math.random() * 107}
                 to="/account?page=system-users"
                 onClick={() => this.messageRead(messageId)}>
-                <u className="forgot-password-link">User Approvals</u>
+                User Approvals
             </Link>
         ))
+
+        text = reactStringReplace(text, LISTING_REGEX, (match, i) => (
+            <Link
+                key={i + Math.random() * 108}
+                to={`/${match}`}
+                onClick={() => this.messageRead(messageId)}>
+                Listing
+            </Link>
+        ));
+
+        text = reactStringReplace(text, SEARCH_REGEX, (match, i) => (
+            <Link
+                key={i + Math.random() * 109}
+                to={`/search/${match}`}
+                onClick={() => this.messageRead(messageId)}>
+                Search
+            </Link>
+        ));
 
         return (
             <Card

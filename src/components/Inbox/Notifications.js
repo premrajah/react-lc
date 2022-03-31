@@ -30,6 +30,7 @@ const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
 const PRODUCT_REGISTRATION = /ProductRegistration\/([\w\d]+)/g;
 const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
 const BRACKETS_REGEX = /[(\[)(\])]/g;
+const ATAG_REGEX = /\<a(.*)\<\/a\>"/g;
 
 class Notifications extends Component {
     state = {
@@ -263,6 +264,15 @@ class Notifications extends Component {
                 <u className="blue-text">To Approvals Page</u>
             </Link>
         ));
+
+        text = reactStringReplace(text, ATAG_REGEX, (match, i) => (
+            <Link
+                key={i + Math.random() * 107}
+                to="/account?page=system-users"
+                onClick={() => this.messageRead(messageId)}>
+                <u className="forgot-password-link">User Approvals</u>
+            </Link>
+        ))
 
         return (
             <Card

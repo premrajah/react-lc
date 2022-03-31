@@ -1637,6 +1637,12 @@ pre {
     opacity: 1;
 }
 
+.has-link a{
+    color: var(--lc-pink) !important;
+    text-decoration: underline;
+    opacity: 1;
+}
+
 .green-link-url {
     color: #05ac82 !important;
     text-decoration: underline;

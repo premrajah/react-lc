@@ -1,16 +1,25 @@
 import React, {Component} from "react";
 import axios from "axios";
 import {connect} from "react-redux";
-import {baseUrl} from "../../Util/Constants";
+import {baseUrl, createMarkup} from "../../Util/Constants";
 import reactStringReplace from "react-string-replace";
 import {Card, CardContent, Snackbar} from "@mui/material";
-import NotIcon from "@mui/icons-material/Notifications";
+import NotIcon from "@mui/icons-material/HdrWeak";
 import moment from "moment/moment";
 import Org from "../Org/Org";
 import {Link} from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import _ from "lodash";
 import PaginationLayout from "../IntersectionOserver/PaginationLayout";
+import Box from "@mui/material/Box";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import Tab from "@mui/material/Tab";
+import TabPanel from "@mui/lab/TabPanel";
+import CustomPopover from "../FormsUI/CustomPopover";
+import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
+import {CheckCircle} from "@mui/icons-material";
+import Badge from '@mui/material/Badge';
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 const ORG_REGEX = /(Org\/[\w\d-]+)/g;
@@ -29,9 +38,10 @@ class Notifications extends Component {
         allNotificationsCount: 0,
         lastPageReached: false,
         currentOffset: 0,
-        productPageSize: 50,
+        productPageSize: 20,
         loadingResults: false,
         count: 0,
+        activeReleaseTabKey:"1",
     };
 
     getAllNotificationsCount = () => {
@@ -46,6 +56,11 @@ class Notifications extends Component {
     };
 
     getNotifications = () => {
+        this.setState({
+
+            loadingResults: true
+        })
+
         let newOffset = this.state.currentOffset;
         axios
             .get(
@@ -66,6 +81,15 @@ class Notifications extends Component {
             currentOffset: newOffset + this.state.productPageSize,
         });
     };
+    setActiveReleaseTabKey=(event,key)=>{
+
+
+        this.setState({
+            activeReleaseTabKey:key
+        })
+
+
+    }
 
     messageRead = (messageId) => {
         if (!messageId) return;
@@ -185,12 +209,12 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, PRODUCT_REGEX, (match, i) => (
             <>
-                <span>Product </span>
+
                 <Link
                     key={i + Math.random() * 101}
                     to={`product/${match}`}
                     onClick={() => this.messageRead(messageId)}>
-                    <u className="blue-text">Link</u>
+                    <u className="forgot-password-link">View</u>
                 </Link>
             </>
         ));
@@ -244,37 +268,47 @@ class Notifications extends Component {
             <Card
                 key={index}
                 variant="outlined"
-                className="mb-2"
-                style={{ opacity: `${flags ? "0.5" : "1"}` }}>
-                <CardContent>
-                    <div className="row">
-                        <div className="col-12">
+                className="mb-3 rad-8  bg-white  "
+                // style={{ opacity: `${flags ? "0.5" : "1"}` }}
+            >
+
+
+                <CardContent className={"hover-bg"}>
+                    <div className="row ">
+                        <div className="col-11">
                             <NotIcon
                                 style={{
-                                    color: flags ? "#eee" : "var(--lc-pink)",
+                                    color: flags ? "#eee" : "var(--lc-purple)",
                                     float: "left",
                                     marginRight: "15px",
                                     marginTop: "3px",
                                 }}
                             />
-                            <div style={{ float: "left", marginBottom: "0" }}>{text}</div>
 
-                            <span className="text-mute time-text">
+                            {text.includes("page") !== -1?
+                                <div
+                                    className={"has-link"}
+                                dangerouslySetInnerHTML={createMarkup(
+                                    text
+                                )} ></div>:
+                            <div style={{ float: "left", marginBottom: "0" }}>{text}</div>}
+
+                            <span className="text-gray-light time-text">
                                 <span className="mr-4">
                                     {moment(message._ts_epoch_ms).fromNow()}
                                 </span>
-                                <span className="">
-                                    {readTime
-                                        ? `Read: ${moment(readTime.ts_epoch_ms).fromNow()}`
-                                        : ""}
-                                </span>
-                                {!readTime ? (
-                                    <span
-                                        onClick={() => this.messageRead(messageId)}
-                                        style={{ cursor: "pointer" }}>
-                                        Mark as read
-                                    </span>
-                                ) : null}
+                                {/*<span className="">*/}
+                                {/*    {readTime*/}
+                                {/*        ? `Read: ${moment(readTime.ts_epoch_ms).fromNow()}`*/}
+                                {/*        : ""}*/}
+                                {/*</span>*/}
+                                {/*{!readTime ? (*/}
+                                {/*    <span*/}
+                                {/*        onClick={() => this.messageRead(messageId)}*/}
+                                {/*        style={{ cursor: "pointer" }}>*/}
+                                {/*        Mark as read*/}
+                                {/*    </span>*/}
+                                {/*) : null}*/}
                                 {item.options && !item.options.is_owned && (
                                     <React.Fragment>
                                         {message.text.match(PRODUCT_REGEX) &&
@@ -297,8 +331,20 @@ class Notifications extends Component {
                                 )}
                             </span>
                         </div>
+
+                        {!flags &&  <div className="col-1 text-right">
+                            <CustomPopover text={"Mark as read"}>
+
+                                <ActionIconBtn
+                                    className="ml-4"
+                                    onClick={()=>this.messageRead(messageId)}>
+                                    <CheckCircle style={{color:"#07AD89"}} />
+                                </ActionIconBtn>
+                            </CustomPopover>
+                        </div>}
                     </div>
                 </CardContent>
+
             </Card>
         );
     };
@@ -333,26 +379,89 @@ class Notifications extends Component {
                             : <span className="mr-1">{this.state.allNotifications.length}</span>}
                         of {this.state.allNotificationsCount}
                     </span>
-                    <span className="text-muted">
-                        <span className="mr-1">Read</span>
-                        {this.state.allNotifications.length <= 0
-                            ? "..."
-                            : this.handleReadUnreadLength(this.state.allNotifications)}
-                    </span>
+                    {/*<span className="text-muted">*/}
+                    {/*    <span className="mr-1">Read</span>*/}
+                    {/*    {this.state.allNotifications.length <= 0*/}
+                    {/*        ? "..."*/}
+                    {/*        : this.handleReadUnreadLength(this.state.allNotifications)}*/}
+                    {/*</span>*/}
                 </h5>
                 <div className="notification-content">
-                    <PaginationLayout
-                        loadingResults={this.state.loadingResults}
-                        lastPageReached={this.state.lastPageReached}
-                        loadMore={this.getNotifications}
-                        hideSearch
-                    >
-                        {this.state.allNotifications.length > 0
-                            ? this.state.allNotifications.map((item, index) => {
-                                  return this.checkNotifications(item, index);
-                              })
-                            : "No notifications... "}
-                    </PaginationLayout>
+                    <div className={"row "}>
+                        <div className={"col-12 "}>
+                            <Box sx={{ width: '100%', typography: 'body1' }}>
+                                <TabContext value={this.state.activeReleaseTabKey}>
+                                    <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                        <TabList
+
+                                            allowScrollButtonsMobile
+
+                                            scrollButtons="auto"
+                                            textColor={"#27245C"}
+                                            TabIndicatorProps={{
+                                                style: {
+                                                    backgroundColor: "#27245C",
+                                                    padding: '2px',
+                                                }
+                                            }}
+                                            onChange={this.setActiveReleaseTabKey}
+
+                                            aria-label="lab API tabs example">
+                                            <Tab label="All" value="1" />
+                                            {/*<Tab label={`Read `} value="2"/>*/}
+
+                                        </TabList>
+                                    </Box>
+
+                                    <TabPanel value="1">
+                                        <div className={"row  mt-4 "}>
+                                            <div className={"col-12 "}>
+
+                                                <PaginationLayout
+
+                                                    visibleCount={this.state.allNotifications.length}
+                                                    count={this.state.allNotificationsCount}
+                                                    loadingResults={this.state.loadingResults}
+                                                    lastPageReached={this.state.lastPageReached}
+                                                    loadMore={this.getNotifications}
+                                                    hideSearch
+                                                >
+                                                    <>
+                                                        {this.state.allNotifications.length > 0
+                                                            ? this.state.allNotifications.map((item, index) => {
+                                                                return this.checkNotifications(item, index);
+                                                            })
+                                                            : "No notifications... "}
+                                                    </>
+                                                </PaginationLayout>
+
+                                            </div>
+                                        </div>
+
+                                    </TabPanel>
+                                    {/*<TabPanel value="2">*/}
+
+                                    {/*    <div className={"row  mt-4 "}>*/}
+                                    {/*        <div className={"col-12 "}>*/}
+
+
+
+                                    {/*        </div>*/}
+                                    {/*    </div>*/}
+
+                                    {/*</TabPanel>*/}
+
+
+
+
+                                </TabContext>
+                            </Box>
+                        </div>
+
+                    </div>
+
+
+
                 </div>
             </div>
         );

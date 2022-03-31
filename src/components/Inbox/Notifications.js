@@ -374,12 +374,12 @@ class Notifications extends Component {
                 </Snackbar>
 
                 <h5 className="blue-text mb-4">
-                    <span className="mr-3">
-                        {this.state.allNotifications.length <= 0
-                            ? "..."
-                            : <span className="mr-1">{this.state.allNotifications.length}</span>}
-                        of {this.state.allNotificationsCount}
-                    </span>
+                    {/*<span className="mr-3">*/}
+                    {/*    {this.state.allNotifications.length <= 0*/}
+                    {/*        ? "..."*/}
+                    {/*        : <span className="mr-1">{this.state.allNotifications.length}</span>}*/}
+                    {/*    of {this.state.allNotificationsCount}*/}
+                    {/*</span>*/}
                     {/*<span className="text-muted">*/}
                     {/*    <span className="mr-1">Read</span>*/}
                     {/*    {this.state.allNotifications.length <= 0*/}

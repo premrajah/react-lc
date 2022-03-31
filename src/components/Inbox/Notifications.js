@@ -207,14 +207,14 @@ class Notifications extends Component {
         const messageId = item.message._id;
 
         text = reactStringReplace(message.text, ORG_REGEX, (match, i) => (
-            <Org key={i + Math.random() * 100} orgId={match} />
+            <Org key={`${i}_${match}`} orgId={match} />
         ));
 
         text = reactStringReplace(text, PRODUCT_REGEX, (match, i) => (
             <>
 
                 <Link
-                    key={i + Math.random() * 101}
+                    key={`${i}_${match}`}
                     to={`product/${match}`}
                     onClick={() => this.messageRead(messageId)}>
                     View Product
@@ -224,7 +224,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, CYCLE_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 102}
+                key={`${i}_${match}`}
                 to={`cycle/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 Cycle
@@ -233,7 +233,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, MATCH_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 103}
+                key={`${i}_${match}`}
                 to={`matched/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 Match
@@ -242,7 +242,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, PRODUCT_RELEASE_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 104}
+                key={`${i}_${match}`}
                 to="/approve?tab=0"
                 onClick={() => this.messageRead(messageId)}>
                 To Approvals Page
@@ -251,7 +251,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, SERVICE_AGENT_CHANGE_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 105}
+                key={`${i}_${match}`}
                 to="/approve?tab=2"
                 onClick={() => this.messageRead(messageId)}>
                 To Approvals Page
@@ -260,7 +260,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, PRODUCT_REGISTRATION, (match, i) => (
             <Link
-                key={i + Math.random() * 106}
+                key={`${i}_${match}`}
                 to="/approve?tab=1"
                 onClick={() => this.messageRead(messageId)}>
                 To Approvals Page
@@ -269,7 +269,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, A_TAG_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 107}
+                key={`${i}_${match}`}
                 to="/account?page=system-users"
                 onClick={() => this.messageRead(messageId)}>
                 User Approvals
@@ -278,7 +278,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, LISTING_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 108}
+                key={`${i}_${match}`}
                 to={`/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 Listing
@@ -287,7 +287,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, SEARCH_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 109}
+                key={`${i}_${match}`}
                 to={`/search/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 Search

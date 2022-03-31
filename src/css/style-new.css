@@ -1637,7 +1637,9 @@ pre {
     opacity: 1;
 }
 
-.has-link a{
+
+.notification-content a{
+
     color: var(--lc-pink) !important;
     text-decoration: underline;
     opacity: 1;

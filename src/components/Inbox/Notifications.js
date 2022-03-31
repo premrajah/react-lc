@@ -20,7 +20,7 @@ import CustomPopover from "../FormsUI/CustomPopover";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {CheckCircle} from "@mui/icons-material";
 import Badge from '@mui/material/Badge';
-
+import Chip from '@mui/material/Chip';
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 const ORG_REGEX = /(Org\/[\w\d-]+)/g;
 const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
@@ -214,7 +214,7 @@ class Notifications extends Component {
                     key={i + Math.random() * 101}
                     to={`product/${match}`}
                     onClick={() => this.messageRead(messageId)}>
-                    <u className="forgot-password-link">View</u>
+                    <u className="forgot-password-link">View Product</u>
                 </Link>
             </>
         ));
@@ -291,7 +291,7 @@ class Notifications extends Component {
                             {/*    dangerouslySetInnerHTML={createMarkup(*/}
                             {/*        text*/}
                             {/*    )} ></div>:*/}
-                            <div style={{ float: "left", marginBottom: "0" }}>{text}</div>
+                            <div >{text}</div>
                             {/*}*/}
 
                             <span className="text-gray-light time-text">
@@ -331,6 +331,12 @@ class Notifications extends Component {
                                     </React.Fragment>
                                 )}
                             </span>
+
+                            {/*<Chip*/}
+
+                            {/*    label={"Chip"}*/}
+
+                            {/*/>*/}
                         </div>
 
                         {!flags &&  <div className="col-1 text-right">

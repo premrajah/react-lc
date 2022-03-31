@@ -285,13 +285,14 @@ class Notifications extends Component {
                                 }}
                             />
 
-                            {text.includes("page") !== -1?
-                                <div
-                                    className={"has-link"}
-                                dangerouslySetInnerHTML={createMarkup(
-                                    text
-                                )} ></div>:
-                            <div style={{ float: "left", marginBottom: "0" }}>{text}</div>}
+                            {/*{text.includes("account") !== -1?*/}
+                            {/*    <div*/}
+                            {/*        className={"has-link"}*/}
+                            {/*    dangerouslySetInnerHTML={createMarkup(*/}
+                            {/*        text*/}
+                            {/*    )} ></div>:*/}
+                            <div style={{ float: "left", marginBottom: "0" }}>{text}</div>
+                            {/*}*/}
 
                             <span className="text-gray-light time-text">
                                 <span className="mr-4">

@@ -146,7 +146,7 @@ class PaginationLayout extends Component {
                             ? "row  justify-content-center filter-row  pt-3 pb-3"
                             : "d-none"
                     }>
-                    <div className="col">
+                    <div className="col-12 justify-content-center text-center">
                         <LoaderAnimated />
                     </div>
                 </div>
@@ -157,7 +157,7 @@ class PaginationLayout extends Component {
                             ? "row  justify-content-center filter-row  pt-3 pb-3"
                             : "d-none"
                     }>
-                    <div className="col text-center">
+                    <div className="col jus text-center">
                         <div className="text-gray-light"> No results found!</div>
                     </div>
                 </div>
@@ -168,7 +168,7 @@ class PaginationLayout extends Component {
 
 function LoaderAnimated() {
     return (
-        <div className="wrapper-loader text-center">
+        <div className="wrapper-loader justify-content-center text-center">
             <svg
                 className="hourglass"
                 xmlns="http://www.w3.org/2000/svg mr-4"

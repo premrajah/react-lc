@@ -28,8 +28,6 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import Layout from "../../components/Layout/Layout";
-import TextField from "@mui/material/TextField";
-import clsx from "clsx";
 import {Link} from "react-router-dom";
 
 

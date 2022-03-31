@@ -35,6 +35,8 @@ import TextField from "@mui/material/TextField";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import {validateDate} from "@mui/lab/internal/pickers/date-utils";
 import DescriptionIcon from "@mui/icons-material/Description";
+import _ from "lodash";
+import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
 
 class CreateCampaign extends Component {
 
@@ -87,7 +89,12 @@ class CreateCampaign extends Component {
             ],
             strategyProducts:[],
             conditionAll:[],
-             conditionAny:[]
+             conditionAny:[],
+            categories:[],
+            types:[],
+            states:[],
+            units:[],
+            autocompleteOptions:[]
 
         }
 
@@ -148,7 +155,13 @@ class CreateCampaign extends Component {
 
 
 
-    handleChange(value,field ) {
+
+
+
+    handleChange(value,field,index ) {
+
+
+
 
 
         if (field==="startDate"){
@@ -188,8 +201,6 @@ class CreateCampaign extends Component {
                 operators:this.state.operatorsAll.filter((item)=> (item.value.includes("greater")||item.value.includes("less")||item.value.includes("equal") )  )
             })
         }
-
-
         else {
 
             this.setState({
@@ -204,8 +215,52 @@ class CreateCampaign extends Component {
             this.countStrategyProducts()
         }
 
+let autocompleteOptions=this.state.autocompleteOptions
+
+
+
+        if (value=="category"){
+
+            autocompleteOptions[field]=this.state.categories
+
+            this.setState({
+                autocompleteOptions:autocompleteOptions
+            })
+        }
+
+      else if (value=="type"){
+
+            autocompleteOptions[field]=this.state.types
+
+            this.setState({
+                autocompleteOptions:autocompleteOptions
+            })
+        }
+        else if (value=="state"){
+
+            autocompleteOptions[field]=this.state.states
+
+            this.setState({
+                autocompleteOptions:autocompleteOptions
+            })
+        }
+
+        else  {
+
+            autocompleteOptions[field]=[]
+
+            this.setState({
+                autocompleteOptions:autocompleteOptions
+            })
+        }
 
     }
+
+
+
+
+
+
     async componentDidMount() {
 
         this.setState({
@@ -229,6 +284,68 @@ class CreateCampaign extends Component {
                 endDate: this.props.item.campaign.end_ts
             })
         }
+
+
+        this.getFiltersCategories()
+    }
+
+
+    getFiltersCategories=()=> {
+        axios
+            .get(baseUrl + "category", {
+                headers: {
+                    Authorization: "Bearer " + this.props.userDetail.token,
+                },
+            })
+            .then(
+                (response) => {
+
+                    let   responseAll = (response.data.data);
+
+
+                    let categories=[]
+                    let types=[]
+                    let states=[]
+                    for (let i=0;i<responseAll.length;i++){
+
+                        categories.push(responseAll[i].name)
+                        for (let k=0;k<responseAll[i].types.length;k++){
+
+                            types.push(responseAll[i].types[k].name)
+                            for (let m=0;m<responseAll[i].types[k].state.length;m++) {
+
+                               states.push(responseAll[i].types[k].state[m])
+
+                            }
+                        }
+
+
+                    }
+
+
+                    // console.log(categories)
+                    // console.log(states)
+                    // console.log(types)
+
+
+                    this.setState({
+
+                        categories:categories.filter(function(item, pos) {
+                            return categories.indexOf(item) == pos;
+                        }),
+                        states:states.filter(function(item, pos) {
+                            return states.indexOf(item) == pos;
+                        }),
+                        types:types.filter(function(item, pos) {
+                            return types.indexOf(item) == pos;
+                        })
+                    })
+
+
+
+                },
+                (error) => {}
+            );
     }
 
 
@@ -937,13 +1054,7 @@ class CreateCampaign extends Component {
 
                 <div className="wrapper">
 
-
                     <div className="container  mb-150  pb-5 pt-4">
-                        {/*<PageHeader*/}
-                        {/*    pageIcon={CubeBlue}*/}
-                        {/*    pageTitle={this.props.item?"Edit Campaign":"Create an Ad Campaign"}*/}
-                        {/*    // subTitle="Define campaign parameters here"*/}
-                        {/*/>*/}
 
                         <div className={classes.root}>
                             <Stepper className={"mb-4 p-0"} style={{background:"transparent"}} activeStep={this.state.activeStep}>
@@ -1122,7 +1233,7 @@ class CreateCampaign extends Component {
 
                                                                             initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].predicate:null}
                                                                             onChange={(value)=> {
-                                                                                this.handleChange(value,`propertyAnd[${index}]`)
+                                                                                this.handleChange(value,`propertyAnd[${index}]`,index)
 
                                                                             }}
                                                                             select={"Select"}
@@ -1159,16 +1270,29 @@ class CreateCampaign extends Component {
                                                             </div>
 
                                                             <div className="col-5">
-                                                                <TextFieldWrapper
-                                                                    error={this.state.errors[`valueAnd[${index}]`]}
+                                                                {/*<TextFieldWrapper*/}
+                                                                {/*    error={this.state.errors[`valueAnd[${index}]`]}*/}
 
-                                                                    initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].value:null
-                                                                    }
+                                                                {/*    initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].value:null*/}
+                                                                {/*    }*/}
+                                                                {/*    onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}*/}
+                                                                {/*    name={`valueAnd[${index}]`}*/}
+                                                                {/*    // value={((this.state.fields[`operatorAnd[${index}]`]==="equals"&&this.state.fields[`propertyAnd[${index}]`]==="brand")?this.props.userDetail.orgId:null)}*/}
+
+                                                                {/*/>*/}
+
+                                                                <AutoCompleteComboBox
+                                                                    initialValue={this.state.conditionAll.length&&this.state.conditionAll[index]?this.state.conditionAll[index].value:null}
                                                                     onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}
+
+                                                                    options={this.state.autocompleteOptions[`propertyAnd[${index}]`]}
+                                                                    error={this.state.errors[`valueAnd[${index}]`]}
                                                                     name={`valueAnd[${index}]`}
-                                                                    // value={((this.state.fields[`operatorAnd[${index}]`]==="equals"&&this.state.fields[`propertyAnd[${index}]`]==="brand")?this.props.userDetail.orgId:null)}
 
                                                                 />
+
+
+
                                                             </div>
 
                                                             <div  className="col-1 text-center"
@@ -1242,7 +1366,7 @@ class CreateCampaign extends Component {
 
                                                                             initialValue={this.state.conditionAny.length>0&&this.state.conditionAny[index]?this.state.conditionAny[index].predicate:null}
                                                                             onChange={(value)=> {
-                                                                                this.handleChange(value,`propertyOr[${index}]`)
+                                                                                this.handleChange(value,`propertyOr[${index}]`,index)
                                                                             }}
 
                                                                             select={"Select"}
@@ -1278,14 +1402,26 @@ class CreateCampaign extends Component {
                                                             </div>
 
                                                             <div className="col-5">
-                                                                <TextFieldWrapper
-                                                                    error={this.state.errors[`valueOr[${index}]`]}
+                                                                {/*<TextFieldWrapper*/}
+                                                                {/*    error={this.state.errors[`valueOr[${index}]`]}*/}
 
+                                                                {/*    initialValue={this.state.conditionAny.length&&this.state.conditionAny[index]?this.state.conditionAny[index].value:null}*/}
+                                                                {/*    onChange={(value)=>this.handleChange(value,`valueOr[${index}]`)}*/}
+                                                                {/*    name={`valueOr[${index}]`}*/}
+                                                                {/*    // title="Value"*/}
+                                                                {/*/>*/}
+
+
+                                                                <AutoCompleteComboBox
                                                                     initialValue={this.state.conditionAny.length&&this.state.conditionAny[index]?this.state.conditionAny[index].value:null}
                                                                     onChange={(value)=>this.handleChange(value,`valueOr[${index}]`)}
+                                                                    options={this.state.autocompleteOptions[`propertyOr[${index}]`]}
+                                                                    error={this.state.errors[`valueOr[${index}]`]}
                                                                     name={`valueOr[${index}]`}
-                                                                    // title="Value"
+
                                                                 />
+
+
                                                             </div>
 
                                                             <div  className="col-1 text-center"

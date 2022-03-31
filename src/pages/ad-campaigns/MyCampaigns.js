@@ -570,23 +570,24 @@ this.props.toggleRightBar()
                                                 lastPageReached={this.state.lastPageReached}
                                                 loadMore={(data)=>this.loadCampaignsPageWise(data)} >
 
-                                            </PaginationLayout>
-
-
-                                            {this.state.items
+                                                {this.state.items
                                                     .map((item, index) => (
 
 
-                                                         <CampaignItem item={item} index={index}
-                                                         toggleRightBar={(data)=>{
-                                                             this.setState({
-                                                                 campaignMode:2
-                                                             });
-                                                             this.toggleRightBar(data);
-                                                         }}
-                                                         />
-)
-                                                            )}
+                                                            <CampaignItem item={item} index={index}
+                                                                          toggleRightBar={(data)=>{
+                                                                              this.setState({
+                                                                                  campaignMode:2
+                                                                              });
+                                                                              this.toggleRightBar(data);
+                                                                          }}
+                                                            />
+                                                        )
+                                                    )}
+                                            </PaginationLayout>
+
+
+
 
                                             </tbody>
                                         </table>

@@ -60,6 +60,46 @@ class ProductView extends Component {
 
 
 
+     loadCurrentProduct = (data) =>  {
+
+         this.props.loading(true)
+         this.setState({
+             loading:true
+         })
+        try{
+            axios
+                .get(baseUrl + "product/" + encodeUrl(data) + "/expand?agg"
+                )
+                .then(
+                    (response) => {
+                        let responseAll = response.data;
+
+
+                        this.props.setCurrentProduct(responseAll.data)
+                        this.props.loading(false)
+                        this.setState({
+                            loading:false
+                        })
+
+                    },
+                    (error) => {
+
+
+                        this.setState({
+                            loading:false
+                        })
+
+                        this.props.loading(false)
+                    }
+                );
+
+        } catch(e) {
+            console.log(e)
+
+
+        }
+    };
+
 
     componentDidMount() {
 
@@ -71,13 +111,13 @@ class ProductView extends Component {
                 (response) => {
                     let responseAll = response.data;
 
-                    this.props.loadCurrentProduct(encodeUrl(this.slug),true);
+                    this.loadCurrentProduct(encodeUrl(this.slug),true);
                 },
                 (error) => {}
             );
         }else {
 
-            this.props.loadCurrentProduct(encodeUrl(this.slug),true);
+            this.loadCurrentProduct(encodeUrl(this.slug),true);
         }
     }
 
@@ -88,12 +128,12 @@ class ProductView extends Component {
 
             <>
 
-                {!this.props.loading &&
+                {!this.state.loading &&
                 !this.props.currentProduct ? (
                     <NotFound />
                 ) :  <Layout hideFooter={true}>
                     <div className={"container pb-5 mb-5"}>
-                        {this.props.currentProduct &&
+                        {!this.state.loading&&this.props.currentProduct &&
                         <ProductDetailContent
                             history={this.props.history}
                             hideRegister={true}
@@ -135,9 +175,12 @@ const mapDispachToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
+        loading: (data) => dispatch(actionCreator.loading(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadCurrentProduct: (data) => dispatch(actionCreator.loadCurrentProduct(data)),
+        setCurrentProduct: (data) => dispatch(actionCreator.setCurrentProduct(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductView);

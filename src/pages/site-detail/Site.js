@@ -7,6 +7,9 @@ import { withStyles } from "@mui/styles/index";
 import NotFound from "../../components/NotFound/index";
 import Layout from "../../components/Layout/Layout";
 import SiteDetailContent from "../../components/Sites/SiteDetailContent";
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
+import {CURRENT_SITE} from "../../store/types";
 
 class Site extends Component {
     slug;
@@ -22,7 +25,7 @@ class Site extends Component {
             item: null,
             showPopUp: false,
             subProducts: [],
-
+           loading:false,
             notFound: false,
         };
 
@@ -54,25 +57,59 @@ class Site extends Component {
         this.props.history.go(+1);
     };
 
+  loadCurrentSite = (data) => {
+
+      this.props.loading(true)
+      this.setState({
+          loading:true
+      })
+
+        axios
+            .get(baseUrl + "site/code/" + encodeUrl(data) + "/expand")
+            .then(
+                (response) => {
+
+                    var responseAll = response.data;
+
+                    this.props.setCurrentSite(responseAll.data);
+                    this.props.loading(false)
+                    this.setState({
+                        loading:false
+                    })
+
+                },
+                (error) => {
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+
+                    this.props.loading(false)
+                    this.setState({
+                        loading:false
+                    })
+
+                }
+            );
+
+    };
 
 
     componentDidMount() {
-        this.props.loadCurrentSite(encodeUrl(this.slug),true);
+        this.loadCurrentSite(encodeUrl(this.slug),true);
     }
 
     render() {
-        const classes = withStyles();
-        const classesBottom = withStyles();
+
 
         return (
             <>
 
-                    {!this.props.loading&&!this.props.currentSite ? (
+                    {!this.state.loading&&!this.props.currentSite ? (
                         <NotFound />
                     ) : (
                         <Layout hideFooter={true}>
                             <div className={"container pb-5 mb-5"}>
-                            {this.props.currentSite && (
+                            {!this.state.loading&&this.props.currentSite && (
                                 <>
                                  <SiteDetailContent
                                         history={this.props.history}
@@ -114,6 +151,10 @@ const mapDispachToProps = (dispatch) => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
+        setCurrentSite: (data) => dispatch(actionCreator.setCurrentSite(data)),
+
+        loading: (data) => dispatch(actionCreator.loading(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(Site);

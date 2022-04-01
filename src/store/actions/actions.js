@@ -312,6 +312,26 @@ export const emptyCurrent = (data) => {
     };
 
 };
+export const setCurrentProduct = (data)  => {
+
+    return {
+        type: CURRENT_PRODUCT,
+        value: data,
+    };
+
+
+};
+
+export const setCurrentSite = (data)  => {
+
+    return {
+        type: CURRENT_SITE,
+        value: data,
+    };
+
+
+};
+
 
 export const loadCurrentProductSync = (data) => (dispatch) => {
 

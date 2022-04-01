@@ -57,7 +57,8 @@ class SiteForm extends Component {
             longitude:null,
             phoneNumberInValid:false,
             showMapSelection:false,
-            showAddressField:false
+            showAddressField:false,
+            subSites:[]
 
         };
 
@@ -545,8 +546,10 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
         window.scrollTo(0, 0);
-        this.props.loadSites();
+        // this.props.loadSites();
 
+
+        this.getSubSites()
 
         if (this.props.showSiteForm.type==="new") {
             this.setState({
@@ -568,6 +571,34 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
     }
+
+
+    getSubSites=()=>{
+
+        axios
+            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
+            .get(baseUrl + "seek?name=Site&relation=&count=false&include-to=Site:any")
+            .then(
+                (response) => {
+
+                    var responseAll = response.data.data;
+
+                    this.setState({
+                        subSites:responseAll
+                    })
+
+                },
+                (error) => {
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+                }
+            );
+
+
+
+    }
+
 
     hidePopUp=() =>{
         this.props.setSiteForm({ item: null, show: false });
@@ -1140,30 +1171,30 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                         }}>
                                                         <option value={null}>Select</option>
 
-                                                        {this.props.siteList
+                                                        {this.state.subSites
                                                             .filter(
                                                                 (item) =>
-                                                                    (item._key !==
+                                                                    (item.Site._key !==
                                                                     this.props.showSiteForm.parent)
                                                                          &&
                                                                     !(
                                                                         this.props.showSiteForm.subSites&&this.props.showSiteForm.subSites.filter(
                                                                             (subItem) =>
                                                                                 subItem._key ===
-                                                                                item._key
+                                                                                item.Site._key
                                                                         ).length > 0
                                                                     )
                                                             )
 
                                                             .map((item) => (
-                                                                <option  value={item._key}>
-                                                                    {item.name}
+                                                                <option  value={item.Site._key}>
+                                                                    {item.Site.name}{GetParent(item)}
                                                                 </option>
                                                             ))}
 
 
                                                     </CustomizedSelect>
-                                             {this.props.siteList.length===0&&
+                                             {this.state.subSites.length===0&&
                                                     <Spinner
                                                         as="span"
                                                         animation="border"
@@ -1384,6 +1415,16 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
 
+
+const GetParent=(item)=>{
+
+
+
+    return (item.SiteToSite[0]?item.SiteToSite[0].entries[0]?` (Parent ${(item.SiteToSite[0].entries[0].Site.name)} )`:"":"")
+
+
+
+}
 
 const mapStateToProps = (state) => {
     return {

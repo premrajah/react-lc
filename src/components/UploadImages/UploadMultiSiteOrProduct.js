@@ -17,6 +17,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import {Alert, Snackbar} from "@mui/material";
+
 
 let productProperties=[
     {field:"name",required:true},
@@ -439,6 +441,7 @@ const UploadMultiSiteOrProduct = (props) => {
             })
             .catch(error => {
                 setUploadArtifactError(<span className="text-warning"><b>Unable to upload at this time, (try different Match or Merge Strategy) or please try again later</b></span>);
+                props.showSnackbar({show: true, severity: "warning", message: `Unable to upload at this time, (try different Match or Merge Strategy) or please try again later`})
                 setIsDisabled(false);
             })
     }
@@ -659,6 +662,7 @@ const UploadMultiSiteOrProduct = (props) => {
             .then(res => {
 
                     setUploadSitesError(<span className="text-success"><b>Uploaded {isSite ? "Sites" : "Products"} Successfully!</b></span>);
+                    props.showSnackbar({show: true, severity: "success", message: `Uploaded ${isSite ? "Sites" : "Products"} Successfully!`});
                     setErrorsArray(res.data.errors)
                     setUploadArtifactError('');
                     setIsDisabled(false);
@@ -669,6 +673,7 @@ const UploadMultiSiteOrProduct = (props) => {
             .catch(error => {
 
                 setUploadSitesError(<span className="text-warning"><b>Unable to upload at this time, (try different Match or Merge Strategy) or please try again later</b></span>);
+                props.showSnackbar({show: true, severity: "warning", message: `Unable to upload at this time, (try different Match or Merge Strategy) or please try again later`})
                 setIsDisabled(false)
             })
     }
@@ -740,7 +745,11 @@ const UploadMultiSiteOrProduct = (props) => {
                                 </div>}
 
                             </div>
-                    {showCompletion&&<div className={"text-pink text-bold mt-2 text-center"}>CSV bulk upload completed.</div>}
+                    {showCompletion&&<div className={"text-pink text-bold mt-2 text-center"}>
+                        <span>CSV bulk upload completed.</span>
+                        <Snackbar open={showCompletion} autoHideDuration={5000} onClose={() => setShowCompletion(false)}>
+                            <Alert severity="success">CSV bulk upload completed.</Alert>
+                        </Snackbar></div>}
                     <p style={{color: "rgb(244, 67, 54)"}} className="text-danger">{errors["artifact"]&&errors["artifact"].message}</p>
                     <div style={{color: "rgb(244, 67, 54)"}} className="text-danger">{errors["upload"]&&errors["upload"].message}</div>
 
@@ -961,6 +970,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         showSiteModal: (data) => dispatch(actionCreator.showSiteModal(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 

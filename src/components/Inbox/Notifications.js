@@ -207,14 +207,14 @@ class Notifications extends Component {
         const messageId = item.message._id;
 
         text = reactStringReplace(message.text, ORG_REGEX, (match, i) => (
-            <Org key={i + Math.random() * 100} orgId={match} />
+            <Org key={`${i}_${match}`} orgId={match} />
         ));
 
         text = reactStringReplace(text, PRODUCT_REGEX, (match, i) => (
             <>
 
                 <Link
-                    key={i + Math.random() * 101}
+                    key={`${i}_${match}`}
                     to={`product/${match}`}
                     onClick={() => this.messageRead(messageId)}>
                     View Product
@@ -224,7 +224,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, CYCLE_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 102}
+                key={`${i}_${match}`}
                 to={`cycle/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 Cycle
@@ -233,7 +233,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, MATCH_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 103}
+                key={`${i}_${match}`}
                 to={`matched/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 Match
@@ -242,7 +242,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, PRODUCT_RELEASE_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 104}
+                key={`${i}_${match}`}
                 to="/approve?tab=0"
                 onClick={() => this.messageRead(messageId)}>
                 To Approvals Page
@@ -251,7 +251,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, SERVICE_AGENT_CHANGE_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 105}
+                key={`${i}_${match}`}
                 to="/approve?tab=2"
                 onClick={() => this.messageRead(messageId)}>
                 To Approvals Page
@@ -260,7 +260,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, PRODUCT_REGISTRATION, (match, i) => (
             <Link
-                key={i + Math.random() * 106}
+                key={`${i}_${match}`}
                 to="/approve?tab=1"
                 onClick={() => this.messageRead(messageId)}>
                 To Approvals Page
@@ -269,7 +269,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, A_TAG_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 107}
+                key={`${i}_${match}`}
                 to="/account?page=system-users"
                 onClick={() => this.messageRead(messageId)}>
                 User Approvals
@@ -278,7 +278,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, LISTING_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 108}
+                key={`${i}_${match}`}
                 to={`/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 Listing
@@ -287,7 +287,7 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, SEARCH_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 109}
+                key={`${i}_${match}`}
                 to={`/search/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 Search
@@ -299,7 +299,6 @@ class Notifications extends Component {
                 key={index}
                 variant="outlined"
                 className="mb-3 rad-8  bg-white  "
-                // style={{ opacity: `${flags ? "0.5" : "1"}` }}
             >
 
 
@@ -315,31 +314,14 @@ class Notifications extends Component {
                                 }}
                             />
 
-                            {/*{text.includes("account") !== -1?*/}
-                            {/*    <div*/}
-                            {/*        className={"has-link"}*/}
-                            {/*    dangerouslySetInnerHTML={createMarkup(*/}
-                            {/*        text*/}
-                            {/*    )} ></div>:*/}
+
                             <div >{text}</div>
-                            {/*}*/}
+
 
                             <span className="text-gray-light time-text">
                                 <span className="mr-4">
                                     {moment(message._ts_epoch_ms).fromNow()}
                                 </span>
-                                {/*<span className="">*/}
-                                {/*    {readTime*/}
-                                {/*        ? `Read: ${moment(readTime.ts_epoch_ms).fromNow()}`*/}
-                                {/*        : ""}*/}
-                                {/*</span>*/}
-                                {/*{!readTime ? (*/}
-                                {/*    <span*/}
-                                {/*        onClick={() => this.messageRead(messageId)}*/}
-                                {/*        style={{ cursor: "pointer" }}>*/}
-                                {/*        Mark as read*/}
-                                {/*    </span>*/}
-                                {/*) : null}*/}
                                 {item.options && !item.options.is_owned && (
                                     <React.Fragment>
                                         {message.text.match(PRODUCT_REGEX) &&
@@ -361,12 +343,6 @@ class Notifications extends Component {
                                     </React.Fragment>
                                 )}
                             </span>
-
-                            {/*<Chip*/}
-
-                            {/*    label={"Chip"}*/}
-
-                            {/*/>*/}
                         </div>
 
                         {!flags &&  <div className="col-1 text-right">
@@ -387,11 +363,8 @@ class Notifications extends Component {
     };
 
     componentDidMount() {
-        // this.props.getNotifications();
         this.setState({ allNotifications: [] });
         this.getAllNotificationsCount();
-        // this.getNotifications();
-        // this.timer = setInterval(this.getNotifications, 10000);
     }
 
     componentWillUnmount() {
@@ -409,20 +382,7 @@ class Notifications extends Component {
                     <Alert severity="success">Notification marked as read.</Alert>
                 </Snackbar>
 
-                <h5 className="blue-text mb-4">
-                    {/*<span className="mr-3">*/}
-                    {/*    {this.state.allNotifications.length <= 0*/}
-                    {/*        ? "..."*/}
-                    {/*        : <span className="mr-1">{this.state.allNotifications.length}</span>}*/}
-                    {/*    of {this.state.allNotificationsCount}*/}
-                    {/*</span>*/}
-                    {/*<span className="text-muted">*/}
-                    {/*    <span className="mr-1">Read</span>*/}
-                    {/*    {this.state.allNotifications.length <= 0*/}
-                    {/*        ? "..."*/}
-                    {/*        : this.handleReadUnreadLength(this.state.allNotifications)}*/}
-                    {/*</span>*/}
-                </h5>
+
                 <div className="notification-content">
                     <div className={"row "}>
                         <div className={"col-12 "}>
@@ -476,21 +436,6 @@ class Notifications extends Component {
                                         </div>
 
                                     </TabPanel>
-                                    {/*<TabPanel value="2">*/}
-
-                                    {/*    <div className={"row  mt-4 "}>*/}
-                                    {/*        <div className={"col-12 "}>*/}
-
-
-
-                                    {/*        </div>*/}
-                                    {/*    </div>*/}
-
-                                    {/*</TabPanel>*/}
-
-
-
-
                                 </TabContext>
                             </Box>
                         </div>

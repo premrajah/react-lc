@@ -697,7 +697,7 @@ class MessengerMessages extends Component {
                                                                     m.entityType
                                                                 )
                                                             }>
-                                                            {m.entityType}:
+                                                            <span className="mr-1">{m.entityType}</span>
                                                             <span
                                                                 className={"forgot-password-link"}>
                                                                 {m.entityAsJson.name}

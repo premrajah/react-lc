@@ -212,6 +212,13 @@ class SubProductsTab extends Component {
                 </div> }
 
                 <div className={"mt-4"}></div>
+
+                {this.state.products&&this.state.products.length > 0 &&
+                    <>
+<div className={"title-bold"}>{this.state.products.length} Products</div>
+                        <div className={"mt-4"}></div>
+                        </>
+                }
                 {this.state.products&&this.state.products.length > 0 && (
                     <>
                         {this.state.products.map(

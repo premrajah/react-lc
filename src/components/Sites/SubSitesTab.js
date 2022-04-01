@@ -98,11 +98,7 @@ class SubSitesTab extends Component {
                         className={
                             "btn-gray-border "
                         }>
-                        <AddLinkIcon />     <span
-
-                    >
-                                                        Link Subsites
-                                                    </span>
+                        <AddLinkIcon />     <span>Link Subsites</span>
 
                     </button>
                 </div> }
@@ -114,6 +110,8 @@ class SubSitesTab extends Component {
                             (item, index) => (
                                 <SitePageItem
 
+
+                                    smallItem
                                    moreMenu
                                    showRemove
                                     key={index}

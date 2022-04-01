@@ -57,7 +57,7 @@ class Site extends Component {
 
 
     componentDidMount() {
-        this.props.loadCurrentSite(encodeUrl(this.slug));
+        this.props.loadCurrentSite(encodeUrl(this.slug),true);
     }
 
     render() {
@@ -65,12 +65,13 @@ class Site extends Component {
         const classesBottom = withStyles();
 
         return (
-            <Layout hideFooter={true}>
+            <>
 
                     {!this.props.loading&&!this.props.currentSite ? (
                         <NotFound />
                     ) : (
-                        <div className={"container pb-4 mb-4"}>
+                        <Layout hideFooter={true}>
+                            <div className={"container pb-5 mb-5"}>
                             {this.props.currentSite && (
                                 <>
                                  <SiteDetailContent
@@ -81,9 +82,9 @@ class Site extends Component {
                                 </>
                             )}
                         </div>
+                        </Layout>
                     )}
-
-            </Layout>
+            </>
         );
     }
 }

@@ -65,7 +65,7 @@ class ProductPopUp extends Component {
                     </div>
                 </div>
 
-                {!this.props.showCreateSubProduct &&!this.props.showCreateProduct &&  <div className="row py-3 justify-content-end mobile-menu-row pt-3 p-2">
+                {!this.props.showCreateSubProduct &&!this.props.showCreateProduct &&  <div className="row py-3 justify-content-end mobile-menu-row  pr-4 ">
                     <div className="col text-right">
                     <button
                         onClick={this.hidePopUp}

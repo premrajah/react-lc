@@ -1744,7 +1744,9 @@ button.blue-btn-border
     text-transform: uppercase;
     line-height: 1.4em;
     letter-spacing: 1px;
-
+    align-items: center;
+    display: flex;
+    justify-content: center;
     background: transparent;
 
 }

@@ -107,15 +107,15 @@ const SitePageItem = (  props) => {
         <>
 
                <div id={props.item._key+"-site-item"} key={props.item._key+"-site-item"} className="row no-gutters site-item-list justify-content-start  mb-4 bg-white rad-8  p-3 ">
-                <div  className={"col-md-2 col-xs-12 "}>
+                <div  className={`${props.smallItem?"col-md-2":"col-md-2"} col-xs-12 `}>
                     {/*<div className={"content-site   content-box-image"}>*/}
                     <Link to={props.isLoggedIn?"/ps/" + props.item._key:"#"}>
                         <>
 
                             {props.item.geo_codes && props.item.geo_codes[0] ?
-                            <img style={{height:"185px",width:"185px"}} className={"img-fluid img-list rad-4"} src={`https://maps.googleapis.com/maps/api/staticmap?center=${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
+                            <img className={`${props.smallItem?"small-image":""} img-fluid img-list rad-4`} src={`https://maps.googleapis.com/maps/api/staticmap?center=${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
                             &markers=color:0x212529%7Clabel:C%7C${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
-                            &zoom=12&size=185x185&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
+                            &zoom=12&size=${props.smallItem?"110x110":"185x185"}&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
                             :<img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />}
 
                         </>
@@ -123,27 +123,28 @@ const SitePageItem = (  props) => {
                     {/*</div>*/}
 
                 </div>
-                   <div  className={"col-md-10 col-xs-12 pl-3-desktop"}>
-                       <div className={" pl-3  content-site content-box-listing"}>
+                   <div  className={`${props.smallItem?"col-md-10":"col-md-10"} col-xs-12 pl-3-desktop `}>
 
-                           <p style={{ fontSize: "18px" }} className="text-capitlize mb-1">
+                       <div className={"   content-site content-box-listing"}>
+
+                           <p style={{ fontSize: "18px" }} className="text-capitlize mb-0">
                                <Link  to={props.isLoggedIn?"/ps/" + props.item._key:"#"}> <span className={"title-bold"}>{props.item.name}</span> {is_head_office&& <span className="mr-2 text-bold text-pink"><small>(Head Office)</small></span>}</Link>
                            </p>
 
-                           {props.item.external_reference &&    <p  className="text-gray-light  mt-2 text-capitlize ">
+                           {props.item.external_reference &&    <p  className="text-gray-light  mb-1 text-capitlize ">
                                Reference Id:  <span className={"text-blue"}>{props.item.external_reference}</span>
                            </p>}
-                           {email &&    <p  className="text-gray-light  mt-2 ">
+                           {!props.smallItem &&  email &&    <p  className="text-gray-light  mb-1 ">
                                Email: <span className={"text-blue"}>{email}</span>
                            </p>}
-                           {phone &&    <p  className="text-gray-light  mt-2 text-capitlize ">
+                           {!props.smallItem&&phone &&    <p  className="text-gray-light  mb-1 text-capitlize ">
                                Phone: <span className={"text-blue"}>{phone}</span>
                            </p>}
-                           {contact &&    <p  className="text-gray-light mt-2 text-capitlize ">
+                           {!props.smallItem&&contact &&    <p  className="text-gray-light mb-1 text-capitlize ">
                                Contact: <span className={"text-blue"}>{contact}</span>
                            </p>}
 
-                           {address &&    <p  className="text-gray-light  mt-2 text-capitlize">
+                           {address &&    <p  className="text-gray-light  mb-1 text-capitlize">
                                Address: <span className={"text-blue"}>{address}</span>
                            </p>}
 

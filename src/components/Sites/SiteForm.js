@@ -499,6 +499,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
         if (prevProps!==this.props){
 
+
             this.setState({
                 count:0,
                 createNew:false,
@@ -507,7 +508,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
             if (this.props.showSiteForm.type==="new") {
                 this.setState({
-                    createNew: !this.state.createNew,
+
                     showMapSelection: true,
                     showAddressField: false
                 })
@@ -523,7 +524,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                 }
                 this.setState({
-                    createNew: !this.state.createNew,
                     showMapSelection: false,
                     showAddressField: true
                 })
@@ -543,13 +543,14 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
     componentDidMount() {
 
+
         window.scrollTo(0, 0);
         this.props.loadSites();
 
 
         if (this.props.showSiteForm.type==="new") {
             this.setState({
-                createNew: !this.state.createNew,
+                createNew: false,
                 showMapSelection: true,
                 showAddressField: true
             })

@@ -138,29 +138,43 @@ class ListFormNew extends Component {
             selectedLoading:true
         })
 
-        axios
-            .get(baseUrl + "product/" + (id)
-            )
-            .then(
-                (response) => {
-                    var responseAll = response.data;
+        try {
+            axios
+                .get(baseUrl + "product/" + (id)
+                )
+                .then(
+                    (response) => {
 
-                    this.setState({
-                        previewProduct:responseAll.data.product
-                    })
+                        if (response.data&&response.data.data) {
+                            var responseAll = response.data;
 
-                },
-                (error) => {
-                    // this.setState({
-                    //     notFound: true,
-                    // });
-                }
-            ).finally(()=>{
+                            this.setState({
+                                previewProduct: responseAll.data.product
+                            })
+                            this.setState({
+                                selectedLoading: false
+                            })
+                        }else{
+                            this.setState({
+                                selectedLoading: false
+                            })
+                        }
 
+                    },
+                    (error) => {
+                        this.setState({
+                            selectedLoading: false
+                        })
+
+                    }
+                )
+
+        }catch (e) {
             this.setState({
-                selectedLoading:false
+                selectedLoading: false
             })
-        });
+
+        }
 
     };
 
@@ -843,7 +857,7 @@ class ListFormNew extends Component {
 
     getProductsNoParentNoListingNoRelease=async () => {
 
-        const url = baseUrl + "seek?name=Product&relation=&count=false&no-from-relation=Listing:listing_of&no-from-relation=ProductRelease:release_for";
+        const url = baseUrl + "seek?name=Product&no_parent=true&&relation=&count=false&no-from-relation=Listing:listing_of&no-from-relation=ProductRelease:release_for";
 
 
         let items = await axios.get(url).catch((error) => {

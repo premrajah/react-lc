@@ -9,8 +9,6 @@ import {makeStyles, withStyles} from "@mui/styles";
 import TreeItem from "@mui/lab/TreeItem";
 import Typography from "@mui/material/Typography";
 import ProductTreeItemView from "./ProductTreeItemView";
-import TextField from "@mui/material/TextField";
-import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "./FormsUI/ProductForm/TextField";
 
 class ProductTreeView extends Component {

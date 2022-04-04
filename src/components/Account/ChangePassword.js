@@ -6,6 +6,8 @@ import {Alert} from "react-bootstrap";
 import PageHeader from "../../components/PageHeader";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 class ChangePassword extends Component {
     constructor(props) {
@@ -32,6 +34,7 @@ class ChangePassword extends Component {
             repeatPassword: '',
             missMatchPasswords: '',
             passwordChangeErrors: '',
+            showHidePassword: false,
         };
 
     }
@@ -118,7 +121,7 @@ class ChangePassword extends Component {
                                                 title="Password"
                                                 error={this.state.errors["password"]}
                                                 onChange={(value) => this.setState({password: value})}
-                                                type="password"
+                                                type={this.state.showHidePassword ? "text" :"password"}
                                             />
                                         </div>
                                         <div className="col-md-6">
@@ -128,28 +131,31 @@ class ChangePassword extends Component {
                                                 title="Repeat Password"
                                                 error={this.state.errors["repeatPassword"]}
                                                 onChange={(value) => this.setState({repeatPassword: value})}
-                                                type="password"
+                                                type={this.state.showHidePassword ? "text" :"password"}
                                             />
                                         </div>
+
+                                        {(this.state.password || this.state.repeatPassword) && <div className="col-md-12 d-flex justify-content-end">
+                                            <div
+                                                className="d-flex justify-content-center align-items-center forgot-password-link"
+                                                onClick={() => this.setState({showHidePassword: !this.state.showHidePassword})}
+                                            >
+                                                {this.state.showHidePassword ? <VisibilityOffIcon className="mr-1"/> :
+                                                    <VisibilityIcon className="mr-1"/>}
+                                                <span>{this.state.showHidePassword ? "Hide" : "Show"} Password</span>
+                                            </div>
+                                        </div>}
 
                                         <div className="col-md-4 pt-2">
                                             <BlueBorderButton
                                                 title={this.state.loading ? "Wait.." : "Update Password"}
                                                 loading={this.state.loading}
-
                                                 fullWidth
                                                 disabled={this.state.password === '' || this.state.repeatPassword === ''}
                                                 onClick={() => this.handleChangePassword()}
                                                 type="button"
                                             >
                                             </BlueBorderButton>
-                                            {/*<button*/}
-                                            {/*    disabled={this.state.password === '' || this.state.repeatPassword === ''}*/}
-                                            {/*    onClick={() => this.handleChangePassword()}*/}
-                                            {/*    type="button"*/}
-                                            {/*    className="btn btn-block  btn-outline-warning sign-up-btn">*/}
-                                            {/*    Update Password*/}
-                                            {/*</button>*/}
                                         </div>
                                         <div className="col-md-12 mt-2">
                                         <small className="text-gray-light ">Password should be at least 8 characters including at least 3 of the following 4 types of characters: a lower-case letter, an upper-case letter, a number, a special character (such as !@#$%^&*).</small>

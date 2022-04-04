@@ -1060,8 +1060,6 @@ class ProductDetailContent extends Component {
 
                                                                     <SelectArrayWrapper
                                                                         details="Select the site where your product is currently located."
-
-
                                                                         option={"name"}
                                                                         valueKey={"_key"}
                                                                         // error={this.state.errors["deliver"]}

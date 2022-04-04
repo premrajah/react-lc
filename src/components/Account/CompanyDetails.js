@@ -58,6 +58,7 @@ class CompanyDetails extends Component {
             showCropper: false,
             files: [],
             showAddCompany: false,
+            isLoopCycleCompany:false,
             industries: [
                 "Commercial kitchen equipment",
                 "Commercial laundry equipment",
@@ -67,6 +68,7 @@ class CompanyDetails extends Component {
             reasons: ["Register new products", "Access Marketplace"],
             businessFields: ["Manufacturer", "Dealer", "Operator"],
             orgId: null,
+
         };
 
         this.companyInfo = this.companyInfo.bind(this);
@@ -87,6 +89,57 @@ class CompanyDetails extends Component {
         this.setState({
             loading: false,
         });
+    };
+
+
+
+    companyDetails = (detail) => {
+
+            console.log(detail)
+
+        if (detail.org) {
+            this.setState({
+                orgId: detail.org,
+            });
+
+            this.setState({
+                isLoopCycleCompany:true
+            })
+        } else {
+
+            this.setState({
+                isLoopCycleCompany:false,
+                companyNumber:detail.company
+            })
+        }
+    };
+
+
+    createCompanyWithDetails = (data) => {
+
+        return       axios.post(baseUrl + "org/company/",{
+
+
+            "company_number":this.state.companyNumber,
+            "email":this.props.userDetail.email,
+            // "details": {
+            //
+            //     "industry": data.get("industry")!=="Other"?data.get("industry"):data.get("industry-other"),
+            //     "sector": data.get("businessField")!=="Other"?data.get("businessField"):data.get("businessField-other"),
+            //     "no_of_staff": data.get("no_of_staff")?data.get("no_of_staff"):0
+            // }
+
+        }).then(
+            (response) => {
+                var responseAll = response.data.data;
+
+                this.setState({
+                    orgId: responseAll._key,
+                });
+            },
+            (error) => {}
+        );
+
     };
 
     addCompany = () => {
@@ -152,11 +205,11 @@ class CompanyDetails extends Component {
             .catch((error) => {});
     };
 
-    companyDetails = (detail) => {
-        this.setState({
-            companyNumber: detail.company,
-        });
-    };
+    // companyDetails = (detail) => {
+    //     this.setState({
+    //         companyNumber: detail.company,
+    //     });
+    // };
 
     submitCompanyNumber = () => {
         this.setState({
@@ -625,7 +678,15 @@ class CompanyDetails extends Component {
         });
     };
 
-    handleAddCompany = (event) => {
+    handleAddCompany = async (event) => {
+
+
+        if (this.state.companyNumber && !this.state.isLoopCycleCompany) {
+
+            await this.createCompanyWithDetails(this.state.companyNumber)
+        }
+
+
         if (!this.state.orgId) {
             this.setState({
                 errorCompany: true,
@@ -657,7 +718,7 @@ class CompanyDetails extends Component {
                 });
             })
             .catch((error) => {
-                this.setState({ isSubmitButtonPressed: false });
+                this.setState({isSubmitButtonPressed: false});
             })
             .finally(() => {
                 this.setState({
@@ -957,39 +1018,12 @@ class CompanyDetails extends Component {
                             </div>
                         )}
 
-                        {this.state.org && !this.state.org.company && (
-                            <>
-                                <div className="d-none row mb-5 pb-5">
-                                    <div className="col-12 mt-3">
-                                        <AutocompleteCustom
-                                            companies={true}
-                                            suggestions={this.state.orgNames}
-                                            selectedCompany={(action) =>
-                                                this.companyDetails(action)
-                                            }
-                                        />
-                                    </div>
 
-                                    <div className="col-12 mt-3">
-                                        <GreenButton
-                                            title={this.state.loading ? "Wait.." : "Submit "}
-                                            onClick={this.submitCompanyNumber}
-                                            loading={this.state.loading}></GreenButton>
-                                    </div>
-                                    <div className="col-12 mt-3">
-                                        {this.state.errorCompany && (
-                                            <Alert key={"alert"} variant={"danger"}>
-                                                {this.state.errorCompany}
-                                            </Alert>
-                                        )}
-                                    </div>
-                                </div>
-                            </>
-                        )}
                     </div>
                 </div>
 
                 <GlobalDialog
+                    allowOverflow
                     size={"xs"}
                     hide={this.addCompany}
                     show={this.state.showAddCompany}
@@ -997,17 +1031,23 @@ class CompanyDetails extends Component {
                     <>
                         <div className="col-12 ">
                             <div className="row no-gutters">
-                                <div className="col-12 ">
+                                <div className="col-12 pt-4 pb-4">
                                     <AutocompleteCustom
+                                        allowOverflow
                                         hideAddNew
                                         orgs={true}
-                                        // companies={true}
+                                        companies={true}
                                         suggestions={this.state.orgNames}
-                                        selectedCompany={(action) =>
-                                            this.setState({
-                                                orgId: action.org,
-                                            })
-                                        }
+
+                                        selectedCompany={(action) => this.companyDetails(action)}
+
+                                        // selectedCompany={(action) =>{
+                                        //
+                                        //
+                                        //     // this.setState({
+                                        //     //     orgId: action.org,
+                                        //     // })
+                                        // }}
                                     />
                                     {this.state.errorCompany && (
                                         <span

@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react'
 import {makeStyles} from '@mui/styles';
 import CustomizedInput from "./CustomizedInput";
 import CustomPopover from "../CustomPopover";
-import {Info} from "@mui/icons-material";
-import {OverlayTrigger} from "react-bootstrap";
 import InfoIcon from "./InfoIcon";
 
 const useStyles = makeStyles((theme) => ({

@@ -124,7 +124,8 @@ class FindResourcePage extends Component {
 
 
 
-        let result = await seekAxiosGet(this.state.searchUrl+"&count=true&offset="+this.state.offset+"&size="+this.state.pageSize)
+        let result = await seekAxiosGet(this.state.searchUrl+
+            "&count=true&offset="+this.state.offset+"&size="+this.state.pageSize)
 
 
         this.setState({
@@ -155,7 +156,8 @@ class FindResourcePage extends Component {
 
         let newOffset = this.state.offset
 
-        let result = await seekAxiosGet(this.state.searchUrl+"&count=false&offset="+this.state.offset+"&size="+this.state.pageSize)
+        let result = await seekAxiosGet(this.state.searchUrl+
+            "&count=false&offset="+this.state.offset+"&size="+this.state.pageSize+"&or=stage!=active")
 
 
         if (result && result.data && result.data.data) {
@@ -312,7 +314,7 @@ class FindResourcePage extends Component {
                             <>
                                 <ErrorBoundary skip>
                                     <div id={item.Listing._key} key={item.Listing._key}>
-
+                                        {item.Listing.stage}
                                         <MarketplaceResourceItem
                                             // triggerCallback={() => this.callBackResult()}
                                             // history={this.props.history}

@@ -1082,7 +1082,7 @@ class ProductDetailContent extends Component {
                                                                             "row justify-content-center"
                                                                         }>
                                                                         <div
-                                                                            className={"col-12"}
+                                                                            className={"col-12 mt-4 mb-4 "}
                                                                             style={{ textAlign: "center" }}>
                                                                             <Alert
                                                                                 key={"alert"}

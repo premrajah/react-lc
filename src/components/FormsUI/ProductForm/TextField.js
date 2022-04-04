@@ -56,7 +56,7 @@ const TextFieldWrapper = ({
         <>
             {title && (
                 <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
-                    {title}{" "}
+                    {title}
                     {details && (
                         <CustomPopover heading={detailsHeading} text={details}>
                             <InfoIcon />

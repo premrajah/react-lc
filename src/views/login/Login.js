@@ -3,15 +3,10 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import history from "../../History/history";
 import {makeStyles} from "@mui/styles";
-import TextField from "@mui/material/TextField";
-import {Alert, Spinner} from "react-bootstrap";
-import {IconButton, InputAdornment} from "@mui/material";
-import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {Alert} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
-import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenBorderButton from "../../components/FormsUI/Buttons/GreenBorderButton";
 import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
 

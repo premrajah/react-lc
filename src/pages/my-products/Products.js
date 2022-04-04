@@ -504,7 +504,8 @@ class Products extends Component {
                             visibleCount={this.state.items.length}
                             loadingResults={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
-                            loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)} >
+                            loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)}
+                        >
 
                             {this.state.items.map((item, index) => (
                                 <div id={item._key} key={item._key}>

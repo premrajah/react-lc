@@ -222,10 +222,7 @@ class App extends Component {
                     {this.props.showProductPopUp && <ProductPopUp />}
                     {this.props.isLoggedIn&& <SiteForm />}
                 <UploadMultiplePopUp />
-
                     {this.props.firstLogin&&<CompanyDetailsPopUp />}
-
-
                     <CustomSnackbar />
                     {/*// Added by Chandan For Google Analytics*/}
                     {/*// Refer: https://github.com/react-ga/react-ga for usage details*/}

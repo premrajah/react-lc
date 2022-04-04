@@ -3,27 +3,13 @@ import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import PageHeader from "../../components/PageHeader";
-import {Close, Edit} from "@mui/icons-material";
-import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import RightSidebar from "../RightBar/RightSidebar";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
-import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
-import IconBtn from "../FormsUI/Buttons/IconBtn";
 import * as actionCreator from "../../store/actions/actions";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
-import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
-import PhoneInput from "react-phone-input-2";
-import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {arrangeAlphabatically, fetchErrorMessage} from "../../Util/GlobalFunctions";
-import GreenButton from "../FormsUI/Buttons/GreenButton";
-import ManageUserItem from "./ManageUserItem";
-import GlobalDialog from "../RightBar/GlobalDialog";
-import Add from "@mui/icons-material/Add";
-import CustomPopover from "../FormsUI/CustomPopover";
 import MenuDropdown from "../FormsUI/MenuDropdown";
-import {getKey, removeKey, saveKey, saveUserToken} from "../../LocalStorage/user-session";
+import {getKey, removeKey, saveKey} from "../../LocalStorage/user-session";
 import AutocompleteCustom from "../AutocompleteCustom";
 
 class AssumeRoles extends Component {
@@ -131,8 +117,6 @@ class AssumeRoles extends Component {
                     this.state.roleBy==="User Id"?"user":this.state.roleBy==="Org Id"?"org":"":null}`,
                 {
                     assumed:this.state.fields["value"],
-
-
                 }
 
             )

@@ -1246,7 +1246,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         className={
                                             "btn  click-item btn-rounded shadow  blue-btn-border"
                                         }>
-                                        <AddIcon />
+                                         <AddIcon />
                                         Add
                                     </span>
                                 </div>
@@ -1450,7 +1450,6 @@ const mapDispachToProps = (dispatch) => {
 
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
-
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
 

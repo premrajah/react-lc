@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import {makeStyles} from '@mui/styles';
+import React, { useEffect, useState } from "react";
+import { makeStyles } from "@mui/styles";
 import CustomizedInput from "./CustomizedInput";
 import CustomPopover from "../CustomPopover";
 import InfoIcon from "./InfoIcon";
@@ -14,62 +14,82 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-
-
-const TextFieldWrapper = ({name,type,title,explanation,details,detailsHeading,
-                              validators,label,onChange,error,initialValue,disabled,readonly,customReadOnly , ...otherProps}) => {
-
+const TextFieldWrapper = ({
+    name,
+    type,
+    title,
+    explanation,
+    details,
+    detailsHeading,
+    validators,
+    label,
+    onChange,
+    error,
+    initialValue,
+    disabled,
+    readonly,
+    customReadOnly,
+    ...otherProps
+}) => {
     // const [field, mata] = useField(name)
     const classes = useStyles();
-    const [field,setField] = useState(initialValue)
+    const [field, setField] = useState(initialValue);
 
-    useEffect(()=>{
-        if (onChange)
-            onChange(initialValue)
-    },[])
-        const configTextField = {
+    useEffect(() => {
+        if (onChange) onChange(initialValue);
+    }, []);
+    const configTextField = {
         // ...field,
         ...otherProps,
-        variant: 'outlined',
+        variant: "outlined",
         fullWidth: true,
-    }
-
-
-    const handleChange = (event) => {
-
-           const {value} = event.target;
-           setField(value)
-
-            if (onChange)
-             onChange(value)
     };
 
+    const handleChange = (event) => {
+        const { value } = event.target;
+        setField(value);
 
-    return(
+        if (onChange) onChange(value);
+    };
+
+    return (
         <>
+            {title && (
+                <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
+                    {title}{" "}
+                    {details && (
+                        <CustomPopover heading={detailsHeading} text={details}>
+                            <InfoIcon />
+                        </CustomPopover>
+                    )}
+                </div>
+            )}
+            {explanation && (
+                <div className={"text-gray-light  mb-0 ellipsis-end"}>{explanation}</div>
+            )}
 
-            {title&& <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
-                {title}  {details&&<CustomPopover heading={detailsHeading}  text={details}>
-                <InfoIcon/></CustomPopover>}
-            </div>}
-            {explanation&& <div className={"text-gray-light  mb-0 ellipsis-end"}>
-                {explanation}
-            </div>}
-
-           <div className={type!="hidden"?"field-box mb-2":"d-none"}>
-
-               <CustomizedInput
-                   disabled={disabled}
-                   type={type}
-                  variant="outlined" label={label} value={field}
-                   className={error&&"border-red-error"} onChange={handleChange} name={name} {...configTextField} />
-
-           </div>
-            {error && <span style={{color:"#f44336",fontSize:"12px!important"}} className='text-danger'>{error.message}</span>}
+            <div className={type != "hidden" ? "field-box mb-2" : "d-none"}>
+                <CustomizedInput
+                    disabled={disabled}
+                    type={type}
+                    variant="outlined"
+                    label={label}
+                    value={field}
+                    className={error && "border-red-error"}
+                    onChange={handleChange}
+                    name={name}
+                    {...configTextField}
+                />
+            </div>
+            {error && (
+                <span
+                    style={{ color: "#f44336", fontSize: "12px!important" }}
+                    className="text-danger">
+                    {error.message}
+                </span>
+            )}
         </>
-
-    )
-}
+    );
+};
 
 export default TextFieldWrapper;

@@ -314,7 +314,7 @@ class FindResourcePage extends Component {
                             <>
                                 <ErrorBoundary skip>
                                     <div id={item.Listing._key} key={item.Listing._key}>
-                                        {item.Listing.stage}
+
                                         <MarketplaceResourceItem
                                             // triggerCallback={() => this.callBackResult()}
                                             // history={this.props.history}

@@ -124,11 +124,10 @@ class CreateCampaign extends Component {
                     countAny: this.state.countAny - 1,
                 });
 
+        this.countStrategyProducts()
     }
 
     subtractCountAll = (index) => {
-
-
 
             let arrayCount = this.state.addCountAll;
             arrayCount.pop()
@@ -138,6 +137,9 @@ class CreateCampaign extends Component {
                     addCountAll: arrayCount,
                     countAll: this.state.countAll - 1,
                 });
+
+
+        this.countStrategyProducts()
 
     }
 
@@ -151,6 +153,10 @@ class CreateCampaign extends Component {
             conditionAll: arrayCount,
             countAll: this.state.countAll + 1,
         });
+
+
+
+
     }
 
 
@@ -261,6 +267,8 @@ let autocompleteOptions=this.state.autocompleteOptions
 
 
 
+
+
     async componentDidMount() {
 
         this.setState({
@@ -287,6 +295,7 @@ let autocompleteOptions=this.state.autocompleteOptions
 
 
         this.getFiltersCategories()
+
     }
 
 
@@ -351,7 +360,6 @@ let autocompleteOptions=this.state.autocompleteOptions
 
     countStrategyProducts = ()  => {
 
-
         let fields=this.state.fields
 
 
@@ -388,11 +396,11 @@ let autocompleteOptions=this.state.autocompleteOptions
         })
 
 
-            if (this.timeout) clearTimeout(this.timeout);
-
-            this.timeout = setTimeout(() => {
-                this.callStrategy()
-            }, 1000);
+            // if (this.timeout) clearTimeout(this.timeout);
+            //
+            // this.timeout = setTimeout(() => {
+                this.callStrategy(conditionAny,conditionAll)
+            // }, 1000);
 
 
 
@@ -400,14 +408,32 @@ let autocompleteOptions=this.state.autocompleteOptions
     };
 
 
-    callStrategy=()=>{
+    callStrategy=(conditionAny,conditionAll)=>{
+
+// alert("call strag")
+
+        let data={}
+        // if (this.state.conditionAll.length>0){
+        //
+        //      data.all_of=this.state.conditionAll
+        //     data.any_of=this.state.conditionAll
+        //
+        // }
+        // if (this.state.conditionAny.length>0){
+        //
+        //     data.any_of=this.state.conditionAny
+        //
+        // }
+
+         data=
+        {
+            all_of:conditionAll,
+                any_of:conditionAny,
+        }
 
 
         axios
-            .post(campaignStrategyUrl, {
-                all_of:this.state.conditionAll,
-                any_of:this.state.conditionAny,
-            })
+            .post(campaignStrategyUrl, data)
             .then(
                 (response) => {
 
@@ -492,6 +518,9 @@ let autocompleteOptions=this.state.autocompleteOptions
      handleNext = () => {
 
 
+         if (this.state.activeStep==0)
+         this.countStrategyProducts()
+
          if (this.state.activeStep<(getSteps().length-1)&&this.handleValidation(this.state.activeStep)) {
 
              if (this.state.activeStep==0&&!this.validateDates()){
@@ -501,6 +530,9 @@ let autocompleteOptions=this.state.autocompleteOptions
 
 
               if (this.state.activeStep==1&&this.state.countAll===0&&this.state.countAny===0){
+
+
+
 
                  this.setState({
 

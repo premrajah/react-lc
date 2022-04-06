@@ -99,12 +99,12 @@ class Products extends Component {
 
             if (activeFilter){
 
-                subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
+                subFilter.push({key:activeFilter, value:"" + searchValue + "", operator:"~"})
 
             }else{
 
                 PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
-                    subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
+                    subFilter.push({key:item.key, value:"" + searchValue + "", operator:"~"})
                 )
 
 
@@ -184,7 +184,8 @@ class Products extends Component {
         let newOffset = this.state.offset
 
 
-        let url = createSeekURL("product", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
+        let url = createSeekURL("product", true,
+            false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
 
         let result = await seekAxiosGet(url)
 

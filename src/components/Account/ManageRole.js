@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import PageHeader from "../../components/PageHeader";
-import {Edit, Delete} from "@mui/icons-material";
+import {Edit, Delete, Info} from "@mui/icons-material";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import RightSidebar from "../RightBar/RightSidebar";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
@@ -16,12 +16,13 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import PhoneInput from "react-phone-input-2";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {arrangeAlphabatically, arrangeObjectKeysAlphabatically} from "../../Util/GlobalFunctions";
+import {arrangeAlphabatically, arrangeObjectKeysAlphabatically, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import CustomTransferList from "../FormsUI/ProductForm/CustomTransferList";
 import GlobalDialog from "../RightBar/GlobalDialog";
 
 import Add from "@mui/icons-material/Add";
+import CustomPopover from "../FormsUI/CustomPopover";
 
 class ManageRole extends Component {
     constructor(props) {
@@ -243,6 +244,13 @@ class ManageRole extends Component {
                 })
                 .catch((error) => {
                     this.setState({isSubmitButtonPressed: false})
+                    this.toggleDeletePopUp()
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "error",
+                        message: fetchErrorMessage(error)
+                    })
+
                 });
 
         }
@@ -363,7 +371,14 @@ class ManageRole extends Component {
                                     </div>
                                     <div className=" col-8 ">
                                         <span className={"text-blue text-capitalize"}> {item.name}</span>
-                                        <span className={"text-gray-light text-14"}> ({item.description})</span>
+                                        <span className={"text-gray-light text-14"}> ({item.description})
+                                            <CustomPopover heading={item.name}
+                                           text={item.perms.length>0?(item.perms.map((role)=> role+", ")):""}>
+                                                    <Info
+                                                        style={{ cursor: "pointer", color: "#EAEAEF" }}
+                                                        fontSize={"small"}
+                                                    />
+                                                </CustomPopover></span>
                                     </div>
                                     {!item.is_system_role &&
 
@@ -373,8 +388,6 @@ class ManageRole extends Component {
 
 
                                     </div>}
-
-
 
                                 </div>
 

@@ -57,7 +57,9 @@ class CompanyDetails extends Component {
             croppedImageData: null,
             showCropper: false,
             files: [],
+            orgsApproval:[],
             showAddCompany: false,
+            isLoopCycleCompany:false,
             industries: [
                 "Commercial kitchen equipment",
                 "Commercial laundry equipment",
@@ -67,6 +69,7 @@ class CompanyDetails extends Component {
             reasons: ["Register new products", "Access Marketplace"],
             businessFields: ["Manufacturer", "Dealer", "Operator"],
             orgId: null,
+
         };
 
         this.companyInfo = this.companyInfo.bind(this);
@@ -87,6 +90,57 @@ class CompanyDetails extends Component {
         this.setState({
             loading: false,
         });
+    };
+
+
+
+    companyDetails = (detail) => {
+
+            console.log(detail)
+
+        if (detail.org) {
+            this.setState({
+                orgId: detail.org,
+            });
+
+            this.setState({
+                isLoopCycleCompany:true
+            })
+        } else {
+
+            this.setState({
+                isLoopCycleCompany:false,
+                companyNumber:detail.company
+            })
+        }
+    };
+
+
+    createCompanyWithDetails = (data) => {
+
+        return       axios.post(baseUrl + "org/company/",{
+
+
+            "company_number":this.state.companyNumber,
+            "email":this.props.userDetail.email,
+            // "details": {
+            //
+            //     "industry": data.get("industry")!=="Other"?data.get("industry"):data.get("industry-other"),
+            //     "sector": data.get("businessField")!=="Other"?data.get("businessField"):data.get("businessField-other"),
+            //     "no_of_staff": data.get("no_of_staff")?data.get("no_of_staff"):0
+            // }
+
+        }).then(
+            (response) => {
+                var responseAll = response.data.data;
+
+                this.setState({
+                    orgId: responseAll._key,
+                });
+            },
+            (error) => {}
+        );
+
     };
 
     addCompany = () => {
@@ -152,11 +206,26 @@ class CompanyDetails extends Component {
             .catch((error) => {});
     };
 
-    companyDetails = (detail) => {
-        this.setState({
-            companyNumber: detail.company,
-        });
+
+    getOrgsApprovalForUser = () => {
+        let url = `${baseUrl}user/org/approval`;
+        axios
+            .get(url)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.setState({
+                        orgsApproval: response.data.data,
+                    });
+                }
+            })
+            .catch((error) => {});
     };
+
+    // companyDetails = (detail) => {
+    //     this.setState({
+    //         companyNumber: detail.company,
+    //     });
+    // };
 
     submitCompanyNumber = () => {
         this.setState({
@@ -347,6 +416,8 @@ class CompanyDetails extends Component {
     }
 
     handleChange(value, field) {
+
+
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -468,6 +539,7 @@ class CompanyDetails extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.getOrgsForUser();
+        this.getOrgsApprovalForUser()
         this.companyInfo();
         this.getFiltersCategories();
     }
@@ -623,7 +695,15 @@ class CompanyDetails extends Component {
         });
     };
 
-    handleAddCompany = (event) => {
+    handleAddCompany = async (event) => {
+
+
+        if (this.state.companyNumber && !this.state.isLoopCycleCompany) {
+
+            await this.createCompanyWithDetails(this.state.companyNumber)
+        }
+
+
         if (!this.state.orgId) {
             this.setState({
                 errorCompany: true,
@@ -655,7 +735,7 @@ class CompanyDetails extends Component {
                 });
             })
             .catch((error) => {
-                this.setState({ isSubmitButtonPressed: false });
+                this.setState({isSubmitButtonPressed: false});
             })
             .finally(() => {
                 this.setState({
@@ -705,14 +785,34 @@ class CompanyDetails extends Component {
                     </ModalBody>
                 </Modal>
 
+
+                <div className="row mt-4 mb-4 d-flex align-items-center no-gutters   ">
+                    {this.state.orgs.length > 1 && (
+                        <>
+                            <div className="col-md-3 ">Switch Company:</div>
+                            <div className="col-md-9 ">
+                                <MenuDropdown
+                                    setSelection={this.switchOrg}
+                                    initialValue={this.props.userContext.orgId}
+                                    options={this.state.orgs}
+                                    option={"name"}
+                                    valueKey={"_key"}
+                                />
+                            </div>
+                        </>
+                    )}
+                </div>
                 {this.state.submitSuccess && (
                     <Alert key={"alert"} variant={"success"}>
                         {"Company information updated successfully"}
                     </Alert>
                 )}
 
-                <div className="row no-gutters">
-                    <div style={{ display: "flex", position: "relative" }} className="col-md-12   ">
+
+
+
+                <div className="row no-gutters bg-light border-box align-items-center">
+                    <div style={{ display: "flex", position: "relative" }} className="col-md-12 align-items-center  ">
                         <div className={"img-box"} style={{ position: "relative" }}>
                             {this.state.orgImage || this.state.file ? (
                                 <img
@@ -758,31 +858,6 @@ class CompanyDetails extends Component {
                         </div>
 
                         <div className={"pl-3"}>
-                            <div className="row  d-flex align-items-center   ">
-                                {this.state.orgs.length > 1 && (
-                                    <>
-                                        <div className="col-md-2   ">Company:</div>
-                                        <div className="col-md-4   ">
-                                            <MenuDropdown
-                                                setSelection={this.switchOrg}
-                                                initialValue={this.props.userContext.orgId}
-                                                options={this.state.orgs}
-                                                option={"name"}
-                                                valueKey={"_key"}
-                                            />
-                                        </div>
-                                    </>
-                                )}
-                                <div className="col-md-6 d-flex text-right ">
-                                    <button
-                                        style={{ minWidth: "180px" }}
-                                        onClick={this.addCompany}
-                                        className="  btn-gray-border  ">
-                                        <Add style={{ fontSize: "20px" }} />
-                                        Join Company
-                                    </button>
-                                </div>
-                            </div>
                             {this.state.org && this.state.org.company && (
                                 <>
                                     <div className={"p-1"}>
@@ -843,8 +918,25 @@ class CompanyDetails extends Component {
                                 </>
                             )}
                         </div>
+
+
+
                     </div>
+
                 </div>
+
+                {!this.props.showSkip &&  <div className="row mt-4 mb-4 d-flex align-items-center justify-content-end   ">
+
+                    <div className="col-md-12  text-right ">
+                        <button
+                            // style={{ minWidth: "180px" }}
+                            onClick={this.addCompany}
+                            className="  btn-gray-border  ">
+                            <Add style={{ fontSize: "20px" }} />
+                            Join New Company
+                        </button>
+                    </div>
+                </div>}
 
                 <div className={"row"}>
                     <div className={"col-12 text-left"}>
@@ -943,39 +1035,12 @@ class CompanyDetails extends Component {
                             </div>
                         )}
 
-                        {this.state.org && !this.state.org.company && (
-                            <>
-                                <div className="d-none row mb-5 pb-5">
-                                    <div className="col-12 mt-3">
-                                        <AutocompleteCustom
-                                            companies={true}
-                                            suggestions={this.state.orgNames}
-                                            selectedCompany={(action) =>
-                                                this.companyDetails(action)
-                                            }
-                                        />
-                                    </div>
 
-                                    <div className="col-12 mt-3">
-                                        <GreenButton
-                                            title={this.state.loading ? "Wait.." : "Submit "}
-                                            onClick={this.submitCompanyNumber}
-                                            loading={this.state.loading}></GreenButton>
-                                    </div>
-                                    <div className="col-12 mt-3">
-                                        {this.state.errorCompany && (
-                                            <Alert key={"alert"} variant={"danger"}>
-                                                {this.state.errorCompany}
-                                            </Alert>
-                                        )}
-                                    </div>
-                                </div>
-                            </>
-                        )}
                     </div>
                 </div>
 
                 <GlobalDialog
+                    allowOverflow
                     size={"xs"}
                     hide={this.addCompany}
                     show={this.state.showAddCompany}
@@ -983,17 +1048,23 @@ class CompanyDetails extends Component {
                     <>
                         <div className="col-12 ">
                             <div className="row no-gutters">
-                                <div className="col-12 ">
+                                <div className="col-12 pt-4 pb-4">
                                     <AutocompleteCustom
+                                        allowOverflow
                                         hideAddNew
                                         orgs={true}
-                                        // companies={true}
+                                        companies={true}
                                         suggestions={this.state.orgNames}
-                                        selectedCompany={(action) =>
-                                            this.setState({
-                                                orgId: action.org,
-                                            })
-                                        }
+
+                                        selectedCompany={(action) => this.companyDetails(action)}
+
+                                        // selectedCompany={(action) =>{
+                                        //
+                                        //
+                                        //     // this.setState({
+                                        //     //     orgId: action.org,
+                                        //     // })
+                                        // }}
                                     />
                                     {this.state.errorCompany && (
                                         <span

@@ -61,7 +61,7 @@ class MarketplaceResourceItem extends Component {
 
     deleteItem() {
         axios
-            .delete(baseUrl + "listing/" + this.props.item.listing._key, {
+            .delete(baseUrl + "listing/" + this.props.item._key, {
                 headers: {
                     Authorization: "Bearer " + this.props.userDetail.token,
                 },
@@ -88,7 +88,7 @@ class MarketplaceResourceItem extends Component {
         return (
             <>
                     <>
-                        <Link to={this.props.link?this.props.link:"/"+ this.props.item.listing._key}>
+                        <Link to={this.props.link?this.props.link:"/"+ this.props.item._key}>
 
                             <div
                                 // onClick={this.goToPage}
@@ -103,16 +103,16 @@ class MarketplaceResourceItem extends Component {
                                 </div>
                                 <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
                                     <p  className="text-capitlize mb-2 item-title width-70 ellipsis-end">
-                                        {this.props.item.listing.name}
+                                        {this.props.item.name}
                                     </p>
                                     <p   className=" mb-2 text-gray-light mt-1 mb-2 width-70 d-block web-only ">
 
-                                            {this.readMore(this.props.item.listing.description)}
+                                            {this.readMore(this.props.item.description)}
 
                                     </p>
-                                    <p  className=" mb-2 text-gray-light mt-1 mb-2  ">
-                                        {this.props.item.product && (
-                                            <>Product: <span className={"text-blue"}>{this.props.item.product.name}</span> </>
+                                    <p  className=" mb-2 text-gray-light mt-1 mb-2 width-70  ">
+                                        {this.props.product && (
+                                            <>Product: <span className={"text-blue"}>{this.props.product.name}</span> </>
                                         )}
                                     </p>
 
@@ -122,47 +122,47 @@ class MarketplaceResourceItem extends Component {
 
                                             className="ml-1 text-capitlize mb-2 cat-box text-left p-1">
                                                             <span className="text-capitlize">
-                                                                {capitalize(this.props.item.listing.category)}
+                                                                {capitalize(this.props.item.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
                                         <span className=" text-capitlize">
-                                                                {capitalize(this.props.item.listing.type)}
+                                                                {capitalize(this.props.item.type)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
                                         <span className="  text-capitlize">
-                                                                {capitalize(this.props.item.listing.state)}
+                                                                {capitalize(this.props.item.state)}
                                                             </span>
 
                                     </span>
                                     </div>
 
                                     <div className={"text-gray-light mt-1 mb-2 "}>
-                                        Seller: <OrgComponent org={this.props.item.org} />
+                                        Seller: <OrgComponent org={this.props.org} />
                                     </div>
                                     <p className={"mobile-only mb-1 text-gray-light text-14  "}>
-                                        Available: <span className="text-bold">{moment(this.props.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} - {moment(this.props.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</span>
+                                        Available: <span className="text-bold">{moment(this.props.item.available_from_epoch_ms).format("DD MMM YYYY")} - {moment(this.props.item.expire_after_epoch_ms).format("DD MMM YYYY")}</span>
                                     </p>
                                     <p className={"mobile-only mb-1 text-gray-light text-14 "}>
-                                            Created on: <span className="text-bold">{moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}</span>
+                                            Created on: <span className="text-bold">{moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}</span>
                                         </p>
 
                                     <div className={"add-top-button    text-right"}>
                                         <p className={"text-blue extra-bold p-0 mb-2"}>
-                                            {this.props.item.listing.price &&
-                                            this.props.item.listing.price.value ? (
-                                                <>GBP {this.props.item.listing.price.value}</>
+                                            {this.props.item.price &&
+                                            this.props.item.price.value ? (
+                                                <>GBP {this.props.item.price.value}</>
                                             ) : (
                                                 "Free"
                                             )}
                                         </p>
                                         <span className={"web-only text-gray-light text-14  text-right"}>
-                                            Created on: <span className="text-bold">{moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}</span>
+                                            Created on: <span className="text-bold">{moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}</span>
                                         </span>
                                         <br/>
                                         <span className={"web-only text-gray-light text-14  text-right"}>
-                                            Available: <span className="text-bold">{moment(this.props.item.listing.available_from_epoch_ms).format("DD MMM YYYY")} - {moment(this.props.item.listing.expire_after_epoch_ms).format("DD MMM YYYY")}</span>
+                                            Available: <span className="text-bold">{moment(this.props.item.available_from_epoch_ms).format("DD MMM YYYY")} - {moment(this.props.item.expire_after_epoch_ms).format("DD MMM YYYY")}</span>
                                         </span>
                                         <p className={"d-none  status text-right"}>
-                                <span className={this.props.item.listing.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
-                                    {this.props.item.listing.stage}
+                                <span className={this.props.item.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
+                                    {this.props.item.stage}
                                 </span>
                                         </p>
                                         <p  className={" text-gray-light text-14 text-right d-none"}>

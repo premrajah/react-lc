@@ -316,9 +316,10 @@ class ComponentsNavbar extends React.Component {
                                                                     style={{
                                                                         maxHeight: "30px",
                                                                         maxWidth: "30px",
-                                                                        objectFit: "cover",
+                                                                        objectFit: "contain",
                                                                         width: "30px",
                                                                         height: "30px",
+                                                                        border: "2px solid var(--lc-yellow)"
                                                                     }}
                                                                 />
                                                             </div>
@@ -443,7 +444,9 @@ function LinearIndeterminate() {
 
     return (
         <div className={classes.root}>
-            <LinearProgress style={{ backgroundColor: "#212529" }} />
+            <LinearProgress
+                // style={{ backgroundColor: "#212529" }}
+            />
         </div>
     );
 }

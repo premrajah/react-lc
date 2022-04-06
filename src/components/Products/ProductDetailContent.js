@@ -994,6 +994,7 @@ class ProductDetailContent extends Component {
                         </Modal>
 
                         <GlobalDialog
+                            allowOverflow
                             heading={"Release Product: "+ this.state.item.product.name}
                             show={this.state.showReleaseProduct}
                             hide={this.showReleaseProductPopUp}
@@ -1059,8 +1060,6 @@ class ProductDetailContent extends Component {
 
                                                                     <SelectArrayWrapper
                                                                         details="Select the site where your product is currently located."
-
-
                                                                         option={"name"}
                                                                         valueKey={"_key"}
                                                                         // error={this.state.errors["deliver"]}
@@ -1081,7 +1080,7 @@ class ProductDetailContent extends Component {
                                                                             "row justify-content-center"
                                                                         }>
                                                                         <div
-                                                                            className={"col-12"}
+                                                                            className={"col-12 mt-4 mb-4 "}
                                                                             style={{ textAlign: "center" }}>
                                                                             <Alert
                                                                                 key={"alert"}
@@ -1233,7 +1232,6 @@ class ProductDetailContent extends Component {
                                                                                                         .showReleaseProductPopUp
                                                                                                 }
                                                                                             >
-                                                                                                Cancel
                                                                                             </BlueBorderButton>
                                                                                         </div>
                                                                                     </div>

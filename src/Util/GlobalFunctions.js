@@ -17,7 +17,7 @@ const addAndFilters=(filters)=>{
     let url=""
 
     filters.forEach((row,index)=> {
-            url = url + "("
+            url = url + ""
 
             row.filters && row.filters.forEach((item, index) => {
 
@@ -30,7 +30,7 @@ const addAndFilters=(filters)=>{
             })
 
 
-            url = url + ")"
+            // url = url + ")"
         }
     )
 
@@ -113,7 +113,7 @@ export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, fil
     }
 
     if (filters&&filters.length>0&&filterType==="AND"){
-        url=url+"&any="+addAndFilters(filters)
+        url=url+"&or="+addAndFilters(filters)
     }
 
 
@@ -140,7 +140,7 @@ export const  ownerCheck=  (userDetail,orgId)=> {
 export const  seekAxiosGet=  (url)=> {
 
 
-    return   axios.get(encodeURI(url)).catch((error)=>{
+    return   axios.get((url)).catch((error)=>{
 
         console.error(error);
 
@@ -151,6 +151,10 @@ export const  seekAxiosGet=  (url)=> {
 
 }
 
+
+export const   isEmptyHtml=( el )=>{
+    // return trim(el.html())
+}
 
 
 export const getActionName=(actionName)=>{

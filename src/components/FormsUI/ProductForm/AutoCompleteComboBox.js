@@ -27,6 +27,7 @@ const AutoCompleteComboBox = (props) => {
     const classes = useStyles();
     const handleChange = (event,selectValue) => {
 
+
         setValue(selectValue);
            if (onChange)
             onChange(selectValue)
@@ -49,13 +50,13 @@ const AutoCompleteComboBox = (props) => {
 
 
             <Autocomplete
-
                 freeSolo
                 style={{width:"100%"}}
 
                 onChange={(event,value) =>handleChange(event,value)}
                 className={`custom-autocomplete ${error&&"border-red-error"}`}
-                renderInput={(params) => <TextField  name={name} variant="standard" {...params} />
+                renderInput={(params) =>
+                    <TextField onChange={(event) =>handleChange(event,event.target.value)}  name={name} variant="standard" {...params} />
                 }
                 options={options}
                 value={value}

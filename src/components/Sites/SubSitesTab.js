@@ -23,7 +23,11 @@ class SubSitesTab extends Component {
     showSiteSelection=(event)=> {
 
         this.props.setSiteForm({show:true,
-            item:null,type:"link",parent:this.props.item.site._key, heading:"Link Child Sites",subSites:this.state.subSites});
+            item:null,type:"link",
+            parent:this.props.item.site._key,
+            heading:"Link Child Sites",
+            subSites:this.state.subSites}
+            );
 
     }
 
@@ -94,11 +98,7 @@ class SubSitesTab extends Component {
                         className={
                             "btn-gray-border "
                         }>
-                        <AddLinkIcon />     <span
-
-                    >
-                                                        Link Subsites
-                                                    </span>
+                        <AddLinkIcon />     <span>Link Subsites</span>
 
                     </button>
                 </div> }
@@ -110,6 +110,8 @@ class SubSitesTab extends Component {
                             (item, index) => (
                                 <SitePageItem
 
+
+                                    smallItem
                                    moreMenu
                                    showRemove
                                     key={index}

@@ -1,17 +1,12 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import history from "../../History/history";
-import {makeStyles} from "@mui/styles";
-import TextField from "@mui/material/TextField";
-import {Alert, Spinner} from "react-bootstrap";
-import {IconButton, InputAdornment} from "@mui/material";
-import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {Link} from "react-router-dom";
+import { makeStyles } from "@mui/styles";
+import { Alert } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
-import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
-import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
+import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
 import GreenBorderButton from "../../components/FormsUI/Buttons/GreenBorderButton";
 import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
 
@@ -77,27 +72,31 @@ class Login extends Component {
             // errors["email"] = "Required";
         }
 
-
         this.setState({ formValid: formIsValid });
 
         // return formIsValid;
     }
 
     handleValidation() {
-
-
         let fields = this.state.fields;
 
+        let validations = [
+            validateFormatCreate(
+                "email",
+                [
+                    { check: Validators.required, message: "Required" },
+                    { check: Validators.email, message: "Required" },
+                ],
+                fields
+            ),
+            validateFormatCreate(
+                "password",
+                [{ check: Validators.required, message: "Required" }],
+                fields
+            ),
+        ];
 
-        let validations=[
-
-            validateFormatCreate("email", [{check: Validators.required, message: 'Required'},{check: Validators.email, message: 'Required'}],fields),
-            validateFormatCreate("password", [{check: Validators.required, message: 'Required'}],fields),
-        ]
-
-
-
-        let {formIsValid,errors}= validateInputs(validations)
+        let { formIsValid, errors } = validateInputs(validations);
 
         this.setState({ errors: errors });
         return formIsValid;
@@ -169,8 +168,6 @@ class Login extends Component {
         // })
     }
 
-
-
     goToSignIn() {
         this.setState({
             active: 0,
@@ -185,125 +182,124 @@ class Login extends Component {
         return (
             <>
                 <div className="container  ">
-
                     <div className="row justify-content-center ">
-                        <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
+                        <div
+                            className={
+                                this.props.parentClass
+                                    ? this.props.parentClass + " pt-5 mt-5"
+                                    : "col-12"
+                            }>
+                            <div className="row no-gutters ">
+                                <div className="col-12">
+                                    <h4 className={"blue-text text-heading"}>Log In</h4>
+                                </div>
+                            </div>
 
-                    <div className="row no-gutters ">
-                        <div className="col-12">
-                            <h4 className={"blue-text text-heading"}>Log In</h4>
-                        </div>
-                    </div>
-
-                <div className="row justify-content-center no-gutters mb-4">
+                            <div className="row justify-content-center no-gutters mb-4">
                                 <div className="col-12 ">
+                                    <form onSubmit={this.handleSubmit}>
+                                        <div className="row no-gutters justify-content-center">
+                                            <div className="col-12">
+                                                {/*<TextField*/}
+                                                {/*    type={"email"}*/}
+                                                {/*    onChange={this.handleChange.bind(this, "email")}*/}
+                                                {/*    id="outlined-basic"*/}
+                                                {/*    label="Email"*/}
+                                                {/*    variant="outlined"*/}
+                                                {/*    fullWidth={true}*/}
+                                                {/*    name={"email"}*/}
+                                                {/*/>*/}
+                                                <TextFieldWrapper
+                                                    onChange={(value) =>
+                                                        this.handleChange("email", value)
+                                                    }
+                                                    error={this.state.errors["email"]}
+                                                    name="email"
+                                                    title="Email"
+                                                />
 
-                    <form onSubmit={this.handleSubmit}>
-                        <div className="row no-gutters justify-content-center">
-                            <div className="col-12">
-                                {/*<TextField*/}
-                                {/*    type={"email"}*/}
-                                {/*    onChange={this.handleChange.bind(this, "email")}*/}
-                                {/*    id="outlined-basic"*/}
-                                {/*    label="Email"*/}
-                                {/*    variant="outlined"*/}
-                                {/*    fullWidth={true}*/}
-                                {/*    name={"email"}*/}
-                                {/*/>*/}
-                                <TextFieldWrapper
+                                                {/*{this.state.errors["email"] && (*/}
+                                                {/*    <span className={"text-mute small"}>*/}
+                                                {/*        <span style={{ color: "red" }}>* </span>*/}
+                                                {/*        {this.state.errors["email"]}*/}
+                                                {/*    </span>*/}
+                                                {/*)}*/}
+                                            </div>
 
+                                            <div className="col-12 ">
+                                                <TextFieldWrapper
+                                                    type="password"
+                                                    onChange={(value) =>
+                                                        this.handleChange("password", value)
+                                                    }
+                                                    error={this.state.errors["password"]}
+                                                    name="password"
+                                                    title="Password"
+                                                />
+                                            </div>
 
-                                    onChange={(value)=>this.handleChange("email",value)}
-                                    error={this.state.errors["email"]}
-                                    name="email" title="Email" />
+                                            <div className="col-12 mt-2 mb-2">
+                                                {this.props.isPage ? (
+                                                    <Link
+                                                        to={"/forgot-password"}
+                                                        className={
+                                                            "forgot-password-link text-mute small"
+                                                        }>
+                                                        Forgot your password?
+                                                    </Link>
+                                                ) : (
+                                                    <p
+                                                        onClick={this.forGotPass}
+                                                        className={
+                                                            "forgot-password-link text-mute small"
+                                                        }>
+                                                        Forgot your password?
+                                                    </p>
+                                                )}
+                                            </div>
 
-                                {/*{this.state.errors["email"] && (*/}
-                                {/*    <span className={"text-mute small"}>*/}
-                                {/*        <span style={{ color: "red" }}>* </span>*/}
-                                {/*        {this.state.errors["email"]}*/}
-                                {/*    </span>*/}
-                                {/*)}*/}
-                            </div>
+                                            {this.props.loginFailed && (
+                                                <div className="col-12 mt-2">
+                                                    <Alert key={"alert"} variant={"danger"}>
+                                                        {this.props.loginError}
+                                                    </Alert>
+                                                </div>
+                                            )}
 
-                            <div className="col-12 ">
-                                <TextFieldWrapper
+                                            <div className="col-12 text-center mt-2">
+                                                <GreenButton
+                                                    title={"Log In"}
+                                                    type={"submit"}
+                                                    disabled={!this.state.formValid}></GreenButton>
+                                            </div>
 
-                                    type="password"
-                                    onChange={(value)=>this.handleChange("password",value)}
-                                    error={this.state.errors["password"]}
-                                    name="password" title="Password"
-
-                                />
-
-
-                            </div>
-
-                            <div className="col-12 mt-2 mb-2">
-                                {this.props.isPage ?
-                                    <Link
-                                        to={"/forgot-password"}
-
-                                        className={"forgot-password-link text-mute small"}>
-                                        Forgot your password?
-                                    </Link> :
-                                    <p
-                                        onClick={this.forGotPass}
-                                        className={"forgot-password-link text-mute small"}>
-                                        Forgot your password?
-                                    </p>
-                                }
-                            </div>
-
-                            {this.props.loginFailed && (
-                                <div className="col-12 mt-2">
-                                    <Alert key={"alert"} variant={"danger"}>
-                                        {this.props.loginError}
-                                    </Alert>
+                                            <div className="col-12 mt-2">
+                                                <p className={"or-text-divider"}>
+                                                    <span>or</span>
+                                                </p>
+                                            </div>
+                                            <div className="col-auto mt-4  justify-content-center">
+                                                {this.props.isPage ? (
+                                                    <Link
+                                                        style={{ padding: ".375rem .75rem" }}
+                                                        to={"/sign-up"}
+                                                        type="button"
+                                                        className="mt-1 mb-4 btn topBtn  sign-up-btn">
+                                                        Sign Up
+                                                    </Link>
+                                                ) : (
+                                                    <GreenBorderButton
+                                                        title={"Sign Up"}
+                                                        onClick={
+                                                            this.goToSignUp
+                                                        }></GreenBorderButton>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                            )}
-
-                            <div className="col-12 text-center mt-2">
-                                <GreenButton
-                                    title={"Log In"}
-                                    type={"submit"}
-
-
-                                    disabled={!this.state.formValid}
-
-                                  >
-                                </GreenButton>
-                            </div>
-
-                            <div className="col-12 mt-2">
-                                <p className={"or-text-divider"}>
-                                    <span>or</span>
-                                </p>
-                            </div>
-                            <div className="col-auto mt-4  justify-content-center">
-                                {this.props.isPage?
-                                    <Link
-                                        style={{padding: ".375rem .75rem"}}
-                                        to={"/sign-up"}
-                                        type="button"
-                                        className="mt-1 mb-4 btn topBtn  sign-up-btn">
-                                        Sign Up
-                                    </Link>
-
-                                    :
-
-                                    <GreenBorderButton
-
-                                        title={"Sign Up"}
-
-                                        onClick={this.goToSignUp}
-                                    >
-                                    </GreenBorderButton>}
                             </div>
                         </div>
-                    </form>
-                                </div>
-                            </div>
-                </div>
                     </div>
                 </div>
             </>

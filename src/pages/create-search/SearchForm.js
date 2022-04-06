@@ -829,7 +829,7 @@ if ((this.state.activeStep-1)==0){
         }
         else if (activeStep===1) {
             validations = [
-                validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
+                // validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
                 validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields),
 
 

@@ -16,6 +16,8 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import InfoTabContent from "./InfoTabContent";
 import ConditionsContent from "./ConditionsContent";
+import DescriptionIcon from "@mui/icons-material/Description";
+import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 
 class CampaignDetail extends Component {
     slug;
@@ -44,11 +46,7 @@ class CampaignDetail extends Component {
             showDeletePopUp: false,
             isVisibleReportModal: false,
             showRegisterSuccess: false,
-            showOrgInput: false,
-            showOrgInputSuccess: false,
-            showApproveRelease: false,
-            showApproveReleasePopUp: false,
-            approveReleasePopUpSuccess: false,
+
             errorRelease: false,
             orgIdAuth: null,
             approveReleaseId: null,
@@ -59,16 +57,7 @@ class CampaignDetail extends Component {
 
         };
 
-        this.getSubProducts = this.getSubProducts.bind(this);
-        this.getMatches = this.getMatches.bind(this);
-        this.getSearches = this.getSearches.bind(this);
-        this.getListing = this.getListing.bind(this);
-        this.getQrCode = this.getQrCode.bind(this);
-        this.showRegister = this.showRegister.bind(this);
-        this.getSites = this.getSites.bind(this);
-        this.showSubmitSite = this.showSubmitSite.bind(this);
-        this.callBackResult = this.callBackResult.bind(this);
-        this.phonenumber = this.phonenumber.bind(this);
+
     }
 
 
@@ -82,408 +71,35 @@ class CampaignDetail extends Component {
 
     }
 
-    phonenumber(inputtxt) {
-        var phoneNoWithCode = /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
 
-        var phoneWithZero = /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
 
-        if (inputtxt.match(phoneNoWithCode)) {
-            return true;
-        } else if (inputtxt.match(phoneWithZero)) {
-            return true;
-        } else {
-            return false;
+     callBackResult=(action,key,blob_url) =>{
+
+        if (action === "download") {
+
+
+            window.location.href = blob_url
+
         }
-    }
 
-    showReportModal = () => this.setState({ isVisibleReportModal: true });
-    hideReportModal = () => this.setState({ isVisibleReportModal: false });
+         if (action === "edit") {
 
-    callBackResult(action) {
-        if (action === "edit") {
+             this.props.toggleEditMode()
 
-            this.props.toggleEditMode()
 
-            // this.setState({
-            //     editMode:true
-            // })
-        }
+         }
     }
 
 
-    showSubmitSite() {
-        this.setState({
-            errorRegister: null,
-        });
 
-        this.setState({
-            showSubmitSite: !this.state.showSubmitSite,
-        });
-    }
 
-    showApproveReleasePopUp = () => {
-        this.setState({
-            showApproveReleasePopUp: !this.state.showApproveReleasePopUp,
-        });
-    };
 
-    handleValidationSite() {
-        let fields = this.state.fieldsSite;
-        let errors = {};
-        let formIsValid = true;
 
-        //Name
-        if (!fields["name"]) {
-            formIsValid = false;
-            errors["name"] = "Required";
-        }
 
-        // if (!fields["others"]) {
-        //     formIsValid = false;
-        //     errors["others"] = "Required";
-        // }
 
-        if (!fields["address"]) {
-            formIsValid = false;
-            errors["address"] = "Required";
-        }
 
-        if (!fields["contact"]) {
-            formIsValid = false;
-            errors["contact"] = "Required";
-        }
 
-        if (!fields["phone"]) {
-            formIsValid = false;
-            errors["phone"] = "Required";
-        }
-        if (fields["phone"] && !this.phonenumber(fields["phone"])) {
-            formIsValid = false;
-            errors["phone"] = "Invalid Phone Number!";
-        }
 
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["email"] = "Required";
-        }
-
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") === -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                errors["email"] = "Invalid email address";
-            }
-        }
-
-        this.setState({ errorsSite: errors });
-        return formIsValid;
-    }
-
-    handleChangeSite(field, e) {
-        let fields = this.state.fieldsSite;
-        fields[field] = e.target.value;
-        this.setState({ fields: fields });
-    }
-
-    handleSubmitSite = (event) => {
-        this.setState({
-            errorRegister: null,
-        });
-
-        event.preventDefault();
-
-        if (this.handleValidationSite()) {
-            const form = event.currentTarget;
-
-            this.setState({
-                btnLoading: true,
-            });
-
-            const data = new FormData(event.target);
-
-            const email = data.get("email");
-            const others = data.get("others");
-            const name = data.get("name");
-            const contact = data.get("contact");
-            const address = data.get("address");
-            const phone = data.get("phone");
-
-            axios
-                .put(
-                    baseUrl + "site",
-
-                    {
-                        site: {
-                            name: name,
-                            email: email,
-                            contact: contact,
-                            address: address,
-                            phone: phone,
-                            others: others,
-                        },
-                    }
-                )
-                .then((res) => {
-                    // this.toggleSite()
-                    this.getSites();
-
-                    this.showSubmitSite();
-
-                    this.setState({
-                        siteSelected: res.data.data,
-                    });
-                })
-                .catch((error) => {});
-        }
-    };
-
-    submitRegisterProduct = (event) => {
-        this.setState({
-            errorRegister: null,
-        });
-
-        event.preventDefault();
-
-        const form = event.currentTarget;
-
-        this.setState({
-            btnLoading: true,
-        });
-
-        const data = new FormData(event.target);
-
-        const site = data.get("site");
-
-        axios
-            .post(
-                baseUrl + "register",
-
-                {
-                    site_id: site,
-                    product_id: this.props.item.campaign._key,
-                }
-            )
-            .then((res) => {
-                // this.toggleSite()
-                // this.showRegister()
-
-                this.setState({
-                    showRegisterSuccess: true,
-                });
-            })
-            .catch((error) => {
-                this.setState({
-                    errorRegister: error.response.data.errors[0].message,
-                });
-            });
-    };
-    companyDetails = (detail) => {
-        if (detail.org) {
-            this.setState({
-                orgIdAuth: detail.org,
-            });
-        }
-    };
-
-    submitOrgId = (event) => {
-        event.preventDefault();
-
-        const form = event.currentTarget;
-
-        const data = new FormData(event.target);
-
-        const orgId = data.get("orgId");
-
-        this.setState({
-            orgIdAuth: orgId,
-        });
-
-        this.showOrgInput();
-
-        axios
-            .get(baseUrl + "release/no-auth?p=" + this.props.item.campaign._key + "&o=" + orgId)
-            .then((res) => {
-                let response = res.data.data;
-
-                for (let i = 0; i < response.length; i++) {
-                    if (response[i].stage === "requested") {
-                        this.setState({
-                            showApproveRelease: true,
-                            approveReleaseId: response[i]._key,
-                        });
-                    }
-                }
-            })
-            .catch((error) => {
-                this.setState({
-                    errorRelease: "Oops! Organisation ID entered is incorrect. Thanks",
-                });
-            });
-    };
-    submitApproveRelease = (event) => {
-        axios
-            .post(
-                baseUrl + "release/complete",
-
-                {
-                    id: this.state.approveReleaseId,
-                    org_id: this.state.orgIdAuth,
-                }
-            )
-            .then((res) => {
-                // this.toggleSite()
-                // this.showRegister()
-
-                // this.setState({
-                //
-                //     showRegisterSuccess:true
-                // })
-
-                this.setState({
-                    approveReleasePopUpSuccess: true,
-                });
-            })
-            .catch((error) => {
-                this.setState({
-                    errorRegister: error.response.data.errors[0].message,
-                });
-            });
-    };
-
-    getSites() {
-        axios.get(baseUrl + "site").then(
-            (response) => {
-                let responseAll = response.data.data;
-
-                this.setState({
-                    sites: responseAll,
-                });
-            },
-            (error) => {}
-        );
-    }
-
-    handlePrintPdf = (productItem, productQRCode) => {
-        const { _key, name } = productItem;
-        if (!_key || !productQRCode) {
-            return;
-        }
-
-        const pdf = new jspdf();
-        pdf.setTextColor(39, 36, 92);
-        pdf.text(name, 10, 30);
-
-        pdf.setDrawColor(7, 173, 136);
-        pdf.line(0, 40, 1000, 40);
-
-        pdf.addImage(productQRCode, "PNG", 20, 40, 80, 80);
-        pdf.addImage(productQRCode, "PNG", 100, 60, 40, 40);
-        pdf.addImage(productQRCode, "PNG", 150, 70, 20, 20);
-
-        pdf.setDrawColor(7, 173, 136);
-        pdf.line(0, 120, 1000, 120);
-
-        pdf.setTextColor(39, 36, 92);
-        pdf.textWithLink("Loopcycle.io", 10, 160, { url: "https://loopcycle.io/" });
-
-        pdf.save(`Loopcycle_QRCode_${name}_${_key}.pdf`);
-    };
-
-    showOrgInput = () => {
-        this.setState({
-            showOrgInput: !this.state.showOrgInput,
-        });
-    };
-
-    showRegister() {
-        this.getSites();
-        this.setState({
-            showRegister: !this.state.showRegister,
-        });
-    }
-
-    getQrCode() {
-        if(!this.props.item.campaign._key) return;
-
-        axios.get(`${baseUrl}product/${this.props.item.campaign._key}/code-artifact?u=${frontEndUrl}p`)
-            .then(response => {
-                this.setState({productQrCode: response.data.data})
-            })
-            .catch(error => {
-
-            })
-    }
-
-    getListing() {
-        axios.get(baseUrl + "listing/" + this.props.item.listing.replace("Listing/", "")).then(
-            (response) => {
-                var responseData = response.data.data;
-
-                this.setState({
-                    listingLinked: responseData,
-                });
-            },
-            (error) => {
-                // var status = error.response.status
-            }
-        );
-    }
-
-    getSearches() {
-        var searches = this.props.item.searches;
-
-        for (var i = 0; i < searches.length; i++) {
-            axios.get(baseUrl + "search/" + searches[i].replace("Search/", "")).then(
-                (response) => {
-                    var responseData = response.data.data;
-
-                    var searches = this.state.searches;
-
-                    searches.push(responseData);
-
-                    this.setState({
-                        searches: searches,
-                    });
-                },
-                (error) => {
-                    // var status = error.response.status
-                }
-            );
-        }
-    }
-
-    getSubProducts() {
-        var subProductIds = this.props.item.sub_products;
-
-        for (var i = 0; i < subProductIds.length; i++) {
-            var url = baseUrl + "code/" + subProductIds[i]._key + "/expand";
-
-            axios.get(url).then(
-                (response) => {
-                    var responseAll = response.data;
-
-                    var subProducts = this.state.subProducts;
-
-                    subProducts.push(responseAll.data);
-
-                    this.setState({
-                        subProducts: subProducts,
-                    });
-                },
-                (error) => {}
-            );
-        }
-    }
 
     handleBack = () => {
         this.props.history.goBack();
@@ -526,44 +142,12 @@ class CampaignDetail extends Component {
     }
 
     componentDidMount() {
-        this.getQrCode();
-
-        if (this.props.showRegister && this.props.isLoggedIn && this.props.userDetail) {
-            this.getSites();
-        }
-
-        this.getProductTrails(this.props.item.campaign._key);
-
-                this.setActiveKey(null,"1")
+        this.setActiveKey(null,"1")
 
     }
 
-    getProductTrails(productKey) {
-        axios
-            .get(`${baseUrl}code/${productKey}/trail`)
-            .then((response) => {
-                const data = response.data.data;
-                this.setState({ orgTrails: data.org_trails, siteTrails: data.site_trails });
-            })
-            .catch((error) => {
-                console.log("trail error ", error);
-            });
-    }
-
-    handleTimelineOptions = (event) => {
-        this.setState({ timelineDisplay: event.target.value });
-    };
 
 
-    callZoom=()=>{
-
-
-        this.setState({
-            zoomQrCode:!this.state.zoomQrCode
-
-
-        })
-    }
 
     render() {
         const classes = withStyles();
@@ -605,7 +189,7 @@ class CampaignDetail extends Component {
                                             </div>
 
                                             <div className="col-4 text-right">
-                                                {this.props.isLoggedIn && (
+
                                                     <MoreMenu
                                                         triggerCallback={(action) =>
                                                             this.callBackResult(action)
@@ -615,7 +199,7 @@ class CampaignDetail extends Component {
                                                         }
 
                                                     />
-                                                )}
+
 
 
                                             </div>
@@ -659,8 +243,6 @@ class CampaignDetail extends Component {
 
                                                         <Tab label="Message Template" value="3" />
 
-
-
                                                     </TabList>
                                                 </Box>
 
@@ -672,11 +254,95 @@ class CampaignDetail extends Component {
                                                 <TabPanel value="2">
                                                     <ConditionsContent  item={this.props.item} />
                                                 </TabPanel>
+
                                                 <TabPanel value="3">
                                                     <>
                                                         <div className={"bg-white mt-4 rad-8 p-2 gray-border"}>
                                                         {this.props.item.message_template.text}
                                                         </div>
+
+
+                                                        <div  className="mt-3 mb-3 text-left pt-3 pb-3 ">
+
+                                                            <div className={"col-12"}>
+                                                        {this.props.item.artifacts&&this.props.item.artifacts.length > 0  &&
+                                                        <p className=" custom-label text-bold text-blue mt-4 mb-4">
+
+                                                            Files Uploaded
+
+                                                        </p>}
+
+                                                            </div>
+
+                                                            {this.props.item.artifacts&&this.props.item.artifacts.length > 0 ? (
+                                                                this.props.item.artifacts.map((artifact, index) => {
+                                                                    if (
+                                                                        artifact.mime_type === "application/pdf" ||
+                                                                        artifact.mime_type === "application/rtf" ||
+                                                                        artifact.mime_type === "application/msword" ||
+                                                                        artifact.mime_type === "text/rtf" ||
+                                                                        artifact.mime_type ===
+                                                                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+                                                                        artifact.mime_type ===
+                                                                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+                                                                        artifact.mime_type === "application/vnd.ms-excel"
+                                                                    ) {
+                                                                        return (
+
+                                                                            <>
+                                                                                {index==0 &&  <p className=" custom-label text-bold text-blue mt-4 mb-4">
+
+                                                                                    Files Uploaded
+
+                                                                                </p>}
+                                                                                <div key={index} className="mt-3 mb-3 text-left pt-3 pb-3 bg-white row">
+
+                                                                                    <div className={"col-10"}>
+
+                                                                                        <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.5rem"}} className={" p-1 rad-4"} />
+                                                                                        <span
+
+                                                                                            className="ml-4  text-blue text-bold"
+                                                                                            // href={artifact.blob_url}
+                                                                                            target="_blank"
+                                                                                            rel="noopener noreferrer">
+                                            {artifact.name}
+                                        </span>
+
+                                                                                    </div>
+                                                                                    <div className={"col-2"}>
+
+
+                                                                                        <MoreMenu
+
+                                                                                            triggerCallback={(action) =>
+                                                                                                this.callBackResult(action,artifact._key,artifact.blob_url)
+                                                                                            }
+
+                                                                                            download={
+                                                                                                true
+                                                                                            }
+
+
+                                                                                        />
+
+
+
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </>
+                                                                        );
+                                                                    }
+                                                                })
+                                                            ) : (
+                                                                <div>No documents added.</div>
+                                                            )}
+                                                        </div>
+
+
+
                                                     </>
 
                                                 </TabPanel>

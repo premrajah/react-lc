@@ -1,16 +1,25 @@
 import React, {Component} from "react";
 import axios from "axios";
 import {connect} from "react-redux";
-import {baseUrl} from "../../Util/Constants";
+import {baseUrl, createMarkup} from "../../Util/Constants";
 import reactStringReplace from "react-string-replace";
 import {Card, CardContent, Snackbar} from "@mui/material";
-import NotIcon from "@mui/icons-material/Notifications";
+import NotIcon from "@mui/icons-material/HdrWeak";
 import moment from "moment/moment";
 import Org from "../Org/Org";
 import {Link} from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import _ from "lodash";
 import PaginationLayout from "../IntersectionOserver/PaginationLayout";
+import Box from "@mui/material/Box";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import Tab from "@mui/material/Tab";
+import TabPanel from "@mui/lab/TabPanel";
+import CustomPopover from "../FormsUI/CustomPopover";
+import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
+import {CheckCircle} from "@mui/icons-material";
+
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 const ORG_REGEX = /(Org\/[\w\d-]+)/g;
@@ -21,6 +30,9 @@ const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
 const PRODUCT_REGISTRATION = /ProductRegistration\/([\w\d]+)/g;
 const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
 const BRACKETS_REGEX = /[(\[)(\])]/g;
+const A_TAG_REGEX = /\<a(.*)\<\/a\>"/g;
+const LISTING_REGEX = /Listing\/([\w\d]+)/g;
+const SEARCH_REGEX = /Search\/([\w\d]+)/g;
 
 class Notifications extends Component {
     state = {
@@ -29,9 +41,10 @@ class Notifications extends Component {
         allNotificationsCount: 0,
         lastPageReached: false,
         currentOffset: 0,
-        productPageSize: 50,
+        productPageSize: 20,
         loadingResults: false,
         count: 0,
+        activeReleaseTabKey:"1",
     };
 
     getAllNotificationsCount = () => {
@@ -46,6 +59,11 @@ class Notifications extends Component {
     };
 
     getNotifications = () => {
+        this.setState({
+
+            loadingResults: true
+        })
+
         let newOffset = this.state.currentOffset;
         axios
             .get(
@@ -66,6 +84,15 @@ class Notifications extends Component {
             currentOffset: newOffset + this.state.productPageSize,
         });
     };
+    setActiveReleaseTabKey=(event,key)=>{
+
+
+        this.setState({
+            activeReleaseTabKey:key
+        })
+
+
+    }
 
     messageRead = (messageId) => {
         if (!messageId) return;
@@ -180,63 +207,90 @@ class Notifications extends Component {
         const messageId = item.message._id;
 
         text = reactStringReplace(message.text, ORG_REGEX, (match, i) => (
-            <Org key={i + Math.random() * 100} orgId={match} />
+            <Org key={`${i}_${match}`} orgId={match} />
         ));
 
         text = reactStringReplace(text, PRODUCT_REGEX, (match, i) => (
             <>
-                <span>Product </span>
+
                 <Link
-                    key={i + Math.random() * 101}
+                    key={`${i}_${match}`}
                     to={`product/${match}`}
                     onClick={() => this.messageRead(messageId)}>
-                    <u className="blue-text">Link</u>
+                    View Product
                 </Link>
             </>
         ));
 
         text = reactStringReplace(text, CYCLE_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 102}
+                key={`${i}_${match}`}
                 to={`cycle/${match}`}
                 onClick={() => this.messageRead(messageId)}>
-                <u className="blue-text">Cycle</u>
+                Cycle
             </Link>
         ));
 
         text = reactStringReplace(text, MATCH_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 103}
+                key={`${i}_${match}`}
                 to={`matched/${match}`}
                 onClick={() => this.messageRead(messageId)}>
-                <u className="blue-text">Match</u>
+                Match
             </Link>
         ));
 
         text = reactStringReplace(text, PRODUCT_RELEASE_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 104}
+                key={`${i}_${match}`}
                 to="/approve?tab=0"
                 onClick={() => this.messageRead(messageId)}>
-                <u className="blue-text">To Approvals Page</u>
+                To Approvals Page
             </Link>
         ));
 
         text = reactStringReplace(text, SERVICE_AGENT_CHANGE_REGEX, (match, i) => (
             <Link
-                key={i + Math.random() * 105}
+                key={`${i}_${match}`}
                 to="/approve?tab=2"
                 onClick={() => this.messageRead(messageId)}>
-                <u className="blue-text">To Approvals Page</u>
+                To Approvals Page
             </Link>
         ));
 
         text = reactStringReplace(text, PRODUCT_REGISTRATION, (match, i) => (
             <Link
-                key={i + Math.random() * 106}
+                key={`${i}_${match}`}
                 to="/approve?tab=1"
                 onClick={() => this.messageRead(messageId)}>
-                <u className="blue-text">To Approvals Page</u>
+                To Approvals Page
+            </Link>
+        ));
+
+        text = reactStringReplace(text, A_TAG_REGEX, (match, i) => (
+            <Link
+                key={`${i}_${match}`}
+                to="/account?page=system-users"
+                onClick={() => this.messageRead(messageId)}>
+                User Approvals
+            </Link>
+        ))
+
+        text = reactStringReplace(text, LISTING_REGEX, (match, i) => (
+            <Link
+                key={`${i}_${match}`}
+                to={`/${match}`}
+                onClick={() => this.messageRead(messageId)}>
+                Listing
+            </Link>
+        ));
+
+        text = reactStringReplace(text, SEARCH_REGEX, (match, i) => (
+            <Link
+                key={`${i}_${match}`}
+                to={`/search/${match}`}
+                onClick={() => this.messageRead(messageId)}>
+                Search
             </Link>
         ));
 
@@ -244,37 +298,30 @@ class Notifications extends Component {
             <Card
                 key={index}
                 variant="outlined"
-                className="mb-2"
-                style={{ opacity: `${flags ? "0.5" : "1"}` }}>
-                <CardContent>
-                    <div className="row">
-                        <div className="col-12">
+                className="mb-3 rad-8  bg-white  "
+            >
+
+
+                <CardContent className={"hover-bg"}>
+                    <div className="row ">
+                        <div className="col-11">
                             <NotIcon
                                 style={{
-                                    color: flags ? "#eee" : "var(--lc-pink)",
+                                    color: flags ? "#eee" : "var(--lc-purple)",
                                     float: "left",
                                     marginRight: "15px",
                                     marginTop: "3px",
                                 }}
                             />
-                            <div style={{ float: "left", marginBottom: "0" }}>{text}</div>
 
-                            <span className="text-mute time-text">
+
+                            <div >{text}</div>
+
+
+                            <span className="text-gray-light time-text">
                                 <span className="mr-4">
                                     {moment(message._ts_epoch_ms).fromNow()}
                                 </span>
-                                <span className="">
-                                    {readTime
-                                        ? `Read: ${moment(readTime.ts_epoch_ms).fromNow()}`
-                                        : ""}
-                                </span>
-                                {!readTime ? (
-                                    <span
-                                        onClick={() => this.messageRead(messageId)}
-                                        style={{ cursor: "pointer" }}>
-                                        Mark as read
-                                    </span>
-                                ) : null}
                                 {item.options && !item.options.is_owned && (
                                     <React.Fragment>
                                         {message.text.match(PRODUCT_REGEX) &&
@@ -297,18 +344,27 @@ class Notifications extends Component {
                                 )}
                             </span>
                         </div>
+
+                        {!flags &&  <div className="col-1 text-right">
+                            <CustomPopover text={"Mark as read"}>
+
+                                <ActionIconBtn
+                                    className="ml-4"
+                                    onClick={()=>this.messageRead(messageId)}>
+                                    <CheckCircle style={{color:"#07AD89"}} />
+                                </ActionIconBtn>
+                            </CustomPopover>
+                        </div>}
                     </div>
                 </CardContent>
+
             </Card>
         );
     };
 
     componentDidMount() {
-        // this.props.getNotifications();
         this.setState({ allNotifications: [] });
         this.getAllNotificationsCount();
-        // this.getNotifications();
-        // this.timer = setInterval(this.getNotifications, 10000);
     }
 
     componentWillUnmount() {
@@ -326,33 +382,68 @@ class Notifications extends Component {
                     <Alert severity="success">Notification marked as read.</Alert>
                 </Snackbar>
 
-                <h5 className="blue-text mb-4">
-                    <span className="mr-3">
-                        {this.state.allNotifications.length <= 0
-                            ? "..."
-                            : <span className="mr-1">{this.state.allNotifications.length}</span>}
-                        of {this.state.allNotificationsCount}
-                    </span>
-                    <span className="text-muted">
-                        <span className="mr-1">Read</span>
-                        {this.state.allNotifications.length <= 0
-                            ? "..."
-                            : this.handleReadUnreadLength(this.state.allNotifications)}
-                    </span>
-                </h5>
+
                 <div className="notification-content">
-                    <PaginationLayout
-                        loadingResults={this.state.loadingResults}
-                        lastPageReached={this.state.lastPageReached}
-                        loadMore={this.getNotifications}
-                        hideSearch
-                    >
-                        {this.state.allNotifications.length > 0
-                            ? this.state.allNotifications.map((item, index) => {
-                                  return this.checkNotifications(item, index);
-                              })
-                            : "No notifications... "}
-                    </PaginationLayout>
+                    <div className={"row "}>
+                        <div className={"col-12 "}>
+                            <Box sx={{ width: '100%', typography: 'body1' }}>
+                                <TabContext value={this.state.activeReleaseTabKey}>
+                                    <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                        <TabList
+
+                                            allowScrollButtonsMobile
+
+                                            scrollButtons="auto"
+                                            textColor={"#27245C"}
+                                            TabIndicatorProps={{
+                                                style: {
+                                                    backgroundColor: "#27245C",
+                                                    padding: '2px',
+                                                }
+                                            }}
+                                            onChange={this.setActiveReleaseTabKey}
+
+                                            aria-label="lab API tabs example">
+                                            <Tab label="All" value="1" />
+                                            {/*<Tab label={`Read `} value="2"/>*/}
+
+                                        </TabList>
+                                    </Box>
+
+                                    <TabPanel value="1">
+                                        <div className={"row  mt-4 "}>
+                                            <div className={"col-12 "}>
+
+                                                <PaginationLayout
+
+                                                    visibleCount={this.state.allNotifications.length}
+                                                    count={this.state.allNotificationsCount}
+                                                    loadingResults={this.state.loadingResults}
+                                                    lastPageReached={this.state.lastPageReached}
+                                                    loadMore={this.getNotifications}
+                                                    hideSearch
+                                                >
+                                                    <>
+                                                        {this.state.allNotifications.length > 0
+                                                            ? this.state.allNotifications.map((item, index) => {
+                                                                return this.checkNotifications(item, index);
+                                                            })
+                                                            : "No notifications... "}
+                                                    </>
+                                                </PaginationLayout>
+
+                                            </div>
+                                        </div>
+
+                                    </TabPanel>
+                                </TabContext>
+                            </Box>
+                        </div>
+
+                    </div>
+
+
+
                 </div>
             </div>
         );

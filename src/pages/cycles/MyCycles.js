@@ -4,33 +4,12 @@ import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
 import {withStyles} from "@mui/styles/index";
-import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
-import SearchBar from "../../components/SearchBar";
-import {
-    baseUrl,
-    CYCLE_FILTER_VALUES,
-    LISTING_FILTER_VALUES,
-    PRODUCTS_FILTER_VALUES,
-    PRODUCTS_FILTER_VALUES_KEY
-} from "../../Util/Constants";
-import DownloadIcon from '@mui/icons-material/GetApp';
-import MapIcon from '@mui/icons-material/Map';
-import {CSVLink} from "react-csv";
-import {Modal, ModalBody} from "react-bootstrap";
+import {baseUrl, CYCLE_FILTER_VALUES} from "../../Util/Constants";
 import Layout from "../../components/Layout/Layout";
-import axios from "axios";
 import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
-import {ProductsGoogleMap} from "../../components/Map/ProductsMapContainer";
-import Close from "@mui/icons-material/Close";
-import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
-import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
-import ResourceItem from "../create-search/ResourceItem";
-import SearchItem from "../../components/Searches/search-item";
 import CycleItem from "../../components/Cycles/CycleItem";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
@@ -107,27 +86,27 @@ class MyCycles extends Component {
                 if (activeFilter=="listing_name")
                     this.setState({
 
-                        searchUrl:this.state.url+encodeURI(`&find-also-to=Listing:listing_of:description~${searchValue}&find-also-to=Listing:listing_of:name~${searchValue}`)
+                        searchUrl:this.state.url+(`&find-also-to=Listing:listing_of:description~%${searchValue}%&find-also-to=Listing:listing_of:name~%${searchValue}%`)
                     })
 
 
                 if (activeFilter=="search_name")
                     this.setState({
 
-                        searchUrl:this.state.url+encodeURI(`&find-also-to=Search:search_for:description~${searchValue}&find-also-to=Search:search_for:name~${searchValue}`)
+                        searchUrl:this.state.url+(`&find-also-to=Search:search_for:description~%${searchValue}%&find-also-to=Search:search_for:name~%${searchValue}%`)
                     })
 
                 if (activeFilter=="product_name")
                     this.setState({
 
-                        searchUrl:this.state.url+encodeURI(`&find-also-to=Product:product_of:description~${searchValue}&find-also-to=Product:product_of:name~${searchValue}`)
+                        searchUrl:this.state.url+(`&find-also-to=Product:product_of:description~%${searchValue}%&find-also-to=Product:product_of:name~%${searchValue}%`)
                     })
             }else{
 
 
                 this.setState({
 
-                    searchUrl:this.state.url+encodeURI(`&or=name~${searchValue}&or=description~${searchValue}&find-also-to=Product:listing_of:description~${searchValue}&find-also-to=Product:listing_of:name~${searchValue}`)
+                    searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
                 })
 
             }

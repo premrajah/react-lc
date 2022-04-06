@@ -78,6 +78,15 @@ class Products extends Component {
         })
     }
 
+
+    handleChange(value,field ) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+
+    }
+
     setFilters=(data)=>{
 
         let filters= []
@@ -90,12 +99,12 @@ class Products extends Component {
 
             if (activeFilter){
 
-                subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
+                subFilter.push({key:activeFilter, value:"" + searchValue + "", operator:"~"})
 
             }else{
 
                 PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
-                    subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
+                    subFilter.push({key:item.key, value:"" + searchValue + "", operator:"~"})
                 )
 
 
@@ -109,15 +118,6 @@ class Products extends Component {
         this.filters= filters
 
     }
-
-    handleChange(value,field ) {
-
-        let fields = this.state.fields;
-        fields[field] = value;
-        this.setState({ fields });
-
-    }
-
 
     seekCount=async () => {
 
@@ -184,7 +184,8 @@ class Products extends Component {
         let newOffset = this.state.offset
 
 
-        let url = createSeekURL("product", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
+        let url = createSeekURL("product", true,
+            false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
 
         let result = await seekAxiosGet(url)
 
@@ -504,7 +505,8 @@ class Products extends Component {
                             visibleCount={this.state.items.length}
                             loadingResults={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
-                            loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)} >
+                            loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)}
+                        >
 
                             {this.state.items.map((item, index) => (
                                 <div id={item._key} key={item._key}>

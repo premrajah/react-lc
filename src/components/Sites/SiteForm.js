@@ -57,7 +57,8 @@ class SiteForm extends Component {
             longitude:null,
             phoneNumberInValid:false,
             showMapSelection:false,
-            showAddressField:false
+            showAddressField:false,
+            subSites:[]
 
         };
 
@@ -179,6 +180,10 @@ class SiteForm extends Component {
     //         console.log(e)
 }
     }
+
+
+
+
 
 
 
@@ -495,6 +500,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
         if (prevProps!==this.props){
 
+
             this.setState({
                 count:0,
                 createNew:false,
@@ -503,7 +509,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
             if (this.props.showSiteForm.type==="new") {
                 this.setState({
-                    createNew: !this.state.createNew,
+
                     showMapSelection: true,
                     showAddressField: false
                 })
@@ -519,7 +525,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                 }
                 this.setState({
-                    createNew: !this.state.createNew,
                     showMapSelection: false,
                     showAddressField: true
                 })
@@ -527,8 +532,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
             if (this.props.showSiteForm.type==="link-product"){
 
-                // alert("load products")
-                // this.props.loadProductsWithoutParent()
                 this.props.loadProductsWithoutParent()
 
 
@@ -541,13 +544,16 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
     componentDidMount() {
 
-        window.scrollTo(0, 0);
-        this.props.loadSites();
 
+        window.scrollTo(0, 0);
+        // this.props.loadSites();
+
+
+        this.getSubSites()
 
         if (this.props.showSiteForm.type==="new") {
             this.setState({
-                createNew: !this.state.createNew,
+                createNew: false,
                 showMapSelection: true,
                 showAddressField: true
             })
@@ -565,6 +571,34 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
     }
+
+
+    getSubSites=()=>{
+
+        axios
+            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
+            .get(baseUrl + "seek?name=Site&relation=&count=false&include-to=Site:any")
+            .then(
+                (response) => {
+
+                    var responseAll = response.data.data;
+
+                    this.setState({
+                        subSites:responseAll
+                    })
+
+                },
+                (error) => {
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+                }
+            );
+
+
+
+    }
+
 
     hidePopUp=() =>{
         this.props.setSiteForm({ item: null, show: false });
@@ -837,7 +871,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                 error={this.state.errors["address"]}
                                             />
 
-                                            // }
+
 
 
 
@@ -848,7 +882,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                     </div>
                                     <div className={"row"}>
-                                        <div className="col-12  mb-2">
+                                        <div className="col-12 mt-4 mb-2">
 
                                             <button
                                                 type={"submit"}
@@ -871,13 +905,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
                     <Modal
-                    // size="lg"
                     centered
                     show={this.props.showSiteForm.show}
                     onHide={this.hidePopUp}
                     className={"custom-modal-popup popup-form"}>
 
-                        {/*edit site popup*/}
 
                         <div className="row   justify-content-end">
                             <div className="col-auto mr-2 mt-2">
@@ -897,7 +929,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                         {/*link existing or new site*/}
 
-                        {this.props.showSiteForm.type==="link"  && !this.state.createNew&& <p style={{margin: "10px 0px"}} className="  small">
+                        {this.props.showSiteForm.type==="link"
+                        && !this.state.createNew&& <p style={{margin: "10px 0px"}} className="  small">
                                 <span onClick={this.toggleCreateNew} className="btn-gray-border click-item mr-2 "
                                       data-parent="cWkY0KVYEM"><AddIcon /> Create New</span><span
                             onClick={this.toggleAddExisting}
@@ -1138,30 +1171,30 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                         }}>
                                                         <option value={null}>Select</option>
 
-                                                        {this.props.siteList
+                                                        {this.state.subSites
                                                             .filter(
                                                                 (item) =>
-                                                                    (item._key !==
+                                                                    (item.Site._key !==
                                                                     this.props.showSiteForm.parent)
                                                                          &&
                                                                     !(
                                                                         this.props.showSiteForm.subSites&&this.props.showSiteForm.subSites.filter(
                                                                             (subItem) =>
                                                                                 subItem._key ===
-                                                                                item._key
+                                                                                item.Site._key
                                                                         ).length > 0
                                                                     )
                                                             )
 
                                                             .map((item) => (
-                                                                <option  value={item._key}>
-                                                                    {item.name}
+                                                                <option  value={item.Site._key}>
+                                                                    {item.Site.name}{GetParent(item)}
                                                                 </option>
                                                             ))}
 
 
                                                     </CustomizedSelect>
-                                             {this.props.siteList.length===0&&
+                                             {this.state.subSites.length===0&&
                                                     <Spinner
                                                         as="span"
                                                         animation="border"
@@ -1213,7 +1246,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         className={
                                             "btn  click-item btn-rounded shadow  blue-btn-border"
                                         }>
-                                        <AddIcon />
+                                         <AddIcon />
                                         Add
                                     </span>
                                 </div>
@@ -1383,6 +1416,16 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
 
+const GetParent=(item)=>{
+
+
+
+    return (item.SiteToSite[0]?item.SiteToSite[0].entries[0]?` (Parent ${(item.SiteToSite[0].entries[0].Site.name)} )`:"":"")
+
+
+
+}
+
 const mapStateToProps = (state) => {
     return {
 
@@ -1407,7 +1450,6 @@ const mapDispachToProps = (dispatch) => {
 
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
-
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
 

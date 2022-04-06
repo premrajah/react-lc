@@ -98,7 +98,8 @@ class ProductTreeItemView extends Component {
 
     this.getSubProducts()
 
-        this.getListing()
+        // this.getListing()
+
     }
 
      getSubProducts() {
@@ -147,6 +148,34 @@ class ProductTreeItemView extends Component {
     }
 
 
+
+    checkListingAndParentAndRelease=()=>{
+
+        var currentProductId = this.props.item.id;
+        // const url = baseUrl + "seek?name=Product&relation=&count=false&offset=0&size=20&no-from-relation=Listing:listing_of&no-from-relation=ProductRelease:release_for";
+
+        let url=`${baseUrl}seek/to?name=Product&id=${currentProductId}&to=Message&relation=&count=true&filters=type:message`
+
+        axios
+            .get(baseUrl + "product/" + currentProductId + "/listing", {
+                headers: {
+                    Authorization: "Bearer " + this.props.token,
+                },
+            })
+            .then(
+                (response) => {
+                    var responseAll = response.data.data;
+
+                    this.setState({
+                        listingExist: responseAll?true:false,
+                    });
+
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
     getListing(event) {
 
 

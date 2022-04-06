@@ -55,21 +55,11 @@ console.log(`baseImgUrl ${baseImgUrl}`);
 console.log(`frontEndUrl ${frontEndUrl}`);
 
 
-export const checkImage=(artifacts)=> {
+export const checkImage=(url)=> {
 
-    // let artifactsArray=[]
-    // for (let i = 0; i < artifacts.length; i++) {
-    //     //
-    //     if (
-    //         artifacts[i].mime_type === "image/jpeg" ||
-    //         artifacts[i].mime_type === "image/png"
-    //     ) {
-    //         imagesArray.push({
-    //             original: imagesArray.images[i].blob_url,
-    //             thumbnail: artifacts[i].blob_url,
-    //         });
-    //     }
-    // }
+    return /(jpg|jpeg|png|webp|avif|gif|svg)/.test(url);
+
+
 }
 export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";

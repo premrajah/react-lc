@@ -26,6 +26,7 @@ export class Validators {
     static requiredCheck(value, message) {
         if (!value) {
 
+
             return { error: true, message };
         }
         return false;

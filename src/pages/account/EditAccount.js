@@ -273,6 +273,7 @@ class EditAccount extends Component {
 
                                             <div className="col-6 mt-2 pr-2">
                                                 <TextFieldWrapper
+                                                    disabled={true}
                                                     initialValue={this.state.email}
                                                     onChange={(value)=>this.handleChange(value,"email")}
                                                     error={this.state.errors["email"]}

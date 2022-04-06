@@ -57,6 +57,7 @@ class CompanyDetails extends Component {
             croppedImageData: null,
             showCropper: false,
             files: [],
+            orgsApproval:[],
             showAddCompany: false,
             isLoopCycleCompany:false,
             industries: [
@@ -199,6 +200,21 @@ class CompanyDetails extends Component {
                 if (response.status === 200) {
                     this.setState({
                         orgs: response.data.data,
+                    });
+                }
+            })
+            .catch((error) => {});
+    };
+
+
+    getOrgsApprovalForUser = () => {
+        let url = `${baseUrl}user/org/approval`;
+        axios
+            .get(url)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.setState({
+                        orgsApproval: response.data.data,
                     });
                 }
             })
@@ -523,6 +539,7 @@ class CompanyDetails extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.getOrgsForUser();
+        this.getOrgsApprovalForUser()
         this.companyInfo();
         this.getFiltersCategories();
     }

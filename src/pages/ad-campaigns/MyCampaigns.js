@@ -357,22 +357,20 @@ class MyCampaigns extends Component {
         })
 
         if (item){
+
             this.setState({
                 editMode:true,
                 editItem:item
-
             })
+
         }else{
 
             this.setState({
                 editMode:false,
                 editItem:null
-
             })
         }
-
-this.props.toggleRightBar()
-
+              this.props.toggleRightBar()
 
     }
 
@@ -475,15 +473,17 @@ this.props.toggleRightBar()
                 <div className="wrapper">
 
                     <RightSidebar heading={this.state.campaignMode ==1? "Create Campaign":this.state.campaignMode ==2?"Campaign Details":"Edit Campaign"} toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
-
+<>
+                        {this.state.toggleBar &&  <>
                         {this.state.campaignMode ==1 &&
                         <CreateCampaign  refreshData={
                             ()=> {
-                                this.toggleRightBar()
-                                this.refreshList()
                                 this.setState({
                                     campaignMode:0
                                 });
+                                this.toggleRightBar()
+                                this.refreshList()
+
                             }} />
                         }
                         {this.state.campaignMode ==3 && this.state.selectedItem&&
@@ -500,6 +500,8 @@ this.props.toggleRightBar()
                         && this.state.editItem &&
                         <CampaignDetailContent toggleEditMode={this.toggleEditMode} item={this.state.editItem} />}
 
+                        </>}
+                        </>
                     </RightSidebar>
                     <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader

@@ -925,7 +925,7 @@ class CompanyDetails extends Component {
 
                 </div>
 
-                <div className="row mt-4 mb-4 d-flex align-items-center justify-content-end   ">
+                {!this.props.showSkip &&  <div className="row mt-4 mb-4 d-flex align-items-center justify-content-end   ">
 
                     <div className="col-md-12  text-right ">
                         <button
@@ -936,7 +936,7 @@ class CompanyDetails extends Component {
                             Join New Company
                         </button>
                     </div>
-                </div>
+                </div>}
 
                 <div className={"row"}>
                     <div className={"col-12 text-left"}>

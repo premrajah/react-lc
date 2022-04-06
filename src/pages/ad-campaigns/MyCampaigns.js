@@ -476,15 +476,16 @@ this.props.toggleRightBar()
 
                     <RightSidebar heading={this.state.campaignMode ==1? "Create Campaign":this.state.campaignMode ==2?"Campaign Details":"Edit Campaign"} toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
 
-                        {this.state.campaignMode ==1 && <CreateCampaign  refreshData={
-
+                        {this.state.campaignMode ==1 &&
+                        <CreateCampaign  refreshData={
                             ()=> {
                                 this.toggleRightBar()
                                 this.refreshList()
                                 this.setState({
                                     campaignMode:0
                                 });
-                            }} />}
+                            }} />
+                        }
                         {this.state.campaignMode ==3 && this.state.selectedItem&&
                         <CreateCampaign item={this.state.selectedItem}
                               refreshData={ ()=> { this.toggleRightBar()

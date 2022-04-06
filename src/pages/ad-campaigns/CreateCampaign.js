@@ -260,6 +260,13 @@ let autocompleteOptions=this.state.autocompleteOptions
             })
         }
 
+
+
+        this.countStrategyProducts()
+
+
+
+
     }
 
 

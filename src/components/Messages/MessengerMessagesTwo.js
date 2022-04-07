@@ -5,6 +5,7 @@ import {Divider, List} from "@mui/material";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
 
 
+
 const MessengerMessagesTwo = () => {
 
     const [allGroups, setAllGroups] = useState([]);
@@ -25,6 +26,19 @@ const MessengerMessagesTwo = () => {
 
             })
     }
+
+    const getSelectedGroupMessage = (key) => {
+        axios
+            .get(`${baseUrl}message-group/${key}/message`)
+
+            .then((res) => {
+                console.log('sele ', res.data.data)
+            })
+            .catch(error => {
+
+            })
+    }
+
 
     const handleGroupDataDisplay = (group, index) => {
 

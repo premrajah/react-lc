@@ -59,9 +59,11 @@ class MessengerMessages extends Component {
 
     getAllMessageGroups = async () => {
         axios
-            .get(`${baseUrl}message-group`)
+            .get(`${baseUrl}message-group/non-empty/expand`)
             .then((response) => {
                 const data = response.data.data;
+
+                console.log(">> ", data)
 
                 let returnedData = [];
 

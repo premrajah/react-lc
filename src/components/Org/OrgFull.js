@@ -1,9 +1,13 @@
-import React from "react";
+import React, {useEffect,useState} from "react";
 import { Info } from "@mui/icons-material";
 import { connect } from "react-redux";
 import { OverlayTrigger, Popover } from "react-bootstrap";
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
 
 const OrgFull = (props) => {
+
+
 
     const orgPopover = (
         <Popover id="org-popover">

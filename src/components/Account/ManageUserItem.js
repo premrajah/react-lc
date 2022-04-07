@@ -11,6 +11,7 @@ import {Spinner} from "react-bootstrap";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import OrgComponent from "../Org/OrgComponent";
 
 class ManageUserItem extends Component {
     constructor(props) {
@@ -283,6 +284,10 @@ class ManageUserItem extends Component {
         window.scrollTo(0, 0);
 
         if (this.props.item.user){
+
+            // if (this.props.item.org_id){
+            //     this.fetchUserOrg(this.props.item.org_id.replace("Org","org"))
+            // }
             this.setState({
                 user:this.props.item.user
             })
@@ -314,6 +319,8 @@ class ManageUserItem extends Component {
             );
     }
 
+
+
     render() {
 
         const index=this.props.index
@@ -328,7 +335,8 @@ class ManageUserItem extends Component {
                     <div className=" col-6 text-left  ">
                         {this.state.user &&   <>
                             <p className={`text-blue text-capitalize mb-0`}> {this.state.user.firstName} {this.state.user.lastName}</p>
-                            <p className={" text-gray-light mb-0"}>({this.state.user.email})</p></>}
+                            <p className={" text-gray-light mb-0"}>({this.state.user.email}) {this.props.item.org_id&& <OrgComponent orgId={this.props.item.org_id.replace("Org","org")}/>}
+                            </p></>}
                         {this.state.user &&   this.state.user.email===this.props.userDetail.email&&
                         <p  className={`text-pink ml-2 `}>Logged In User</p>}
 

@@ -474,7 +474,7 @@ class MyCampaigns extends Component {
 
                     <RightSidebar heading={this.state.campaignMode ==1? "Create Campaign":this.state.campaignMode ==2?"Campaign Details":"Edit Campaign"} toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
 <>
-                        {this.state.toggleBar &&  <>
+
                         {this.state.campaignMode ==1 &&
                         <CreateCampaign  refreshData={
                             ()=> {
@@ -500,7 +500,7 @@ class MyCampaigns extends Component {
                         && this.state.editItem &&
                         <CampaignDetailContent toggleEditMode={this.toggleEditMode} item={this.state.editItem} />}
 
-                        </>}
+
                         </>
                     </RightSidebar>
                     <div className="container  mb-150  pb-4 pt-4">

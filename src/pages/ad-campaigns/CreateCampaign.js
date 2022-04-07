@@ -89,7 +89,7 @@ class CreateCampaign extends Component {
             ],
             strategyProducts:[],
             conditionAll:[],
-             conditionAny:[],
+            conditionAny:[],
             categories:[],
             types:[],
             states:[],
@@ -114,29 +114,29 @@ class CreateCampaign extends Component {
 
     subtractCountAny = (index) => {
 
-            var array = this.state.addCountAny;
+        var array = this.state.addCountAny;
 
-            // array.splice(index,1    );
-            array.pop();
+        // array.splice(index,1    );
+        array.pop();
 
-                this.setState({
-                    addCountAny: array,
-                    countAny: this.state.countAny - 1,
-                });
+        this.setState({
+            addCountAny: array,
+            countAny: this.state.countAny - 1,
+        });
 
         this.countStrategyProducts()
     }
 
     subtractCountAll = (index) => {
 
-            let arrayCount = this.state.addCountAll;
-            arrayCount.pop()
+        let arrayCount = this.state.addCountAll;
+        arrayCount.pop()
 
 
-                this.setState({
-                    addCountAll: arrayCount,
-                    countAll: this.state.countAll - 1,
-                });
+        this.setState({
+            addCountAll: arrayCount,
+            countAll: this.state.countAll - 1,
+        });
 
 
         this.countStrategyProducts()
@@ -192,11 +192,11 @@ class CreateCampaign extends Component {
         if (["brand","category", "type","state","model",
             "serial","sku","upc","part_no","line","condition","stage",
             "purpose","units"].includes(value)){
-           this.setState({
-               // operators:this.state.operatorsAll
+            this.setState({
+                // operators:this.state.operatorsAll
 
-               operators:this.state.operatorsAll.filter((item)=> !(item.value.includes("greater")||item.value.includes("less") )  )
-           })
+                operators:this.state.operatorsAll.filter((item)=> !(item.value.includes("greater")||item.value.includes("less") )  )
+            })
         }
 
         else if (["year_of_making"]
@@ -221,7 +221,7 @@ class CreateCampaign extends Component {
             this.countStrategyProducts()
         }
 
-let autocompleteOptions=this.state.autocompleteOptions
+        let autocompleteOptions=this.state.autocompleteOptions
 
 
 
@@ -234,7 +234,7 @@ let autocompleteOptions=this.state.autocompleteOptions
             })
         }
 
-      else if (value=="type"){
+        else if (value=="type"){
 
             autocompleteOptions[field]=this.state.types
 
@@ -261,8 +261,6 @@ let autocompleteOptions=this.state.autocompleteOptions
         }
 
 
-
-        this.countStrategyProducts()
 
 
 
@@ -330,7 +328,7 @@ let autocompleteOptions=this.state.autocompleteOptions
                             types.push(responseAll[i].types[k].name)
                             for (let m=0;m<responseAll[i].types[k].state.length;m++) {
 
-                               states.push(responseAll[i].types[k].state[m])
+                                states.push(responseAll[i].types[k].state[m])
 
                             }
                         }
@@ -403,11 +401,11 @@ let autocompleteOptions=this.state.autocompleteOptions
         })
 
 
-            // if (this.timeout) clearTimeout(this.timeout);
-            //
-            // this.timeout = setTimeout(() => {
-                this.callStrategy(conditionAny,conditionAll)
-            // }, 1000);
+        // if (this.timeout) clearTimeout(this.timeout);
+        //
+        // this.timeout = setTimeout(() => {
+        this.callStrategy(conditionAny,conditionAll)
+        // }, 1000);
 
 
 
@@ -432,11 +430,11 @@ let autocompleteOptions=this.state.autocompleteOptions
         //
         // }
 
-         data=
-        {
-            all_of:conditionAll,
+        data=
+            {
+                all_of:conditionAll,
                 any_of:conditionAny,
-        }
+            }
 
 
         axios
@@ -512,53 +510,53 @@ let autocompleteOptions=this.state.autocompleteOptions
 
 
 
-     isStepOptional = (step) => {
+    isStepOptional = (step) => {
         // return step === 1;
 
-         return false
+        return false
     };
 
-     isStepSkipped = (step) => {
+    isStepSkipped = (step) => {
         return this.state.skipped.has(step);
     };
 
-     handleNext = () => {
+    handleNext = () => {
 
 
-         if (this.state.activeStep==0)
-         this.countStrategyProducts()
+        if (this.state.activeStep==0)
+            this.countStrategyProducts()
 
-         if (this.state.activeStep<(getSteps().length-1)&&this.handleValidation(this.state.activeStep)) {
+        if (this.state.activeStep<(getSteps().length-1)&&this.handleValidation(this.state.activeStep)) {
 
-             if (this.state.activeStep==0&&!this.validateDates()){
+            if (this.state.activeStep==0&&!this.validateDates()){
 
-                 return
-             }
-
-
-              if (this.state.activeStep==1&&this.state.countAll===0&&this.state.countAny===0){
+                return
+            }
 
 
-
-
-                 this.setState({
-
-                     selectOptionError:true
-                 })
-
-                 return
-             }else{
-
-                 this.setState({
-
-                     selectOptionError:false
-                 })
-             }
+            if (this.state.activeStep==1&&this.state.countAll===0&&this.state.countAny===0){
 
 
 
 
-             let newSkipped = this.state.skipped;
+                this.setState({
+
+                    selectOptionError:true
+                })
+
+                return
+            }else{
+
+                this.setState({
+
+                    selectOptionError:false
+                })
+            }
+
+
+
+
+            let newSkipped = this.state.skipped;
             if (this.isStepSkipped(this.state.activeStep)) {
                 newSkipped = new Set(newSkipped.values());
                 newSkipped.delete(this.state.activeStep);
@@ -576,15 +574,15 @@ let autocompleteOptions=this.state.autocompleteOptions
         }else{
 
 
-             if (this.props.item){
+            if (this.props.item){
 
-                 this.handleUpdate()
+                this.handleUpdate()
 
-             }else{
+            }else{
 
-                 this.handleSubmit()
+                this.handleSubmit()
 
-             }
+            }
 
 
         }
@@ -618,11 +616,11 @@ let autocompleteOptions=this.state.autocompleteOptions
 
         let fields=this.state.fields
 
-            const name = fields["name"];
-            const description = fields["description"];
-            const startDate = new Date(fields["startDate"]).getTime() ;
-            const endDate =  new Date(fields["endDate"]).getTime();
-            const messageTemplate = fields["messageTemplate"];
+        const name = fields["name"];
+        const description = fields["description"];
+        const startDate = new Date(fields["startDate"]).getTime() ;
+        const endDate =  new Date(fields["endDate"]).getTime();
+        const messageTemplate = fields["messageTemplate"];
 
         let conditionAll=[]
         let conditionAny=[]
@@ -649,52 +647,52 @@ let autocompleteOptions=this.state.autocompleteOptions
         }
 
 
-            const campaignData = {
+        const campaignData = {
 
-                campaign:{
-                    name:name,
-                    description:description,
-                    start_ts:startDate,
-                    end_ts:endDate,
-                    all_of:conditionAll,
-                    any_of:conditionAny
-                },
-                message_template:messageTemplate,
-                artifact_ids:this.state.images,
-            };
+            campaign:{
+                name:name,
+                description:description,
+                start_ts:startDate,
+                end_ts:endDate,
+                all_of:conditionAll,
+                any_of:conditionAny
+            },
+            message_template:messageTemplate,
+            artifact_ids:this.state.images,
+        };
 
-            this.setState({isSubmitButtonPressed: true})
+        this.setState({isSubmitButtonPressed: true})
 
-            axios
-                .put(
-                    createCampaignUrl,
-                    campaignData,
-                    {
-                        headers: {
-                            Authorization: "Bearer " + this.props.userDetail.token,
-                        },
-                    }
-                )
-                .then((res) => {
-
-
-                    this.props.refreshData()
-                    //
-                    // if (!this.props.parentProduct) {
-                    //     this.setState({
-                    //         product: res.data.data,
-                    //         parentProduct: res.data.data,
-                    //     });
-                    // }
-
-                    // this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
-                    // this.props.toggleRightBar()
+        axios
+            .put(
+                createCampaignUrl,
+                campaignData,
+                {
+                    headers: {
+                        Authorization: "Bearer " + this.props.userDetail.token,
+                    },
+                }
+            )
+            .then((res) => {
 
 
-                })
-                .catch((error) => {
-                    this.setState({isSubmitButtonPressed: false})
-                });
+                this.props.refreshData()
+                //
+                // if (!this.props.parentProduct) {
+                //     this.setState({
+                //         product: res.data.data,
+                //         parentProduct: res.data.data,
+                //     });
+                // }
+
+                // this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
+                // this.props.toggleRightBar()
+
+
+            })
+            .catch((error) => {
+                this.setState({isSubmitButtonPressed: false})
+            });
 
 
     };
@@ -798,16 +796,16 @@ let autocompleteOptions=this.state.autocompleteOptions
 
     handleBack = () => {
 
-         this.setState({
-             activeStep:this.state.activeStep-1
-         });
+        this.setState({
+            activeStep:this.state.activeStep-1
+        });
 
-         // this.setState({
-         //     activeStep:0
-         // });
+        // this.setState({
+        //     activeStep:0
+        // });
     };
 
-     handleSkip = () => {
+    handleSkip = () => {
         if (!this.isStepOptional(this.state.activeStep)) {
             // You probably want to guard against something like this,
             // it should never occur unless someone's actively trying to break something.
@@ -815,23 +813,23 @@ let autocompleteOptions=this.state.autocompleteOptions
         }
 
 
-         this.setState({
-             activeStep:this.state.activeStep+1
-         });
+        this.setState({
+            activeStep:this.state.activeStep+1
+        });
 
 
-         const newSkipped = new Set(this.state.skipped.values());
-         newSkipped.add(this.state.activeStep);
+        const newSkipped = new Set(this.state.skipped.values());
+        newSkipped.add(this.state.activeStep);
 
 
-         this.setState({
-             skipped:newSkipped
-         });
+        this.setState({
+            skipped:newSkipped
+        });
 
 
     };
 
-     handleReset = () => {
+    handleReset = () => {
         this.setState({
             activeStep:0
         });
@@ -1005,7 +1003,7 @@ let autocompleteOptions=this.state.autocompleteOptions
 
             for (let i=0;i<this.state.countAll;i++){
 
-             validations.push(validateFormatCreate(`propertyAnd[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
+                validations.push(validateFormatCreate(`propertyAnd[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
                 validations.push(validateFormatCreate(`operatorAnd[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
                 validations.push(validateFormatCreate(`valueAnd[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
 
@@ -1049,35 +1047,35 @@ let autocompleteOptions=this.state.autocompleteOptions
 
         let valid=true
 
-            if (!this.state.startDate){
+        if (!this.state.startDate){
 
-                this.setState({
-                    startDateError:true
-                })
+            this.setState({
+                startDateError:true
+            })
 
-                valid=  false
+            valid=  false
 
-            }else{
-                this.setState({
-                    startDateError:false
-                })
-            }
+        }else{
+            this.setState({
+                startDateError:false
+            })
+        }
 
-            if (!this.state.endDate){
+        if (!this.state.endDate){
 
-                this.setState({
-                    endDateError:true
-                })
+            this.setState({
+                endDateError:true
+            })
 
-                valid =  false
+            valid =  false
 
-            }else{
-                this.setState({
-                    endDateError:false
-                })
+        }else{
+            this.setState({
+                endDateError:false
+            })
 
-            }
-            return valid
+        }
+        return valid
 
 
     }
@@ -1115,128 +1113,128 @@ let autocompleteOptions=this.state.autocompleteOptions
                             </Stepper>
                             <div>
 
-                                    <div>
+                                <div>
 
-                                            {/*{getStepContent(this.state.activeStep)}*/}
+                                    {/*{getStepContent(this.state.activeStep)}*/}
 
 
 
-                                                <div className={this.state.activeStep===0?"":"d-none"}>
-                                            <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
+                                    <div className={this.state.activeStep===0?"":"d-none"}>
+                                        <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
 
-                                                <div className="row no-gutters">
-                                                    <div className="col-12 ">
+                                            <div className="row no-gutters">
+                                                <div className="col-12 ">
 
-                                                        <TextFieldWrapper
-                                                            initialValue={this.props.item&&this.props.item.campaign.name}
-                                                            onChange={(value)=>this.handleChange(value,"name")}
-                                                            error={this.state.errors["name"]}
-                                                            name="name" title="Name" />
+                                                    <TextFieldWrapper
+                                                        initialValue={this.props.item&&this.props.item.campaign.name}
+                                                        onChange={(value)=>this.handleChange(value,"name")}
+                                                        error={this.state.errors["name"]}
+                                                        name="name" title="Name" />
 
-                                                    </div>
                                                 </div>
+                                            </div>
 
 
-                                                <div className="row no-gutters">
-                                                    <div className="col-12 ">
+                                            <div className="row no-gutters">
+                                                <div className="col-12 ">
 
-                                                        <TextFieldWrapper
-                                                            multiline
-                                                            rows={4}
-                                                            initialValue={this.props.item&&this.props.item.campaign.description}
-                                                            onChange={(value)=>this.handleChange(value,"description")}
-                                                            error={this.state.errors["description"]}
-                                                            name="description" title="Description" />
+                                                    <TextFieldWrapper
+                                                        multiline
+                                                        rows={4}
+                                                        initialValue={this.props.item&&this.props.item.campaign.description}
+                                                        onChange={(value)=>this.handleChange(value,"description")}
+                                                        error={this.state.errors["description"]}
+                                                        name="description" title="Description" />
 
-                                                    </div>
                                                 </div>
+                                            </div>
 
-                                                <div className="row no-gutters mb-3">
-                                                    <div className="col-6 pr-1">
+                                            <div className="row no-gutters mb-3">
+                                                <div className="col-6 pr-1">
 
-                                                        <div
-                                                            className={
-                                                                "custom-label text-bold text-blue "
-                                                            }>
-                                                            Start Date
-                                                        </div>
+                                                    <div
+                                                        className={
+                                                            "custom-label text-bold text-blue "
+                                                        }>
+                                                        Start Date
+                                                    </div>
 
 
 
-                                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
 
                                                         <MobileDatePicker
 
                                                             disableHighlightToday={true}
-                                                                minDate={new Date()}
-                                                                // label="Required By"
-                                                                inputVariant="outlined"
-                                                                variant={"outlined"}
-                                                                margin="normal"
-                                                                id="date-picker-dialog-1"
-                                                                // label="Available From"
-                                                                inputFormat="dd/MM/yyyy"
-                                                                value={this.state.startDate}
+                                                            minDate={new Date()}
+                                                            // label="Required By"
+                                                            inputVariant="outlined"
+                                                            variant={"outlined"}
+                                                            margin="normal"
+                                                            id="date-picker-dialog-1"
+                                                            // label="Available From"
+                                                            inputFormat="dd/MM/yyyy"
+                                                            value={this.state.startDate}
 
-                                                                // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
-                                                                // onChange={this.handleChangeDateStartDate.bind(
-                                                                //     this
-                                                                // )}
-                                                                renderInput={(params) => <CustomizedInput {...params} />}
-                                                                onChange={(value)=>this.handleChange(value,"startDate")}
+                                                            // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
+                                                            // onChange={this.handleChangeDateStartDate.bind(
+                                                            //     this
+                                                            // )}
+                                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                                            onChange={(value)=>this.handleChange(value,"startDate")}
 
-                                                            />
-                                                        </LocalizationProvider>
+                                                        />
+                                                    </LocalizationProvider>
 
-                                                        {this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
-
-                                                    </div>
-
-                                                    <div className="col-6 pl-1 ">
-
-                                                        <div
-                                                            className={
-                                                                "custom-label text-bold text-blue "
-                                                            }>
-                                                            End Date
-                                                        </div>
-                                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-                                                            <MobileDatePicker
-                                                                disableHighlightToday={true}
-
-                                                                minDate={new Date()}
-                                                                // label="Required By"
-                                                                inputVariant="outlined"
-                                                                variant={"outlined"}
-                                                                margin="normal"
-                                                                id="date-picker-dialog"
-                                                                inputFormat="dd/MM/yyyy"
-                                                                value={this.state.endDate}
-                                                                // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
-
-                                                                renderInput={(params) => <CustomizedInput {...params} />}
-                                                                onChange={(value)=>this.handleChange(value,"endDate")}
-
-                                                            />
-                                                        </LocalizationProvider>
-                                                        {this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
-
-                                                    </div>
-                                                </div>
-
-
-
-
-                                            </form>
+                                                    {this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
 
                                                 </div>
 
+                                                <div className="col-6 pl-1 ">
+
+                                                    <div
+                                                        className={
+                                                            "custom-label text-bold text-blue "
+                                                        }>
+                                                        End Date
+                                                    </div>
+                                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                                        <MobileDatePicker
+                                                            disableHighlightToday={true}
+
+                                                            minDate={new Date()}
+                                                            // label="Required By"
+                                                            inputVariant="outlined"
+                                                            variant={"outlined"}
+                                                            margin="normal"
+                                                            id="date-picker-dialog"
+                                                            inputFormat="dd/MM/yyyy"
+                                                            value={this.state.endDate}
+                                                            // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
+
+                                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                                            onChange={(value)=>this.handleChange(value,"endDate")}
+
+                                                        />
+                                                    </LocalizationProvider>
+                                                    {this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
+                                                </div>
+                                            </div>
 
 
 
-                                            <div className={this.state.activeStep===1?"":"d-none"}>
-                                            <div className="row p-3">
+
+                                        </form>
+
+                                    </div>
+
+
+
+
+                                    <div className={this.state.activeStep===1?"":"d-none"}>
+                                        <div className="row p-3">
 
 
 
@@ -1261,7 +1259,7 @@ let autocompleteOptions=this.state.autocompleteOptions
                                                             <div className={"custom-label text-bold text-blue mb-0"}>Property</div>
                                                         </div>
                                                     </div>
-                                                     {this.state.addCountAll.map((item, index) =>
+                                                    {this.state.addCountAll.map((item, index) =>
 
                                                         <div className="row no-gutters mt-4">
                                                             <div className="col-3">
@@ -1506,161 +1504,161 @@ let autocompleteOptions=this.state.autocompleteOptions
 
                                             </div>
 
-                                                <div className={"col-12 mb-3 p-3 bg-white rad-8 text-blue text-bold"}>Products targeted based on conditions defined above: <span className={"sub-title-text-pink"}>{this.state.strategyProducts.length}</span></div>
+                                            <div className={"col-12 mb-3 p-3 bg-white rad-8 text-blue text-bold"}>Products targeted based on conditions defined above: <span className={"sub-title-text-pink"}>{this.state.strategyProducts.length}</span></div>
 
-                                            </div>
-                                            </div>
-
-
-                                        <div className={this.state.activeStep===2?"":"d-none"}>
-                                                <div className="row mt-3 ">
-                                                    <div className="col-12 mt-0">
-                                                        <div className="row camera-grids   no-gutters   ">
-                                                            <div className="col-12  text-left ">
-
-                                                                    <form onSubmit={this.props.itemIndex?this.updateSite:this.handleSubmit}>
-
-                                                                        <div className="row no-gutters">
-                                                                            <div className="col-12 ">
-
-                                                                                <TextFieldWrapper
-                                                                                    multiline
-                                                                                    rows={4}
-                                                                                    initialValue={this.props.item&&this.props.item.message_template.text}
-                                                                                    onChange={(value)=>this.handleChange(value,"messageTemplate")}
-                                                                                    error={this.state.errors["messageTemplate"]}
-                                                                                    name="messageTemplate" title="Message Template" />
-
-                                                                            </div>
-                                                                        </div>
+                                        </div>
+                                    </div>
 
 
-                                                                        <div className={"row d-none"}>
-                                                                            <div className="col-12 mt-4 mb-2">
+                                    <div className={this.state.activeStep===2?"":"d-none"}>
+                                        <div className="row mt-3 ">
+                                            <div className="col-12 mt-0">
+                                                <div className="row camera-grids   no-gutters   ">
+                                                    <div className="col-12  text-left ">
 
-                                                                                <button
-                                                                                    type={"submit"}
-                                                                                    className={
-                                                                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                                                    }
-                                                                                    disabled={this.state.isSubmitButtonPressed}>
-                                                                                    {this.props.item?"Update Site":"Add Site"}
-                                                                                </button>
+                                                        <form onSubmit={this.props.itemIndex?this.updateSite:this.handleSubmit}>
 
-                                                                            </div>
-                                                                        </div>
+                                                            <div className="row no-gutters">
+                                                                <div className="col-12 ">
 
-                                                                    </form>
+                                                                    <TextFieldWrapper
+                                                                        multiline
+                                                                        rows={4}
+                                                                        initialValue={this.props.item&&this.props.item.message_template.text}
+                                                                        onChange={(value)=>this.handleChange(value,"messageTemplate")}
+                                                                        error={this.state.errors["messageTemplate"]}
+                                                                        name="messageTemplate" title="Message Template" />
 
+                                                                </div>
                                                             </div>
 
-                                                            <div className="row camera-grids   no-gutters mb-4  ">
 
-                                                                <div className="col-12  text-left ">
-                                                                    <div className="">
-                                                                        <div className={""}>
-                                                                            {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
+                                                            <div className={"row d-none"}>
+                                                                <div className="col-12 mt-4 mb-2">
 
-                                                                            <div className={"file-uploader-box"}>
-                                                                                <div
-                                                                                    className={
-                                                                                        "file-uploader-thumbnail-container"
-                                                                                    }>
+                                                                    <button
+                                                                        type={"submit"}
+                                                                        className={
+                                                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                                        }
+                                                                        disabled={this.state.isSubmitButtonPressed}>
+                                                                        {this.props.item?"Update Site":"Add Site"}
+                                                                    </button>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </form>
+
+                                                    </div>
+
+                                                    <div className="row camera-grids   no-gutters mb-4  ">
+
+                                                        <div className="col-12  text-left ">
+                                                            <div className="">
+                                                                <div className={""}>
+                                                                    {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
+
+                                                                    <div className={"file-uploader-box"}>
+                                                                        <div
+                                                                            className={
+                                                                                "file-uploader-thumbnail-container"
+                                                                            }>
+                                                                            <div
+                                                                                className={
+                                                                                    "file-uploader-thumbnail-container"
+                                                                                }>
+                                                                                <label
+                                                                                    className={"label-file-input"}
+                                                                                    htmlFor="fileInput">
+                                                                                    <Publish
+                                                                                        style={{
+                                                                                            fontSize: 32,
+                                                                                            color: "#a8a8a8",
+                                                                                            margin: "auto",
+                                                                                        }}
+                                                                                    />
+                                                                                </label>
+                                                                                <input
+                                                                                    accept={MIME_TYPES_ACCEPT}
+                                                                                    style={{ display: "none" }}
+                                                                                    id="fileInput"
+                                                                                    className={""}
+                                                                                    multiple
+                                                                                    type="file"
+                                                                                    onChange={this.handleChangeFile.bind(
+                                                                                        this
+                                                                                    )}
+                                                                                />
+                                                                            </div>
+
+                                                                            {this.state.files &&
+                                                                            this.state.files.map(
+                                                                                (item, index) => (
                                                                                     <div
+                                                                                        key={index}
                                                                                         className={
                                                                                             "file-uploader-thumbnail-container"
                                                                                         }>
-                                                                                        <label
-                                                                                            className={"label-file-input"}
-                                                                                            htmlFor="fileInput">
-                                                                                            <Publish
-                                                                                                style={{
-                                                                                                    fontSize: 32,
-                                                                                                    color: "#a8a8a8",
-                                                                                                    margin: "auto",
-                                                                                                }}
-                                                                                            />
-                                                                                        </label>
-                                                                                        <input
-                                                                                            accept={MIME_TYPES_ACCEPT}
-                                                                                            style={{ display: "none" }}
-                                                                                            id="fileInput"
-                                                                                            className={""}
-                                                                                            multiple
-                                                                                            type="file"
-                                                                                            onChange={this.handleChangeFile.bind(
-                                                                                                this
-                                                                                            )}
-                                                                                        />
-                                                                                    </div>
 
-                                                                                    {this.state.files &&
-                                                                                    this.state.files.map(
-                                                                                        (item, index) => (
-                                                                                            <div
-                                                                                                key={index}
-                                                                                                className={
-                                                                                                    "file-uploader-thumbnail-container"
-                                                                                                }>
+                                                                                        <div
 
-                                                                                                <div
+                                                                                            data-index={
+                                                                                                index
+                                                                                            }
+                                                                                            className={
+                                                                                                "file-uploader-thumbnail"
+                                                                                            }
 
-                                                                                                    data-index={
-                                                                                                        index
-                                                                                                    }
-                                                                                                    className={
-                                                                                                        "file-uploader-thumbnail"
-                                                                                                    }
+                                                                                            style={{
+                                                                                                backgroundImage: `url("${item.imgUrl ? checkImage(item.imgUrl)?item.imgUrl:"" : URL.createObjectURL(item.file)}")`
 
+                                                                                            }}
+                                                                                        >
+
+                                                                                            {item.file&&(!checkImage(item.file.name))?
+
+                                                                                                <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={"attachment-icon file p-1 rad-4"} />
+                                                                                                :null}
+
+
+                                                                                            {item.imgUrl&&(!checkImage(item.imgUrl))? <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={"attachment-icon file p-1 rad-4"} />:null}
+                                                                                            {item.status ===
+                                                                                            0 && (
+                                                                                                <Spinner
+                                                                                                    as="span"
+                                                                                                    animation="border"
+                                                                                                    size="sm"
+                                                                                                    role="status"
+                                                                                                    aria-hidden="true"
                                                                                                     style={{
-                                                                                                        backgroundImage: `url("${item.imgUrl ? checkImage(item.imgUrl)?item.imgUrl:"" : URL.createObjectURL(item.file)}")`
-
+                                                                                                        color:
+                                                                                                            "#cccccc",
                                                                                                     }}
-                                                                                                >
+                                                                                                    className={
+                                                                                                        "center-spinner"
+                                                                                                    }
+                                                                                                />
+                                                                                            )}
 
-                                                                                                    {item.file&&(!checkImage(item.file.name))?
-
-                                                                                                        <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={"attachment-icon file p-1 rad-4"} />
-                                                                                                        :null}
-
-
-                                                                                                    {item.imgUrl&&(!checkImage(item.imgUrl))? <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={"attachment-icon file p-1 rad-4"} />:null}
-                                                                                                    {item.status ===
-                                                                                                    0 && (
-                                                                                                        <Spinner
-                                                                                                            as="span"
-                                                                                                            animation="border"
-                                                                                                            size="sm"
-                                                                                                            role="status"
-                                                                                                            aria-hidden="true"
-                                                                                                            style={{
-                                                                                                                color:
-                                                                                                                    "#cccccc",
-                                                                                                            }}
-                                                                                                            className={
-                                                                                                                "center-spinner"
-                                                                                                            }
-                                                                                                        />
-                                                                                                    )}
-
-                                                                                                    {item.status ===
-                                                                                                    1 && (
-                                                                                                        <Check
-                                                                                                            style={{
-                                                                                                                color:
-                                                                                                                    "#cccccc",
-                                                                                                            }}
-                                                                                                            className={
-                                                                                                                " file-upload-img-thumbnail-check"
-                                                                                                            }
-                                                                                                        />
-                                                                                                    )}
-                                                                                                    {item.status ===
-                                                                                                    2 && (
-                                                                                                        <span
-                                                                                                            className={
-                                                                                                                "file-upload-img-thumbnail-error"
-                                                                                                            }>
+                                                                                            {item.status ===
+                                                                                            1 && (
+                                                                                                <Check
+                                                                                                    style={{
+                                                                                                        color:
+                                                                                                            "#cccccc",
+                                                                                                    }}
+                                                                                                    className={
+                                                                                                        " file-upload-img-thumbnail-check"
+                                                                                                    }
+                                                                                                />
+                                                                                            )}
+                                                                                            {item.status ===
+                                                                                            2 && (
+                                                                                                <span
+                                                                                                    className={
+                                                                                                        "file-upload-img-thumbnail-error"
+                                                                                                    }>
                                                                                                 <Error
                                                                                                     style={{
                                                                                                         color:
@@ -1674,87 +1672,87 @@ let autocompleteOptions=this.state.autocompleteOptions
                                                                                                     Error!
                                                                                                 </p>
                                                                                             </span>
-                                                                                                    )}
-                                                                                                    <Cancel
-                                                                                                        data-name={
-                                                                                                            item.file &&
-                                                                                                            item
-                                                                                                                .file[
-                                                                                                                "name"
-                                                                                                                ]
-                                                                                                                ? item
-                                                                                                                    .file[
-                                                                                                                    "name"
-                                                                                                                    ]
-                                                                                                                : ""
-                                                                                                        }
-                                                                                                        data-index={
-                                                                                                            item.id
-                                                                                                        }
-                                                                                                        onClick={this.handleCancel.bind(
-                                                                                                            this
-                                                                                                        )}
-                                                                                                        className={
-                                                                                                            "file-upload-img-thumbnail-cancel"
-                                                                                                        }
-                                                                                                    />
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        )
-                                                                                    )}
-                                                                                </div>
-                                                                            </div>
+                                                                                            )}
+                                                                                            <Cancel
+                                                                                                data-name={
+                                                                                                    item.file &&
+                                                                                                    item
+                                                                                                        .file[
+                                                                                                        "name"
+                                                                                                        ]
+                                                                                                        ? item
+                                                                                                            .file[
+                                                                                                            "name"
+                                                                                                            ]
+                                                                                                        : ""
+                                                                                                }
+                                                                                                data-index={
+                                                                                                    item.id
+                                                                                                }
+                                                                                                onClick={this.handleCancel.bind(
+                                                                                                    this
+                                                                                                )}
+                                                                                                className={
+                                                                                                    "file-upload-img-thumbnail-cancel"
+                                                                                                }
+                                                                                            />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                )
+                                                                            )}
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
-
                                                     </div>
 
-
                                                 </div>
+
+                                            </div>
+
+
                                         </div>
+                                    </div>
 
 
 
 
 
-                                        <div>
-                                            <Button  disabled={this.state.activeStep === 0} onClick={this.handleBack} className={" btn-back"}>
-                                                Back
-                                            </Button>
-                                            {this.isStepOptional(this.state.activeStep) && (
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={this.handleSkip}
-                                                    // className={classes.button}
-                                                >
-                                                    Skip
-                                                </Button>
-                                            )}
-
-                                            <button
+                                    <div>
+                                        <Button  disabled={this.state.activeStep === 0} onClick={this.handleBack} className={" btn-back"}>
+                                            Back
+                                        </Button>
+                                        {this.isStepOptional(this.state.activeStep) && (
+                                            <Button
                                                 variant="contained"
                                                 color="primary"
-                                                onClick={this.handleNext}
-                                                className={" btn-gray-border "}
+                                                onClick={this.handleSkip}
+                                                // className={classes.button}
                                             >
+                                                Skip
+                                            </Button>
+                                        )}
+
+                                        <button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={this.handleNext}
+                                            className={" btn-gray-border "}
+                                        >
 
 
-                                                {this.state.files.length > 0 ? (
+                                            {this.state.files.length > 0 ? (
                                                     this.state.files.filter((item) => item.status === 0).length >
                                                     0 ?"Upload In Progress":this.state.activeStep!==2?"Next":"Submit"):
                                                 this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
-                                            </button>
+                                        </button>
 
 
-                                        </div>
-
-                                        {this.state.selectOptionError&&<span className={"text-danger"}>*Atleast one condition is required.</span>}
                                     </div>
+
+                                    {this.state.selectOptionError&&<span className={"text-danger"}>*Atleast one condition is required.</span>}
+                                </div>
                             </div>
                         </div>
 

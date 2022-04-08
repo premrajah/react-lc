@@ -13,7 +13,7 @@ import {baseUrl} from "../../Util/Constants";
 import LinearProgress from "@mui/material/LinearProgress";
 import {makeStyles, withStyles} from "@mui/styles";
 import {Badge, Snackbar, Tooltip} from "@mui/material";
-import Alert from "@mui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import Menu from '@mui/material/Menu';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 

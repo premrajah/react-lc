@@ -29,6 +29,9 @@ import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import Layout from "../../components/Layout/Layout";
 import {Link} from "react-router-dom";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
+import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
 
 
 class ListFormNew extends Component {
@@ -95,7 +98,8 @@ class ListFormNew extends Component {
             createListingError:null,
             activeStep:0,
             showFieldErrors:false,
-            items:[]
+            items:[],
+            loading:false
         };
 
         this.handleBack = this.handleBack.bind(this);
@@ -614,6 +618,11 @@ class ListFormNew extends Component {
 
 
     createListing() {
+
+        this.setState({
+            loading:true
+        })
+
         var data = {};
 
         data = {
@@ -653,11 +662,6 @@ class ListFormNew extends Component {
                     site_id: this.state.fields["deliver"],
                     product_id: this.state.fields["product"],
                 },
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
             )
             .then((res) => {
 
@@ -672,9 +676,17 @@ class ListFormNew extends Component {
                     createListingError:null
                 });
 
+                this.setState({
+                    loading:false
+                })
+
                 // this.props.history.push("/"+res.data.data._key)
             })
             .catch((error) => {
+
+                this.setState({
+                    loading:false
+                })
 
                 console.log(error.response)
                 if (error&&error.response){
@@ -1407,7 +1419,7 @@ class ListFormNew extends Component {
                                 )}
                                 <Toolbar>
                                     <div
-                                        className="row  justify-content-center search-container "
+                                        className="row align-items-center justify-content-center search-container "
                                         style={{ margin: "auto" }}>
                                         <div className="col-auto">
                                             {this.state.activeStep > 0 && (
@@ -1436,18 +1448,28 @@ class ListFormNew extends Component {
                                                 </button>
                                             )}
 
+                                            {/*<button*/}
+                                            {/*    onClick={this.handleNext}*/}
+                                            {/*    type="button"*/}
+                                            {/*    className={this.state.nextBlue*/}
+                                            {/*        ? "btn-next shadow-sm mr-2  blue-btn-border   mt-2 mb-2  "*/}
+                                            {/*        : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "*/}
+                                            {/*    }>*/}
+                                            {/*    Post Listing*/}
+                                            {/*</button>*/}
+                                            {/*)}  {this.state.activeStep === 2 && (*/}
+
+
                                             {this.state.activeStep === 2 && (
-                                                <button
+                                                <BlueBorderButton
                                                     onClick={this.handleNext}
                                                     type="button"
-                                                    className={this.state.nextBlue
-                                                            ? "btn-next shadow-sm mr-2  blue-btn-border   mt-2 mb-2  "
-                                                            : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "
-                                                    }>
+                                                    disabled={this.state.loading}
+                                                   loading={this.state.loading}
+                                                >
                                                     Post Listing
-                                                </button>
+                                                </BlueBorderButton>
                                             )}
-
 
 
 
@@ -1483,36 +1505,33 @@ class ListFormNew extends Component {
                     )}
 
 
-                {this.state.createListingError && (
-                    <div className={"body-overlay"}>
-                        <div className={"modal-popup site-popup"}>
-                            <div className=" text-right ">
-                                <Close
-                                    onClick={this.goToStepOne}
-                                    className="blue-text"
-                                    style={{ fontSize: 32 }}
-                                />
-                            </div>
 
-                            <div className={"row"}>
-                                <div className={"col-12"}>
-                                    {this.state.createListingError}
-                                </div>
-                                <div className={"col-12"}>
-                                <button
-                                    onClick={this.goToStepOne}
-                                    type="button"
-                                    className={
-                                        "btn-next shadow-sm mr-2  blue-btn-border   mt-2 mb-2  "
+                <GlobalDialog size={"xs"} hide={this.goToStepOne} show={this.state.createListingError} heading={"Error"} >
 
-                                    }>
-                                    Edit Listing
-                                </button>
-                                </div>.
-                            </div>
-                        </div>
+                    <div className={"col-12 mb-3"}>
+                        {this.state.createListingError}
                     </div>
-                )}
+
+
+                    <div
+                        className={"col-6"}
+                        style={{
+                            textAlign: "center",
+                        }}>
+                        <BlueBorderButton
+                            type="button"
+
+                            title={" Edit Listing"}
+
+                            onClick={this.goToStepOne}
+                        >
+
+                        </BlueBorderButton>
+                    </div>
+
+                </GlobalDialog>
+
+
 
             </Layout>
         );

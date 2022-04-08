@@ -27,7 +27,7 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
 
-class SiteForm extends Component {
+class SiteFormNew extends Component {
 
     slug = null;
 
@@ -871,6 +871,10 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                 error={this.state.errors["address"]}
                                             />
 
+
+
+
+
                                         </div>
                                     </div>
 
@@ -1460,4 +1464,4 @@ const mapDispachToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(SiteForm);
+export default connect(mapStateToProps, mapDispachToProps)(SiteFormNew);

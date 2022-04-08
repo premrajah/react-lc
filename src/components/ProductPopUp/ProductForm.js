@@ -92,7 +92,8 @@ class ProductForm extends Component {
             is_listable: false,
             moreDetail: false,
             isSubmitButtonPressed: false,
-            disableVolume:false
+            disableVolume:false,
+            loading:false
         };
 
 
@@ -415,6 +416,7 @@ class ProductForm extends Component {
 
             this.setState({
                 btnLoading: true,
+                loading:true
             });
 
             const data = new FormData(event.target);
@@ -503,17 +505,13 @@ class ProductForm extends Component {
                     .put(
                         createProductUrl,
                         completeData,
-                        {
-                            headers: {
-                                Authorization: "Bearer " + this.props.userDetail.token,
-                            },
-                        }
                     )
                     .then((res) => {
                         if (!this.props.parentProduct) {
                             this.setState({
                                 product: res.data.data,
                                 parentProduct: res.data.data,
+
                             });
                         }
 
@@ -526,13 +524,15 @@ class ProductForm extends Component {
                         // this.props.loadProductsWithoutParent();
 
 
+                        this.setState({loading: false})
+
 
                     })
                     .catch((error) => {
                         this.setState({isSubmitButtonPressed: false})
                         this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
 
-
+                        this.setState({loading: false})
                     });
             }
 
@@ -1235,8 +1235,8 @@ class ProductForm extends Component {
                                     <GreenButton
                                         title={this.props.item?"Update Product":"Add Product"}
                                         type={"submit"}
-                                        loading={this.props.loading}
-                                        disabled={this.state.isSubmitButtonPressed}
+                                        loading={this.state.loading}
+                                        disabled={this.state.loading||this.state.isSubmitButtonPressed}
 
                                     >
                                     </GreenButton>
@@ -1246,8 +1246,9 @@ class ProductForm extends Component {
                                     <GreenButton
                                     title={this.props.item?"Update Product":"Add Product"}
                                     type={"submit"}
-                                    loading={this.props.loading}
-                                    disabled={this.state.isSubmitButtonPressed}
+                                    loading={this.state.loading}
+
+                                    disabled={this.state.loading||this.state.isSubmitButtonPressed}
 
                                     >
                                     </GreenButton>

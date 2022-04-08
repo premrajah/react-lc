@@ -5,25 +5,14 @@ import Select from "@mui/material/Select";
 import SearchIcon from "../../img/icons/search-icon.png";
 import {Link} from "react-router-dom";
 import Close from "@mui/icons-material/Close";
-import NavigateBefore from "@mui/icons-material/NavigateBefore";
 import {makeStyles} from "@mui/styles";
 import Toolbar from "@mui/material/Toolbar";
 import {withStyles} from "@mui/styles/index";
-import MarkerIcon from "../../img/icons/marker.png";
-import CalenderIcon from "../../img/icons/calender.png";
-import ListIcon from "../../img/icons/list.png";
-import AmountIcon from "../../img/icons/amount.png";
-import StateIcon from "../../img/icons/state.png";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import LinearProgress from "@mui/material/LinearProgress";
-import HeaderWhiteBack from "../../views/header/HeaderWhiteBack";
-import ResourceItem from "../../views/item/ResourceItem";
-import HeaderDark from "../../views/header/HeaderDark";
-import Sidebar from "../../views/menu/Sidebar";
 import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import FormHelperText from "@mui/material/FormHelperText";
-import moment from "moment";
 import _ from "lodash";
 // import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
@@ -37,6 +26,7 @@ import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import {capitalize} from "../../Util/GlobalFunctions";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import Layout from "../../components/Layout/Layout";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -106,7 +96,9 @@ class SearchForm extends Component {
             dateRequiredFrom: null,
             success: false,
             activeStep:0,
-            showFieldErrors:false
+            showFieldErrors:false,
+            loading:false
+
         };
 
         this.selectCreateSearch = this.selectCreateSearch.bind(this);
@@ -193,6 +185,9 @@ class SearchForm extends Component {
 
 
     getSite() {
+
+
+        let url=
         axios
             .get(baseUrl + "site/" + this.state.siteSelected, {
                 headers: {
@@ -226,6 +221,11 @@ class SearchForm extends Component {
     createSearch() {
 
 
+        this.setState({
+            loading:true
+        })
+
+
         var data = {
             search: {
                 name: this.state.fields["title"],
@@ -256,9 +256,18 @@ class SearchForm extends Component {
                     activeStep:2
                 });
 
+                this.setState({
+                    loading:false
+                })
+
                 this.getSite();
             })
-            .catch((error) => {});
+            .catch((error) => {
+
+                this.setState({
+                    loading:false
+                })
+            });
     }
 
     loadMatches() {
@@ -1286,7 +1295,8 @@ if ((this.state.activeStep-1)==0){
 
                                                 <SelectArrayWrapper
                                                     valueKey={"_key"}
-                                                    initialValue={this.props.item&&capitalize(this.props.item.product.condition)}
+                                                    initialValue={this.props.item&&capitalize(this.props.item.product.name)}
+
                                                     onChange={(value)=>this.handleChange(value,"product")}
                                                       error={this.state.showFieldErrors&&this.state.errors["product"]}
                                                     options={this.props.productList}
@@ -1487,7 +1497,7 @@ if ((this.state.activeStep-1)==0){
                                 <Toolbar>
 
                                         <div
-                                            className="row  justify-content-center search-container "
+                                            className="row align-items-center justify-content-center search-container "
                                             style={{ margin: "auto" }}>
                                             <div className="col-auto">
                                                 {this.state.activeStep > 0 && (
@@ -1509,19 +1519,34 @@ if ((this.state.activeStep-1)==0){
                                                     </p>
                                                 </div>
                                             )}
-                                            <div className="col-auto">
+                                            <div className="col-auto ">
+
                                                 {this.state.activeStep <2 && (
-                                                    <button
+                                                    <BlueBorderButton
                                                         onClick={this.state.activeStep==0?this.handleNext:this.createSearch}
                                                         type="button"
-                                                        className={
-                                                            this.state.nextBlue
-                                                                ? "btn-next shadow-sm mr-2  blue-btn-border   mt-2 mb-2 "
-                                                                : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "
-                                                        }>
-                                                        {this.state.activeStep==1?"Submit Search":"Next"}
-                                                    </button>
+                                                        loading={this.state.loading}
+
+
+                                                       title= {this.state.activeStep==1?this.state.loading?"Wait...":"Submit Search":"Next"}
+                                                        disabled={!this.state.nextBlue||this.state.loading}
+                                                    >
+
+                                                    </BlueBorderButton>
                                                 )}
+
+                                                {/*{this.state.activeStep <2 && (*/}
+                                                {/*    <button*/}
+                                                {/*        onClick={this.state.activeStep==0?this.handleNext:this.createSearch}*/}
+                                                {/*        type="button"*/}
+                                                {/*        className={*/}
+                                                {/*            this.state.nextBlue*/}
+                                                {/*                ? "btn-next shadow-sm mr-2  blue-btn-border   mt-2 mb-2 "*/}
+                                                {/*                : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "*/}
+                                                {/*        }>*/}
+                                                {/*        {this.state.activeStep==1?"Submit Search":"Next"}*/}
+                                                {/*    </button>*/}
+                                                {/*)}*/}
 
                                                 {/*{this.state.activeStep <3 && (*/}
                                                 {/*    <button*/}

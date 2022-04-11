@@ -1,6 +1,7 @@
 import axios from "axios";
 import {baseUrl} from "./Constants";
 import React from "react";
+import moment from "moment/moment";
 
 export const  capitalize=(sentence)=> {
     return sentence.toLowerCase()
@@ -151,6 +152,13 @@ export const  seekAxiosGet=  (url)=> {
 
 }
 
+export const  getTimeFormat=  (time)=> {
+
+
+    return   moment(time).format("DD MMM YYYY")
+
+}
+
 
 export const   isEmptyHtml=( el )=>{
     // return trim(el.html())
@@ -205,3 +213,6 @@ export const getActionName=(actionName)=>{
     }
 
 }
+
+
+

@@ -753,24 +753,25 @@ class ProductDetailCycle extends Component {
                                                     {this.props.userDetail.orgId ===
                                                     this.props.item.org._id
                                                     ?     <span onClick={this.showReportModal} className="click-item d-flex flex-row align-items-center">
-                                                <ReportIcon className="click-Item mr-1" /> Report Issue
+                                                <ReportIcon color={"text-blue"} className="click-Item mr-1" /> Report Issue
                                                 </span>:""}
 
-                                                <MoreMenu
+                                                    { this.props.userDetail.orgId !==
+                                                    this.props.item.org._id &&   <MoreMenu
                                                     triggerCallback={(action) =>
                                                         this.callBackResult(action)
                                                     }
-                                                    report={
-                                                        this.props.userDetail.orgId ===
-                                                        this.props.item.org._id
-                                                            ? true
-                                                            : false
-                                                    }
+                                                    // report={
+                                                    //     this.props.userDetail.orgId ===
+                                                    //     this.props.item.org._id
+                                                    //         ? true
+                                                    //         : false
+                                                    // }
                                                     register={
                                                         this.props.userDetail.orgId !==
                                                         this.props.item.org._id
                                                     }
-                                                />
+                                                />}
                                                 </div>
                                             )}
 

@@ -777,6 +777,7 @@ class CompanyDetails extends Component {
                 }
             )
             .then((res) => {
+
                 this.addCompany();
 
                 this.props.showSnackbar({
@@ -800,7 +801,10 @@ class CompanyDetails extends Component {
 
         // return false
         axios
-            .delete(baseUrl + "user/org/"+this.state.org._key)
+            .delete(baseUrl + "user/org",{
+
+                data:{org_id:this.state.org._key}
+            })
             .then((res) => {
 
                 this.removeCompany();
@@ -810,6 +814,13 @@ class CompanyDetails extends Component {
                     severity: "success",
                     message: "Un-join request sent to the company successfully. Thanks",
                 });
+
+
+                setTimeout(function () {
+                    window.location.href = "/account";
+                }, 1000);
+
+
             })
             .catch((error) => {
                 this.setState({isSubmitButtonPressed: false});

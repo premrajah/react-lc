@@ -98,7 +98,6 @@ function a11yProps(index) {
                                 {props.isLoggedIn&& props.userContext &&
                                 <div className="row">
                                         <div className="col-md-3">
-
                                             <Tabs
 
                                                 className={"custom-vertical-tabs"}

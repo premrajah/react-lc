@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
-import {Alert, Modal, ModalBody} from "react-bootstrap";
+import {Alert, Modal, ModalBody, Toast} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
 import PlaceholderImg from "../../img/sq_placeholder.png";
@@ -17,8 +17,41 @@ import GreenBorderButton from "../FormsUI/Buttons/GreenBorderButton";
 import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import Add from "@mui/icons-material/Add";
+import Minus from "@mui/icons-material/Remove";
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { red } from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import GlobalDialog from "../RightBar/GlobalDialog";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import {getTimeFormat} from "../../Util/GlobalFunctions";
+import { styled } from '@mui/material/styles';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import OrgSettings from "./OrgSettings";
+import Box from "@mui/material/Box";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import Tab from "@mui/material/Tab";
+import TabPanel from "@mui/lab/TabPanel";
+import InfoTabContent from "../Products/InfoTabContent";
+import AggregatesTab from "../Products/AggregatesTab";
+import SubProductsTab from "../Products/SubProductsTab";
+import {Link} from "react-router-dom";
+import {GoogleMap} from "../Map/MapsContainer";
+import SearchItem from "../Searches/search-item";
+import ResourceItem from "../../pages/create-search/ResourceItem";
+import ArtifactProductsTab from "../Products/ArtifactProductsTab";
+
+
 
 class CompanyDetails extends Component {
     constructor(props) {
@@ -33,7 +66,8 @@ class CompanyDetails extends Component {
             companyName: "",
             description: "",
             orgImage: "",
-
+            approvals:[],
+            activeKey:1,
             orgImageKey: "",
             loading: false,
             base64Data: null,
@@ -58,6 +92,7 @@ class CompanyDetails extends Component {
             files: [],
             orgsApproval:[],
             showAddCompany: false,
+            showRemoveCompany: false,
             isLoopCycleCompany:false,
             industries: [
                 "Commercial kitchen equipment",
@@ -91,6 +126,16 @@ class CompanyDetails extends Component {
         });
     };
 
+
+    setActiveKey=(event,key)=>{
+
+
+        this.setState({
+            activeKey:key
+        })
+
+
+    }
 
 
     companyDetails = (detail) => {
@@ -145,6 +190,12 @@ class CompanyDetails extends Component {
     addCompany = () => {
         this.setState({
             showAddCompany: !this.state.showAddCompany,
+        });
+    };
+
+    removeCompany = () => {
+        this.setState({
+            showRemoveCompany: !this.state.showRemoveCompany,
         });
     };
 
@@ -536,11 +587,12 @@ class CompanyDetails extends Component {
     };
 
     componentDidMount() {
-        window.scrollTo(0, 0);
+
         this.getOrgsForUser();
         this.getOrgsApprovalForUser()
         this.companyInfo();
         this.getFiltersCategories();
+        this.setActiveKey(null,"1")
     }
 
     handleChangeProduct(value, field) {
@@ -725,6 +777,7 @@ class CompanyDetails extends Component {
                 }
             )
             .then((res) => {
+
                 this.addCompany();
 
                 this.props.showSnackbar({
@@ -742,6 +795,43 @@ class CompanyDetails extends Component {
                 });
             });
     };
+
+    handleRemoveCompany = async (event) => {
+
+
+        // return false
+        axios
+            .delete(baseUrl + "user/org",{
+
+                data:{org_id:this.state.org._key}
+            })
+            .then((res) => {
+
+                this.removeCompany();
+
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Un-join request sent to the company successfully. Thanks",
+                });
+
+
+                setTimeout(function () {
+                    window.location.href = "/account";
+                }, 1000);
+
+
+            })
+            .catch((error) => {
+                this.setState({isSubmitButtonPressed: false});
+            })
+            .finally(() => {
+                this.setState({
+                    btnLoading: false,
+                });
+            });
+    };
+
 
     render() {
         return (
@@ -786,10 +876,11 @@ class CompanyDetails extends Component {
 
 
                 <div className="row mt-4 mb-4 d-flex align-items-center no-gutters   ">
-                    {this.state.orgs.length > 1 && (
+
                         <>
+                            {this.state.orgs.length > 1 && <>
                             <div className="col-md-3 ">Switch Company:</div>
-                            <div className="col-md-9 ">
+                            <div className="col-md-6 ">
                                 <MenuDropdown
                                     setSelection={this.switchOrg}
                                     initialValue={this.props.userContext.orgId}
@@ -798,9 +889,34 @@ class CompanyDetails extends Component {
                                     valueKey={"_key"}
                                 />
                             </div>
+                                </>}
+                            <div className="col-md-3 ">
+
+                                    <button
+                                        // style={{ minWidth: "180px" }}
+                                        onClick={this.addCompany}
+                                        className="  btn-gray-border  ">
+                                        <Add style={{ fontSize: "20px" }} />
+                                        Join New Company
+                                    </button>
+                                </div>
+
                         </>
-                    )}
                 </div>
+
+                {this.state.orgsApproval.map((item)=>
+
+                    <div className="row mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
+                        <div className={"col-9 text-blue "}>
+                            {item.name}   <small className={"text-gray-light"}>{getTimeFormat(item._ts_epoch_ms)}</small>
+                        </div>
+                        <div className={"col-3  "}>
+                            Status: <span className={"text-pink"}>Pending Approval</span>
+                        </div>
+                    </div>
+                )}
+
+
                 {this.state.submitSuccess && (
                     <Alert key={"alert"} variant={"success"}>
                         {"Company information updated successfully"}
@@ -808,9 +924,7 @@ class CompanyDetails extends Component {
                 )}
 
 
-
-
-                <div className="row no-gutters bg-light border-box align-items-center">
+                <div className="row company-box no-gutters bg-light border-box rad-8 align-items-center">
                     <div style={{ display: "flex", position: "relative" }} className="col-md-12 align-items-center  ">
                         <div className={"img-box"} style={{ position: "relative" }}>
                             {this.state.orgImage || this.state.file ? (
@@ -856,7 +970,7 @@ class CompanyDetails extends Component {
                             />
                         </div>
 
-                        <div className={"pl-3"}>
+                        <div className={"pl-3 info-box"}>
                             {this.state.org && this.state.org.company && (
                                 <>
                                     <div className={"p-1"}>
@@ -924,119 +1038,181 @@ class CompanyDetails extends Component {
 
                 </div>
 
-                {!this.props.showSkip &&  <div className="row mt-4 mb-4 d-flex align-items-center justify-content-end   ">
 
-                    <div className="col-md-12  text-right ">
-                        <button
+
+               <div className="row mt-4 mb-4 d-flex align-items-center justify-content-end   ">
+
+                   <div className="col-md-12 d-flex flex-row align-items-center justify-content-end  ">
+                        {this.state.org &&  (
+                            <button
                             // style={{ minWidth: "180px" }}
-                            onClick={this.addCompany}
-                            className="  btn-gray-border  ">
-                            <Add style={{ fontSize: "20px" }} />
-                            Join New Company
-                        </button>
-                    </div>
-                </div>}
-
-                <div className={"row"}>
-                    <div className={"col-12 text-left"}>
-                        {this.state.org && (
-                            <div className={"row"}>
-                                <div className={"col-12"}>
-                                    <form onSubmit={this.handleSubmitSite}>
-                                        <div className="row  justify-content-start ">
-                                            <div className="col-6  mt-3">
-                                                <TextFieldWrapper
-                                                    disabled={true}
-                                                    initialValue={this.state.companyName}
-                                                    onChange={(value) =>
-                                                        this.handleChange(value, "companyName")
-                                                    }
-                                                    error={this.state.errors["companyName"]}
-                                                    name="companyName"
-                                                    title="Company Name"
-                                                />
-                                            </div>
-
-                                            <div className="col-6 mt-3">
-                                                <TextFieldWrapper
-                                                    initialValue={this.state.description}
-                                                    onChange={(value) =>
-                                                        this.handleChange(value, "description")
-                                                    }
-                                                    error={this.state.errors["description"]}
-                                                    name="description"
-                                                    title="Description"
-                                                />
-                                            </div>
-
-                                            <div className="col-6 mt-3">
-                                                <AutoCompleteComboBox
-                                                    initialValue={this.state.industry}
-                                                    name="industry"
-                                                    onChange={(value) =>
-                                                        this.handleChange(value, "industry")
-                                                    }
-                                                    options={this.state.industries}
-                                                    title="Industry"
-                                                />
-                                            </div>
-                                            <div className="col-6 mt-3">
-                                                <AutoCompleteComboBox
-                                                    initialValue={this.state.sector}
-                                                    name="businessField"
-                                                    onChange={(value) =>
-                                                        this.handleChange(value, "businessField")
-                                                    }
-                                                    options={this.state.businessFields}
-                                                    title="Field of Business"
-                                                />
-
-                                                {/*<TextFieldWrapper*/}
-                                                {/*    initialValue={this.state.sector}*/}
-                                                {/*    onChange={(value)=>this.handleChange(value,"businessField")}*/}
-                                                {/*    error={this.state.errors["businessField"]}*/}
-                                                {/*    name="businessField" title="Field of Business" />*/}
-                                            </div>
-                                            <div className="col-6 mt-3">
-                                                <TextFieldWrapper
-                                                    initialValue={this.state.no_of_staff}
-                                                    onChange={(value) =>
-                                                        this.handleChange(value, "no_of_staff")
-                                                    }
-                                                    error={this.state.errors["no_of_staff"]}
-                                                    name="no_of_staff"
-                                                    title="No of staff"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="row  justify-content-start ">
-                                            <div className="col-4 mt-3">
-                                                <GreenButton
-                                                    title={this.state.loading ? "Wait.." : "Update"}
-                                                    type={"submit"}
-                                                    loading={this.state.loading}
-                                                    fullWidth></GreenButton>
-                                            </div>
-                                            {this.props.showSkip && (
-                                                <div className="col-8 justify-content-end mt-3 text-right">
-                                                    <GreenBorderButton
-                                                        type={"button"}
-                                                        title={"Skip"}
-                                                        onClick={
-                                                            this.submitFirstLogin
-                                                        }></GreenBorderButton>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        )}
+                            onClick={this.removeCompany}
+                            className="  btn-gray-border mr-2 ">
+                            <Minus style={{ fontSize: "20px" }} /> Un-join {this.state.org.name}
+                        </button>)}
 
 
-                    </div>
+                   </div>
+               </div>
+                   <div className="row  mb-4 d-flex align-items-center justify-content-end   ">
+
+                   <div className="col-md-12 d-flex  flex-row align-items-center   ">
+
+                       <Box sx={{ width: '100%', typography: 'body1' }}>
+                           <TabContext value={this.state.activeKey}>
+                               <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                   <TabList
+                                       allowScrollButtonsMobile
+                                       variant="scrollable"
+                                       scrollButtons="auto"
+                                       textColor={"#27245C"}
+                                       TabIndicatorProps={{
+                                           style: {
+                                               backgroundColor: "#27245C",
+                                               padding: '2px',
+                                               borderRadius:"2px"
+                                           }
+                                       }}
+                                       onChange={this.setActiveKey}
+
+                                   >
+
+                                       <Tab label="General" value="1" />
+
+                                       <Tab label="Settings" value="2"/>
+
+                                   </TabList>
+                               </Box>
+
+                               <TabPanel value="1">
+                                   <div className={"row mt-4"}>
+                                       <div className={"col-12 text-left"}>
+                                           {this.state.org && (
+                                               <div className={"row"}>
+                                                   <div className={"col-12"}>
+                                                       <form onSubmit={this.handleSubmitSite}>
+                                                           <div className="row  justify-content-start ">
+                                                               <div className="col-6  mt-3">
+                                                                   <TextFieldWrapper
+                                                                       disabled={true}
+                                                                       initialValue={this.state.companyName}
+                                                                       onChange={(value) =>
+                                                                           this.handleChange(value, "companyName")
+                                                                       }
+                                                                       error={this.state.errors["companyName"]}
+                                                                       name="companyName"
+                                                                       title="Company Name"
+                                                                   />
+                                                               </div>
+
+                                                               <div className="col-6 mt-3">
+                                                                   <TextFieldWrapper
+                                                                       initialValue={this.state.description}
+                                                                       onChange={(value) =>
+                                                                           this.handleChange(value, "description")
+                                                                       }
+                                                                       error={this.state.errors["description"]}
+                                                                       name="description"
+                                                                       title="Description"
+                                                                   />
+                                                               </div>
+
+                                                               <div className="col-6 mt-3">
+                                                                   <AutoCompleteComboBox
+                                                                       initialValue={this.state.industry}
+                                                                       name="industry"
+                                                                       onChange={(value) =>
+                                                                           this.handleChange(value, "industry")
+                                                                       }
+                                                                       options={this.state.industries}
+                                                                       title="Industry"
+                                                                   />
+                                                               </div>
+                                                               <div className="col-6 mt-3">
+                                                                   <AutoCompleteComboBox
+                                                                       initialValue={this.state.sector}
+                                                                       name="businessField"
+                                                                       onChange={(value) =>
+                                                                           this.handleChange(value, "businessField")
+                                                                       }
+                                                                       options={this.state.businessFields}
+                                                                       title="Field of Business"
+                                                                   />
+
+                                                                   {/*<TextFieldWrapper*/}
+                                                                   {/*    initialValue={this.state.sector}*/}
+                                                                   {/*    onChange={(value)=>this.handleChange(value,"businessField")}*/}
+                                                                   {/*    error={this.state.errors["businessField"]}*/}
+                                                                   {/*    name="businessField" title="Field of Business" />*/}
+                                                               </div>
+                                                               <div className="col-6 mt-3">
+                                                                   <TextFieldWrapper
+                                                                       initialValue={this.state.no_of_staff}
+                                                                       onChange={(value) =>
+                                                                           this.handleChange(value, "no_of_staff")
+                                                                       }
+                                                                       error={this.state.errors["no_of_staff"]}
+                                                                       name="no_of_staff"
+                                                                       title="No of staff"
+                                                                   />
+                                                               </div>
+                                                           </div>
+
+                                                           <div className="row  justify-content-start ">
+                                                               <div className="col-4 mt-3">
+                                                                   <GreenButton
+                                                                       title={this.state.loading ? "Wait.." : "Update"}
+                                                                       type={"submit"}
+                                                                       loading={this.state.loading}
+                                                                       fullWidth></GreenButton>
+                                                               </div>
+                                                               {this.props.showSkip && (
+                                                                   <div className="col-8 justify-content-end mt-3 text-right">
+                                                                       <GreenBorderButton
+                                                                           type={"button"}
+                                                                           title={"Skip"}
+                                                                           onClick={
+                                                                               this.submitFirstLogin
+                                                                           }></GreenBorderButton>
+                                                                   </div>
+                                                               )}
+                                                           </div>
+                                                       </form>
+                                                   </div>
+                                               </div>
+                                           )}
+
+
+                                       </div>
+                                   </div>
+                               </TabPanel>
+                               <TabPanel value="2">
+                                   <div className={"row mt-4"}>
+                                       <div className={"col-12 text-left"}>
+                                           <OrgSettings org={this.state.org} />
+                                       </div>
+                                   </div>
+
+                               </TabPanel>
+
+
+                           </TabContext>
+                       </Box>
+
+
+                   </div>
+
                 </div>
+
+
+
+
+
+
+
+
+
+
 
                 <GlobalDialog
                     allowOverflow
@@ -1101,10 +1277,67 @@ class CompanyDetails extends Component {
                         </div>
                     </>
                 </GlobalDialog>
+
+
+
+                <GlobalDialog
+                    allowOverflow
+                    size={"xs"}
+                    hide={this.removeCompany}
+                    show={this.state.showRemoveCompany}
+                    heading={"Un-join "+this.state.org.name}>
+                    <>
+                        <div className="col-12 ">
+                            {this.state.errorCompany && (      <div className="row no-gutters">
+                                <div className="col-12 pt-4 pb-4">
+                                        <span
+                                            style={{ color: "rgb(244, 67, 54)" }}
+                                            className="text-danger">
+                                            Required
+                                        </span>
+
+                                </div>
+                            </div> )}
+
+                            <div className="row no-gutters">
+                                <div className="col-12 ">
+                                    Are you sure you want to un-join the company ?
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-12 ">
+                            <div className="row mt-4 no-gutters">
+                                <div
+                                    className={"col-6 pr-1"}
+                                    style={{
+                                        textAlign: "center",
+                                    }}>
+                                    <GreenButton
+                                        onClick={() => this.handleRemoveCompany()}
+                                        title={"Remove"}
+                                        type={"submit"}></GreenButton>
+                                </div>
+                                <div
+                                    className={"col-6 pl-1"}
+                                    style={{
+                                        textAlign: "center",
+                                    }}>
+                                    <BlueBorderButton
+                                        type="button"
+                                        title={"Cancel"}
+                                        onClick={() => this.removeCompany()}></BlueBorderButton>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                </GlobalDialog>
             </>
         );
     }
 }
+
+
+
 
 const mapStateToProps = (state) => {
     return {

@@ -42,11 +42,11 @@ spec:
               port: 80
             initialDelaySeconds: 30
             periodSeconds: 1
-#          volumeMounts:
-#            - name: tz-utc
-#              mountPath: /etc/localtime
-#      volumes:
-#        - name: tz-utc
-#          hostPath:
-#            path: /usr/share/zoneinfo/UTC
+          volumeMounts:
+            - name: tz-utc
+              mountPath: /etc/localtime
+      volumes:
+        - name: tz-utc
+          hostPath:
+            path: /usr/share/zoneinfo/UTC
 

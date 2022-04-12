@@ -6,21 +6,12 @@ import * as actionCreator from "../../store/actions/actions";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {arrangeAlphabatically, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import {getKey, removeKey, saveKey} from "../../LocalStorage/user-session";
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import {red} from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {styled} from '@mui/material/styles';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -31,6 +22,20 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
+import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
+import {Autocomplete, TextField} from "@mui/material";
+import {Add} from "@mui/icons-material";
+import FormControl from "@mui/material/FormControl";
+import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+import {Spinner} from "react-bootstrap";
+import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
+import Chip from "@mui/material/Chip";
+
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
 }
@@ -76,7 +81,21 @@ class OrgSettings extends Component {
             showAddPopUp: false,
             roleBy:"Email",
             assumeRoles:[],
-            expanded:false
+            expanded:false,
+            allSettings:null,
+            orgSettings:null,
+            matching_brands: [],
+            acceptable_domains:[],
+            notification_settings:[],
+            notifSettingsOptions:["entity_ownership_change", "tracked_entity_update", "delete_org_entity", "misc_class",
+                "update_org_entity", "add_entity_to_org"],
+            is_qr_mono:false,
+            qr_format_name:null,
+            allow_external_product_read:null,
+            allow_external_site_read:false,
+            allow_external_site_write:false,
+            allow_external_org_read:false,
+
 
         };
 
@@ -87,16 +106,45 @@ class OrgSettings extends Component {
         this.setState({expanded:!this.state.expanded});
     };
 
-    fetchAllPermissions=()=> {
+
+    fetchOrgSettings=(orgId)=> {
         axios
-            .get(baseUrl + "role/perm")
+            .get(baseUrl + "org/"+orgId)
             .then(
                 (response) => {
 
-                    this.setState({
-                        allPerms: arrangeAlphabatically(response.data.data),
 
-                    });
+
+
+                    if (response.data.data.org.settings) {
+
+
+                        let   notification_settings=response.data.data.org.settings.notification_settings.value
+
+                        let options=[]
+                        if(notification_settings){
+
+
+                            options=this.state.notifSettingsOptions.filter((option,index)=>  notification_settings[option])
+                        }
+
+                     console.log(options)
+
+                        this.setState({
+                            matching_brands:  response.data.data.org.settings.matching_brands?response.data.data.org.settings.matching_brands.value:[] ,
+                            acceptable_domains: response.data.data.org.settings.acceptable_domains?response.data.data.org.settings.acceptable_domains.value:[] ,
+                            is_qr_mono:  response.data.data.org.settings.is_qr_mono?response.data.data.org.settings.is_qr_mono.value:false ,
+                            qr_format_name: response.data.data.org.settings.qr_format_name? response.data.data.org.settings.qr_format_name.value:"png" ,
+                            allow_external_product_read: response.data.data.org.settings.allow_external_product_read? response.data.data.org.settings.allow_external_product_read.value :"open",
+                            notification_settings: options,
+                            allow_external_site_read: response.data.data.org.settings.allow_external_site_read? response.data.data.org.settings.allow_external_site_read.value:false,
+                            allow_external_site_write:  response.data.data.org.settings.allow_external_site_write?response.data.data.org.settings.allow_external_site_write.value:false,
+                            allow_external_org_read: response.data.data.org.settings.allow_external_org_read? response.data.data.org.settings.allow_external_org_read.value:false ,
+
+                        })
+
+                    }
+
                 },
                 (error) => {
                     // var status = error.response.status
@@ -104,130 +152,143 @@ class OrgSettings extends Component {
             );
     }
 
-    toggleAddUser=async (loadRoles) => {
-
-        if (loadRoles)
-        this.fetchRoles()
-
-        this.setState({
-            showAddPopUp: !this.state.showAddPopUp,
-        })
 
 
+
+
+    fetchAllSettings=()=> {
+        axios
+            .get(baseUrl + "org/setting")
+            .then(
+                (response) => {
+
+                    this.setState({
+                        allSettings:response.data.data
+                    })
+
+
+
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
     }
 
 
-    handleValidation() {
 
-
-        let fields = this.state.fields;
-
-
-        let validations = [
-            validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("role", [{check: Validators.required, message: 'Required'}], fields),
-        ]
-
-
-        let {formIsValid, errors} = validateInputs(validations)
-
-        this.setState({errors: errors});
-        return formIsValid;
-    }
 
     handleChange(value, field) {
 
-        let fields = this.state.fields;
-        fields[field] = value;
-        this.setState({fields});
+
+            let fields = this.state.fields
+
+
+
+
+            if (field=="notification_settings"){
+
+            let selectedValues={}
+              value.forEach((item)=>{
+                  selectedValues[item]=true
+              })
+
+                fields[field] = {value:selectedValues };
+            }
+        else  {
+            fields[field] = {value:value};
+        }
+
+        this.setState({
+            [field]:value
+        })
+            this.setState({fields});
 
     }
 
 
-    assumeRole = (event) => {
+    addOption=(event,field,valueToRemove, remove)=>{
 
 
-        if (!this.state.fields["value"]){
+        let values=this.state[field]
 
-            let errors=this.state.errors
-            errors.value={message:"Required."}
-
-            this.setState({
-                errors:errors
-            })
+        if (remove) {
+            values=  values.filter((item)=> item!==valueToRemove)
         }
+        else{
 
-        // return false
-        axios
-            .post(
-                `${baseUrl}user/assume/${this.state.roleBy?this.state.roleBy==="Email"?"email":
-                    this.state.roleBy==="User Id"?"user":this.state.roleBy==="Org Id"?"org":"":null}`,
-                {
-                    assumed:this.state.fields["value"],
-                }
+            const form = event.currentTarget;
 
-            )
-            .then((res) => {
-                console.log("user",getKey("user"))
-
-                console.log("token",getKey("token"))
-                removeKey("token")
-                // removeKey("user")
-                saveKey("assumedRole",true)
-                saveKey("roleName",this.state.fields["value"])
-
-                let usrObject=res.data.data
-
-                // delete usrObject["token"]
-
-                saveKey("token",JSON.stringify(res.data.data.token)+"")
-
-                // saveKey("user",usrObject)
-                // console.log("token",getKey("token"))
-                // console.log("user",getKey("user"))
-
-                this.props.showSnackbar({show: true, severity: "success", message: "User assumed successfully. Thanks"})
-
-                setTimeout(function() {
-
-                    window.location.href=("/")
-
-                }, 1000);
-
-
-            })
-            .catch((error) => {
-                this.setState({isSubmitButtonPressed: false})
-                this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
-
-            }).finally(()=>{
-
-            this.toggleAddUser(false)
-        });
-
-
-    };
-
-    componentDidMount() {
-
-
-        let roles=[]
-
-        if(this.props.userDetail.perms.includes("LcAssumeUserRole")){
-            roles.push("Email")
+            const data = new FormData(event.target);
+            const option = data.get("option");
+                values.push(option)
         }
-        if(this.props.userDetail.perms.includes("LcAssumeOrgRole")){
-            roles.push("Org Id")
-        }
-        if(this.props.userDetail.perms.includes("LcAssumeUserRole")){
-            roles.push("User Id")
-        }
+        console.log(values)
+
+        this.setState({
+            [field]:values
+        })
+
+
+        let fields = this.state.fields
+
+
+        // if (field==="matching_brands"){
+
+            fields[field] = {value:values};
+        // }
+
 
         this.setState({
 
-            assumeRoles:roles
-
+            fields
         })
+
+
+}
+
+
+    submitSettings=()=>{
+        console.log(this.state.fields)
+
+
+        axios
+            .post(baseUrl + "org/"+this.props.orgId,{
+                settings:this.state.fields
+            })
+            .then(
+                (response) => {
+
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "success",
+                        message: "Org settings saved successfully. Thanks",
+                    });
+
+
+                },
+                (error) => {
+                    // var status = error.response.status
+
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "error",
+                        message: fetchErrorMessage(error),
+                    });
+
+
+                }
+            );
+
+    }
+
+
+    componentDidMount() {
+
+        this.fetchOrgSettings(this.props.orgId)
+
+        // this.fetchAllSettings()
+
 
     }
 
@@ -238,41 +299,272 @@ class OrgSettings extends Component {
 
 
     <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-                <TableRow>
-                    <TableCell>Dessert (100g serving)</TableCell>
-                    <TableCell align="right">Calories</TableCell>
-                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                </TableRow>
-            </TableHead>
+        <Table className={"custom-table"} sx={{ minWidth: 650 }} aria-label="simple table">
+
             <TableBody>
-                {rows.map((row) => (
+
                     <TableRow
-                        key={row.name}
+                        className={"custom-table-row"}
+                        key={1}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                         <TableCell component="th" scope="row">
-                            {row.name}
+                            Is Qr Code Mono
                         </TableCell>
-                        <TableCell align="right">{row.calories}</TableCell>
-                        <TableCell align="right">{row.fat}</TableCell>
-                        <TableCell align="right">{row.carbs}</TableCell>
-                        <TableCell align="right">{row.protein}</TableCell>
+                        <TableCell align="right">
+                            <Switch checked={this.state.is_qr_mono} onChange={(event, checked)=>{this.handleChange(checked,"is_qr_mono")}} name={"is_qr_mono"}  />
+                        </TableCell>
+
                     </TableRow>
-                ))}
+
+                <TableRow
+                    className={"custom-table-row"}
+                    key={1}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                    <TableCell component="th" scope="row">
+                        Qr Code Format
+                    </TableCell>
+                    <TableCell align="right">
+                        <SelectArrayWrapper
+                            initialValue={this.state.qr_format_name?this.state.qr_format_name:"png"}
+                            onChange={(value) =>
+                                this.handleChange(value, "qr_format_name")
+                            }
+                            name={"qr_format_name"}  options={["png","jpg","bmp"]} />
+                    </TableCell>
+
+                </TableRow>
+
+                <TableRow
+                    className={"custom-table-row"}
+                    key={1}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                    <TableCell component="th" scope="row">
+                        Allow External Site Read
+                    </TableCell>
+                    <TableCell align="right">
+                        <Switch checked={this.state.allow_external_site_read}  onChange={(event, checked)=>{this.handleChange(checked,"allow_external_site_read")}} name={"allow_external_site_read"}  />
+                    </TableCell>
+                </TableRow>
+
+                <TableRow
+                    className={"custom-table-row"}
+                    key={1}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                    <TableCell component="th" scope="row">
+                        Allow External Site Write
+                    </TableCell>
+                    <TableCell align="right">
+                        <Switch
+
+                            checked={this.state.allow_external_site_write}
+                            onChange={(event, checked)=>{this.handleChange(checked,"allow_external_site_write")}} name={"allow_external_site_write"}
+
+
+                        />
+                    </TableCell>
+                </TableRow>
+
+                <TableRow
+                    className={"custom-table-row"}
+                    key={1}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                    <TableCell component="th" scope="row">
+                        Allow External Org Read
+                    </TableCell>
+                    <TableCell align="right">
+                        <Switch checked={this.state.allow_external_org_read}
+                                onChange={(event, checked)=>{this.handleChange(checked,"allow_external_org_read")}} name={"allow_external_org_read"}  />
+                    </TableCell>
+                </TableRow>
+
+                <TableRow
+                    className={"custom-table-row"}
+                    key={1}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                    <TableCell component="th" scope="row">
+                        Allow External Product Read
+                    </TableCell>
+                    <TableCell align="right">
+                        <SelectArrayWrapper
+
+
+                           initialValue={this.state.allow_external_product_read?this.state.allow_external_product_read:"open"}
+                            onChange={(value) =>
+                                this.handleChange(value, "allow_external_product_read")
+                            }
+                            name={"allow_external_product_read"}  options={["open","partial","restricted"]} />
+
+                    </TableCell>
+                </TableRow>
+
+                <TableRow
+                className={"custom-table-row"}
+                key={1}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+                <TableCell component="th" scope="row">
+                    Acceptable Domains
+                </TableCell>
+
+                    <TableCell align="right">
+
+                        <div className="justify-content-end align-items-center d-flex flex-row">
+                            <div className="row mt-2">
+                                <div className="col-6">
+                                    {this.state.acceptable_domains.map((item, index) =>
+                                        <Chip
+                                            className={"m-1"}
+                                            key={index}
+
+                                            onDelete={()=>this.addOption(null,"acceptable_domains",item,true)}
+                                            label={item}
+
+                                        />
+                                    )}
+                                </div>
+
+                                <div
+                                    className="col-6 text-center "
+                                >
+                                    <form className={"d-flex flex-row align-items-center "}
+                                          onSubmit={(event)=>
+                                          { event.preventDefault(); event.stopPropagation();
+                                              this.addOption(event,"acceptable_domains",null,false)  }}>
+
+                                        <TextFieldWrapper
+                                            name={`option`}
+                                            variant={"standard"}
+                                            required={true}
+                                            native
+                                            onChange={()=>{}}
+                                        />
+                                        <IconButton className={"ml-2"} type={"submit"}>
+                                            <AddIcon    />
+                                        </IconButton>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </TableCell>
+
+            </TableRow>
+                <TableRow
+                    className={"custom-table-row"}
+                    key={1}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                    <TableCell component="th" scope="row">
+                        Matching matching_brands
+                    </TableCell>
+                    <TableCell align="right">
+
+                        <div className="justify-content-end align-items-center d-flex flex-row">
+                            <div className="row mt-2">
+                                <div className="col-6">
+                            {this.state.matching_brands.map((item, index) =>
+                                        <Chip
+                                            className={"m-1"}
+                                            key={index}
+
+                                           onDelete={()=>this.addOption(null,"matching_brands",item,true)}
+                                            label={item}
+
+                                        />
+                            )}
+                                </div>
+
+                                    <div
+                                        className="col-6 text-center "
+                                       >
+                                        <form className={"d-flex flex-row align-items-center "}
+                                              onSubmit={(event)=>
+                                              { event.preventDefault(); event.stopPropagation();
+                                              this.addOption(event,"matching_brands",null,false)  }}>
+
+                                        <TextFieldWrapper
+                                            name={`option`}
+                                            variant={"standard"}
+                                            required={true}
+                                            native
+                                            onChange={()=>{}}
+                                        />
+                                        <IconButton className={"ml-2"} type={"submit"}>
+                                        <AddIcon    />
+                                        </IconButton>
+                                        </form>
+                                    </div>
+
+                            </div>
+
+                        </div>
+
+                    </TableCell>
+                </TableRow>
+
+                <TableRow
+                    className={"custom-table-row"}
+                    key={1}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                    <TableCell component="th" scope="row">
+                        Notification Settings
+                    </TableCell>
+                    <TableCell align="right">
+
+                        <Autocomplete
+                            className={"m-3"}
+                            multiple
+
+                            value={this.state.notification_settings}
+                            id="tags-standard"
+                            onChange={(event, value, reason, details) =>this.handleChange(value,"notification_settings")}
+                            options={this.state.notifSettingsOptions}
+                            variant={"standard"}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    style={{ minHeight: "45px" }}
+                                    variant="standard"
+                                    placeholder=""
+                                />
+                            )}
+                        />
+
+
+
+                    </TableCell>
+                </TableRow>
+
+
+
             </TableBody>
         </Table>
     </TableContainer>
 
-    <div>
+    <div className={"row"}>
 
-        <FormGroup>
-            <FormControlLabel control={<Switch defaultChecked />} label="Label" />
-            <FormControlLabel disabled control={<Switch />} label="Disabled" />
-        </FormGroup>
+        <div className="col-12 text-center mt-4">
+
+            <BlueButton
+                onClick={this.submitSettings}
+                fullWidth
+                title={"Submit"}
+                type={"button"}>
+
+            </BlueButton>
+
+
+        </div>
+
     </div>
 
 

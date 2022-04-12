@@ -40,10 +40,10 @@ const MessengerMessagesTwo = () => {
     }
 
 
-    const handleGroupDataDisplay = (group, index) => {
+    const handleGroupDataDisplay = (groups, index) => {
 
 
-        return <MessengerMessagesTwoGroupItem key={index} message_group={group.message_group} index={index} />
+        return <MessengerMessagesTwoGroupItem key={index} groups={groups} index={index} />
 
     }
 
@@ -51,12 +51,12 @@ const MessengerMessagesTwo = () => {
 
     return <React.Fragment>
         <div className="row">
-            <div className="col-md-5">
+            <div className="col-md-4">
                 {allGroups.length > 0 && <List sx={{height: '500px', maxHeight: '500px', overflow: 'auto', bgColor: 'background.paper'}}>
                     {allGroups.map((g, index) => handleGroupDataDisplay(g, index))}
                 </List>}
             </div>
-            <div className="col-md-7">
+            <div className="col-md-8">
                 2
             </div>
         </div>

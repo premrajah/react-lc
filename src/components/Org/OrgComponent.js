@@ -67,7 +67,7 @@ const OrgComponent = (props) => {
                             fontWeight: "700",
                             // color : "#444",
                         }}>
-                        <span className={"sub-title-text-pink"}> {org.name}</span>
+                        <span className={props.colorClass ? props.colorClass : "sub-title-text-pink"}> {org.name}</span>
                     </div>
                     <OverlayTrigger
                         trigger={["hover", "focus"]}

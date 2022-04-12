@@ -1189,7 +1189,7 @@ class CompanyDetails extends Component {
                                <TabPanel value="2">
                                    <div className={"row mt-4"}>
                                        <div className={"col-12 text-left"}>
-                                           <OrgSettings org={this.state.org} />
+                                           <OrgSettings orgId={this.state.org._key} />
                                        </div>
                                    </div>
 

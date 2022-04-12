@@ -128,19 +128,18 @@ class OrgSettings extends Component {
                             options=this.state.notifSettingsOptions.filter((option,index)=>  notification_settings[option])
                         }
 
-                        console.log("response.data.data.org.settings.is_qr_mono.value")
-                        console.log(response.data.data.org.settings.is_qr_mono.value)
+                     console.log(options)
 
                         this.setState({
-                            matching_brands:  response.data.data.org.settings.matching_brands.value ,
-                            acceptable_domains: response.data.data.org.settings.acceptable_domains.value ,
-                            is_qr_mono:  response.data.data.org.settings.is_qr_mono.value ,
-                            qr_format_name: response.data.data.org.settings.qr_format_name.value ,
-                            allow_external_product_read: response.data.data.org.settings.allow_external_product_read.value ,
+                            matching_brands:  response.data.data.org.settings.matching_brands?response.data.data.org.settings.matching_brands.value:[] ,
+                            acceptable_domains: response.data.data.org.settings.acceptable_domains?response.data.data.org.settings.acceptable_domains.value:[] ,
+                            is_qr_mono:  response.data.data.org.settings.is_qr_mono?response.data.data.org.settings.is_qr_mono.value:false ,
+                            qr_format_name: response.data.data.org.settings.qr_format_name? response.data.data.org.settings.qr_format_name.value:"png" ,
+                            allow_external_product_read: response.data.data.org.settings.allow_external_product_read? response.data.data.org.settings.allow_external_product_read.value :"open",
                             notification_settings: options,
-                            allow_external_site_read: response.data.data.org.settings.allow_external_site_read.value,
-                            allow_external_site_write:  response.data.data.org.settings.allow_external_site_write.value,
-                            allow_external_org_read: response.data.data.org.settings.allow_external_org_read.value ,
+                            allow_external_site_read: response.data.data.org.settings.allow_external_site_read? response.data.data.org.settings.allow_external_site_read.value:false,
+                            allow_external_site_write:  response.data.data.org.settings.allow_external_site_write?response.data.data.org.settings.allow_external_site_write.value:false,
+                            allow_external_org_read: response.data.data.org.settings.allow_external_org_read? response.data.data.org.settings.allow_external_org_read.value:false ,
 
                         })
 
@@ -200,6 +199,9 @@ class OrgSettings extends Component {
             fields[field] = {value:value};
         }
 
+        this.setState({
+            [field]:value
+        })
             this.setState({fields});
 
     }
@@ -310,7 +312,7 @@ class OrgSettings extends Component {
                             Is Qr Code Mono
                         </TableCell>
                         <TableCell align="right">
-                            <Switch defaultChecked={this.state.is_qr_mono} onChange={(event, checked)=>{this.handleChange(checked,"is_qr_mono")}} name={"is_qr_mono"}  />
+                            <Switch checked={this.state.is_qr_mono} onChange={(event, checked)=>{this.handleChange(checked,"is_qr_mono")}} name={"is_qr_mono"}  />
                         </TableCell>
 
                     </TableRow>
@@ -343,7 +345,7 @@ class OrgSettings extends Component {
                         Allow External Site Read
                     </TableCell>
                     <TableCell align="right">
-                        <Switch defaultChecked={this.state.allow_external_site_read}  onChange={(event, checked)=>{this.handleChange(checked,"allow_external_site_read")}} name={"allow_external_site_read"}  />
+                        <Switch checked={this.state.allow_external_site_read}  onChange={(event, checked)=>{this.handleChange(checked,"allow_external_site_read")}} name={"allow_external_site_read"}  />
                     </TableCell>
                 </TableRow>
 
@@ -358,7 +360,7 @@ class OrgSettings extends Component {
                     <TableCell align="right">
                         <Switch
 
-                            defaultChecked={this.state.allow_external_site_write}
+                            checked={this.state.allow_external_site_write}
                             onChange={(event, checked)=>{this.handleChange(checked,"allow_external_site_write")}} name={"allow_external_site_write"}
 
 
@@ -375,7 +377,8 @@ class OrgSettings extends Component {
                         Allow External Org Read
                     </TableCell>
                     <TableCell align="right">
-                        <Switch defaultChecked={this.state.allow_external_org_read}  onChange={(event, checked)=>{this.handleChange(checked,"allow_external_org_read")}} name={"allow_external_org_read"}  />
+                        <Switch checked={this.state.allow_external_org_read}
+                                onChange={(event, checked)=>{this.handleChange(checked,"allow_external_org_read")}} name={"allow_external_org_read"}  />
                     </TableCell>
                 </TableRow>
 
@@ -520,19 +523,9 @@ class OrgSettings extends Component {
                         <Autocomplete
                             className={"m-3"}
                             multiple
-                            onOpen={() => {
-                                this.setState({
-                                    open: true,
-                                });
-                            }}
-                            open={this.state.open}
-                            onClose={() => {
-                                this.setState({
-                                    open: false,
-                                });
-                            }}
+
+                            value={this.state.notification_settings}
                             id="tags-standard"
-                            defaultValue={this.state.notification_settings}
                             onChange={(event, value, reason, details) =>this.handleChange(value,"notification_settings")}
                             options={this.state.notifSettingsOptions}
                             variant={"standard"}

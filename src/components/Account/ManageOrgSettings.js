@@ -226,15 +226,15 @@ class ManageOrgSettings extends Component {
 
 
 
-                    {/*{this.state.orgId &&  */}
+                    {this.state.orgId &&
                     <div className="col-12    mt-4">
 
                     <OrgSettings
-                        // orgId={this.state.orgId}
-                        orgId={"parallelai"}
+                        orgId={this.state.orgId}
+
                     />
                     </div>
-                    {/*}*/}
+                    }
 
 
 

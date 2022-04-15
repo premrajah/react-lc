@@ -8,6 +8,7 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 
 class ChangePassword extends Component {
     constructor(props) {
@@ -67,13 +68,19 @@ class ChangePassword extends Component {
     postChangePassword = (payload) => {
         axios.post(`${baseUrl}user/change`, payload)
             .then(res => {
+
                 this.setState({showPasswordFields: false, password: '', repeatPassword: '', passwordChangeErrors: <span className="text-success">Password changed successfully.</span>})
+
             })
             .catch(error => {
-                this.setState({passwordChangeErrors: error.message})
-                if(error.response) {
-                    this.setState({passwordChangeErrors: error.response.data.errors.map((e, i) => <div className="text-danger" key={i}>{e.message}</div>)})
-                }
+                // this.setState({passwordChangeErrors: error.message})
+
+                    // this.setState({passwordChangeErrors: fetchErrorMessage(error)})
+
+                // if (error.data.errors){
+                    this.setState({missMatchPasswords: fetchErrorMessage(error)})
+                // }
+
             })
     }
 

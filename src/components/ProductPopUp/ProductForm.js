@@ -22,6 +22,9 @@ import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import SiteFormNew from "../Sites/SiteFormNew";
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import DialogContent from "@mui/material/DialogContent";
 
 
 class ProductForm extends Component {
@@ -117,6 +120,8 @@ class ProductForm extends Component {
         this.setState({
             showSubmitSite: !this.state.showSubmitSite,
         });
+
+        this.props.loadSites(this.props.userDetail.token);
     }
 
 
@@ -1282,13 +1287,17 @@ class ProductForm extends Component {
                                 <ArrowBackIcon /> Add Product
                             </div>
                         </div>
+
                         <div className="col-md-12 col-sm-12 col-xs-12 ">
+                            <div className=" row  justify-content-center align-items-center">
+                                <div className="col-12">
+                                    <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>Add New Site</h4>
+                                </div>
+
+                            </div>
                             <div className={"row"}>
                                 <div className={"col-12"}>
-
-                                    <SiteForm submitCallback={() => this.showSubmitSite()} setSiteFormNew={{show:true,item:this.props.item,type:"new",heading:"Add New Site"}} removePopUp={true} />
-                                    {/*<EditSite showHeader={false} site={{}} submitCallback={() => this.showSubmitSite()} />*/}
-
+                                    <SiteFormNew showHeader={false}  refresh={() => this.showSubmitSite()}   />
                                 </div>
                             </div>
                         </div>

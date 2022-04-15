@@ -4292,10 +4292,14 @@ input:active,input:focus{
 
     background: #f9fbfc;
 }
-.pb-20{
+.pb-20 {
 
     padding-bottom: 5rem !important;
+}
 
+
+.fullWidth{
+width: 100% !important
 }
 
 

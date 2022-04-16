@@ -32,6 +32,7 @@ import {Link} from "react-router-dom";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
+import SiteFormNew from "../../components/Sites/SiteFormNew";
 
 
 class ListFormNew extends Component {
@@ -606,10 +607,16 @@ class ListFormNew extends Component {
         });
     }
 
-    toggleSite() {
+    toggleSite(refresh) {
         this.setState({
             showCreateSite: !this.state.showCreateSite,
         });
+
+
+        if (refresh){
+            this.props.loadSites();
+
+        }
     }
 
     getSites() {
@@ -1102,9 +1109,9 @@ class ListFormNew extends Component {
                                                     <span onClick={this.showProductSelection}
                                                         style={{float:"right"}}
                                                         className={
-                                                            "green-text forgot-password-link text-mute small"
+                                                            " forgot-password-link "
                                                         }>
-                                                    Add New product
+                                                    Add new product
                                                 </span>
                                                 </div>
                                                 <span className={"text-gray-light"}>Search Products.... </span>
@@ -1213,7 +1220,7 @@ class ListFormNew extends Component {
                                                             or <span
                                                                 onClick={this.toggleSite}
                                                                 className={
-                                                                    "green-text forgot-password-link "
+                                                                    " forgot-password-link "
                                                                 }>Add new</span>
                                                         </p>
                                                     </div>
@@ -1448,17 +1455,6 @@ class ListFormNew extends Component {
                                                 </button>
                                             )}
 
-                                            {/*<button*/}
-                                            {/*    onClick={this.handleNext}*/}
-                                            {/*    type="button"*/}
-                                            {/*    className={this.state.nextBlue*/}
-                                            {/*        ? "btn-next shadow-sm mr-2  blue-btn-border   mt-2 mb-2  "*/}
-                                            {/*        : "btn-next shadow-sm mr-2 btn btn-link btn-gray mt-2 mb-2 "*/}
-                                            {/*    }>*/}
-                                            {/*    Post Listing*/}
-                                            {/*</button>*/}
-                                            {/*)}  {this.state.activeStep === 2 && (*/}
-
 
                                             {this.state.activeStep === 2 && (
                                                 <BlueBorderButton
@@ -1482,27 +1478,7 @@ class ListFormNew extends Component {
                         </React.Fragment>
                     )}
 
-                    {this.state.showCreateSite && (
-                        <>
-                            <div className={"body-overlay"}>
-                                <div className={"modal-popup site-popup"}>
-                                    <div className=" text-right ">
-                                        <Close
-                                            onClick={this.toggleSite}
-                                            className="blue-text"
-                                            style={{ fontSize: 32 }}
-                                        />
-                                    </div>
 
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <EditSite site={{}} submitCallback={() => this.toggleSite()} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    )}
 
 
 
@@ -1532,6 +1508,21 @@ class ListFormNew extends Component {
                 </GlobalDialog>
 
 
+
+
+                <GlobalDialog
+
+                    size={"lg"}
+                    hide={this.toggleSite}
+                    show={this.state.showCreateSite}
+                    heading={"Add Company"}>
+                    <>
+                        <div className="col-12 ">
+
+                            <SiteFormNew refresh={()=>this.toggleSite(true)} />
+                        </div>
+                    </>
+                </GlobalDialog>
 
             </Layout>
         );

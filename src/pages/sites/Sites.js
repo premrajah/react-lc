@@ -53,8 +53,6 @@ class Sites extends Component {
 
         // this.props.loadParentSites();
 
-
-
         this.setState({
             items:[]
         })
@@ -66,24 +64,24 @@ class Sites extends Component {
 
         if (prevProps!==this.props) {
 
-            if (this.props.refresh){
-
-                this.props.refreshPage(false)
-
-                this.setState({
-                    items:[],
-                    currentOffset:0,
-                })
-
-
-                if (this.state.currentOffset==0){
-                    this.getTotalCount()
-
-                    this.loadProductsWithoutParentPageWise();
-                }
-
-
-            }
+            // if (this.props.refresh){
+            //
+            //     this.props.refreshPage(false)
+            //
+            //     this.setState({
+            //         items:[],
+            //         currentOffset:0,
+            //     })
+            //
+            //
+            //     if (this.state.currentOffset==0){
+            //         this.getTotalCount()
+            //
+            //         this.loadProductsWithoutParentPageWise();
+            //     }
+            //
+            //
+            // }
         }
 
         }

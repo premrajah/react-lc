@@ -27,6 +27,8 @@ import {capitalize} from "../../Util/GlobalFunctions";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import Layout from "../../components/Layout/Layout";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
+import SiteFormNew from "../../components/Sites/SiteFormNew";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -206,16 +208,21 @@ class SearchForm extends Component {
                     var status = error.response.status;
                 }
             );
-    }
+    }Upload
 
     getSites() {
         this.props.loadSites(this.props.userDetail.token);
     }
 
-    toggleSite() {
+    toggleSite(refresh) {
         this.setState({
             showCreateSite: !this.state.showCreateSite,
         });
+
+
+        if (refresh){
+            this.props.loadSites();
+        }
     }
 
     createSearch() {
@@ -1580,27 +1587,46 @@ if ((this.state.activeStep-1)==0){
                             </div>
                         </React.Fragment>}
 
-                    {this.state.showCreateSite && (
-                        <>
-                            <div className={"body-overlay"}>
-                                <div className={"modal-popup site-popup"}>
-                                    <div className=" text-right ">
-                                        <Close
-                                            onClick={this.toggleSite}
-                                            className="blue-text"
-                                            style={{ fontSize: 32 }}
-                                        />
-                                    </div>
 
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <EditSite site={{}} submitCallback={() => this.toggleSite()} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    )}
+                <GlobalDialog
+
+                    hide={this.toggleSite}
+                    show={this.state.showCreateSite}
+                    heading={"Add Company"}>
+                    <>
+                        <div className="col-12 ">
+
+                            <SiteFormNew refresh={()=>this.toggleSite(true)} />
+                        </div>
+                    </>
+                </GlobalDialog>
+
+
+                    {/*{this.state.showCreateSite && (*/}
+                    {/*    <>*/}
+                    {/*        <div className={"body-overlay"}>*/}
+                    {/*            <div className={"modal-popup site-popup"}>*/}
+                    {/*                <div className=" text-right ">*/}
+                    {/*                    <Close*/}
+                    {/*                        onClick={this.toggleSite}*/}
+                    {/*                        className="blue-text"*/}
+                    {/*                        style={{ fontSize: 32 }}*/}
+                    {/*                    />*/}
+                    {/*                </div>*/}
+
+                    {/*                <div className={"row"}>*/}
+                    {/*                    <div className={"col-12"}>*/}
+                    {/*                        <EditSite site={{}} submitCallback={() => this.toggleSite()} />*/}
+                    {/*                    </div>*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </>*/}
+                    {/*)}*/}
+
+
+
+
 
             </Layout>
         );

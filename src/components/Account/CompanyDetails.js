@@ -50,6 +50,7 @@ import {GoogleMap} from "../Map/MapsContainer";
 import SearchItem from "../Searches/search-item";
 import ResourceItem from "../../pages/create-search/ResourceItem";
 import ArtifactProductsTab from "../Products/ArtifactProductsTab";
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 
 
 
@@ -85,6 +86,7 @@ class CompanyDetails extends Component {
             states: [],
             sites: [],
             orgs: [],
+            removeCompanyPopUpType:0,
             page: 1,
             units: [],
             croppedImageData: null,
@@ -193,9 +195,14 @@ class CompanyDetails extends Component {
         });
     };
 
-    removeCompany = () => {
+
+
+
+    removeCompany = (type,orgId) => {
         this.setState({
             showRemoveCompany: !this.state.showRemoveCompany,
+            removeCompanyPopUpType:type,
+            orgId:orgId
         });
     };
 
@@ -798,16 +805,13 @@ class CompanyDetails extends Component {
 
     handleRemoveCompany = async (event) => {
 
-
-        // return false
         axios
             .delete(baseUrl + "user/org",{
-
-                data:{org_id:this.state.org._key}
+                data:{org_id:this.state.removeCompanyPopUpType==1?this.state.org._key:this.state.orgId}
             })
             .then((res) => {
 
-                this.removeCompany();
+
 
                 this.props.showSnackbar({
                     show: true,
@@ -816,10 +820,18 @@ class CompanyDetails extends Component {
                 });
 
 
-                setTimeout(function () {
-                    window.location.href = "/account";
-                }, 1000);
 
+
+                this.removeCompany(0);
+
+                if (this.props.removeCompanyPopUpType==1) {
+                    setTimeout(function () {
+                        window.location.href = "/account";
+                    }, 1000);
+
+                }else  if (this.props.removeCompanyPopUpType==2) {
+                    this.getOrgsApprovalForUser()
+                }
 
             })
             .catch((error) => {
@@ -831,6 +843,10 @@ class CompanyDetails extends Component {
                 });
             });
     };
+
+
+
+
 
 
     render() {
@@ -907,11 +923,14 @@ class CompanyDetails extends Component {
                 {this.state.orgsApproval.map((item)=>
 
                     <div className="row mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
-                        <div className={"col-9 text-blue "}>
+                            <div className={"col-7 text-blue "}>
                             {item.name}   <small className={"text-gray-light"}>{getTimeFormat(item._ts_epoch_ms)}</small>
                         </div>
                         <div className={"col-3  "}>
                             Status: <span className={"text-pink"}>Pending Approval</span>
+                        </div>
+                        <div className={"col-2 text-right "}>
+                           <CloseButtonPopUp onClick={()=>this.removeCompany(2,item._key)}/>
                         </div>
                     </div>
                 )}
@@ -1046,7 +1065,7 @@ class CompanyDetails extends Component {
                         {this.state.org &&  (
                             <button
                             // style={{ minWidth: "180px" }}
-                            onClick={this.removeCompany}
+                            onClick={()=>this.removeCompany(1)}
                             className="  btn-gray-border mr-2 ">
                             <Minus style={{ fontSize: "20px" }} /> Un-join {this.state.org.name}
                         </button>)}
@@ -1285,7 +1304,7 @@ class CompanyDetails extends Component {
                     size={"xs"}
                     hide={this.removeCompany}
                     show={this.state.showRemoveCompany}
-                    heading={"Un-join "+this.state.org.name}>
+                    heading={this.state.removeCompanyPopUpType==1?"Un-join "+this.state.org.name:"Cancel Join Request"}>
                     <>
                         <div className="col-12 ">
                             {this.state.errorCompany && (      <div className="row no-gutters">
@@ -1301,7 +1320,8 @@ class CompanyDetails extends Component {
 
                             <div className="row no-gutters">
                                 <div className="col-12 ">
-                                    Are you sure you want to un-join the company ?
+                                    {this.state.removeCompanyPopUpType==1?"Are you sure you want to un-join the company ?":
+                                        "Are you sure you want to cancel join request ?"}
                                 </div>
                             </div>
                         </div>

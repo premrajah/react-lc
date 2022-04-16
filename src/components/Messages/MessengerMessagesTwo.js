@@ -3,12 +3,14 @@ import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import {Divider, List} from "@mui/material";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
+import MessengerMessagesTwoSelectedMessage from "./MessengerMessagesTwoSelectedMessage";
 
 
 
 const MessengerMessagesTwo = () => {
 
     const [allGroups, setAllGroups] = useState([]);
+    const [clickedMessage, setClickedMessage] = useState([]);
 
     useEffect(() => {
         getAllMessageGroups();
@@ -19,7 +21,6 @@ const MessengerMessagesTwo = () => {
             .get(`${baseUrl}message-group/non-empty/expand`)
             .then((res) => {
                 const data = res.data.data;
-                console.log('> ', data)
                 setAllGroups(data);
             })
             .catch(error => {
@@ -32,22 +33,23 @@ const MessengerMessagesTwo = () => {
             .get(`${baseUrl}message-group/${key}/message`)
 
             .then((res) => {
-                console.log('sele ', res.data.data)
+                setClickedMessage(res.data.data);
             })
             .catch(error => {
 
             })
     }
 
-
-    const handleGroupDataDisplay = (groups, index) => {
-
-
-        return <MessengerMessagesTwoGroupItem key={index} groups={groups} index={index} />
-
+    const handleGroupClickCallback = (group) => {
+        setClickedMessage([]) // clear selected message
+        getSelectedGroupMessage(group.message_group._key);
     }
 
-    // {group.message_group.name.replaceAll("+", ", ")}
+
+    const handleGroupDataDisplay = (group, index) => {
+        return <MessengerMessagesTwoGroupItem key={index} group={group} index={index} handleGroupClickCallback={handleGroupClickCallback} />
+    }
+
 
     return <React.Fragment>
         <div className="row">
@@ -57,7 +59,7 @@ const MessengerMessagesTwo = () => {
                 </List>}
             </div>
             <div className="col-md-8">
-                2
+                {clickedMessage.length > 0 && <div style={{height: '500px', maxHeight: '500px', overflow: 'auto'}}><MessengerMessagesTwoSelectedMessage messages={clickedMessage} /></div>}
             </div>
         </div>
     </React.Fragment>

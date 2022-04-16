@@ -2,14 +2,15 @@ import React from "react";
 import { Chip, Divider, ListItem, ListItemText } from "@mui/material";
 import OrgComponent from "../Org/OrgComponent";
 
-const MessengerMessagesTwoGroupItem = ({ groups, index }) => {
-    const handleOrgDisplay = (group, index) => {
+const MessengerMessagesTwoGroupItem = ({ group, index, handleGroupClickCallback }) => {
+
+    const handleOrgDisplay = (org, index) => {
         return (
             <Chip
                 label={
                     <>
                         <span key={index}>
-                            <OrgComponent org={group} colorClass="blue-text" />
+                            <OrgComponent org={org} colorClass="blue-text" />
                         </span>
                     </>
                 }
@@ -21,11 +22,11 @@ const MessengerMessagesTwoGroupItem = ({ groups, index }) => {
 
     return (
         <>
-            <ListItem alignItems="flex-start">
+            <ListItem alignItems="flex-start" onClick={() => handleGroupClickCallback(group)} style={{cursor: "pointer"}}>
                 <ListItemText
                     primary={
-                        groups.orgs.length > 0 &&
-                        groups.orgs.map((group, index) => handleOrgDisplay(group, index))
+                        group.orgs.length > 0 &&
+                        group.orgs.map((org, index) => handleOrgDisplay(org, index))
                     }
                 />
             </ListItem>

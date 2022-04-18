@@ -73,10 +73,11 @@ export default function MenuDropdown(props) {
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
-                MenuListProps={{
-                    "aria-labelledby": "lock-button",
-                    role: "listbox",
-                }}>
+                // MenuListProps={{
+                //     "aria-labelledby": "lock-button",
+                //     role: "listbox",
+                // }}
+            >
                 {options.map((option, index) => (
                     <MenuItem
                         key={props.valueKey ? props.valueKey : option}

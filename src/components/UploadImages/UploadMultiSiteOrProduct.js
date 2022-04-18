@@ -18,6 +18,7 @@ import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import {Alert, Snackbar} from "@mui/material";
+import SiteFormNew from "../Sites/SiteFormNew";
 
 
 let productProperties=[
@@ -643,11 +644,15 @@ const UploadMultiSiteOrProduct = (props) => {
 
     }
 
-    const handleShowHideSite = () => {
-        props.loadSites();
+    const handleShowHideSite = (refresh) => {
+
         setSiteShowHide(!siteShowHide);
         setSubmitSiteError('');
-        setSubmitSiteErrorClassName('');
+        setSubmitSiteErrorClassName('')
+
+        if (refresh) {
+            props.loadSites();
+        }
     }
 
     const handleEditSiteCallBack = (e) => {
@@ -915,11 +920,22 @@ const UploadMultiSiteOrProduct = (props) => {
                     </div>
                 </div>
                 <div className="col-md-12 col-sm-12 col-xs-12 ">
+                    <div className=" row  justify-content-center align-items-center">
+                        <div className="col-12">
+                            <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>Add New Site</h4>
+                        </div>
+
+                    </div>
+
                     <div className={"row"}>
                         <div className={"col-12"}>
 
-                            <SiteForm submitCallback={ handleShowHideSite} setSiteFormNew={{show:true,type:"new",heading:"Add New Site"}} removePopUp={true} />
+                            {/*<SiteForm submitCallback={ handleShowHideSite} setSiteFormNew={{show:true,type:"new",heading:"Add New Site"}} removePopUp={true} />*/}
                             {/*<EditSite showHeader={false} site={{}} submitCallback={() => this.showSubmitSite()} />*/}
+                            <SiteFormNew refresh={()=>handleShowHideSite(true)}
+                                         />
+
+
 
                         </div>
                     </div>

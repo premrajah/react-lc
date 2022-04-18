@@ -17,6 +17,7 @@ import ManageRole from "../../components/Account/ManageRole";
 import SystemManageUser from "../../components/Account/SystemManageUser";
 import ManageOrgUsers from "../../components/Account/ManageOrgUsers";
 import AssumeRoles from "../../components/Account/AssumeRoles";
+import ManageOrgSettings from "../../components/Account/ManageOrgSettings";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -98,7 +99,6 @@ function a11yProps(index) {
                                 {props.isLoggedIn&& props.userContext &&
                                 <div className="row">
                                         <div className="col-md-3">
-
                                             <Tabs
 
                                                 className={"custom-vertical-tabs"}
@@ -121,6 +121,7 @@ function a11yProps(index) {
                                                 {props.userContext.perms.includes("AdminWrite") &&<Tab key={7} label="System Users" value={(7)} />}
                                                  {props.userContext.perms.includes("AdminWrite") &&
                                                         (props.userContext.perms.includes("LcAssumeUserRole") || props.userContext.perms.includes("LcAssumeOrgRole")  )  &&<Tab key={8} label="Assume Users" value={8} />}
+                                                {props.userContext.perms.includes("AdminWrite") &&<Tab key={9} label="Manage Orgs" value={(9)} />}
 
                                           }
 
@@ -149,13 +150,19 @@ function a11yProps(index) {
                                             {props.userContext.perms.includes("OrgAdminWrite") &&   <TabPanel value={value} index={6}>
                                         <ManageRole/>
                                     </TabPanel>}
-                                            {props.userContext.perms.includes("AdminWrite") &&        <TabPanel value={value} index={7}>
+                                            {props.userContext.perms.includes("AdminWrite") &&
+                                            <TabPanel value={value} index={7}>
                                                 <SystemManageUser/>
                                             </TabPanel>}
                                             {props.userContext.perms.includes("AdminWrite") &&
                                             (props.userContext.perms.includes("LcAssumeUserRole") || props.userContext.perms.includes("LcAssumeOrgRole")  )  &&
                                             <TabPanel value={value} index={8}>
                                                 <AssumeRoles/>
+                                            </TabPanel>}
+
+                                            {props.userContext.perms.includes("AdminWrite") &&
+                                            <TabPanel value={value} index={9}>
+                                                <ManageOrgSettings/>
                                             </TabPanel>}
 
 

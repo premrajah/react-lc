@@ -1,11 +1,8 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import CubeBlue from "../../img/icons/product-icon-big.png";
 import {withStyles} from "@mui/styles/index";
-import PageHeader from "../../components/PageHeader";
 import {baseUrl, checkImage, MIME_TYPES_ACCEPT} from "../../Util/Constants";
-import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import Stepper from '@mui/material/Stepper';
@@ -14,14 +11,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
-// import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DatePicker from '@mui/lab/DatePicker';
-import Attachment from "@mui/icons-material/FilePresent";
-
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
-
-
-import MomentUtils from "@date-io/moment";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -31,12 +21,11 @@ import Select from "@mui/material/Select";
 import {campaignStrategyUrl, createCampaignUrl} from "../../Util/Api";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import TextField from "@mui/material/TextField";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
-import {validateDate} from "@mui/lab/internal/pickers/date-utils";
 import DescriptionIcon from "@mui/icons-material/Description";
-import _ from "lodash";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
+import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
+import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 
 class CreateCampaign extends Component {
 
@@ -165,9 +154,6 @@ class CreateCampaign extends Component {
 
 
     handleChange(value,field,index ) {
-
-
-
 
 
         if (field==="startDate"){
@@ -366,11 +352,8 @@ class CreateCampaign extends Component {
     countStrategyProducts = ()  => {
 
         let fields=this.state.fields
-
-
         let conditionAll=[]
         let conditionAny=[]
-
 
 
         for (let i=0;i<this.state.countAll;i++) {
@@ -661,17 +644,12 @@ class CreateCampaign extends Component {
             artifact_ids:this.state.images,
         };
 
-        this.setState({isSubmitButtonPressed: true})
+        this.setState({isSubmitButtonPressed: true,loading:true})
 
         axios
             .put(
                 createCampaignUrl,
                 campaignData,
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
             )
             .then((res) => {
 
@@ -688,10 +666,10 @@ class CreateCampaign extends Component {
                 // this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
                 // this.props.toggleRightBar()
 
-
+                this.setState({isSubmitButtonPressed: false,loading:false})
             })
             .catch((error) => {
-                this.setState({isSubmitButtonPressed: false})
+                this.setState({isSubmitButtonPressed: false,loading:false})
             });
 
 
@@ -1307,16 +1285,6 @@ class CreateCampaign extends Component {
                                                             </div>
 
                                                             <div className="col-5">
-                                                                {/*<TextFieldWrapper*/}
-                                                                {/*    error={this.state.errors[`valueAnd[${index}]`]}*/}
-
-                                                                {/*    initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].value:null*/}
-                                                                {/*    }*/}
-                                                                {/*    onChange={(value)=>this.handleChange(value,`valueAnd[${index}]`)}*/}
-                                                                {/*    name={`valueAnd[${index}]`}*/}
-                                                                {/*    // value={((this.state.fields[`operatorAnd[${index}]`]==="equals"&&this.state.fields[`propertyAnd[${index}]`]==="brand")?this.props.userDetail.orgId:null)}*/}
-
-                                                                {/*/>*/}
 
                                                                 <AutoCompleteComboBox
                                                                     initialValue={this.state.conditionAll.length&&this.state.conditionAll[index]?this.state.conditionAll[index].value:null}
@@ -1327,8 +1295,6 @@ class CreateCampaign extends Component {
                                                                     name={`valueAnd[${index}]`}
 
                                                                 />
-
-
 
                                                             </div>
 
@@ -1400,18 +1366,13 @@ class CreateCampaign extends Component {
                                                                     <div className="col-md-12 col-sm-12 col-xs-12 pr-2 ">
 
                                                                         <SelectArrayWrapper
-
                                                                             initialValue={this.state.conditionAny.length>0&&this.state.conditionAny[index]?this.state.conditionAny[index].predicate:null}
                                                                             onChange={(value)=> {
                                                                                 this.handleChange(value,`propertyOr[${index}]`,index)
                                                                             }}
-
                                                                             select={"Select"}
-
                                                                             error={this.state.errors[`propertyOr[${index}]`]}
-
                                                                             options={this.state.properties} name={`propertyOr[${index}]`}
-                                                                            // title="Property"
                                                                         />
 
                                                                     </div>
@@ -1439,15 +1400,6 @@ class CreateCampaign extends Component {
                                                             </div>
 
                                                             <div className="col-5">
-                                                                {/*<TextFieldWrapper*/}
-                                                                {/*    error={this.state.errors[`valueOr[${index}]`]}*/}
-
-                                                                {/*    initialValue={this.state.conditionAny.length&&this.state.conditionAny[index]?this.state.conditionAny[index].value:null}*/}
-                                                                {/*    onChange={(value)=>this.handleChange(value,`valueOr[${index}]`)}*/}
-                                                                {/*    name={`valueOr[${index}]`}*/}
-                                                                {/*    // title="Value"*/}
-                                                                {/*/>*/}
-
 
                                                                 <AutoCompleteComboBox
                                                                     initialValue={this.state.conditionAny.length&&this.state.conditionAny[index]?this.state.conditionAny[index].value:null}
@@ -1734,19 +1686,25 @@ class CreateCampaign extends Component {
                                             </Button>
                                         )}
 
-                                        <button
+                                        <GreenSmallBtn
+
                                             variant="contained"
                                             color="primary"
                                             onClick={this.handleNext}
+
+                                            loading={this.state.loading}
+                                            disabled={this.state.loading}
+
                                             className={" btn-gray-border "}
+                                            title={this.state.files.length > 0 ? (
+                                                        this.state.files.filter((item) => item.status === 0).length >
+                                                        0 ?"Upload In Progress":this.state.activeStep!==2?"Next":"Submit"):
+                                                    this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
                                         >
 
 
-                                            {this.state.files.length > 0 ? (
-                                                    this.state.files.filter((item) => item.status === 0).length >
-                                                    0 ?"Upload In Progress":this.state.activeStep!==2?"Next":"Submit"):
-                                                this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
-                                        </button>
+
+                                        </GreenSmallBtn>
 
 
                                     </div>

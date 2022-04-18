@@ -5,7 +5,7 @@ const BlueBorderButton = ({onClick,title,fullWidth,disabled,loading, ...otherPro
 
     const { children } = otherProps
 
-    return <button className={`${disabled?" btn-gray":" blue-btn-border  "}  ${fullWidth?"btn-block":""}`}
+    return <button disabled={disabled} className={`${disabled?" btn-gray":" blue-btn-border  "}  ${fullWidth?"btn-block":""}`}
         onClick={onClick} {...otherProps}>
 
         {loading && (

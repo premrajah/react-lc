@@ -871,10 +871,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                 error={this.state.errors["address"]}
                                             />
 
-
-
-
-
                                         </div>
                                     </div>
 

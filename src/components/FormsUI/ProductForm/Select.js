@@ -18,7 +18,9 @@ const useStyles = makeStyles((theme) => ({
 
 const SelectArrayWrapper = (props) => {
 
-    const {label,title,option,initialValue,detailsHeading,details,noBorder,textAlignRight,placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
+    const {label,title,option,notNative,initialValue,detailsHeading,details,noBorder,textAlignRight,
+        placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect,
+        defaultValue,options,multiple,error, ...rest} = props;
 
     const [value, setValue] = React.useState();
     const classes = useStyles();
@@ -46,7 +48,11 @@ const SelectArrayWrapper = (props) => {
 
             <CustomizedSelect
 
-                native
+                multiple={multiple}
+                native={notNative?false:true}
+
+
+
                 variant="standard"
                 label={label}
                 value={defaultValue}

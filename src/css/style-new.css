@@ -2487,6 +2487,13 @@ button.blue-btn-border
 }
 
 @media screen and (max-width: 768px) {
+
+    .company-box>div{
+        display: flex;
+        flex-direction: column;
+    }
+
+
     .pl-3-desktop{
 
         padding-left: 0rem !important;
@@ -2501,6 +2508,7 @@ button.blue-btn-border
 }
 
 @media screen and (max-width: 576px) {
+
     .mt-mobile{
         margin-top: 10px;
     }
@@ -4284,8 +4292,16 @@ input:active,input:focus{
 
     background: #f9fbfc;
 }
-.pb-20{
+.pb-20 {
 
     padding-bottom: 5rem !important;
-
 }
+
+
+.fullWidth{
+width: 100% !important
+}
+
+
+
+

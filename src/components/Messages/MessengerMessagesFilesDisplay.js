@@ -11,7 +11,6 @@ import {
 
 const MessengerMessagesFilesDisplay = ({ artifacts }) => {
 
-
     return (
         <>
             {artifacts && <List sx={{width: "100%", maxWidth: "100%", bgcolor: "background.paper"}}>

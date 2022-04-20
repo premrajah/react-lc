@@ -2,7 +2,7 @@ import React from "react";
 import { Chip, Divider, ListItem, ListItemText } from "@mui/material";
 import OrgComponent from "../Org/OrgComponent";
 
-const MessengerMessagesTwoGroupItem = ({ group, index, handleGroupClickCallback }) => {
+const MessengerMessagesTwoGroupItem = ({ group, index, handleGroupClickCallback, handleSelectedItemCallback }) => {
 
     const handleOrgDisplay = (org, index) => {
         return (
@@ -20,9 +20,14 @@ const MessengerMessagesTwoGroupItem = ({ group, index, handleGroupClickCallback 
         );
     };
 
+    const handleListItemClick = () => {
+        handleSelectedItemCallback(index);
+        handleGroupClickCallback(group);
+    }
+
     return (
         <>
-            <ListItem alignItems="flex-start" onClick={() => handleGroupClickCallback(group)} style={{cursor: "pointer"}}>
+            <ListItem alignItems="flex-start" onClick={() => handleListItemClick()} style={{cursor: "pointer"}}>
                 <ListItemText
                     primary={
                         group.orgs.length > 0 &&
@@ -30,7 +35,6 @@ const MessengerMessagesTwoGroupItem = ({ group, index, handleGroupClickCallback 
                     }
                 />
             </ListItem>
-            <Divider style={{ background: "var(--lc-purple)", opacity: "0.3" }} />
         </>
     );
 };

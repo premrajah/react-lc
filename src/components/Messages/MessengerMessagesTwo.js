@@ -4,6 +4,7 @@ import {baseUrl} from "../../Util/Constants";
 import {Divider, List} from "@mui/material";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
 import MessengerMessagesTwoSelectedMessage from "./MessengerMessagesTwoSelectedMessage";
+import MenuItem from "@mui/material/MenuItem";
 
 
 
@@ -11,6 +12,7 @@ const MessengerMessagesTwo = () => {
 
     const [allGroups, setAllGroups] = useState([]);
     const [clickedMessage, setClickedMessage] = useState([]);
+    const [selectedMenuItemIndex, setSelectedMenuItemIndex] =useState(null);
 
     useEffect(() => {
         getAllMessageGroups();
@@ -45,9 +47,15 @@ const MessengerMessagesTwo = () => {
         getSelectedGroupMessage(group.message_group._key);
     }
 
+    const handleSelectedItemCallback = (selectedIndex) => {
+        setSelectedMenuItemIndex(selectedIndex);
+    }
+
 
     const handleGroupDataDisplay = (group, index) => {
-        return <MessengerMessagesTwoGroupItem key={index} group={group} index={index} handleGroupClickCallback={handleGroupClickCallback} />
+        return <MenuItem divider dense key={index} selected={selectedMenuItemIndex === index}>
+            <MessengerMessagesTwoGroupItem  group={group} index={index} handleGroupClickCallback={handleGroupClickCallback} handleSelectedItemCallback={handleSelectedItemCallback} />
+        </MenuItem>
     }
 
 

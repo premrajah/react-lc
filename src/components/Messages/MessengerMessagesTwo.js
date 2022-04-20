@@ -53,7 +53,7 @@ const MessengerMessagesTwo = () => {
 
 
     const handleGroupDataDisplay = (group, index) => {
-        return <MenuItem divider dense key={index} selected={selectedMenuItemIndex === index}>
+        return <MenuItem button divider dense key={index} selected={selectedMenuItemIndex === index}>
             <MessengerMessagesTwoGroupItem  group={group} index={index} handleGroupClickCallback={handleGroupClickCallback} handleSelectedItemCallback={handleSelectedItemCallback} />
         </MenuItem>
     }

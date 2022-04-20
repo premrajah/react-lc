@@ -27,7 +27,7 @@ const MessengerMessagesTwoGroupItem = ({ group, index, handleGroupClickCallback,
 
     return (
         <>
-            <ListItem alignItems="flex-start" onClick={() => handleListItemClick()} style={{cursor: "pointer"}}>
+            <ListItem  onClick={() => handleListItemClick()} >
                 <ListItemText
                     primary={
                         group.orgs.length > 0 &&

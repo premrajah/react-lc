@@ -215,7 +215,7 @@ class Notifications extends Component {
 
                 <Link
                     key={`${i}_${match}`}
-                    to={`product/${match}`}
+                    to={`p/${match}`}
                     onClick={() => this.messageRead(messageId)}>
                     View Product
                 </Link>

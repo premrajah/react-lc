@@ -22,7 +22,7 @@ const MessengerMessagesTwoGroupItem = ({ group, index, handleGroupClickCallback,
 
     const handleListItemClick = () => {
         handleSelectedItemCallback(index);
-        handleGroupClickCallback(group);
+        handleGroupClickCallback(group.message_group._key);
     }
 
     return (

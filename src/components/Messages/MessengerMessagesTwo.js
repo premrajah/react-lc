@@ -15,6 +15,7 @@ const MessengerMessagesTwo = () => {
     const [selectedMenuItemIndex, setSelectedMenuItemIndex] =useState(null);
 
     useEffect(() => {
+        setSelectedMenuItemIndex(0);
         getAllMessageGroups();
     }, [])
 
@@ -42,9 +43,9 @@ const MessengerMessagesTwo = () => {
             })
     }
 
-    const handleGroupClickCallback = (group) => {
+    const handleGroupClickCallback = (key) => {
         setClickedMessage([]) // clear selected message
-        getSelectedGroupMessage(group.message_group._key);
+        getSelectedGroupMessage(key);
     }
 
     const handleSelectedItemCallback = (selectedIndex) => {

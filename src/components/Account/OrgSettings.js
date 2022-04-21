@@ -116,7 +116,6 @@ class OrgSettings extends Component {
                             options=this.state.notifSettingsOptions.filter((option,index)=>  notification_settings[option])
                         }
 
-                     console.log(options)
 
                         this.setState({
                             matching_brands:  response.data.data.org.settings.matching_brands?response.data.data.org.settings.matching_brands.value:[] ,
@@ -211,7 +210,6 @@ class OrgSettings extends Component {
             const option = data.get("option");
                 values.push(option)
         }
-        console.log(values)
 
         this.setState({
             [field]:values
@@ -237,8 +235,6 @@ class OrgSettings extends Component {
 
 
     submitSettings=()=>{
-        console.log(this.state.fields)
-
 
         axios
             .post(baseUrl + "org/"+this.props.orgId,{

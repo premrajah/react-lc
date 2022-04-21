@@ -142,8 +142,6 @@ class CompanyDetails extends Component {
 
     companyDetails = (detail) => {
 
-            console.log(detail)
-
         if (detail.org) {
             this.setState({
                 orgId: detail.org,

@@ -142,8 +142,6 @@ class CompanyDetails extends Component {
 
     companyDetails = (detail) => {
 
-            console.log(detail)
-
         if (detail.org) {
             this.setState({
                 orgId: detail.org,
@@ -1208,7 +1206,7 @@ class CompanyDetails extends Component {
                                <TabPanel value="2">
                                    <div className={"row mt-4"}>
                                        <div className={"col-12 text-left"}>
-                                           <OrgSettings orgId={this.state.org._key} />
+                                           <OrgSettings orgId={this.state.org._key} isVisible={false} />
                                        </div>
                                    </div>
 

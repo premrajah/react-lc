@@ -123,23 +123,13 @@ class ManageOrgSettings extends Component {
 
             )
             .then((res) => {
-                console.log("user",getKey("user"))
-
-                console.log("token",getKey("token"))
                 removeKey("token")
-                // removeKey("user")
                 saveKey("assumedRole",true)
                 saveKey("roleName",this.state.fields["value"])
 
                 let usrObject=res.data.data
 
-                // delete usrObject["token"]
-
                 saveKey("token",JSON.stringify(res.data.data.token)+"")
-
-                // saveKey("user",usrObject)
-                // console.log("token",getKey("token"))
-                // console.log("user",getKey("user"))
 
                 this.props.showSnackbar({show: true, severity: "success", message: "User assumed successfully. Thanks"})
 
@@ -229,7 +219,7 @@ class ManageOrgSettings extends Component {
                     {this.state.orgId &&
                     <div className="col-12    mt-4">
 
-                    <OrgSettings
+                    <OrgSettings isVisible={true}
                         orgId={this.state.orgId}
 
                     />

@@ -88,6 +88,7 @@ class ProductForm extends Component {
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["New", "Used", "Salvage"],
+            powerSupply: ["Gas", "Electric", "Hybrid", "Solid_Fuel"],
             product: null,
             parentProduct: null,
             imageLoading: false,
@@ -451,6 +452,7 @@ class ProductForm extends Component {
                 const site = data.get("deliver")
                 const year_of_making = data.get("manufacturedDate")?data.get("manufacturedDate"):0
                 const external_reference = data.get("external_reference")
+                const power_supply = data.get("power_supply");
 
 
                 const productData = {
@@ -472,6 +474,7 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
+                        power_supply: power_supply.toLowerCase(),
                     },
 
                     year_of_making: year_of_making,
@@ -642,6 +645,7 @@ class ProductForm extends Component {
             const state = data.get("state");
            const external_reference = data.get("external_reference")
             const site = data.get("deliver");
+           const power_supply = data.get("power_supply");
 
             const productData = {
                 id: this.props.item.product._key,
@@ -666,6 +670,7 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
+                        power_supply: power_supply,
                     },
 
                     year_of_making: Number(data.get("manufacturedDate")),
@@ -1065,6 +1070,16 @@ class ProductForm extends Component {
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper  details="A unique number used by external systems"   initialValue={this.props.item&&this.props.item.product.external_reference} name="external_reference" title="External reference" />
 
+                                            </div>
+
+                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                                <SelectArrayWrapper
+                                                    initialValue={this.props.item&&this.props.item.product.power_supply}
+                                                    select={"Select"}
+                                                    onChange={(value)=> {
+
+                                                    }}
+                                                    options={this.state.powerSupply} name={"power_supply"} title="Power Supply"/>
                                             </div>
                                         </div>
 

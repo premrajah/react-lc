@@ -990,7 +990,8 @@ class ProductForm extends Component {
                                         onChange={(value)=>this.handleChangeProduct(value,"description")}
                                         error={this.state.errors["description"]}
                                         multiline
-                                  rows={4} name="description" title="Description" />
+                                  rows={4}
+                                                       name="description" title="Description" />
 
 
                                 </div>

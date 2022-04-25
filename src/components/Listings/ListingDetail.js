@@ -1,12 +1,8 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
-import AppBar from "@mui/material/AppBar";
 import {Link} from "react-router-dom";
 import PlaceholderImg from "../../img/place-holder-lc.png";
-import {makeStyles} from "@mui/styles";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
@@ -18,7 +14,6 @@ import NotFound from "../../views/NotFound";
 import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import MoreMenu from "../../components/MoreMenu";
 import ListEditForm from "../../components/ListEditForm";
-import Layout from "../../components/Layout/Layout";
 import OrgComponent from "../../components/Org/OrgComponent";
 import Box from "@mui/material/Box";
 import TabContext from "@mui/lab/TabContext";
@@ -29,6 +24,8 @@ import InfoTabContent from "../../components/Listings/InfoTabContent";
 import {GoogleMap} from "../../components/Map/MapsContainer";
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import Badge from "@mui/material/Badge";
+import GlobalDialog from "../RightBar/GlobalDialog";
+import Layout from "../Layout/Layout";
 
 class ListingDetail extends Component {
     slug;
@@ -563,26 +560,28 @@ marteplace
                                         </div>
                                     </div>
 
-                                    <Modal
-                                        size="lg"
-                                        show={this.state.showEdit}
-                                        onHide={this.showEdit}
-                                        className={"custom-modal-popup popup-form"}>
-                                        <div className="">
-                                            <button
-                                                onClick={this.showEdit}
-                                                className="btn-close close"
-                                                data-dismiss="modal"
-                                                aria-label="Close">
-                                                <i className="fas fa-times"></i>
-                                            </button>
-                                        </div>
+
+                                        <GlobalDialog
+
+                                            size={"md"}
+                                            hide={this.showEdit}
+                                            show={this.state.showEdit}
+                                            heading={"Edit Listing"}>
+                                            <>
+                                                <div className="col-12 ">
+
 
                                         <ListEditForm
                                             triggerCallback={this.showEdit}
                                             listingId={this.state.item.listing._key}
                                         />
-                                    </Modal>
+
+
+                                                </div>
+                                            </>
+                                        </GlobalDialog>
+
+
 
                                     {(this.state.item.org._id !== this.props.userDetail.orgId) && (
                                         <React.Fragment>

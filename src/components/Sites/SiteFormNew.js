@@ -496,8 +496,7 @@ class SiteFormNew extends Component {
 
     componentDidMount() {
 
-
-
+        window.scrollTo(0, 0);
         this.getSubSites()
 
 
@@ -506,10 +505,6 @@ class SiteFormNew extends Component {
                 showMapSelection: true,
                 showAddressField: false
             })
-
-
-
-
 
         // else if (this.props.showSiteForm.type==="link-product"){
 

@@ -36,9 +36,7 @@ const UNAUTHORIZED = 406;
 axios.interceptors.request.use((request) => {
     if (store.getState().isLoggedIn) {
 
-        request.headers =  {
-            'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
+        request.headers = { Authorization: "Bearer " + store.getState().token };
 
     }
     return request;

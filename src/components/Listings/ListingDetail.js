@@ -583,34 +583,7 @@ marteplace
 
 
 
-                                    {(this.state.item.org._id !== this.props.userDetail.orgId) && (
-                                        <React.Fragment>
 
-
-                                            <div
-
-                                                color="#ffffff"
-                                                className={
-                                                    "custom-bottom-fixed-appbar container  custom-bottom-appbar"
-                                                }>
-
-                                                    <div
-                                                        className="row  justify-content-center search-container "
-
-                                                    >
-                                                        <div className="col-12 text-center">
-                                                            <button
-                                                                onClick={this.props.type==="search"?this.props.requestMatch:this.acceptMatch}
-                                                                type="button"
-                                                                className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
-                                                                Request A Match
-                                                            </button>
-                                                        </div>
-                                                    </div>
-
-                                            </div>
-                                        </React.Fragment>
-                                    )}
 
                                     <Modal
                                         className={"loop-popup"}
@@ -686,10 +659,44 @@ marteplace
                                             )}
                                         </ModalBody>
                                     </Modal>
+
+
+
+
                                 </>
                             )}
                         </>
                     )}
+
+
+                {this.state.item&&(this.state.item.org._id !== this.props.userDetail.orgId) && (
+                    <React.Fragment>
+
+
+                        <div
+
+                            color="#ffffff"
+                            className={
+                                "custom-bottom-fixed-appbar   custom-bottom-appbar"
+                            }>
+
+                            <div
+                                className="row  justify-content-center search-container "
+
+                            >
+                                <div className="col-12 text-center">
+                                    <button
+                                        onClick={this.props.type==="search"?this.props.requestMatch:this.acceptMatch}
+                                        type="button"
+                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                        Request A Match
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </React.Fragment>
+                )}
 
             </>
         );

@@ -107,14 +107,14 @@ class OrgSettings extends Component {
                     if (response.data.data.org.settings) {
 
 
-                        let   notification_settings=response.data.data.org.settings.notification_settings.value
 
                         let options=[]
-                        if(notification_settings){
+                            let   notification_settings=response.data.data.org.settings&&response.data.data.org.settings.notification_settings?response.data.data.org.settings.notification_settings.value:[]
 
 
+                        if (notification_settings.length>0)
                             options=this.state.notifSettingsOptions.filter((option,index)=>  notification_settings[option])
-                        }
+
 
 
                         this.setState({

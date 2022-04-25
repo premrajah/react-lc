@@ -984,7 +984,7 @@ class ProductForm extends Component {
                                       options={this.state.powerSupply} name={"power_supply"} title="Power Supply"/>
                               </div>
 
-                                  <div className="col-md-8 col-sm-12 col-xs-12">
+                                  <div className="col-md-8 d-none col-sm-12 col-xs-12">
                                       <div className="custom-label text-bold ellipsis-end text-blue mb-0">Energy Rating
                                       </div>
                                   <div className="d-flex mt-2  align-items-center flex-row ">

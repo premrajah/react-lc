@@ -219,7 +219,7 @@ class ManageOrgSettings extends Component {
                     {this.state.orgId &&
                     <div className="col-12    mt-4">
 
-                    <OrgSettings
+                    <OrgSettings isVisible={true}
                         orgId={this.state.orgId}
 
                     />

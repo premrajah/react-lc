@@ -33,6 +33,7 @@ const BRACKETS_REGEX = /[(\[)(\])]/g;
 const A_TAG_REGEX = /\<a(.*)\<\/a\>"/g;
 const LISTING_REGEX = /Listing\/([\w\d]+)/g;
 const SEARCH_REGEX = /Search\/([\w\d]+)/g;
+const ISSUE_REGEX = /Issue\/([\w\d]+)/g;
 
 class Notifications extends Component {
     state = {
@@ -291,6 +292,15 @@ class Notifications extends Component {
                 to={`/search/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 Search
+            </Link>
+        ));
+
+        text = reactStringReplace(text, ISSUE_REGEX, (match, i) => (
+            <Link
+                key={`${i}_${match}`}
+                to={`/issue/${match}`}
+                onClick={() => this.messageRead(messageId)}>
+                Issue
             </Link>
         ));
 

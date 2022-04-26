@@ -6,10 +6,8 @@ import {Link} from "react-router-dom";
 import {withStyles} from "@mui/styles/index";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
-import SearchBar from "../../components/SearchBar";
-import {baseUrl, PRODUCTS_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import DownloadIcon from '@mui/icons-material/GetApp';
-import MapIcon from '@mui/icons-material/Map';
 import {CSVLink} from "react-csv";
 import {Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
@@ -168,10 +166,12 @@ class Products extends Component {
     loadProductsWithoutParentPageWise= async (data) => {
 
 
-        if (data.reset){
+        if (data&&data.reset){
 
             this.clearList()
         }
+
+        if (data)
         this.setFilters(data)
 
         this.seekCount()
@@ -448,7 +448,6 @@ class Products extends Component {
                                 </div>
                                 <div className="row  no-gutters mb-1">
                                     <div className="col blue-text">Selected Products</div>
-
                                     <button className=" btn-pink " onClick={() => this.setState({selectedProducts: []})}><>Clear</></button>
                                 </div>
 
@@ -509,7 +508,7 @@ class Products extends Component {
                         >
 
                             {this.state.items.map((item, index) => (
-                                <div id={item._key} key={item._key}>
+                                <div id={item._key} key={item._key+"-"+index}>
                                     <ProductItem
                                         index={index}
                                         goToLink={true}

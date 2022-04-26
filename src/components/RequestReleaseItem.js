@@ -1,20 +1,17 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PlaceholderImg from "../img/place-holder-lc.png";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
 
-import { Modal, ModalBody } from "react-bootstrap";
+import {Modal, ModalBody} from "react-bootstrap";
 import TextField from "@mui/material/TextField";
 import moment from "moment/moment";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { withStyles } from "@mui/styles/index";
-import Org from "./Org/Org";
+import {withStyles} from "@mui/styles/index";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
-import {CURRENT_PRODUCT, PRODUCT_NOT_FOUND} from "../store/types";
 import {capitalize} from "../Util/GlobalFunctions";
 import CustomizedSelect from "./FormsUI/ProductForm/CustomizedSelect";
 
@@ -50,24 +47,11 @@ class RequestReleaseItem extends Component {
 
         this.actionSubmit = this.actionSubmit.bind(this);
         this.showPopUpInitiateAction = this.showPopUpInitiateAction.bind(this);
-        this.getSites = this.getSites.bind(this);
+
         this.showSubmitSite = this.showSubmitSite.bind(this);
         this.getDetails = this.getDetails.bind(this);
     }
 
-    getSites() {
-        axios.get(baseUrl + "site").then(
-            (response) => {
-                let responseAll = response.data.data;
-
-                this.setState({
-                    sites: responseAll,
-                });
-            }
-        ).catch(error => {
-
-        });
-    }
 
     showPopUpInitiateAction(event) {
         if(!event) return;
@@ -115,11 +99,6 @@ class RequestReleaseItem extends Component {
             formIsValid = false;
             errors["phone"] = "Required";
         }
-        // if ((fields["phone"])&&!this.phonenumber(fields["phone"])) {
-        //
-        //     formIsValid = false;
-        //     errors["phone"] = "Invalid Phone Number!";
-        // }
 
         if (!fields["email"]) {
             formIsValid = false;
@@ -179,7 +158,6 @@ class RequestReleaseItem extends Component {
             });
 
             const data = new FormData(event.target);
-
             const email = data.get("email");
             const others = data.get("others");
             const name = data.get("name");

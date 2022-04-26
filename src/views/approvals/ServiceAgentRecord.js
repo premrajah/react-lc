@@ -9,6 +9,7 @@ import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import {Link} from "react-router-dom";
 import RequestRegisterItem from "../../components/RequestRegisterItem";
 import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 const ServiceAgentRecord = ({serviceAgentRequests, fetchServiceAgentRequest, history}) => {
 
@@ -43,9 +44,10 @@ const ServiceAgentRecord = ({serviceAgentRequests, fetchServiceAgentRequest, his
                             <div className="col">
                                 {serviceAgentRequests.length !== 0 ?
                                     serviceAgentRequests.filter(r => r.Release.stage !== "requested").map((item, index) => (
+                                        <ErrorBoundary skip>
                                         <div className="row" key={index}>
                                             <div className="col">
-                                                <Link to={`/product/${item.product.product._key}`}>
+                                                <Link to={`/product/${item.product_id.replace("Product/","")._key}`}>
                                                     <RequestServiceAgentItem
                                                         history={history}
                                                         item={item}
@@ -53,6 +55,7 @@ const ServiceAgentRecord = ({serviceAgentRequests, fetchServiceAgentRequest, his
                                                 </Link>
                                             </div>
                                         </div>
+                                        </ErrorBoundary>
                                     ))
                                     : (
                                         <div>No registered request records yet.</div>

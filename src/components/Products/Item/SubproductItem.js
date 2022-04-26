@@ -76,7 +76,7 @@ const SubproductItem = (props) => {
 
 
     return <>
-        <div className="row no-gutters justify-content-center mb-2 white-bg p-2 rad-8">
+        <div className="row no-gutters align-items-center justify-content-center mb-2 white-bg p-2 rad-8">
             <div className="col-2">
                 {
                     artifacts.length > 0

@@ -8,9 +8,6 @@ import {baseUrl} from "../../Util/Constants";
 import axios from "axios";
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import Cancel from '@mui/icons-material/Logout';
 import {getKey} from "../../LocalStorage/user-session";
 

@@ -1,20 +1,17 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import { Modal, ModalBody } from "react-bootstrap";
-import GrayLoop from "../img/icons/gray-loop.png";
 import TextField from "@mui/material/TextField";
-import { Link } from "react-router-dom";
-import CompanyInfo from "./CompanyInfo";
+import {Link} from "react-router-dom";
 import OrgComponent from "./Org/OrgComponent";
 import GreenButton from "./FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "./RightBar/GlobalDialog";
-import TextFieldWrapper from "./FormsUI/ProductForm/TextField";
 import GrayBorderBtn from "./FormsUI/Buttons/GrayBorderBtn";
 import {getActionName} from "../Util/GlobalFunctions";
+import GreenSmallBtn from "./FormsUI/Buttons/GreenSmallBtn";
 
 class MatchItemSeller extends Component {
     constructor(props) {
@@ -368,7 +365,7 @@ class MatchItemSeller extends Component {
             }
 
             this.getOffer();
-        }, 5000);
+        }, 10000);
     }
 
     componentWillUnmount() {
@@ -705,7 +702,7 @@ class MatchItemSeller extends Component {
                             <div className={"col-12 text-center mt-2"}>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <GreenButton
+                                        <GreenSmallBtn
 
                                             title={"Submit"}
                                             onClick={
@@ -716,7 +713,7 @@ class MatchItemSeller extends Component {
 
                                             type={"submit"}>
 
-                                        </GreenButton>
+                                        </GreenSmallBtn>
                                     </div>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
                                         <BlueBorderButton

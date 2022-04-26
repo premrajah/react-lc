@@ -27,7 +27,7 @@ const MessengerMessagesTwoGroupItem = ({ group, index, handleGroupClickCallback,
 
     return (
         <>
-            <ListItem  onClick={() => handleListItemClick()} >
+            <ListItem  onClick={() => handleListItemClick()}>
                 <ListItemText
                     primary={
                         group.orgs.length > 0 &&

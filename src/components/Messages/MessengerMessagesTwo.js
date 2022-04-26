@@ -54,13 +54,22 @@ const MessengerMessagesTwo = () => {
 
 
     const handleGroupDataDisplay = (group, index) => {
-        return <MenuItem button divider dense key={index} selected={selectedMenuItemIndex === index}>
+        return <MenuItem button divider dense disableGutters key={index} selected={selectedMenuItemIndex === index} style={{whiteSpace: 'normal'}}>
             <MessengerMessagesTwoGroupItem  group={group} index={index} handleGroupClickCallback={handleGroupClickCallback} handleSelectedItemCallback={handleSelectedItemCallback} />
         </MenuItem>
     }
 
 
     return <React.Fragment>
+        <div className="row">
+            <div className="col-md-4">
+                New message
+            </div>
+            <div className="col-md-8">
+                search
+            </div>
+        </div>
+
         <div className="row">
             <div className="col-md-4">
                 {allGroups.length > 0 && <List sx={{height: '500px', maxHeight: '500px', overflow: 'auto', bgColor: 'background.paper'}}>

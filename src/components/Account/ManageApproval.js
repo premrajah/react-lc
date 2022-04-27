@@ -269,7 +269,7 @@ class ManageApproval extends Component {
                                     {this.state.items.map((item,index)=>
                                         <div key={index}>
 
-                                            <ManageUserItem approveType toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)} refreshList={this.fetchUsers} item={{user:item}} index={index}/>
+                                            <ManageUserItem key={`user-1-${index}-${item._key}`}  approveType toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)} refreshList={this.fetchUsers} item={{user:item}} index={index}/>
 
                                         </div>
                                     )}

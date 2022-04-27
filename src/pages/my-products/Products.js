@@ -507,8 +507,8 @@ class Products extends Component {
                             loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)}
                         >
 
-                            {this.state.items.map((item, index) => (
-                                <div id={item._key} key={item._key+"-"+index}>
+                            {this.state.items.map((item, index) =>
+                                <div id={item._key}  key={item._key+"-"+index}>
                                     <ProductItem
                                         index={index}
                                         goToLink={true}
@@ -522,7 +522,7 @@ class Products extends Component {
                                         showAddToListButton
                                     />
                                 </div>
-                            ))}
+                            )}
 
                         </PaginationLayout>
 

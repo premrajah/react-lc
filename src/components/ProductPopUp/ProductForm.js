@@ -934,7 +934,7 @@ class ProductForm extends Component {
                                             error={this.state.errors["title"]}
                                             name="brand" title="Brand" />
                                         </div>
-                                        <div className="col-md-4 col-sm-12 col-xs-12 ">
+                                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
                                             <SelectArrayWrapper
                                                 details="Select product’s location from the existing sites or add new address below"

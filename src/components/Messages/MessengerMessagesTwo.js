@@ -8,6 +8,8 @@ import MenuItem from "@mui/material/MenuItem";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import MessengerMessagesTwoFilterChats from "./MessengerMessagesTwoFilterChats";
+import FilterListIcon from '@mui/icons-material/FilterList';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 
 
@@ -17,6 +19,7 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
     const [clickedMessage, setClickedMessage] = useState([]);
     const [selectedMenuItemIndex, setSelectedMenuItemIndex] =useState(null);
     const [filteredGroups, setFilteredGroups] = useState([]);
+    const [filterVisibility, setFilterVisibility] = useState(false);
 
     useEffect(() => {
         setSelectedMenuItemIndex(0);
@@ -65,6 +68,10 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
         console.log(values)
     }
 
+    const handleFilterVisibility = () => {
+        setFilterVisibility(!filterVisibility);
+    }
+
 
     const handleGroupDataDisplay = (group, index) => {
         return <MenuItem button divider dense disableGutters key={index} selected={selectedMenuItemIndex === index} style={{whiteSpace: 'normal'}}>
@@ -77,18 +84,25 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
         <div className="row">
             <div className="col-md-4">
                 <div className="row">
-                    <div className="col-md-19">
-                        <MessengerMessagesTwoFilterChats handleFilerCallback={(v) => handleFilterCallback(v)} />
+                    <div className="col-md-10 d-flex justify-content-between">
+                        {filterVisibility && <>
+                            <MessengerMessagesTwoFilterChats handleFilerCallback={(v) => handleFilterCallback(v)}/>
+                            <div className="d-flex justify-content-start align-items-center">{allGroups.length}</div>
+                        </>}
                     </div>
+
                     <div className="col-md-1">
-                        <div>{allGroups.length}</div>
+                        <div className="d-flex justify-content-end align-items-center">
+                            <FilterListIcon onClick={() => handleFilterVisibility()} />
+                        </div>
                     </div>
+
                     <div className="col-md-1">
-                        FI
+                        <div className="d-flex justify-content-end align-items-center">
+                            <AddCircleIcon />
+                        </div>
                     </div>
-                    <div className="col-md-1">
-                        N
-                    </div>
+
                 </div>
 
             </div>

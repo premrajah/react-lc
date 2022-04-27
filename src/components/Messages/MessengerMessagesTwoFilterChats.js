@@ -12,7 +12,7 @@ const MessengerMessagesTwoFilterChats = ({handleFilerCallback}) => {
         <input
             placeholder="Filter conversations"
             onChange={(e) => filterGroups(e)}
-            className="search-input full-width-field"
+            className="search-input"
         />
     </div>
 }

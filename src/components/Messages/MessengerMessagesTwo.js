@@ -66,6 +66,8 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
 
     const handleFilterCallback = (values) => {
         console.log(values)
+
+
     }
 
     const handleFilterVisibility = () => {
@@ -81,10 +83,10 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
 
 
     return <React.Fragment>
-        <div className="row">
+        <div className="row" style={{height: '45px'}}>
             <div className="col-md-4">
-                <div className="row">
-                    <div className="col-md-10 d-flex justify-content-between">
+                <div className="row" >
+                    <div className="col-md-10 d-flex justify-content-around">
                         {filterVisibility && <>
                             <MessengerMessagesTwoFilterChats handleFilerCallback={(v) => handleFilterCallback(v)}/>
                             <div className="d-flex justify-content-start align-items-center">{allGroups.length}</div>
@@ -92,13 +94,13 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
                     </div>
 
                     <div className="col-md-1">
-                        <div className="d-flex justify-content-end align-items-center">
+                        <div className="d-flex justify-content-center align-items-center" style={{height: '45px'}}>
                             <FilterListIcon onClick={() => handleFilterVisibility()} />
                         </div>
                     </div>
 
                     <div className="col-md-1">
-                        <div className="d-flex justify-content-end align-items-center">
+                        <div className="d-flex justify-content-center align-items-center" style={{height: '45px'}}>
                             <AddCircleIcon />
                         </div>
                     </div>

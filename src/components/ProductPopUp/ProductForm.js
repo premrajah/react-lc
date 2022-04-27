@@ -101,7 +101,7 @@ class ProductForm extends Component {
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["New", "Used", "Salvage"],
-            powerSupply: ["Electric", "Electric", "Hybrid", "Solid_Fuel"],
+            powerSupply: ["Gas", "Electric", "Hybrid", "Solid_Fuel"],
             product: null,
             parentProduct: null,
             imageLoading: false,
@@ -490,8 +490,7 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
-                        // power_supply: power_supply.toLowerCase(),
-                        // power_supply: "Electric",
+                        power_supply: power_supply.toLowerCase(),
                     },
 
                     year_of_making: year_of_making,
@@ -690,8 +689,7 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
-                        // power_supply: power_supply,
-
+                        power_supply: power_supply,
                     },
 
                     year_of_making: Number(data.get("manufacturedDate")),
@@ -914,7 +912,7 @@ class ProductForm extends Component {
                             <div className="row  mt-2">
                                 <div className="col-12">
                                     <div className="row camera-grids      ">
-                                        <div className="col-md-4 col-sm-12 col-xs-12  ">
+                                        <div className="col-md-4 d-none col-sm-12 col-xs-12  ">
 
                                             <SelectArrayWrapper  detailsHeading="What is the purpose of your product?"
                                                 details="Defined: a whole product,
@@ -973,7 +971,7 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                              <div className="row d-none mt-2">
+                              <div className="row  mt-2">
                               <div className="col-md-4 col-sm-6 col-xs-6">
                                   <SelectArrayWrapper
                                       initialValue={this.props.item&&this.props.item.product.power_supply}

@@ -5,19 +5,24 @@ import {Divider, List} from "@mui/material";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
 import MessengerMessagesTwoSelectedMessage from "./MessengerMessagesTwoSelectedMessage";
 import MenuItem from "@mui/material/MenuItem";
+import * as actionCreator from "../../store/actions/actions";
+import {connect} from "react-redux";
+import MessengerMessagesTwoFilterChats from "./MessengerMessagesTwoFilterChats";
 
 
 
-const MessengerMessagesTwo = () => {
+const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
 
     const [allGroups, setAllGroups] = useState([]);
     const [clickedMessage, setClickedMessage] = useState([]);
     const [selectedMenuItemIndex, setSelectedMenuItemIndex] =useState(null);
+    const [filteredGroups, setFilteredGroups] = useState([]);
 
     useEffect(() => {
         setSelectedMenuItemIndex(0);
         getAllMessageGroups();
     }, [])
+
 
     const getAllMessageGroups = () => {
         axios
@@ -32,19 +37,18 @@ const MessengerMessagesTwo = () => {
                 }
             })
             .catch(error => {
-
+                showSnackbar({show:true, severity:"warning", message: `${error.message}`})
             })
     }
 
     const getSelectedGroupMessage = (key) => {
         axios
             .get(`${baseUrl}message-group/${key}/message`)
-
             .then((res) => {
                 setClickedMessage(res.data.data);
             })
             .catch(error => {
-
+                showSnackbar({show:true, severity:"warning", message: `${error.message}`})
             })
     }
 
@@ -55,6 +59,10 @@ const MessengerMessagesTwo = () => {
 
     const handleSelectedItemCallback = (selectedIndex) => {
         setSelectedMenuItemIndex(selectedIndex);
+    }
+
+    const handleFilterCallback = (values) => {
+        console.log(values)
     }
 
 
@@ -68,7 +76,21 @@ const MessengerMessagesTwo = () => {
     return <React.Fragment>
         <div className="row">
             <div className="col-md-4">
-                New message
+                <div className="row">
+                    <div className="col-md-19">
+                        <MessengerMessagesTwoFilterChats handleFilerCallback={(v) => handleFilterCallback(v)} />
+                    </div>
+                    <div className="col-md-1">
+                        <div>{allGroups.length}</div>
+                    </div>
+                    <div className="col-md-1">
+                        FI
+                    </div>
+                    <div className="col-md-1">
+                        N
+                    </div>
+                </div>
+
             </div>
             <div className="col-md-8">
                 search
@@ -88,4 +110,18 @@ const MessengerMessagesTwo = () => {
     </React.Fragment>
 }
 
-export default MessengerMessagesTwo;
+
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        userDetail: state.userDetail,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessengerMessagesTwo);

@@ -219,12 +219,12 @@ class Sidebar extends Component {
 
 
 
-                                        <Link
-                                            onClick={this.toggleMenu}
-                                            to={"/help"}
-                                            className="white-text list-group-item list-group-item-action">
-                                            Help
-                                        </Link>
+                                        {/*<Link*/}
+                                        {/*    onClick={this.toggleMenu}*/}
+                                        {/*    to={"/help"}*/}
+                                        {/*    className="white-text list-group-item list-group-item-action">*/}
+                                        {/*    Help*/}
+                                        {/*</Link>*/}
 
 
 

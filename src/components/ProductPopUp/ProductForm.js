@@ -101,7 +101,7 @@ class ProductForm extends Component {
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["New", "Used", "Salvage"],
-            powerSupply: ["Gas", "Electric", "Hybrid", "Solid_Fuel"],
+            powerSupply: ["Electric", "Electric", "Hybrid", "Solid_Fuel"],
             product: null,
             parentProduct: null,
             imageLoading: false,
@@ -490,7 +490,8 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
-                        power_supply: power_supply.toLowerCase(),
+                        // power_supply: power_supply.toLowerCase(),
+                        // power_supply: "Electric",
                     },
 
                     year_of_making: year_of_making,
@@ -689,7 +690,8 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
-                        power_supply: power_supply,
+                        // power_supply: power_supply,
+
                     },
 
                     year_of_making: Number(data.get("manufacturedDate")),
@@ -971,7 +973,7 @@ class ProductForm extends Component {
                                 </div>
                             </div>
 
-                              <div className="row  mt-2">
+                              <div className="row d-none mt-2">
                               <div className="col-md-4 col-sm-6 col-xs-6">
                                   <SelectArrayWrapper
                                       initialValue={this.props.item&&this.props.item.product.power_supply}

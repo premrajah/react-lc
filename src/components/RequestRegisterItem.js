@@ -225,12 +225,12 @@ class RequestRegisterItem extends Component {
 
         return (
             <>
-                {this.state.item && (
+                {this.state.product && (
                     <>
                         <div className="row no-gutters bg-white rad-8 p-3 mb-4 ">
                             <div className={"col-md-2 col-xs-12 col-sm-12 "}>
                                 {this.state.artifacts.length > 0 ? (
-                                    <ImageOnlyThumbnail images={this.state.item.product.artifacts} />
+                                    <ImageOnlyThumbnail images={this.state.artifacts} />
                                 ) : (
                                     <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
                                 )}

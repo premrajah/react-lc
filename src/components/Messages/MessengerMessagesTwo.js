@@ -25,6 +25,11 @@ const MessengerMessagesTwo = () => {
             .then((res) => {
                 const data = res.data.data;
                 setAllGroups(data);
+
+                // on first load handle click
+                if(selectedMenuItemIndex === 0) {
+                    handleGroupClickCallback(data[0].message_group._key)
+                }
             })
             .catch(error => {
 

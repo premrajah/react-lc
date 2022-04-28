@@ -492,7 +492,6 @@ const UploadMultiSiteOrProduct = (props) => {
             }
             catch(e){
 
-
                 if (e.response.data.errors&&e.response.data.errors.length>0) {
                    e.response.data.errors.forEach(item => {
                        uploadError.push(<div className="d-flex flex-column">

@@ -33,6 +33,7 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
             .then((res) => {
                 const data = res.data.data;
                 setAllGroups(data);
+                setFilteredGroups(data);
 
                 // on first load handle click
                 if(selectedMenuItemIndex === 0) {
@@ -115,8 +116,8 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
 
         <div className="row">
             <div className="col-md-4">
-                {allGroups.length > 0 && <List sx={{height: '500px', maxHeight: '500px', overflow: 'auto', bgColor: 'background.paper'}}>
-                    {allGroups.map((g, index) => handleGroupDataDisplay(g, index))}
+                {filteredGroups.length > 0 && <List sx={{height: '500px', maxHeight: '500px', overflow: 'auto', bgColor: 'background.paper'}}>
+                    {filteredGroups.map((g, index) => handleGroupDataDisplay(g, index))}
                 </List>}
             </div>
             <div className="col-md-8">

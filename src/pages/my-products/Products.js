@@ -87,7 +87,7 @@ class Products extends Component {
 
     setFilters=(data)=>{
 
-        let filters= []
+
         let subFilter=[]
 
         let searchValue= data.searchValue
@@ -97,12 +97,12 @@ class Products extends Component {
 
             if (activeFilter){
 
-                subFilter.push({key:activeFilter, value:"" + searchValue + "", operator:"~"})
+                subFilter.push({key:activeFilter, value:searchValue})
 
             }else{
 
                 PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
-                    subFilter.push({key:item.key, value:"" + searchValue + "", operator:"~"})
+                    subFilter.push({key:item.key, value:searchValue})
                 )
 
 
@@ -110,17 +110,19 @@ class Products extends Component {
         }
 
 
-        filters.push({filters:subFilter,operator:"||"})
-
-
-        this.filters= filters
+        this.filters= subFilter
 
     }
 
     seekCount=async () => {
 
-        let url = createSeekURL("product", true, true, null, null,
-            this.filters, "AND")
+        let url = `${baseUrl}seek?name=Product&no_parent=true&count=true`;
+
+        this.filters.forEach((item)=>{
+
+            url = url+`&or=${item.key}~%${item.value}%`
+
+        })
 
 
         let result = await seekAxiosGet(url)
@@ -129,11 +131,13 @@ class Products extends Component {
         this.setState({
             count: result.data?result.data.data:0,
 
+
         })
 
 
 
     }
+
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -184,8 +188,18 @@ class Products extends Component {
         let newOffset = this.state.offset
 
 
-        let url = createSeekURL("product", true,
-            false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
+        // let url = createSeekURL("product", true,
+        //     false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
+
+
+        let url = `${baseUrl}seek?name=Product&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
+
+        this.filters.forEach((item)=>{
+
+            url = url+`&or=${item.key}~%${item.value}%`
+
+        })
+
 
         let result = await seekAxiosGet(url)
 
@@ -219,6 +233,8 @@ class Products extends Component {
 
 
     }
+
+
 
     componentDidMount() {
 

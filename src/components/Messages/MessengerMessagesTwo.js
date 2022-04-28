@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import MessengerMessagesTwoFilterChats from "./MessengerMessagesTwoFilterChats";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ClearIcon from '@mui/icons-material/Clear';
 
 
 
@@ -20,6 +21,7 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
     const [selectedMenuItemIndex, setSelectedMenuItemIndex] =useState(null);
     const [filteredGroups, setFilteredGroups] = useState([]);
     const [filterVisibility, setFilterVisibility] = useState(false);
+    const [filterValues, setFilterValues] = useState("");
 
     useEffect(() => {
         setSelectedMenuItemIndex(0);
@@ -66,18 +68,37 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
     }
 
     const handleFilterCallback = (values) => {
-        console.log(values)
+        setFilterValues(values);
+        if(filterValues) {
+            let temp = allGroups.filter((g, index) => {
+                return g.message_group.name && g.message_group.name.toLowerCase().includes(values.toLowerCase());
+            })
+
+            setFilteredGroups(temp);
+
+        } else {
+            setFilteredGroups(allGroups);
+        }
 
 
     }
 
     const handleFilterVisibility = () => {
         setFilterVisibility(!filterVisibility);
+
+        if(filterVisibility) {
+            setFilteredGroups(allGroups);
+        }
+    }
+
+    const handleClearFilterInput = () => {
+        setFilteredGroups(allGroups)
+        setFilterValues("");
     }
 
 
     const handleGroupDataDisplay = (group, index) => {
-        return <MenuItem button divider dense disableGutters key={index} selected={selectedMenuItemIndex === index} style={{whiteSpace: 'normal'}}>
+        return <MenuItem button divider dense disableGutters key={`${index}_${group.message_group._key}`} selected={selectedMenuItemIndex === index} style={{whiteSpace: 'normal'}} >
             <MessengerMessagesTwoGroupItem  group={group} index={index} handleGroupClickCallback={handleGroupClickCallback} handleSelectedItemCallback={handleSelectedItemCallback} />
         </MenuItem>
     }
@@ -90,7 +111,9 @@ const MessengerMessagesTwo = ({loading, userDetail, showSnackbar}) => {
                     <div className="col-md-10 d-flex justify-content-around">
                         {filterVisibility && <>
                             <MessengerMessagesTwoFilterChats handleFilerCallback={(v) => handleFilterCallback(v)}/>
-                            <div className="d-flex justify-content-start align-items-center">{allGroups.length}</div>
+                            <div className="d-flex justify-content-start align-items-center" onClick={() => handleClearFilterInput()}>{filterValues.length > 0 &&
+                                    <ClearIcon/>}</div>
+                            <div className="d-flex justify-content-start align-items-center">{filteredGroups.length}</div>
                         </>}
                     </div>
 

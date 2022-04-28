@@ -2,17 +2,20 @@ import React, {useState} from "react";
 
 const MessengerMessagesTwoFilterChats = ({handleFilerCallback}) => {
 
+    const [inputValue, setInputValue] = useState("");
 
     const filterGroups = (e) => {
-        const { value } = e.target;
-        handleFilerCallback(value)
+        setInputValue(e.target.value);
+        handleFilerCallback(inputValue)
     };
 
     return <div>
         <input
+            type="text"
             placeholder="Filter conversations"
             onChange={(e) => filterGroups(e)}
             className="search-input"
+            value={inputValue}
         />
     </div>
 }

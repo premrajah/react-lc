@@ -16,6 +16,8 @@ const MessengerMessagesTwoGroupItem = ({ group, index, handleGroupClickCallback,
                 }
                 className="mr-1 mb-1"
                 variant="outlined"
+                key={`${index}_${org._ts_epoch_ms}`}
+                id={`${index}_${org._ts_epoch_ms}`}
             />
         );
     };

@@ -785,6 +785,8 @@ class CompanyDetails extends Component {
 
                 this.addCompany();
 
+                this.getOrgsApprovalForUser()
+
                 this.props.showSnackbar({
                     show: true,
                     severity: "success",
@@ -810,6 +812,7 @@ class CompanyDetails extends Component {
             .then((res) => {
 
 
+                this.getOrgsApprovalForUser()
 
                 this.props.showSnackbar({
                     show: true,

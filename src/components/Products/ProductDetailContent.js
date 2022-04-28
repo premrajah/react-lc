@@ -1112,7 +1112,7 @@ class ProductDetailContent extends Component {
                                                             </BlueButton>
                                                         </div>
                                                         <div
-                                                            className={"col-6"}
+                                                            className={"col-6 d-none"}
                                                             style={{
                                                                 textAlign: "center",
                                                             }}>
@@ -1186,7 +1186,7 @@ class ProductDetailContent extends Component {
                                                                                         "row justify-content-center"
                                                                                     }>
                                                                                     <div
-                                                                                        className={"col-12 mt-3"}
+                                                                                        className={"col-12 mt-4 mb-4"}
                                                                                         style={{ textAlign: "center" }}>
                                                                                         <Alert
                                                                                             key={"alert"}
@@ -1219,7 +1219,7 @@ class ProductDetailContent extends Component {
                                                                                             </BlueButton>
                                                                                         </div>
                                                                                         <div
-                                                                                            className={"col-6"}
+                                                                                            className={"col-6 d-none"}
                                                                                             style={{
                                                                                                 textAlign: "center",
                                                                                             }}>
@@ -1312,7 +1312,7 @@ class ProductDetailContent extends Component {
                                                     <>
                                                         {!this.state.cancelReleaseSuccess && (
                                                             <div className={"row justify-content-center"}>
-                                                                <div className={"col-12 mt-3 text-center"}>
+                                                                <div className={"col-12 mt-4 mb-3 text-center"}>
                                                                     <Alert key={"alert"} variant={"success"}>
                                                                         Your release request has been submitted
                                                                         successfully. Thanks

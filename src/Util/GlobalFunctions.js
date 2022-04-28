@@ -100,10 +100,7 @@ export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, fil
 
     let url = `${baseUrl}seek?name=${entity}${extra?"&"+extra:""}`;
 
-
     url=url+`&count=${count}`
-
-
 
     if (offset===0||offset>0){
 
@@ -138,10 +135,17 @@ export const  ownerCheck=  (userDetail,orgId)=> {
 
 }
 
-export const  seekAxiosGet=  (url)=> {
+export const  seekAxiosGet=  (url,doNotEncode)=> {
 
 
-    return   axios.get((url)).catch((error)=>{
+    let urlEncode=url
+
+    if (!doNotEncode){
+        urlEncode=encodeURI(urlEncode)
+    }
+
+
+    return   axios.get(urlEncode).catch((error)=>{
 
         console.error(error);
 

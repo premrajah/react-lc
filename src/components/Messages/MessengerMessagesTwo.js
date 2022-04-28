@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
-import { Divider, List } from "@mui/material";
+import { List } from "@mui/material";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
 import MessengerMessagesTwoSelectedMessage from "./MessengerMessagesTwoSelectedMessage";
 import MenuItem from "@mui/material/MenuItem";

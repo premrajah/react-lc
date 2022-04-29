@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
-import { List } from "@mui/material";
+import {List, Tooltip} from "@mui/material";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
 import MessengerMessagesTwoSelectedMessage from "./MessengerMessagesTwoSelectedMessage";
 import MenuItem from "@mui/material/MenuItem";
@@ -135,19 +135,23 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         </div>
 
                         <div className="col-md-1">
-                            <div
-                                className="d-flex justify-content-center align-items-center"
-                                style={{ height: "45px" }}>
-                                <FilterListIcon onClick={() => handleFilterVisibility()} />
-                            </div>
+                            <Tooltip title="Filter chats">
+                                <div
+                                    className="d-flex justify-content-center align-items-center"
+                                    style={{ height: "45px" }}>
+                                    <FilterListIcon onClick={() => handleFilterVisibility()} />
+                                </div>
+                            </Tooltip>
                         </div>
 
                         <div className="col-md-1">
-                            <div
-                                className="d-flex justify-content-center align-items-center"
-                                style={{ height: "45px" }}>
-                                <AddCircleIcon />
-                            </div>
+                            <Tooltip title="New Chat">
+                                <div
+                                    className="d-flex justify-content-center align-items-center"
+                                    style={{ height: "45px" }}>
+                                    <AddCircleIcon />
+                                </div>
+                            </Tooltip>
                         </div>
                     </div>
                 </div>

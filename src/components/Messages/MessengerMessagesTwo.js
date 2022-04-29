@@ -87,10 +87,13 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         }
     };
 
-    const handleClearFilterInput = () => {
-        setFilteredGroups(allGroups);
-        setFilterValues("");
-    };
+    const handleClearInputCallback = (v) => {
+      if(!v) return;
+      if(v) {
+          setFilteredGroups(allGroups);
+      }
+    }
+
 
     const handleGroupDataDisplay = (group, index) => {
         return (
@@ -122,12 +125,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                 <>
                                     <MessengerMessagesTwoFilterChats
                                         handleFilerCallback={(v) => handleFilterCallback(v)}
+                                        handleClearInputCallback={(v) => handleClearInputCallback(v)}
                                     />
-                                    <div
-                                        className="d-flex justify-content-start align-items-center"
-                                        onClick={() => handleClearFilterInput()}>
-                                        {filterValues.length > 0 && <ClearIcon />}
-                                    </div>
                                     <div className="d-flex justify-content-start align-items-center">
                                         {filteredGroups.length}
                                     </div>

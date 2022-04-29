@@ -11,6 +11,7 @@ import MessengerMessagesTwoFilterChats from "./MessengerMessagesTwoFilterChats";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ClearIcon from "@mui/icons-material/Clear";
+import MessengerMessagesTwoOrgSearch from "./MessengerMessagesTwoOrgSearch";
 
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [allGroups, setAllGroups] = useState([]);
@@ -155,7 +156,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-8">search</div>
+                <div className="col-md-8">
+                    <MessengerMessagesTwoOrgSearch />
+                </div>
             </div>
 
             <div className="row">

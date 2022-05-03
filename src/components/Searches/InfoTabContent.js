@@ -48,6 +48,13 @@ class InfoTabContent extends Component {
                     </div>
                 )}
 
+                {this.props.item.search_type &&    <div className="row justify-content-start search-container ">
+                    <div className="col-auto">
+                        <p  className=" text-bold text-label text-blue mb-1">Type</p>
+                        <p className="text-gray-light mb text-capitlize" >{this.props.item.search_type} </p>
+                    </div>
+                </div>}
+
               <div className="row justify-content-start search-container ">
                     <div className="col-auto">
                         <p  className=" text-bold text-label text-blue mb-1">Amount</p>

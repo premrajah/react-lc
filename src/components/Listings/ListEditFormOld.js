@@ -1,47 +1,28 @@
 import React, {Component} from "react";
-import * as actionCreator from "../store/actions/actions";
+import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Close from "@mui/icons-material/Close";
 import {makeStyles} from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
-import TextField from "@mui/material/TextField";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
-import {baseUrl} from "../Util/Constants";
-import ProductExpandItem from "./Products/ProductExpandItem";
+import {baseUrl} from "../../Util/Constants";
+import ProductExpandItem from "../Products/ProductExpandItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import _ from "lodash";
 import clsx from "clsx";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import CustomizedInput from "./FormsUI/ProductForm/CustomizedInput";
-import CustomizedSelect from "./FormsUI/ProductForm/CustomizedSelect";
-import GlobalDialog from "./RightBar/GlobalDialog";
-import SiteFormNew from "./Sites/SiteFormNew";
-import Layout from "./Layout/Layout";
+import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+import SiteFormNew from "../Sites/SiteFormNew";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        "& > *": {
-            margin: theme.spacing(1),
-            width: "25ch",
-        },
-    },
-}));
-
-const useStylesTabs = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
 
 class ListEditForm extends Component {
     constructor(props) {

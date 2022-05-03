@@ -1,5 +1,6 @@
 
 import React, {useState} from "react";
+import AsyncSelect from 'react-select/async';
 import {Autocomplete, TextField} from "@mui/material";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
@@ -7,37 +8,21 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 
 const MessengerMessagesTwoOrgSearch = ({showSnackbar}) => {
+    const [inputValue, setInputValue] = useState([]);
 
-    const [newMsgOrgs, setNewMsgOrgs] = useState([])
-    const [open, setOpen] = useState(false)
-    const [selectOrgs, setSelectOrgs] = useState([])
 
-    const handleChange = (event, values) => {
-        if(!values) return;
-
-        let orgs = [];
-        values.forEach((item) => {
-            orgs.push(item._key);
-        });
-
-        setNewMsgOrgs(orgs);
+    const handleInputChange = (e) => {
+        setInputValue(e);
     };
 
-    const handleReactAsyncOnChange = (e) => {
-        const { value, options } = e.target;
+    const handleNewMessageSelectAsync = async (value) => {
         if(!value) return;
 
-        handleNewMessageSelectAsync(value);
-        setSelectOrgs([])
-    };
-
-    const handleNewMessageSelectAsync = async (inputValue) => {
         try {
-            const result = await axios.get(`${baseUrl}org/search?o=0&s=20&q=${inputValue}`);
+            const result = await axios.get(`${baseUrl}org/search?o=0&s=20&q=${value}`);
             const data = result.data.data;
 
-
-            setSelectOrgs(data.orgs);
+            return data;
 
         } catch (error) {
             showSnackbar({
@@ -48,37 +33,31 @@ const MessengerMessagesTwoOrgSearch = ({showSnackbar}) => {
         }
     };
 
+    const loadOptions = async (value, callback) => {
+        const response = await handleNewMessageSelectAsync(value);
+        callback(response.orgs.map(o => ({value: o._id, label: o.name})));
+
+        //   // callback(object.map(i => ({ label: `${i.fields.firstName} - ${i.fields.lasName} , value: i.fields.firstName })))
+
+        // simulate async operation
+        // setTimeout(() => {
+        //     callback([
+        //         { value: "apple", label: "Apple" },
+        //         { value: "amazon", label: "Amazon" },
+        //         { value: "Microsoft", label: "Microsoft" }
+        //     ]);
+        // }, 1000);
+    };
+
     return <div>
-        {console.log('so ', selectOrgs)}
-        <Autocomplete
-            className={"m-3"}
-            multiple
-            onOpen={() => setOpen(true)}
-            open={open}
-            onClose={() => setOpen(false)}
-            isOptionEqualToValue={(option, value) =>
-                option.name === value.name
-            }
-            // loading={this.state.loading}
-            id="messages-search-orgs"
-            onChange={() => handleChange()}
-            options={
-                selectOrgs.length > 0
-                    ? selectOrgs
-                    : []
-            }
-            noOptionsText="Enter company name to search"
-            variant={"standard"}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    style={{ minHeight: "45px" }}
-                    variant="standard"
-                    placeholder="Search companies"
-                    onChange={(e) => handleReactAsyncOnChange(e)}
-                />
-            )}
+        <AsyncSelect
+            isClearable
+            defaultOptions
+            placeholder="Search Orgs"
+            loadOptions={loadOptions}
+            onInputChange={handleInputChange}
+            isMulti
+            noOptionsMessage={i => "Search..."}
         />
     </div>
 }

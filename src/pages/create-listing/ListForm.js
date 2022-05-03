@@ -100,7 +100,8 @@ class ListFormNew extends Component {
             activeStep:0,
             showFieldErrors:false,
             items:[],
-            loading:false
+            loading:false,
+            types: ["sale", "rental"],
         };
 
         this.handleBack = this.handleBack.bind(this);
@@ -653,6 +654,8 @@ class ListFormNew extends Component {
                 units: this.state.fields["units"],
                 volume: this.state.fields["volume"],
                 state: this.state.fields["state"],
+              listing_type: this.state.fields["listing_type"],
+
                available_from_epoch_ms: new Date(this.state.startDate).getTime(),
                 expire_after_epoch_ms: new Date(this.state.endDate).getTime(),
          price: {
@@ -1228,7 +1231,7 @@ class ListFormNew extends Component {
                                             </div>
                                         </div>
                                         <div className="row  justify-content-start ">
-                                            <div className="col-6 ">
+                                            <div className="col-4 ">
                                                 <div
                                                     className={
                                                         "custom-label text-bold text-blue "
@@ -1266,7 +1269,7 @@ class ListFormNew extends Component {
 
                                             </div>
 
-                                            <div className="col-6  ">
+                                            <div className="col-4  ">
 
                                                 <div
                                                     className={
@@ -1297,12 +1300,27 @@ class ListFormNew extends Component {
                                                 {this.state.showFieldErrors&&this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
 
                                             </div>
+
+                                            <div className="col-4">
+
+                                                <SelectArrayWrapper
+
+                                                    select={"Select"}
+                                                    onChange={(value)=> {
+                                                        this.handleChange(value,"listing_type")
+
+                                                    }}
+                                                    options={this.state.types} name={"listing_type"} title="Type"/>
+
+
+                                            </div>
                                         </div>
 
                                         <div className="row no-gutters justify-content-start ">
 
                                         <div className="col-12 mb-3">
                                             <div className="row">
+
                                                 <div className="col-md-6 col-sm-12 col-xs-12">
                                                     <div className="row mt-3">
 
@@ -1350,6 +1368,8 @@ class ListFormNew extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
+
+
                                             </div>
                                         </div>
                                         </div>

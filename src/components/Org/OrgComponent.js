@@ -20,7 +20,7 @@ const OrgComponent = (props) => {
 
     const   fetchUserOrg=(org)=> {
         axios
-            .get(baseUrl + ""+org   )
+            .get(baseUrl + "org/"+org   )
             .then(
                 (response) => {
 

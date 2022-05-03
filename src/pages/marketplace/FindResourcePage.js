@@ -237,7 +237,7 @@ class FindResourcePage extends Component {
                           />
                       </ErrorBoundary>
                   ))
-            : "Loading, no resources yet...";
+            : "";
     };
 
     render() {

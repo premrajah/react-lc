@@ -101,22 +101,13 @@ class OrgSettings extends Component {
             .then(
                 (response) => {
 
-
-
-
                     if (response.data.data.org.settings) {
 
-
-                        let   notification_settings=response.data.data.org.settings.notification_settings.value
-
                         let options=[]
-                        if(notification_settings){
+                            let   notification_settings=response.data.data.org.settings&&response.data.data.org.settings.notification_settings?response.data.data.org.settings.notification_settings.value:[]
 
-
+                        if (notification_settings.length>0)
                             options=this.state.notifSettingsOptions.filter((option,index)=>  notification_settings[option])
-                        }
-
-                     console.log(options)
 
                         this.setState({
                             matching_brands:  response.data.data.org.settings.matching_brands?response.data.data.org.settings.matching_brands.value:[] ,
@@ -140,10 +131,6 @@ class OrgSettings extends Component {
             );
     }
 
-
-
-
-
     fetchAllSettings=()=> {
         axios
             .get(baseUrl + "org/setting")
@@ -162,8 +149,6 @@ class OrgSettings extends Component {
                 }
             );
     }
-
-
 
 
     handleChange(value, field) {
@@ -211,7 +196,6 @@ class OrgSettings extends Component {
             const option = data.get("option");
                 values.push(option)
         }
-        console.log(values)
 
         this.setState({
             [field]:values
@@ -237,8 +221,6 @@ class OrgSettings extends Component {
 
 
     submitSettings=()=>{
-        console.log(this.state.fields)
-
 
         axios
             .post(baseUrl + "org/"+this.props.orgId,{
@@ -391,7 +373,7 @@ class OrgSettings extends Component {
                     </TableCell>
                 </TableRow>
 
-                <TableRow
+                {this.props.isVisible && <TableRow
                 className={"custom-table-row"}
                 key={1}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -444,8 +426,8 @@ class OrgSettings extends Component {
 
                     </TableCell>
 
-            </TableRow>
-                <TableRow
+            </TableRow> }
+                {this.props.isVisible && <TableRow
                     className={"custom-table-row"}
                     key={1}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -496,7 +478,7 @@ class OrgSettings extends Component {
                         </div>
 
                     </TableCell>
-                </TableRow>
+                </TableRow>}
 
                 <TableRow
                     className={"custom-table-row"}

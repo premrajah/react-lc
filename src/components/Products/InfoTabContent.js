@@ -229,6 +229,26 @@ class InfoTabContent extends Component {
                     </div>
                 )}
 
+                {this.props.item &&
+                this.props.item.product.sku.power_supply && (
+                    <div className="row  justify-content-start search-container  pb-2 ">
+                        <div className={"col-auto"}>
+                            <p
+
+                                className=" text-label text-blue mb-1 text-label">
+                                Power Supply.
+                            </p>
+                            <p
+
+                                className=" text-gray-light mb-1">
+                                {this.props.item &&
+                                this.props.item.product.sku
+                                    .power_supply}
+                            </p>
+                        </div>
+                    </div>
+                )}
+
                 <div className="row  justify-content-start search-container  pb-2 ">
                     <div className={"col-auto"}>
                         <p

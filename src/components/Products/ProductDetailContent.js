@@ -36,6 +36,7 @@ import BlueButton from "../FormsUI/Buttons/BlueButton";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
+import {getTimeFormat} from "../../Util/GlobalFunctions";
 
 
 class ProductDetailContent extends Component {
@@ -80,7 +81,8 @@ class ProductDetailContent extends Component {
             initialValues:{},
             activeKey:"1",
             activeReleaseTabKey:"1",
-            zoomQrCode:false
+            zoomQrCode:false,
+            releases:[]
 
         };
 
@@ -131,42 +133,34 @@ class ProductDetailContent extends Component {
 
 
     actionSubmit = () => {
-        var data = {
-            id: this.state.currentReleaseId,
-            new_stage: "cancelled",
-            // "site_id": this.state.site
-        };
 
-        axios
-            .post(
-                baseUrl + "release/stage",
-                data,
+        if (this.state.releases&&this.state.releases.length>0) {
+            var data = {
+                id: this.state.releases[0].Release._key,
+                new_stage: "cancelled",
+                // "site_id": this.state.site
+            };
 
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
-            )
-            .then((res) => {
-                // this.getDetails()
-                //
-                //
-                // this.showPopUpInitiateAction()
+            axios
+                .post(baseUrl + "release/stage", data)
+                .then((res) => {
 
-                // this.showReleaseProduct()
 
-                this.setState({
-                    cancelReleaseSuccess: true,
+                    this.fetchReleases()
+
+                    this.props.showSnackbar({show:true,severity:"success",message:"Release request cancelled successfully. Thanks"})
+
+
+                })
+                .catch((error) => {
+                    // this.setState({
+                    //
+                    //     showPopUp: true,
+                    //     loopError: error.response.data.content.message
+                    // })
                 });
-            })
-            .catch((error) => {
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
-            });
+
+        }
     };
 
     companyDetails = (detail) => {
@@ -301,8 +295,6 @@ class ProductDetailContent extends Component {
 
         if (prevProps!==this.props) {
 
-
-
             this.setActiveKey(null,"1")
 
 
@@ -359,7 +351,7 @@ class ProductDetailContent extends Component {
 
     triggerCallback() {
         this.showProductEdit();
-        // this.props.triggerCallback();
+
     }
 
     deleteItem() {
@@ -447,6 +439,10 @@ class ProductDetailContent extends Component {
                     currentReleaseId: res.data.data._key,
                     showReleaseSuccess: true,
                 });
+
+                this.fetchReleases()
+
+
             })
             .catch((error) => {
                 this.setState({
@@ -662,6 +658,26 @@ class ProductDetailContent extends Component {
             );
     }
 
+
+
+    fetchReleases=()=> {
+        axios
+            .get(baseUrl + "release/product/"+this.state.item.product._key)
+            .then(
+                (response) => {
+
+                    this.setState({
+                        releases: response.data.data,
+
+                    });
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
+
+
     componentDidMount() {
         if (!this.props.item) {
             this.loadProduct(this.props.productId);
@@ -674,6 +690,9 @@ class ProductDetailContent extends Component {
         }
 
         this.setActiveKey(null,"1")
+
+
+            this.fetchReleases()
 
     }
 
@@ -1112,7 +1131,7 @@ class ProductDetailContent extends Component {
                                                             </BlueButton>
                                                         </div>
                                                         <div
-                                                            className={"col-6"}
+                                                            className={"col-6 d-none"}
                                                             style={{
                                                                 textAlign: "center",
                                                             }}>
@@ -1137,8 +1156,11 @@ class ProductDetailContent extends Component {
                                             </TabPanel>
                                             <TabPanel value="2">
 
-                                                {!this.state.showReleaseSuccess ? (
+                                                {/*{!this.state.showReleaseSuccess ? (*/}
                                                     <> <div className={"row "}>
+                                                        {!(this.state.releases&&
+                                                            this.state.releases.length&&
+                                                            this.state.releases.filter(item=>item.Release.stage!=="cancelled").length>0)&&
                                                         <div className={"col-12 mt-3 "}>
 
                                                             <div style={{position:"relative"}} className="text_fild ">
@@ -1154,7 +1176,33 @@ class ProductDetailContent extends Component {
                                                                     }
                                                                 />
                                                             </div>
-                                                        </div>
+                                                        </div>}
+
+                                                        {this.state.releases&&this.state.releases.length>0
+                                                        && this.state.releases.filter(item=>item.Release.stage!=="cancelled").map((release)=>
+
+                                                            <div className={"col-12 mt-3 "}>
+
+                                                                <div className="row mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
+                                                                    <div className={"col-11 text-blue "}>
+                                                                       Product Release request to  <b>{release.responder.name}</b> <br/>
+                                                                        Status: <span className="text-pink text-capitlize">{release.Release.stage}</span>
+                                                                        <br/><small className="text-gray-light mr-2">{getTimeFormat(release.Release._ts_epoch_ms)}</small>
+                                                                    </div>
+
+                                                                    <div className={"col-1 text-right "}>
+                                                                         <CloseButtonPopUp
+                                                                            // onClick={()=>this.removeCompany(2,item._key)}
+
+                                                                            onClick={this.actionSubmit}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                            </div>
+                                                        )}
                                                         <div className={"col-12 "}>
                                                             <form onSubmit={this.submitReleaseProduct}>
                                                                 <div className={"row justify-content-center "}>
@@ -1186,7 +1234,7 @@ class ProductDetailContent extends Component {
                                                                                         "row justify-content-center"
                                                                                     }>
                                                                                     <div
-                                                                                        className={"col-12 mt-3"}
+                                                                                        className={"col-12 mt-4 mb-4"}
                                                                                         style={{ textAlign: "center" }}>
                                                                                         <Alert
                                                                                             key={"alert"}
@@ -1211,15 +1259,17 @@ class ProductDetailContent extends Component {
                                                                                             style={{
                                                                                                 textAlign: "center",
                                                                                             }}>
-                                                                                            <BlueButton
+                                                                                            {!(this.state.releases&&
+                                                                                                this.state.releases.length&&
+                                                                                                this.state.releases.filter(item=>item.Release.stage!=="cancelled").length>0)&&         <BlueButton
                                                                                                 fullWidth
                                                                                                 title={"Submit"}
                                                                                                 type={"submit"}>
 
-                                                                                            </BlueButton>
+                                                                                            </BlueButton>}
                                                                                         </div>
                                                                                         <div
-                                                                                            className={"col-6"}
+                                                                                            className={"col-6 d-none"}
                                                                                             style={{
                                                                                                 textAlign: "center",
                                                                                             }}>
@@ -1308,11 +1358,11 @@ class ProductDetailContent extends Component {
                                                         )}
                                                     </div>
                                                     </>
-                                                ) : (
-                                                    <>
+                                                {/*) : (*/}
+                                                    <div className="d-none">
                                                         {!this.state.cancelReleaseSuccess && (
                                                             <div className={"row justify-content-center"}>
-                                                                <div className={"col-12 mt-3 text-center"}>
+                                                                <div className={"col-12 mt-4 mb-3 text-center"}>
                                                                     <Alert key={"alert"} variant={"success"}>
                                                                         Your release request has been submitted
                                                                         successfully. Thanks
@@ -1341,11 +1391,7 @@ class ProductDetailContent extends Component {
                                                                     fullWidth
                                                                     type="button"
                                                                     onClick={this.showReleaseProductPopUp}
-
-
                                                                 >
-
-                                                                    Ok
                                                                 </BlueButton>
                                                             </div>
                                                             <div
@@ -1355,14 +1401,13 @@ class ProductDetailContent extends Component {
                                                                     title={" Cancel Release"}
                                                                     fullWidth
                                                                     onClick={this.actionSubmit}
-
                                                                 >
 
                                                                 </BlueBorderLink>
                                                             </div>
                                                         </div>
-                                                    </>
-                                                )}
+                                                    </div>
+                                                {/*)}*/}
 
 
 

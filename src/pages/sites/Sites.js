@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
-import {baseUrl, SITES_FILTER_VALUES} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES_KEY, SITES_FILTER_VALUES} from "../../Util/Constants";
 import {Modal} from "react-bootstrap";
 import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
 import Layout from "../../components/Layout/Layout";
@@ -14,6 +14,7 @@ import axios from "axios";
 import SitePageItem from "../../components/Sites/SitePageItem";
 import PaginationLayoutOld from "../../components/IntersectionOserver/PaginationLayoutOld";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
+import {seekAxiosGet} from "../../Util/GlobalFunctions";
 
 class Sites extends Component {
 
@@ -28,8 +29,11 @@ class Sites extends Component {
             lastPageReached:false,
             currentOffset:0,
             productPageSize:50,
+
+            offset:0,
+            pageSize:50,
             loadingResults:false,
-            count:0
+            count:0,
         }
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -48,43 +52,91 @@ class Sites extends Component {
     }
 
 
-    componentDidMount() {
 
-
-        // this.props.loadParentSites();
-
-        this.setState({
-            items:[]
-        })
-        this.getTotalCount()
-    }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
 
         if (prevProps!==this.props) {
 
-            // if (this.props.refresh){
-            //
-            //     this.props.refreshPage(false)
-            //
-            //     this.setState({
-            //         items:[],
-            //         currentOffset:0,
-            //     })
-            //
-            //
-            //     if (this.state.currentOffset==0){
-            //         this.getTotalCount()
-            //
-            //         this.loadProductsWithoutParentPageWise();
-            //     }
-            //
-            //
-            // }
+            if (this.props.refresh){
+                this.props.refreshPage(false)
+
+                this.setState({
+                    items:[],
+                    offset:0,
+                })
+
+            }
         }
 
+    }
+
+
+    componentDidMount() {
+
+        this.setState({
+            items:[]
+        })
+
+    }
+
+
+    setFilters=(data)=>{
+
+
+        let subFilter=[]
+
+        let searchValue= data.searchValue
+        let activeFilter= data.searchFilter
+
+        if (searchValue){
+
+            if (activeFilter){
+
+                subFilter.push({key:activeFilter, value:searchValue})
+
+            }else{
+
+                SITES_FILTER_VALUES.forEach((item)=>
+                    subFilter.push({key:item.key, value:searchValue})
+                )
+
+
+            }
         }
+
+
+        this.filters= subFilter
+
+    }
+
+
+
+    seekCount=async () => {
+
+        let url = `${baseUrl}seek?name=Site&no_parent=true&count=true`;
+
+        this.filters.forEach((item)=>{
+
+            url = url+`&or=${item.key}~%${item.value}%`
+
+        })
+
+
+        let result = await seekAxiosGet(url)
+
+
+        this.setState({
+            count: result.data?result.data.data:0,
+
+
+        })
+
+
+
+    }
+
 
 
     getTotalCount=()=>{
@@ -114,6 +166,83 @@ class Sites extends Component {
     }
 
 
+
+    loadSitesWithoutParentPageWise= async (data) => {
+
+
+        if (data&&data.reset){
+
+            this.clearList()
+        }
+
+        if (data)
+            this.setFilters(data)
+
+        this.seekCount()
+
+        this.setState({
+
+            loadingResults: true
+        })
+
+        let newOffset = this.state.offset
+
+
+        // let url = createSeekURL("product", true,
+        //     false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
+
+
+        let url = `${baseUrl}seek?name=Site&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
+
+        this.filters.forEach((item)=>{
+
+            url = url+`&or=${item.key}~%${item.value}%`
+
+        })
+
+
+        let result = await seekAxiosGet(url)
+
+
+        if (result && result.data && result.data.data) {
+
+            this.state.offset= newOffset + this.state.pageSize
+
+            this.setState({
+                items: this.state.items.concat(result.data?result.data.data:[]),
+                loadingResults: false,
+                lastPageReached: (result.data?(result.data.data.length === 0 ? true : false):true),
+                offset: newOffset + this.state.pageSize
+
+            })
+        }else{
+
+            if (result) {
+                this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+
+                this.setState({
+
+                    loadingResults: false,
+                    lastPageReached:true
+
+                })
+
+            }
+        }
+
+
+
+    }
+
+    clearList=()=>{
+
+        this.setState({
+            offset:0,
+            items:[],
+            lastPageReached:false,
+            loadingResults: false,
+        })
+    }
 
     loadProductsWithoutParentPageWise=()=>{
 
@@ -194,48 +323,19 @@ class Sites extends Component {
                                 </Link>
                             </div>
                         </div>
-                        <div className="row  justify-content-center search-container  pt-3 pb-3">
-                            <div className={"col-12"}>
-                                <SearchBar onSearch={(sv) => this.handleSearch(sv)}  onSearchFilter={(fv) => this.handleSearchFilter(fv)}  dropDown dropDownValues={SITES_FILTER_VALUES} />
-                            </div>
-                        </div>
-
-                        <div className="row  justify-content-center filter-row   pb-3">
-                            <div className="col">
-                                <p style={{ fontSize: "18px" }}
-                                   className="text-gray-light ">Showing {this.state.items.filter((site)=>
-                                        this.state.filterValue?( this.state.filterValue==="name"?
-                                            site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                            this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                                this.state.filterValue==="address"? site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()):null):
-                                            (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                                site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                                                site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()))).length
-                                    }
-                                    <span className="ml-1 "> of {this.state.count} Sites</span>
-                                </p>
-                            </div>
-
-                        </div>
 
 
                         <PaginationLayout
-                            hideSearch
-                            hideCount
+                            dropDownValues={SITES_FILTER_VALUES}
+                            count={this.state.count}
+                            visibleCount={this.state.items.length}
                             loadingResults={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
-                            loadMore={this.loadProductsWithoutParentPageWise} >
+                            loadMore={(data)=>this.loadSitesWithoutParentPageWise(data)}
+
+                        >
 
                         {this.state.items&&this.state.items
-                            .filter((site)=>
-                                this.state.filterValue?( this.state.filterValue==="name"?
-                                site.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                this.state.filterValue==="site id"? site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase()):
-                                this.state.filterValue==="address"? site.address.toLowerCase().includes(this.state.searchValue.toLowerCase()):null):
-                                (site.name.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                            site.external_reference&&site.external_reference.toLowerCase().includes(this.state.searchValue.toLowerCase())||
-                            site.address.toLowerCase().includes(this.state.searchValue.toLowerCase())))
-
                             .map((site, index) =>
                             <React.Fragment key={index}>
                                 <SitePageItem  showEdit={true} item={site}/>
@@ -311,6 +411,7 @@ const mapDispatchToProps = (dispatch) => {
         loadParentSites: (data) => dispatch(actionCreator.loadParentSites(data)),
         setSiteForm: (data) => dispatch(actionCreator.setSiteForm(data)),
         refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
 
     };
 };

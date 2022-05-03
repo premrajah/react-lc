@@ -358,7 +358,7 @@ class RequestServiceAgentItem extends Component {
 
         return (
             <>
-                {this.state.item && (
+                {this.state.product && (
                     <>
                         <div  className="row  justify-content-center bg-white no-gutters rad-8 p-3 mb-4 ">
                             <div className={"col-md-2 col-xs-12 col-sm-12 "}>

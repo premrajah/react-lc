@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import RequestReleaseItem from "../../components/RequestReleaseItem";
 import * as actionCreator from "../../store/actions/actions";
+import Layout from "../../components/Layout/Layout";
 
 class ApprovedReleases extends Component {
 
@@ -18,11 +19,7 @@ class ApprovedReleases extends Component {
 
     render() {
         return (
-            <div>
-                <Sidebar />
-                <div className="wrapper">
-                    <HeaderDark />
-
+            <Layout>
                     <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={ArchiveIcon}
@@ -62,8 +59,8 @@ class ApprovedReleases extends Component {
 
 
                     </div>
-                </div>
-            </div>
+                </Layout>
+
         );
     }
 }

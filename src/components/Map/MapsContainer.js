@@ -126,7 +126,7 @@ class MapsContainer extends Component {
                     visible={true||this.state.showingInfoWindow}>
 
                     <div>
-                        <span><a href={"/ps/"+this.props._id}>{this.state.selectedPlace.name}</a></span>
+                        <span><a href={"/ps/"+this.props.siteId}>{this.state.selectedPlace.name}</a></span>
                     </div>
                 </InfoWindow>
                 <Polyline

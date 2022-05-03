@@ -30,6 +30,7 @@ import PageHeader from "../../components/PageHeader";
 import EditSite from "../../components/Sites/EditSite";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
+import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 
 
 class ListForm extends Component {
@@ -93,7 +94,8 @@ class ListForm extends Component {
             selectedProductId: null,
             previewProduct:null,
             selectedLoading:false,
-            createListingError:null
+            createListingError:null,
+            type: ["sale", "rental"],
         };
 
         this.handleBack = this.handleBack.bind(this);
@@ -1176,6 +1178,20 @@ class ListForm extends Component {
                                                                 )}
                                                             </div>
                                                         </div>
+                                                    </div>
+
+                                                    <div className="col-md-6 col-sm-12 col-xs-12">
+
+                                                        <SelectArrayWrapper
+
+                                                            select={"Select"}
+                                                            onChange={(value)=> {
+                                                                this.handleChange(value,"type")
+
+                                                            }}
+                                                            options={this.state.type} name={"type"} title="Type"/>
+
+
                                                     </div>
                                                 </div>
                                             </div>

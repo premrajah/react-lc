@@ -1,43 +1,28 @@
 import React, {Component} from "react";
-import * as actionCreator from "../store/actions/actions";
+import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Close from "@mui/icons-material/Close";
 import {makeStyles} from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
-import TextField from "@mui/material/TextField";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
-import {baseUrl} from "../Util/Constants";
-import ProductExpandItem from "./Products/ProductExpandItem";
+import {baseUrl} from "../../Util/Constants";
+import ProductExpandItem from "../Products/ProductExpandItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import _ from "lodash";
 import clsx from "clsx";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import CustomizedInput from "./FormsUI/ProductForm/CustomizedInput";
-import CustomizedSelect from "./FormsUI/ProductForm/CustomizedSelect";
+import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+import SiteFormNew from "../Sites/SiteFormNew";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        "& > *": {
-            margin: theme.spacing(1),
-            width: "25ch",
-        },
-    },
-}));
-
-const useStylesTabs = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
 
 class ListEditForm extends Component {
     constructor(props) {
@@ -337,10 +322,14 @@ class ListEditForm extends Component {
         this.props.loadSites(this.props.userDetail.token);
     }
 
-    toggleSite() {
+    toggleSite(refresh) {
         this.setState({
             showCreateSite: !this.state.showCreateSite,
         });
+
+        if (refresh){
+            this.getSites()
+        }
     }
 
     handleUpdateListing(event) {
@@ -1104,13 +1093,9 @@ class ListEditForm extends Component {
 
         return (
             <>
-                {this.state.item && (
+                {this.state.item &&!this.state.showCreateSite&& (
                     <div className="container  ">
-                        <div className="row no-gutters mt-3">
-                            <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Edit Listing</h3>
-                            </div>
-                        </div>
+
 
                         <form onSubmit={this.handleUpdateListing}>
                             <div className="row no-gutters justify-content-center mt-2 pb-4">
@@ -1662,162 +1647,41 @@ class ListEditForm extends Component {
                     </div>
                 )}
 
+
+
                 {this.state.showCreateSite && (
-                    <>
-                        <div className={"body-overlay"}>
-                            <div className={"modal-popup site-popup"}>
-                                <div className=" text-right ">
-                                    <Close
-                                        onClick={this.toggleSite}
-                                        className="blue-text"
-                                        style={{ fontSize: 32 }}
-                                    />
+                    <div
+                        className={
+                            "row justify-content-center p-2 "
+                        }>
+
+
+                        <div className="col-md-12 col-sm-12 col-xs-12 ">
+                            <div
+                                onClick={this.toggleSite}
+                                className={
+                                    "custom-label text-bold text-blue pt-2 pb-2 click-item"
+                                }>
+                                <ArrowBackIcon /> Listing
+                            </div>
+                        </div>
+
+                        <div className="col-md-12 col-sm-12 col-xs-12 ">
+                            <div className=" row  justify-content-center align-items-center">
+                                <div className="col-12">
+                                    <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>Add New Site</h4>
                                 </div>
 
-                                <div className={"row"}>
-                                    <div className={"col-12"}>
-                                        <form onSubmit={this.handleSubmitSite}>
-                                            <div className="row no-gutters justify-content-center ">
-                                                <div className="col-12 mt-4">
-                                                    <CustomizedInput
-                                                        id="outlined-basic"
-                                                        label=" Name"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                        name={"name"}
-                                                        onChange={this.handleChangeSite.bind(
-                                                            this,
-                                                            "name"
-                                                        )}
-                                                    />
-
-                                                    {this.state.errorsSite["name"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsSite["name"]}
-                                                        </span>
-                                                    )}
-                                                </div>
-
-                                                <div className="col-12 mt-4">
-                                                    <CustomizedInput
-                                                        id="outlined-basic"
-                                                        label="Contact"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                        name={"contact"}
-                                                        onChange={this.handleChangeSite.bind(
-                                                            this,
-                                                            "contact"
-                                                        )}
-                                                    />
-
-                                                    {this.state.errorsSite["contact"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsSite["contact"]}
-                                                        </span>
-                                                    )}
-                                                </div>
-
-                                                <div className="col-12 mt-4">
-                                                    <CustomizedInput
-                                                        id="outlined-basic"
-                                                        label="Address"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                        name={"address"}
-                                                        type={"text"}
-                                                        onChange={this.handleChangeSite.bind(
-                                                            this,
-                                                            "address"
-                                                        )}
-                                                    />
-
-                                                    {this.state.errorsSite["address"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsSite["address"]}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <div className="col-12 mt-4">
-                                                    <CustomizedInput
-                                                        id="outlined-basic"
-                                                        type={"text"}
-                                                        name={"phone"}
-                                                        onChange={this.handleChangeSite.bind(
-                                                            this,
-                                                            "phone"
-                                                        )}
-                                                        label="Phone"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                    />
-
-                                                    {this.state.errorsSite["phone"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsSite["phone"]}
-                                                        </span>
-                                                    )}
-                                                </div>
-
-                                                <div className="col-12 mt-4">
-                                                    <CustomizedInput
-                                                        id="outlined-basic"
-                                                        label="Email"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                        name={"email"}
-                                                        type={"email"}
-                                                        onChange={this.handleChangeSite.bind(
-                                                            this,
-                                                            "email"
-                                                        )}
-                                                    />
-
-                                                    {this.state.errorsSite["email"] && (
-                                                        <span className={"text-mute small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errorsSite["email"]}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <div className="col-12 mt-4">
-                                                    <CustomizedInput
-                                                        onChange={this.handleChangeSite.bind(
-                                                            this,
-                                                            "others"
-                                                        )}
-                                                        name={"others"}
-                                                        id="outlined-basic"
-                                                        label="Others"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                        type={"others"}
-                                                    />
-
-                                                    {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
-                                                </div>
-
-                                                <div className="col-12 mt-4">
-                                                    <button
-                                                        type={"submit"}
-                                                        className={
-                                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                        }>
-                                                        Add Site
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                            </div>
+                            <div className={"row"}>
+                                <div className={"col-12"}>
+                                    <SiteFormNew showHeader={false}  refresh={() => this.toggleSite(true)}   />
                                 </div>
                             </div>
                         </div>
-                    </>
+                    </div>
                 )}
+
             </>
         );
     }

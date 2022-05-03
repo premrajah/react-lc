@@ -339,7 +339,7 @@ class ProductItemNew extends Component {
                                     </p>
 
 
-                                    {!this.props.hideMore && (
+                                    {!this.props.hideMore && <div className="top-right">
                                         <MoreMenu
                                             triggerCallback={(action) => this.callBackResult(action)}
                                             delete={this.props.delete}
@@ -348,7 +348,7 @@ class ProductItemNew extends Component {
                                             untrack={this.props.untrack}
                                             duplicate={this.props.duplicate}
                                         />
-                                    )}
+                                    </div>}
                                 </div>
 
                             </div>

@@ -72,15 +72,12 @@ class MyListings extends Component {
     setFilters=(data)=>{
 
 
-
         let searchValue= data.searchValue
         let activeFilter= data.searchFilter
 
         console.log(data)
 
-
         if (searchValue){
-
 
             if (activeFilter){
 

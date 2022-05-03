@@ -446,6 +446,7 @@ class MatchItemBuyer extends Component {
                                 <GreenButton
 
 
+
                                     onClick={()=>this.props.makeOffer(this.props.item.match._key,true,"Accept Listed Price")}
                                     title={"Accept Seller's Offer"}
                                     // onClick={()=> this.showPopUp(true)}
@@ -660,13 +661,12 @@ class MatchItemBuyer extends Component {
                                 <div className={"col-12 text-center mt-2"}>
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-6"} style={{ textAlign: "center" }}>
-                                            <button
-                                                className={
-                                                    "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                }
+                                            <GreenButton
+
+                                                title="Submit"
                                                 type={"submit"}>
-                                                Submit
-                                            </button>
+
+                                            </GreenButton>
                                         </div>
                                         <div className={"col-6"} style={{ textAlign: "center" }}>
                                             <p

@@ -6,10 +6,8 @@ import {Link} from "react-router-dom";
 import {withStyles} from "@mui/styles/index";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
-import SearchBar from "../../components/SearchBar";
-import {baseUrl, PRODUCTS_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import DownloadIcon from '@mui/icons-material/GetApp';
-import MapIcon from '@mui/icons-material/Map';
 import {CSVLink} from "react-csv";
 import {Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
@@ -22,7 +20,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
-import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
+import {seekAxiosGet} from "../../Util/GlobalFunctions";
 
 class Products extends Component {
 
@@ -89,7 +87,7 @@ class Products extends Component {
 
     setFilters=(data)=>{
 
-        let filters= []
+
         let subFilter=[]
 
         let searchValue= data.searchValue
@@ -99,12 +97,12 @@ class Products extends Component {
 
             if (activeFilter){
 
-                subFilter.push({key:activeFilter, value:"" + searchValue + "", operator:"~"})
+                subFilter.push({key:activeFilter, value:searchValue})
 
             }else{
 
                 PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
-                    subFilter.push({key:item.key, value:"" + searchValue + "", operator:"~"})
+                    subFilter.push({key:item.key, value:searchValue})
                 )
 
 
@@ -112,17 +110,19 @@ class Products extends Component {
         }
 
 
-        filters.push({filters:subFilter,operator:"||"})
-
-
-        this.filters= filters
+        this.filters= subFilter
 
     }
 
     seekCount=async () => {
 
-        let url = createSeekURL("product", true, true, null, null,
-            this.filters, "AND")
+        let url = `${baseUrl}seek?name=Product&no_parent=true&count=true`;
+
+        this.filters.forEach((item)=>{
+
+            url = url+`&or=${item.key}~%${item.value}%`
+
+        })
 
 
         let result = await seekAxiosGet(url)
@@ -131,11 +131,13 @@ class Products extends Component {
         this.setState({
             count: result.data?result.data.data:0,
 
+
         })
 
 
 
     }
+
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -144,19 +146,21 @@ class Products extends Component {
         if (prevProps!==this.props) {
 
             if (this.props.refresh){
-
                 this.props.refreshPage(false)
 
                 this.setState({
                     items:[],
-                    currentOffset:0,
+                    offset:0,
                 })
 
 
-                if (this.state.currentOffset==0){
 
-                    this.loadProductsWithoutParentPageWise();
-                }
+                // if (this.timeout) clearTimeout(this.timeout);
+                //
+                // this.timeout = setTimeout(() => {
+                //     this.loadMore(true);
+                //     this.loadProductsWithoutParentPageWise({reset: true});
+                // }, 500);
 
 
             }
@@ -168,10 +172,12 @@ class Products extends Component {
     loadProductsWithoutParentPageWise= async (data) => {
 
 
-        if (data.reset){
+        if (data&&data.reset){
 
             this.clearList()
         }
+
+        if (data)
         this.setFilters(data)
 
         this.seekCount()
@@ -184,8 +190,18 @@ class Products extends Component {
         let newOffset = this.state.offset
 
 
-        let url = createSeekURL("product", true,
-            false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
+        // let url = createSeekURL("product", true,
+        //     false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
+
+
+        let url = `${baseUrl}seek?name=Product&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
+
+        this.filters.forEach((item)=>{
+
+            url = url+`&or=${item.key}~%${item.value}%`
+
+        })
+
 
         let result = await seekAxiosGet(url)
 
@@ -219,6 +235,8 @@ class Products extends Component {
 
 
     }
+
+
 
     componentDidMount() {
 
@@ -448,7 +466,6 @@ class Products extends Component {
                                 </div>
                                 <div className="row  no-gutters mb-1">
                                     <div className="col blue-text">Selected Products</div>
-
                                     <button className=" btn-pink " onClick={() => this.setState({selectedProducts: []})}><>Clear</></button>
                                 </div>
 
@@ -508,8 +525,8 @@ class Products extends Component {
                             loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)}
                         >
 
-                            {this.state.items.map((item, index) => (
-                                <div id={item._key} key={item._key}>
+                            {this.state.items.map((item, index) =>
+                                <div id={`${item._key}-${index}`}  key={item._key+"-"+index}>
                                     <ProductItem
                                         index={index}
                                         goToLink={true}
@@ -523,7 +540,7 @@ class Products extends Component {
                                         showAddToListButton
                                     />
                                 </div>
-                            ))}
+                            )}
 
                         </PaginationLayout>
 

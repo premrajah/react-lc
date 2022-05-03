@@ -15,17 +15,30 @@ import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
-import SiteForm from "../Sites/SiteForm";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
-import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import SiteFormNew from "../Sites/SiteFormNew";
-import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
-import DialogContent from "@mui/material/DialogContent";
+import Slider from '@mui/material/Slider';
+import PropTypes from 'prop-types';
+import Tooltip from '@mui/material/Tooltip';
 
+
+function ValueLabelComponent(props) {
+    const { children, value } = props;
+
+    return (
+        <Tooltip enterTouchDelay={0} placement="top" title={value}>
+            {children}
+        </Tooltip>
+    );
+}
+
+ValueLabelComponent.propTypes = {
+    children: PropTypes.element.isRequired,
+    value: PropTypes.number.isRequired,
+};
 
 class ProductForm extends Component {
 
@@ -88,6 +101,7 @@ class ProductForm extends Component {
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["New", "Used", "Salvage"],
+            powerSupply: ["gas", "electric", "hybrid", "solid_Fuel"],
             product: null,
             parentProduct: null,
             imageLoading: false,
@@ -96,7 +110,8 @@ class ProductForm extends Component {
             moreDetail: false,
             isSubmitButtonPressed: false,
             disableVolume:false,
-            loading:false
+            loading:false,
+            energyRating:0
         };
 
 
@@ -451,6 +466,8 @@ class ProductForm extends Component {
                 const site = data.get("deliver")
                 const year_of_making = data.get("manufacturedDate")?data.get("manufacturedDate"):0
                 const external_reference = data.get("external_reference")
+                const power_supply = data.get("power_supply");
+                const energy_rating = this.state.energyRating;
 
 
                 const productData = {
@@ -463,6 +480,7 @@ class ProductForm extends Component {
                     units: units,
                     state: state,
                     volume: volume,
+                    energy_rating:energy_rating,
                     is_listable: is_listable,
                     "external_reference" : external_reference,
                     sku: {
@@ -472,6 +490,7 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
+                        power_supply: power_supply.toLowerCase(),
                     },
 
                     year_of_making: year_of_making,
@@ -505,7 +524,9 @@ class ProductForm extends Component {
 
                 this.setState({isSubmitButtonPressed: true})
 
-                // return false
+                // console.log(completeData)
+
+
                 axios
                     .put(
                         createProductUrl,
@@ -642,6 +663,7 @@ class ProductForm extends Component {
             const state = data.get("state");
            const external_reference = data.get("external_reference")
             const site = data.get("deliver");
+           const power_supply = data.get("power_supply");
 
             const productData = {
                 id: this.props.item.product._key,
@@ -657,6 +679,7 @@ class ProductForm extends Component {
                     state: state,
                     volume: Number(volume),
                     stage: "certified",
+                    energy_rating : this.state.energyRating,
                     external_reference : external_reference,
                     is_listable: this.state.is_listable,
                     sku: {
@@ -666,6 +689,7 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
+                        power_supply: power_supply,
                     },
 
                     year_of_making: Number(data.get("manufacturedDate")),
@@ -888,7 +912,7 @@ class ProductForm extends Component {
                             <div className="row  mt-2">
                                 <div className="col-12">
                                     <div className="row camera-grids      ">
-                                        <div className="col-md-4 col-sm-12 col-xs-12  ">
+                                        <div className="col-md-4 d-none col-sm-12 col-xs-12  ">
 
                                             <SelectArrayWrapper  detailsHeading="What is the purpose of your product?"
                                                 details="Defined: a whole product,
@@ -910,7 +934,7 @@ class ProductForm extends Component {
                                             error={this.state.errors["title"]}
                                             name="brand" title="Brand" />
                                         </div>
-                                        <div className="col-md-4 col-sm-12 col-xs-12 ">
+                                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
                                             <SelectArrayWrapper
                                                 details="Select product’s location from the existing sites or add new address below"
@@ -946,6 +970,46 @@ class ProductForm extends Component {
                                     </div>
                                 </div>
                             </div>
+
+                              <div className="row  mt-2">
+                              <div className="col-md-4 col-sm-6 col-xs-6">
+                                  <SelectArrayWrapper
+                                      initialValue={this.props.item&&this.props.item.product.sku.power_supply}
+                                      // select={"Select"}
+
+                                      onChange={(value)=> {
+                                          this.handleChangeProduct(value,"power_supply")
+
+                                      }}
+                                      options={this.state.powerSupply} name={"power_supply"} title="Power Supply"/>
+                              </div>
+
+                                  <div className="col-md-8 d-none col-sm-12 col-xs-12">
+                                      <div className="custom-label text-bold ellipsis-end text-blue mb-0">Energy Rating
+                                      </div>
+                                  <div className="d-flex mt-2  align-items-center flex-row ">
+                                       <span className={"mr-2"}>0&nbsp;&nbsp;</span>
+                                      <Slider
+                                          step={1}
+                                          min={0}
+                                          max={100}
+                                          style={{color: "var(--lc-pink) !important"}}
+                                          valueLabelDisplay="on"
+                                          components={{
+                                              ValueLabel: ValueLabelComponent,
+                                          }}
+                                          aria-label="custom thumb label"
+                                          defaultValue={this.props.item&&this.props.item.product.energy_rating?this.props.item.product.energy_rating:0}
+                                          onChange={(event)=>{
+                                              this.setState({
+                                                  energyRating:event.target.value
+                                              })
+                                          }}
+                                      /> <span className={"ml-2"}> &nbsp;&nbsp;{100}</span>
+                                  </div>
+
+                                  </div>
+                              </div>
                                 <div className="row  mt-2">
                                     <div className="col-12">
                                         <div className="row  justify-content-start ">
@@ -990,7 +1054,8 @@ class ProductForm extends Component {
                                         onChange={(value)=>this.handleChangeProduct(value,"description")}
                                         error={this.state.errors["description"]}
                                         multiline
-                                  rows={4} name="description" title="Description" />
+                                  rows={4}
+                                                       name="description" title="Description" />
 
 
                                 </div>
@@ -1065,6 +1130,8 @@ class ProductForm extends Component {
                                                 <TextFieldWrapper  details="A unique number used by external systems"   initialValue={this.props.item&&this.props.item.product.external_reference} name="external_reference" title="External reference" />
 
                                             </div>
+
+
                                         </div>
 
 

@@ -3,11 +3,10 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import Select from "@mui/material/Select";
 import "../../Util/upload-file.css";
-import {Close} from "@mui/icons-material";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import {Modal, Spinner} from "react-bootstrap";
+import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
@@ -18,10 +17,6 @@ import AddIcon from "@mui/icons-material/Add";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
-import { geocodeByPlaceId } from 'react-google-places-autocomplete';
-import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
-import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
-import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
@@ -182,10 +177,6 @@ class SiteFormNew extends Component {
             //         console.log(e)
         }
     }
-
-
-
-
 
 
 
@@ -496,8 +487,7 @@ class SiteFormNew extends Component {
 
     componentDidMount() {
 
-
-
+        window.scrollTo(0, 0);
         this.getSubSites()
 
 
@@ -506,10 +496,6 @@ class SiteFormNew extends Component {
                 showMapSelection: true,
                 showAddressField: false
             })
-
-
-
-
 
         // else if (this.props.showSiteForm.type==="link-product"){
 

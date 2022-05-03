@@ -83,19 +83,15 @@ class ManageRole extends Component {
 
   toggleEdit = async (edit, key, item) => {
 
-
-            this.fetchAllPermissions()
-
             // this.props.toggleRightBar()
             this.setState({
                 showEdit: !this.state.showEdit,
                 editMode: edit,
                 selectedKey: key,
                 selectedEditItem: item,
-
-
-
             })
+
+      this.fetchAllPermissions()
         }
 
 
@@ -196,9 +192,9 @@ class ManageRole extends Component {
 
                 )
                 .then((res) => {
+                    this.toggleEdit()
 
                     this.fetchRoles()
-                    this.toggleEdit()
                     this.props.showSnackbar({show: true, severity: "success", message: `Role updated successfully. Thanks`})
 
 
@@ -356,7 +352,7 @@ class ManageRole extends Component {
                     <div className="col-12 pt-4">
 
                         {this.state.items.map((item,index)=>
-                            <div key={index}>
+                            <div id={`${index}-${item._key}`} key={`${index}-${item._key}`}>
                                 {/*<hr/>*/}
                                 <div className="row d-flex flex-row pb-2 pt-2 min-row-height-90  hover-bg align-items-center border-top">
                                     <div className=" col-1 justify-content-start">
@@ -367,11 +363,15 @@ class ManageRole extends Component {
                                         <span className={"text-blue text-capitalize"}> {item.name}</span>
                                         <span className={"text-gray-light text-14"}> ({item.description})
                                             <CustomPopover heading={item.name}
-                                           text={item.perms.length>0?(item.perms.map((role)=> role+", ")):""}>
+                                                           text={item.perms.length>0?(item.perms.map((role,index)=> <span id={`${role}-${index}`} key={`${role}-${index}`}>{role},</span>)):""}
+
+                                            >
+
                                                     <Info
                                                         style={{ cursor: "pointer", color: "#EAEAEF" }}
                                                         fontSize={"small"}
                                                     />
+
                                                 </CustomPopover></span>
                                     </div>
                                     {!item.is_system_role &&

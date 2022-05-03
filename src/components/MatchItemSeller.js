@@ -702,7 +702,7 @@ class MatchItemSeller extends Component {
                             <div className={"col-12 text-center mt-2"}>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <GreenSmallBtn
+                                        <GreenButton
 
                                             title={"Submit"}
                                             onClick={
@@ -713,7 +713,7 @@ class MatchItemSeller extends Component {
 
                                             type={"submit"}>
 
-                                        </GreenSmallBtn>
+                                        </GreenButton>
                                     </div>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
                                         <BlueBorderButton

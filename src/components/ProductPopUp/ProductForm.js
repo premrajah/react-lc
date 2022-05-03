@@ -975,7 +975,7 @@ class ProductForm extends Component {
                               <div className="col-md-4 col-sm-6 col-xs-6">
                                   <SelectArrayWrapper
                                       initialValue={this.props.item&&this.props.item.product.sku.power_supply}
-                                      select={"Select"}
+                                      // select={"Select"}
 
                                       onChange={(value)=> {
                                           this.handleChangeProduct(value,"power_supply")

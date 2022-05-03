@@ -150,43 +150,46 @@ class ListEditForm extends Component {
     }
 
     loadSelection() {
+
+
+        if (this.state.item)
         this.setState({
             dateRequiredBy: this.state.item.listing.expire_after_epoch_ms,
             dateRequiredFrom: this.state.item.listing.available_from_epoch_ms,
         });
 
-        let catSelected = this.state.categories.filter(
-            (item) => item.name === this.state.item.listing.category
-        )[0];
-
-        var subCategories = catSelected.types;
-
-        this.setState({
-            catSelected: catSelected,
-        });
-
-        this.setState({
-            subCategories: subCategories,
-        });
-
-        let subCatSelected = subCategories.filter(
-            (item) => item.name === this.state.item.listing.type
-        )[0];
-
-        if (subCatSelected) {
-            var states = subCatSelected.state;
-
-            var units = subCatSelected.units;
-
-            this.setState({
-                subCatSelected: subCatSelected,
-            });
-
-            this.setState({
-                states: states,
-                units: units,
-            });
-        }
+        // let catSelected = this.state.categories.filter(
+        //     (item) => item.name === this.state.item.listing.category
+        // )[0];
+        //
+        // var subCategories = catSelected.types;
+        //
+        // this.setState({
+        //     catSelected: catSelected,
+        // });
+        //
+        // this.setState({
+        //     subCategories: subCategories,
+        // });
+        //
+        // let subCatSelected = subCategories.filter(
+        //     (item) => item.name === this.state.item.listing.type
+        // )[0];
+        //
+        // if (subCatSelected) {
+        //     var states = subCatSelected.state;
+        //
+        //     var units = subCatSelected.units;
+        //
+        //     this.setState({
+        //         subCatSelected: subCatSelected,
+        //     });
+        //
+        //     this.setState({
+        //         states: states,
+        //         units: units,
+        //     });
+        // }
     }
 
     getListing() {

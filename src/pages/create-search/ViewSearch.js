@@ -1,18 +1,11 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
 import SearchIcon from "../../img/icons/search-icon.png";
 import {Link} from "react-router-dom";
-import InputLabel from "@mui/material/InputLabel";
 import {makeStyles} from "@mui/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
-import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import moment from "moment";
 import NotFound from "../../views/NotFound";
 import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import SearchEditForm from "../../components/Searches/SearchEditForm";
@@ -25,26 +18,20 @@ import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import AggregatesTab from "../../components/Products/AggregatesTab";
-import SubProductsTab from "../../components/Products/SubProductsTab";
 import {GoogleMap} from "../../components/Map/MapsContainer";
-import SearchItem from "../../components/Searches/search-item";
 import ResourceItem from "./ResourceItem";
-import ArtifactProductsTab from "../../components/Products/ArtifactProductsTab";
 import InfoTabContent from "../../components/Searches/InfoTabContent";
 import Badge from '@mui/material/Badge';
 import RightSidebar from "../../components/RightBar/RightSidebar";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
-import CustomTransferList from "../../components/FormsUI/ProductForm/CustomTransferList";
 import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
 import SearchMatches from "./search-matches";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
-import ItemDetailMatch from "./ItemDetailMatch";
 import ListingDetail from "../../components/Listings/ListingDetail";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
-import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import {fetchErrorMessage, getActionName} from "../../Util/GlobalFunctions";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         "& > *": {
@@ -92,6 +79,7 @@ class ViewSearch extends Component {
             nextBlueAddDetail: false,
             nextBlueViewSearch: false,
             matches: [],
+            suggesstions: [],
             unitSelected: null,
             volumeSelected: null,
             title: null,
@@ -306,6 +294,7 @@ class ViewSearch extends Component {
                 {
                     listing_id: this.state.listingSelected._key,
                     search_id: this.state.createSearchData.search._key,
+                    note:data.get("message")
                 },
             )
             .then((res) => {
@@ -518,7 +507,7 @@ class ViewSearch extends Component {
                 );
     }
 
-    getListingForSearch() {
+    getListingForSearch(matches) {
         axios
             .get(baseUrl + "search/" + this.slug + "/listing", {
                 headers: {
@@ -527,11 +516,25 @@ class ViewSearch extends Component {
             })
             .then(
                 (response) => {
+
                     var responseAll = response.data.data;
 
-                    this.setState({
-                        matchesCount: responseAll.length,
-                    });
+                    if (responseAll.length>0){
+                        this.setState({
+                            matchesCount: responseAll.filter((item)=>
+                                !matches.find((match)=>item.listing._key==match.listing.listing._key)).length,
+
+                            suggesstions: responseAll.filter((item)=>
+                                !matches.find((match)=>item.listing._key==match.listing.listing._key)),
+                        });
+                    }else{
+
+                        this.setState({
+                            matchesCount: 0,
+                        });
+                    }
+
+
                 },
                 (error) => {}
             );
@@ -581,11 +584,7 @@ class ViewSearch extends Component {
 
     loadMatches() {
         axios
-            .get(baseUrl + "match/search/" + this.slug, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "match/search/" + this.slug)
             .then(
                 (response) => {
                     var responseAll = response.data.data;
@@ -593,6 +592,9 @@ class ViewSearch extends Component {
                     this.setState({
                         matches: responseAll,
                     });
+
+                    this.getListingForSearch(responseAll);
+
                 },
                 (error) => {}
             );
@@ -713,12 +715,18 @@ class ViewSearch extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.getSearch();
-        this.getListingForSearch();
         this.loadMatches();
+        this.interval = setInterval(() => {
+            this.loadMatches();
+        }, 10000);
+
+
         this.setState({
             activeKey:"0"
         })
     }
+
+
 
 
     render() {
@@ -1021,11 +1029,13 @@ class ViewSearch extends Component {
                             </React.Fragment>
                         )}
 
-                        <RightSidebar heading={"Matches"} subTitle={"Your search matches"} toggleOpen={this.toggleMatches} open={this.state.showMatches} width={"70%"}>
+                        <RightSidebar heading={"Matches"}
+                                      subTitle={"Your search matches"} toggleOpen={this.toggleMatches} open={this.state.showMatches} width={"70%"}>
 
                             <>
                             {this.state.matchesView &&
                             <SearchMatches
+                                suggesstions={this.state.suggesstions}
                                 hideConfirmed
                                 slug={this.slug}
                                            requestMatch={this.toggleRequestMatch}
@@ -1038,7 +1048,6 @@ class ViewSearch extends Component {
                         <RightSidebar heading={"Listing Details"}  toggleOpen={()=>this.toggleListingView(null)} open={this.state.showListing} width={"70%"}>
 
                             <>
-
                                 {this.state.listingId &&
                                 <>
                                         <ListingDetail

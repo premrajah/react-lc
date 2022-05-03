@@ -17,7 +17,7 @@ import MatchItemSeller from "../../components/MatchItemSeller";
 import NotFound from "../../views/NotFound";
 import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import MoreMenu from "../../components/MoreMenu";
-import ListEditForm from "../../components/ListEditForm";
+import ListEditForm from "../../components/Listings/ListEditForm";
 import Layout from "../../components/Layout/Layout";
 import OrgComponent from "../../components/Org/OrgComponent";
 import Box from "@mui/material/Box";

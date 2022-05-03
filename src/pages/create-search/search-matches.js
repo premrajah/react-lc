@@ -1,71 +1,14 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import { makeStyles } from "@mui/styles";
-import AppBar from "@mui/material/AppBar";
-import { withStyles } from "@mui/styles/index";
+import {connect} from "react-redux";
 import axios from "axios/index";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import ResourceItem from "./ResourceItem";
-import HeaderDark from "../../views/header/HeaderDark";
-import Sidebar from "../../views/menu/Sidebar";
-import { Link } from "react-router-dom";
-import MatchItem from "../../components/MatchItem";
-import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import PropTypes from "prop-types";
-import Layout from "../../components/Layout/Layout";
-import PageHeader from "../../components/PageHeader";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
-import InfoTabContent from "../../components/Sites/InfoTabContent";
-import SubSitesTab from "../../components/Sites/SubSitesTab";
-import SubProductsTab from "../../components/Sites/SubProductsTab";
 import TabPanel from '@mui/lab/TabPanel';
-import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-const useStyles = makeStyles((theme) => ({
-    root: {
-        "& > *": {
-            margin: theme.spacing(1),
-            width: "25ch",
-        },
-    },
-}));
-
-
-const StyledTabs = withStyles({
-    root: {
-        borderBottom: '1px solid #70707062',
-    },
-    indicator: {
-        backgroundColor: '#07AD88',
-    },
-
-})((props) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />);
-const StyledTab = withStyles((theme) => ({
-    root: {
-        minWidth: 290,
-        textTransform: 'none',
-        color: '#3C3972',
-
-        fontSize: theme.typography.pxToRem(15),
-        marginRight: theme.spacing(1),
-
-        '&:hover': {
-            color: '#3C3972',
-            opacity: 1,
-        },
-        '&$selected': {
-            color: '#3C3972',
-            fontWeight: 500,
-        },
-        '&:focus': {
-            color: '#3C3972',
-        },
-    },
-}))((props) => <Tab disableRipple {...props} />);
 
 
 class SearchMatches extends Component {
@@ -112,18 +55,18 @@ class SearchMatches extends Component {
     }
 
         loadMatches() {
-        axios
-            .get(baseUrl + "match/search/" + this.slug, )
-            .then(
-                (response) => {
-                    var responseAll = response.data.data;
-
-                    this.setState({
-                        matches: responseAll,
-                    });
-                },
-                (error) => {}
-            );
+        // axios
+        //     .get(baseUrl + "match/search/" + this.slug, )
+        //     .then(
+        //         (response) => {
+        //             var responseAll = response.data.data;
+        //
+        //             this.setState({
+        //                 matches: this.props.suggesstions,
+        //             });
+            //     },
+            //     (error) => {}
+            // );
     }
 
     getListingForSearch() {
@@ -137,14 +80,17 @@ class SearchMatches extends Component {
                 (response) => {
                     var responseAll = response.data.data;
 
-                    var matches = this.state.listingsForSearch;
+                    var matches = [];
 
                     for (var i = 0; i < responseAll.length; i++) {
-                        matches.push({ listing: responseAll[i] });
+                        if (responseAll[i].listing.stage=="active") {
+                            matches.push({listing: responseAll[i]});
+                        }
                     }
 
                     this.setState({
                         listingsForSearch: matches,
+                        // matches:matches
                     });
                 },
                 (error) => {}
@@ -154,16 +100,61 @@ class SearchMatches extends Component {
 
     componentDidMount() {
 
+        if (this.props.suggesstions&&this.props.suggesstions.length>0) {
+            this.setState({
+                // matches: this.props.suggesstions,
+                listingsForSearch: this.props.suggesstions
+            });
+        }else{
+
+            this.setState({
+                // matches: this.props.suggesstions,
+                listingsForSearch: []
+            });
+        }
 
         if (this.props.slug){
             this.slug=this.props.slug
 
+            // this.setState({
+            //     matches: this.props.suggesstions,
+            // });
+
             this.setActiveKey(null,"1")
-            this.loadMatches();
-            this.getListingForSearch();
+            // this.loadMatches();
+            // this.getListingForSearch();
         }
 
     }
+
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        if (prevProps!==this.props) {
+
+            if (this.props.suggesstions&&this.props.suggesstions.length>0) {
+                this.setState({
+                    // matches: this.props.suggesstions,
+                    listingsForSearch: this.props.suggesstions
+                });
+
+            }else{
+                this.setState({
+                listingsForSearch: []
+
+                });
+            }
+            this.slug=this.props.slug
+            this.setActiveKey(null,"1")
+            // this.loadMatches();
+            // this.getListingForSearch();
+
+
+        }
+    }
+
+
+
 
     goToSignIn() {
         this.setState({
@@ -195,8 +186,6 @@ class SearchMatches extends Component {
         return (
 
                 <div className="container ">
-
-
                     <div className="row justify-content-start pb-3  tabs-detail">
                         <div className="col-12 ">
                             <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -217,7 +206,8 @@ class SearchMatches extends Component {
 
                                             <Tab label="Suggested" value="1"/>
 
-                                            {!this.props.hideConfirmed &&      <Tab label="Confirmed" value="2" />}
+                                            {!this.props.hideConfirmed &&
+                                            <Tab label="Confirmed" value="2" />}
 
 
                                         </TabList>
@@ -235,17 +225,14 @@ class SearchMatches extends Component {
                                         {this.state.listingsForSearch.map((item) => (
                                             <>
                                                 {/*<Link to={"/match/"+props.slug+"/"+item.listing.listing._key }>*/}
-
                                                 <ResourceItem
-
                                                     showDetails={this.props.showDetails}
                                                     requestMatch={this.props.requestMatch}
                                                     fromSearch
-
                                                     history={this.props.history}
                                                     disableLink
                                                     searchId={this.slug}
-                                                    item={item.listing}
+                                                    item={item}
                                                     hideMoreMenu
                                                 />
 
@@ -291,25 +278,12 @@ class SearchMatches extends Component {
                                         </div>
 
                                     </TabPanel>}
-
-
-
-
                                 </TabContext>
                             </Box>
 
                         </div>
                     </div>
-                    {/*<div className="row ">*/}
-                    {/*    <div className={"tab-content-listing col-12"}>*/}
-                    {/*        <NavTabs*/}
-                    {/*            history={this.props.history}*/}
-                    {/*            matches={this.state.matches}*/}
-                    {/*            slug={this.slug}*/}
-                    {/*            suggesstions={this.state.listingsForSearch}*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+
                 </div>
 
         );

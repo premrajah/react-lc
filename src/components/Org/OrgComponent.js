@@ -14,6 +14,7 @@ const OrgComponent = (props) => {
         }
     }, []);
 
+<<<<<<< HEAD
     const fetchUserOrg = (org) => {
         axios.get(baseUrl + "" + org).then(
             (response) => {
@@ -24,6 +25,24 @@ const OrgComponent = (props) => {
             }
         );
     };
+=======
+    },[])
+
+    const   fetchUserOrg=(org)=> {
+        axios
+            .get(baseUrl + "org/"+org   )
+            .then(
+                (response) => {
+
+                    setOrg(response.data.data.org)
+
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
+>>>>>>> 11ed8f3e055d8a7bb5c62be7cbff360856c1e044
 
     const orgPopover = (
         <Popover id="org-popover">

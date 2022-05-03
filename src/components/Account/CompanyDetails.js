@@ -28,6 +28,7 @@ import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import OrgComponent from "../Org/OrgComponent";
 
 
 class CompanyDetails extends Component {
@@ -239,7 +240,7 @@ class CompanyDetails extends Component {
 
 
     getOrgsApprovalForUser = () => {
-        let url = `${baseUrl}user/org/approval`;
+        let url = `${baseUrl}user/org/approval/ids`;
         axios
             .get(url)
             .then((response) => {
@@ -825,7 +826,6 @@ class CompanyDetails extends Component {
 
 
 
-
     render() {
         return (
             <>
@@ -897,17 +897,18 @@ class CompanyDetails extends Component {
                         </>
                 </div>
 
-                {this.state.orgsApproval.map((item)=>
+                {this.state.orgsApproval.map((item,index)=>
 
-                    <div className="row mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
+                    <div id={`${item._key}-${index}`} key={`${item._key}-${index}`}
+                         className=" row d-flex align-items-start mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
                             <div className={"col-7 text-blue "}>
-                            {item.name}   <small className={"text-gray-light"}>{getTimeFormat(item._ts_epoch_ms)}</small>
+                            <OrgComponent orgId={item._to.replace("Org/",'')} /> <br/> <small className={"text-gray-light"}>{getTimeFormat(item._ts_epoch_ms)}</small>
                         </div>
                         <div className={"col-3  "}>
                             Status: <span className={"text-pink"}>Pending Approval</span>
                         </div>
                         <div className={"col-2 text-right "}>
-                           <CloseButtonPopUp onClick={()=>this.removeCompany(2,item._key)}/>
+                           <CloseButtonPopUp onClick={()=>this.removeCompany(2,item._to.replace("Org/",''))}/>
                         </div>
                     </div>
                 )}
@@ -1075,7 +1076,7 @@ class CompanyDetails extends Component {
 
                                        <Tab label="General" value="1" />
 
-                                       <Tab label="Settings" value="2"/>
+                                       {this.props.userContext.perms.includes("AdminWrite") &&        <Tab label="Settings" value="2"/>}
 
                                    </TabList>
                                </Box>

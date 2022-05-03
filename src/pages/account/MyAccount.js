@@ -126,9 +126,9 @@ function MyAccount(props) {
                                     <TabPanel value={value} index={2}>
                                         <ChangePassword />
                                     </TabPanel>
-                                    <TabPanel value={value} index={3}>
-                                        <TransferScaling />
-                                    </TabPanel>
+                                    {/*<TabPanel value={value} index={3}>*/}
+                                    {/*    <TransferScaling />*/}
+                                    {/*</TabPanel>*/}
                                     <TabPanel value={value} index={4}>
                                         <Statistics />
                                     </TabPanel>

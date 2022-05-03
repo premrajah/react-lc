@@ -20,7 +20,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
-import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
+import {seekAxiosGet} from "../../Util/GlobalFunctions";
 
 class Products extends Component {
 
@@ -146,19 +146,21 @@ class Products extends Component {
         if (prevProps!==this.props) {
 
             if (this.props.refresh){
-
                 this.props.refreshPage(false)
 
                 this.setState({
                     items:[],
-                    currentOffset:0,
+                    offset:0,
                 })
 
 
-                if (this.state.currentOffset==0){
 
-                    this.loadProductsWithoutParentPageWise();
-                }
+                // if (this.timeout) clearTimeout(this.timeout);
+                //
+                // this.timeout = setTimeout(() => {
+                //     this.loadMore(true);
+                //     this.loadProductsWithoutParentPageWise({reset: true});
+                // }, 500);
 
 
             }
@@ -524,7 +526,7 @@ class Products extends Component {
                         >
 
                             {this.state.items.map((item, index) =>
-                                <div id={item._key}  key={item._key+"-"+index}>
+                                <div id={`${item._key}-${index}`}  key={item._key+"-"+index}>
                                     <ProductItem
                                         index={index}
                                         goToLink={true}

@@ -1583,10 +1583,9 @@ class ViewCycle extends Component {
                                             type={"button"}
                                             title={"Cancel"}
                                             onClick={this.showPopUpAction}
-                                            className={
-                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                            }>
-                                            Cancel
+
+                                        >
+
                                         </GreenBorderButton>
                                     </div>
                                 </div>

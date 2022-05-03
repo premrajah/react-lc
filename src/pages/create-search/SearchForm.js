@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import Select from "@mui/material/Select";
 import SearchIcon from "../../img/icons/search-icon.png";
 import {Link} from "react-router-dom";
-import Close from "@mui/icons-material/Close";
 import {makeStyles} from "@mui/styles";
 import Toolbar from "@mui/material/Toolbar";
 import {withStyles} from "@mui/styles/index";
@@ -17,7 +16,6 @@ import _ from "lodash";
 // import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import PageHeader from "../../components/PageHeader";
-import EditSite from "../../components/Sites/EditSite";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
@@ -30,22 +28,6 @@ import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton"
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import SiteFormNew from "../../components/Sites/SiteFormNew";
 
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        "& > *": {
-            margin: theme.spacing(1),
-            width: "25ch",
-        },
-    },
-}));
-
-const useStylesTabs = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
 
 class SearchForm extends Component {
     constructor(props) {
@@ -93,6 +75,7 @@ class SearchForm extends Component {
             productSelection: false,
             purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["New", "Used", "Salvage"],
+            types: ["sale", "rental"],
             site: {},
             dateRequiredBy: null,
             dateRequiredFrom: null,
@@ -244,6 +227,7 @@ class SearchForm extends Component {
                 state: this.state.fields["state"],
                 require_after_epoch_ms: new Date(this.state.startDate).getTime(),
                 expire_after_epoch_ms: new Date(this.state.endDate).getTime(),
+                search_type: this.state.fields["search_type"],
             },
             site_id: this.state.fields["deliver"],
             product_id: this.state.fields["product"],
@@ -1253,9 +1237,9 @@ if ((this.state.activeStep-1)==0){
 
                                             </div>
                                         </div>
-                                        <div className="row no-gutters mt-2">
+                                        <div className="row  mt-2">
                                             <div className="col-12">
-                                                <div className="row no-gutters justify-content-start ">
+                                                <div className="row  justify-content-start ">
                                                     <div className="col-12 ">
                                                         <div
                                                             className={"custom-label text-bold text-blue mb-1"}>
@@ -1263,7 +1247,7 @@ if ((this.state.activeStep-1)==0){
                                                         </div>
                                                     </div>
 
-                                                    <div className="col-4 pr-2">
+                                                    <div className="col-4 ">
                                                         <SelectArrayWrapper
                                                             select={"Select"}
                                                             initialValue={this.props.item&&this.props.item.product.units}
@@ -1273,7 +1257,7 @@ if ((this.state.activeStep-1)==0){
                                                             disabled={ (this.state.units.length > 0) ? false : true}
                                                             options={this.state.units} name={"units"} title="(Units)"/>
                                                     </div>
-                                                    <div className="col-4 pl-2">
+                                                    <div className="col-4 ">
 
                                                         <TextFieldWrapper
 
@@ -1282,6 +1266,20 @@ if ((this.state.activeStep-1)==0){
                                                             onChange={(value)=>this.handleChange(value,"volume")}
                                                               error={this.state.showFieldErrors&&this.state.errors["volume"]}
                                                             name="volume" title="(Volume)" />
+
+                                                    </div>
+
+                                                    <div className="col-4 ">
+
+                                                        <SelectArrayWrapper
+
+                                                            select={"Select"}
+                                                            onChange={(value)=> {
+                                                                this.handleChange(value,"search_type")
+
+                                                            }}
+                                                            options={this.state.types} name={"search_type"} title="Type"/>
+
 
                                                     </div>
                                                 </div>

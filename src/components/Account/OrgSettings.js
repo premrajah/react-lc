@@ -139,10 +139,6 @@ class OrgSettings extends Component {
             );
     }
 
-
-
-
-
     fetchAllSettings=()=> {
         axios
             .get(baseUrl + "org/setting")
@@ -161,8 +157,6 @@ class OrgSettings extends Component {
                 }
             );
     }
-
-
 
 
     handleChange(value, field) {

@@ -264,20 +264,7 @@ render() {
                                             )}
 
 
-                                            {this.props.productRegisterRequests.filter(r => (
-                                                    r.registration.stage !== "complete" &&
-                                                    r.registration.stage !== "cancelled" &&
-                                                    r.registration.stage !== "invalidated")
-                                                ).length === 0 && (
-                                                    <div className={" column--message"}>
-                                                        <p>
-                                                            {this.state.loading
-                                                                ? "Loading..."
-                                                                : "This currently has no active results"}
-                                                        </p>
-                                                    </div>
-                                                )
-                                            }
+
 
 
                                         </div>

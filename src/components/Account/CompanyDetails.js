@@ -1099,7 +1099,7 @@ class CompanyDetails extends Component {
 
                                        <Tab label="General" value="1" />
 
-                                       <Tab label="Settings" value="2"/>
+                                       {this.props.userContext.perms.includes("AdminWrite") &&        <Tab label="Settings" value="2"/>}
 
                                    </TabList>
                                </Box>

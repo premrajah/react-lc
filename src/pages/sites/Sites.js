@@ -52,15 +52,33 @@ class Sites extends Component {
     }
 
 
+
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+
+        if (prevProps!==this.props) {
+
+            if (this.props.refresh){
+                this.props.refreshPage(false)
+
+                this.setState({
+                    items:[],
+                    offset:0,
+                })
+
+            }
+        }
+
+    }
+
+
     componentDidMount() {
-
-
-        // this.props.loadParentSites();
 
         this.setState({
             items:[]
         })
-        this.getTotalCount()
+
     }
 
 

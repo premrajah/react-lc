@@ -101,21 +101,13 @@ class OrgSettings extends Component {
             .then(
                 (response) => {
 
-
-
-
                     if (response.data.data.org.settings) {
-
-
 
                         let options=[]
                             let   notification_settings=response.data.data.org.settings&&response.data.data.org.settings.notification_settings?response.data.data.org.settings.notification_settings.value:[]
 
-
                         if (notification_settings.length>0)
                             options=this.state.notifSettingsOptions.filter((option,index)=>  notification_settings[option])
-
-
 
                         this.setState({
                             matching_brands:  response.data.data.org.settings.matching_brands?response.data.data.org.settings.matching_brands.value:[] ,

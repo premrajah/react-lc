@@ -101,7 +101,7 @@ class ProductForm extends Component {
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["New", "Used", "Salvage"],
-            powerSupply: ["Gas", "Electric", "Hybrid", "Solid_Fuel"],
+            powerSupply: ["gas", "electric", "hybrid", "solid_Fuel"],
             product: null,
             parentProduct: null,
             imageLoading: false,
@@ -974,7 +974,7 @@ class ProductForm extends Component {
                               <div className="row  mt-2">
                               <div className="col-md-4 col-sm-6 col-xs-6">
                                   <SelectArrayWrapper
-                                      initialValue={this.props.item&&this.props.item.product.power_supply}
+                                      initialValue={this.props.item&&this.props.item.product.sku.power_supply}
                                       select={"Select"}
 
                                       onChange={(value)=> {

@@ -9,11 +9,16 @@ import {connect} from "react-redux";
 
 const MessengerMessagesTwoOrgSearch = ({showSnackbar}) => {
     const [inputValue, setInputValue] = useState([]);
+    const [selected, setSelected] = useState([])
 
 
     const handleInputChange = (e) => {
         setInputValue(e);
     };
+
+    const handleChange = (value) => {
+        setSelected(value)
+    }
 
     const handleNewMessageSelectAsync = async (value) => {
         if(!value) return;
@@ -56,6 +61,7 @@ const MessengerMessagesTwoOrgSearch = ({showSnackbar}) => {
             placeholder="Search Orgs"
             loadOptions={loadOptions}
             onInputChange={handleInputChange}
+            onChange={handleChange}
             isMulti
             noOptionsMessage={i => "Search..."}
         />

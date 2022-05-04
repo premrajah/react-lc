@@ -172,6 +172,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         <List
                             sx={{
                                 height: "500px",
+                                minHeight: "500px",
                                 maxHeight: "500px",
                                 overflow: "auto",
                                 bgColor: "background.paper",
@@ -182,9 +183,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 </div>
                 <div className="col-md-8">
                     <div className="row">
-                        <div className="col">
+                        <div className="col" style={{ height: "500px", minHeight: "500px"}}>
                             {clickedMessage.length > 0 && (
-                                <div style={{ height: "500px", maxHeight: "500px", overflow: "auto" }}>
+                                <div style={{ height: "500px", minHeight: "500px", maxHeight: "500px", overflow: "auto" }}>
                                     <MessengerMessagesTwoSelectedMessage messages={clickedMessage} />
                                 </div>
                             )}

@@ -19,6 +19,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [selectedMenuItemIndex, setSelectedMenuItemIndex] = useState(null);
     const [filteredGroups, setFilteredGroups] = useState([]);
     const [filterVisibility, setFilterVisibility] = useState(false);
+    const [orgSearchVisibility, setOrgSearchVisibility] = useState(false);
     const [filterValues, setFilterValues] = useState("");
 
     useEffect(() => {
@@ -88,6 +89,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         }
     };
 
+    const handleOrgSelectVisibility = () => {
+        setOrgSearchVisibility(!orgSearchVisibility);
+    }
+
     const handleClearInputCallback = (v) => {
       if(!v) return;
       if(v) {
@@ -150,14 +155,14 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                 <div
                                     className="d-flex justify-content-center align-items-center"
                                     style={{ height: "45px" }}>
-                                    <AddCircleIcon />
+                                    <AddCircleIcon onClick={() => handleOrgSelectVisibility()} />
                                 </div>
                             </Tooltip>
                         </div>
                     </div>
                 </div>
                 <div className="col-md-8">
-                    <MessengerMessagesTwoOrgSearch />
+                    {orgSearchVisibility && <MessengerMessagesTwoOrgSearch/>}
                 </div>
             </div>
 

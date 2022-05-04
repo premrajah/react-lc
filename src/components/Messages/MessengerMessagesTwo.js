@@ -181,11 +181,20 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     )}
                 </div>
                 <div className="col-md-8">
-                    {clickedMessage.length > 0 && (
-                        <div style={{ height: "500px", maxHeight: "500px", overflow: "auto" }}>
-                            <MessengerMessagesTwoSelectedMessage messages={clickedMessage} />
+                    <div className="row">
+                        <div className="col">
+                            {clickedMessage.length > 0 && (
+                                <div style={{ height: "500px", maxHeight: "500px", overflow: "auto" }}>
+                                    <MessengerMessagesTwoSelectedMessage messages={clickedMessage} />
+                                </div>
+                            )}
                         </div>
-                    )}
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            typing
+                        </div>
+                    </div>
                 </div>
             </div>
         </React.Fragment>

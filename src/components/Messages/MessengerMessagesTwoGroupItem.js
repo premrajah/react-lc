@@ -5,15 +5,10 @@ import OrgComponent from "../Org/OrgComponent";
 const MessengerMessagesTwoGroupItem = ({ group, index, handleGroupClickCallback, handleSelectedItemCallback }) => {
 
     const handleOrgDisplay = (org, index) => {
+        console.log('> ', org)
         return (
             <Chip
-                label={
-                    <>
-                        <span key={index}>
-                            <OrgComponent org={org} colorClass="blue-text" />
-                        </span>
-                    </>
-                }
+                label={org.name ? org.name : ""}
                 className="mr-1 mb-1"
                 variant="outlined"
                 key={`${index}_${org._ts_epoch_ms}`}

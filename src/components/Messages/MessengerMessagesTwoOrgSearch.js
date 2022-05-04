@@ -1,7 +1,6 @@
 
 import React, {useState} from "react";
 import AsyncSelect from 'react-select/async';
-import {Autocomplete, TextField} from "@mui/material";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import * as actionCreator from "../../store/actions/actions";
@@ -41,17 +40,6 @@ const MessengerMessagesTwoOrgSearch = ({showSnackbar}) => {
     const loadOptions = async (value, callback) => {
         const response = await handleNewMessageSelectAsync(value);
         callback(response.orgs.map(o => ({value: o._id, label: o.name})));
-
-        //   // callback(object.map(i => ({ label: `${i.fields.firstName} - ${i.fields.lasName} , value: i.fields.firstName })))
-
-        // simulate async operation
-        // setTimeout(() => {
-        //     callback([
-        //         { value: "apple", label: "Apple" },
-        //         { value: "amazon", label: "Amazon" },
-        //         { value: "Microsoft", label: "Microsoft" }
-        //     ]);
-        // }, 1000);
     };
 
     return <div>

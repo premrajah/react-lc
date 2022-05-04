@@ -8,6 +8,9 @@ import SelectArrayWrapper from "./FormsUI/ProductForm/Select";
 import {validateFormatCreate, validateInputs, Validators} from "../Util/Validator";
 import {createProductUrl} from "../Util/Api";
 import * as actionCreator from "../store/actions/actions";
+import KeywordChip from "./issues/KeywordChip";
+
+
 
 // import {Select} from "formik-material-ui";
 
@@ -20,6 +23,8 @@ class IssueSubmitForm extends Component {
             status: "",
             fields: {},
             errors: {},
+            keywords: [],
+            keywordSelected: []
         }
     }
 
@@ -34,6 +39,64 @@ class IssueSubmitForm extends Component {
     VALIDATION_SCHEMA = Yup.object().shape({
         title: Yup.string().required("Required")
     })
+
+timeout=0
+    addToKeywords=(keyword,add)=>{
+
+        let keywords=[]
+
+        if (this.timeout) clearTimeout(this.timeout);
+
+        // this.timeout = setTimeout(() => {
+        keywords=this.state.keywordSelected?this.state.keywordSelected:[]
+
+        // }, 200);
+        console.log(keyword,add)
+
+        if (add) {
+
+            if (keywords.length==0||!keywords.find((item)=>item==keyword))
+             keywords.push(keyword)
+
+        }else {
+            if (keywords.length>0) {
+                keywords = keywords.filter((item) => keyword != item)
+            }
+        }
+        console.log(keywords)
+
+        this.setState({
+            keywordSelected: keywords
+        })
+
+    }
+
+    fetchKeywords=()=> {
+        axios
+            .get(baseUrl + "issue/no-auth/keywords")
+            .then(
+                (response) => {
+
+                    this.setState({
+                        keywords: response.data.data,
+
+                    });
+
+                    if (this.props.issue&&this.props.issue.keywords){
+
+                        this.setState({
+                            keywordSelected:this.props.issue.keywords
+                        })
+
+
+                    }
+
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
 
 
     handleValidation=() =>{
@@ -62,12 +125,8 @@ class IssueSubmitForm extends Component {
         event.preventDefault();
         event.stopPropagation()
         if (!this.handleValidation()){
-
             return
-
         }
-
-
         const form = event.currentTarget;
 
         this.setState({
@@ -82,11 +141,6 @@ class IssueSubmitForm extends Component {
             const description = data.get("description");
 
 
-
-
-
-
-
             if (this.props.issue){
                 this.postEditIssue({
                     id:this.props.issue._key,
@@ -94,6 +148,7 @@ class IssueSubmitForm extends Component {
                         priority: priority.toLowerCase(),
                         title: title,
                         description: description,
+                        keywords : this.state.keywordSelected
 
                     }
                 })
@@ -103,7 +158,8 @@ class IssueSubmitForm extends Component {
                      priority: priority.toLowerCase(),
                      title: title,
                      description: description,
-                     product_id: this.props.productId
+                     product_id: this.props.productId,
+                     keywords : this.state.keywordSelected
                  }
 
                 });
@@ -112,6 +168,9 @@ class IssueSubmitForm extends Component {
     };
 
     postCreateIssue = (payload) => {
+
+        console.log(payload)
+
         axios
             .post(`${baseUrl}issue`, payload)
             .then((response) => {
@@ -160,10 +219,16 @@ class IssueSubmitForm extends Component {
 
     }
 
+    componentDidMount() {
+    this.fetchKeywords()
+
+    }
+
     render() {
         return (
             <div className="row p-3">
-                <div className="col-12  "><h4 className="blue-text text-heading"> {this.props.issue ?"Edit Issue: "+this.props.issue.title:"Report Issue"}</h4></div>
+                {/*<div className="col-12  "><h4 className="blue-text text-heading">*/}
+                {/*    {this.props.issue ?"Edit Issue: "+this.props.issue.title:"Report Issue"}</h4></div>*/}
 
                 <div className="col">
 
@@ -204,7 +269,19 @@ class IssueSubmitForm extends Component {
 
                                 </div>
                             </div>
+                              <div className="row mb-1">
+                                          <div className="col">
+                                              {this.state.keywords.map((item)=>
+                                                  <KeywordChip
+                                                      onChange={(keyword,add)=>
+                                                      this.addToKeywords(keyword,add)}
+                                                      selected={(this.props.issue&&this.props.issue.keywords
+                                                      &&this.props.issue.keywords.find((key)=>item.name==key))?true:false}
+                                                      item={item} />
+                                              )}
 
+                                          </div>
+                             </div>
                             <div className="row">
                                 <div className="col">
                                     <button type="submit"  className="btn btn-green btn-block">Submit</button>

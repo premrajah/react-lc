@@ -41,6 +41,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import QrCode from "./Products/QrCode";
 import {NavLink} from "reactstrap";
+import GlobalDialog from "./RightBar/GlobalDialog";
 class ProductDetailCycle extends Component {
     slug;
     search;
@@ -753,7 +754,8 @@ class ProductDetailCycle extends Component {
                                                     {this.props.userDetail.orgId ===
                                                     this.props.item.org._id
                                                     ?     <span onClick={this.showReportModal} className="click-item d-flex flex-row align-items-center">
-                                                <ReportIcon color={"text-blue"} className="click-Item mr-1" /> Report Issue
+                                                Report Issue <ReportIcon color={"text-blue"} className="click-Item mr-2 text-blue" />
+
                                                 </span>:""}
 
                                                     { this.props.userDetail.orgId !==
@@ -996,11 +998,15 @@ class ProductDetailCycle extends Component {
                     </div>
                 </div>
 
-                <Modal
-                    id="reportModal"
+
+                <GlobalDialog
+                    size="sm"
+
+                    heading={"Report Issue"}
                     show={this.state.isVisibleReportModal}
-                    onHide={this.hideReportModal}
-                    animation={false}>
+                    hide={this.hideReportModal}
+                >
+
 
                         {this.props.item.product._key && (
 
@@ -1013,7 +1019,7 @@ class ProductDetailCycle extends Component {
 
                         )}
 
-                </Modal>
+                </GlobalDialog>
 
                 <Modal
                     className={"loop-popup"}

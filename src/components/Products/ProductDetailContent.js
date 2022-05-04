@@ -844,7 +844,7 @@ class ProductDetailContent extends Component {
                                                 {this.state.item.org._id ===
                                                 this.props.userDetail.orgId
                                                     ?  <span onClick={this.showReleaseProductPopUp} className="click-item d-flex flex-row align-items-center">
-                                               Release   <ReportIcon className="click-Item mr-1 text-blue" />
+                                               Release   <ReportIcon className="click-Item ml-2 mr-1 text-blue" />
                                                 </span>:""}
                                             </div>
                                         </div>

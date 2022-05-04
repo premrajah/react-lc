@@ -21,6 +21,7 @@ import OrgComponent from "../../components/Org/OrgComponent";
 import InfoTabContent from "../../components/issues/InfoTabContent";
 import SubproductItem from "../../components/Products/Item/SubproductItem";
 import CustomizedSelect from "../../components/FormsUI/ProductForm/CustomizedSelect";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
 
 class IssueDetail extends Component {
     state = {
@@ -309,7 +310,13 @@ class IssueDetail extends Component {
 
                 {this.state.issue && (
                     <>
-                        <Modal show={this.state.editModal} onHide={this.handleHideEditModal}>
+                    <GlobalDialog
+                        size="sm"
+
+                        heading={"Edit Issue"}
+                        show={this.state.editModal}
+                        hide={this.handleHideEditModal}
+                    >
 
 
                                 <IssueSubmitForm
@@ -321,7 +328,7 @@ class IssueDetail extends Component {
                                     }}
                                 />
 
-                        </Modal>
+                    </GlobalDialog>
 
                         <Modal show={this.state.stageModal} onHide={this.handleHideStageModal}>
                             <Modal.Header closeButton>

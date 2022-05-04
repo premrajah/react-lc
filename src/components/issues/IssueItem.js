@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
 import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
 import {capitalize} from "../../Util/GlobalFunctions";
+import KeywordChip from "./KeywordChip";
 
 const IssueItem = ({ item, onSubmitted }) => {
     const { artifacts, creator, issue, product, service_agent } = item;
@@ -116,13 +117,23 @@ const IssueItem = ({ item, onSubmitted }) => {
 
                                     </span>
                                             </p>
-                                                    <p  className=" text-capitalize  text-gray-light">
+                                                    {/*<p  className=" text-capitalize  text-gray-light">*/}
 
-                                                        {product.product.purpose!=="aggregate"?"Qty:":""} {product.product.purpose!=="aggregate"&&  <span className={"text-blue"}>{product.product.volume} </span>}
-                                                        {product.product.purpose!=="aggregate"&&     <span  className={"text-blue"}>{product.product.units}</span>}
-                                                    </p>
+                                                    {/*    {product.product.purpose!=="aggregate"?"Qty:":""} {product.product.purpose!=="aggregate"&&  <span className={"text-blue"}>{product.product.volume} </span>}*/}
+                                                    {/*    {product.product.purpose!=="aggregate"&&     <span  className={"text-blue"}>{product.product.units}</span>}*/}
+                                                    {/*</p>*/}
                                                 </>}
 
+                                            <div className="row  no-gutters  ">
+                                                <div className="col-md-12">
+                                                    {issue&&issue.keywords&&issue.keywords.map((item)=>
+                                                        <KeywordChip
+                                                            disableClick
+                                                            name={item}
+                                                        />
+                                                    )}
+                                                </div>
+                                            </div>
 
                                         </div>
 
@@ -139,7 +150,11 @@ const IssueItem = ({ item, onSubmitted }) => {
                                                 />
                                             </div>
                                         )}
+
+
                                     </div>
+
+
 
                 </Link>
             )}

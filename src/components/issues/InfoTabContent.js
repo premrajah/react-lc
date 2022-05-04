@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {capitalizeFirstLetter} from "../../Util/Constants";
 import {capitalize} from "../../Util/GlobalFunctions";
 import OrgComponent from "../Org/OrgComponent";
+import KeywordChip from "./KeywordChip";
 
 class InfoTabContent extends Component {
     slug;
@@ -46,6 +47,21 @@ class InfoTabContent extends Component {
                 {/*        </div>*/}
                 {/*    </div>*/}
                 {/*)}*/}
+                <div className="row  no-gutters  ">
+                    <div className="col-md-12">
+                        <p
+
+                            className=" text-label text-bold text-blue mb-1">
+                            Keywords
+                        </p>
+                        {this.props.item&&this.props.item.issue.keywords&&this.props.item.issue.keywords.map((item)=>
+                            <KeywordChip
+                                disableClick
+                                name={item}
+                            />
+                        )}
+                    </div>
+                </div>
 
 
 
@@ -69,6 +85,10 @@ class InfoTabContent extends Component {
                         </div>
                     </div>
                 </div>
+
+
+
+
             </div>
         );
     }

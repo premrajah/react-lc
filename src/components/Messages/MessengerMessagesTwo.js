@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import {List, Tooltip} from "@mui/material";
@@ -11,9 +11,12 @@ import MessengerMessagesTwoFilterChats from "./MessengerMessagesTwoFilterChats";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import MessengerMessagesTwoOrgSearch from "./MessengerMessagesTwoOrgSearch";
+import WysiwygEditor from "./WysiwygEditor";
 
 
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
+
+    const resetDraftRef = useRef(null);
 
     const [allGroups, setAllGroups] = useState([]);
     const [clickedMessage, setClickedMessage] = useState([]);
@@ -22,6 +25,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [filterVisibility, setFilterVisibility] = useState(false);
     const [orgSearchVisibility, setOrgSearchVisibility] = useState(false);
     const [filterValues, setFilterValues] = useState("");
+    const [messageText, setMessageText] = useState("");
 
     useEffect(() => {
         setSelectedMenuItemIndex(0);
@@ -100,6 +104,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
           setFilteredGroups(allGroups);
       }
     }
+
+    const handleRichTextCallback = (value) => {
+        setMessageText(value);
+    };
 
 
 
@@ -195,7 +203,14 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     </div>
                     <div className="row">
                         <div className="col">
-                            message
+                            {messageText}
+                            <WysiwygEditor
+                                allOrgs={allGroups}
+                                ref={resetDraftRef}
+                                richTextHandleCallback={(value) =>
+                                    handleRichTextCallback(value)
+                                }
+                            />
                         </div>
                     </div>
                 </div>

@@ -10,10 +10,11 @@ import { connect } from "react-redux";
 import MessengerMessagesTwoFilterChats from "./MessengerMessagesTwoFilterChats";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import ClearIcon from "@mui/icons-material/Clear";
 import MessengerMessagesTwoOrgSearch from "./MessengerMessagesTwoOrgSearch";
 
+
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
+
     const [allGroups, setAllGroups] = useState([]);
     const [clickedMessage, setClickedMessage] = useState([]);
     const [selectedMenuItemIndex, setSelectedMenuItemIndex] = useState(null);
@@ -99,6 +100,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
           setFilteredGroups(allGroups);
       }
     }
+
 
 
     const handleGroupDataDisplay = (group, index) => {
@@ -193,7 +195,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     </div>
                     <div className="row">
                         <div className="col">
-                            typing
+                            message
                         </div>
                     </div>
                 </div>

@@ -10,7 +10,6 @@ const MessengerMessagesTwoGroupItem = ({
     handleSelectedItemCallback,
 }) => {
     const handleOrgDisplay = (org, index) => {
-        console.log("> ", org);
         return (
             <React.Fragment
                 key={`${index}_${org._ts_epoch_ms}`}>

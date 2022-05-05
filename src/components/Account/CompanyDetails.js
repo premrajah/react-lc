@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
-import {Alert, Modal, ModalBody, Toast} from "react-bootstrap";
+import {Alert, Modal, ModalBody} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
 import PlaceholderImg from "../../img/sq_placeholder.png";
@@ -18,41 +18,17 @@ import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import Add from "@mui/icons-material/Add";
 import Minus from "@mui/icons-material/Remove";
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import GlobalDialog from "../RightBar/GlobalDialog";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
-import { styled } from '@mui/material/styles';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OrgSettings from "./OrgSettings";
 import Box from "@mui/material/Box";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
-import InfoTabContent from "../Products/InfoTabContent";
-import AggregatesTab from "../Products/AggregatesTab";
-import SubProductsTab from "../Products/SubProductsTab";
-import {Link} from "react-router-dom";
-import {GoogleMap} from "../Map/MapsContainer";
-import SearchItem from "../Searches/search-item";
-import ResourceItem from "../../pages/create-search/ResourceItem";
-import ArtifactProductsTab from "../Products/ArtifactProductsTab";
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 import OrgComponent from "../Org/OrgComponent";
-
 
 
 class CompanyDetails extends Component {
@@ -1242,6 +1218,8 @@ class CompanyDetails extends Component {
                     show={this.state.showAddCompany}
                     heading={"Add Company"}>
                     <>
+                        {this.state.showAddCompany &&
+                            <>
                         <div className="col-12 ">
                             <div className="row no-gutters">
                                 <div className="col-12 pt-4 pb-4">
@@ -1264,7 +1242,7 @@ class CompanyDetails extends Component {
                                     />
                                     {this.state.errorCompany && (
                                         <span
-                                            style={{ color: "rgb(244, 67, 54)" }}
+                                            style={{color: "rgb(244, 67, 54)"}}
                                             className="text-danger">
                                             Required
                                         </span>
@@ -1272,30 +1250,32 @@ class CompanyDetails extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 ">
+                            <div className="col-12 ">
                             <div className="row mt-4 no-gutters">
-                                <div
-                                    className={"col-6 pr-1"}
-                                    style={{
-                                        textAlign: "center",
-                                    }}>
-                                    <GreenButton
-                                        onClick={() => this.handleAddCompany()}
-                                        title={"Submit"}
-                                        type={"submit"}></GreenButton>
-                                </div>
-                                <div
-                                    className={"col-6 pl-1"}
-                                    style={{
-                                        textAlign: "center",
-                                    }}>
-                                    <BlueBorderButton
-                                        type="button"
-                                        title={"Cancel"}
-                                        onClick={() => this.addCompany()}></BlueBorderButton>
-                                </div>
+                            <div
+                            className={"col-6 pr-1"}
+                            style={{
+                            textAlign: "center",
+                        }}>
+                            <GreenButton
+                            onClick={() => this.handleAddCompany()}
+                            title={"Submit"}
+                            type={"submit"}></GreenButton>
                             </div>
-                        </div>
+                            <div
+                            className={"col-6 pl-1"}
+                            style={{
+                            textAlign: "center",
+                        }}>
+                            <BlueBorderButton
+                            type="button"
+                            title={"Cancel"}
+                            onClick={() => this.addCompany()}></BlueBorderButton>
+                            </div>
+                            </div>
+                            </div>
+</>
+                        }
                     </>
                 </GlobalDialog>
 

@@ -203,11 +203,7 @@ class RequestRegisterItem extends Component {
 
     getDetails() {
         axios
-            .get(baseUrl + "register/" + this.state.item.registration._key, {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+            .get(baseUrl + "register/" + this.state.item.registration._key, )
             .then(
                 (response) => {
                     var responseData = response.data;

@@ -5,22 +5,20 @@ import {baseUrl} from "../../Util/Constants";
 import ImagesSlider from "../../components/ImagesSlider/ImagesSlider";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import MoreMenu from "../../components/MoreMenu";
-import Org from "../../components/Org/Org";
 import {Link} from "react-router-dom";
 import {Badge, Modal} from "react-bootstrap";
 import IssueSubmitForm from "../../components/IssueSubmitForm";
 import {FormControl, FormHelperText, MenuItem, Select} from "@mui/material";
-import ProductItem from "../../components/Products/Item/ProductItem";
 import Layout from "../../components/Layout/Layout";
 import Box from "@mui/material/Box";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
-import OrgComponent from "../../components/Org/OrgComponent";
 import InfoTabContent from "../../components/issues/InfoTabContent";
 import SubproductItem from "../../components/Products/Item/SubproductItem";
 import CustomizedSelect from "../../components/FormsUI/ProductForm/CustomizedSelect";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
 
 class IssueDetail extends Component {
     state = {
@@ -309,7 +307,13 @@ class IssueDetail extends Component {
 
                 {this.state.issue && (
                     <>
-                        <Modal show={this.state.editModal} onHide={this.handleHideEditModal}>
+                    <GlobalDialog
+                        size="sm"
+
+                        heading={"Edit Issue"}
+                        show={this.state.editModal}
+                        hide={this.handleHideEditModal}
+                    >
 
 
                                 <IssueSubmitForm
@@ -321,7 +325,7 @@ class IssueDetail extends Component {
                                     }}
                                 />
 
-                        </Modal>
+                    </GlobalDialog>
 
                         <Modal show={this.state.stageModal} onHide={this.handleHideStageModal}>
                             <Modal.Header closeButton>

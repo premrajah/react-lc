@@ -111,6 +111,7 @@ const KeywordChip = (props) => {
                         fontWeight: "700",
                         // color : "#444",
                     }}><span className={"sub-title-text-pink"}>
+                    {!props.disableClick ?
                     <Checkbox
 
                         checked={checked}
@@ -119,11 +120,25 @@ const KeywordChip = (props) => {
                         {...label} icon={<Chip
 
 
-                        label={keyword.name} />}
-                                    checkedIcon={<Chip
-                                        label={keyword.name} style={{color:"white",background:`${keyword.avoidability=="unavoidable"?"#0F835E":"#07ad88"}`,}}  label={keyword.name}   avatar={<DoneIcon style={{color:"white"}}
-                                    />}
-                          />}/>
+                        label={keyword.name}/>}
+                        checkedIcon={<Chip
+                            label={keyword.name} style={{
+                            color: "white",
+                            background: `${keyword.avoidability == "unavoidable" ? "#0F835E" : "#07ad88"}`,
+                        }} label={keyword.name} avatar={<DoneIcon style={{color: "white"}}
+                        />}
+                        />}/>:
+                    <>
+                        <Chip
+                            label={keyword.name} style={{
+                            color: "white",
+                            background: `${keyword.avoidability == "unavoidable" ? "#0F835E" : "#07ad88"}`,
+                        }} label={keyword.name} avatar={<DoneIcon style={{color: "white"}}
+                        />}
+                        />
+                    </>
+
+                    }
                     </span>
                 </div>
                 <OverlayTrigger

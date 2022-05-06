@@ -47,7 +47,7 @@ class InfoTabContent extends Component {
                 {/*        </div>*/}
                 {/*    </div>*/}
                 {/*)}*/}
-                <div className="row  no-gutters  ">
+                <div className="row  no-gutters mb-2  ">
                     <div className="col-md-12">
                         <p
 

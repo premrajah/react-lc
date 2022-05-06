@@ -14,6 +14,10 @@ import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
 import {capitalize} from "../Util/GlobalFunctions";
 import CustomizedSelect from "./FormsUI/ProductForm/CustomizedSelect";
+import GlobalDialog from "./RightBar/GlobalDialog";
+import BlueButton from "./FormsUI/Buttons/BlueButton";
+import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
+import GreenButton from "./FormsUI/Buttons/GreenButton";
 
 class RequestReleaseItem extends Component {
     constructor(props) {
@@ -46,19 +50,19 @@ class RequestReleaseItem extends Component {
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
-        this.showPopUpInitiateAction = this.showPopUpInitiateAction.bind(this);
+        this.togglePopUpInitiateAction = this.togglePopUpInitiateAction.bind(this);
 
         this.showSubmitSite = this.showSubmitSite.bind(this);
         this.getDetails = this.getDetails.bind(this);
     }
 
 
-    showPopUpInitiateAction(event) {
-        if(!event) return;
+    togglePopUpInitiateAction(event) {
+        // if(!event) return;
 
         this.setState({
             showPopUpInitiateAction: !this.state.showPopUpInitiateAction,
-            initiateAction: event.currentTarget.dataset.action,
+            initiateAction: event?event.currentTarget.dataset.action:null,
         });
     }
 
@@ -250,9 +254,10 @@ class RequestReleaseItem extends Component {
                 this.setState({
                     isLoading:false
                 })
-                this.getDetails();
-                this.showPopUpInitiateAction();
-                this.props.refreshPageCallback();
+                // this.getDetails();
+                this.togglePopUpInitiateAction();
+                // this.props.refreshPageCallback();
+                this.props.refresh()
             })
             .catch((error) => {
                 this.setState({
@@ -382,7 +387,7 @@ class RequestReleaseItem extends Component {
                                                         <button
                                                             data-id={this.state.item.Release_key}
                                                             data-action={actionName}
-                                                            onClick={this.showPopUpInitiateAction}
+                                                            onClick={this.togglePopUpInitiateAction}
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
@@ -418,27 +423,23 @@ class RequestReleaseItem extends Component {
                             </div>
                         </div>
 
-                        <Modal
-                            className={"loop-popup"}
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered
+                        <GlobalDialog
+                            size={"xs"}
+
+                            heading={this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
                             show={this.state.showPopUpInitiateAction}
-                            onHide={this.showPopUpInitiateAction}
-                            animation={false}>
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p
-                                            style={{ textTransform: "uppercase" }}
-                                            className={"text-bold"}>
-                                            {this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
-                                        </p>
-                                        <p>
+                            hide={this.togglePopUpInitiateAction}
+                        >
+                            <>
+
+                                    <div className={"col-12 text-center"}>
+
+                                        <div className=" mb-2 text-left title-bold">
                                             Are you sure you want to <span className={"text-lowercase"}>{this.state.initiateAction==="cancelled"?"cancel":this.state.initiateAction}?</span>
 
-                                        </p>
+                                        </div>
                                     </div>
-                                </div>
+
 
                                 {this.state.initiateAction === "complete" && (
                                     <>
@@ -518,29 +519,33 @@ class RequestReleaseItem extends Component {
                                             <div className={"row justify-content-center"}>
                                                 <div
                                                     className={"col-6"}
-                                                    style={{ textAlign: "center" }}>
-                                                    <button
+                                                    >
+                                                    <GreenButton
 
                                                         disabled={this.state.isLoading?true:false}
                                                         onClick={this.actionSubmit}
-                                                        style={{ minWidth: "120px" }}
-                                                        className={
-                                                            "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                        }
+                                                       fullWidth
+                                                        // className={
+                                                        //     "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
+                                                        // }
+                                                        title={"Yes"}
                                                         type={"submit"}>
-                                                        Yes
-                                                    </button>
+
+                                                    </GreenButton>
                                                 </div>
                                                 <div
                                                     className={"col-6"}
-                                                    style={{ textAlign: "center" }}>
-                                                    <p
-                                                        onClick={this.showPopUpInitiateAction}
-                                                        className={
-                                                            "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                        }>
-                                                        Cancel
-                                                    </p>
+                                                   >
+                                                    <BlueBorderButton
+                                                        fullWidth
+                                                        title={"Cancel"}
+                                                        onClick={this.togglePopUpInitiateAction}
+                                                        // className={
+                                                        //     "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
+                                                        // }
+                                                    >
+
+                                                    </BlueBorderButton>
                                                 </div>
                                             </div>
                                         </div>
@@ -736,8 +741,11 @@ class RequestReleaseItem extends Component {
                                         </div>
                                     </div>
                                 )}
-                            </ModalBody>
-                        </Modal>
+
+                                </>
+                        </GlobalDialog>
+                        {/*    </ModalBody>*/}
+                        {/*</Modal>*/}
                     </>
                 )}
             </>

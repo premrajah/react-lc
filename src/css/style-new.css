@@ -2243,7 +2243,8 @@ button.blue-btn-border
 .img-list{
     height: 185px;
     object-fit: cover;
-    width: 185px;
+    /*width: 185px;*/
+    width: auto;
 }
 
 .rad-4{

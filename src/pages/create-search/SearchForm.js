@@ -1117,7 +1117,7 @@ if ((this.state.activeStep-1)==0){
         const classesBottom = withStyles();
 
         return (
-            <Layout>
+            <Layout hideFooter>
 
                     <div className="container  pb-4 pt-4">
                         {this.state.activeStep <2 &&<PageHeader pageTitle="New Search"  subTitle={this.state.activeStep === 0 ?"Basic Details":"More Details"}/>}

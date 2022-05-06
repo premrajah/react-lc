@@ -3929,6 +3929,7 @@ input:active,input:focus{
     width: 100%;
     background: white;
     z-index: 1000;
+    left: 0;
 }
 
 .MuiMenu-list{

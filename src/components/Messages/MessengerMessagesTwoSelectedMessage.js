@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import PropTypes from "prop-types";
 import MessengerMessagesFilesDisplay from "./MessengerMessagesFilesDisplay";
+import MessengerMessageTwoMessageBubble from "./MessengerMessageTwoMessageBubble";
 
 const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
     TabPanel.propTypes = {
@@ -24,19 +25,24 @@ const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
                         <Tabs
                             value={value}
                             onChange={handleTabsChange}
-                            aria-label="basic tabs example">
+                            aria-label="message-tabs">
                             <Tab label="Chats" {...a11yProps(0)} />
                             <Tab label="Files" {...a11yProps(1)} />
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
                         {messages.length > 0 &&
-                            messages.map((m, i) => <div key={i}>{m.message.text}</div>)}
+                            messages.map((m, i) => <React.Fragment key={i} >
+                                <div className={`d-flex ${m.options.is_owned ? "justify-content-end" : "justify-content-start"}`}>
+                                    <MessengerMessageTwoMessageBubble m={m} />
+                                </div>
+                            </React.Fragment>)
+                        }
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         {messages.length > 0 &&
-                            messages.map((m, i) => (
-                                <div>
+                            messages.map((m, ind) => (
+                                <div key={ind}>
                                     {m.artifacts.map((a, j) => (
                                         <MessengerMessagesFilesDisplay key={j} artifacts={a} />
                                     ))}

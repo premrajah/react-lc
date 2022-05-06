@@ -202,7 +202,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col">
+                        <div className="col-sm-10">
                             {messageText}
                             <WysiwygEditor
                                 allOrgs={allGroups}
@@ -211,6 +211,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                     handleRichTextCallback(value)
                                 }
                             />
+                        </div>
+                        <div className="col-sm-2">
+                            button
                         </div>
                     </div>
                 </div>

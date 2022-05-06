@@ -55,7 +55,7 @@
     "react-places-autocomplete": "^7.3.0",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.1",
     "react-select": "^5.1.0",
     "react-string-replace": "^0.4.4",
     "reactstrap": "^8.6.0",

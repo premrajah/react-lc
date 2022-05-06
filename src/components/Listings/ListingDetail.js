@@ -25,7 +25,6 @@ import {GoogleMap} from "../../components/Map/MapsContainer";
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import Badge from "@mui/material/Badge";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import Layout from "../Layout/Layout";
 
 class ListingDetail extends Component {
     slug;
@@ -572,10 +571,11 @@ marteplace
                                                 <div className="col-12 ">
 
 
-                                        <ListEditForm
-                                            triggerCallback={this.showEdit}
-                                            listingId={this.state.item.listing._key}
-                                        />
+                                        {/*<ListEditForm*/}
+                                        {/*    triggerCallback={this.showEdit}*/}
+                                        {/*    listingId={this.state.item.listing._key}*/}
+                                        {/*/>*/}
+
 
 
                                                 </div>

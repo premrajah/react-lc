@@ -1218,6 +1218,8 @@ class CompanyDetails extends Component {
                     show={this.state.showAddCompany}
                     heading={"Add Company"}>
                     <>
+                        {this.state.showAddCompany &&
+                            <>
                         <div className="col-12 ">
                             <div className="row no-gutters">
                                 <div className="col-12 pt-4 pb-4">
@@ -1240,7 +1242,7 @@ class CompanyDetails extends Component {
                                     />
                                     {this.state.errorCompany && (
                                         <span
-                                            style={{ color: "rgb(244, 67, 54)" }}
+                                            style={{color: "rgb(244, 67, 54)"}}
                                             className="text-danger">
                                             Required
                                         </span>
@@ -1248,30 +1250,32 @@ class CompanyDetails extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 ">
+                            <div className="col-12 ">
                             <div className="row mt-4 no-gutters">
-                                <div
-                                    className={"col-6 pr-1"}
-                                    style={{
-                                        textAlign: "center",
-                                    }}>
-                                    <GreenButton
-                                        onClick={() => this.handleAddCompany()}
-                                        title={"Submit"}
-                                        type={"submit"}></GreenButton>
-                                </div>
-                                <div
-                                    className={"col-6 pl-1"}
-                                    style={{
-                                        textAlign: "center",
-                                    }}>
-                                    <BlueBorderButton
-                                        type="button"
-                                        title={"Cancel"}
-                                        onClick={() => this.addCompany()}></BlueBorderButton>
-                                </div>
+                            <div
+                            className={"col-6 pr-1"}
+                            style={{
+                            textAlign: "center",
+                        }}>
+                            <GreenButton
+                            onClick={() => this.handleAddCompany()}
+                            title={"Submit"}
+                            type={"submit"}></GreenButton>
                             </div>
-                        </div>
+                            <div
+                            className={"col-6 pl-1"}
+                            style={{
+                            textAlign: "center",
+                        }}>
+                            <BlueBorderButton
+                            type="button"
+                            title={"Cancel"}
+                            onClick={() => this.addCompany()}></BlueBorderButton>
+                            </div>
+                            </div>
+                            </div>
+</>
+                        }
                     </>
                 </GlobalDialog>
 

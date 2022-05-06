@@ -10,7 +10,10 @@ import { withStyles } from "@mui/styles/index";
 import Org from "./Org/Org";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
-import {capitalize} from "../Util/GlobalFunctions";
+import {capitalize, fetchErrorMessage} from "../Util/GlobalFunctions";
+import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
+import GreenButton from "./FormsUI/Buttons/GreenButton";
+import GlobalDialog from "./RightBar/GlobalDialog";
 
 class RequestRegisterItem extends Component {
     constructor(props) {
@@ -42,19 +45,19 @@ class RequestRegisterItem extends Component {
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
-        this.showPopUpInitiateAction = this.showPopUpInitiateAction.bind(this);
+        this.togglePopUpInitiateAction = this.togglePopUpInitiateAction.bind(this);
         this.getDetails = this.getDetails.bind(this);
     }
 
 
 
-    showPopUpInitiateAction(event) {
+    togglePopUpInitiateAction(event) {
         this.setState({
             showPopUpInitiateAction: !this.state.showPopUpInitiateAction,
         });
 
         this.setState({
-            initiateAction: event.currentTarget.dataset.action,
+            initiateAction: event?event.currentTarget.dataset.action:null,
         });
     }
 
@@ -110,6 +113,9 @@ class RequestRegisterItem extends Component {
                 this.setState({
                     showRegisterSuccess: true,
                 });
+
+
+
             })
             .catch((error) => {
                 this.setState({
@@ -133,32 +139,24 @@ class RequestRegisterItem extends Component {
         axios
             .post(
                 baseUrl + "register/stage",
-                data,
-
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
+                data
             )
             .then((res) => {
                 this.setState({
                     isLoading:false
                 })
-                this.getDetails();
 
-                this.showPopUpInitiateAction();
+                this.props.refresh()
+                this.togglePopUpInitiateAction();
             })
             .catch((error) => {
 
                 this.setState({
                     isLoading:false
                 })
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
+                this.togglePopUpInitiateAction();
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
+
             });
     }
 
@@ -283,7 +281,7 @@ class RequestRegisterItem extends Component {
                                                                 this.state.item.registration_key
                                                             }
                                                             data-action={actionName}
-                                                            onClick={this.showPopUpInitiateAction}
+                                                            onClick={this.togglePopUpInitiateAction}
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
@@ -319,60 +317,58 @@ class RequestRegisterItem extends Component {
                             </div>
                         </div>
 
-                        <Modal
-                            className={"loop-popup"}
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered
-                            show={this.state.showPopUpInitiateAction}
-                            onHide={this.showPopUpInitiateAction}
-                            animation={false}>
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p
-                                            style={{ textTransform: "uppercase" }}
-                                            className={"text-bold"}>
-                                            {this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
-                                        </p>
+                        {/*<Modal*/}
+                        {/*    className={"loop-popup"}*/}
+                        {/*    aria-labelledby="contained-modal-title-vcenter"*/}
+                        {/*    centered*/}
+                        {/*    show={this.state.showPopUpInitiateAction}*/}
+                        {/*    onHide={this.togglePopUpInitiateAction}*/}
+                        {/*    animation={false}>*/}
+
+                            <GlobalDialog
+                                size={"xs"}
+
+                                heading={this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
+                                show={this.state.showPopUpInitiateAction}
+                                hide={this.togglePopUpInitiateAction}
+                            >
+
+                            <>
+                                    <div className={"col-12 mb-2 text-left"}>
                                         <p>
                                             Are you sure you want to <span className={"text-lowercase"}>{this.state.initiateAction==="cancelled"?"cancel":this.state.initiateAction}?</span>
                                         </p>
                                     </div>
-                                </div>
 
-                                <div className={"row justify-content-center"}>
                                     <div className={"col-12 text-center mt-2"}>
                                         <div className={"row justify-content-center"}>
                                             <div
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
-                                                <button
+                                                <GreenButton
                                                     disabled={this.state.isLoading?true:false}
                                                     onClick={this.actionSubmit}
-                                                    style={{ minWidth: "120px" }}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                    }
+                                                    title={"Yes"}
+
                                                     type={"submit"}>
-                                                    Yes
-                                                </button>
+
+                                                </GreenButton>
                                             </div>
                                             <div
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
-                                                <p
-                                                    onClick={this.showPopUpInitiateAction}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                    }>
-                                                    Cancel
-                                                </p>
+                                                <BlueBorderButton
+                                                    onClick={this.togglePopUpInitiateAction}
+                                                   title={"Cancel"}
+                                                >
+
+                                                </BlueBorderButton>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </ModalBody>
-                        </Modal>
+
+                            </>
+                            </GlobalDialog>
                     </>
                 )}
             </>
@@ -404,6 +400,7 @@ const mapDispachToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(RequestRegisterItem);

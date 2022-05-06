@@ -206,6 +206,12 @@ render() {
                                                 <div className="col-12" key={item.product_id.replace("Product/","")} id={item.product_id.replace("Product/","")}>
 
                                                     <RequestReleaseItem
+
+                                                        refresh={()=>{
+
+                                                            this.props.fetchReleaseRequest();
+                                                        }}
+
                                                         history={this.props.history}
                                                         item={item}
                                                     />
@@ -248,6 +254,11 @@ render() {
                                                     <RequestRegisterItem
                                                         history={this.props.history}
                                                         item={item}
+
+                                                        refresh={()=>{
+
+                                                            this.props.fetchRegisterRequest();
+                                                        }}
                                                     />
 
                                                 </div>
@@ -286,6 +297,9 @@ render() {
                                                     <RequestServiceAgentItem
                                                         history={this.props.history}
                                                         item={item}
+                                                        refresh={()=>{
+                                                            this.props.fetchServiceAgentRequest();
+                                                        }}
                                                     />
                                                 </div>
                                             ))}
@@ -300,20 +314,20 @@ render() {
                                                 </div>
                                             )}
 
-                                            {
-                                                this.props.serviceAgentRequests.filter(r => (
-                                                    r.Release.stage !== "complete" &&
-                                                    r.Release.stage !== "cancelled")
-                                                ).length === 0 && (
-                                                    <div className={" column--message"}>
-                                                        <p>
-                                                            {this.state.loading
-                                                                ? "Loading..."
-                                                                : "This currently has no active results"}
-                                                        </p>
-                                                    </div>
-                                                )
-                                            }
+                                            {/*{*/}
+                                            {/*    this.props.serviceAgentRequests.filter(r => (*/}
+                                            {/*        r.Release.stage !== "complete" &&*/}
+                                            {/*        r.Release.stage !== "cancelled")*/}
+                                            {/*    ).length === 0 && (*/}
+                                            {/*        <div className={" column--message"}>*/}
+                                            {/*            <p>*/}
+                                            {/*                {this.state.loading*/}
+                                            {/*                    ? "Loading..."*/}
+                                            {/*                    : "This currently has no active results"}*/}
+                                            {/*            </p>*/}
+                                            {/*        </div>*/}
+                                            {/*    )*/}
+                                            {/*}*/}
 
                                         </div>
 

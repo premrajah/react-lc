@@ -105,7 +105,7 @@ const KeywordChip = (props) => {
             {keyword &&
             <div style={{ display: "inline-flex", justifyContent: "center", alignItems: "center" }}>
                 <div
-                    className="mr-1 text-gray-light "
+                    className=" text-gray-light "
                     style={{
                         textTransform: "capitalize",
                         fontWeight: "700",
@@ -130,10 +130,14 @@ const KeywordChip = (props) => {
                         />}/>:
                     <>
                         <Chip
-                            label={keyword.name} style={{
+                            size="small"
+                            className="mr-1"
+                            label={keyword.name}
+                            style={{
                             color: "white",
                             background: `${keyword.avoidability == "unavoidable" ? "#0F835E" : "#07ad88"}`,
-                        }} label={keyword.name} avatar={<DoneIcon style={{color: "white"}}
+                        }}
+                            label={keyword.name} avatar={<DoneIcon style={{color: "white"}}
                         />}
                         />
                     </>

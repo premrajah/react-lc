@@ -5,6 +5,8 @@ import SitePageItem from "./SitePageItem";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import AddLinkIcon from "@mui/icons-material/AddLink";
+import SiteFormNew from "./SiteFormNew";
+import GlobalDialog from "../RightBar/GlobalDialog";
 
 class SubSitesTab extends Component {
     slug;
@@ -15,19 +17,24 @@ class SubSitesTab extends Component {
 
         this.state = {
 
-            subSites:[]
+            subSites:[],
+            showSiteSelectPopUp:false
         }
 
     }
 
     showSiteSelection=(event)=> {
 
-        this.props.setSiteForm({show:true,
-            item:null,type:"link",
-            parent:this.props.item.site._key,
-            heading:"Link Child Sites",
-            subSites:this.state.subSites}
-            );
+        // this.props.setSiteForm({show:true,
+        //     item:null,type:"link",
+        //     parent:this.props.item.site._key,
+        //     heading:"Link Child Sites",
+        //     subSites:this.state.subSites}
+        //     );
+
+        this.setState({
+            showSiteSelectPopUp:!this.state.showSiteSelectPopUp
+        })
 
     }
 
@@ -121,6 +128,23 @@ class SubSitesTab extends Component {
                                 />
                             )
                         )}
+
+
+                <GlobalDialog
+
+                    heading={"Link Site"}
+                    show={this.state.showSiteSelectPopUp}
+                    hide={this.showSiteSelection}
+                >
+                    <>
+                        <div className="col-12">
+
+                <SiteFormNew link showHeader={false}  refresh={() => {}}   />
+
+                        </div>
+                </>
+                </GlobalDialog>
+
             </>
         );
     }

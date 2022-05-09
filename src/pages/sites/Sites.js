@@ -5,14 +5,12 @@ import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
 import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
-import SearchBar from "../../components/SearchBar";
-import {baseUrl, PRODUCTS_FILTER_VALUES_KEY, SITES_FILTER_VALUES} from "../../Util/Constants";
+import {baseUrl, SITES_FILTER_VALUES} from "../../Util/Constants";
 import {Modal} from "react-bootstrap";
 import UploadMultiSiteOrProduct from "../../components/UploadImages/UploadMultiSiteOrProduct";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import SitePageItem from "../../components/Sites/SitePageItem";
-import PaginationLayoutOld from "../../components/IntersectionOserver/PaginationLayoutOld";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {seekAxiosGet} from "../../Util/GlobalFunctions";
 

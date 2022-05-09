@@ -41,6 +41,8 @@ let productProperties=[
     {field:"part_no",required:false},
     {field:"line",required:false},
     {field:"is_listable",required:false},
+    {field:"power_supply",required:true},
+    {field:"energy_rating",required:false},
 ]
 
 let siteProperties=[

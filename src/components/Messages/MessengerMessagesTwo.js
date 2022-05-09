@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
-import {List, Tooltip} from "@mui/material";
+import {IconButton, List, Tooltip} from "@mui/material";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
 import MessengerMessagesTwoSelectedMessage from "./MessengerMessagesTwoSelectedMessage";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,6 +12,8 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import MessengerMessagesTwoOrgSearch from "./MessengerMessagesTwoOrgSearch";
 import WysiwygEditor from "./WysiwygEditor";
+import SendIcon from '@mui/icons-material/Send';
+import ClearIcon from '@mui/icons-material/Clear';
 
 
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
@@ -131,6 +133,11 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         );
     };
 
+    const handleResetWysiwygEditor = () => {
+        resetDraftRef.current.resetDraft();
+        setMessageText("");
+    }
+
     return (
         <React.Fragment>
             <div className="row" style={{ height: "45px" }}>
@@ -202,8 +209,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-sm-10">
-                            {messageText}
+                        <div className="col-sm-11">
                             <WysiwygEditor
                                 allOrgs={allGroups}
                                 ref={resetDraftRef}
@@ -212,8 +218,19 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                 }
                             />
                         </div>
-                        <div className="col-sm-2">
-                            button
+                        <div className="col-sm-1 d-flex justify-content-center align-items-center">
+                            <div>
+                                <Tooltip title="Clear" placement="right-start" arrow>
+                                    <IconButton disabled={!messageText} onClick={() => handleResetWysiwygEditor()}>
+                                        <ClearIcon fontSize="large" />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Send" placement="right-end" arrow>
+                                    <IconButton disabled={!messageText}>
+                                        <SendIcon fontSize="large" />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -653,6 +653,148 @@ class SiteFormNew extends Component {
         return (
             <>
 
+
+                {this.props.link
+                &&  <p style={{margin: "10px 0px"}} className="  small">
+                                <span onClick={this.toggleCreateNew} className="btn-gray-border click-item mr-2 "
+                                      data-parent="cWkY0KVYEM"><AddIcon /> Create New</span><span
+                    onClick={this.toggleAddExisting}
+                    className="btn-gray-border ml-2 click-item"
+                    data-parent="cWkY0KVYEM"> <AddLinkIcon /> Add Existing</span></p>
+                }
+
+                {this.state.addExisting &&
+                <div className="row   justify-content-start">
+
+                    <div className="col-12 " style={{ padding: "0!important" }}>
+
+                        <form style={{ width: "100%" }} onSubmit={this.linkSubSites}>
+
+                            <div className="row   ">
+                                <div className="col-12 p-0" style={{ padding: "0!important" }}>
+                                    {this.state.addCount.map((item, index) => (
+                                        <div className="row mt-2">
+                                            <div className="col-10">
+
+                                                <CustomizedSelect
+                                                    variant={"standard"}
+
+                                                    name={`site[${index}]`}
+                                                    // label={"Link a product"}
+                                                    required={true}
+                                                    native
+                                                    onChange={this.handleChange.bind(
+                                                        this,
+                                                        "site"
+                                                    )}
+                                                    inputProps={{
+                                                        // name: {`product[${index}]`},
+                                                        id: "outlined-age-native-simple",
+                                                    }}>
+                                                    <option value={null}>Select</option>
+
+                                                    {this.state.subSites
+                                                        .filter(
+                                                            (item) =>
+                                                                (item.Site._key !==
+                                                                    this.props.showSiteForm.parent)
+                                                                &&
+                                                                !(
+                                                                    this.props.showSiteForm.subSites&&this.props.showSiteForm.subSites.filter(
+                                                                        (subItem) =>
+                                                                            subItem._key ===
+                                                                            item.Site._key
+                                                                    ).length > 0
+                                                                )
+                                                        )
+
+                                                        .map((item) => (
+                                                            <option  value={item.Site._key}>
+                                                                {item.Site.name}{GetParent(item)}
+                                                            </option>
+                                                        ))}
+
+
+                                                </CustomizedSelect>
+                                                {this.state.subSites.length===0&&
+                                                <Spinner
+                                                    as="span"
+                                                    animation="border"
+                                                    size="sm"
+                                                    role="status"
+                                                    aria-hidden="true"
+                                                    style={{color:"#07AD88"}}
+                                                    className={"spinner-select"}
+                                                />}
+                                                {this.state.errorsLink["site"] && (
+                                                    <span className={" small"}>
+                                                            <span style={{ color: "red" }}>* </span>
+                                                        {this.state.errorsLink["site"]}
+                                                        </span>
+                                                )}
+
+
+
+                                            </div>
+
+
+
+                                            <div
+                                                className="col-2 text-center"
+                                                style={{ display: "flex" }}>
+                                                {item > 1 && (
+                                                    <>
+                                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
+
+                                                        <DeleteIcon
+                                                            classname={"click-item"}
+                                                            style={{
+                                                                color: "#ccc",
+                                                                margin: "auto",
+                                                            }}
+                                                            onClick={() => this.subtractCount()}
+                                                        />
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="row   ">
+                                <div className="col-12 mt-4 p-0 ">
+                                    <span
+                                        onClick={this.addCount}
+                                        className={
+                                            "btn  click-item btn-rounded shadow  blue-btn-border"
+                                        }>
+                                         <AddIcon />
+                                        Add
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="row    pt-2 ">
+
+                                <div className="col-12 mt-4 mobile-menu">
+                                    <div className="row text-center ">
+                                        <div className="col-12 text-center">
+                                            <button
+                                                style={{ margin: "auto", width: "200px" }}
+                                                type={"submit"}
+                                                className={
+                                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                }>
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>}
+
                         <div className="row   justify-content-start mobile-menu-row   pb-3 mb-3 ">
 
                             <div className="col-12 p-0 ">

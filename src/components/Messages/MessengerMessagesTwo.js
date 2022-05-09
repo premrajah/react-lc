@@ -15,6 +15,8 @@ import WysiwygEditor from "./WysiwygEditor";
 import SendIcon from '@mui/icons-material/Send';
 import ClearIcon from '@mui/icons-material/Clear';
 
+const newMessagePlaceHOlder = {"message_group": {"_id": 0}, "orgs": [{"name": "New Message", "email": "new@new.com"}]}
+
 
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
@@ -98,13 +100,19 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
     const handleOrgSelectVisibility = () => {
         setOrgSearchVisibility(!orgSearchVisibility);
+        if(!orgSearchVisibility) {
+            setFilteredGroups([newMessagePlaceHOlder, ...allGroups]);
+        }
+
+        if(filteredGroups[0].message_group._id === 0) {
+            setFilteredGroups(filteredGroups.filter(g => g.message_group._id !== 0)); // remove temp new message
+        }
     }
 
     const handleClearInputCallback = (v) => {
       if(!v) return;
-      if(v) {
-          setFilteredGroups(allGroups);
-      }
+
+      setFilteredGroups(allGroups);
     }
 
     const handleRichTextCallback = (value) => {

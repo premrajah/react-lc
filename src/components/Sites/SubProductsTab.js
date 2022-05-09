@@ -90,7 +90,7 @@ class SubProductsTab extends Component {
 
         axios
             // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
-            .get(baseUrl + "site/" + this.props.item._key+"/product")
+            .get(baseUrl + "site/" + this.props.item._key+"/product/no-parent")
             .then(
                 (response) => {
 

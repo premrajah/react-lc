@@ -1,5 +1,5 @@
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import AsyncSelect from 'react-select/async';
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
@@ -9,7 +9,14 @@ import {connect} from "react-redux";
 const MessengerMessagesTwoOrgSearch = ({showSnackbar, handleOrgSelectedCallback}) => {
     const [inputValue, setInputValue] = useState([]);
 
+    useEffect(() => {
+        setInputValue([]);
 
+        return () => {
+            setInputValue([]); // reset orgs selected
+            handleOrgSelectedCallback([]);
+        }
+    }, [])
 
     const handleInputChange = (e) => {
         setInputValue(e);
@@ -19,9 +26,6 @@ const MessengerMessagesTwoOrgSearch = ({showSnackbar, handleOrgSelectedCallback}
         handleOrgSelectedCallback(value)
     }
 
-    const resetOrgs = () => {
-        console.log('reset orgs')
-    }
 
     const handleNewMessageSelectAsync = async (value) => {
         if(!value) return;

@@ -107,7 +107,6 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
         if(filteredGroups[0].message_group._id === 0) {
             setFilteredGroups(filteredGroups.filter(g => g.message_group._id !== 0)); // remove temp new message
-            // TODO reset org selected
         }
     }
 

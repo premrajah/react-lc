@@ -19,7 +19,7 @@ const MessengerMessagesTwoOrgSearch = ({showSnackbar, handleOrgSelectedCallback}
         handleOrgSelectedCallback(value)
     }
 
-    const resetOrgsSelected = () => {
+    const resetOrgs = () => {
         console.log('reset orgs')
     }
 

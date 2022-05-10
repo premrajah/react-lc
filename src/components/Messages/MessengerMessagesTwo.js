@@ -30,6 +30,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [orgSearchVisibility, setOrgSearchVisibility] = useState(false);
     const [filterValues, setFilterValues] = useState("");
     const [messageText, setMessageText] = useState("");
+    const [selectedOrgs, setSelectedOrgs] = useState([]);
 
     useEffect(() => {
         setSelectedMenuItemIndex(0);
@@ -106,8 +107,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
         if(filteredGroups[0].message_group._id === 0) {
             setFilteredGroups(filteredGroups.filter(g => g.message_group._id !== 0)); // remove temp new message
+            // TODO reset org selected
         }
     }
+
 
     const handleClearInputCallback = (v) => {
       if(!v) return;
@@ -119,7 +122,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         setMessageText(value);
     };
 
-
+    const handleOrgSelectedCallback = (value) => {
+        setSelectedOrgs(value);
+    }
 
     const handleGroupDataDisplay = (group, index) => {
         return (
@@ -144,6 +149,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const handleResetWysiwygEditor = () => {
         resetDraftRef.current.resetDraft();
         setMessageText("");
+    }
+
+    const handleSendMessage = () => {
+        console.log(messageText, selectedOrgs, clickedMessage)
     }
 
     return (
@@ -187,7 +196,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     </div>
                 </div>
                 <div className="col-md-8">
-                    {orgSearchVisibility && <MessengerMessagesTwoOrgSearch/>}
+                    {orgSearchVisibility && <MessengerMessagesTwoOrgSearch handleOrgSelectedCallback={(v) => handleOrgSelectedCallback(v)}/>}
                 </div>
             </div>
 
@@ -234,7 +243,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Send" placement="right-end" arrow>
-                                    <IconButton disabled={!messageText}>
+                                    <IconButton disabled={!messageText} onClick={() => handleSendMessage()}>
                                         <SendIcon fontSize="large" />
                                     </IconButton>
                                 </Tooltip>

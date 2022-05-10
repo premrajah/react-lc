@@ -6,9 +6,9 @@ import {baseUrl} from "../../Util/Constants";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 
-const MessengerMessagesTwoOrgSearch = ({showSnackbar}) => {
+const MessengerMessagesTwoOrgSearch = ({showSnackbar, handleOrgSelectedCallback}) => {
     const [inputValue, setInputValue] = useState([]);
-    const [selected, setSelected] = useState([])
+
 
 
     const handleInputChange = (e) => {
@@ -16,7 +16,11 @@ const MessengerMessagesTwoOrgSearch = ({showSnackbar}) => {
     };
 
     const handleChange = (value) => {
-        setSelected(value)
+        handleOrgSelectedCallback(value)
+    }
+
+    const resetOrgsSelected = () => {
+        console.log('reset orgs')
     }
 
     const handleNewMessageSelectAsync = async (value) => {

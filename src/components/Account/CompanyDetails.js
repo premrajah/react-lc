@@ -1076,7 +1076,7 @@ class CompanyDetails extends Component {
 
                                        <Tab label="General" value="1" />
 
-                                       {this.props.userContext.perms.includes("AdminWrite") &&        <Tab label="Settings" value="2"/>}
+                                       {this.props.userContext.perms.includes("OrgAdminWrite") &&        <Tab label="Settings" value="2"/>}
 
                                    </TabList>
                                </Box>
@@ -1186,7 +1186,7 @@ class CompanyDetails extends Component {
                                <TabPanel value="2">
                                    <div className={"row mt-4"}>
                                        <div className={"col-12 text-left"}>
-                                           <OrgSettings orgId={this.state.org._key} isVisible={false} />
+                                           <OrgSettings fromSettings orgId={this.state.org._key} isVisible={false} />
                                        </div>
                                    </div>
 

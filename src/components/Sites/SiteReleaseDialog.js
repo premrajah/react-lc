@@ -137,6 +137,7 @@ class SiteReleaseDialog extends Component {
                     <>
 
                         <GlobalDialog
+                            allowOverflow
                             heading={"Release Site: "+ this.props.item.site.name}
                             show={this.props.showReleaseProduct}
                             hide={this.props.hide}

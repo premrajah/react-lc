@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import PageHeader from "../../components/PageHeader";
 import {connect} from "react-redux";
-import {makeStyles, withStyles} from "@mui/styles/index";
-import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import RequestReleaseItem from "../../components/RequestReleaseItem";
@@ -16,54 +14,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from '@mui/lab/TabPanel';
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
-
-const StyledTabs = withStyles({
-    root: {
-        borderBottom: '1px solid #70707062',
-    },
-    indicator: {
-        backgroundColor: '#07AD88',
-    },
-
-})((props) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />);
-
-const StyledTab = withStyles((theme) => ({
-    root: {
-        minWidth: 290,
-        textTransform: 'none',
-        color: '#3C3972',
-
-        fontSize: theme.typography.pxToRem(15),
-        marginRight: theme.spacing(1),
-
-        '&:hover': {
-            color: '#3C3972',
-            opacity: 1,
-        },
-        '&$selected': {
-            color: '#3C3972',
-            fontWeight: 500,
-        },
-        '&:focus': {
-            color: '#3C3972',
-        },
-    },
-}))((props) => <Tab disableRipple {...props} />);
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    padding: {
-        padding: theme.spacing(3),
-    },
-    demo1: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    demo2: {
-        backgroundColor: '#2e1534',
-    },
-}));
+import {PRODUCT_RELEASE, SERVICE_AGENT_REQUEST} from "../../store/types";
 
 
 class Approvals extends Component {
@@ -81,6 +32,7 @@ class Approvals extends Component {
             loading: false,
             tabQuery: 0,
             activeKey:"1",
+            siteReleases:[]
         };
 
     }
@@ -97,8 +49,30 @@ class Approvals extends Component {
         })
 
 
+
+
     }
 
+
+     fetchSiteReleaseRequests = () => (dispatch) => {
+
+         axios.get(baseUrl + "release").then(
+             (response) => {
+
+                 let responseAll = response.data.data;
+
+                 this.setState({
+                     siteReleases:responseAll
+                 })
+
+             },
+             (error) => {
+                 // let status = error.response.status
+                 // dispatch({ type: "PRODUCT_LIST", value: [] })
+             }
+         )
+             .catch(error => {});
+    };
 
     componentDidMount() {
 

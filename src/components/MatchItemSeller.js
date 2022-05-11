@@ -585,7 +585,7 @@ class MatchItemSeller extends Component {
                                 <>
                                 <div className="row d-flex align-items-center">
                                     <div className="col-9">
-                                <span> Message: {message.message.text}</span>
+                                        <span> Message: <span className="text-gray-light">{message.message.text}</span></span>
                                     </div>
                                     <div className="col-3 text-right">
                                         <span className="text-gray-light "><span className="mr-4"> {getTimeFormat(message.message._ts_epoch_ms)}</span></span>

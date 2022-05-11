@@ -151,7 +151,13 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     }
 
     const handleSendMessage = () => {
-        console.log(messageText, selectedOrgs, clickedMessage)
+        if(selectedOrgs.length > 0 && messageText) {
+            console.log('selected orgs', selectedOrgs)
+        } else {
+            console.log('reply ', clickedMessage)
+        }
+
+
     }
 
     return (

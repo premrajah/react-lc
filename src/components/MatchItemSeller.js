@@ -583,6 +583,7 @@ class MatchItemSeller extends Component {
 
                             {this.state.messages.filter(item=> item.message.type=="message").map((message)=>
                                 <>
+                                    <hr/>
                                 <div className="row d-flex align-items-center">
                                     <div className="col-9">
                                         <span> Message: <span className="text-gray-light">{message.message.text}</span></span>

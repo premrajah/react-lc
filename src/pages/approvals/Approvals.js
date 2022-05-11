@@ -14,7 +14,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from '@mui/lab/TabPanel';
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
-import {PRODUCT_RELEASE, SERVICE_AGENT_REQUEST} from "../../store/types";
+import RequestSiteReleaseItem from "../../components/RequestSiteReleaseItem";
 
 
 class Approvals extends Component {
@@ -54,9 +54,9 @@ class Approvals extends Component {
     }
 
 
-     fetchSiteReleaseRequests = () => (dispatch) => {
+     fetchSiteReleaseRequests = () => {
 
-         axios.get(baseUrl + "release").then(
+         axios.get(baseUrl + "site-release").then(
              (response) => {
 
                  let responseAll = response.data.data;
@@ -87,6 +87,10 @@ class Approvals extends Component {
            else if (this.props.location.search.includes("tab=2"))
                 this.setActiveKey(null,"3")
 
+            else if (this.props.location.search.includes("tab=3"))
+                this.setActiveKey(null,"4")
+
+
         }
 
         const query = new URLSearchParams(this.props.location.search);
@@ -109,12 +113,13 @@ class Approvals extends Component {
         this.props.fetchReleaseRequest();
         this.props.fetchRegisterRequest();
         this.props.fetchServiceAgentRequest()
-
+        this.fetchSiteReleaseRequests()
 
     this.interval = setInterval(() => {
         this.props.fetchReleaseRequest();
         this.props.fetchRegisterRequest();
         this.props.fetchServiceAgentRequest()
+        this.fetchSiteReleaseRequests()
     }, 30000);
 }
 
@@ -156,6 +161,7 @@ render() {
                                             <Tab label="Product Release Request" value="1" />
                                             <Tab label="Product Register Request" value="2"/>
                                             <Tab label="Change Service Agent Request" value="3" />
+                                            <Tab label="Site Release Requests" value="4" />
 
                                         </TabList>
                                     </Box>
@@ -306,7 +312,54 @@ render() {
                                         </div>
 
                                     </TabPanel>
+                                    <TabPanel value="4">
+                                        <div className={"row"} >
+                                            <div className="col-12 mt-3 mb-3">
+                                                <div className="col d-flex justify-content-end">
+                                                    <Link to="/approved" className="btn btn-sm blue-btn"
+                                                          style={{color: "#fff"}}>
+                                                       Site Release Request Records
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                            <div className={"listing-row-border "}></div>
 
+
+                                            {this.state.siteReleases.filter(r =>
+                                                r.Release.stage !== "complete" &&
+                                                r.Release.stage !== "cancelled" &&
+                                                r.Release.stage !== "invalidated").map((item, index) =>
+                                                <>
+                                                <div className="col-12"
+                                                     key={item.Site_id.replace("Site/","")}
+                                                     id={item.Site_id.replace("Site/","")}>
+
+                                                    <RequestSiteReleaseItem
+                                                        refresh={()=>{
+                                                            this.fetchSiteReleaseRequests();
+                                                        }}
+                                                        history={this.props.history}
+                                                        item={item}
+                                                    />
+
+                                                </div>
+
+                                                </>
+                                            )}
+
+
+                                            {this.state.siteReleases.length === 0 && (
+                                                <div className={" column--message"}>
+                                                    <p>
+                                                        {this.state.loading
+                                                            ? "Loading..."
+                                                            : "This search currently has no results"}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                        </div>
+                                    </TabPanel>
 
                                 </TabContext>
                             </Box>

@@ -741,10 +741,7 @@ class ProductDetailCycle extends Component {
                             <div className="col-12 ">
                                 <div className="row">
                                     <div className="col-12">
-
-
-
-                                            <h4 className="text-capitalize product-title width-90">
+                                        <h4 className="text-capitalize product-title width-80">
                                                 {this.props.item.product.name}</h4>
 
                                         <div className="top-right text-right">

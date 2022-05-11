@@ -10,7 +10,7 @@ import GreenButton from "./FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "./RightBar/GlobalDialog";
 import GrayBorderBtn from "./FormsUI/Buttons/GrayBorderBtn";
-import {getActionName} from "../Util/GlobalFunctions";
+import {getActionName, getTimeFormat} from "../Util/GlobalFunctions";
 import GreenSmallBtn from "./FormsUI/Buttons/GreenSmallBtn";
 
 class MatchItemSeller extends Component {
@@ -29,6 +29,7 @@ class MatchItemSeller extends Component {
             initiateAction: null,
             initiateActionId: null,
             cycle: null,
+            messages:[]
         };
 
         this.acceptMatch = this.acceptMatch.bind(this);
@@ -39,7 +40,6 @@ class MatchItemSeller extends Component {
         this.actionOffer = this.actionOffer.bind(this);
         this.getOffer = this.getOffer.bind(this);
         this.showPopUpInitiateAction = this.showPopUpInitiateAction.bind(this);
-
         this.getCycleId = this.getCycleId.bind(this);
     }
 
@@ -356,8 +356,26 @@ class MatchItemSeller extends Component {
     }
 
 
+    getMatchMessage() {
+        axios
+            .get(baseUrl + "message/match/" + this.props.item.match._key, )
+            .then(
+                (response) => {
+                    var responseAll = response.data.data;
+
+                    this.setState({
+                        messages:responseAll
+                    })
+
+                },
+                (error) => {}
+            );
+    }
+
+
     componentDidMount() {
         this.getOffer();
+        this.getMatchMessage()
 
         this.interval = setInterval(() => {
             if (this.props.item.match.stage) {
@@ -375,12 +393,8 @@ class MatchItemSeller extends Component {
     render() {
         return (
             <div className="row no-gutters rad-8 bg-white mt-4 mb-4  p-4 border-light">
-                {/*<div className={"col-1  content-box-listing"}>*/}
-                {/*<p style={{ fontSize: "18px" }} className="text-bold mb-1"> {this.props.index+1}.</p>*/}
-                {/*</div>*/}
-                <div className={"col-6  content-box-listing"}>
-                    {/*<p style={{ fontSize: "18px" }} className=" mb-1 list-title">{this.props.item.listing.listing.name}</p>*/}
 
+                <div className={"col-6  content-box-listing"}>
                     <p style={{ fontSize: "16px" }} className="title-bold ellipsis-end mb-1 width-75">
                         {this.props.item.search.search.name}
                     </p>
@@ -562,27 +576,28 @@ class MatchItemSeller extends Component {
                     {/*)}*/}
                 </div>
 
-                {/*{this.props.item.match.stage === "converted" && (*/}
-                {/*    <div className={"row"}>*/}
-                {/*        {this.state.offers.map((item, index) => (*/}
-                {/*            <div*/}
-                {/*                className={*/}
-                {/*                    this.state.offers.length > index + 1*/}
-                {/*                        ? "col-12 listing-row-border mb-2 "*/}
-                {/*                        : "col-12  mb-2 pb-2"*/}
-                {/*                }>*/}
-                {/*                {index + 1}.*/}
-                {/*                <span*/}
-                {/*                    style={{ fontSize: "18px" }}*/}
-                {/*                    className=" mb-1 list-title text-bold text-blue">*/}
-                {/*                    GBP {item.offer.amount.value}*/}
-                {/*                </span>*/}
-                {/*                , Offer Stage: {item.offer.stage}*/}
-                {/*            </div>*/}
-                {/*        ))}*/}
-                {/*    </div>*/}
-                {/*)}*/}
 
+
+                    <div className="col-12">
+
+
+                            {this.state.messages.filter(item=> item.message.type=="message").map((message)=>
+                                <>
+                                <div className="row d-flex align-items-center">
+                                    <div className="col-9">
+                                <span> Message: {message.message.text}</span>
+                                    </div>
+                                    <div className="col-3 text-right">
+                                        <span className="text-gray-light "><span className="mr-4"> {getTimeFormat(message.message._ts_epoch_ms)}</span></span>
+                                    </div>
+                                </div>
+                                </>
+
+                        )}
+
+
+
+                    </div>
 
                         <GlobalDialog size={"xs"}
                                       hide={this.editPopUp}
@@ -645,6 +660,7 @@ class MatchItemSeller extends Component {
                                 <p className={"text-bold"}>Make an offer</p>
                                 <p>Make an offer</p>
                             </div>
+
                         </div>
 
                         <form onSubmit={this.makeOfferMatch}>

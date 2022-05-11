@@ -456,7 +456,7 @@ marteplace
                                                                         <Tab label="Info" value="0"/>
                                                                         <Tab label="Linked Product" value="1" />
                                                                         <Tab label="Site" value="2" />
-                                                                        <Tab label={<Badge color={"primary"} badgeContent={this.state.matches.length}>Matches Received</Badge>} value="3" />
+                                                                        {!this.props.hideMatchesTab &&   <Tab label={<Badge color={"primary"} badgeContent={this.state.matches.length}>Matches Received</Badge>} value="3" />}
                                                                     </TabList>
                                                                 </Box>
 
@@ -652,7 +652,7 @@ marteplace
                     )}
 
 
-                {this.state.item&&(this.state.item.org._id !== this.props.userDetail.orgId) && (
+                {!this.props.hideRequestMatch&&this.state.item&&(this.state.item.org._id !== this.props.userDetail.orgId) && (
                     <React.Fragment>
 
 

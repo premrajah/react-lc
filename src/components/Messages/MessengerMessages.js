@@ -63,8 +63,6 @@ class MessengerMessages extends Component {
             .then((response) => {
                 const data = response.data.data;
 
-                console.log(">> ", data)
-
                 let returnedData = [];
 
                 data.map((d, index) => {

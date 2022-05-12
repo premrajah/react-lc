@@ -24,6 +24,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
     const [allGroups, setAllGroups] = useState([]);
     const [clickedMessage, setClickedMessage] = useState([]);
+    const [clickedMessageKey, setClickedMessageKey] = useState(null);
     const [selectedMenuItemIndex, setSelectedMenuItemIndex] = useState(null);
     const [filteredGroups, setFilteredGroups] = useState([]);
     const [filterVisibility, setFilterVisibility] = useState(false);
@@ -56,6 +57,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     };
 
     const getSelectedGroupMessage = (key) => {
+        if(!key) return;
+
+        setClickedMessageKey(key);
+
         axios
             .get(`${baseUrl}message-group/${key}/message`)
             .then((res) => {
@@ -151,13 +156,56 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     }
 
     const handleSendMessage = () => {
+        let payload = {};
         if(selectedOrgs.length > 0 && messageText) {
-            console.log('selected orgs', selectedOrgs)
+
+            const orgIds = [];
+            selectedOrgs.map(o => orgIds.push(o.value));
+
+            payload = {
+                message: {
+                    type: "message",
+                    text: messageText,
+                },
+                to_org_ids: orgIds,
+            };
+
+            console.log("Reply message", orgIds)
+            postMessage(payload, "R")
+
         } else {
-            console.log('reply ', clickedMessage)
+
+            payload = {
+                message: {
+                    type: "message",
+                    text: messageText,
+                },
+                to_org_ids: [],
+                message_group_id: clickedMessageKey,
+            };
+
+            console.log('new message')
+            postMessage(payload, "N");
         }
 
+    }
 
+    const postMessage = (payload, messageType) => {
+        axios
+            .post(`${baseUrl}message/chat`, payload)
+            .then((response) => {
+                if(messageType === "N") {
+                    console.log('N ', response)
+                }
+
+                if(messageType === "R") {
+                    console.log('R ', response)
+                }
+                getAllMessageGroups();
+            })
+            .catch(error => {
+                showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
+            })
     }
 
     return (

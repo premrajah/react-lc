@@ -1534,7 +1534,7 @@ class ListFormNew extends Component {
                     size={"lg"}
                     hide={this.toggleSite}
                     show={this.state.showCreateSite}
-                    heading={"Add Company"}>
+                    heading={"Add new site"}>
                     <>
                         <div className="col-12 ">
 

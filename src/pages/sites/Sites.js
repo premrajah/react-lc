@@ -13,6 +13,8 @@ import axios from "axios";
 import SitePageItem from "../../components/Sites/SitePageItem";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {seekAxiosGet} from "../../Util/GlobalFunctions";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
+import SiteFormNew from "../../components/Sites/SiteFormNew";
 
 class Sites extends Component {
 
@@ -276,6 +278,17 @@ class Sites extends Component {
 
     }
 
+    toggleSite=(refresh) =>{
+        if (refresh){
+
+            this.loadSitesWithoutParentPageWise({reset:true})
+        }
+
+        this.setState({
+            showCreateSite: !this.state.showCreateSite,
+        });
+    }
+
     toggleMultiSite = () => {
 
         // this.setState({showMultiUpload: !this.state.showMultiUpload});
@@ -311,7 +324,7 @@ class Sites extends Component {
                         <div className="row">
                             <div className="col-md-12  justify-content-start">
                                 <Link onClick={()=> {
-                                    this.props.setSiteForm({show:true,item:this.props.item,type:"new",heading:"Add New Site"})
+                                    this.toggleSite(true)
                                 }}  className="btn-gray-border  mr-2  click-item">
                                     Add Sites / Address
                                 </Link>
@@ -362,6 +375,21 @@ class Sites extends Component {
                         </Modal>
                     </>
                 )}
+
+
+                <GlobalDialog
+
+                    size={"lg"}
+                    hide={this.toggleSite}
+                    show={this.state.showCreateSite}
+                    heading={"Add new site"}>
+                    <>
+                        <div className="col-12 ">
+
+                            <SiteFormNew refresh={()=>this.toggleSite(true)} />
+                        </div>
+                    </>
+                </GlobalDialog>
             </Layout>
         );
     }

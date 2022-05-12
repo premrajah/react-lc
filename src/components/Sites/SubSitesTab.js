@@ -139,7 +139,7 @@ class SubSitesTab extends Component {
                     <>
                         <div className="col-12">
 
-                <SiteFormNew link showHeader={false}  refresh={() => {}}   />
+                <SiteFormNew   hide={this.showSiteSelection} item={this.props.item} link showHeader={false}  refresh={() => {}}   />
 
                         </div>
                 </>

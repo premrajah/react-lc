@@ -55,7 +55,8 @@ class SiteFormNew extends Component {
             phoneNumberInValid:false,
             showMapSelection:false,
             showAddressField:false,
-            subSites:[]
+            subSites:[],
+            addNew:false
 
         };
 
@@ -97,8 +98,9 @@ class SiteFormNew extends Component {
     toggleCreateNew = () => {
 
         this.setState({
-            createNew: !this.state.createNew,
+            addNew: !this.state.addNew,
             addExisting: false,
+            showMapSelection: !this.state.showMapSelection,
 
         });
     }
@@ -106,7 +108,7 @@ class SiteFormNew extends Component {
 
         this.setState({
             addExisting: !this.state.addExisting,
-            createNew: false,
+            addNew: false,
         });
     }
 
@@ -248,7 +250,7 @@ class SiteFormNew extends Component {
         const data = new FormData(event.target);
 
         const formData = {
-
+            parent_site_id: data.get("parent"),
             site: {
                 name: data.get("name"),
                 description: data.get("description"),
@@ -259,7 +261,7 @@ class SiteFormNew extends Component {
                 others: data.get("other"),
                 phone:  data.get("phone").trim().length<=4?"":data.get("phone"),
                 is_head_office: this.state.isHeadOffice,
-                parent_id: data.get("parent"),
+
                 is_deletable:true,
 
                 "geo_codes": [
@@ -302,8 +304,6 @@ class SiteFormNew extends Component {
             )
             .then((res) => {
 
-
-
                 this.setState({
                     loading:false
                 })
@@ -314,6 +314,12 @@ class SiteFormNew extends Component {
 
                 if (this.props.setSite)
                 this.props.setSite( res.data.data._key)
+
+                if (this.props.hide)
+                    this.props.hide()
+
+                if (this.props.item&&this.props.item.site)
+                this.props.loadCurrentSite(this.props.item.site._key)
 
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
 
@@ -328,7 +334,8 @@ class SiteFormNew extends Component {
 
                 this.setState({isSubmitButtonPressed: false})
                 this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
-
+                if (this.props.hide)
+                    this.props.hide()
             })
 
 
@@ -339,25 +346,19 @@ class SiteFormNew extends Component {
     updateSite = (event) => {
         event.preventDefault();
 
-        let item=this.props.showSiteForm.item
-
+        let item=this.props.item&&this.props.item.site
 
         if (!this.handleValidation()) {
-
             return
-
         }
 
 
         this.setState({
             btnLoading: true,
         });
-
         const data = new FormData(event.target);
 
-
         const formData = {
-
             id:item._key,
             update: {
                 name: data.get("name"),
@@ -393,16 +394,11 @@ class SiteFormNew extends Component {
         };
 
 
-
         axios.post(`${baseUrl}site`,formData)
             .then(res => {
                 if (res.status === 200) {
 
-
-                    // if (data.get("parent")) {
-
-
-                    if (this.props.showSiteForm.item.parent_site&&!data.get("parent")){
+                    if (this.props.item&&this.props.item.site.parent_site&&!data.get("parent")){
 
                         //removal of parent site id
                         this.updateParentSite(data.get("parent"), res.data.data._key,item._key,true)
@@ -411,8 +407,13 @@ class SiteFormNew extends Component {
                         this.updateParentSite(data.get("parent"), res.data.data._key,item._key,false)
                     }
 
-                    this.hidePopUp()
                     this.props.showSnackbar({show: true, severity: "success", message: "Site updated successfully. Thanks"})
+
+                    if (this.props.hide)
+                        this.props.hide()
+
+                    if (this.props.item&&this.props.item.site)
+                        this.props.loadCurrentSite(this.props.item.site._key)
 
                 }
             })
@@ -479,10 +480,31 @@ class SiteFormNew extends Component {
     }
 
 
+    loadInitialLocaiton=()=>{
+
+
+        if (this.props.edit){
+
+            try {
+                this.setState({
+                    latitude: this.props.item.site.geo_codes[0].address_info.geometry.location.lat,
+                    longitude: this.props.item.site.geo_codes[0].address_info.geometry.location.lng,
+                })
+            }catch (error){
+
+
+            }
+        }
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
 
 
+        if (prevProps!=this.props) {
+            this.getSubSites()
 
+
+        }
     }
 
     componentDidMount() {
@@ -491,16 +513,33 @@ class SiteFormNew extends Component {
         this.getSubSites()
 
 
+        if(!this.props.link){
             this.setState({
-                createNew: true,
-                showMapSelection: true,
-                showAddressField: false
+                addNew:true,
+                addExisting:false,
+                showMapSelection: this.props.edit?false:true,
+                showAddressField: this.props.edit?true:false,
+
             })
+
+           this.loadInitialLocaiton()
+
+
+        }
+
+
+      // else  if(!this.props.edit) {
+      //       this.setState({
+      //           createNew: true,
+      //           showMapSelection: true,
+      //           showAddressField: false
+      //       })
+      //   }
 
         // else if (this.props.showSiteForm.type==="link-product"){
 
         // this.props.loadProducts()
-        this.props.loadProductsWithoutParent()
+        // this.props.loadProductsWithoutParent()
 
         // }
 
@@ -535,13 +574,15 @@ class SiteFormNew extends Component {
     }
 
 
+
+
     hidePopUp=() =>{
         this.props.setSiteForm({ item: null, show: false });
     }
 
     linkSubSites = async (event) => {
 
-        let parentId=this.props.showSiteForm.parent
+        let parentId=this.props.item.site._key
 
 
         event.preventDefault();
@@ -559,8 +600,6 @@ class SiteFormNew extends Component {
 
         for (let i = 0; i < this.state.addCount.length; i++) {
 
-            // this.updateParentSite(this.props.showSiteForm.item._key, data.get(`site[${i}]`))
-
             await   axios
                 .post(baseUrl + "site/parent", {"parent_site_id":parentId,site_id:data.get(`site[${i}]`)}, {
                     headers: {
@@ -568,7 +607,6 @@ class SiteFormNew extends Component {
                     },
                 })
                 .then((res) => {
-
 
                     this.props.loadCurrentSite(parentId)
 
@@ -584,7 +622,9 @@ class SiteFormNew extends Component {
             count:0
         })
 
-        this.hidePopUp()
+        this.props.hide()
+
+// /        this.hidePopUp()
 
 
     }
@@ -592,7 +632,7 @@ class SiteFormNew extends Component {
 
     linkSubProducts = async (event) => {
 
-        let item=this.props.showSiteForm.item
+        let item=this.props.item&&this.props.item.site
 
         event.preventDefault();
 
@@ -655,12 +695,18 @@ class SiteFormNew extends Component {
 
 
                 {this.props.link
-                &&  <p style={{margin: "10px 0px"}} className="  small">
+                &&
+                <div className="row   justify-content-start">
+
+                    <div className="col-12 " style={{ padding: "0!important" }}>
+                <p style={{margin: "10px 0px"}} className="  small">
                                 <span onClick={this.toggleCreateNew} className="btn-gray-border click-item mr-2 "
                                       data-parent="cWkY0KVYEM"><AddIcon /> Create New</span><span
                     onClick={this.toggleAddExisting}
                     className="btn-gray-border ml-2 click-item"
-                    data-parent="cWkY0KVYEM"> <AddLinkIcon /> Add Existing</span></p>
+                    > <AddLinkIcon /> Add Existing</span></p>
+                    </div>
+                </div>
                 }
 
                 {this.state.addExisting &&
@@ -697,10 +743,11 @@ class SiteFormNew extends Component {
                                                         .filter(
                                                             (item) =>
                                                                 (item.Site._key !==
-                                                                    this.props.showSiteForm.parent)
+                                                                    this.props.item.site._key)
                                                                 &&
                                                                 !(
-                                                                    this.props.showSiteForm.subSites&&this.props.showSiteForm.subSites.filter(
+                                                                    this.props.item.children_sites
+                                                                    &&this.props.item.children_sites.filter(
                                                                         (subItem) =>
                                                                             subItem._key ===
                                                                             item.Site._key
@@ -795,486 +842,232 @@ class SiteFormNew extends Component {
                     </div>
                 </div>}
 
-                        <div className="row   justify-content-start mobile-menu-row   pb-3 mb-3 ">
+                {(this.state.addNew ||this.props.edit)&&
+                <div className="row   justify-content-start mobile-menu-row   pb-3 mb-3 ">
 
-                            <div className="col-12 p-0 ">
-                                <h4 className={"blue-text text-heading text-left"}>
-                                    {this.props.showSiteForm.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h4>
-                            </div>
 
-                            {/*link existing or new site*/}
+                    {/*link existing or new site*/}
 
-                            {this.props.showSiteForm.type==="link"
-                            && !this.state.createNew&& <p style={{margin: "10px 0px"}} className="  small">
-                                <span onClick={this.toggleCreateNew} className="btn-gray-border click-item mr-2 "
-                                      data-parent="cWkY0KVYEM"><AddIcon /> Create New</span><span
-                                onClick={this.toggleAddExisting}
-                                className="btn-gray-border ml-2 click-item"
-                                data-parent="cWkY0KVYEM"> <AddLinkIcon /> Add Existing</span></p>
-                            }
 
 
-                            <div className="col-12  ">
+                    <div className="col-12  ">
 
-                                {(this.state.createNew||this.props.showSiteForm.type==="new"||this.props.showSiteForm.type==="edit") &&
-                                <div className={"row justify-content-center create-product-row"}>
 
-                                    <form className={"col-12"} onSubmit={this.props.showSiteForm.type==="edit"?this.updateSite:this.handleSubmit}>
+                        <div className={"row justify-content-center create-product-row"}>
 
+                            <form className={"col-12"}
+                                  onSubmit={this.props.edit?this.updateSite : this.handleSubmit}>
 
+                                <div className="row no-gutters">
+                                    <div className="col-12 ">
 
-                                        <div className="row no-gutters">
-                                            <div className="col-12 ">
+                                        <TextFieldWrapper
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.name}
+                                            onChange={(value) => this.handleChange(value, "name")}
+                                            error={this.state.errors["name"]}
+                                            name="name" title="Name"/>
 
-                                                <TextFieldWrapper
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.name}
-                                                    onChange={(value)=>this.handleChange(value,"name")}
-                                                    error={this.state.errors["name"]}
-                                                    name="name" title="Name" />
-
-                                            </div>
-                                        </div>
-                                        <div className="row no-gutters ">
-                                            <div className="col-md-6 col-sm-12  justify-content-start align-items-center">
-
-                                                <CheckboxWrapper
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.is_head_office}
-                                                    onChange={(checked)=>this.checkListable(checked)} color="primary"
-                                                    name={"isHeadOffice"} title="Head Office ?" />
-
-                                            </div>
-
-                                            <div className="col-md-6 col-sm-12">
-
-                                                <TextFieldWrapper
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.contact}
-                                                    onChange={(value)=>this.handleChange(value,"contact")}
-                                                    error={this.state.errors["contact"]}
-                                                    name="contact" title="Contact" />
-
-                                            </div>
-                                        </div>
-
-                                        <div className="row no-gutters">
-                                            <div className="col-12 ">
-
-                                                <TextFieldWrapper
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.description}
-                                                    onChange={(value)=>this.handleChange(value,"description")}
-                                                    error={this.state.errors["description"]}
-                                                    name="description" title="Description" />
-
-                                            </div>
-                                        </div>
-
-                                        <div className="row no-gutters">
-                                            <div className="col-6 pr-1">
-
-
-                                                <TextFieldWrapper
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.external_reference}
-                                                    onChange={(value)=>this.handleChange(value,"external_reference")}
-                                                    error={this.state.errors["external_reference"]}
-                                                    name="external_reference" title="External Reference" />
-                                            </div>
-
-                                            <div className="col-6 pl-1 ">
-
-                                                <SelectArrayWrapper
-                                                    initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key?this.props.showSiteForm.parent._key:this.props.showSiteForm.parent}
-                                                    option={"name"}
-                                                    valueKey={"_key"}
-                                                    error={this.state.errors["parent"]}
-                                                    onChange={(value)=> {
-                                                        this.handleChange(value,"parent")
-                                                    }}
-                                                    select={"Select"} options={this.props.siteList}
-                                                    name={"parent"} title="Select parent site/address"/>
-
-                                            </div>
-                                        </div>
-
-                                        <div className="row no-gutters ">
-                                            <div className="col-12">
-                                                <div className="row no-gutters justify-content-center ">
-
-                                                    <div className="col-6 pr-2">
-                                                        <div className="custom-label text-bold text-blue mb-0 ellipsis-end">Phone
-                                                        </div>
-
-                                                        <PhoneInput
-
-                                                            value={this.props.showSiteForm.item&&this.props.showSiteForm.item.phone}
-                                                            onChange={this.handleChange.bind(this, "phone")}
-                                                            inputClass={this.state.phoneNumberInValid?"is-invalid":""}
-                                                            inputProps={{
-                                                                name: 'phone',
-                                                                // required: true,
-                                                                defaultErrorMessage:"Invalid",
-                                                                // minLength:9,
-                                                            }}
-                                                            country={'gb'}
-                                                        />
-                                                        {this.state.errors["phone"] &&
-                                                        <span style="color: rgb(244, 67, 54);" className="text-danger">Required</span>}
-
-
-                                                    </div>
-                                                    <div className="col-6 pl-2">
-
-
-
-
-                                                        <TextFieldWrapper
-
-                                                            initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.email}
-                                                            onChange={(value)=>this.handleChange(value,"email")}
-                                                            error={this.state.errors["email"]}
-                                                            name="email" title="Email" />
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="row no-gutters ">
-                                            <div className="col-12">
-
-
-                                                <TextFieldWrapper
-                                                    type={this.state.showAddressField?"text":"hidden"}
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.address}
-                                                    onChange={(value)=>this.handleChange(value,"address")}
-                                                    error={this.state.errors["address"]}
-                                                    value={this.state.fields["address"]?this.state.fields["address"]:this.state.searchAddress?this.state.searchAddress:null}
-
-                                                    name="address"
-                                                    title={this.state.showAddressField?"Alternate name for address":"Address"}
-
-                                                />
-
-                                                {this.props.showSiteForm.item && <span onClick={this.toggleMapSelection} className="forgot-password-link ">{this.state.showMapSelection?"Hide Search":"Search address on map"}</span>}
-
-                                                {this.state.showMapSelection &&
-
-                                                <SearchPlaceAutocomplete
-                                                    initialValue={this.props.showSiteForm.item}
-                                                    onChange={(value)=>this.handleSearchAddress(value)}
-                                                    error={this.state.errors["address"]}
-                                                />
-                                                }
-
-
-                                            </div>
-                                        </div>
-
-
-                                        <div className="row no-gutters ">
-                                            <div className="col-12">
-
-
-
-
-                                            </div>
-                                        </div>
-                                        <div className="row no-gutters ">
-                                            <div className="col-12">
-
-                                                <TextFieldWrapper
-                                                    initialValue={this.props.showSiteForm.item&&this.props.showSiteForm.item.others}
-                                                    onChange={(value)=>this.handleChange(value,"other")}
-                                                    error={this.state.errors["description"]}
-                                                    name="other" title="Other" />
-
-
-                                            </div>
-                                        </div>
-                                        <div className="row no-gutters ">
-
-                                        </div>
-                                        <div className={"row"}>
-                                            <div className="col-12 mt-4 mb-2">
-
-                                                <BlueButton
-                                                    title={this.props.showSiteForm.item?"Update Site":"Add Site"}
-                                                    type={"submit"}
-
-                                                    disabled={this.state.isSubmitButtonPressed}
-                                                    fullWidth
-                                                >
-                                                </BlueButton>
-
-                                            </div>
-                                        </div>
-
-                                    </form>
-
-                                </div>}
-
-                                {this.state.addExisting &&
-                                <div className="row   justify-content-start">
-
-                                    <div className="col-12 " style={{ padding: "0!important" }}>
-
-                                        <form style={{ width: "100%" }} onSubmit={this.linkSubSites}>
-
-                                            <div className="row   ">
-                                                <div className="col-12 p-0" style={{ padding: "0!important" }}>
-                                                    {this.state.addCount.map((item, index) => (
-                                                        <div className="row mt-2">
-                                                            <div className="col-10">
-
-                                                                <CustomizedSelect
-                                                                    variant={"standard"}
-
-                                                                    name={`site[${index}]`}
-                                                                    // label={"Link a product"}
-                                                                    required={true}
-                                                                    native
-                                                                    onChange={this.handleChange.bind(
-                                                                        this,
-                                                                        "site"
-                                                                    )}
-                                                                    inputProps={{
-                                                                        // name: {`product[${index}]`},
-                                                                        id: "outlined-age-native-simple",
-                                                                    }}>
-                                                                    <option value={null}>Select</option>
-
-                                                                    {this.state.subSites
-                                                                        .filter(
-                                                                            (item) =>
-                                                                                (item.Site._key !==
-                                                                                    this.props.showSiteForm.parent)
-                                                                                &&
-                                                                                !(
-                                                                                    this.props.showSiteForm.subSites&&this.props.showSiteForm.subSites.filter(
-                                                                                        (subItem) =>
-                                                                                            subItem._key ===
-                                                                                            item.Site._key
-                                                                                    ).length > 0
-                                                                                )
-                                                                        )
-
-                                                                        .map((item) => (
-                                                                            <option  value={item.Site._key}>
-                                                                                {item.Site.name}{GetParent(item)}
-                                                                            </option>
-                                                                        ))}
-
-
-                                                                </CustomizedSelect>
-                                                                {this.state.subSites.length===0&&
-                                                                <Spinner
-                                                                    as="span"
-                                                                    animation="border"
-                                                                    size="sm"
-                                                                    role="status"
-                                                                    aria-hidden="true"
-                                                                    style={{color:"#07AD88"}}
-                                                                    className={"spinner-select"}
-                                                                />}
-                                                                {this.state.errorsLink["site"] && (
-                                                                    <span className={" small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                                        {this.state.errorsLink["site"]}
-                                                        </span>
-                                                                )}
-
-
-
-                                                            </div>
-
-
-
-                                                            <div
-                                                                className="col-2 text-center"
-                                                                style={{ display: "flex" }}>
-                                                                {item > 1 && (
-                                                                    <>
-                                                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
-
-                                                                        <DeleteIcon
-                                                                            classname={"click-item"}
-                                                                            style={{
-                                                                                color: "#ccc",
-                                                                                margin: "auto",
-                                                                            }}
-                                                                            onClick={() => this.subtractCount()}
-                                                                        />
-                                                                    </>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div className="row   ">
-                                                <div className="col-12 mt-4 p-0 ">
-                                    <span
-                                        onClick={this.addCount}
-                                        className={
-                                            "btn  click-item btn-rounded shadow  blue-btn-border"
-                                        }>
-                                         <AddIcon />
-                                        Add
-                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className="row    pt-2 ">
-
-                                                <div className="col-12 mt-4 mobile-menu">
-                                                    <div className="row text-center ">
-                                                        <div className="col-12 text-center">
-                                                            <button
-                                                                style={{ margin: "auto", width: "200px" }}
-                                                                type={"submit"}
-                                                                className={
-                                                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                                }>
-                                                                Submit
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                </div>}
-
-
-
-
-
-
-
-                                { this.props.showSiteForm.type==="link-product" &&
-                                <div className="row   justify-content-start">
-                                    <div className="col-12 " style={{ padding: "0!important" }}>
-                                        <form style={{ width: "100%" }} onSubmit={this.linkSubProducts}>
-
-                                            <div className="row   ">
-                                                <div className="col-12" style={{ padding: "0!important" }}>
-                                                    {this.state.addCount.map((item, index) => (
-                                                        <div className="row mt-2">
-                                                            <div className="col-10">
-                                                                {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
-
-                                                                <FormControl
-                                                                    variant="outlined"
-                                                                    className={classes.formControl}>
-                                                                    <Select
-                                                                        name={`product[${index}]`}
-                                                                        // label={"Link a product"}
-                                                                        required={true}
-                                                                        native
-                                                                        onChange={this.handleChangeLinkSite.bind(
-                                                                            this,
-                                                                            "product"
-                                                                        )}
-                                                                        inputProps={{
-                                                                            // name: {`product[${index}]`},
-                                                                            id: "outlined-age-native-simple",
-                                                                        }}>
-                                                                        <option value={null}>Select</option>
-                                                                        {this.props.productWithoutParentList.filter(
-                                                                            (item) =>
-                                                                                !this.props.showSiteForm.subProducts.filter(
-                                                                                    (subItem) =>
-                                                                                        subItem._key ===
-                                                                                        item._key
-                                                                                ).length > 0
-                                                                        )
-                                                                            .map((item) => (
-                                                                                <option value={item._key}>
-                                                                                    {item.name}
-                                                                                </option>
-                                                                            ))}
-
-
-                                                                    </Select>
-                                                                    {this.props.productWithoutParentList.length===0&&
-                                                                    <Spinner
-                                                                        as="span"
-                                                                        animation="border"
-                                                                        size="sm"
-                                                                        role="status"
-                                                                        aria-hidden="true"
-                                                                        style={{color:"#07AD88"}}
-                                                                        className={"spinner-select"}
-                                                                    />}
-                                                                    {this.state.errorsLink["site"] && (
-                                                                        <span className={" small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                                            {this.state.errorsLink["site"]}
-                                                        </span>
-                                                                    )}
-                                                                </FormControl>
-
-
-                                                            </div>
-
-                                                            <div
-                                                                className="col-2 text-center"
-                                                                style={{ display: "flex" }}>
-                                                                {item > 1 && (
-                                                                    <>
-                                                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
-
-                                                                        <DeleteIcon
-                                                                            classname={"click-item"}
-                                                                            style={{
-                                                                                color: "#ccc",
-                                                                                margin: "auto",
-                                                                            }}
-                                                                            onClick={() => this.subtractCount()}
-                                                                        />
-                                                                    </>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div className="row   pt-2 ">
-                                                <div className="col-12 mt-4 ">
-                                    <span
-                                        onClick={this.addCount}
-                                        className={
-                                            "btn  click-item btn-rounded shadow  blue-btn-border"
-                                        }>
-                                        <AddIcon />
-                                        Add
-                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className="row   pt-2 ">
-
-                                                <div className="col-12 mt-4 mobile-menu">
-                                                    <div className="row text-center ">
-                                                        <div className="col-12 text-center">
-                                                            <GreenButton
-                                                                title={this.state.loading?"Wait...":"Submit"}
-                                                                type={"submit"}
-                                                                loading={this.state.loading}
-                                                                disabled={this.state.loading}
-                                                            >
-                                                            </GreenButton>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
                                     </div>
                                 </div>
-                                }
+                                <div className="row no-gutters ">
+                                    <div className="col-md-6 col-sm-12  justify-content-start align-items-center">
 
-                            </div>
+                                        <CheckboxWrapper
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.is_head_office}
+                                            onChange={(checked) => this.checkListable(checked)} color="primary"
+                                            name={"isHeadOffice"} title="Head Office ?"/>
+
+                                    </div>
+
+                                    <div className="col-md-6 col-sm-12">
+
+                                        <TextFieldWrapper
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.contact}
+                                            onChange={(value) => this.handleChange(value, "contact")}
+                                            error={this.state.errors["contact"]}
+                                            name="contact" title="Contact"/>
+
+                                    </div>
+                                </div>
+
+                                <div className="row no-gutters">
+                                    <div className="col-12 ">
+
+                                        <TextFieldWrapper
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.description}
+                                            onChange={(value) => this.handleChange(value, "description")}
+                                            error={this.state.errors["description"]}
+                                            name="description" title="Description"/>
+
+                                    </div>
+                                </div>
+
+                                <div className="row no-gutters">
+                                    <div className="col-6 pr-1">
+
+
+                                        <TextFieldWrapper
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.external_reference}
+                                            onChange={(value) => this.handleChange(value, "external_reference")}
+                                            error={this.state.errors["external_reference"]}
+                                            name="external_reference" title="External Reference"/>
+                                    </div>
+
+                                    <div className="col-6 pl-1 ">
+
+                                        <SelectArrayWrapper
+                                            initialValue={this.props.item?this.props.item.site?this.props.item.site._key:this.props.item._key:''}
+                                            option={"Site"}
+                                            subOption={"name"}
+                                            valueKey={"Site"}
+                                            subValueKey={"_key"}
+                                            error={this.state.errors["parent"]}
+                                            onChange={(value) => {
+                                                this.handleChange(value, "parent")
+                                            }}
+                                            select={"Select"}
+                                            options={this.state.subSites
+                                            .filter(
+                                                (item) =>
+                                                    // (item.Site._key !==
+                                                    //     this.props.item.site._key)
+                                                    // &&
+                                                    !(
+                                                        this.props.item&&this.props.item.children_sites
+                                                        &&this.props.item.children_sites.filter(
+                                                            (subItem) =>
+                                                                subItem._key ===
+                                                                item.Site._key
+                                                        ).length > 0
+                                                    )
+                                            )}
+                                            name={"parent"} title="Select parent site/address"/>
+
+                                    </div>
+                                </div>
+
+                                <div className="row no-gutters ">
+                                    <div className="col-12">
+                                        <div className="row no-gutters justify-content-center ">
+
+                                            <div className="col-6 pr-2">
+                                                <div
+                                                    className="custom-label text-bold text-blue mb-0 ellipsis-end">Phone
+                                                </div>
+
+                                                <PhoneInput
+
+                                                    value={this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.phone}
+                                                    onChange={this.handleChange.bind(this, "phone")}
+                                                    inputClass={this.state.phoneNumberInValid ? "is-invalid" : ""}
+                                                    inputProps={{
+                                                        name: 'phone',
+                                                        // required: true,
+                                                        defaultErrorMessage: "Invalid",
+                                                        // minLength:9,
+                                                    }}
+                                                    country={'gb'}
+                                                />
+                                                {this.state.errors["phone"] &&
+                                                <span style="color: rgb(244, 67, 54);"
+                                                      className="text-danger">Required</span>}
+
+
+                                            </div>
+                                            <div className="col-6 pl-2">
+
+
+                                                <TextFieldWrapper
+
+                                                    initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.email}
+                                                    onChange={(value) => this.handleChange(value, "email")}
+                                                    error={this.state.errors["email"]}
+                                                    name="email" title="Email"/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row no-gutters ">
+                                    <div className="col-12">
+
+
+                                        <TextFieldWrapper
+                                            type={this.state.showAddressField ? "text" : "hidden"}
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.address}
+                                            onChange={(value) => this.handleChange(value, "address")}
+                                            error={this.state.errors["address"]}
+                                            value={this.state.fields["address"] ? this.state.fields["address"] : this.state.searchAddress ? this.state.searchAddress : null}
+
+                                            name="address"
+                                            title={this.state.showAddressField ? "Alternate name for address" : "Address"}
+
+                                        />
+
+                                        {this.props.edit &&  <span onClick={this.toggleMapSelection}
+                                                                               className="forgot-password-link ">{this.state.showMapSelection ? "Hide Search" : "Search address on map"}</span>}
+
+                                        {this.state.showMapSelection &&
+
+                                        <SearchPlaceAutocomplete
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site}
+                                            onChange={(value) => this.handleSearchAddress(value)}
+                                            error={this.state.errors["address"]}
+                                        />
+                                        }
+
+
+                                    </div>
+                                </div>
+
+
+                                <div className="row no-gutters ">
+                                    <div className="col-12">
+
+
+                                    </div>
+                                </div>
+                                <div className="row no-gutters ">
+                                    <div className="col-12">
+
+                                        <TextFieldWrapper
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.others}
+                                            onChange={(value) => this.handleChange(value, "other")}
+                                            error={this.state.errors["description"]}
+                                            name="other" title="Other"/>
+
+
+                                    </div>
+                                </div>
+                                <div className="row no-gutters ">
+
+                                </div>
+                                <div className={"row"}>
+                                    <div className="col-12 mt-4 mb-2">
+
+                                        <BlueButton
+                                            title={this.props.item&&this.props.item.site ? "Update Site" : "Add Site"}
+                                            type={"submit"}
+
+                                            disabled={this.state.isSubmitButtonPressed}
+                                            fullWidth
+                                        >
+                                        </BlueButton>
+
+                                    </div>
+                                </div>
+
+                            </form>
 
                         </div>
 
 
+                    </div>
+
+                </div>
+
+                }
 
             </>
         );

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SelectArrayWrapper = (props) => {
 
-    const {label,title,option,notNative,initialValue,detailsHeading,details,noBorder,textAlignRight,
+    const {label,title,option,notNative,initialValue,detailsHeading,details,noBorder,textAlignRight,subOption,subValueKey,
         placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect,
         defaultValue,options,multiple,error, ...rest} = props;
 
@@ -40,6 +40,7 @@ const SelectArrayWrapper = (props) => {
         <>
             {title&& <div className={"custom-label text-bold ellipsis-end text-blue mb-0"}>
                 {title} {details&&<CustomPopover heading={detailsHeading} text={details}><InfoIcon/></CustomPopover>}
+                {initialValue}
             </div>}
             <div className={"field-box mb-2"}>
                 <FormControl variant="standard" >
@@ -50,8 +51,6 @@ const SelectArrayWrapper = (props) => {
 
                 multiple={multiple}
                 native={notNative?false:true}
-
-
 
                 variant="standard"
                 label={label}
@@ -72,11 +71,16 @@ const SelectArrayWrapper = (props) => {
                     {placeholder}
                 </option>}
 
+
                 {options&&options.map((item, index) => (
                     <option
-                        selected={valueKey?(item[valueKey]===initialValue):(item===initialValue)}
-                            key={valueKey?item[valueKey]:item} value={valueKey?item[valueKey]:item}>
-                        {(option?item[option]:item)}
+                        selected={subValueKey?item[valueKey][subValueKey]==initialValue:valueKey?(item[valueKey]===initialValue):(item===initialValue)}
+
+                        key={subValueKey?item[valueKey][subValueKey]:valueKey?item[valueKey]:item}
+                        value={subValueKey?item[valueKey][subValueKey]:valueKey?item[valueKey]:item}
+
+                    >
+                     {subOption?option?item[option][subOption]:item:option?item[option]:item}
                     </option>
                 ))}
             </CustomizedSelect>

@@ -201,6 +201,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 if(messageType === "R") {
                     console.log('R ', response)
                 }
+                resetDraftRef.current.resetDraft();
                 getAllMessageGroups();
             })
             .catch(error => {

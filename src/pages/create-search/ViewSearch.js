@@ -1052,6 +1052,8 @@ class ViewSearch extends Component {
                                 <>
                                         <ListingDetail
 
+                                            hideRequestMatch
+                                            hideMatchesTab
                                             requestMatch={this.toggleRequestMatch}
                                             hideSearches
                                             hideBreadcrumbs

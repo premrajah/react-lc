@@ -236,7 +236,7 @@ class InfoTabContent extends Component {
                             <p
 
                                 className=" text-label text-blue mb-1 text-label">
-                                Power Supply.
+                                Power Supply
                             </p>
                             <p
 

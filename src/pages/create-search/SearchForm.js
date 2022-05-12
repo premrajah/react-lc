@@ -1590,7 +1590,7 @@ if ((this.state.activeStep-1)==0){
 
                     hide={this.toggleSite}
                     show={this.state.showCreateSite}
-                    heading={"Add Company"}>
+                    heading={"Add new site"}>
                     <>
                         <div className="col-12 ">
 

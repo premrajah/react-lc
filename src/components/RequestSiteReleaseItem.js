@@ -4,18 +4,12 @@ import axios from "axios/index";
 import {baseUrl} from "../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-
-import {Modal, ModalBody} from "react-bootstrap";
-import TextField from "@mui/material/TextField";
 import moment from "moment/moment";
 import FormControl from "@mui/material/FormControl";
 import {withStyles} from "@mui/styles/index";
-import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
-import {capitalize} from "../Util/GlobalFunctions";
 import CustomizedSelect from "./FormsUI/ProductForm/CustomizedSelect";
 import GlobalDialog from "./RightBar/GlobalDialog";
-import BlueButton from "./FormsUI/Buttons/BlueButton";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 import GreenButton from "./FormsUI/Buttons/GreenButton";
 
@@ -268,6 +262,7 @@ class RequestSiteReleaseItem extends Component {
     componentDidMount() {
         this.loadSiteSync()
         // this.getArtifactsForProduct()
+        console.log(this.props.item)
     }
 
     getArtifactsForProduct = () => {
@@ -356,8 +351,9 @@ class RequestSiteReleaseItem extends Component {
                                     <div className="col-12 text-right pb-2 pt-2">
                                         {this.props.item.next_action.is_mine &&
                                             this.props.item.next_action.possible_actions.map(
-                                                (actionName, index) => (
+                                                (actionName, index) =>
                                                     <>
+
                                                         <button
                                                             data-id={this.props.item.Release._key}
                                                             data-action={actionName}
@@ -378,6 +374,8 @@ class RequestSiteReleaseItem extends Component {
                                                                     ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                             }>
+
+
                                                             {actionName === "accepted" && "Accept"}
                                                             {actionName === "cancelled" && "Cancel"}
                                                             {actionName === "rejected" && "Reject"}
@@ -391,7 +389,7 @@ class RequestSiteReleaseItem extends Component {
                                                                 "Complete"}
                                                         </button>
                                                     </>
-                                                )
+
                                             )}
                                     </div>
                                 </div>

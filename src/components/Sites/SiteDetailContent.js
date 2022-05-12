@@ -19,6 +19,9 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import SiteReleaseDialog from "./SiteReleaseDialog";
 import {ownerCheck} from "../../Util/GlobalFunctions";
+import GlobalDialog from "../RightBar/GlobalDialog";
+import SiteFormNew from "./SiteFormNew";
+import Layout from "../Layout/Layout";
 
 
 class SiteDetailContent extends Component {
@@ -145,12 +148,26 @@ class SiteDetailContent extends Component {
         }
     }
 
+    toggleSite=(refresh) =>{
+        if (refresh){
+
+            // this.loadSitesWithoutParentPageWise({reset:true})
+        }
+
+        this.setState({
+            showCreateSite: !this.state.showCreateSite,
+        });
+    }
+
+
     callBackResult(action) {
         if (action === "edit") {
 
-            this.props.setSiteForm({show:true,
-                item:this.props.item.site,type:"edit",
-                heading:"Edit Site",parent:this.props.item.parent_site});
+            // this.props.setSiteForm({show:true,
+            //     item:this.props.item.site,type:"edit",
+            //     heading:"Edit Site",parent:this.props.item.parent_site});
+
+            this.toggleSite(false)
 
         } else if (action === "delete") {
             this.deleteItem();
@@ -608,6 +625,21 @@ class SiteDetailContent extends Component {
                         </div>
 
                         {this.state.item && <SiteReleaseDialog hide={this.showReleaseSitePopUp} item={this.props.item} showReleaseProduct={this.state.showReleaseProduct} />}
+
+
+                        <GlobalDialog
+
+                            size={"lg"}
+                            hide={this.toggleSite}
+                            show={this.state.showCreateSite}
+                            heading={"Edit site"}>
+                            <>
+                                <div className="col-12 ">
+
+                                    <SiteFormNew  hide={this.toggleSite} edit item={this.props.item} refresh={()=>this.toggleSite(true)} />
+                                </div>
+                            </>
+                        </GlobalDialog>
 
 
 

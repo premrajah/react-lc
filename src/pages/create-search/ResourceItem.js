@@ -165,7 +165,7 @@ class ResourceItem extends Component {
                                     )}
                                 </p>
 
-                                <div className={"text-gray-light mt-1 mb-1 width-75"}>
+                                {!this.props.hideCategory &&   <div className={"text-gray-light mt-1 mb-1 width-75"}>
                                     Category:
                                     <span
 
@@ -181,7 +181,7 @@ class ResourceItem extends Component {
                                                             </span>
 
                                     </span>
-                                </div>
+                                </div>}
                                 {this.props.item.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>
                                     <OrgComponent org={this.props.item.org }/>
                                 </div>}

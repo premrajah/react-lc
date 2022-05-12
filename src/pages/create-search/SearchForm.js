@@ -1294,9 +1294,9 @@ if ((this.state.activeStep-1)==0){
                             <div className="row  mb-5 pb-5">
                                 <div className={"col-12"}>
 
-                                    <div className="row no-gutters justify-content-center ">
+                                    <div className="row  no-gutters justify-content-center ">
 
-                                        <div className="col-12 mb-2">
+                                        <div className="col-12 d-none mb-2">
 
                                                 <SelectArrayWrapper
                                                     valueKey={"_key"}

@@ -144,7 +144,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/messages-new" component={Messeges} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
-                        <LoggedInRoute exact path="/search-records" component={SearchRecords} />
+
                         <LoggedInRoute exact path="/my-listings" component={MyListings} />
                         <LoggedInRoute exact path="/my-listing-record" component={ListingRecord} />
                         <LoggedInRoute exact path="/statistics" component={Statistics} />

@@ -240,7 +240,7 @@ class InfoTabContent extends Component {
                             </p>
                             <p
 
-                                className=" text-gray-light mb-1">
+                                className=" text-gray-light mb-1 text-capitalize">
                                 {this.props.item &&
                                 this.props.item.product.sku
                                     .power_supply}

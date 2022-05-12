@@ -916,7 +916,8 @@ class SiteFormNew extends Component {
                                     <div className="col-6 pl-1 ">
 
                                         <SelectArrayWrapper
-                                            initialValue={this.props.item?this.props.item.site?this.props.item.site._key:this.props.item._key:''}
+                                            initialValue={this.props.edit?
+                                                this.props.item.parent_site&&this.props.item.parent_site._key:this.props.item?this.props.item.site?this.props.item.site._key:this.props.item._key:''}
                                             option={"Site"}
                                             subOption={"name"}
                                             valueKey={"Site"}
@@ -927,11 +928,14 @@ class SiteFormNew extends Component {
                                             }}
                                             select={"Select"}
                                             options={this.state.subSites
+                                                .filter(
+                                                    (item) =>
+                                                        !(this.props.edit&&item.Site._key ==
+                                                            this.props.item.site._key)
+                                                )
                                             .filter(
                                                 (item) =>
-                                                    // (item.Site._key !==
-                                                    //     this.props.item.site._key)
-                                                    // &&
+
                                                     !(
                                                         this.props.item&&this.props.item.children_sites
                                                         &&this.props.item.children_sites.filter(

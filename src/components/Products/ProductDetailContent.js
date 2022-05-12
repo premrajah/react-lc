@@ -961,6 +961,7 @@ class ProductDetailContent extends Component {
                                                         <TabPanel value="6">
                                                             {this.state.listingLinked && (
                                                                 <ResourceItem
+                                                                    hideCategory
                                                                     smallImage={true}
                                                                     history={this.props.history}
                                                                     item={this.state.listingLinked}

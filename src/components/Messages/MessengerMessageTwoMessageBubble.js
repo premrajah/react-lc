@@ -1,12 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 import {createMarkup} from "../../Util/Constants";
 import moment from "moment/moment";
 import {Divider, ImageList, ImageListItem} from "@mui/material";
 import {Link} from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
+import SubproductItem from "../Products/Item/SubproductItem";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import GlobalDialog from "../RightBar/GlobalDialog";
 
 const MessengerMessageTwoMessageBubble = ({m}) => {
+
+    const [showEntity, setShowEntity] = useState(false);
+    const [entityObj, setEntityObj] = useState({});
+
+    const toggleEntity = async (entity, entityType) => {
+
+        setShowEntity(!showEntity);
+        setEntityObj({ entity: entity, type: entityType });
+    };
+
     return <div className="w-75 p-2 mb-2 chat-msg-box border-rounded text-blue gray-border">
         <div className="row">
             <div className="col">
@@ -38,7 +52,9 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
                 {m.message && <div className="d-flex">
                     {m.message.entity_type === "Product" && <div className="mr-2 text-mute">{m.message.entity_type}</div>}
                     {m.message.entity_as_json && <div className="text-pink">
-                        {m.message.entity_as_json.name}
+                        <div onClick={() => toggleEntity(m.message.entity_as_json, m.message.entity_type)}>
+                            {m.message.entity_as_json.name}
+                        </div>
                     </div>}
                 </div>}
             </div>
@@ -60,6 +76,49 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
                 </Stack>
             </div>
         </div>}
+
+        <GlobalDialog
+            size={"xl"}
+            hide={() => toggleEntity(null, null)}
+            show={showEntity}
+            heading={entityObj ? entityObj.type : ""}>
+            <>
+                <div className="col-12 ">
+                    {entityObj && entityObj.type === "Product" && (
+                        <SubproductItem
+                            hideMoreMenu
+                            smallImage={true}
+                            item={entityObj.entity}
+                        />
+                    )}
+                </div>
+                <div className="col-12 d-none ">
+                    <div className="row mt-4 no-gutters">
+                        <div
+                            className={"col-6 pr-1"}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <GreenButton
+                                title={"View Details"}
+                                type={"submit"}></GreenButton>
+                        </div>
+                        <div
+                            className={"col-6 pl-1"}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <BlueBorderButton
+                                type="button"
+                                title={"Close"}
+                                onClick={() =>
+                                    toggleEntity(null, null)
+                                }></BlueBorderButton>
+                        </div>
+                    </div>
+                </div>
+            </>
+        </GlobalDialog>
 
     </div>
 }

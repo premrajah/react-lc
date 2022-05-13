@@ -37,7 +37,7 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
                 {/*{console.log("> ", m.message._key, m.message.entity_type, m.message.entity_as_json )}*/}
                 {m.message && <div className="d-flex">
                     {m.message.entity_type === "Product" && <div className="mr-2 text-mute">{m.message.entity_type}</div>}
-                    {m.message.entity_as_json && <div>
+                    {m.message.entity_as_json && <div className="text-pink">
                         {m.message.entity_as_json.name}
                     </div>}
                 </div>}
@@ -47,13 +47,16 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
         {m.artifacts.length > 0 && <div className="row">
             <div className="col">
                 <Stack direction="row" spacing={2}>
-                    {m.artifacts.map((item) => (<Avatar
-                        alt={item.name}
-                        src={item.blob_url}
-                        sx={{ width: 56, height: 56 }}
-                        variant="square"
-                        key={`${item._ts_epoch_ms}_${item._key}`}
-                    />))}
+                    {m.artifacts.map((item) => (<div key={`${item._ts_epoch_ms}_${item._key}`} style={{cursor: "pointer"}}>
+                        <a href={item.blob_url} target="_blank" rel="noreferrer">
+                            <Avatar
+                            alt={item.name}
+                            src={item.blob_url}
+                            sx={{ width: 56, height: 56 }}
+                            variant="square"
+                            />
+                        </a>
+                    </div>))}
                 </Stack>
             </div>
         </div>}

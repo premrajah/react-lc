@@ -35,21 +35,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
+                fullWidth={true}
                 maxWidth={props.size?props.size:"sm"}
                     className={`${props.allowOverflow?" allow-overflow":""}`}
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogContent>
-                {/*<div className="container ">*/}
 
-                <div className=" row  justify-content-center align-items-center">
+                    {!props.hideHeader &&
+                    <div className=" row  justify-content-center align-items-center">
                     <div className="col-10">
-                        <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>{props.heading}</h4>
+                        {!props.hideHeading &&    <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>{props.heading}</h4>}
                     </div>
                     <div className="col-2 text-right">
                         {!props.hideClose && <CloseButtonPopUp onClick={handleClose}/>}
                     </div>
-                </div>
+                </div>}
                     <div className=" pd-3 pt-3 row  justify-content-center align-items-center">
 
                         {children}

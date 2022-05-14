@@ -10,7 +10,7 @@ class SubProductsTab extends Component {
 
     showProductSelection=(event)=> {
         this.props.setProduct(this.props.item);
-        this.props.showProductPopUp({ type: "sub_product_view", show: true });
+        this.props.showProductPopUp({ type: "parent", show: true, parentProductId:this.props.item.product._key,});
     }
 
     render() {
@@ -51,7 +51,7 @@ class SubProductsTab extends Component {
                         {this.props.item.sub_products.map(
                             (item, index) => (
                                 <SubproductItem
-                                    
+
                                     smallImage={true}
                                     noLinking={this.props.noLinking}
                                     hideMoreMenu={this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id?false:true}

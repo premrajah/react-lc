@@ -123,7 +123,7 @@ class ProductTreeView extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
 
         if (prevProps!==this.props) {
-
+            // this.setTree()
 
 
         }

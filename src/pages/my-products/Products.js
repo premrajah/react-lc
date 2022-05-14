@@ -21,6 +21,10 @@ import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {seekAxiosGet} from "../../Util/GlobalFunctions";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
+import ProductForm from "../../components/ProductPopUp/ProductForm";
+import { Redirect } from 'react-router';
+
 
 class Products extends Component {
 
@@ -44,6 +48,8 @@ class Products extends Component {
             pageSize:50,
             loadingResults:false,
             count:0,
+            showProductPopUp:false,
+            productId:null
 
 
         }
@@ -57,7 +63,9 @@ class Products extends Component {
     pageSize=50
 
 
-
+    toProducts() {
+        this.context.router.history.push('/about')
+    }
 
     showProductSelection() {
         this.props.showProductPopUp({ type: "create_product", show: true });
@@ -145,6 +153,8 @@ class Products extends Component {
 
         if (prevProps!==this.props) {
 
+            this.detectChange()
+
             if (this.props.refresh){
                 this.props.refreshPage(false)
 
@@ -228,19 +238,43 @@ class Products extends Component {
                     lastPageReached:true
 
                 })
-
             }
         }
-
-
-
     }
 
 
+    detectChange=()=>{
+
+        if (this.props.match.params.id){
+
+
+            let id=this.props.match.params.id
+
+            if (id&&id=="new"){
+                this.setState({
+                    productId:null
+                })
+                this.toggleProductPopUp()
+            }else {
+                this.setState({
+                    productId:id
+                })
+
+                if (!this.state.showProductPopUp)
+                this.toggleProductPopUp()
+            }
+
+        }else{
+
+            this.setState({
+                redirect:false
+            })
+        }
+
+    }
 
     componentDidMount() {
-
-
+        // this.detectChange()
     }
 
 
@@ -364,11 +398,8 @@ class Products extends Component {
 
                     for (let i=0;i<mapData.length;i++){
                         let site=sites.find((site)=>site.product_id.replace("Product/","")==mapData[i]._key)
-
                         mapData[i].site=site.site
-
                     }
-
 
                     this.setState({
                         showMap:!this.state.showMap,
@@ -437,6 +468,13 @@ class Products extends Component {
 
     }
 
+
+    toggleProductPopUp=()=> {
+
+        this.setState({
+            showProductPopUp: !this.state.showProductPopUp,
+        });
+    }
 
 
     render() {
@@ -550,7 +588,6 @@ class Products extends Component {
                 </>
 
                 <Modal
-                    // className={"loop-popup"}
                     aria-labelledby="contained-modal-title-vcenter"
                     show={this.state.showMap}
                     centered
@@ -576,11 +613,9 @@ class Products extends Component {
 
 
                 <Modal
-                    // className={"loop-popup"}
                     aria-labelledby="contained-modal-title-vcenter"
                     show={this.state.showDownloadQrCodes}
                     centered
-                    // size={"lg"}
                     onHide={this.toggleDownloadQrCodes}
                     animation={false}>
                     <ModalBody>
@@ -641,10 +676,34 @@ class Products extends Component {
                     </ModalBody>
                 </Modal>
 
+
+                {/*<GlobalDialog*/}
+                {/*    size="md"*/}
+                {/*    heading={"Add Product"}*/}
+                {/*    show={this.state.showProductPopUp}*/}
+                {/*    hide={()=> {*/}
+                {/*        this.toggleProductPopUp();*/}
+                {/*        this.setState({*/}
+                {/*            redirect:true*/}
+                {/*        })*/}
+                {/*    }}>*/}
+                {/*    <>*/}
+                {/*        <div className=" col-12">*/}
+                {/*        <ProductForm productId={this.state.productId}  />*/}
+                {/*        </div>*/}
+                {/*        </>*/}
+
+                {/*</GlobalDialog>*/}
+
+                {/*<React.Fragment>*/}
+                {/*    {this.state.redirect && <Redirect to="/my-products" /> }  }*/}
+                {/*</React.Fragment>*/}
+
             </Layout>
         );
     }
 }
+
 
 
 
@@ -675,14 +734,9 @@ const mapDispatchToProps = (dispatch) => {
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
         showLoading: (data) => dispatch(actionCreator.showLoading(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
-        dispatchLoadProductsWithoutParentPage: (data) =>
-            dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
-        // resetProductPageOffset: (data) =>
-        //     dispatch(actionCreator.resetProductPageOffset(data)),
-
+        dispatchLoadProductsWithoutParentPage: (data) => dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
         setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
-        dispatchLoadProductsWithoutParent: (data) =>
-            dispatch(actionCreator.loadProductsWithoutParent(data)),
+        dispatchLoadProductsWithoutParent: (data) => dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
         refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),

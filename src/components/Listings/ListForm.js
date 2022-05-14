@@ -719,7 +719,7 @@ class ListFormNew extends Component {
     showProductSelection(event) {
         var action = event.currentTarget.dataset.id;
 
-        this.props.showProductPopUp({ type: "create_product", show: true });
+        this.props.showProductPopUp({ type: "new", show: true ,parentProductId:null});
 
 
     }
@@ -865,7 +865,21 @@ class ListFormNew extends Component {
 
         return formIsValid;
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
 
+
+        if (prevProps!==this.props&&this.props.refresh) {
+
+
+                this.setState({
+                    items:[]
+                })
+                //
+                this.getProductsNoParentNoListingNoRelease();
+                // this.props.loadSites(this.props.userDetail.token);
+
+        }
+    }
 
     componentDidMount() {
         window.scrollTo(0, 0);
@@ -884,7 +898,8 @@ class ListFormNew extends Component {
 
         let items = await axios.get(url).catch((error) => {
 
-             fetchErrorMessage(error)
+
+             // fetchErrorMessage(error)
 
         });
 
@@ -1102,7 +1117,6 @@ class ListFormNew extends Component {
                                             </div>
 
                                             <div className="col-12 mt-2 mb-4">
-
                                                 <div
                                                     className={
                                                         "custom-label text-bold text-blue mb-1"
@@ -1605,6 +1619,7 @@ const mapStateToProps = (state) => {
         productList: state.productList,
         siteList: state.siteList,
         productWithoutParentNoList : state.productWithoutParentNoList ,
+        refresh:state.refresh
 
     };
 };

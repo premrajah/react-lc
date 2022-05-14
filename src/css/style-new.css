@@ -18,6 +18,10 @@
 
 }
 
+.bg-lyt{
+    background: var(--lc-bg);
+}
+
 .icon-bg{
     background: #EAEAEF;
     border-radius: 50%;

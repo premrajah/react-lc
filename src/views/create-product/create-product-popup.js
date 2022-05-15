@@ -9,6 +9,8 @@ import ProductForm from "../../components/ProductPopUp/ProductForm";
 import IconButton from "@mui/material/IconButton";
 import {Close} from "@mui/icons-material";
 import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
+import Layout from "../../components/Layout/Layout";
 
 class ProductPopUp extends Component {
     componentDidMount() {}
@@ -29,11 +31,29 @@ class ProductPopUp extends Component {
 
     render() {
         return (
-            <Modal
+            <>
+
+                <GlobalDialog
+                    size="md"
+                    heading={"Add Product"}
+                    hideHeading
+                    show={this.props.showProductPopUp}
+                    hide={()=> {
+                        this.hidePopUp();
+                    }}
+                >
+                    <div className="col-12">
+                    <ProductForm type={this.props.showProductPopUpType} productId={this.props.parentProductId} />
+                    </div>
+
+                </GlobalDialog>
+
+                <div  className="d-none">
+                <Modal
                 size="lg"
-                show={this.props.showProductPopUp}
-                onHide={this.hidePopUp}
-                className={"custom-modal-popup popup-form"}>
+                // show={this.props.showProductPopUp}
+                // onHide={this.hidePopUp}
+                className={"custom-modal-popup popup-form "}>
                 <div className="row   justify-content-end">
                 <div className="col-auto mr-2 mt-2">
                     <CloseButtonPopUp onClick={this.hidePopUp}>
@@ -65,7 +85,8 @@ class ProductPopUp extends Component {
                     </div>
                 </div>
 
-                {!this.props.showCreateSubProduct &&!this.props.showCreateProduct &&  <div className="row py-3 justify-content-end mobile-menu-row  pr-4 ">
+                {!this.props.showCreateSubProduct &&!this.props.showCreateProduct &&
+                <div className="row py-3 justify-content-end mobile-menu-row  pr-4 ">
                     <div className="col text-right">
                     <button
                         onClick={this.hidePopUp}
@@ -78,6 +99,10 @@ class ProductPopUp extends Component {
                 </div>}
 
             </Modal>
+                </div>
+
+
+                </>
         );
     }
 }
@@ -92,6 +117,11 @@ const mapStateToProps = (state) => {
         showProductView: state.loginPopUpStatus,
         showProductPopUp: state.showProductPopUp,
         product: state.product,
+        parentProductId: state.parentProductId,
+
+
+        showProductPopUpType: state.showProductPopUpType,
+
     };
 };
 

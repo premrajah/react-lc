@@ -1354,13 +1354,11 @@ if ((this.state.activeStep-1)==0){
                                                   />
                                             <p style={{ marginTop: "10px" }}>
 
-                                                Don’t see it on here?
-                                                <span
+                                                Don’t see it on here? <span
                                                     onClick={this.toggleSite}
                                                     className={
-                                                        " forgot-password-link text-mute small"
-                                                    }>
-                                                    Add a site
+                                                        " forgot-password-link"
+                                                    }>Add a site
                                                 </span>
                                             </p>
                                         </div>

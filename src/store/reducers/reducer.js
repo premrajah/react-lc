@@ -73,6 +73,8 @@ export const initialState = {
     userContext: null,
 
     showProductPopUp: false,
+    showProductPopUpType: 'new',
+
     showCreateProduct: false,
     showCreateSubProduct: false,
     showProductView: false,
@@ -80,6 +82,7 @@ export const initialState = {
     showSiteProductView:false,
     product: null,
     parentProduct: null,
+    parentProductId:null,
     productList: [],
     productWithoutParentList: [],
     productWithoutParentNoList: [],
@@ -366,7 +369,6 @@ console.log("empty")
             break;
         case PRODUCT_POPUP:
 
-
             newState.loginFailed = false;
             newState.showSubProductView = false;
             newState.showSiteProductView = false;
@@ -374,6 +376,12 @@ console.log("empty")
             newState.showCreateSubProduct = false;
             newState.showProductView = false;
             newState.showProductPopUp = action.value.show;
+
+            if (action.value.type)
+            newState.showProductPopUpType = action.value.type
+
+            newState.parentProductId = action.value.parentProductId
+
 
             let type = action.value.type;
 

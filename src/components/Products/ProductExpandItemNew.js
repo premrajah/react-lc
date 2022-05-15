@@ -4,7 +4,6 @@ import {baseUrl} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import FormControl from "@mui/material/FormControl";
-import {makeStyles, withStyles} from "@mui/styles/index";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Spinner} from "react-bootstrap";
 import SubproductItem from "./Item/SubproductItem";
@@ -14,16 +13,6 @@ import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import AddIcon from "@mui/icons-material/Add";
 
-const useStylesSelect = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(0),
-        width: "100%",
-        // minWidth: auto,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(0),
-    },
-}));
 
 class ProductExpandItem extends Component {
     constructor(props) {
@@ -99,20 +88,8 @@ class ProductExpandItem extends Component {
         }
     }
 
-    classes = useStylesSelect;
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.productId !== this.props.productId) {
-            this.setState({
-                product: null,
-            });
-
-            this.loadProduct(this.props.productId);
 
 
-
-        }
-    }
 
     handleChange(field, e, i) {
         let fields = this.state.fields;
@@ -176,7 +153,7 @@ class ProductExpandItem extends Component {
         var array = [];
 
         for (let i = 0; i < this.state.addCount.length; i++) {
-            array.push({ id: data.get(`product[${i}]`), volume: data.get(`volume[${i}]`) });
+            array.push({ id: data.get(`product[${i}]`) });
         }
 
         var dataForm = {
@@ -216,12 +193,22 @@ class ProductExpandItem extends Component {
 
     }
 
+    componentDidUpdate(prevProps) {
+
+            if (prevProps !== this.props) {
+            // if (prevProps.productId !== this.props.productId) {
+            this.setState({
+                product: null,
+            });
+            this.loadProduct(this.props.productId);
+        }
+    }
 
     render() {
-        const classes = withStyles();
+
 
         return (
-            <div className={"mt-3"}>
+            <div className={"mt-3 "}>
                 {this.props.currentProduct && (
                     <SubproductItem
                         smallImage={true}
@@ -283,8 +270,12 @@ class ProductExpandItem extends Component {
                                                     className={
                                                         " btn-gray-border  mr-2 "
                                                     }
-                                                    data-parent={this.props.currentProduct.product._key}
-                                                    onClick={this.showProductSelection}>
+                                                    // data-parent={this.props.currentProduct.product._key}
+                                                    // onClick={this.showProductSelection}
+
+                                                    onClick={()=> this.props.createNew(this.props.productId,'new')}
+
+                                                >
                                                      <AddIcon />
                                                     Create New
                                                 </button>
@@ -307,19 +298,19 @@ class ProductExpandItem extends Component {
                     </div>
                 </div>
 
-                {this.props.currentProduct && this.props.showLinkProducts && this.state.showExisting && (
+                {this.props.currentProduct &&  this.state.showExisting && (
                     <>
-                        <div className="row   justify-content-left">
+                         <div className="row   justify-content-left">
                             <form style={{ width: "100%" }} onSubmit={this.linkSubProduct}>
                                 <div className="col-12 mt-4" style={{ padding: "0!important" }}>
                                     {this.state.addCount.map((item, index) => (
                                         <div className="row mt-2">
-                                            <div className="col-8">
+                                            <div className="col-11">
                                                 {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
 
                                                 <FormControl
                                                     variant="outlined"
-                                                    className={classes.formControl}>
+                                                   >
                                                     <CustomizedSelect
                                                         name={`product[${index}]`}
                                                         variant={"standard"}
@@ -379,11 +370,11 @@ class ProductExpandItem extends Component {
 
                                             </div>
 
-                                            <div className="col-3">
+                                            <div className="col-3 d-none">
                                                 {/*<div className={"custom-label text-bold text-blue mb-1"}>Volume</div>*/}
 
                                                 <CustomizedInput
-                                                    required={true}
+                                                    // required={true}
                                                     type={"number"}
                                                     onChange={this.handleChange.bind(
                                                         this,

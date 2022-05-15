@@ -13,15 +13,16 @@ import {capitalize} from "../../../Util/GlobalFunctions";
 const SubproductItem = (props) => {
 
 
-   const   [item, setItem]=useState(props.item)
+   const   [item, setItem]=useState('')
     const parentId= props.parentId
     const remove=props.remove
     const [artifacts, setArtifacts] = useState([]);
 
     useEffect(() => {
 
-
+        setItem(props.item)
             if(item&&item._key) {
+
                 getArtifactsForProduct(item._key)
             }
 
@@ -29,7 +30,7 @@ const SubproductItem = (props) => {
                 setItem(null);
             }
 
-    }, [item])
+    }, [props.item])
 
     const getArtifactsForProduct = (key) => {
 
@@ -76,10 +77,10 @@ const SubproductItem = (props) => {
 
 
     return <>
-        <div className="row no-gutters align-items-center justify-content-center mb-2 white-bg p-2 rad-8">
+
+        {item&&  <div className="row no-gutters align-items-center justify-content-center mb-2 white-bg p-2 rad-8">
             <div className="col-2">
-                {
-                    artifacts.length > 0
+                {artifacts.length > 0
                     ? <ImageOnlyThumbnail smallImage={props.smallImage} images={artifacts} />
                     : <img className={"img-fluid img-list small-image"} src={PlaceholderImg} alt="" />
                 }
@@ -144,7 +145,7 @@ const SubproductItem = (props) => {
 
 
 
-        </div>
+        </div>}
     </>
 }
 

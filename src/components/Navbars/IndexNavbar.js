@@ -67,7 +67,7 @@ class ComponentsNavbar extends React.Component {
     };
 
     showProductSelection() {
-        this.props.showProductPopUp({ type: "create_product", show: true });
+        this.props.showProductPopUp({ type: "new", show: true ,parentProductId:null});
     }
 
     toggleMenu = (event) => {

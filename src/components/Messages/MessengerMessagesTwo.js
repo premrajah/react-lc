@@ -65,7 +65,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         axios
             .get(`${baseUrl}message-group/${key}/message`)
             .then((res) => {
-                setClickedMessage(res.data.data);
+                setClickedMessage(res.data.data.reverse());
             })
             .catch((error) => {
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });

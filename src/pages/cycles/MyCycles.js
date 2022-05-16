@@ -35,8 +35,8 @@ class MyCycles extends Component {
             pageSize:50,
             loadingResults:false,
             count:0,
-            url:baseUrl+"seek?name=Cycle&relation=&include-to=Product:product_of&include-to=Search:search_for&include-to=Listing:listing_of&include-to=Org:any&include-to=Offer:any",
-            searchUrl:baseUrl+"seek?name=Cycle&relation=&include-to=Product:product_of&include-to=Search:search_for&include-to=Listing:listing_of&include-to=Org:any&include-to=Offer:any",
+            url:baseUrl+"seek?name=Cycle&relation=&include-to=Product:product_of&include-to=Search:search_for&include-to=Listing:listing_of&include-to=Org:any&include-to=Offer:any&and=stage!=closed&and=stage!=settled",
+            searchUrl:baseUrl+"seek?name=Cycle&relation=&include-to=Product:product_of&include-to=Search:search_for&include-to=Listing:listing_of&include-to=Org:any&include-to=Offer:any&and=stage!=closed&and=stage!=settled",
 
         }
 

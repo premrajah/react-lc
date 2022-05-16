@@ -379,7 +379,7 @@ class Sites extends Component {
 
                 <GlobalDialog
 
-                    size={"lg"}
+                    size={"sm"}
                     hide={this.toggleSite}
                     show={this.state.showCreateSite}
                     heading={"Add new site"}>

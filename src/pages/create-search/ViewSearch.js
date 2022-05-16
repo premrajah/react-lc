@@ -926,13 +926,13 @@ class ViewSearch extends Component {
 
                                                                                         makeOffer={this.toggleMakeOffer}
                                                                                         actionOffer={this.toggleActionOffer}
-
+                                                                                        hideCategory
                                                                                         key={index}
 
                                                                                         showDetails={(data)=> this.toggleListingView(data)}
                                                                                         onClick
                                                                                         hideStage
-
+                                                                                        smallImage
                                                                                         matchedItem={item}
                                                                                         stage={item.match.stage}
 

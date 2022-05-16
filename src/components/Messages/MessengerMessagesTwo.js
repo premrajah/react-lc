@@ -171,8 +171,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 to_org_ids: orgIds,
             };
 
-            console.log("Reply message", orgIds)
-            postMessage(payload, "R")
+            postMessage(payload, "N")
 
         } else {
 
@@ -185,8 +184,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 message_group_id: clickedMessageKey,
             };
 
-            console.log('new message')
-            postMessage(payload, "N");
+            postMessage(payload, "R");
         }
 
     }
@@ -195,12 +193,14 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
+                let data = response.data.data;
+
                 if(messageType === "N") {
-                    console.log('N ', response)
+                    console.log('N ', data)
                 }
 
                 if(messageType === "R") {
-                    console.log('R ', response)
+                    console.log('R ', data)
                 }
                 resetDraftRef.current.resetDraft();
                 getAllMessageGroups();

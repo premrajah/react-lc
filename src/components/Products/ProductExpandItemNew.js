@@ -30,7 +30,9 @@ class ProductExpandItem extends Component {
             addCount: [],
             count: 0,
             showExisting: false,
-            productList:[]
+            productList:[],
+            loading: false,
+
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -211,6 +213,7 @@ class ProductExpandItem extends Component {
             <div className={"mt-3 "}>
                 {this.props.currentProduct && (
                     <SubproductItem
+                        loading={this.state.loading}
                         smallImage={true}
                         hideMoreMenu={true}
                         item={this.props.currentProduct.product}

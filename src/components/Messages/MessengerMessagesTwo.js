@@ -14,6 +14,7 @@ import MessengerMessagesTwoOrgSearch from "./MessengerMessagesTwoOrgSearch";
 import WysiwygEditor from "./WysiwygEditor";
 import SendIcon from '@mui/icons-material/Send';
 import ClearIcon from '@mui/icons-material/Clear';
+import {LoaderAnimated} from "../../Util/GlobalFunctions";
 
 const newMessagePlaceHOlder = {"message_group": {"_id": 0}, "orgs": [{"name": "New Message", "email": "new@new.com"}]}
 
@@ -277,11 +278,14 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 <div className="col-md-8">
                     <div className="row">
                         <div className="col" style={{ height: "500px", minHeight: "500px"}}>
-                            {clickedMessage.length > 0 && (
+                            {clickedMessage.length > 0 ? (
                                 <div style={{ height: "500px", minHeight: "500px", maxHeight: "500px", overflow: "auto" }}>
                                     <MessengerMessagesTwoSelectedMessage messages={clickedMessage} />
                                 </div>
-                            )}
+                            ) : <div>
+                                <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                                <LoaderAnimated />
+                            </div>}
                         </div>
                     </div>
                     <div className="row">

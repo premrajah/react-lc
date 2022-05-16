@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Tab, Tabs } from "@mui/material";
+import {Box, Skeleton, Tab, Tabs} from "@mui/material";
 import PropTypes from "prop-types";
 import MessengerMessagesFilesDisplay from "./MessengerMessagesFilesDisplay";
 import MessengerMessageTwoMessageBubble from "./MessengerMessageTwoMessageBubble";
@@ -19,7 +19,7 @@ const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
 
     return (
         <>
-            {messages.length > 0 && (
+            {messages.length > 0 ? (
                 <Box sx={{ width: "100%" }}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                         <Tabs
@@ -50,7 +50,10 @@ const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
                             ))}
                     </TabPanel>
                 </Box>
-            )}
+            ) : <div>
+                abc
+                <Skeleton variant="rectangular" height="40px" />
+            </div>}
         </>
     );
 

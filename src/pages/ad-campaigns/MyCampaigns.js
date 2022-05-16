@@ -4,9 +4,7 @@ import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
-import SearchBar from "../../components/SearchBar";
-import {baseUrl, CAMPAIGN_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
-import moment from "moment/moment";
+import {baseUrl, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
@@ -17,7 +15,7 @@ import CreateCampaign from "./CreateCampaign";
 import RightSidebar from "../../components/RightBar/RightSidebar";
 import CampaignDetailContent from "../../components/Campaign/CampaignDetailContent";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
-import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
+import {seekAxiosGet} from "../../Util/GlobalFunctions";
 import CampaignItem from "../../components/Campaign/CampaignItem";
 
 class MyCampaigns extends Component {

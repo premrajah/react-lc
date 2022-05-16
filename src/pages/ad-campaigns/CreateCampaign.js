@@ -111,9 +111,11 @@ class CreateCampaign extends Component {
         this.setState({
             addCountAny: array,
             countAny: this.state.countAny - 1,
-        });
+        },()=>
+            this.countStrategyProducts()
+        );
 
-        this.countStrategyProducts()
+
     }
 
     subtractCountAll = (index) => {
@@ -125,10 +127,9 @@ class CreateCampaign extends Component {
         this.setState({
             addCountAll: arrayCount,
             countAll: this.state.countAll - 1,
-        });
-
-
+        },()=>
         this.countStrategyProducts()
+    );
 
     }
 

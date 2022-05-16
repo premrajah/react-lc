@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
-import {IconButton, List, Tooltip} from "@mui/material";
+import {IconButton, List, Skeleton, Tooltip} from "@mui/material";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
 import MessengerMessagesTwoSelectedMessage from "./MessengerMessagesTwoSelectedMessage";
 import MenuItem from "@mui/material/MenuItem";
@@ -256,7 +256,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
             <div className="row">
                 <div className="col-md-4">
-                    {filteredGroups.length > 0 && (
+                    {filteredGroups.length > 0 ? (
                         <List
                             sx={{
                                 height: "500px",
@@ -267,7 +267,12 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                             }}>
                             {filteredGroups.map((g, index) => handleGroupDataDisplay(g, index))}
                         </List>
-                    )}
+                    ) : <div>
+                        <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                        <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                        <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                        <Skeleton variant="rectangular" height="40px" />
+                    </div>}
                 </div>
                 <div className="col-md-8">
                     <div className="row">

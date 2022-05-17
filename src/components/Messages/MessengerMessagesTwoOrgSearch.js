@@ -1,12 +1,12 @@
 
-import React, {useEffect, useState} from "react";
+import React, {forwardRef, useEffect, useState} from "react";
 import AsyncSelect from 'react-select/async';
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 
-const MessengerMessagesTwoOrgSearch = ({showSnackbar, handleOrgSelectedCallback}) => {
+const MessengerMessagesTwoOrgSearch = forwardRef(({showSnackbar, handleOrgSelectedCallback}, ref) => {
     const [inputValue, setInputValue] = useState([]);
 
     useEffect(() => {
@@ -60,9 +60,11 @@ const MessengerMessagesTwoOrgSearch = ({showSnackbar, handleOrgSelectedCallback}
             onChange={handleChange}
             isMulti
             noOptionsMessage={i => "Search..."}
+            ref={ref}
         />
     </div>
-}
+})
+
 
 const mapStateToProps = (state) => {
     return {
@@ -77,4 +79,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessengerMessagesTwoOrgSearch);
+export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(MessengerMessagesTwoOrgSearch);

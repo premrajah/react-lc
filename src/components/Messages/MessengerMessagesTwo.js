@@ -22,6 +22,7 @@ const newMessagePlaceHOlder = {"message_group": {"_id": 0}, "orgs": [{"name": "N
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
     const resetDraftRef = useRef(null);
+    const orgSearchRef = useRef(null);
 
     const [allGroups, setAllGroups] = useState([]);
     const [clickedMessage, setClickedMessage] = useState([]);
@@ -156,6 +157,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         setMessageText("");
     }
 
+    const handleClearOrgSearch = () => {
+        orgSearchRef.current.clearValue();
+    }
+
     const handleSendMessage = () => {
         let payload = {};
         if(selectedOrgs.length > 0 && messageText) {
@@ -251,7 +256,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     </div>
                 </div>
                 <div className="col-md-8">
-                    {orgSearchVisibility && <MessengerMessagesTwoOrgSearch handleOrgSelectedCallback={(v) => handleOrgSelectedCallback(v)}/>}
+                    {orgSearchVisibility && <MessengerMessagesTwoOrgSearch ref={orgSearchRef} handleOrgSelectedCallback={(v) => handleOrgSelectedCallback(v)}/>}
                 </div>
             </div>
 

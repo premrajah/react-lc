@@ -47,6 +47,7 @@ import {
     SERVICE_AGENT_REQUEST,
     SHOW_SNACKBAR,
     CURRENT_PRODUCT,
+    CURRENT_PRODUCT_LOADING,
     EMPTY_CURRENT,
     CURRENT_SITE,
     GET_LISTINGS,
@@ -108,6 +109,7 @@ export const initialState = {
     productRegisterRequests: [],
     snackbarMessage: { show: false, message: "", severity: "" },
     currentProduct: null,
+
     currentProductLoading: false,
     currentSite: null,
     currentSiteLoading: false,
@@ -183,6 +185,7 @@ const reducer = (state = initialState, action) => {
 console.log("empty")
             newState.loading=true
             newState.currentProduct = null;
+            newState.currentProductLoading = true;
             newState.currentSite = null;
 
             break;
@@ -266,6 +269,9 @@ console.log("empty")
             break;
         case SHOW_SNACKBAR:
             newState.snackbarMessage = action.value;
+        case CURRENT_PRODUCT_LOADING:
+
+            newState.currentProductLoading = action.value;
 
             break;
         case CURRENT_SITE:

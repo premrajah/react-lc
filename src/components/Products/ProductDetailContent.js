@@ -290,15 +290,38 @@ class ProductDetailContent extends Component {
         clearInterval(this.interval);
     }
 
+    componentDidMount() {
+        if (!this.props.item) {
+            this.loadProduct(this.props.productId);
+        } else {
+            this.setState({
+                item: this.props.item,
+            });
+
+            this.loadInfo();
+        }
+
+        this.setActiveKey(null,"1")
+
+
+        this.fetchReleases()
+
+    }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
         if (prevProps!==this.props) {
 
+            if (!this.props.item) {
+                this.loadProduct(this.props.productId);
+            } else {
+                this.setState({
+                    item: this.props.item,
+                });
+
+                this.loadInfo();
+            }
             this.setActiveKey(null,"1")
-
-
-
         }
     }
 
@@ -678,23 +701,6 @@ class ProductDetailContent extends Component {
     }
 
 
-    componentDidMount() {
-        if (!this.props.item) {
-            this.loadProduct(this.props.productId);
-        } else {
-            this.setState({
-                item: this.props.item,
-            });
-
-            this.loadInfo();
-        }
-
-        this.setActiveKey(null,"1")
-
-
-            this.fetchReleases()
-
-    }
 
     loadInfo() {
         if (this.state.item) {
@@ -1013,7 +1019,7 @@ class ProductDetailContent extends Component {
                             }} >
 
                                     <div className="form-col-left col-12">
-                                        <ProductForm triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.state.item} />
+                                        <ProductForm edit triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.props.item} />
                                     </div>
 
                         </GlobalDialog>

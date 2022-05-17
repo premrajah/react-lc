@@ -51,7 +51,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                         {!props.hideClose && <CloseButtonPopUp onClick={handleClose}/>}
                     </div>
                 </div>}
-                    <div className=" pd-3 pt-3 row  justify-content-center align-items-center">
+                    <div className=" pb-3 pt-3 row  justify-content-center align-items-center">
 
                         {children}
                     </div>

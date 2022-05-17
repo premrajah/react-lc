@@ -12,6 +12,7 @@ import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import AddIcon from "@mui/icons-material/Add";
+import SubproductItemSkeleton from "./Item/SubproductItemSkeleton";
 
 
 class ProductExpandItem extends Component {
@@ -32,6 +33,7 @@ class ProductExpandItem extends Component {
             showExisting: false,
             productList:[],
             loading: false,
+            item:null
 
         };
 
@@ -46,14 +48,16 @@ class ProductExpandItem extends Component {
 
     removeItem(event) {
         var data = {
-            product_id: this.props.currentProduct.product._key,
+            product_id: this.state.item.product._key,
             sub_products_ids: [event.currentTarget.dataset.id],
         };
 
         axios.post(baseUrl + "product/sub-product/remove", data).then(
             (response) => {
 
-                this.loadProduct(this.props.currentProduct.product._key);
+                this.loadProduct(this.state.item.product._key);
+                this.props.loadCurrentProduct(this.state.item.product._key)
+
             },
             (error) => {}
         );
@@ -125,11 +129,32 @@ class ProductExpandItem extends Component {
         });
     }
 
-    loadProduct(productKey) {
+    // loadProduct(productKey) {
+    //
+    //
+    //     if (productKey)
+    //     this.props.loadCurrentProduct(productKey)
+    //
+    // }
 
 
-        if (productKey)
-        this.props.loadCurrentProduct(productKey)
+     loadProduct=(id)=> {
+
+        // alert(id)
+
+        axios.get(baseUrl + "product/" + id+"/expand")
+            .then(
+                (response) => {
+
+                    let responseAll = response.data;
+                    this.setState({item:responseAll.data})
+
+                },
+                (error) => {
+
+
+                }
+            );
 
     }
 
@@ -159,7 +184,7 @@ class ProductExpandItem extends Component {
         }
 
         var dataForm = {
-            product_id: this.props.currentProduct.product._key,
+            product_id: this.state.item.product._key,
             sub_products: array,
         };
 
@@ -172,7 +197,8 @@ class ProductExpandItem extends Component {
                     addCount: [],
                     count: 0,
                 });
-                this.loadProduct(this.props.currentProduct.product._key);
+                this.loadProduct(this.state.item.product._key);
+                this.props.loadCurrentProduct(this.state.item.product._key)
             })
             .catch((error) => {
                 // dispatch(stopLoading())
@@ -202,7 +228,9 @@ class ProductExpandItem extends Component {
             this.setState({
                 product: null,
             });
-            this.loadProduct(this.props.productId);
+            // this.loadProduct(this.props.productId);
+
+                // alert(this.props.productId)
         }
     }
 
@@ -210,19 +238,21 @@ class ProductExpandItem extends Component {
 
 
         return (
-            <div className={"mt-3 "}>
-                {this.props.currentProduct && (
+            <div className={"mt-0 "}>
+                {this.state.item ? (
                     <SubproductItem
-                        loading={this.state.loading}
                         smallImage={true}
                         hideMoreMenu={true}
-                        item={this.props.currentProduct.product}
+                        // productId={this.props.productId}
+
+                        item={this.state.item.product}
                     />
-                )}
+                ): <SubproductItemSkeleton/>}
+
 
                 <div className="row no-gutters  justify-content-left">
                     <div className="col-12">
-                        {this.props.currentProduct && (
+                        {this.state.item && (
                             <>
                                 {!this.props.hideAddAll && (
                                     <div className="row no-gutters justify-content-left">
@@ -232,8 +262,8 @@ class ProductExpandItem extends Component {
                                             </p>
 
                                             <ol>
-                                                {this.props.currentProduct &&this.props.currentProduct.sub_products&&
-                                                    this.props.currentProduct.sub_products.map(
+                                                {this.state.item.sub_products&&
+                                                this.state.item.sub_products.map(
                                                         (item, index) => (
                                                             <>
                                                                 <li className={"text-gray-light"}>
@@ -287,7 +317,7 @@ class ProductExpandItem extends Component {
                                                     className={
                                                         "btn-gray-border click-item ml-2"
                                                     }
-                                                    data-parent={this.props.currentProduct.product._key}
+                                                    data-parent={this.state.item.product._key}
                                                     onClick={this.showExisting}>
                                                      <AddLinkIcon />
                                                     Link Existing
@@ -301,7 +331,7 @@ class ProductExpandItem extends Component {
                     </div>
                 </div>
 
-                {this.props.currentProduct &&  this.state.showExisting && (
+                {this.state.item &&  this.state.showExisting && (
                     <>
                          <div className="row   justify-content-left">
                             <form style={{ width: "100%" }} onSubmit={this.linkSubProduct}>
@@ -333,15 +363,17 @@ class ProductExpandItem extends Component {
                                                             .filter(
                                                                 (item) =>
                                                                     item._key !==
-                                                                        this.props.currentProduct.product
-                                                                            ._key &&
-                                                                    !(
-                                                                        this.props.currentProduct.sub_products.filter(
+                                                                    this.state.item.product
+                                                                        ._key
+                                                            )
+                                                            .filter(
+                                                                (item) =>
+                                                                        !this.state.item.sub_products.filter(
                                                                             (subItem) =>
                                                                                 subItem._key ===
                                                                                 item._key
                                                                         ).length > 0
-                                                                    )
+
                                                             )
                                                             .map((item) => (
                                                                 <option value={item._key}>
@@ -469,7 +501,8 @@ const mapStateToProps = (state) => {
         product: state.product,
         productList: state.productList,
         productWithoutParentList: state.productWithoutParentList,
-        currentProduct:state.currentProduct
+        currentProduct:state.currentProduct,
+        currentProductLoading:state.currentProductLoading
 
     };
 };

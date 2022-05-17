@@ -13,24 +13,59 @@ import {capitalize} from "../../../Util/GlobalFunctions";
 const SubproductItem = (props) => {
 
 
-   const   [item, setItem]=useState('')
+   const   [item, setItem]=useState(props.item)
     const parentId= props.parentId
     const remove=props.remove
     const [artifacts, setArtifacts] = useState([]);
 
+
+const loadProduct=(id)=> {
+
+    // alert(id)
+
+    axios.get(baseUrl + "product/" + id)
+        .then(
+            (response) => {
+
+                let responseAll = response.data;
+               setItem(responseAll.data.product)
+
+            },
+            (error) => {
+
+
+            }
+        );
+
+}
     useEffect(() => {
 
-        setItem(props.item)
-            if(item&&item._key) {
-
+            if(item) {
+                // alert(item._key)
+                setItem(props.item)
                 getArtifactsForProduct(item._key)
             }
 
-            return () => {
-                setItem(null);
-            }
-
     }, [props.item])
+
+
+
+    useEffect(() => {
+        if (props.productId) {
+            loadProduct(props.productId)
+            getArtifactsForProduct(props.productId)
+        }
+
+    }, [props.productId])
+
+
+    // useEffect(() => {
+    //
+    //     if (props.loading)
+    //     setItem(null)
+    //
+    //
+    // }, [props.loading])
 
     const getArtifactsForProduct = (key) => {
 
@@ -78,7 +113,10 @@ const SubproductItem = (props) => {
 
     return <>
 
-        {item&&  <div className="row no-gutters align-items-center justify-content-center mb-2 white-bg p-2 rad-8">
+
+
+        {item &&
+        <div className="row no-gutters align-items-center justify-content-center mb-2 white-bg p-2 rad-8">
             <div className="col-2">
                 {artifacts.length > 0
                     ? <ImageOnlyThumbnail smallImage={props.smallImage} images={artifacts} />
@@ -163,6 +201,7 @@ const mapStateToProps = (state) => {
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
         showSubProductView: state.showSubProductView,
+
     };
 };
 

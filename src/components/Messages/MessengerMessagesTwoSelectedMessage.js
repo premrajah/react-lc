@@ -1,5 +1,5 @@
-import React from "react";
-import {Box, Skeleton, Tab, Tabs} from "@mui/material";
+import React, { useEffect, useRef } from "react";
+import { Box, Skeleton, Tab, Tabs } from "@mui/material";
 import PropTypes from "prop-types";
 import MessengerMessagesFilesDisplay from "./MessengerMessagesFilesDisplay";
 import MessengerMessageTwoMessageBubble from "./MessengerMessageTwoMessageBubble";
@@ -11,7 +11,17 @@ const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
         value: PropTypes.number.isRequired,
     };
 
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    const messagesEndRef = useRef(null);
+
     const [value, setValue] = React.useState(0);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
     const handleTabsChange = (event, newValue) => {
         setValue(newValue);
@@ -22,22 +32,29 @@ const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
             {messages.length > 0 ? (
                 <Box sx={{ width: "100%" }}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                        <Tabs
-                            value={value}
-                            onChange={handleTabsChange}
-                            aria-label="message-tabs">
+                        <Tabs value={value} onChange={handleTabsChange} aria-label="message-tabs">
                             <Tab label="Chats" {...a11yProps(0)} />
                             <Tab label="Files" {...a11yProps(1)} />
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                        {messages.length > 0 &&
-                            messages.map((m, i) => <React.Fragment key={i} >
-                                <div className={`d-flex ${m.options.is_owned ? "justify-content-end" : "justify-content-start"}`}>
-                                    <MessengerMessageTwoMessageBubble m={m} />
-                                </div>
-                            </React.Fragment>)
-                        }
+                        {messages.length > 0 && (
+                            <>
+                                {messages.map((m, i) => (
+                                    <React.Fragment key={i}>
+                                        <div
+                                            className={`d-flex ${
+                                                m.options.is_owned
+                                                    ? "justify-content-end"
+                                                    : "justify-content-start"
+                                            }`}>
+                                            <MessengerMessageTwoMessageBubble m={m} />
+                                        </div>
+                                    </React.Fragment>
+                                ))}
+                                <div ref={messagesEndRef} />
+                            </>
+                        )}
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         {messages.length > 0 &&
@@ -50,10 +67,12 @@ const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
                             ))}
                     </TabPanel>
                 </Box>
-            ) : <div>
-                abc
-                <Skeleton variant="rectangular" height="40px" />
-            </div>}
+            ) : (
+                <div>
+                    abc
+                    <Skeleton variant="rectangular" height="40px" />
+                </div>
+            )}
         </>
     );
 

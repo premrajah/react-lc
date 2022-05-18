@@ -110,11 +110,16 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         setOrgSearchVisibility(!orgSearchVisibility);
         if(!orgSearchVisibility) {
             setFilteredGroups([newMessagePlaceHOlder, ...allGroups]);
+            handleSelectedItemCallback(0)
+            handleGroupClickCallback("")
+
         }
 
         if(filteredGroups[0].message_group._id === 0) {
             setFilteredGroups(allGroups); // remove temp new message
             handleClearOrgSearch();
+            handleSelectedItemCallback(0);
+            handleGroupClickCallback(allGroups[0].message_group._key);
         }
     }
 

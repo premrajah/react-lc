@@ -34,6 +34,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [filterValues, setFilterValues] = useState("");
     const [messageText, setMessageText] = useState("");
     const [selectedOrgs, setSelectedOrgs] = useState([]);
+    const [newMessageDisplay, setNewMessageDisplay] = useState(null);
 
     useEffect(() => {
         setSelectedMenuItemIndex(0);
@@ -108,11 +109,12 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
     const handleOrgSelectVisibility = () => {
         setOrgSearchVisibility(!orgSearchVisibility);
+
         if(!orgSearchVisibility) {
             setFilteredGroups([newMessagePlaceHOlder, ...allGroups]);
             handleSelectedItemCallback(0)
             handleGroupClickCallback("")
-
+            setNewMessageDisplay("Select Orgs to send New Message");
         }
 
         if(filteredGroups[0].message_group._id === 0) {
@@ -120,6 +122,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             handleClearOrgSearch();
             handleSelectedItemCallback(0);
             handleGroupClickCallback(allGroups[0].message_group._key);
+            setNewMessageDisplay(null);
         }
     }
 
@@ -128,6 +131,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
       if(!v) return;
 
       setFilteredGroups(allGroups);
+        handleSelectedItemCallback(0);
+        handleGroupClickCallback(allGroups[0].message_group._key);
     }
 
     const handleRichTextCallback = (value) => {
@@ -294,6 +299,16 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                     <MessengerMessagesTwoSelectedMessage messages={clickedMessage} />
                                 </div>
                             )}
+                            {newMessageDisplay && <div className="row mt-2">
+                                <div className="col">
+                                    {selectedOrgs.length === 0 && <div>{newMessageDisplay}</div>}
+                                </div>
+                            </div>}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            {selectedOrgs.length > 0 && <small>Selected: {selectedOrgs.map(o => <span className="mr-1"><span>{o.label}</span>{selectedOrgs.length > 1 && <span>, </span>}</span> )}</small>}
                         </div>
                     </div>
                     <div className="row">

@@ -55,7 +55,7 @@ import {
     TOGGLE_GLOBAL_DIALOG,
     USER_CONTEXT,
     ORG_CACHE,
-    REFRESH_PAGE, EMPTY_CURRENT
+    REFRESH_PAGE, EMPTY_CURRENT, CURRENT_PRODUCT_LOADING
 } from "../types";
 
 // Added by Chandan For Google Analytics
@@ -291,17 +291,24 @@ export const loadParentSitesSync = (data) => (dispatch) => {
 export const loadCurrentProduct = (data,refresh) => {
     return (dispatch) => {
 
-
-
         if (refresh) {
             dispatch(emptyCurrent());
         }
+        dispatch(currentProductLoading(true));
+
         dispatch(loadCurrentProductSync(data));
     };
 };
 
 
+export const currentProductLoading = (data) => {
 
+    return {
+        type: CURRENT_PRODUCT_LOADING,
+        value: data,
+    };
+
+};
 
 export const emptyCurrent = (data) => {
 
@@ -336,17 +343,17 @@ export const loadCurrentProductSync = (data) => (dispatch) => {
 
     try{
         axios
-            .get(baseUrl + "product/" + encodeUrl(data) + "/expand?agg"
-            )
+            .get(baseUrl + "product/" + encodeUrl(data) + "/expand?agg")
             .then(
                 (response) => {
                     let responseAll = response.data;
 
                     dispatch({ type: CURRENT_PRODUCT, value: responseAll.data });
-
+                    dispatch(currentProductLoading(false));
 
                 },
                 (error) => {
+                    dispatch(currentProductLoading(false));
                     // this.setState({
                     //     notFound: true,
                     // });

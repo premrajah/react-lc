@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import Select from "@mui/material/Select";
 import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
-import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import _ from "lodash";
@@ -843,7 +842,7 @@ class ProductForm extends Component {
                     <div className="row">
                     <div className="col-md-8  col-xs-12">
                         <h4 className={"blue-text text-heading "}>
-                            {this.state.parentProductId?"Add subproduct":"Add product"}
+                            {this.props.edit?"Edit Product":this.state.parentProductId?"Add subproduct":"Add product"}
                         </h4>
                     </div>
                         <div className="col-md-4  col-xs-12 desktop-right">
@@ -1501,4 +1500,4 @@ const mapDispachToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(ProductForm);
+export default  connect(mapStateToProps, mapDispachToProps)(ProductForm);

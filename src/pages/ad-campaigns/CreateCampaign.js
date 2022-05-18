@@ -111,9 +111,11 @@ class CreateCampaign extends Component {
         this.setState({
             addCountAny: array,
             countAny: this.state.countAny - 1,
-        });
+        },()=>
+            this.countStrategyProducts()
+        );
 
-        this.countStrategyProducts()
+
     }
 
     subtractCountAll = (index) => {
@@ -125,10 +127,9 @@ class CreateCampaign extends Component {
         this.setState({
             addCountAll: arrayCount,
             countAll: this.state.countAll - 1,
-        });
-
-
+        },()=>
         this.countStrategyProducts()
+    );
 
     }
 
@@ -517,24 +518,24 @@ class CreateCampaign extends Component {
             }
 
 
-            if (this.state.activeStep==1&&this.state.countAll===0&&this.state.countAny===0){
-
-
-
-
-                this.setState({
-
-                    selectOptionError:true
-                })
-
-                return
-            }else{
-
-                this.setState({
-
-                    selectOptionError:false
-                })
-            }
+            // if (this.state.activeStep==1&&this.state.countAll===0&&this.state.countAny===0){
+            //
+            //
+            //
+            //
+            //     this.setState({
+            //
+            //         selectOptionError:true
+            //     })
+            //
+            //     return
+            // }else{
+            //
+            //     this.setState({
+            //
+            //         selectOptionError:false
+            //     })
+            // }
 
 
 
@@ -1709,7 +1710,10 @@ class CreateCampaign extends Component {
 
                                     </div>
 
-                                    {this.state.selectOptionError&&<span className={"text-danger"}>*Atleast one condition is required.</span>}
+                                    {/*{this.state.selectOptionError&&<span className={"text-danger"}>*Atleast one condition is required.</span>}*/}
+
+                                    <p className="mt-2">"If no conditions are added, the ad campaign will target all of your brand's products in the Loopcycle Platform"</p>
+
                                 </div>
                             </div>
                         </div>

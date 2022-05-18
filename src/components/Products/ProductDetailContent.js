@@ -290,15 +290,38 @@ class ProductDetailContent extends Component {
         clearInterval(this.interval);
     }
 
+    componentDidMount() {
+        if (!this.props.item) {
+            this.loadProduct(this.props.productId);
+        } else {
+            this.setState({
+                item: this.props.item,
+            });
+
+            this.loadInfo();
+        }
+
+        this.setActiveKey(null,"1")
+
+
+        this.fetchReleases()
+
+    }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
         if (prevProps!==this.props) {
 
+            if (!this.props.item) {
+                this.loadProduct(this.props.productId);
+            } else {
+                this.setState({
+                    item: this.props.item,
+                });
+
+                this.loadInfo();
+            }
             this.setActiveKey(null,"1")
-
-
-
         }
     }
 
@@ -678,23 +701,6 @@ class ProductDetailContent extends Component {
     }
 
 
-    componentDidMount() {
-        if (!this.props.item) {
-            this.loadProduct(this.props.productId);
-        } else {
-            this.setState({
-                item: this.props.item,
-            });
-
-            this.loadInfo();
-        }
-
-        this.setActiveKey(null,"1")
-
-
-            this.fetchReleases()
-
-    }
 
     loadInfo() {
         if (this.state.item) {
@@ -961,6 +967,7 @@ class ProductDetailContent extends Component {
                                                         <TabPanel value="6">
                                                             {this.state.listingLinked && (
                                                                 <ResourceItem
+                                                                    hideCategory
                                                                     smallImage={true}
                                                                     history={this.props.history}
                                                                     item={this.state.listingLinked}
@@ -986,31 +993,36 @@ class ProductDetailContent extends Component {
                             </div>
                         </div>
 
-                        <Modal
-                            size="lg"
+                        {/*<Modal*/}
+                        {/*    size="lg"*/}
+                        {/*    show={this.state.showProductEdit}*/}
+                        {/*    onHide={this.showProductEdit}*/}
+                        {/*    className={"custom-modal-popup popup-form"}>*/}
+                        {/*    <div className="row   justify-content-end">*/}
+                        {/*        <div className="col-auto mr-2 mt-2">*/}
+                        {/*            <CloseButtonPopUp onClick={this.showProductEdit}>*/}
+                        {/*                <Close />*/}
+                        {/*            </CloseButtonPopUp>*/}
+
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+
+
+
+                        <GlobalDialog
+                            size="md"
+                            heading={"Add Product"}
+                            hideHeading
                             show={this.state.showProductEdit}
-                            onHide={this.showProductEdit}
-                            className={"custom-modal-popup popup-form"}>
-                            <div className="row   justify-content-end">
-                                <div className="col-auto mr-2 mt-2">
-                                    <CloseButtonPopUp onClick={this.showProductEdit}>
-                                        <Close />
-                                    </CloseButtonPopUp>
+                            hide={()=> {
+                                this.showProductEdit();
+                            }} >
 
-                                </div>
-                            </div>
-
-
-
-                            <div className="row  justify-content-center mobile-menu-row  pr-2 pl-2 pb-2">
-                                <div className="col mobile-menu">
                                     <div className="form-col-left col-12">
-                                        <ProductForm triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.state.item} />
+                                        <ProductForm edit triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.props.item} />
                                     </div>
-                                </div>
-                            </div>
 
-                        </Modal>
+                        </GlobalDialog>
 
                         <GlobalDialog
                             allowOverflow

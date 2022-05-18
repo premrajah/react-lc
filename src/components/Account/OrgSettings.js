@@ -97,11 +97,11 @@ class OrgSettings extends Component {
 
     fetchOrgSettings=(orgId)=> {
         axios
-            .get(baseUrl + "org/"+orgId)
+            .get(baseUrl + "org")
             .then(
                 (response) => {
 
-                    if (response.data.data.org.settings) {
+                    if (response.data.data&&response.data.data.org&&response.data.data.org.settings) {
 
                         let options=[]
                             let   notification_settings=response.data.data.org.settings&&response.data.data.org.settings.notification_settings?response.data.data.org.settings.notification_settings.value:[]
@@ -223,7 +223,7 @@ class OrgSettings extends Component {
     submitSettings=()=>{
 
         axios
-            .post(baseUrl + "org/"+this.props.orgId,{
+            .post(baseUrl + "org"+(!this.props.fromSettings?"/"+this.props.orgId:''),{
                 settings:this.state.fields
             })
             .then(

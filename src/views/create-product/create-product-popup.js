@@ -9,6 +9,8 @@ import ProductForm from "../../components/ProductPopUp/ProductForm";
 import IconButton from "@mui/material/IconButton";
 import {Close} from "@mui/icons-material";
 import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
+import Layout from "../../components/Layout/Layout";
 
 class ProductPopUp extends Component {
     componentDidMount() {}
@@ -29,55 +31,24 @@ class ProductPopUp extends Component {
 
     render() {
         return (
-            <Modal
-                size="lg"
-                show={this.props.showProductPopUp}
-                onHide={this.hidePopUp}
-                className={"custom-modal-popup popup-form"}>
-                <div className="row   justify-content-end">
-                <div className="col-auto mr-2 mt-2">
-                    <CloseButtonPopUp onClick={this.hidePopUp}>
-                        <Close />
-                    </CloseButtonPopUp>
+            <>
 
-                </div>
-                </div>
-                <div className="row no-gutters  justify-content-center mobile-menu-row  pl-2 pr-2 pb-2">
-                    <div className="col mobile-menu">
-                        <div className="form-col-left col-12">
-                            {this.props.showCreateSubProduct && (
-                                <ProductForm heading="Add Subproduct" />
-                            )}
-
-                            {this.props.showCreateProduct && (
-                                <ProductForm id={this.props.id} heading={"Add Product"} />
-                            )}
-                            {this.props.showSubProductView && (
-                                <ProductExpandItem
-                                    showLinkProducts={true}
-                                    productId={this.props.product.product._key}
-                                />
-                            )}
-
-                        </div>
-
-
+                <GlobalDialog
+                    size="md"
+                    hideHeading
+                    show={this.props.showProductPopUp}
+                    hide={()=> {
+                        this.hidePopUp();
+                    }}
+                >
+                    <div className="col-12">
+                    <ProductForm type={this.props.showProductPopUpType} productId={this.props.parentProductId} />
                     </div>
-                </div>
 
-                {!this.props.showCreateSubProduct &&!this.props.showCreateProduct &&  <div className="row py-3 justify-content-end mobile-menu-row  pr-4 ">
-                    <div className="col text-right">
-                    <button
-                        onClick={this.hidePopUp}
-                        className=" btn-gray-border  "
-                        data-dismiss="modal"
-                        aria-label="Close">
-                        Done
-                    </button>
-                    </div>
-                </div>}
+                </GlobalDialog>
 
-            </Modal>
+
+                </>
         );
     }
 }
@@ -92,6 +63,11 @@ const mapStateToProps = (state) => {
         showProductView: state.loginPopUpStatus,
         showProductPopUp: state.showProductPopUp,
         product: state.product,
+        parentProductId: state.parentProductId,
+
+
+        showProductPopUpType: state.showProductPopUpType,
+
     };
 };
 

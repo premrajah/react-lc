@@ -1,2 +1,2 @@
-name,description,external_reference,condition,purpose,year_of_making,category,type,state,units,volume,brand,model,serial,sku,upc,part_no,line,is_listable
-Example Text,Example Text,dsdsds,new,defined,2021,commercial catering,complete,fully functional,units,2,loopcycle,loopcycle 123,123456,98765,,,,TRUE
+name,description,external_reference,condition,purpose,year_of_making,category,type,state,units,volume,brand,model,serial,sku,upc,part_no,line,is_listable,power_supply,energy_rating
+Example Text,Example Text,abcd123,new,defined,2021,commercial kitchen equipment ,complete,fully functional,units,2,loopcycle,loopcycle 123,123456,98765,,,,TRUE,gas,5

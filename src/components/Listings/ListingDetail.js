@@ -25,7 +25,6 @@ import {GoogleMap} from "../../components/Map/MapsContainer";
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import Badge from "@mui/material/Badge";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import Layout from "../Layout/Layout";
 
 class ListingDetail extends Component {
     slug;
@@ -454,24 +453,16 @@ marteplace
                                                                         onChange={this.setActiveKey}
 
                                                                         aria-label="lab API tabs example">
-
-
                                                                         <Tab label="Info" value="0"/>
-
                                                                         <Tab label="Linked Product" value="1" />
-
                                                                         <Tab label="Site" value="2" />
-
-                                                                        <Tab label={<Badge color={"primary"} badgeContent={this.state.matches.length}>Matches Received</Badge>} value="3" />
-
+                                                                        {!this.props.hideMatchesTab &&   <Tab label={<Badge color={"primary"} badgeContent={this.state.matches.length}>Matches Received</Badge>} value="3" />}
                                                                     </TabList>
                                                                 </Box>
 
                                                                 <TabPanel value="0">
-
                                                                     <InfoTabContent item={this.state.item.listing}/>
                                                                 </TabPanel>
-
                                                                 {this.state.item.product &&  <TabPanel value="1">
 
                                                                     <>
@@ -489,8 +480,6 @@ marteplace
                                                                     </>
 
                                                                 </TabPanel>}
-
-
                                                                 {this.state.item.site &&
                                                                 <TabPanel value="2">
                                                                     <>
@@ -512,21 +501,15 @@ marteplace
                                                                     </>
 
                                                                 </TabPanel>}
-
-
                                                                 <TabPanel value="3">
 
-                                                                    { this.state.matches.length === 0 &&    <div className="row no-gutters mt-4 ">
+                                                                    {this.state.matches.length === 0 &&    <div className="row no-gutters mt-4 ">
                                                                         <div className="col-12  ">
                                                                             <p className="mb-1 text-gray-light">
                                                                                No Matches Received
                                                                             </p>
                                                                         </div>
                                                                     </div>}
-
-
-
-
                                                                     {!this.props.hideSearches&&this.state.matches &&
                                                                     this.state.matches.length > 0 && (
                                                                         <>
@@ -545,8 +528,6 @@ marteplace
                                                                         </>
                                                                     )}
                                                                 </TabPanel>
-
-
                                                             </TabContext>
                                                         </Box>
 
@@ -576,6 +557,7 @@ marteplace
                                             triggerCallback={this.showEdit}
                                             listingId={this.state.item.listing._key}
                                         />
+
 
 
                                                 </div>
@@ -670,7 +652,7 @@ marteplace
                     )}
 
 
-                {this.state.item&&(this.state.item.org._id !== this.props.userDetail.orgId) && (
+                {!this.props.hideRequestMatch&&this.state.item&&(this.state.item.org._id !== this.props.userDetail.orgId) && (
                     <React.Fragment>
 
 

@@ -1117,7 +1117,7 @@ if ((this.state.activeStep-1)==0){
         const classesBottom = withStyles();
 
         return (
-            <Layout>
+            <Layout hideFooter>
 
                     <div className="container  pb-4 pt-4">
                         {this.state.activeStep <2 &&<PageHeader pageTitle="New Search"  subTitle={this.state.activeStep === 0 ?"Basic Details":"More Details"}/>}
@@ -1294,9 +1294,9 @@ if ((this.state.activeStep-1)==0){
                             <div className="row  mb-5 pb-5">
                                 <div className={"col-12"}>
 
-                                    <div className="row no-gutters justify-content-center ">
+                                    <div className="row  no-gutters justify-content-center ">
 
-                                        <div className="col-12 mb-2">
+                                        <div className="col-12 d-none mb-2">
 
                                                 <SelectArrayWrapper
                                                     valueKey={"_key"}
@@ -1354,13 +1354,11 @@ if ((this.state.activeStep-1)==0){
                                                   />
                                             <p style={{ marginTop: "10px" }}>
 
-                                                Don’t see it on here?
-                                                <span
+                                                Don’t see it on here? <span
                                                     onClick={this.toggleSite}
                                                     className={
-                                                        " forgot-password-link text-mute small"
-                                                    }>
-                                                    Add a site
+                                                        " forgot-password-link"
+                                                    }>Add a site
                                                 </span>
                                             </p>
                                         </div>
@@ -1590,7 +1588,7 @@ if ((this.state.activeStep-1)==0){
 
                     hide={this.toggleSite}
                     show={this.state.showCreateSite}
-                    heading={"Add Company"}>
+                    heading={"Add new site"}>
                     <>
                         <div className="col-12 ">
 

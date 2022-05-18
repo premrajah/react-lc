@@ -253,7 +253,7 @@ class ProductItemNew extends Component {
     render() {
         return (
             <>
-                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center  mb-4 bg-white rad-8  p-3">
+                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center align-items-center mb-4 bg-white rad-8  p-3">
                                 <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-md-4  col-xs-12":"col-md-2  col-xs-12"}>
                                     <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
                                         <>

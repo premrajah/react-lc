@@ -47,6 +47,7 @@ import {
     SERVICE_AGENT_REQUEST,
     SHOW_SNACKBAR,
     CURRENT_PRODUCT,
+    CURRENT_PRODUCT_LOADING,
     EMPTY_CURRENT,
     CURRENT_SITE,
     GET_LISTINGS,
@@ -73,6 +74,8 @@ export const initialState = {
     userContext: null,
 
     showProductPopUp: false,
+    showProductPopUpType: 'new',
+
     showCreateProduct: false,
     showCreateSubProduct: false,
     showProductView: false,
@@ -80,6 +83,7 @@ export const initialState = {
     showSiteProductView:false,
     product: null,
     parentProduct: null,
+    parentProductId:null,
     productList: [],
     productWithoutParentList: [],
     productWithoutParentNoList: [],
@@ -105,6 +109,7 @@ export const initialState = {
     productRegisterRequests: [],
     snackbarMessage: { show: false, message: "", severity: "" },
     currentProduct: null,
+
     currentProductLoading: false,
     currentSite: null,
     currentSiteLoading: false,
@@ -180,6 +185,7 @@ const reducer = (state = initialState, action) => {
 console.log("empty")
             newState.loading=true
             newState.currentProduct = null;
+            newState.currentProductLoading = true;
             newState.currentSite = null;
 
             break;
@@ -263,6 +269,9 @@ console.log("empty")
             break;
         case SHOW_SNACKBAR:
             newState.snackbarMessage = action.value;
+        case CURRENT_PRODUCT_LOADING:
+
+            newState.currentProductLoading = action.value;
 
             break;
         case CURRENT_SITE:
@@ -366,7 +375,6 @@ console.log("empty")
             break;
         case PRODUCT_POPUP:
 
-
             newState.loginFailed = false;
             newState.showSubProductView = false;
             newState.showSiteProductView = false;
@@ -374,6 +382,12 @@ console.log("empty")
             newState.showCreateSubProduct = false;
             newState.showProductView = false;
             newState.showProductPopUp = action.value.show;
+
+            if (action.value.type)
+            newState.showProductPopUpType = action.value.type
+
+            newState.parentProductId = action.value.parentProductId
+
 
             let type = action.value.type;
 

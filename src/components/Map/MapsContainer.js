@@ -59,7 +59,42 @@ class MapsContainer extends Component {
           }
 
 }
-     moveMarker= (coord) => {
+
+
+
+
+
+componentDidUpdate(prevProps, prevState, snapshot) {
+     if (prevProps!=this.props){
+
+         setTimeout(()=> {
+
+             if (!this.props.searchLocation)
+             for (let i=0;i<this.props.locations.length;i++){
+
+                 this.polyLine.push( {lat: this.props.locations[i].location.lat, lng: this.props.locations[i].location.lng},)
+
+             }else{
+
+
+
+
+
+             this.setState({
+                 markerLatitude:this.props.latitude,
+                 markerLongitude:this.props.longitude,
+                 markerName:this.props.name
+
+             })
+         }
+
+         }, 1000);
+
+     }
+}
+
+
+    moveMarker= (coord) => {
 
 
          const { latLng } = coord;
@@ -153,10 +188,11 @@ class MapsContainer extends Component {
                  lat: this.props.latitude,
                  lng: this.props.longitude,
              }}
-
              zoom={12}
+
          >
                  <Marker
+
                      // label={"<span>som label</span>"}
                      draggable={true}
                      // onDragend={this.moveMarker.bind(this)}

@@ -1,16 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import { Modal, ModalBody } from "react-bootstrap";
+import {Modal, ModalBody} from "react-bootstrap";
 import TextField from "@mui/material/TextField";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import GreenButton from "./FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
-import BlueButton from "./FormsUI/Buttons/BlueButton";
-import BlueBorderLink from "./FormsUI/Buttons/BlueBorderLink";
-import GreenSmallBtn from "./FormsUI/Buttons/GreenSmallBtn";
 import {getActionName} from "../Util/GlobalFunctions";
 import GrayBorderBtn from "./FormsUI/Buttons/GrayBorderBtn";
 

@@ -18,6 +18,10 @@
 
 }
 
+.bg-lyt{
+    background: var(--lc-bg);
+}
+
 .icon-bg{
     background: #EAEAEF;
     border-radius: 50%;
@@ -2243,7 +2247,8 @@ button.blue-btn-border
 .img-list{
     height: 185px;
     object-fit: cover;
-    width: 185px;
+    /*width: 185px;*/
+    width: auto;
 }
 
 .rad-4{
@@ -3929,6 +3934,7 @@ input:active,input:focus{
     width: 100%;
     background: white;
     z-index: 1000;
+    left: 0;
 }
 
 .MuiMenu-list{

@@ -229,6 +229,7 @@ class SearchMatches extends Component {
                                                     showDetails={this.props.showDetails}
                                                     requestMatch={this.props.requestMatch}
                                                     fromSearch
+                                                    smallImage
                                                     history={this.props.history}
                                                     disableLink
                                                     searchId={this.slug}
@@ -258,12 +259,11 @@ class SearchMatches extends Component {
 
 
                                                 <ResourceItem
-
+                                                    hideCategory
                                                     showDetails={this.props.showDetails}
-
+                                                    smallImage
                                                     matchedItem
                                                     stage={item.match.stage}
-
                                                     history={this.props.history}
                                                     disableLink
                                                     searchId={this.slug}

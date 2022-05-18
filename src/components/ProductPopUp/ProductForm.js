@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import Select from "@mui/material/Select";
 import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
-import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import _ from "lodash";
@@ -23,6 +22,7 @@ import SiteFormNew from "../Sites/SiteFormNew";
 import Slider from '@mui/material/Slider';
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
+import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 
 
 function ValueLabelComponent(props) {
@@ -104,6 +104,7 @@ class ProductForm extends Component {
             powerSupply: ["gas", "electric", "hybrid", "solid_Fuel"],
             product: null,
             parentProduct: null,
+            parentProductId: null,
             imageLoading: false,
             showSubmitSite: false,
             is_listable: false,
@@ -111,7 +112,10 @@ class ProductForm extends Component {
             isSubmitButtonPressed: false,
             disableVolume:false,
             loading:false,
-            energyRating:0
+            energyRating:0,
+            productId:null,
+            showForm:true,
+
         };
 
 
@@ -141,12 +145,7 @@ class ProductForm extends Component {
 
 
     getFiltersCategories() {
-        axios
-            .get(baseUrl + "category", {
-                headers: {
-                    Authorization: "Bearer " + this.props.userDetail.token,
-                },
-            })
+        axios.get(baseUrl + "category")
             .then(
                 (response) => {
                     let   responseAll=[]
@@ -157,7 +156,6 @@ class ProductForm extends Component {
                     });
 
                     if (responseAll.length>0&&this.props.item){
-
 
                         let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
                         let subCategories=cat.length>0?cat[0].types:[]
@@ -176,6 +174,9 @@ class ProductForm extends Component {
                 (error) => {}
             );
     }
+
+
+
 
     handleChangeFile(event) {
         let files = this.state.files;
@@ -426,9 +427,7 @@ class ProductForm extends Component {
         event.preventDefault();
         event.stopPropagation()
         if (!this.handleValidationProduct()){
-
             return
-
         }
 
 
@@ -503,24 +502,24 @@ class ProductForm extends Component {
 
                 var completeData;
 
-                if (this.props.parentProduct) {
+                // if (this.props.parentProduct) {
                     completeData = {
                         product: productData,
                         sub_products: [],
                         artifact_ids: this.state.images,
                         site_id: site,
-                        parent_product_id: this.props.parentProduct,
+                        parent_product_id: this.state.parentProductId?this.state.parentProductId:null,
                     };
-                } else {
-                    completeData = {
-                        product: productData,
-                        sub_products: [],
-                        // "sub_product_ids": [],
-                        artifact_ids: this.state.images,
-                        parent_product_id: null,
-                        site_id: site,
-                    };
-                }
+                // } else {
+                //     completeData = {
+                //         product: productData,
+                //         sub_products: [],
+                //         // "sub_product_ids": [],
+                //         artifact_ids: this.state.images,
+                //         parent_product_id: null,
+                //         site_id: site,
+                //     };
+                // }
 
                 this.setState({isSubmitButtonPressed: true})
 
@@ -533,32 +532,50 @@ class ProductForm extends Component {
                         completeData,
                     )
                     .then((res) => {
+
                         if (!this.props.parentProduct) {
                             this.setState({
                                 product: res.data.data,
                                 parentProduct: res.data.data,
-
                             });
                         }
 
                         this.props.refreshPage(true)
-
                         this.props.showSnackbar({show:true,severity:"success",message:title+" created successfully. Thanks"})
-
                         this.showProductSelection();
+
                         // this.props.loadProducts(this.props.userDetail.token);
                         // this.props.loadProductsWithoutParent();
 
 
-                        this.setState({loading: false})
+                        // this.setState({
+                        //     parentProductId:res.data.data.product._key
+                        // })
 
+                        this.setState({loading: false,  })
+
+
+                        this.setState({
+                            btnLoading: false,
+                            loading:false,
+                            isSubmitButtonPressed:false
+                        });
+
+                        if (!this.state.parentProductId) {
+                            this.handleView(res.data.data.product._key, 'parent')
+                        }else{
+                            this.handleView(this.state.parentProductId, 'parent')
+                        }
 
                     })
                     .catch((error) => {
-                        this.setState({isSubmitButtonPressed: false})
+                        this.setState({
+                            btnLoading: false,
+                            loading:false,
+                            isSubmitButtonPressed:false
+                        });
                         this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
 
-                        this.setState({loading: false})
                     });
             }
 
@@ -691,8 +708,8 @@ class ProductForm extends Component {
                         part_no: part_no,
                         power_supply: power_supply,
                     },
-
                     year_of_making: Number(data.get("manufacturedDate")),
+
                 },
             };
 
@@ -718,25 +735,53 @@ class ProductForm extends Component {
 
     };
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps!=this.props){
+              // alert("called")
+
+        }
+    }
+
     componentDidMount() {
+
         window.scrollTo(0, 0);
 
-        this.getFiltersCategories();
+        console.log(this.props.productId,this.props.type)
+        this.setState({
+            parentProductId:null
+        }, ()=>{
 
+            this.handleView(this.props.productId,this.props.type)
+
+        })
+
+      // alert("called")
 
         if (this.props.item){
             this.loadImages()
             this.setState({
                 isEditProduct:true,
-
             })
-
         }
 
 
         this.setUpYearList();
 
         this.props.loadSites(this.props.userDetail.token);
+
+        // if (this.props.productId){
+        //     this.setState({
+        //         productId:this.props.productId,
+        //         showForm:false
+        //     })
+        // }else{
+        //     this.setState({
+        //         productId:null,
+        //         showForm:true
+        //     })
+        // }
+
+
     }
 
 
@@ -745,41 +790,70 @@ class ProductForm extends Component {
         this.props.setMultiplePopUp({show:true,type:"isProduct"})
             this.props.showProductPopUp({ action: "hide_all", show: false });
 
+    }
 
+
+    handleView=(productId,type)=>{
+
+        this.setState({
+            categories:[],
+            subCategories:[],
+            states :[],
+            units : []
+        })
+        this.getFiltersCategories();
+
+        if (type=='new') {
+            this.setState({
+                parentProductId: productId?productId:null,
+                showForm: true
+            })
+        }
+        else if (type=='parent') {
+            this.setState({
+                parentProductId: productId,
+                showForm: false
+            })
+        }
+
+
+        // this.props.setMultiplePopUp({show:true,type:"isProduct"})
+        // this.props.showProductPopUp({ action: "hide_all", show: false });
 
     }
 
 
+
+
+
     render() {
-        const classes = withStyles();
-        const classesBottom = withStyles();
 
 
         return (
             <>
+                {!this.state.showForm&&
+                    <ProductExpandItemNew
+                        createNew={this.handleView}
+                        productId={this.state.parentProductId}
+                    />}
 
-
-                    <div className={!this.state.showSubmitSite?"":"d-none"}>
-
-                <div className="row">
+                {this.state.showForm &&
+                <div className={`${!this.state.showSubmitSite?"":"d-none"} `}>
+                    <div className="row">
                     <div className="col-md-8  col-xs-12">
-                        <h4 className={"blue-text text-heading pt-2"}>{this.props.heading} {this.state.isEditProduct&&"- "+this.props.item.product.name}</h4>
+                        <h4 className={"blue-text text-heading "}>
+                            {this.props.edit?"Edit Product":this.state.parentProductId?"Add subproduct":"Add product"}
+                        </h4>
                     </div>
                         <div className="col-md-4  col-xs-12 desktop-right">
                         <button className="btn btn-sm blue-btn pt-2" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
                         </div>
-
-                </div>
-
-
+                    </div>
 
 
                 <div className={"row justify-content-center create-product-row"}>
                     <div className={"col-12"}>
-
                           <form onSubmit={this.handleSubmit}>
-
-
                             <div className="row ">
                                 <div className="col-12 mt-2">
 
@@ -928,11 +1002,13 @@ class ProductForm extends Component {
 
                                         </div>
                                         <div className="col-md-4 col-sm-12 col-xs-12  ">
-                                        <TextFieldWrapper  details="The brand name of a product"
+                                        <TextFieldWrapper
+                                            details="The brand name of a product"
                                             initialValue={this.props.item&&this.props.item.product.sku.brand}
                                             onChange={(value)=>this.handleChangeProduct(value,"brand")}
-                                            error={this.state.errors["title"]}
-                                            name="brand" title="Brand" />
+                                            error={this.state.errors["brand"]}
+                                            name="brand"
+                                            title="Brand" />
                                         </div>
                                         <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
@@ -967,22 +1043,23 @@ class ProductForm extends Component {
 
 
                                         </div>
+                                        <div className="col-md-4 col-sm-6 col-xs-6">
+                                            <SelectArrayWrapper
+                                                initialValue={this.props.item&&this.props.item.product.sku.power_supply}
+                                                // select={"Select"}
+
+                                                onChange={(value)=> {
+                                                    this.handleChangeProduct(value,"power_supply")
+
+                                                }}
+                                                options={this.state.powerSupply} name={"power_supply"} title="Power Supply"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                               <div className="row  mt-2">
-                              <div className="col-md-4 col-sm-6 col-xs-6">
-                                  <SelectArrayWrapper
-                                      initialValue={this.props.item&&this.props.item.product.sku.power_supply}
-                                      // select={"Select"}
 
-                                      onChange={(value)=> {
-                                          this.handleChangeProduct(value,"power_supply")
-
-                                      }}
-                                      options={this.state.powerSupply} name={"power_supply"} title="Power Supply"/>
-                              </div>
 
                                   <div className="col-md-8 d-none col-sm-12 col-xs-12">
                                       <div className="custom-label text-bold ellipsis-end text-blue mb-0">Energy Rating
@@ -1329,14 +1406,10 @@ class ProductForm extends Component {
                             </div>
                     </div>
                             </form>
-
-
-
                     </div>
                 </div>
                         </div>
-
-
+                }
 
                 {this.state.showSubmitSite && (
                     <div
@@ -1390,10 +1463,7 @@ const mapStateToProps = (state) => {
         parentProduct: state.parentProduct,
         product: state.product,
         showProductPopUp: state.showProductPopUp,
-
-
         siteList: state.siteList,
-
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset:state.productPageOffset,
         productPageSize:state.productPageSize,
@@ -1415,6 +1485,7 @@ const mapDispachToProps = (dispatch) => {
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
         loadCurrentProduct: (data) =>
             dispatch(actionCreator.loadCurrentProduct(data)),
+
         loadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadProductsWithoutParentNoListing: (data) =>
@@ -1424,7 +1495,9 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
         refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+        setCurrentProduct: (data) => dispatch(actionCreator.setCurrentProduct(data)),
+
 
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(ProductForm);
+export default  connect(mapStateToProps, mapDispachToProps)(ProductForm);

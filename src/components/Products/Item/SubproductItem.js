@@ -18,18 +18,54 @@ const SubproductItem = (props) => {
     const remove=props.remove
     const [artifacts, setArtifacts] = useState([]);
 
+
+const loadProduct=(id)=> {
+
+    // alert(id)
+
+    axios.get(baseUrl + "product/" + id)
+        .then(
+            (response) => {
+
+                let responseAll = response.data;
+               setItem(responseAll.data.product)
+
+            },
+            (error) => {
+
+
+            }
+        );
+
+}
     useEffect(() => {
 
-
-            if(item&&item._key) {
+            if(item) {
+                // alert(item._key)
+                setItem(props.item)
                 getArtifactsForProduct(item._key)
             }
 
-            return () => {
-                setItem(null);
-            }
+    }, [props.item])
 
-    }, [item])
+
+
+    useEffect(() => {
+        if (props.productId) {
+            loadProduct(props.productId)
+            getArtifactsForProduct(props.productId)
+        }
+
+    }, [props.productId])
+
+
+    // useEffect(() => {
+    //
+    //     if (props.loading)
+    //     setItem(null)
+    //
+    //
+    // }, [props.loading])
 
     const getArtifactsForProduct = (key) => {
 
@@ -76,10 +112,13 @@ const SubproductItem = (props) => {
 
 
     return <>
+
+
+
+        {item &&
         <div className="row no-gutters align-items-center justify-content-center mb-2 white-bg p-2 rad-8">
             <div className="col-2">
-                {
-                    artifacts.length > 0
+                {artifacts.length > 0
                     ? <ImageOnlyThumbnail smallImage={props.smallImage} images={artifacts} />
                     : <img className={"img-fluid img-list small-image"} src={PlaceholderImg} alt="" />
                 }
@@ -144,7 +183,7 @@ const SubproductItem = (props) => {
 
 
 
-        </div>
+        </div>}
     </>
 }
 
@@ -162,6 +201,7 @@ const mapStateToProps = (state) => {
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
         showSubProductView: state.showSubProductView,
+
     };
 };
 

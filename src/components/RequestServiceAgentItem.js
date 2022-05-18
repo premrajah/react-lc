@@ -1,16 +1,18 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PlaceholderImg from "../img/place-holder-lc.png";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
-import { connect } from "react-redux";
+import {baseUrl} from "../Util/Constants";
+import {connect} from "react-redux";
 import * as actionCreator from "../store/actions/actions";
-import { Modal, ModalBody } from "react-bootstrap";
+import {Modal, ModalBody} from "react-bootstrap";
 import moment from "moment/moment";
-import { withStyles } from "@mui/styles/index";
-import Org from "./Org/Org";
+import {withStyles} from "@mui/styles/index";
 import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
-import {capitalize} from "../Util/GlobalFunctions";
+import {capitalize, fetchErrorMessage} from "../Util/GlobalFunctions";
+import GlobalDialog from "./RightBar/GlobalDialog";
+import GreenButton from "./FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 
 class RequestServiceAgentItem extends Component {
     constructor(props) {
@@ -42,7 +44,7 @@ class RequestServiceAgentItem extends Component {
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
-        this.showPopUpInitiateAction = this.showPopUpInitiateAction.bind(this);
+        this.togglePopUpInitiateAction = this.togglePopUpInitiateAction.bind(this);
         this.getSites = this.getSites.bind(this);
         this.showSubmitSite = this.showSubmitSite.bind(this);
         this.getDetails = this.getDetails.bind(this);
@@ -67,13 +69,13 @@ class RequestServiceAgentItem extends Component {
             );
     }
 
-    showPopUpInitiateAction(event) {
+    togglePopUpInitiateAction(event) {
         this.setState({
             showPopUpInitiateAction: !this.state.showPopUpInitiateAction,
         });
 
         this.setState({
-            initiateAction: event.currentTarget.dataset.action,
+            initiateAction: event?event.currentTarget.dataset.action:null,
         });
     }
 
@@ -240,11 +242,6 @@ class RequestServiceAgentItem extends Component {
                 {
                     site_id: site,
                     product_id: this.props.item.product._key,
-                },
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
                 }
             )
             .then((res) => {
@@ -279,14 +276,19 @@ class RequestServiceAgentItem extends Component {
                 this.setState({
                     isLoading:false
                 })
-                this.getDetails();
 
-                this.showPopUpInitiateAction();
+                this.togglePopUpInitiateAction();
+                this.props.refresh()
             })
             .catch((error) => {
+
+
                 this.setState({
                     isLoading:false
                 })
+                this.togglePopUpInitiateAction();
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
+
                 // this.setState({
                 //
                 //     showPopUp: true,
@@ -422,7 +424,7 @@ class RequestServiceAgentItem extends Component {
                                                         <button
                                                             data-id={this.state.item.Release}
                                                             data-action={actionName}
-                                                            onClick={this.showPopUpInitiateAction}
+                                                            onClick={this.togglePopUpInitiateAction}
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
@@ -459,61 +461,60 @@ class RequestServiceAgentItem extends Component {
                             </div>
                         </div>
 
-                        <Modal
-                            className={"loop-popup"}
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered
+                        {/*<Modal*/}
+                        {/*    className={"loop-popup"}*/}
+                        {/*    aria-labelledby="contained-modal-title-vcenter"*/}
+                        {/*    centered*/}
+                        {/*    show={this.state.showPopUpInitiateAction}*/}
+                        {/*    onHide={this.showPopUpInitiateAction}*/}
+                        {/*    animation={false}>*/}
+                        {/*    <ModalBody>*/}
+
+                        <GlobalDialog
+                            size={"xs"}
+
+                            heading={this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
                             show={this.state.showPopUpInitiateAction}
-                            onHide={this.showPopUpInitiateAction}
-                            animation={false}>
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p
-                                            style={{ textTransform: "uppercase" }}
-                                            className={"text-bold"}>
-                                            {this.state.initiateAction==="cancelled"?"Cancel":this.state.initiateAction}
-                                        </p>
+                            hide={this.togglePopUpInitiateAction}
+                        >
+                            <>
+                                    <div className={"col-12 mb-2 text-left"}>
+
                                         <p>
                                             Are you sure you want to <span className={"text-lowercase"}>{this.state.initiateAction==="cancelled"?"cancel":this.state.initiateAction}?</span>
                                         </p>
                                     </div>
-                                </div>
 
-                                <div className={"row justify-content-center"}>
                                     <div className={"col-12 text-center mt-2"}>
                                         <div className={"row justify-content-center"}>
                                             <div
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
-                                                <button
+                                                <GreenButton
 
                                                     disabled={this.state.isLoading?true:false}
                                                     onClick={this.actionSubmit}
-                                                    style={{ minWidth: "120px" }}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                    }
+                                                    title={"Yes"}
+
                                                     type={"submit"}>
-                                                    Yes
-                                                </button>
+
+                                                </GreenButton>
                                             </div>
                                             <div
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
-                                                <p
-                                                    onClick={this.showPopUpInitiateAction}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                    }>
-                                                    Cancel
-                                                </p>
+                                                <BlueBorderButton
+                                                    onClick={this.togglePopUpInitiateAction}
+                                                   title={"Cancel"}
+
+                                                >
+
+                                                </BlueBorderButton>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </ModalBody>
-                        </Modal>
+                           </>
+                        </GlobalDialog>
                     </>
                 )}
             </>

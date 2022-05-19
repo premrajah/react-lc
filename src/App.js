@@ -22,7 +22,7 @@ import ViewCycle from "./views/loop-cycle/view-cycle";
 import CreateSearchHome from "./pages/create-search/Home";
 import CreateListingHome from "./views/create-listing/Home";
 import SubProductView from "./views/create-listing/SubProductView";
-import SearchForm from "./pages/create-search/SearchForm";
+import SearchForm from "./pages/create-search/SearchFormPage";
 import ViewSearchNew from "./pages/create-search/ViewSearch";
 import SearchMatches from "./pages/create-search/search-matches";
 import AddDetail from "./pages/create-search/AddDetail";

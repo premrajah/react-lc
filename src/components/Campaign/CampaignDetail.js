@@ -18,6 +18,7 @@ import InfoTabContent from "./InfoTabContent";
 import ConditionsContent from "./ConditionsContent";
 import DescriptionIcon from "@mui/icons-material/Description";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
+import StatisticsTab from "./StatisticsTab";
 
 class CampaignDetail extends Component {
     slug;
@@ -242,7 +243,7 @@ class CampaignDetail extends Component {
                                                         <Tab label="Conditions" value="2" />
 
                                                         <Tab label="Message Template" value="3" />
-
+                                                        <Tab label="Statistics" value="4" />
                                                     </TabList>
                                                 </Box>
 
@@ -347,6 +348,11 @@ class CampaignDetail extends Component {
 
                                                 </TabPanel>
 
+                                                <TabPanel value="4">
+
+                                                   <StatisticsTab item={this.props.item} />
+
+                                                </TabPanel>
 
                                             </TabContext>
                                         </Box>

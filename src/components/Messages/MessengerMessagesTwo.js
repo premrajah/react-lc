@@ -213,6 +213,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
                 if(messageType === "N") {
                     console.log('N ', data)
+
+                    handleClearOrgSearch(); // clear selected orgs
                 }
 
                 if(messageType === "R") {

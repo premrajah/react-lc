@@ -21,7 +21,7 @@ class StatisticsTab extends Component {
 
 componentDidMount() {
         this.callStrategy(this.props.item.campaign.any_of,this.props.item.campaign.all_of)
-    this.orgViewed(this.props.item.campaign._key)
+    // this.orgViewed(this.props.item.campaign._key)
 
 }
 

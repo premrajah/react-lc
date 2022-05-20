@@ -78,7 +78,7 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
         </div>}
 
         <GlobalDialog
-            size={"xl"}
+            size="sm"
             hide={() => toggleEntity(null, null)}
             show={showEntity}
             heading={entityObj ? entityObj.type : ""}>

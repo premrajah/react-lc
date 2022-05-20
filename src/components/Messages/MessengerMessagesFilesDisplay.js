@@ -8,8 +8,10 @@ import {
     ListItemText,
     Typography,
 } from "@mui/material";
+import moment from "moment/moment";
 
 const MessengerMessagesFilesDisplay = ({ artifacts }) => {
+
 
     return (
         <>
@@ -22,14 +24,22 @@ const MessengerMessagesFilesDisplay = ({ artifacts }) => {
                         primary={artifacts && artifacts.name}
                         secondary={
                             <React.Fragment>
-                                <a
-                                    className="text-pink"
-                                    href={artifacts && artifacts.blob_url}
-                                    type={artifacts && artifacts.blob_content}
-                                    target="_blank"
-                                >
-                                    {artifacts &&  artifacts.name}
-                                </a>
+                                <div>
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <a
+                                                className="text-pink"
+                                                href={artifacts && artifacts.blob_url}
+                                                type={artifacts && artifacts.blob_content}
+                                                target="_blank"
+                                            >
+                                                Download
+                                            </a>
+                                        </div>
+                                        <small className="text-mute">{moment(artifacts._ts_epoch_ms).fromNow()}</small>
+                                    </div>
+                                </div>
+
                             </React.Fragment>
                         }
                     />

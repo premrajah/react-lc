@@ -42,7 +42,7 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
 
         {(m.message.entity_as_json && m.message.entity_type === "Product") && <div className="row mt-3 mb-2">
             <div className="col">
-                <div style={{borderBottom: "1px solid rgba(0,0,0,0.1)" }}></div>
+                <div style={{borderBottom: "1px solid rgba(0,0,0,0.1)" }} />
             </div>
         </div>}
 
@@ -100,8 +100,8 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
                                 textAlign: "center",
                             }}>
                             <GreenButton
-                                title={"View Details"}
-                                type={"submit"}></GreenButton>
+                                title="View Details"
+                                type="submit" />
                         </div>
                         <div
                             className={"col-6 pl-1"}
@@ -111,9 +111,7 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
                             <BlueBorderButton
                                 type="button"
                                 title={"Close"}
-                                onClick={() =>
-                                    toggleEntity(null, null)
-                                }></BlueBorderButton>
+                                onClick={() => toggleEntity(null, null)} />
                         </div>
                     </div>
                 </div>

@@ -217,14 +217,14 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 // getAllMessageGroups();
 
                 if(messageType === "N") {
-                    console.log('N ', data)
+                    // console.log('N ', data)
 
                     handleClearOrgSearch(); // clear selected orgs
                     getAllMessageGroups();
                 }
 
                 if(messageType === "R") {
-                    console.log('R ', data)
+                    // console.log('R ', data)
                     handleSelectedItemCallback(selectedMenuItemIndex);
                     handleGroupClickCallback(data.message_group._key);
                     // const returned = allGroups.filter(m => m.message_group._key === data.message_group._key);

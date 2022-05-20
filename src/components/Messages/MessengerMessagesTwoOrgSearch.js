@@ -54,7 +54,7 @@ const MessengerMessagesTwoOrgSearch = forwardRef(({showSnackbar, handleOrgSelect
         <AsyncSelect
             isClearable
             defaultOptions
-            placeholder="Search Organisations"
+            placeholder="&nbsp; Type to search Organisations"
             loadOptions={loadOptions}
             onInputChange={handleInputChange}
             onChange={handleChange}

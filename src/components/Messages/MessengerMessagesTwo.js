@@ -51,9 +51,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 setFilteredGroups(data);
 
                 // on first load handle click
-                if (selectedMenuItemIndex === 0) {
+                // if (selectedMenuItemIndex === 0) {
+                    handleSelectedItemCallback(0);
                     handleGroupClickCallback(data[0].message_group._key);
-                }
+                // }
             })
             .catch((error) => {
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
@@ -213,19 +214,21 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 let data = response.data.data;
 
                 resetDraftRef.current.resetDraft();
-                getAllMessageGroups();
+                // getAllMessageGroups();
 
                 if(messageType === "N") {
                     console.log('N ', data)
 
                     handleClearOrgSearch(); // clear selected orgs
+                    getAllMessageGroups();
                 }
 
                 if(messageType === "R") {
                     console.log('R ', data)
-
-                    const returned = allGroups.filter(m => m.message_group._key === data.message_group._key);
-                    console.log("r ", returned)
+                    handleSelectedItemCallback(selectedMenuItemIndex);
+                    handleGroupClickCallback(data.message_group._key);
+                    // const returned = allGroups.filter(m => m.message_group._key === data.message_group._key);
+                    // console.log("r ", returned)
                 }
             })
             .catch(error => {

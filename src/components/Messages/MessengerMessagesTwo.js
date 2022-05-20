@@ -70,6 +70,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             .get(`${baseUrl}message-group/${key}/message`)
             .then((res) => {
                 setClickedMessage(res.data.data.reverse());
+                handleResetWysiwygEditor();
             })
             .catch((error) => {
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });

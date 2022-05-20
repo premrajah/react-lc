@@ -46,6 +46,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             .get(`${baseUrl}message-group/non-empty/expand`)
             .then((res) => {
                 const data = res.data.data;
+
                 setAllGroups(data);
                 setFilteredGroups(data);
 
@@ -211,6 +212,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             .then((response) => {
                 let data = response.data.data;
 
+                resetDraftRef.current.resetDraft();
+                getAllMessageGroups();
+
                 if(messageType === "N") {
                     console.log('N ', data)
 
@@ -219,9 +223,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
                 if(messageType === "R") {
                     console.log('R ', data)
+
+                    const returned = allGroups.filter(m => m.message_group._key === data.message_group._key);
+                    console.log("r ", returned)
                 }
-                resetDraftRef.current.resetDraft();
-                getAllMessageGroups();
             })
             .catch(error => {
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });

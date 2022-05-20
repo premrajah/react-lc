@@ -854,7 +854,7 @@ class ViewSearch extends Component {
 
                                                                             <Tab label="Info" value="0"/>
 
-                                                                            <Tab label="Linked Product" value="1" />
+                                                                            {/*<Tab label="Linked Product" value="1" />*/}
 
                                                                             <Tab label="Site" value="2" />
 
@@ -867,26 +867,26 @@ class ViewSearch extends Component {
                                                                         <InfoTabContent item={this.state.createSearchData.search}/>
                                                                     </TabPanel>
 
-                                                                    {this.state.createSearchData.product &&  <TabPanel value="1">
+                                                                    {/*{this.state.createSearchData.product &&  <TabPanel value="1">*/}
 
-                                                                        <>
+                                                                    {/*    <>*/}
 
-                                                                            <div className={"mt-4"}></div>
+                                                                    {/*        <div className={"mt-4"}></div>*/}
 
 
-                                                                                {this.state.createSearchData && (
-                                                                                    <ProductExpandItem
-                                                                                        hideMoreMenu={true}
-                                                                                        hideAddAll={true}
-                                                                                        productId={this.state.createSearchData.product._id.replace(
-                                                                                            "Product/",
-                                                                                            ""
-                                                                                        )}
-                                                                                    />
-                                                                                )}
-                                                                            </>
+                                                                    {/*            {this.state.createSearchData && (*/}
+                                                                    {/*                <ProductExpandItem*/}
+                                                                    {/*                    hideMoreMenu={true}*/}
+                                                                    {/*                    hideAddAll={true}*/}
+                                                                    {/*                    productId={this.state.createSearchData.product._id.replace(*/}
+                                                                    {/*                        "Product/",*/}
+                                                                    {/*                        ""*/}
+                                                                    {/*                    )}*/}
+                                                                    {/*                />*/}
+                                                                    {/*            )}*/}
+                                                                    {/*        </>*/}
 
-                                                                    </TabPanel>}
+                                                                    {/*</TabPanel>}*/}
 
 
                                                                     {this.state.createSearchData.site &&

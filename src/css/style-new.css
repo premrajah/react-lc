@@ -1725,6 +1725,7 @@ a.blue-btn-border
     height: 48px;
     background: transparent;
     display: inline-block;
+    margin: auto;
 }
 
 button.blue-btn-border svg{

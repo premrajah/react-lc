@@ -37,7 +37,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [newMessageDisplay, setNewMessageDisplay] = useState(null);
 
     useEffect(() => {
-        setSelectedMenuItemIndex(0);
+        handleSelectedItemCallback(0);
         getAllMessageGroups();
     }, []);
 

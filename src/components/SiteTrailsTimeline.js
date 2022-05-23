@@ -141,7 +141,8 @@ function SiteTrailsTimeline(props) {
                                     className="blue-text"
                                     variant="subtitle1"
                                     component="div">
-                                    {item.site.site.address}  <MapIcon onClick={() => handleMapModal(item.site.site)} />
+                                    {item.site.site.address}   {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
+                                   handleMapModal(item.site.site)} />}
                                 </Typography>
                             </TimelineContent>
                         </TimelineItem>
@@ -212,7 +213,7 @@ function SiteTrailsTimeline(props) {
                     <Modal
                         className={"loop-popup"}
                         aria-labelledby="contained-modal-title-vcenter"
-                        show={showMap &&locations.length>0}
+                        show={showMap}
                         centered
                         onHide={handleMapModal}
                         animation={false}>
@@ -226,38 +227,27 @@ function SiteTrailsTimeline(props) {
                                 />
                             </div>
 
-                            {/*<div className={"row justify-content-center"}>*/}
-                            {/*    <div className={"col-10 text-center"}>*/}
-                            {/*        <p*/}
-                            {/*            style={{ textTransform: "Capitalize" }}*/}
-                            {/*            className={"text-bold text-blue"}>*/}
-                            {/*            {this.state.type=="edit"?"Edit Transfer Scaling ":this.state.type=="add"?"Add Transfer Scaling":"Delete Transfer Scaling"}*/}
-                            {/*        </p>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
-                    {/*<div className={"body-overlay"}>*/}
-                    {/*    <div className={"modal-popup site-popup"}>*/}
-                    {/*        <div className=" text-right ">*/}
-                    {/*            <Close*/}
-                    {/*                onClick={() => handleMapModal()}*/}
-                    {/*                className="blue-text click-item"*/}
-                    {/*                style={{ fontSize: 32 }}*/}
-                    {/*            />*/}
-                    {/*        </div>*/}
 
+
+                            {site &&
                             <div className={"row"}>
                                 <div className={"col-12"}>
-                                    <GoogleMap width={"100%"}
-                                                          height={"300px"}
+                                    <GoogleMap
+                                        width={"100%"}
+                                        height={"300px"}
 
-                                                          locations={locations}
+                                        siteId={site._key}
+                                         locations={[{
+                                        name: site.name,
+                                        location: site.geo_codes[0].address_info.geometry.location,
+                                        isCenter: true
+                                    }]}
                                     />
                                 </div>
-                            </div>
+                            </div>}
                         </ModalBody>
                     </Modal>
-                        {/*</div>*/}
-                    {/*</div>*/}
+
                 </>
 
 

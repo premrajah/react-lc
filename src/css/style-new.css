@@ -18,6 +18,10 @@
 
 }
 
+.bg-lyt{
+    background: var(--lc-bg);
+}
+
 .icon-bg{
     background: #EAEAEF;
     border-radius: 50%;
@@ -107,6 +111,10 @@
     height: 30px !important;
     max-height: 30px !important;
     min-width: 40px !important;
+}
+
+.rdw-link-modal {
+    height: 280px !important;
 }
 
 .filter-conversations-data::after {
@@ -1717,6 +1725,7 @@ a.blue-btn-border
     height: 48px;
     background: transparent;
     display: inline-block;
+    margin: auto;
 }
 
 button.blue-btn-border svg{

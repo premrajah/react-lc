@@ -4,7 +4,6 @@ import {baseUrl} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import FormControl from "@mui/material/FormControl";
-import {makeStyles, withStyles} from "@mui/styles/index";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Spinner} from "react-bootstrap";
 import SubproductItem from "./Item/SubproductItem";
@@ -13,17 +12,8 @@ import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import AddIcon from "@mui/icons-material/Add";
+import SubproductItemSkeleton from "./Item/SubproductItemSkeleton";
 
-const useStylesSelect = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(0),
-        width: "100%",
-        // minWidth: auto,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(0),
-    },
-}));
 
 class ProductExpandItem extends Component {
     constructor(props) {
@@ -41,7 +31,10 @@ class ProductExpandItem extends Component {
             addCount: [],
             count: 0,
             showExisting: false,
-            productList:[]
+            productList:[],
+            loading: false,
+            item:null
+
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -55,14 +48,16 @@ class ProductExpandItem extends Component {
 
     removeItem(event) {
         var data = {
-            product_id: this.props.currentProduct.product._key,
+            product_id: this.state.item.product._key,
             sub_products_ids: [event.currentTarget.dataset.id],
         };
 
         axios.post(baseUrl + "product/sub-product/remove", data).then(
             (response) => {
 
-                this.loadProduct(this.props.currentProduct.product._key);
+                this.loadProduct(this.state.item.product._key);
+                this.props.loadCurrentProduct(this.state.item.product._key)
+
             },
             (error) => {}
         );
@@ -99,20 +94,8 @@ class ProductExpandItem extends Component {
         }
     }
 
-    classes = useStylesSelect;
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.productId !== this.props.productId) {
-            this.setState({
-                product: null,
-            });
-
-            this.loadProduct(this.props.productId);
 
 
-
-        }
-    }
 
     handleChange(field, e, i) {
         let fields = this.state.fields;
@@ -146,11 +129,32 @@ class ProductExpandItem extends Component {
         });
     }
 
-    loadProduct(productKey) {
+    // loadProduct(productKey) {
+    //
+    //
+    //     if (productKey)
+    //     this.props.loadCurrentProduct(productKey)
+    //
+    // }
 
 
-        if (productKey)
-        this.props.loadCurrentProduct(productKey)
+     loadProduct=(id)=> {
+
+        // alert(id)
+
+        axios.get(baseUrl + "product/" + id+"/expand")
+            .then(
+                (response) => {
+
+                    let responseAll = response.data;
+                    this.setState({item:responseAll.data})
+
+                },
+                (error) => {
+
+
+                }
+            );
 
     }
 
@@ -176,11 +180,11 @@ class ProductExpandItem extends Component {
         var array = [];
 
         for (let i = 0; i < this.state.addCount.length; i++) {
-            array.push({ id: data.get(`product[${i}]`), volume: data.get(`volume[${i}]`) });
+            array.push({ id: data.get(`product[${i}]`) });
         }
 
         var dataForm = {
-            product_id: this.props.currentProduct.product._key,
+            product_id: this.state.item.product._key,
             sub_products: array,
         };
 
@@ -193,7 +197,8 @@ class ProductExpandItem extends Component {
                     addCount: [],
                     count: 0,
                 });
-                this.loadProduct(this.props.currentProduct.product._key);
+                this.loadProduct(this.state.item.product._key);
+                this.props.loadCurrentProduct(this.state.item.product._key)
             })
             .catch((error) => {
                 // dispatch(stopLoading())
@@ -216,23 +221,38 @@ class ProductExpandItem extends Component {
 
     }
 
+    componentDidUpdate(prevProps) {
+
+            if (prevProps !== this.props) {
+            // if (prevProps.productId !== this.props.productId) {
+            this.setState({
+                product: null,
+            });
+            // this.loadProduct(this.props.productId);
+
+                // alert(this.props.productId)
+        }
+    }
 
     render() {
-        const classes = withStyles();
+
 
         return (
-            <div className={"mt-3"}>
-                {this.props.currentProduct && (
+            <div className={"mt-0 "}>
+                {this.state.item ? (
                     <SubproductItem
                         smallImage={true}
                         hideMoreMenu={true}
-                        item={this.props.currentProduct.product}
+                        // productId={this.props.productId}
+
+                        item={this.state.item.product}
                     />
-                )}
+                ): <SubproductItemSkeleton/>}
+
 
                 <div className="row no-gutters  justify-content-left">
                     <div className="col-12">
-                        {this.props.currentProduct && (
+                        {this.state.item && (
                             <>
                                 {!this.props.hideAddAll && (
                                     <div className="row no-gutters justify-content-left">
@@ -242,8 +262,8 @@ class ProductExpandItem extends Component {
                                             </p>
 
                                             <ol>
-                                                {this.props.currentProduct &&this.props.currentProduct.sub_products&&
-                                                    this.props.currentProduct.sub_products.map(
+                                                {this.state.item.sub_products&&
+                                                this.state.item.sub_products.map(
                                                         (item, index) => (
                                                             <>
                                                                 <li className={"text-gray-light"}>
@@ -283,8 +303,12 @@ class ProductExpandItem extends Component {
                                                     className={
                                                         " btn-gray-border  mr-2 "
                                                     }
-                                                    data-parent={this.props.currentProduct.product._key}
-                                                    onClick={this.showProductSelection}>
+                                                    // data-parent={this.props.currentProduct.product._key}
+                                                    // onClick={this.showProductSelection}
+
+                                                    onClick={()=> this.props.createNew(this.props.productId,'new')}
+
+                                                >
                                                      <AddIcon />
                                                     Create New
                                                 </button>
@@ -293,7 +317,7 @@ class ProductExpandItem extends Component {
                                                     className={
                                                         "btn-gray-border click-item ml-2"
                                                     }
-                                                    data-parent={this.props.currentProduct.product._key}
+                                                    data-parent={this.state.item.product._key}
                                                     onClick={this.showExisting}>
                                                      <AddLinkIcon />
                                                     Link Existing
@@ -307,19 +331,19 @@ class ProductExpandItem extends Component {
                     </div>
                 </div>
 
-                {this.props.currentProduct && this.props.showLinkProducts && this.state.showExisting && (
+                {this.state.item &&  this.state.showExisting && (
                     <>
-                        <div className="row   justify-content-left">
+                         <div className="row   justify-content-left">
                             <form style={{ width: "100%" }} onSubmit={this.linkSubProduct}>
                                 <div className="col-12 mt-4" style={{ padding: "0!important" }}>
                                     {this.state.addCount.map((item, index) => (
                                         <div className="row mt-2">
-                                            <div className="col-8">
+                                            <div className="col-11">
                                                 {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
 
                                                 <FormControl
                                                     variant="outlined"
-                                                    className={classes.formControl}>
+                                                   >
                                                     <CustomizedSelect
                                                         name={`product[${index}]`}
                                                         variant={"standard"}
@@ -339,15 +363,17 @@ class ProductExpandItem extends Component {
                                                             .filter(
                                                                 (item) =>
                                                                     item._key !==
-                                                                        this.props.currentProduct.product
-                                                                            ._key &&
-                                                                    !(
-                                                                        this.props.currentProduct.sub_products.filter(
+                                                                    this.state.item.product
+                                                                        ._key
+                                                            )
+                                                            .filter(
+                                                                (item) =>
+                                                                        !this.state.item.sub_products.filter(
                                                                             (subItem) =>
                                                                                 subItem._key ===
                                                                                 item._key
                                                                         ).length > 0
-                                                                    )
+
                                                             )
                                                             .map((item) => (
                                                                 <option value={item._key}>
@@ -379,11 +405,11 @@ class ProductExpandItem extends Component {
 
                                             </div>
 
-                                            <div className="col-3">
+                                            <div className="col-3 d-none">
                                                 {/*<div className={"custom-label text-bold text-blue mb-1"}>Volume</div>*/}
 
                                                 <CustomizedInput
-                                                    required={true}
+                                                    // required={true}
                                                     type={"number"}
                                                     onChange={this.handleChange.bind(
                                                         this,
@@ -475,7 +501,8 @@ const mapStateToProps = (state) => {
         product: state.product,
         productList: state.productList,
         productWithoutParentList: state.productWithoutParentList,
-        currentProduct:state.currentProduct
+        currentProduct:state.currentProduct,
+        currentProductLoading:state.currentProductLoading
 
     };
 };

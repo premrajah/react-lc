@@ -144,7 +144,7 @@ class ResourceItem extends Component {
                                 this.state.artifacts.length > 0 ?
                                     <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.state.artifacts} />:
 
-                                    <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
+                                    <img className={`img-fluid img-list  ${this.props.smallImage?"small-image":""}`} src={PlaceholderImg} alt="" />
                                 }
 
 
@@ -153,9 +153,7 @@ class ResourceItem extends Component {
                                 <p  className="text-capitlize mb-1 title-bold width-80 ">
                                     {this.props.item.listing.name}
                                 </p>
-                                {/*{this.props.matchedItem && <div className={"text-gray-light text-capitalize mt-1 mb-1 width-75"}>*/}
-                                {/*    Stage: <span className={"text-blue text-bold"}>{this.props.stage }</span>*/}
-                                {/*</div>}*/}
+
                                 <p  className=" mb-1 text-gray-light mt-1 mb-1 width-80  ellipses-end">
                                     {this.props.item.product && (
                                         <>Product: <span className={"text-blue width-75"}>{this.props.item.product.name}</span> </>
@@ -165,6 +163,7 @@ class ResourceItem extends Component {
                                     )}
                                 </p>
 
+                                {!this.props.hideCategory &&
                                 <div className={"text-gray-light mt-1 mb-1 width-75"}>
                                     Category:
                                     <span
@@ -181,7 +180,7 @@ class ResourceItem extends Component {
                                                             </span>
 
                                     </span>
-                                </div>
+                                </div>}
                                 {this.props.item.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>
                                     <OrgComponent org={this.props.item.org }/>
                                 </div>}
@@ -191,14 +190,14 @@ class ResourceItem extends Component {
 
 
                                 {(this.props.fromSearch ||this.props.matchedItem) &&
-                                <div className={"bottom-btn-box mt-1 mb-1 "}>
+                                <div className={"bottom-btn-box-1 mt-2  "}>
 
                                     <GrayBorderBtn title={"View Details"} onClick={()=> this.props.showDetails(this.props.item.listing._key)} />
 
-                                    {!this.props.matchedItem && <GreenSmallBtn onClick={()=> this.props.requestMatch(this.props.item.listing)} title={"Request a match"}/>}
+                                    {!this.props.matchedItem && <GreenSmallBtn classAdd="ml-2" onClick={()=> this.props.requestMatch(this.props.item.listing)} title={"Request a match"}/>}
 
                                     {this.props.matchedItem&&
-                                    <span className={"text-capitalize text-gray-light"}>Stage: <span className={"title-bold"}>{this.props.stage}</span></span>
+                                    <span className={"text-capitalize ml-2 text-gray-light"}>Stage: <span className={"title-bold"}>{this.props.stage}</span></span>
                                     }
                                </div>
                                 }
@@ -212,7 +211,7 @@ class ResourceItem extends Component {
             "Free"
         )}
     </p>
-                                <p className={"  status text-right"}>
+                                <p className={"status text-right"}>
 
 
                                     <span className={this.props.item.listing.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
@@ -222,7 +221,8 @@ class ResourceItem extends Component {
 
 
 
-                                <p  className={" text-gray-light text-14 text-right"}>  {!this.props.hideMoreMenu&&  <MoreMenu
+                                <p  className={" text-gray-light text-14 text-right"}>
+                                    {!this.props.hideMoreMenu&&  <MoreMenu
                                     triggerCallback={(action) => this.callBackResult(action)}
                                     delete={true}
                                     edit={false}
@@ -240,7 +240,7 @@ class ResourceItem extends Component {
 
 
                             {this.props.matchedItem&&
-                            <div className={"col-md-12 col-xs-12 col-sm-12"}>
+                            // <div className={"col-md-12 col-xs-12 col-sm-12"}>
 
                                 <MatchItemBuyer
                                     actionOffer={this.props.actionOffer}
@@ -251,7 +251,8 @@ class ResourceItem extends Component {
                                     item={this.props.matchedItem}
                                 />
 
-                            </div>}
+                            // </div>
+                                }
 
                         </div>
                         </Link>

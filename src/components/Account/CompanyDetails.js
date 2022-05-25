@@ -967,8 +967,9 @@ class CompanyDetails extends Component {
                             />
                         </div>
 
-                        <div className={"pl-3 info-box"}>
-                            {this.state.org && this.state.org.company && (
+                        {this.state.org &&
+                            <div className={"pl-3 info-box"}>
+                            { this.state.org.company ?
                                 <>
                                     <div className={"p-1"}>
                                         <div className=" text-blue">
@@ -1025,9 +1026,23 @@ class CompanyDetails extends Component {
                                             </span>
                                         </div>
                                     </div>
+                                </> :
+
+
+                                <>
+                                    <div className={"p-1 d-flex align-items-start"}>
+                                        <div className=" text-blue">
+                                            <span className="   text-blue mb-1 mr-1">Name:</span>
+                                            <span className={"text-gray-light"}>
+                                                {this.state.org.name}
+                                            </span>
+                                        </div>
+
+
+                                    </div>
                                 </>
-                            )}
-                        </div>
+                            }
+                        </div>}
 
 
 

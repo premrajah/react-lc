@@ -3,8 +3,10 @@ import { Box, Skeleton, Tab, Tabs } from "@mui/material";
 import PropTypes from "prop-types";
 import MessengerMessagesFilesDisplay from "./MessengerMessagesFilesDisplay";
 import MessengerMessageTwoMessageBubble from "./MessengerMessageTwoMessageBubble";
+import {connect} from "react-redux";
+import * as actionCreator from "../../store/actions/actions";
 
-const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
+const MessengerMessagesTwoSelectedMessage = ({ messages, userDetail }) => {
     TabPanel.propTypes = {
         children: PropTypes.node,
         index: PropTypes.number.isRequired,
@@ -27,6 +29,17 @@ const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
         setValue(newValue);
     };
 
+    const handleWhoseMessage = (o, index) => {
+        if(o.actor === "message_from") {
+            if(o.org.org._id.toLowerCase() === userDetail.orgId.toLowerCase()) {
+                return "justify-content-end";
+            } else {
+                return "justify-content-start";
+            }
+        }
+    }
+
+
     return (
         <>
             {messages.length > 0 ? (
@@ -44,9 +57,7 @@ const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
                                     <React.Fragment key={i}>
                                         <div
                                             className={`d-flex ${
-                                                m.options.is_owned
-                                                    ? "justify-content-end"
-                                                    : "justify-content-start"
+                                                m.orgs.map((o, i) => handleWhoseMessage(o, i))
                                             }`}>
                                             <MessengerMessageTwoMessageBubble m={m} />
                                         </div>
@@ -105,4 +116,15 @@ const MessengerMessagesTwoSelectedMessage = ({ messages }) => {
     }
 };
 
-export default MessengerMessagesTwoSelectedMessage;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        userDetail: state.userDetail,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessengerMessagesTwoSelectedMessage);

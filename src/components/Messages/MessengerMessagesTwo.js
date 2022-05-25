@@ -69,7 +69,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         axios
             .get(`${baseUrl}message-group/${key}/message`)
             .then((res) => {
-                setClickedMessage(res.data.data.reverse());
+                setClickedMessage(res.data.data);
                 handleResetWysiwygEditor();
             })
             .catch((error) => {

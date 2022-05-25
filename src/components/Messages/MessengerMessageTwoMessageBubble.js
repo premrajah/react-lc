@@ -48,7 +48,6 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
 
         <div className="row">
             <div className="col">
-                {/*{console.log("> ", m.message._key, m.message.entity_type, m.message.entity_as_json )}*/}
                 {m.message && <div className="d-flex">
                     {m.message.entity_type === "Product" && <div className="mr-2 text-mute">{m.message.entity_type}</div>}
                     {m.message.entity_as_json && <div className="text-pink">

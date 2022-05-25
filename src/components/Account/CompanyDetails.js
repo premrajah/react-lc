@@ -1030,7 +1030,12 @@ class CompanyDetails extends Component {
 
 
                                 <>
-                                    <div className={"p-1 d-flex align-items-start"}>
+                                    <div style={{
+
+                                        height: "100%",
+                                        position: "relative",
+                                        minHeight: "120px"
+                                    }} className={"p-1 d-flex align-items-start"}>
                                         <div className=" text-blue">
                                             <span className="   text-blue mb-1 mr-1">Name:</span>
                                             <span className={"text-gray-light"}>

@@ -33,10 +33,10 @@ const MessengerMessagesTwoSelectedMessage = ({ messages, userDetail }) => {
         if(o.actor === "message_from") {
             if(o.org.org._id.toLowerCase() === userDetail.orgId.toLowerCase()) {
                 return "justify-content-end";
-            } else {
-                return "justify-content-start";
             }
         }
+
+        return "justify-content-start";
     }
 
 

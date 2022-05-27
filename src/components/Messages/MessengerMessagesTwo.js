@@ -291,6 +291,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                             {filteredGroups.map((g, index) => handleGroupDataDisplay(g, index))}
                         </List>
                     ) : <div>
+                        {filteredGroups.length === 0 && <div>No groups yet.</div>}
                         <Skeleton className="mb-1" variant="rectangular" height="40px" />
                         <Skeleton className="mb-1" variant="rectangular" height="40px" />
                         <Skeleton className="mb-1" variant="rectangular" height="40px" />

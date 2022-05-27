@@ -7,7 +7,7 @@ const MessengerMessagesTwoFilterChats = ({handleFilerCallback, handleClearInputC
 
     const filterGroups = (e) => {
         setInputValue(e.target.value);
-        handleFilerCallback(inputValue)
+        handleFilerCallback(e.target.value)
     };
 
     const handleClearFilterInput = () => {

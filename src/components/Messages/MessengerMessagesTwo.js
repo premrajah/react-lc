@@ -15,6 +15,8 @@ import WysiwygEditor from "./WysiwygEditor";
 import SendIcon from '@mui/icons-material/Send';
 import ClearIcon from '@mui/icons-material/Clear';
 import {LoaderAnimated} from "../../Util/GlobalFunctions";
+import draftToHtml from "draftjs-to-html";
+import {convertToRaw} from "draft-js";
 
 const newMessagePlaceHOlder = {"message_group": {"_id": 0}, "orgs": [{"name": "New Message", "email": "new@new.com"}]}
 
@@ -139,7 +141,15 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     }
 
     const handleRichTextCallback = (value) => {
-        setMessageText(value);
+
+        const content = draftToHtml(convertToRaw(value))
+
+        if(value.hasText()) {
+            setMessageText(content);
+        } else {
+            setMessageText(null);
+        }
+
     };
 
     const handleOrgSelectedCallback = (value) => {

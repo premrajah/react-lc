@@ -39,7 +39,10 @@ class WysiwygEditor extends Component{
         this.setState({
             editorState,
         }, () => {
-            this.props.richTextHandleCallback(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())));
+
+            const content = this.state.editorState.getCurrentContent();
+            // this.props.richTextHandleCallback(draftToHtml(convertToRaw(content)));
+            this.props.richTextHandleCallback(content);
         });
 
     };

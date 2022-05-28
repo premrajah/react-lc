@@ -22,7 +22,7 @@ const MessengerMessagesTwoSelectedMessage = ({ messages, userDetail }) => {
     const [value, setValue] = React.useState(0);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: 'nearest', inline: 'start' });
     };
 
     const handleTabsChange = (event, newValue) => {

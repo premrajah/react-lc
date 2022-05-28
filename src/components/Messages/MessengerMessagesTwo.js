@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import {IconButton, List, Skeleton, Tooltip} from "@mui/material";
+import {makeStyles} from "@mui/styles";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
 import MessengerMessagesTwoSelectedMessage from "./MessengerMessagesTwoSelectedMessage";
 import MenuItem from "@mui/material/MenuItem";
@@ -18,10 +19,18 @@ import {LoaderAnimated} from "../../Util/GlobalFunctions";
 import draftToHtml from "draftjs-to-html";
 import {convertToRaw} from "draft-js";
 
+
 const newMessagePlaceHOlder = {"message_group": {"_id": 0}, "orgs": [{"name": "New Message", "email": "new@new.com"}]}
 
+const useStyles = makeStyles(theme => ({
+    customHoverFocus: {
+        "&:hover, &.Mui-focusVisible": { color: "var(--lc-purple)" }
+    }
+}));
 
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
+
+    const classes = useStyles();
 
     const resetDraftRef = useRef(null);
     const orgSearchRef = useRef(null);
@@ -37,6 +46,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [messageText, setMessageText] = useState("");
     const [selectedOrgs, setSelectedOrgs] = useState([]);
     const [newMessageDisplay, setNewMessageDisplay] = useState(null);
+
 
     useEffect(() => {
         handleSelectedItemCallback(0);
@@ -346,7 +356,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Send" placement="right-end" arrow>
-                                    <IconButton disabled={!messageText} onClick={() => handleSendMessage()}>
+                                    <IconButton className={classes.customHoverFocus} disabled={!messageText} onClick={() => handleSendMessage()}>
                                         <SendIcon fontSize="large" />
                                     </IconButton>
                                 </Tooltip>

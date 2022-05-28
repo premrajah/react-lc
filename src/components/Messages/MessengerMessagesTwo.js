@@ -97,6 +97,12 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
     const handleGroupClickCallback = (key) => {
         setClickedMessage([]); // clear selected message
+
+        if(orgSearchVisibility) {
+            setOrgSearchVisibility(false);
+            setFilteredGroups(allGroups); // remove temp new message
+        }
+
         getSelectedGroupMessage(key);
     };
 

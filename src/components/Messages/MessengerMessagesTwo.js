@@ -25,6 +25,9 @@ const newMessagePlaceHOlder = {"message_group": {"_id": 0}, "orgs": [{"name": "N
 const useStyles = makeStyles(theme => ({
     customHoverFocus: {
         "&:hover, &.Mui-focusVisible": { color: "var(--lc-purple)" }
+    },
+    customHoverFocusClearText: {
+        "&:hover, &.Mui-focusVisible": { color: "orange" }
     }
 }));
 
@@ -46,11 +49,13 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [messageText, setMessageText] = useState("");
     const [selectedOrgs, setSelectedOrgs] = useState([]);
     const [newMessageDisplay, setNewMessageDisplay] = useState(null);
+    const [sendButtonDisable, setSendButtonDisable] = useState(false);
 
 
     useEffect(() => {
         handleSelectedItemCallback(0);
         getAllMessageGroups();
+        setSendButtonDisable(false);
     }, []);
 
     const getAllMessageGroups = () => {
@@ -77,6 +82,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         if(!key) return;
 
         setClickedMessageKey(key);
+        setSendButtonDisable(false);
 
         axios
             .get(`${baseUrl}message-group/${key}/message`)
@@ -196,6 +202,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     }
 
     const handleSendMessage = () => {
+        setSendButtonDisable(true);
         let payload = {};
         if(selectedOrgs.length > 0 && messageText) {
 
@@ -234,7 +241,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             .then((response) => {
                 let data = response.data.data;
 
-                resetDraftRef.current.resetDraft();
+                handleResetWysiwygEditor()
+                setSendButtonDisable(false);
                 // getAllMessageGroups();
 
                 if(messageType === "N") {
@@ -248,6 +256,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 }
             })
             .catch(error => {
+                setSendButtonDisable(false);
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
             })
     }
@@ -351,12 +360,12 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>
                                 <Tooltip title="Clear" placement="right-start" arrow>
-                                    <IconButton disabled={!messageText} onClick={() => handleResetWysiwygEditor()}>
+                                    <IconButton className={classes.customHoverFocusClearText} disabled={!messageText} onClick={() => handleResetWysiwygEditor()}>
                                         <ClearIcon fontSize="large" />
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Send" placement="right-end" arrow>
-                                    <IconButton className={classes.customHoverFocus} disabled={!messageText} onClick={() => handleSendMessage()}>
+                                    <IconButton className={classes.customHoverFocus} disabled={!messageText ? !sendButtonDisable : sendButtonDisable} onClick={() => handleSendMessage()}>
                                         <SendIcon fontSize="large" />
                                     </IconButton>
                                 </Tooltip>

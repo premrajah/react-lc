@@ -9,8 +9,9 @@ import SubproductItem from "../Products/Item/SubproductItem";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "../RightBar/GlobalDialog";
+import {connect} from "react-redux";
 
-const MessengerMessageTwoMessageBubble = ({m}) => {
+const MessengerMessageTwoMessageBubble = ({m, userDetail}) => {
 
     const [showEntity, setShowEntity] = useState(false);
     const [entityObj, setEntityObj] = useState({});
@@ -21,11 +22,23 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
         setEntityObj({ entity: entity, type: entityType });
     };
 
+    const handleWhoseMessage = (o, index) => {
+        if(o.actor === "message_to") {
+            if(o.org.org._id.toLowerCase() === userDetail.orgId.toLowerCase()) {
+                return "red";
+            }
+        }
+
+        return "blue";
+    }
+
     return <div className="w-75 p-2 mb-2 chat-msg-box border-rounded text-blue gray-border">
         <div className="row">
             <div className="col">
                 {m && m.orgs.map((o, index) => o.actor === "message_from" && <div key={index} className="d-flex justify-content-between">
-                    <small className="text-mute">{o.org.org.name}</small>
+                    <small className="text-mute" style={{"color": `${
+                        (m.orgs.map((o, i) => handleWhoseMessage(o, i)).filter((s) => s === "red").length > 0) ? "red" : "blue"
+                    }`}}>{o.org.org.name}</small>
                     <small className="text-mute">{moment(m.message._ts_epoch_ms).fromNow()}</small>
                 </div> )}
             </div>
@@ -120,4 +133,16 @@ const MessengerMessageTwoMessageBubble = ({m}) => {
     </div>
 }
 
-export default MessengerMessageTwoMessageBubble;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        userDetail: state.userDetail,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessengerMessageTwoMessageBubble);

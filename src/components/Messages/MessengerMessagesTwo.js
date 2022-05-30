@@ -146,7 +146,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             setFilteredGroups([newMessagePlaceHOlder, ...allGroups]);
             handleSelectedItemCallback(0)
             handleGroupClickCallback("")
-            setNewMessageDisplay("Select Organisations to send New Message");
+            setNewMessageDisplay("Select organisations to send new message");
         }
 
         if(filteredGroups[0].message_group._id === 0) {

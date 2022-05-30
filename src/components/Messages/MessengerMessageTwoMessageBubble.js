@@ -11,6 +11,9 @@ import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import {connect} from "react-redux";
 
+const LC_PURPLE = "#27245C";
+const LC_PINK = "#D31169";
+
 const MessengerMessageTwoMessageBubble = ({m, userDetail}) => {
 
     const [showEntity, setShowEntity] = useState(false);
@@ -25,11 +28,11 @@ const MessengerMessageTwoMessageBubble = ({m, userDetail}) => {
     const handleWhoseMessage = (o, index) => {
         if(o.actor === "message_to") {
             if(o.org.org._id.toLowerCase() === userDetail.orgId.toLowerCase()) {
-                return "red";
+                return LC_PINK;
             }
         }
 
-        return "blue";
+        return LC_PURPLE;
     }
 
     return <div className="w-75 p-2 mb-2 chat-msg-box border-rounded text-blue gray-border">
@@ -37,7 +40,7 @@ const MessengerMessageTwoMessageBubble = ({m, userDetail}) => {
             <div className="col">
                 {m && m.orgs.map((o, index) => o.actor === "message_from" && <div key={index} className="d-flex justify-content-between">
                     <small className="text-mute" style={{"color": `${
-                        (m.orgs.map((o, i) => handleWhoseMessage(o, i)).filter((s) => s === "red").length > 0) ? "red" : "blue"
+                        (m.orgs.map((o, i) => handleWhoseMessage(o, i)).filter((s) => s === LC_PINK).length > 0) ? LC_PINK : LC_PURPLE
                     }`}}>{o.org.org.name}</small>
                     <small className="text-mute">{moment(m.message._ts_epoch_ms).fromNow()}</small>
                 </div> )}

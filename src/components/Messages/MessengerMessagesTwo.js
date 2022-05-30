@@ -70,7 +70,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 // on first load handle click
                 // if (selectedMenuItemIndex === 0) {
                     handleSelectedItemCallback(0);
-                    handleGroupClickCallback(data[0].message_group._key);
+                    data.length > 0 && handleGroupClickCallback(data[0].message_group._key);
                 // }
             })
             .catch((error) => {

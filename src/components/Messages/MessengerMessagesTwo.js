@@ -366,14 +366,18 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>
                                 <Tooltip title="Clear" placement="right-start" arrow>
-                                    <IconButton className={classes.customHoverFocusClearText} disabled={!messageText} onClick={() => handleResetWysiwygEditor()}>
-                                        <ClearIcon fontSize="large" />
-                                    </IconButton>
+                                    <div>
+                                        <IconButton className={classes.customHoverFocusClearText} disabled={!messageText} onClick={() => handleResetWysiwygEditor()}>
+                                            <ClearIcon fontSize="large" />
+                                        </IconButton>
+                                    </div>
                                 </Tooltip>
                                 <Tooltip title="Send" placement="right-end" arrow>
-                                    <IconButton className={classes.customHoverFocus} disabled={!messageText ? !sendButtonDisable : sendButtonDisable} onClick={() => handleSendMessage()}>
-                                        <SendIcon fontSize="large" />
-                                    </IconButton>
+                                    <div>
+                                        <IconButton className={classes.customHoverFocus} disabled={!messageText ? !sendButtonDisable : sendButtonDisable} onClick={() => handleSendMessage()}>
+                                            <SendIcon fontSize="large" />
+                                        </IconButton>
+                                    </div>
                                 </Tooltip>
                             </div>
                         </div>

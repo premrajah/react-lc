@@ -97,10 +97,15 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
     const handleGroupClickCallback = (key) => {
         setClickedMessage([]); // clear selected message
+        setNewMessageDisplay(null); // clear org visibility message
 
         if(orgSearchVisibility) {
             setOrgSearchVisibility(false);
             setFilteredGroups(allGroups); // remove temp new message
+        }
+
+        if(allGroups.length > 0 && filteredGroups.length > 0 && filteredGroups[0].message_group._id === 0) {
+             getSelectedGroupMessage(allGroups[0].message_group._key)
         }
 
         getSelectedGroupMessage(key);
@@ -141,7 +146,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             setFilteredGroups([newMessagePlaceHOlder, ...allGroups]);
             handleSelectedItemCallback(0)
             handleGroupClickCallback("")
-            setNewMessageDisplay("Select Orgs to send New Message");
+            setNewMessageDisplay("Select Organisations to send New Message");
         }
 
         if(filteredGroups[0].message_group._id === 0) {
@@ -155,9 +160,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
 
     const handleClearInputCallback = (v) => {
-      if(!v) return;
+        if(!v) return;
 
-      setFilteredGroups(allGroups);
+        setFilteredGroups(allGroups);
         handleSelectedItemCallback(0);
         handleGroupClickCallback(allGroups[0].message_group._key);
     }
@@ -336,6 +341,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 <div className="col-md-8">
                     <div className="row">
                         <div className="col" style={{ height: "500px", minHeight: "500px"}}>
+                            {(clickedMessage.length === 0 && (filteredGroups.length > 0 && filteredGroups[0].message_group._id !== 0)) && <div>{LoaderAnimated()}</div>}
                             {clickedMessage.length > 0 && (
                                 <div style={{ height: "500px", minHeight: "500px", maxHeight: "500px", overflow: "auto" }}>
                                     <MessengerMessagesTwoSelectedMessage messages={clickedMessage} />

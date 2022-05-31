@@ -23,6 +23,8 @@ import Slider from '@mui/material/Slider';
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
+import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+var slugify = require('slugify')
 
 
 function ValueLabelComponent(props) {
@@ -100,8 +102,8 @@ class ProductForm extends Component {
             currentUploadingImages: [],
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
-            condition: ["New", "Used", "Salvage"],
-            powerSupply: ["gas", "electric", "hybrid", "solid_Fuel"],
+            condition: ["new", "used", "salvage"],
+            powerSupply: ["gas", "electric", "hybrid", "solid_fuel"],
             product: null,
             parentProduct: null,
             parentProductId: null,
@@ -115,6 +117,9 @@ class ProductForm extends Component {
             energyRating:0,
             productId:null,
             showForm:true,
+            templates:[],
+            selectedTemplated:null,
+            artifacts:[]
 
         };
 
@@ -205,6 +210,9 @@ class ProductForm extends Component {
         var url = e.currentTarget.dataset.url;
 
         var files = this.state.files.filter((item) => item.file.name !== name);
+        this.setState({
+            artifacts: this.state.artifacts.filter(item=> item.name!==name)
+        })
         // var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
         // var images = this.state.images.filter((item)=> item !==index )
@@ -270,8 +278,15 @@ class ProductForm extends Component {
                                     let images = [...this.state.images];
                                     images.push(res.data.data._key);
 
+
+                                    let artifacts=this.state.artifacts
+
+                                    artifacts.push(res.data.data)
+
                                     this.setState({
                                         images: images,
+                                        artifacts:artifacts
+
                                     });
 
                                     let currentFiles = this.state.files;
@@ -359,12 +374,22 @@ class ProductForm extends Component {
             validateFormatCreate("category", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("type", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("state", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("units", [{check: Validators.required, message: 'Required'}],fields),
 
         ]
 
-        if (!this.state.disableVolume){
+        if(!this.props.productLines&&!this.props.item){
+            validations.push(validateFormatCreate("units", [{check: Validators.required, message: 'Required'}],fields))
+            validations.push(validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}],fields))
+            validations.push(validateFormatCreate("templateName", [{check: Validators.required, message: 'Required'}],fields))
+
+        }
+        if(this.props.productLines){
+
+            validations.push(validateFormatCreate("templateName", [{check: Validators.required, message: 'Required'}],fields))
+
+        }
+
+            if (!this.state.disableVolume&&!this.props.productLines){
             validations.push( validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields),
             )
         }
@@ -374,6 +399,7 @@ class ProductForm extends Component {
         let {formIsValid,errors}= validateInputs(validations)
 
         this.setState({ errors: errors });
+            console.log(errors)
         return formIsValid;
     }
 
@@ -463,7 +489,7 @@ class ProductForm extends Component {
                 const state = data.get("state");
                 const is_listable = this.state.is_listable;
                 const site = data.get("deliver")
-                const year_of_making = data.get("manufacturedDate")?data.get("manufacturedDate"):0
+                const year_of_making = data.get("manufacturedDate") ? data.get("manufacturedDate") : 0
                 const external_reference = data.get("external_reference")
                 const power_supply = data.get("power_supply");
                 const energy_rating = this.state.energyRating;
@@ -479,9 +505,9 @@ class ProductForm extends Component {
                     units: units,
                     state: state,
                     volume: volume,
-                    energy_rating:energy_rating,
+                    energy_rating: energy_rating,
                     is_listable: is_listable,
-                    "external_reference" : external_reference,
+                    "external_reference": external_reference,
                     sku: {
                         serial: serial,
                         model: model,
@@ -495,21 +521,21 @@ class ProductForm extends Component {
                     year_of_making: year_of_making,
                 };
 
-                if (this.props.createProductId){
+                if (this.props.createProductId) {
 
-                    productData._id="Product/"+this.props.createProductId
+                    productData._id = "Product/" + this.props.createProductId
                 }
 
                 var completeData;
 
                 // if (this.props.parentProduct) {
-                    completeData = {
-                        product: productData,
-                        sub_products: [],
-                        artifact_ids: this.state.images,
-                        site_id: site,
-                        parent_product_id: this.state.parentProductId?this.state.parentProductId:null,
-                    };
+                completeData = {
+                    product: productData,
+                    sub_products: [],
+                    artifact_ids: this.state.images,
+                    site_id: site,
+                    parent_product_id: this.state.parentProductId ? this.state.parentProductId : null,
+                };
                 // } else {
                 //     completeData = {
                 //         product: productData,
@@ -523,84 +549,171 @@ class ProductForm extends Component {
 
                 this.setState({isSubmitButtonPressed: true})
 
-                // console.log(completeData)
+
+                if (this.props.productLines) {
+
+                    completeData.name=data.get("templateName")
+
+                    this.saveProductLines(data.get("templateName") ,completeData)
+                } else {
+                    axios
+                        .put(
+                            createProductUrl,
+                            completeData,
+                        )
+                        .then((res) => {
+
+                            if (!this.props.parentProduct) {
+                                this.setState({
+                                    product: res.data.data,
+                                    parentProduct: res.data.data,
+                                });
+                            }
+
+                            this.props.refreshPage(true)
+                            this.props.showSnackbar({
+                                show: true,
+                                severity: "success",
+                                message: title + " created successfully. Thanks"
+                            })
+                            this.showProductSelection();
+
+                            // this.props.loadProducts(this.props.userDetail.token);
+                            // this.props.loadProductsWithoutParent();
 
 
-                axios
-                    .put(
-                        createProductUrl,
-                        completeData,
-                    )
-                    .then((res) => {
+                            // this.setState({
+                            //     parentProductId:res.data.data.product._key
+                            // })
 
-                        if (!this.props.parentProduct) {
+                            this.setState({loading: false,})
+
+
                             this.setState({
-                                product: res.data.data,
-                                parentProduct: res.data.data,
+                                btnLoading: false,
+                                loading: false,
+                                isSubmitButtonPressed: false
                             });
-                        }
 
-                        this.props.refreshPage(true)
-                        this.props.showSnackbar({show:true,severity:"success",message:title+" created successfully. Thanks"})
-                        this.showProductSelection();
+                            if (!this.state.parentProductId) {
+                                this.handleView(res.data.data.product._key, 'parent')
+                            } else {
+                                this.handleView(this.state.parentProductId, 'parent')
+                            }
 
-                        // this.props.loadProducts(this.props.userDetail.token);
-                        // this.props.loadProductsWithoutParent();
+                        })
+                        .catch((error) => {
+                            this.setState({
+                                btnLoading: false,
+                                loading: false,
+                                isSubmitButtonPressed: false
+                            });
+                            this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
 
-
-                        // this.setState({
-                        //     parentProductId:res.data.data.product._key
-                        // })
-
-                        this.setState({loading: false,  })
-
-
-                        this.setState({
-                            btnLoading: false,
-                            loading:false,
-                            isSubmitButtonPressed:false
                         });
-
-                        if (!this.state.parentProductId) {
-                            this.handleView(res.data.data.product._key, 'parent')
-                        }else{
-                            this.handleView(this.state.parentProductId, 'parent')
-                        }
-
-                    })
-                    .catch((error) => {
-                        this.setState({
-                            btnLoading: false,
-                            loading:false,
-                            isSubmitButtonPressed:false
-                        });
-                        this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
-
-                    });
+                }
             }
-
     };
-    loadImages=()=> {
+
+    saveProductLines=(name,completeData)=>{
+
+
+        completeData.artifacts=this.state.artifacts
+
+        // console.log(this.state.artifacts)
+
+
+        axios
+            .post(
+                `${baseUrl}org/cache`, {
+                    key: "product_line_"+slugify(name,{
+                        lower: true,
+                        replacement: '_',
+                    },),
+                    value:   JSON.stringify(completeData),
+                },
+            )
+            .then((res) => {
+
+                // if (!this.props.parentProduct) {
+                //     this.setState({
+                //         product: res.data.data,
+                //         parentProduct: res.data.data,
+                //     });
+                // }
+                //
+                // this.props.refreshPage(true)
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message:  "Product line created successfully. Thanks"
+                })
+
+                if (this.props.refresh) {
+                    this.props.refresh()
+                    this.props.hide()
+                }
+                // this.showProductSelection();
+
+                // this.props.loadProducts(this.props.userDetail.token);
+                // this.props.loadProductsWithoutParent();
+
+
+                // this.setState({
+                //     parentProductId:res.data.data.product._key
+                // })
+
+                this.setState({loading: false,})
+
+
+                this.setState({
+                    btnLoading: false,
+                    loading: false,
+                    isSubmitButtonPressed: false
+                });
+
+                // if (!this.state.parentProductId) {
+                //     this.handleView(res.data.data.product._key, 'parent')
+                // } else {
+                //     this.handleView(this.state.parentProductId, 'parent')
+                // }
+
+            })
+            .catch((error) => {
+                this.setState({
+                    btnLoading: false,
+                    loading: false,
+                    isSubmitButtonPressed: false
+                });
+                this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+
+            });
+    }
+
+
+
+    loadImages=(artifacts)=> {
+        console.log(artifacts)
         let images = [];
 
         let currentFiles = [];
 
-        for (let k = 0; k < this.props.item.artifacts.length; k++) {
+        for (let k = 0; k < artifacts.length; k++) {
 
             var fileItem = {
                 status: 1,
-                id: this.props.item.artifacts[k]._key,
-                imgUrl: this.props.item.artifacts[k].blob_url,
+                id: artifacts[k]._key,
+                imgUrl: artifacts[k].blob_url,
                 file: {
-                    mime_type: this.props.item.artifacts[k].mime_type,
-                    name: this.props.item.artifacts[k].name,
+                    mime_type: artifacts[k].mime_type,
+                    name: artifacts[k].name,
                 },
             };
             // fileItem.status = 1  //success
             // fileItem.id = this.state.item.artifacts[k]._key
             // fileItem.url = this.state.item.artifacts[k].blob_url
 
-            images.push(this.props.item.artifacts[k]._key);
+            images.push(artifacts[k]._key);
 
             currentFiles.push(fileItem);
         }
@@ -726,7 +839,6 @@ class ProductForm extends Component {
                        this.props.loadCurrentProduct(this.props.item.product._key)
                     this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
 
-
                     this.props.triggerCallback("edit")
 
 
@@ -740,6 +852,48 @@ class ProductForm extends Component {
               // alert("called")
 
         }
+    }
+
+    fetchCache=()=> {
+
+        this.setState({
+            btnLoading: true,
+
+        });
+        axios
+            .get(baseUrl + "org/cache")
+            .then(
+                (response) => {
+
+                    // this.setState({
+                    //     btnLoading: false,
+                    //
+                    // });
+
+                    let responseObj=response.data.data
+
+                    let keys=Object.keys(responseObj)
+
+                    let templates=[]
+                    keys.forEach((item)=> {
+
+                            if (item.includes("product_line"))
+                                templates.push({key: item, value: JSON.parse(responseObj[item])})
+                        }
+                    )
+                    console.log(templates)
+
+                    this.setState({
+                        templates: templates,
+
+                    });
+
+
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
     }
 
     componentDidMount() {
@@ -758,7 +912,7 @@ class ProductForm extends Component {
       // alert("called")
 
         if (this.props.item){
-            this.loadImages()
+            this.loadImages(this.props.item.artifacts)
             this.setState({
                 isEditProduct:true,
             })
@@ -781,6 +935,7 @@ class ProductForm extends Component {
         //     })
         // }
 
+        this.fetchCache()
 
     }
 
@@ -842,12 +997,55 @@ class ProductForm extends Component {
                     <div className="row">
                     <div className="col-md-8  col-xs-12">
                         <h4 className={"blue-text text-heading "}>
-                            {this.props.edit?"Edit Product":this.state.parentProductId?"Add subproduct":"Add product"}
+                            {this.props.edit?"Edit Product":this.props.productLines?"Add Product Line":this.state.parentProductId?"Add subproduct":"Add product"}
                         </h4>
                     </div>
+                        {!this.props.productLines &&
                         <div className="col-md-4  col-xs-12 desktop-right">
                         <button className="btn btn-sm blue-btn pt-2" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
-                        </div>
+                        </div>}
+
+                        {!this.props.item&&!this.props.productLines &&this.state.templates.length>0&&
+                        <div className="col-4 ">
+
+                            <select
+
+                                className="rad-8 "
+                                style={{height:"60px",
+                                    padding: '18.5px 14px',
+                                    borderRadius: 4,
+                                    fontSize: 16,
+                                    border: '1px solid #ced4da',}}
+                                variant="standard"
+                                // details=""
+                                // initialValue={this.props.item&&this.props.item.site._key}
+                                // option={"name"}
+                                // valueKey={"key"}
+                                // subValueKey={"name"}
+                                onChange={(value)=> {
+
+
+                                    this.setState({
+                                        selectedTemplate:this.state.templates.find(item=>item.key==value.currentTarget.value )
+                                    })
+
+                                    this.loadImages(this.state.templates.find(item=>item.key==value.currentTarget.value).value.artifacts)
+
+
+                                }}
+                                // select={"Select"}
+                                // options={this.state.templates}
+                                name={"template"}
+                                title="Select Product Line..">
+                                <option value={""}>Select Product Line</option>
+                                {this.state.templates.map((item)=>
+                                <option value={item.key}>{item.value.name?item.value.name:item.value.product.name}</option>
+
+                                )}
+                            </select>
+
+                        </div>}
+
                     </div>
 
 
@@ -855,10 +1053,24 @@ class ProductForm extends Component {
                     <div className={"col-12"}>
                           <form onSubmit={this.handleSubmit}>
                             <div className="row ">
+                                {this.props.productLines &&
+                                <div className="col-12 mt-2">
+                                <TextFieldWrapper
+                                    details="The name of  template"
+                                      initialValue={this.props.item&&this.props.item.product.name}
+                                        onChange={(value)=>this.handleChangeProduct(value,"templateName")}
+                                        error={this.state.errors["templateName"]}
+                                        name="templateName" title="Template Name"
+                                />
+                                </div>
+                                }
                                 <div className="col-12 mt-2">
 
-                                   <TextFieldWrapper  details="The name of a product"
-                                     initialValue={this.props.item&&this.props.item.product.name}
+                                   <TextFieldWrapper
+                                       details="The name of a product"
+                                     initialValue={(this.props.item?this.props.item.product.name:"")
+                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.name:"")
+                                     }
                                      onChange={(value)=>this.handleChangeProduct(value,"title")}
                                      error={this.state.errors["title"]}
                                      name="title" title="Title"
@@ -869,7 +1081,7 @@ class ProductForm extends Component {
                             </div>
 
                             <div className="row  mt-2">
-                                <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
+                                {!this.props.productLines &&    <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
                                     <CheckboxWrapper
                                         details="When listed, product will appear in the marketplace searches"
@@ -877,12 +1089,15 @@ class ProductForm extends Component {
                                         onChange={(checked)=>this.checkListable(checked)} color="primary"
                                         name={"is_listable"} title="List for sale" />
 
-                                </div>
+                                </div>}
 
                                 <div className="col-md-8 col-sm-12">
 
-                                    <SelectArrayWrapper  details="Materials or category a product belongs to Type"
-                                        initialValue={this.props.item&&this.props.item.product.category}
+                                    <SelectArrayWrapper
+                                        details="Materials or category a product belongs to Type"
+                                        initialValue={this.props.item?this.props.item.product.category:""
+                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.category:"")
+                                        }
                                         option={"name"}
                                         valueKey={"name"}
                                         select={"Select"}
@@ -905,7 +1120,8 @@ class ProductForm extends Component {
 
                                             })
                                         }}
-                                        options={this.state.categories} name={"category"} title="Resource Category"
+                                        options={this.state.categories} name={"category"}
+                                                         title="Resource Category"
                                     />
 
 
@@ -917,15 +1133,17 @@ class ProductForm extends Component {
                                 {/* */}
 
                                 {/*</div>*/}
-                            </div>
+                            {/*</div>*/}
 
-                            <div className="row mt-2">
+                            {/*<div className="row mt-2">*/}
 
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
                                     <SelectArrayWrapper
-                                        initialValue={this.props.item&&this.props.item.product.type}
+                                        initialValue={this.props.item?this.props.item.product.type:""
+                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.type:"")
+                                        }
                                         option={"name"}
                                         valueKey={"name"}
                                         select={"Select"}
@@ -934,14 +1152,20 @@ class ProductForm extends Component {
                                             this.handleChangeProduct(value,"type")
 
                                             this.setState({
-                                                subCatSelected:  this.state.subCategories.length>0? this.state.subCategories.filter(
+                                                subCatSelected: this.state.subCategories&& this.state.subCategories.length>0&&this.state.subCategories.filter(
+                                                    (item) => item.name === value
+                                                ).length>0?this.state.subCategories.filter(
                                                     (item) => item.name === value
                                                 )[0]:null,
 
-                                                states: this.state.subCategories.length>0?this.state.subCategories.filter(
+                                                states:this.state.subCategories&& this.state.subCategories.length>0&&this.state.subCategories.filter(
+                                                    (item) => item.name === value
+                                                ).length>0?this.state.subCategories.filter(
                                                     (item) => item.name === value
                                                 )[0].state:[],
-                                                units: this.state.subCategories.length>0?this.state.subCategories.filter(
+                                                units: this.state.subCategories&&this.state.subCategories.length>0&&this.state.subCategories.filter(
+                                                    (item) => item.name === value
+                                                ).length>0?this.state.subCategories.filter(
                                                     (item) => item.name === value
                                                 )[0].units:[]
                                             })
@@ -949,7 +1173,9 @@ class ProductForm extends Component {
 
                                         disabled={
                                             ((this.state.subCategories&&this.state.subCategories.length > 0)) ? false : true
-                                        } options={this.state.subCategories?this.state.subCategories:[]} name={"type"} title="Type"/>
+                                        }
+                                        options={this.state.subCategories?this.state.subCategories:[]} name={"type"}
+                                        title="Type"/>
 
                                 </div>
 
@@ -958,7 +1184,9 @@ class ProductForm extends Component {
 
 
                                     <SelectArrayWrapper
-                                        initialValue={this.props.item&&this.props.item.product.state}
+                                        initialValue={this.props.item?this.props.item.product.state:""
+                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")
+                                        }
                                         onChange={(value)=>this.handleChangeProduct(value,"state")}
                                         error={this.state.errors["state"]}
 
@@ -970,7 +1198,10 @@ class ProductForm extends Component {
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
                                     <SelectArrayWrapper
-                                        initialValue={this.props.item&&capitalize(this.props.item.product.condition)}
+
+                                        initialValue={this.props.item?(this.props.item.product.condition):""
+                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.condition:"")
+                                        }
                                         onChange={(value)=>this.handleChangeProduct(value,"condition")}
                                         error={this.state.errors["condition"]}
                                         options={this.state.condition}
@@ -988,12 +1219,15 @@ class ProductForm extends Component {
                                     <div className="row camera-grids      ">
                                         <div className="col-md-4 d-none col-sm-12 col-xs-12  ">
 
-                                            <SelectArrayWrapper  detailsHeading="What is the purpose of your product?"
+                                            <SelectArrayWrapper
+                                                detailsHeading="What is the purpose of your product?"
                                                 details="Defined: a whole product,
                                                 Aggregate: a product made up from other products,
                                                 Prototype: a first version of a product"
 
-                                                initialValue={this.props.item&&capitalize(this.props.item.product.purpose)}
+                                                initialValue={this.props.item?(this.props.item.product.purpose):""
+                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.purpose:"")
+                                                }
                                                 onChange={(value)=> {
                                                     this.handleChangeProduct(value,"purpose")
 
@@ -1004,13 +1238,13 @@ class ProductForm extends Component {
                                         <div className="col-md-4 col-sm-12 col-xs-12  ">
                                         <TextFieldWrapper
                                             details="The brand name of a product"
-                                            initialValue={this.props.item&&this.props.item.product.sku.brand}
+                                            initialValue={this.props.item&&this.props.item.product.sku.brand||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.brand:"")}
                                             onChange={(value)=>this.handleChangeProduct(value,"brand")}
                                             error={this.state.errors["brand"]}
                                             name="brand"
                                             title="Brand" />
                                         </div>
-                                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                        {!this.props.productLines &&         <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
                                             <SelectArrayWrapper
                                                 details="Select product’s location from the existing sites or add new address below"
@@ -1042,10 +1276,13 @@ class ProductForm extends Component {
 
 
 
-                                        </div>
+                                        </div>}
                                         <div className="col-md-4 col-sm-6 col-xs-6">
                                             <SelectArrayWrapper
-                                                initialValue={this.props.item&&this.props.item.product.sku.power_supply}
+
+                                                initialValue={this.props.item&&this.props.item.product.sku.power_supply
+                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.power_supply:"")
+                                                }
                                                 // select={"Select"}
 
                                                 onChange={(value)=> {
@@ -1087,7 +1324,7 @@ class ProductForm extends Component {
 
                                   </div>
                               </div>
-                                <div className="row  mt-2">
+                              {!this.props.productLines && <div className="row  mt-2">
                                     <div className="col-12">
                                         <div className="row  justify-content-start ">
                                             <div className="col-12 ">
@@ -1121,13 +1358,15 @@ class ProductForm extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>}
 
                             <div className="row  mt-2">
                                 <div className="col-12">
 
                                     <TextFieldWrapper  details="Describe the product your adding"
-                                        initialValue={this.props.item&&this.props.item.product.description}
+                                        initialValue={this.props.item&&this.props.item.product.description
+                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.description:"")
+                                        }
                                         onChange={(value)=>this.handleChangeProduct(value,"description")}
                                         error={this.state.errors["description"]}
                                         multiline
@@ -1156,7 +1395,9 @@ class ProductForm extends Component {
                             <div className={`row  ${this.state.moreDetail?"mt-2":"d-none"}`}>
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper
-                                                    initialValue={this.props.item&&this.props.item.product.year_of_making}
+                                                    initialValue={this.props.item?this.props.item.product.year_of_making:""
+                                                    ||(this.state.selectedTemplate?parseInt(this.state.selectedTemplate.value.product.year_of_making):"")
+                                                    }
                                                     select={"Select"}
                                                     onChange={(value)=> {
 
@@ -1168,24 +1409,27 @@ class ProductForm extends Component {
                                             <div className="col-md-4 col-sm-6 col-xs-6">
 
                                                 <TextFieldWrapper
-                                                    initialValue={this.props.item&&this.props.item.product.sku.model}
+                                                    initialValue={this.props.item?this.props.item.product.sku.model:""
+                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.model:"")}
                                                     name="model"
                                                     title="Model" />
 
                                             </div>
 
-                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                {!this.props.productLines &&     <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
                                                     initialValue={this.props.item&&this.props.item.product.sku.serial}
                                                     name="serial"
                                                     title="Serial Number" />
 
-                                            </div>
+                                            </div>}
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
                                                     details="Stock Keeping Unit"
-                                                    initialValue={this.props.item&&this.props.item.product.sku.sku}
+                                                    initialValue={this.props.item&&this.props.item.product.sku.sku
+                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.sku:"")
+                                                    }
                                                     name="sku"
                                                     title="Sku" />
 
@@ -1194,17 +1438,24 @@ class ProductForm extends Component {
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
                                                     details="Universal Product Code"
-                                                    initialValue={this.props.item&&this.props.item.product.sku.upc} name="upc" title="UPC" />
+                                                    initialValue={this.props.item&&this.props.item.product.sku.upc
+                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.upc:"")
+                                                    } name="upc" title="UPC" />
 
                                             </div>
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
-                                                    initialValue={this.props.item&&this.props.item.product.sku.part_no} name="part_no" title="Part No." />
+                                                    initialValue={this.props.item&&this.props.item.product.sku.part_no
+                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.part_no:"")
+                                                    } name="part_no" title="Part No." />
 
                                             </div>
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  details="A unique number used by external systems"   initialValue={this.props.item&&this.props.item.product.external_reference} name="external_reference" title="External reference" />
+                                                <TextFieldWrapper  details="A unique number used by external systems"
+                                                                   initialValue={this.props.item&&this.props.item.product.external_reference
+                                                                   ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.expanded:"")
+                                                                   } name="external_reference" title="External reference" />
 
                                             </div>
 
@@ -1212,7 +1463,7 @@ class ProductForm extends Component {
                                         </div>
 
 
-<div className={"row"}>
+                   <div className={"row"}>
                             <div className="col-12 mt-2">
                                 <div className={"custom-label text-bold text-blue mb-3"}>
                                    Add Attachments <CustomPopover text="Add images, videos, manuals and other documents or external links (png, jpeg, jpg, doc, csv)"><InfoIcon/></CustomPopover>

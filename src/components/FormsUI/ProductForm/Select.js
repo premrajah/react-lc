@@ -31,16 +31,21 @@ const SelectArrayWrapper = (props) => {
     };
 
     useEffect(()=>{
-        if (onChange)
-            onChange(initialValue)
-    },[])
+        if (onChange) {
+
+            // setValue(initialValue)
+                onChange(initialValue)
+
+
+        }
+    },[initialValue])
 
 
     return (
         <>
             {title&& <div className={"custom-label text-bold ellipsis-end text-blue mb-0"}>
                 {title} {details&&<CustomPopover heading={detailsHeading} text={details}><InfoIcon/></CustomPopover>}
-                {initialValue}
+
             </div>}
             <div className={"field-box mb-2"}>
                 <FormControl variant="standard" >
@@ -59,7 +64,7 @@ const SelectArrayWrapper = (props) => {
                 style={{width:"100%"}}
                 disabled={disabled}
                 name={name}
-                className={` ${error&&"border-red-error"}  ${textAlignRight&&"select-text-right"}  ${noBorder&&"select-no-border"} `}
+                className={` ${error&&"border-red-error"} txt-capitalize ${textAlignRight&&"select-text-right"}  ${noBorder&&"select-no-border"} `}
                 // defaultValue={defaultValue ? defaultValue : ""}
             >
                 {select&&

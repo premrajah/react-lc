@@ -43,17 +43,24 @@ const addAndFilters=(filters)=>{
 
 export const fetchErrorMessage=(e)=>{
 
+
     let errorString=""
-    if (e.response.data.errors&&e.response.data.errors.length>0) {
-        e.response.data.errors.forEach(item => {
-            errorString =errorString+" "+ item.message
 
-        })
-    }else{
+    try {
+        if (e.response.data.errors&&e.response.data.errors.length>0) {
+            e.response.data.errors.forEach(item => {
+                errorString =errorString+" "+ item.message
 
-        errorString=e.response.status +" error received from server"
+            })
+        }else{
 
+            errorString=e.response.status +" error received from server"
+
+        }
+    }catch (e){
+        errorString="Unknown error occurred."
     }
+
     return errorString
 }
 
@@ -146,11 +153,8 @@ export const  seekAxiosGet=  (url,doNotEncode)=> {
 
 
     return   axios.get(urlEncode).catch((error)=>{
-
         console.error(error);
-
-
-        return  fetchErrorMessage(error)
+        return  "Unknown error occurred."
 
     });
 

@@ -8,14 +8,17 @@ const CustomizedInput = styled(InputBase)(({ theme }) => ({
         marginTop: theme.spacing(3),
     },
     '& .MuiInputBase-input': {
-        borderRadius: 4,
+
         position: 'relative',
         // backgroundColor:  '#fcfcfb' ,
-        border: '1px solid #ced4da',
-        fontSize: 16,
+
+
         width: '100%!important',
         // padding: '10px 12px',
         padding: '18.5px 14px',
+        borderRadius: 4,
+        fontSize: 16,
+        border: '1px solid #ced4da',
         // height: "1.188em",
         // height:theme.height,
         transition: theme.transitions.create([

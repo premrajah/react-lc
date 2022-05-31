@@ -36,8 +36,16 @@ const TextFieldWrapper = ({
     const [field, setField] = useState(initialValue);
 
     useEffect(() => {
-        if (onChange) onChange(initialValue);
-    }, []);
+
+        // if (initialValue) {
+            if (onChange) {
+
+                setField(initialValue)
+                // alert(initialValue)
+                onChange(initialValue);
+            }
+        // }
+    }, [initialValue]);
     const configTextField = {
         // ...field,
         ...otherProps,

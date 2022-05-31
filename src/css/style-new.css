@@ -4314,5 +4314,5 @@ width: 100% !important
 }
 
 
-
+select,select option {text-transform:capitalize!important;}
 

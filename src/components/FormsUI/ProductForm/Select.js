@@ -33,7 +33,7 @@ const SelectArrayWrapper = (props) => {
     useEffect(()=>{
         if (onChange) {
 
-            // setValue(initialValue)
+            setValue(initialValue)
                 onChange(initialValue)
 
 

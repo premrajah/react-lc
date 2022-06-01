@@ -380,7 +380,7 @@ class ProductForm extends Component {
         if(!this.props.productLines&&!this.props.item){
             validations.push(validateFormatCreate("units", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}],fields))
-            validations.push(validateFormatCreate("templateName", [{check: Validators.required, message: 'Required'}],fields))
+            // validations.push(validateFormatCreate("templateName", [{check: Validators.required, message: 'Required'}],fields))
 
         }
         if(this.props.productLines){
@@ -1158,9 +1158,8 @@ class ProductForm extends Component {
                                                     (item) => item.name === value
                                                 )[0]:null,
 
-                                                states:this.state.subCategories&& this.state.subCategories.length>0&&this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                ).length>0?this.state.subCategories.filter(
+                                                states:this.state.subCategories&&
+                                                this.state.subCategories.length>0&&this.state.subCategories.filter((item) => item.name === value).length>0?this.state.subCategories.filter(
                                                     (item) => item.name === value
                                                 )[0].state:[],
                                                 units: this.state.subCategories&&this.state.subCategories.length>0&&this.state.subCategories.filter(
@@ -1181,15 +1180,11 @@ class ProductForm extends Component {
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
-
-
                                     <SelectArrayWrapper
                                         initialValue={this.props.item?this.props.item.product.state:""
-                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")
-                                        }
+                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
                                         onChange={(value)=>this.handleChangeProduct(value,"state")}
                                         error={this.state.errors["state"]}
-
                                         select={"Select"}
                                         disabled={ (this.state.states.length > 0 )? false : true}
                                         options={this.state.states?this.state.states:[]} name={"state"} title="State"/>
@@ -1410,13 +1405,18 @@ class ProductForm extends Component {
 
                                                 <TextFieldWrapper
                                                     initialValue={this.props.item?this.props.item.product.sku.model:""
-                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.model:"")}
+                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.model:"model")}
                                                     name="model"
-                                                    title="Model" />
+                                                    title="Model"
+
+                                                    onChange={(value)=>this.handleChangeProduct(value,"model")}
+
+                                                />
 
                                             </div>
 
-                                {!this.props.productLines &&     <div className="col-md-4 col-sm-6 col-xs-6">
+                                {!this.props.productLines &&
+                                <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
                                                     initialValue={this.props.item&&this.props.item.product.sku.serial}
                                                     name="serial"
@@ -1427,9 +1427,10 @@ class ProductForm extends Component {
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
                                                     details="Stock Keeping Unit"
-                                                    initialValue={this.props.item&&this.props.item.product.sku.sku
+                                                    initialValue={this.props.item?this.props.item.product.sku.sku:""
                                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.sku:"")
                                                     }
+                                                    onChange={(value)=>this.handleChangeProduct(value,"sku")}
                                                     name="sku"
                                                     title="Sku" />
 
@@ -1437,8 +1438,9 @@ class ProductForm extends Component {
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
+                                                    onChange={(value)=>this.handleChangeProduct(value,"upc")}
                                                     details="Universal Product Code"
-                                                    initialValue={this.props.item&&this.props.item.product.sku.upc
+                                                    initialValue={this.props.item?this.props.item.product.sku.upc:""
                                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.upc:"")
                                                     } name="upc" title="UPC" />
 
@@ -1446,15 +1448,18 @@ class ProductForm extends Component {
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
-                                                    initialValue={this.props.item&&this.props.item.product.sku.part_no
+                                                    onChange={(value)=>this.handleChangeProduct(value,"part_no")}
+                                                    initialValue={this.props.item?this.props.item.product.sku.part_no:""
                                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.part_no:"")
                                                     } name="part_no" title="Part No." />
 
                                             </div>
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  details="A unique number used by external systems"
-                                                                   initialValue={this.props.item&&this.props.item.product.external_reference
-                                                                   ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.expanded:"")
+                                                <TextFieldWrapper
+                                                    onChange={(value)=>this.handleChangeProduct(value,"external_reference")}
+                                                    details="A unique number used by external systems"
+                                                                   initialValue={this.props.item?this.props.item.product.external_reference:""
+                                                                   ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.external_reference:"")
                                                                    } name="external_reference" title="External reference" />
 
                                             </div>

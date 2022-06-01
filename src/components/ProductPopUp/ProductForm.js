@@ -399,7 +399,7 @@ class ProductForm extends Component {
         let {formIsValid,errors}= validateInputs(validations)
 
         this.setState({ errors: errors });
-            console.log(errors)
+            // console.log(errors)
         return formIsValid;
     }
 
@@ -693,7 +693,7 @@ class ProductForm extends Component {
 
 
     loadImages=(artifacts)=> {
-        console.log(artifacts)
+        // console.log(artifacts)
         let images = [];
 
         let currentFiles = [];
@@ -881,7 +881,7 @@ class ProductForm extends Component {
                                 templates.push({key: item, value: JSON.parse(responseObj[item])})
                         }
                     )
-                    console.log(templates)
+                    // console.log(templates)
 
                     this.setState({
                         templates: templates,
@@ -900,7 +900,7 @@ class ProductForm extends Component {
 
         window.scrollTo(0, 0);
 
-        console.log(this.props.productId,this.props.type)
+        // console.log(this.props.productId,this.props.type)
         this.setState({
             parentProductId:null
         }, ()=>{
@@ -1150,7 +1150,6 @@ class ProductForm extends Component {
                                         error={this.state.errors["type"]}
                                         onChange={(value)=> {
 
-                                            console.log(value,">",this.state.subCategories )
                                             this.setState({
                                                 states:[],
                                                 units:[]
@@ -1161,7 +1160,6 @@ class ProductForm extends Component {
 
 
 
-                                                    console.log("change type detected")
                                                     let subCatSelected=this.state.subCategories.find(
                                                         (item) => item.name === value
                                                     )
@@ -1171,7 +1169,6 @@ class ProductForm extends Component {
                                                     if(subCatSelected) {
                                                         states = subCatSelected.state
                                                         units = subCatSelected.units
-                                                        console.log(states)
                                                     }
 
                                                     this.setState({

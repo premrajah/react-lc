@@ -33,13 +33,16 @@ const TextFieldWrapper = ({
 }) => {
     // const [field, mata] = useField(name)
     const classes = useStyles();
-    const [field, setField] = useState(initialValue);
+    const [field, setField] = useState(null);
 
     useEffect(() => {
 
         // if (initialValue) {
-            if (onChange) {
+        // if (name=="model"){
+        //     alert(initialValue)
+        // }
 
+            if (onChange) {
                 setField(initialValue)
                 // alert(initialValue)
                 onChange(initialValue);

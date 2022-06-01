@@ -380,7 +380,7 @@ class ProductForm extends Component {
         if(!this.props.productLines&&!this.props.item){
             validations.push(validateFormatCreate("units", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}],fields))
-            validations.push(validateFormatCreate("templateName", [{check: Validators.required, message: 'Required'}],fields))
+            // validations.push(validateFormatCreate("templateName", [{check: Validators.required, message: 'Required'}],fields))
 
         }
         if(this.props.productLines){
@@ -399,7 +399,7 @@ class ProductForm extends Component {
         let {formIsValid,errors}= validateInputs(validations)
 
         this.setState({ errors: errors });
-            console.log(errors)
+            // console.log(errors)
         return formIsValid;
     }
 
@@ -693,7 +693,7 @@ class ProductForm extends Component {
 
 
     loadImages=(artifacts)=> {
-        console.log(artifacts)
+        // console.log(artifacts)
         let images = [];
 
         let currentFiles = [];
@@ -881,7 +881,7 @@ class ProductForm extends Component {
                                 templates.push({key: item, value: JSON.parse(responseObj[item])})
                         }
                     )
-                    console.log(templates)
+                    // console.log(templates)
 
                     this.setState({
                         templates: templates,
@@ -900,7 +900,7 @@ class ProductForm extends Component {
 
         window.scrollTo(0, 0);
 
-        console.log(this.props.productId,this.props.type)
+        // console.log(this.props.productId,this.props.type)
         this.setState({
             parentProductId:null
         }, ()=>{
@@ -1149,26 +1149,39 @@ class ProductForm extends Component {
                                         select={"Select"}
                                         error={this.state.errors["type"]}
                                         onChange={(value)=> {
-                                            this.handleChangeProduct(value,"type")
 
                                             this.setState({
-                                                subCatSelected: this.state.subCategories&& this.state.subCategories.length>0&&this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                ).length>0?this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                )[0]:null,
-
-                                                states:this.state.subCategories&& this.state.subCategories.length>0&&this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                ).length>0?this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                )[0].state:[],
-                                                units: this.state.subCategories&&this.state.subCategories.length>0&&this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                ).length>0?this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                )[0].units:[]
+                                                states:[],
+                                                units:[]
                                             })
+
+                                            setTimeout(()=>{
+                                                if ( this.state.subCategories&&this.state.subCategories.length>0){
+
+
+
+                                                    let subCatSelected=this.state.subCategories.find(
+                                                        (item) => item.name === value
+                                                    )
+
+                                                    let states=[]
+                                                    let units=[]
+                                                    if(subCatSelected) {
+                                                        states = subCatSelected.state
+                                                        units = subCatSelected.units
+                                                    }
+
+                                                    this.setState({
+                                                        subCatSelected: subCatSelected ? subCatSelected : null,
+                                                        states: states,
+                                                        units: units
+                                                    })
+                                                }
+                                            },500)
+
+
+                                            this.handleChangeProduct(value,"type")
+
                                         }}
 
                                         disabled={
@@ -1181,18 +1194,18 @@ class ProductForm extends Component {
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
-
-
                                     <SelectArrayWrapper
                                         initialValue={this.props.item?this.props.item.product.state:""
-                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")
-                                        }
-                                        onChange={(value)=>this.handleChangeProduct(value,"state")}
-                                        error={this.state.errors["state"]}
+                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
+                                        onChange={(value)=>  {
 
+                                            this.handleChangeProduct(value,"state")}
+                                        }
+                                        error={this.state.errors["state"]}
                                         select={"Select"}
                                         disabled={ (this.state.states.length > 0 )? false : true}
-                                        options={this.state.states?this.state.states:[]} name={"state"} title="State"/>
+                                        options={this.state.states?this.state.states:[]} name={"state"} title="State"
+                                    />
                                 </div>
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
@@ -1410,13 +1423,18 @@ class ProductForm extends Component {
 
                                                 <TextFieldWrapper
                                                     initialValue={this.props.item?this.props.item.product.sku.model:""
-                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.model:"")}
+                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.model:"model")}
                                                     name="model"
-                                                    title="Model" />
+                                                    title="Model"
+
+                                                    onChange={(value)=>this.handleChangeProduct(value,"model")}
+
+                                                />
 
                                             </div>
 
-                                {!this.props.productLines &&     <div className="col-md-4 col-sm-6 col-xs-6">
+                                {!this.props.productLines &&
+                                <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
                                                     initialValue={this.props.item&&this.props.item.product.sku.serial}
                                                     name="serial"
@@ -1427,9 +1445,10 @@ class ProductForm extends Component {
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
                                                     details="Stock Keeping Unit"
-                                                    initialValue={this.props.item&&this.props.item.product.sku.sku
+                                                    initialValue={this.props.item?this.props.item.product.sku.sku:""
                                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.sku:"")
                                                     }
+                                                    onChange={(value)=>this.handleChangeProduct(value,"sku")}
                                                     name="sku"
                                                     title="Sku" />
 
@@ -1437,8 +1456,9 @@ class ProductForm extends Component {
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
+                                                    onChange={(value)=>this.handleChangeProduct(value,"upc")}
                                                     details="Universal Product Code"
-                                                    initialValue={this.props.item&&this.props.item.product.sku.upc
+                                                    initialValue={this.props.item?this.props.item.product.sku.upc:""
                                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.upc:"")
                                                     } name="upc" title="UPC" />
 
@@ -1446,15 +1466,18 @@ class ProductForm extends Component {
 
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
-                                                    initialValue={this.props.item&&this.props.item.product.sku.part_no
+                                                    onChange={(value)=>this.handleChangeProduct(value,"part_no")}
+                                                    initialValue={this.props.item?this.props.item.product.sku.part_no:""
                                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.part_no:"")
                                                     } name="part_no" title="Part No." />
 
                                             </div>
                                             <div className="col-md-4 col-sm-6 col-xs-6">
-                                                <TextFieldWrapper  details="A unique number used by external systems"
-                                                                   initialValue={this.props.item&&this.props.item.product.external_reference
-                                                                   ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.expanded:"")
+                                                <TextFieldWrapper
+                                                    onChange={(value)=>this.handleChangeProduct(value,"external_reference")}
+                                                    details="A unique number used by external systems"
+                                                                   initialValue={this.props.item?this.props.item.product.external_reference:""
+                                                                   ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.external_reference:"")
                                                                    } name="external_reference" title="External reference" />
 
                                             </div>

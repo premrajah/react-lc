@@ -1149,25 +1149,42 @@ class ProductForm extends Component {
                                         select={"Select"}
                                         error={this.state.errors["type"]}
                                         onChange={(value)=> {
+
+                                            console.log(value,">",this.state.subCategories )
+                                            this.setState({
+                                                states:[],
+                                                units:[]
+                                            })
+
+                                            setTimeout(()=>{
+                                                if ( this.state.subCategories&&this.state.subCategories.length>0){
+
+
+
+                                                    console.log("change type detected")
+                                                    let subCatSelected=this.state.subCategories.find(
+                                                        (item) => item.name === value
+                                                    )
+
+                                                    let states=[]
+                                                    let units=[]
+                                                    if(subCatSelected) {
+                                                        states = subCatSelected.state
+                                                        units = subCatSelected.units
+                                                        console.log(states)
+                                                    }
+
+                                                    this.setState({
+                                                        subCatSelected: subCatSelected ? subCatSelected : null,
+                                                        states: states,
+                                                        units: units
+                                                    })
+                                                }
+                                            },500)
+
+
                                             this.handleChangeProduct(value,"type")
 
-                                            this.setState({
-                                                subCatSelected: this.state.subCategories&& this.state.subCategories.length>0&&this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                ).length>0?this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                )[0]:null,
-
-                                                states:this.state.subCategories&&
-                                                this.state.subCategories.length>0&&this.state.subCategories.filter((item) => item.name === value).length>0?this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                )[0].state:[],
-                                                units: this.state.subCategories&&this.state.subCategories.length>0&&this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                ).length>0?this.state.subCategories.filter(
-                                                    (item) => item.name === value
-                                                )[0].units:[]
-                                            })
                                         }}
 
                                         disabled={
@@ -1183,11 +1200,15 @@ class ProductForm extends Component {
                                     <SelectArrayWrapper
                                         initialValue={this.props.item?this.props.item.product.state:""
                                         ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
-                                        onChange={(value)=>this.handleChangeProduct(value,"state")}
+                                        onChange={(value)=>  {
+
+                                            this.handleChangeProduct(value,"state")}
+                                        }
                                         error={this.state.errors["state"]}
                                         select={"Select"}
                                         disabled={ (this.state.states.length > 0 )? false : true}
-                                        options={this.state.states?this.state.states:[]} name={"state"} title="State"/>
+                                        options={this.state.states?this.state.states:[]} name={"state"} title="State"
+                                    />
                                 </div>
 
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>

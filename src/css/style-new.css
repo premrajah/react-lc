@@ -95,6 +95,12 @@
     background: var(--lc-bg-gray) !important;
 }
 
+.rdw-image-custom-option {
+    border: 1px solid #F1F1F1;
+    background-color: white;
+    border-radius: 2px;
+}
+
 .rdw-dropdown-wrapper,
 .rdw-inline-dropdown,
 .rdw-block-wrapper,
@@ -106,7 +112,8 @@
 .rdw-emoji-wrapper,
 .rdw-remove-wrapper,
 .rdw-dropdown-wrapper,
-.rdw-history-dropdown
+.rdw-history-dropdown,
+.rdw-image-custom-option
 {
     height: 30px !important;
     max-height: 30px !important;

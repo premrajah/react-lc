@@ -3,6 +3,7 @@ import {ContentState, convertToRaw, EditorState} from "draft-js";
 import {Editor} from "react-draft-wysiwyg"
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
+import WysiwygCustomIcons from "./WysiwygCustomIcons";
 
 
 function uploadImageCallBack(file) {
@@ -65,7 +66,7 @@ class WysiwygEditor extends Component{
                 editorState={editorState}
                 onEditorStateChange={this.onEditorStateChange}
                 toolbar={{
-                    options: ['inline', 'blockType', 'fontSize', 'fontFamily','list','textAlign','link','colorPicker','emoji','remove','history'],
+                    options: ['inline', 'blockType', 'fontSize', 'fontFamily','list','textAlign','link','colorPicker','emoji','remove','history', /*'image'*/],
 
                     inline: { inDropdown: true },
                     list: { inDropdown: true },
@@ -74,6 +75,7 @@ class WysiwygEditor extends Component{
                     history: { inDropdown: true },
                     // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
                 }}
+                toolbarCustomButtons={[<WysiwygCustomIcons />]}
 
                 // mention={{
                 //     separator: ' ',

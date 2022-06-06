@@ -35,7 +35,8 @@ class ProductLines extends Component {
             selectedEditItem:null,
             showDeletePopUp: false,
             showAddPopUp: false,
-            templates:[]
+            templates:[],
+            editItem:null
         };
 
     }
@@ -309,7 +310,8 @@ class ProductLines extends Component {
 
                 <div className="row mt-4">
                     <div className="col-12 text-right text-blue">
-                        <button onClick={()=>this.toggleAddUser(true)} className=" btn-sm btn-gray-border  mr-2"><>
+                        <button onClick={()=>this.toggleAddUser(true)}
+                                className=" btn-sm btn-gray-border  mr-2"><>
                             <Add  style={{fontSize:"20px"}} />
                             Add New</></button>
                     </div>
@@ -321,7 +323,22 @@ class ProductLines extends Component {
                                     {this.state.templates.map((item,index)=>
                                             <div id={`product-${index}-${item.key}`} key={`product-${index}-${item.key}`}>
 
-                                            <ManageTemplateItem onClick={()=>this.handleDelete(item.key)} key={index} toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)} refreshList={this.fetchUsers} item={item.value} index={index}/>
+                                            <ManageTemplateItem
+                                                onClickEdit={(item)=>
+                                                {
+                                                    this.setState({
+                                                        editItem:item
+                                                    })
+                                                    this.toggleAddUser()
+
+                                                }}
+                                                onClick={()=>this.handleDelete(item.key)}
+                                                key={index}
+                                                toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)}
+                                                refreshList={this.fetchUsers}
+                                                item={item.value}
+                                                index={index}
+                                            />
 
                                         </div>
 
@@ -377,9 +394,16 @@ class ProductLines extends Component {
 
     </GlobalDialog>
 
-    <GlobalDialog hideHeader size={"md"} hide={()=>this.toggleAddUser()} show={this.state.showAddPopUp} heading={"Add New"} >
+    <GlobalDialog
+        hideHeader
+                  size={"md"} hide={()=>this.toggleAddUser()}
+                  show={this.state.showAddPopUp} heading={"Add New"} >
         <div className="col-12">
-          <ProductForm hide={()=>this.toggleAddUser()} refresh={()=>this.fetchCache()} productLines />
+          <ProductForm
+              item={this.state.editItem}
+              hide={()=>this.toggleAddUser()}
+                       refresh={()=>this.fetchCache()}
+                       productLines />
     </div>
     </GlobalDialog>
 

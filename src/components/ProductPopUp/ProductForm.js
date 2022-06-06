@@ -467,7 +467,9 @@ class ProductForm extends Component {
             const data = new FormData(event.target);
 
 
-            if (this.props.item){
+            if (this.props.item&&!this.props.productLines){
+
+
                 this.updateSubmitProduct(data)
             }
             else {
@@ -997,7 +999,7 @@ class ProductForm extends Component {
                     <div className="row">
                     <div className="col-md-8  col-xs-12">
                         <h4 className={"blue-text text-heading "}>
-                            {this.props.edit?"Edit Product":this.props.productLines?"Add Product Line":this.state.parentProductId?"Add subproduct":"Add product"}
+                            {this.props.edit?"Edit Product":this.props.productLines?this.props.item?"Edit "+this.props.item.name:"Add Product Line":this.state.parentProductId?"Add subproduct":"Add product"}
                         </h4>
                     </div>
                         {!this.props.productLines &&
@@ -1056,8 +1058,10 @@ class ProductForm extends Component {
                                 {this.props.productLines &&
                                 <div className="col-12 mt-2">
                                 <TextFieldWrapper
+
                                     details="The name of  template"
-                                      initialValue={this.props.item&&this.props.item.product.name}
+                                      initialValue={this.props.item&&this.props.item.name}
+                                    hidden={this.props.item?true:false}
                                         onChange={(value)=>this.handleChangeProduct(value,"templateName")}
                                         error={this.state.errors["templateName"]}
                                         name="templateName" title="Template Name"

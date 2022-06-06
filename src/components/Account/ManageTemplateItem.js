@@ -340,13 +340,15 @@ class ManageTemplateItem extends Component {
                     </div>
                     <div className=" col-2 text-right  ">
                     <div className={""}>
-                        {/*<CustomPopover text={"Assign Role"}>*/}
-                        {/*    <ActionIconBtn*/}
-                        {/*        type={"submit"}*/}
-                        {/*        title={"Submit"}*/}
-                        {/*    >*/}
-                        {/*        <Done />*/}
-                        {/*    </ActionIconBtn></CustomPopover>*/}
+                        <CustomPopover text={"Edit"}>
+                            <ActionIconBtn
+                                className={"mb-2"}
+                                onClick={()=>this.props.onClickEdit(this.props.item)}
+                                type={"submit"}
+                                title={"Submit"}
+                            >
+                                <Edit />
+                            </ActionIconBtn></CustomPopover>
                         <CustomPopover text={"Cancel"}>
                             <ActionIconBtn
                                 className={"mb-2"}

@@ -23,6 +23,7 @@ const TextFieldWrapper = ({
     detailsHeading,
     validators,
     label,
+    hidden,
     onChange,
     error,
     initialValue,
@@ -65,7 +66,7 @@ const TextFieldWrapper = ({
 
     return (
         <>
-            {title && (
+            {title &&!hidden&& (
                 <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
                     <span className="mr-1">{title}</span>
                     {details && (
@@ -85,6 +86,7 @@ const TextFieldWrapper = ({
                     type={type}
                     variant="outlined"
                     label={label}
+                    hidden={hidden}
                     value={field}
                     className={error && "border-red-error"}
                     onChange={handleChange}

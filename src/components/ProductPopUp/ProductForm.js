@@ -119,7 +119,8 @@ class ProductForm extends Component {
             showForm:true,
             templates:[],
             selectedTemplated:null,
-            artifacts:[]
+            artifacts:[],
+            is_manufacturer:false
 
         };
 
@@ -338,6 +339,13 @@ class ProductForm extends Component {
             is_listable: checked,
         });
     }
+    checkListableManufacturer(checked) {
+
+
+        this.setState({
+            is_manufacturer: checked,
+        });
+    }
 
     showMoreDetails() {
         this.setState({
@@ -490,6 +498,8 @@ class ProductForm extends Component {
                 const part_no = data.get("part_no");
                 const state = data.get("state");
                 const is_listable = this.state.is_listable;
+                const is_manufacturer = this.state.is_manufacturer;
+
                 const site = data.get("deliver")
                 const year_of_making = data.get("manufacturedDate") ? data.get("manufacturedDate") : 0
                 const external_reference = data.get("external_reference")
@@ -509,6 +519,8 @@ class ProductForm extends Component {
                     volume: volume,
                     energy_rating: energy_rating,
                     is_listable: is_listable,
+                    is_manufacturer: is_manufacturer,
+
                     "external_reference": external_reference,
                     sku: {
                         serial: serial,
@@ -814,6 +826,8 @@ class ProductForm extends Component {
                     energy_rating : this.state.energyRating,
                     external_reference : external_reference,
                     is_listable: this.state.is_listable,
+                    is_manufacturer: this.state.is_manufacturer,
+
                     sku: {
                         serial: serial,
                         model: model,
@@ -1094,8 +1108,17 @@ class ProductForm extends Component {
                                         name={"is_listable"} title="List for sale" />
 
                                 </div>}
+                                {!this.props.productLines &&    <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
-                                <div className="col-md-8 col-sm-12">
+                                    <CheckboxWrapper
+                                        details="Is Manufacturer ?"
+                                        initialValue={this.props.item&&this.props.item.product.is_manufacturer}
+                                        onChange={(checked)=>this.checkListableManufacturer(checked)} color="primary"
+                                        name={"is_manufacturer"} title="Manufacturer" />
+
+                                </div>}
+
+                                <div className="col-md-4 col-sm-12">
 
                                     <SelectArrayWrapper
                                         details="Materials or category a product belongs to Type"

@@ -519,7 +519,7 @@ class ProductForm extends Component {
                     volume: volume,
                     energy_rating: energy_rating,
                     is_listable: is_listable,
-                    is_manufacturer: is_manufacturer,
+
 
                     "external_reference": external_reference,
                     sku: {
@@ -546,6 +546,7 @@ class ProductForm extends Component {
                 completeData = {
                     product: productData,
                     sub_products: [],
+                    is_manufacturer: is_manufacturer,
                     artifact_ids: this.state.images,
                     site_id: site,
                     parent_product_id: this.state.parentProductId ? this.state.parentProductId : null,
@@ -811,6 +812,7 @@ class ProductForm extends Component {
 
             const productData = {
                 id: this.props.item.product._key,
+                is_manufacturer: this.state.is_manufacturer,
                 update: {
                     artifacts: this.state.images,
                     purpose: purpose.toLowerCase(),
@@ -826,7 +828,7 @@ class ProductForm extends Component {
                     energy_rating : this.state.energyRating,
                     external_reference : external_reference,
                     is_listable: this.state.is_listable,
-                    is_manufacturer: this.state.is_manufacturer,
+
 
                     sku: {
                         serial: serial,

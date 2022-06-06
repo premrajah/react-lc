@@ -176,8 +176,16 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         } else {
             setMessageText(null);
         }
-
     };
+
+    const handleEnterCallback = (value) => {
+        if(!value) return;
+
+        // for enter command
+        if(value === "split-block") {
+            handleSendMessage() // send message
+        }
+    }
 
     const handleOrgSelectedCallback = (value) => {
         setSelectedOrgs(value);
@@ -367,7 +375,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                 richTextHandleCallback={(value) =>
                                     handleRichTextCallback(value)
                                 }
+                                handleEnterCallback={(value, content) => handleEnterCallback(value, content)}
                             />
+                            <div><small>Press enter to send message, CTRL+Enter or Shift+ENTER for carriage return</small></div>
                         </div>
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ContentState, convertToRaw, EditorState} from "draft-js";
+import {ContentState, convertToRaw, EditorState, RichUtils} from "draft-js";
 import {Editor} from "react-draft-wysiwyg"
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
@@ -53,6 +53,10 @@ class WysiwygEditor extends Component{
         this.setState({ editorState });
     }
 
+    handleKeyCommand = (command) => {
+        this.props.handleEnterCallback(command);
+    }
+
     render(){
         const { editorState } = this.state;
         return <div className="">
@@ -76,7 +80,7 @@ class WysiwygEditor extends Component{
                     // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
                 }}
                 toolbarCustomButtons={[<WysiwygCustomIcons />]}
-
+                handleKeyCommand={(command) => this.handleKeyCommand(command)}
                 // mention={{
                 //     separator: ' ',
                 //     trigger: '@',

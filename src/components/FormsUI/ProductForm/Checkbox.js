@@ -3,7 +3,7 @@ import {Checkbox} from '@mui/material'
 import {Info} from "@mui/icons-material";
 import CustomPopover from "../CustomPopover";
 
-const CheckboxWrapper = ({name, title,details,detailsHeading,onChange, legend,initialValue,error, ...otherProps}) => {
+const CheckboxWrapper = ({name,showErrorMessage, title,details,detailsHeading,onChange, legend,initialValue,error, ...otherProps}) => {
 
     const [field,setField] = useState(initialValue)
 
@@ -43,6 +43,11 @@ const CheckboxWrapper = ({name, title,details,detailsHeading,onChange, legend,in
             <Checkbox
                 className={error?"border-red-error":""} checked={field} onChange={handleChange} {...configCheckbox} />
             </span>
+
+
+
+
+
 
 
         </>

@@ -215,6 +215,9 @@ class SignUp extends Component {
         let {formIsValid,errors}= validateInputs(validations)
 
         this.setState({ errors: errors });
+
+        console.log(errors)
+
         return formIsValid;
     }
 
@@ -429,16 +432,18 @@ class SignUp extends Component {
                             </div>
 
                             <div className="col-12  justify-content-center">
-                                <div className={""}>
-                                <p className={"mt-1 mb-2"}>
+                                <div className={"mb-2"}>
+                                <p className={"mt-1 mb-0"}>
                                     <CheckboxWrapper
+                                        showErrorMessage
                                         name={"agree"}
                                         onChange={(value)=>this.handleChange(value,"agree")}
                                         initialValue={false}
                                         // color="#07AD88"
-
+                                        error={this.state.errors["agree"]}
                                         inputProps={{ "aria-label": "secondary checkbox" }}
                                     />
+
                                 {/*</div>*/}
                                 {/*<div className={"col-10"}>*/}
                                 <span className={"small"}>
@@ -450,6 +455,14 @@ class SignUp extends Component {
                                     </span>
                                 </span>
                                 </p>
+
+                                    {this.state.errors["agree"] && (
+                                        <span
+                                            style={{ color: "#f44336", fontSize: "12px!important" }}
+                                            className="text-danger">
+                    {this.state.errors["agree"].message}
+                </span>
+                                    )}
                                 </div>
                             </div>
 

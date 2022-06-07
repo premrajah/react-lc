@@ -4323,3 +4323,7 @@ width: 100% !important
 
 select,select option {text-transform:capitalize!important;}
 
+.border-red-error{
+
+    color: #dc3545 !important;
+}

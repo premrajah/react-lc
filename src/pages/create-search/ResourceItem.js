@@ -8,7 +8,7 @@ import moment from "moment";
 import MoreMenu from "../../components/MoreMenu";
 import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
-import {capitalize} from "../../Util/GlobalFunctions";
+import {capitalize, getTimeFormat} from "../../Util/GlobalFunctions";
 import GrayBorderBtn from "../../components/FormsUI/Buttons/GrayBorderBtn";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 import OrgComponent from "../../components/Org/OrgComponent";
@@ -181,6 +181,9 @@ class ResourceItem extends Component {
 
                                     </span>
                                 </div>}
+                                <div className={"text-gray-light mt-1 mb-1 width-75 text-14"}>
+                                    <span>{getTimeFormat(this.props.item.listing.require_after_epoch_ms)}</span> - <span>{getTimeFormat(this.props.item.listing.expire_after_epoch_ms)}</span>
+                                </div>
                                 {this.props.item.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>
                                     <OrgComponent org={this.props.item.org }/>
                                 </div>}

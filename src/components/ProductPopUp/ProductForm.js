@@ -1018,7 +1018,7 @@ class ProductForm extends Component {
                             {this.props.edit?"Edit Product":this.props.productLines?this.props.item?"Edit "+this.props.item.name:"Add Product Line":this.state.parentProductId?"Add subproduct":"Add product"}
                         </h4>
                     </div>
-                        {!this.props.productLines &&
+                        {!this.props.hideUpload&&!this.props.productLines &&
                         <div className="col-md-4  col-xs-12 desktop-right">
                         <button className="btn btn-sm blue-btn pt-2" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
                         </div>}

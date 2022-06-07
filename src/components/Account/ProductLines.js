@@ -395,7 +395,7 @@ class ProductLines extends Component {
     </GlobalDialog>
 
     <GlobalDialog
-        hideHeader
+        hideHeading
                   size={"md"} hide={()=>this.toggleAddUser()}
                   show={this.state.showAddPopUp} heading={"Add New"} >
         <div className="col-12">

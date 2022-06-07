@@ -1019,7 +1019,7 @@ class ProductDetailContent extends Component {
                             }} >
 
                                     <div className="form-col-left col-12">
-                                        <ProductForm edit triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.props.item} />
+                                        <ProductForm hideUpload edit triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.props.item} />
                                     </div>
 
                         </GlobalDialog>

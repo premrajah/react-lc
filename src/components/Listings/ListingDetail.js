@@ -553,10 +553,11 @@ marteplace
                                                 <div className="col-12 ">
 
 
-                                        <ListEditForm
-                                            triggerCallback={this.showEdit}
-                                            listingId={this.state.item.listing._key}
-                                        />
+                                        {/*<ListEditForm*/}
+                                        {/*    triggerCallback={this.showEdit}*/}
+                                        {/*    listingId={this.state.item.listing._key}*/}
+                                        {/*/>*/}
+
 
 
 

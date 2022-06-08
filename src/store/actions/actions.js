@@ -57,7 +57,6 @@ import {
     ORG_CACHE,
     REFRESH_PAGE, EMPTY_CURRENT, CURRENT_PRODUCT_LOADING
 } from "../types";
-import {load} from "dotenv";
 
 // Added by Chandan For Google Analytics
 // Refer: https://github.com/react-ga/react-ga for usage details

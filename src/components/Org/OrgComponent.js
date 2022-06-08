@@ -1,22 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Info } from "@mui/icons-material";
 import { connect } from "react-redux";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 
 const OrgComponent = (props) => {
+    const [org, setOrg] = useState(props.org);
 
-    const [org,setOrg]= useState(props.org);
-
-    useEffect(()=>{
-
-        if (props.orgId){
-
-            fetchUserOrg(props.orgId)
+    useEffect(() => {
+        if (props.orgId) {
+            fetchUserOrg(props.orgId);
         }
+    }, []);
 
-    },[])
 
     const   fetchUserOrg=(org)=> {
         axios
@@ -35,22 +32,23 @@ const OrgComponent = (props) => {
 
     const orgPopover = (
         <Popover id="org-popover">
-            {org&&
-            <div className={"p-3"}>
-
-                <span className={"title-bold"} style={{ textTransform: "capitalize" }}>{org.name}</span>
-<br/>
-            {org.description && (
-               <>
-                <span className={"text-gray-light  "}>
-
-                                {org.description}
-                       </span>
-                   <br/>
-                    <span className={"text-gray-light  "}>Email: <span className={"text-pink"}>{org.email }</span></span>
-               </>
+            {org && (
+                <div className={"p-3"}>
+                    <span className={"title-bold"} style={{ textTransform: "capitalize" }}>
+                        {org.name}
+                    </span>
+                    <br />
+                    {org.description && (
+                        <>
+                            <span className={"text-gray-light  "}>{org.description}</span>
+                            <br />
+                            <span className={"text-gray-light  "}>
+                                Email: <span className={"text-pink"}>{org.email}</span>
+                            </span>
+                        </>
+                    )}
+                </div>
             )}
-            </div>}
         </Popover>
     );
 
@@ -60,26 +58,30 @@ const OrgComponent = (props) => {
 
     return (
         <>
-            {org &&  <div style={{ display: "inline-flex", justifyContent: "center", alignItems: "center" }}>
+            {org && (
                 <div
-                    className="mr-1 text-gray-light "
                     style={{
-                        textTransform: "capitalize",
-                        fontWeight: "700",
-                        // color : "#444",
-                    }}><span className={"sub-title-text-pink"}> {org.name}</span>
+                        display: "inline-flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}>
+                    <div
+                        className="mr-1 text-gray-light "
+                        style={{
+                            textTransform: "capitalize",
+                            fontWeight: "700",
+                            // color : "#444",
+                        }}>
+                        <span className={props.colorClass ? props.colorClass : "sub-title-text-pink"}> {org.name}</span>
+                    </div>
+                    <OverlayTrigger
+                        trigger={["hover", "focus"]}
+                        placement={"bottom"}
+                        overlay={orgPopover}>
+                        <Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"small"} />
+                    </OverlayTrigger>
                 </div>
-                <OverlayTrigger
-                    trigger={ ["hover", "focus"]}
-                    placement={"bottom"}
-                    overlay={orgPopover}
-                >
-                    <Info
-                        style={{ cursor: "pointer", color: "#d7d7d7" }}
-                        fontSize={"small"}
-                    />
-                </OverlayTrigger>
-            </div>}
+            )}
         </>
     );
 };

@@ -896,7 +896,7 @@ class ListForm extends Component {
                                                             showAddToListButton
                                                         />}
                                                         {this.state.selectedLoading&&
-                                                        <div>Loading.....</div>
+                                                        <div className="d-flex align-items-center">Loading.....</div>
                                                         }
 
                                                     </div>

@@ -29,6 +29,8 @@ const MATCH_REGEX = /Match\/([\w\d]+)/g;
 const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
 const PRODUCT_REGISTRATION = /ProductRegistration\/([\w\d]+)/g;
 const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
+const SITE_RELEASE_REGEX = /Site\/([\w\d]+)/g;
+
 const BRACKETS_REGEX = /[(\[)(\])]/g;
 const A_TAG_REGEX = /\<a(.*)\<\/a\>"/g;
 const LISTING_REGEX = /Listing\/([\w\d]+)/g;
@@ -301,6 +303,15 @@ class Notifications extends Component {
                 to={`/issue/${match}`}
                 onClick={() => this.messageRead(messageId)}>
                 Issue
+            </Link>
+        ));
+
+        text = reactStringReplace(text, SITE_RELEASE_REGEX, (match, i) => (
+            <Link
+                key={`${i}_${match}`}
+                to={"/approve?tab=3"}
+                onClick={() => this.messageRead(messageId)}>
+                Site Approvals
             </Link>
         ));
 

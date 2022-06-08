@@ -468,20 +468,13 @@ class CampaignDetailContent extends Component {
 
     componentDidMount() {
 
-
-
-        axios
-            // .get(baseUrl + "campaign/" + encodeUrl(this.slug))
-            .get(baseUrl + "campaign/" + encodeUrl(this.props.item.campaign._key))
+        axios.get(baseUrl + "campaign/" + encodeUrl(this.props.item.campaign._key))
             .then(
                 (response) => {
                     var responseAll = response.data;
-
-
                     this.setState({
                         item:responseAll.data
                     })
-
                 },
                 (error) => {
                     // this.setState({

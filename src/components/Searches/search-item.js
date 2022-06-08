@@ -8,7 +8,7 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import MoreMenu from "../MoreMenu";
-import {capitalize} from "../../Util/GlobalFunctions";
+import {capitalize, getTimeFormat} from "../../Util/GlobalFunctions";
 
 class SearchItem extends Component {
     constructor(props) {
@@ -128,9 +128,7 @@ class SearchItem extends Component {
                         </p>
                         <div className={"text-gray-light mt-1 mb-1 width-75 "}>
                             Category:
-                            <span
-
-                                className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                            <span className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.props.item.search.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
@@ -145,7 +143,9 @@ class SearchItem extends Component {
 
                                     </span>
                         </div>
-
+                        <div className={"text-gray-light mt-1 mb-1 width-75 text-14"}>
+                           <span>{getTimeFormat(this.props.item.search.require_after_epoch_ms)}</span> - <span>{getTimeFormat(this.props.item.search.expire_after_epoch_ms)}</span>
+                        </div>
                         <div className={"add-top-button pl-3-desktop"}>
 
                         <p className={"  status text-right"}>

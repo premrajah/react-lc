@@ -13,7 +13,7 @@ import {baseUrl} from "../../Util/Constants";
 import LinearProgress from "@mui/material/LinearProgress";
 import {makeStyles, withStyles} from "@mui/styles";
 import {Badge, Snackbar, Tooltip} from "@mui/material";
-import Alert from "@mui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import Menu from '@mui/material/Menu';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
@@ -354,39 +354,39 @@ class ComponentsNavbar extends React.Component {
                                     {/*<DropdownMenu className="dropdown-with-icons">*/}
                                         <Link className={"dropdown-item"} to="/account">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            Account
+                                           My Account
                                         </Link>
 
                                         <Link className={"dropdown-item"} to="/sites">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            Sites
+                                            My Sites
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-products">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            Products
+                                            My Products
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-campaigns">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            Campaigns
+                                            My Campaigns
                                         </Link>
 
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />
-                                            Searches
+                                            My Searches
                                         </Link>
 
                                         <Link className={"dropdown-item"} to="/my-listings">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            Listings
+                                            My Listings
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-cycles">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            Cycles
+                                            My Cycles
                                         </Link>
 
                                         <Link className={"dropdown-item"} to="/approve">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            Approvals
+                                            My Approvals
                                         </Link>
 
 

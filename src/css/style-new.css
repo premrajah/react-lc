@@ -113,6 +113,10 @@
     min-width: 40px !important;
 }
 
+.rdw-link-modal {
+    height: 280px !important;
+}
+
 .filter-conversations-data::after {
     position: absolute;
     right: 0px;
@@ -1721,6 +1725,7 @@ a.blue-btn-border
     height: 48px;
     background: transparent;
     display: inline-block;
+    margin: auto;
 }
 
 button.blue-btn-border svg{
@@ -4309,5 +4314,9 @@ width: 100% !important
 }
 
 
+select,select option {text-transform:capitalize!important;}
 
+.border-red-error{
 
+    color: #dc3545 !important;
+}

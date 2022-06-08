@@ -425,8 +425,7 @@ class CreateCampaign extends Component {
             .post(campaignStrategyUrl, data)
             .then(
                 (response) => {
-
-
+                    
                     this.setState({
 
                         strategyProducts:response.data.data

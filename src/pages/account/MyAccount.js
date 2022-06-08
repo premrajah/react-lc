@@ -18,6 +18,7 @@ import SystemManageUser from "../../components/Account/SystemManageUser";
 import ManageOrgUsers from "../../components/Account/ManageOrgUsers";
 import AssumeRoles from "../../components/Account/AssumeRoles";
 import ManageOrgSettings from "../../components/Account/ManageOrgSettings";
+import ProductLines from "../../components/Account/ProductLines";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -92,7 +93,7 @@ function MyAccount(props) {
                                         <Tab key={0} label="Personal Info" value={0} />
                                         <Tab key={1} label="Company Info" value={1} />
                                         <Tab key={2} label="Change Password" value={2} />
-                                        <Tab key={3} label="Transfer Scaling" value={3} />
+                                        <Tab key={3} label="Product Lines" value={3} />
                                         <Tab key={4} label="Statistics" value={4} />
                                         {props.userContext.perms.includes("OrgAdminWrite") && (
                                             <Tab key={5} label="Manage Users" value={5} />
@@ -126,9 +127,9 @@ function MyAccount(props) {
                                     <TabPanel value={value} index={2}>
                                         <ChangePassword />
                                     </TabPanel>
-                                    {/*<TabPanel value={value} index={3}>*/}
-                                    {/*    <TransferScaling />*/}
-                                    {/*</TabPanel>*/}
+                                    <TabPanel value={value} index={3}>
+                                        <ProductLines />
+                                    </TabPanel>
                                     <TabPanel value={value} index={4}>
                                         <Statistics />
                                     </TabPanel>
@@ -163,6 +164,8 @@ function MyAccount(props) {
                                             <ManageOrgSettings />
                                         </TabPanel>
                                     )}
+
+
                                 </div>
                             </div>
                         )}

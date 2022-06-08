@@ -23,6 +23,7 @@ const TextFieldWrapper = ({
     detailsHeading,
     validators,
     label,
+    hidden,
     onChange,
     error,
     initialValue,
@@ -33,11 +34,22 @@ const TextFieldWrapper = ({
 }) => {
     // const [field, mata] = useField(name)
     const classes = useStyles();
-    const [field, setField] = useState(initialValue);
+    const [field, setField] = useState(null);
 
     useEffect(() => {
-        if (onChange) onChange(initialValue);
-    }, []);
+
+        // if (initialValue) {
+        // if (name=="model"){
+        //     alert(initialValue)
+        // }
+
+            if (onChange) {
+                setField(initialValue)
+                // alert(initialValue)
+                onChange(initialValue);
+            }
+        // }
+    }, [initialValue]);
     const configTextField = {
         // ...field,
         ...otherProps,
@@ -54,7 +66,7 @@ const TextFieldWrapper = ({
 
     return (
         <>
-            {title && (
+            {title &&!hidden&& (
                 <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
                     <span className="mr-1">{title}</span>
                     {details && (
@@ -74,6 +86,7 @@ const TextFieldWrapper = ({
                     type={type}
                     variant="outlined"
                     label={label}
+                    hidden={hidden}
                     value={field}
                     className={error && "border-red-error"}
                     onChange={handleChange}

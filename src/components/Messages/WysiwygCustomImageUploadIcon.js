@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
-import AddImagesToProduct from "../UploadImages/AddImagesToProduct";
 import { Cancel, Check, Error, Publish } from "@mui/icons-material";
 import { baseUrl, MIME_TYPES_ACCEPT } from "../../Util/Constants";
 import { Spinner } from "react-bootstrap";
 import axios from "axios";
 
-class WysiwygCustomIcons extends Component {
+class WysiwygCustomImageUploadIcon extends Component {
     constructor(props) {
         super(props);
 
@@ -65,11 +63,9 @@ class WysiwygCustomIcons extends Component {
 
         this.setState({
             images: images,
-        });
-
-        this.setState({
             files: files,
         });
+
     }
 
     getBase64(file) {
@@ -244,4 +240,4 @@ class WysiwygCustomIcons extends Component {
     }
 }
 
-export default WysiwygCustomIcons;
+export default WysiwygCustomImageUploadIcon;

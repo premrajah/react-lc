@@ -3,7 +3,7 @@ import {ContentState, convertToRaw, EditorState, RichUtils} from "draft-js";
 import {Editor} from "react-draft-wysiwyg"
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
-import WysiwygCustomIcons from "./WysiwygCustomIcons";
+import WysiwygCustomImageUploadIcon from "./WysiwygCustomImageUploadIcon";
 
 
 function uploadImageCallBack(file) {
@@ -88,7 +88,7 @@ class WysiwygEditor extends Component{
                     history: { inDropdown: true },
                     // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
                 }}
-                toolbarCustomButtons={[<WysiwygCustomIcons />]}
+                toolbarCustomButtons={[<WysiwygCustomImageUploadIcon />]}
                 // handleKeyCommand={(command) => this.handleKeyCommand(command)}
                 // keyBindingFn={(e) => this.myKeyBindingFn(e)}
                 // mention={{

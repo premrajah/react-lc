@@ -26,9 +26,6 @@ class WysiwygCustomIcons extends Component {
         editorState: PropTypes.object,
     };
 
-    uploadImageIcon = (e) => {
-        console.log("> ", e.target);
-    };
 
     handleChangeFile(event) {
         let files = this.state.files;

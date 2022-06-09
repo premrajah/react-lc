@@ -50,6 +50,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [selectedOrgs, setSelectedOrgs] = useState([]);
     const [newMessageDisplay, setNewMessageDisplay] = useState(null);
     const [sendButtonDisable, setSendButtonDisable] = useState(false);
+    const [selectedMessageGroupKey, setSelectedMessageGroupKey] = useState(null);
 
 
     useEffect(() => {
@@ -98,6 +99,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const handleGroupClickCallback = (key) => {
         setClickedMessage([]); // clear selected message
         setNewMessageDisplay(null); // clear org visibility message
+        setSelectedMessageGroupKey(key);
 
         if(orgSearchVisibility) {
             setOrgSearchVisibility(false);
@@ -352,7 +354,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                             {(clickedMessage.length === 0 && (filteredGroups.length > 0 && filteredGroups[0].message_group._id !== 0)) && <div>{LoaderAnimated()}</div>}
                             {clickedMessage.length > 0 && (
                                 <div style={{ height: "500px", minHeight: "500px", maxHeight: "500px", overflow: "auto" }}>
-                                    <MessengerMessagesTwoSelectedMessage messages={clickedMessage} />
+                                    <MessengerMessagesTwoSelectedMessage groupMessageKey={selectedMessageGroupKey} messages={clickedMessage} />
                                 </div>
                             )}
                             {newMessageDisplay && <div className="row mt-2">

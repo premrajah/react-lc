@@ -54,7 +54,16 @@ class WysiwygEditor extends Component{
     }
 
     handleKeyCommand = (command) => {
-        this.props.handleEnterCallback(command);
+        console.log("> ", command)
+    }
+
+    myKeyBindingFn = (e) => {
+        if (e.keyCode === 13) {
+            this.props.handleEnterCallback(e.keyCode);
+            return e.keyCode;
+        }
+
+        return;
     }
 
     render(){
@@ -80,7 +89,8 @@ class WysiwygEditor extends Component{
                     // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
                 }}
                 toolbarCustomButtons={[<WysiwygCustomIcons />]}
-                handleKeyCommand={(command) => this.handleKeyCommand(command)}
+                // handleKeyCommand={(command) => this.handleKeyCommand(command)}
+                // keyBindingFn={(e) => this.myKeyBindingFn(e)}
                 // mention={{
                 //     separator: ' ',
                 //     trigger: '@',

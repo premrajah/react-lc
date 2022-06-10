@@ -37,6 +37,7 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
+import EventForm from "../Event/EventForm";
 
 
 class ProductDetailContent extends Component {
@@ -286,6 +287,15 @@ class ProductDetailContent extends Component {
         });
     }
 
+
+    showEvent() {
+
+        this.setState({
+            showEventPopUp: !this.state.showEventPopUp,
+        });
+    }
+
+
     componentWillUnmount() {
         clearInterval(this.interval);
     }
@@ -366,8 +376,12 @@ class ProductDetailContent extends Component {
             this.submitDuplicateProduct();
         } else if (action === "release") {
             this.showReleaseProductPopUp();
-        } else if (action === "serviceAgent") {
+        }
+        else if (action === "serviceAgent") {
             this.showServiceAgent();
+        }
+        else if (action === "addevent") {
+            this.showEvent();
         }
     }
 
@@ -831,6 +845,11 @@ class ProductDetailContent extends Component {
                                                                 ? true
                                                                 : false
                                                         }
+
+                                                        addEvent={(action)=>
+                                                            this.callBackResult(action)
+                                                        }
+
                                                     />
 
                                                     }
@@ -1007,6 +1026,26 @@ class ProductDetailContent extends Component {
                         {/*        </div>*/}
                         {/*    </div>*/}
 
+
+
+
+                        <GlobalDialog
+                            size="sm"
+                            heading={"Add event"}
+
+                            show={this.state.showEventPopUp}
+                            hide={()=> {
+                                this.showEvent();
+                            }} >
+
+                            <div className="form-col-left col-12">
+                                <EventForm
+
+                                    productId={this.state.item.product._id}
+                                    triggerCallback={(action) => this.callBackSubmit(action)}   />
+                            </div>
+
+                        </GlobalDialog>
 
 
                         <GlobalDialog

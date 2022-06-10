@@ -83,6 +83,7 @@ class CalenderEvents extends Component {
 
                         <LocalizationProvider   dateAdapter={AdapterDateFns}>
                             <CalendarPicker
+
                                 renderDay={(day, _value, DayComponentProps) => {
                                     const isSelected =
                                         !DayComponentProps.outsideCurrentMonth &&
@@ -102,64 +103,64 @@ class CalenderEvents extends Component {
                                     );
                                 }}
 
-                                style={{widht:"100%"}}
+                                style={{width:"500px"}}
                                 PopperProps={{
                                     sx: this.popperSx
                                 }}
                                 date={this.state.date} onChange={(newDate) => this.handleChange(newDate)} />
-                            {/*<StaticDatePicker*/}
+                            <StaticDatePicker
 
-                            {/*    PopperProps={{*/}
-                            {/*        sx: this.popperSx*/}
-                            {/*    }}*/}
-                            {/*    renderDay={(day, _value, DayComponentProps) => {*/}
-                            {/*        const isSelected =*/}
-                            {/*            !DayComponentProps.outsideCurrentMonth &&*/}
-                            {/*            this.state.highlightedDays.indexOf(day.getDate()) > 0;*/}
+                                PopperProps={{
+                                    sx: this.popperSx
+                                }}
+                                renderDay={(day, _value, DayComponentProps) => {
+                                    const isSelected =
+                                        !DayComponentProps.outsideCurrentMonth &&
+                                        this.state.highlightedDays.indexOf(day.getDate()) > 0;
 
-                            {/*        return (*/}
-                            {/*            <>*/}
-                            {/*                {isSelected ? <Badge*/}
-                            {/*                key={day.toString()}*/}
-                            {/*                // overlap="circular"*/}
-                            {/*                color={"secondary"}*/}
-                            {/*                badgeContent={ '2' }*/}
-                            {/*            >*/}
-                            {/*                <PickersDay {...DayComponentProps} />*/}
-                            {/*            </Badge>: <PickersDay {...DayComponentProps} />}*/}
-                            {/*                </>*/}
-                            {/*        );*/}
-                            {/*    }}*/}
+                                    return (
+                                        <>
+                                            {isSelected ? <Badge
+                                            key={day.toString()}
+                                            // overlap="circular"
+                                            color={"secondary"}
+                                            badgeContent={ '2' }
+                                        >
+                                            <PickersDay {...DayComponentProps} />
+                                        </Badge>: <PickersDay {...DayComponentProps} />}
+                                            </>
+                                    );
+                                }}
 
 
-                            {/*    // displayStaticWrapperAs="mobile"*/}
-                            {/*    // minDate={addDays(new Date(0, 0, 0, 8), days)}*/}
-                            {/*    // shouldDisableDate={disableWeekends}*/}
+                                // displayStaticWrapperAs="mobile"
+                                // minDate={addDays(new Date(0, 0, 0, 8), days)}
+                                // shouldDisableDate={disableWeekends}
 
-                            {/*    inputFormat={"yyyy-MM-dd HH:mm"}*/}
-                            {/*    // ampm={false}*/}
-                            {/*    // variant="inline"*/}
-                            {/*    // toolbarTitle={"Datum und Uhrzeit auswählen"}*/}
-                            {/*    variant="inline"*/}
-                            {/*    value={this.state.date}*/}
-                            {/*    label={""}*/}
-                            {/*    toolbarPlaceholder={""}*/}
-                            {/*    onChange={(newValue) => {*/}
-                            {/*        this.handleChange(newValue)*/}
-                            {/*    }}*/}
+                                inputFormat={"yyyy-MM-dd HH:mm"}
+                                // ampm={false}
+                                // variant="inline"
+                                // toolbarTitle={"Datum und Uhrzeit auswählen"}
+                                variant="inline"
+                                value={this.state.date}
+                                label={""}
+                                toolbarPlaceholder={""}
+                                onChange={(newValue) => {
+                                    this.handleChange(newValue)
+                                }}
 
-                            {/*    // minTime={new Date(0, 0, 0, 8)}*/}
-                            {/*    // maxTime={new Date(0, 0, 0, 17, 0)}*/}
-                            {/*    // shouldDisableTime={(timeValue, clockType) => {*/}
-                            {/*    //     if (clockType === 'hours' && (timeValue ==12)) {*/}
-                            {/*    //         return true;*/}
-                            {/*    //     }*/}
-                            {/*    //*/}
-                            {/*    //     return false;*/}
-                            {/*    // }}*/}
-                            {/*    renderInput={(params) => <TextField*/}
-                            {/*        sx={{width: '100%'}} {...params} />}*/}
-                            {/*/>*/}
+                                // minTime={new Date(0, 0, 0, 8)}
+                                // maxTime={new Date(0, 0, 0, 17, 0)}
+                                // shouldDisableTime={(timeValue, clockType) => {
+                                //     if (clockType === 'hours' && (timeValue ==12)) {
+                                //         return true;
+                                //     }
+                                //
+                                //     return false;
+                                // }}
+                                renderInput={(params) => <TextField
+                                    sx={{width: '100%'}} {...params} />}
+                            />
                         </LocalizationProvider>
 
                     </div>

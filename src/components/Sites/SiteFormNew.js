@@ -250,7 +250,8 @@ class SiteFormNew extends Component {
         const data = new FormData(event.target);
 
         const formData = {
-            parent_site_id: data.get("parent"),
+            // parent_site_id: data.get("parent"),
+
             site: {
                 name: data.get("name"),
                 description: data.get("description"),
@@ -287,20 +288,21 @@ class SiteFormNew extends Component {
 
         };
 
-        parentId=data.get("parent")
+
 
         this.setState({isSubmitButtonPressed: true})
 
         // return false
+
+
+        if (data.get("parent")){
+            formData.parent_site_id=data.get("parent")
+        }
         axios
             .put(
                 baseUrl + "site",
                 formData,
-                {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                }
+
             )
             .then((res) => {
 
@@ -370,7 +372,7 @@ class SiteFormNew extends Component {
                 others: data.get("other"),
                 phone: data.get("phone"),
                 is_head_office: this.state.isHeadOffice,
-                parent_id: data.get("parent"),
+                parent_id: data.get("parent")?data.get("parent"):null,
                 "geo_codes": [
                     {
                         "address_info": {

@@ -258,6 +258,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     text: messageText,
                 },
                 to_org_ids: orgIds,
+                linked_artifact_ids: uploadedImages.length > 0 && uploadedImages
             };
 
             postMessage(payload, "N")
@@ -271,6 +272,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 },
                 to_org_ids: [],
                 message_group_id: clickedMessageKey,
+                linked_artifact_ids: uploadedImages.length > 0 && uploadedImages
             };
 
             postMessage(payload, "R");
@@ -298,9 +300,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     handleGroupClickCallback(data.message_group._key);
                 }
 
-                if(uploadedImages.length > 0) {
-                    postUploadedImagesToMessageGroup(selectedMessageGroupKey, uploadedImages); // Upload images to group message
-                }
+                // if(uploadedImages.length > 0) {
+                //     postUploadedImagesToMessageGroup(selectedMessageGroupKey, uploadedImages); // Upload images to group message
+                // }
             })
             .catch(error => {
                 setSendButtonDisable(false);
@@ -381,7 +383,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         <div className="col" style={{ height: "500px", minHeight: "500px"}}>
                             {(clickedMessage.length === 0 && (filteredGroups.length > 0 && filteredGroups[0].message_group._id !== 0)) && <div>{LoaderAnimated()}</div>}
                             {clickedMessage.length > 0 && (
-                                <div style={{ height: "500px", minHeight: "500px", maxHeight: "500px", overflow: "auto" }}>
+                                <div style={{ height: "500px", minHeight: "500px", maxHeight: "500px" }}>
                                     <MessengerMessagesTwoSelectedMessage groupMessageKey={selectedMessageGroupKey} messages={clickedMessage} />
                                 </div>
                             )}

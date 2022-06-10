@@ -193,7 +193,8 @@ class WysiwygCustomImageUploadIcon extends Component {
                     </>
                 </div>
 
-                {this.state.files &&
+                <div className="message-upload-images-container d-flex flex-row-reverse" style={{position: "absolute", right: "0", top: "-90px"}}>
+                    {this.state.files &&
                     this.state.files.map((item, index) => (
                         <div key={index} className={"file-uploader-thumbnail-container"}>
                             <div
@@ -247,6 +248,7 @@ class WysiwygCustomImageUploadIcon extends Component {
                             </div>
                         </div>
                     ))}
+                </div>
             </div>
         );
     }

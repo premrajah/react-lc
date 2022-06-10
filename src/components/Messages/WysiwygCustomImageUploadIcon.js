@@ -24,6 +24,14 @@ class WysiwygCustomImageUploadIcon extends Component {
         editorState: PropTypes.object,
     };
 
+    resetImagesAfterMessageSend = () => {
+        this.setState({
+            files: [],
+            images: [],
+            artifacts: [],
+        })
+    }
+
 
     handleChangeFile(event) {
         let files = this.state.files;
@@ -66,6 +74,8 @@ class WysiwygCustomImageUploadIcon extends Component {
             files: files,
         });
 
+
+        this.props.handleUploadCallback(images); // callback for image ids
     }
 
     getBase64(file) {
@@ -132,6 +142,8 @@ class WysiwygCustomImageUploadIcon extends Component {
                                     this.setState({
                                         files: currentFiles,
                                     });
+
+                                    this.props.handleUploadCallback(images);
                                 })
                                 .catch((error) => {
                                     let currentFiles = [...this.state.files];
@@ -160,7 +172,7 @@ class WysiwygCustomImageUploadIcon extends Component {
         return (
             <div className="rdw-image-custom-option">
                 <div className={" d-flex justify-content-center align-items-center"}>
-                    <div>
+                    <>
                         <label htmlFor="fileInput">
                             <Publish
                                 style={{
@@ -178,7 +190,7 @@ class WysiwygCustomImageUploadIcon extends Component {
                             type="file"
                             onChange={this.handleChangeFile.bind(this)}
                         />
-                    </div>
+                    </>
                 </div>
 
                 {this.state.files &&

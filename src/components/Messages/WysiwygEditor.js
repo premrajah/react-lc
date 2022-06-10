@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
-import {ContentState, convertToRaw, EditorState, RichUtils} from "draft-js";
+import React, {Component, createRef} from 'react';
+import {ContentState, EditorState} from "draft-js";
 import {Editor} from "react-draft-wysiwyg"
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import draftToHtml from 'draftjs-to-html';
 import WysiwygCustomImageUploadIcon from "./WysiwygCustomImageUploadIcon";
 
 
@@ -31,6 +30,7 @@ function uploadImageCallBack(file) {
 class WysiwygEditor extends Component{
     constructor(props){
         super(props);
+        this.clearImages = createRef();
         this.state = {
             editorState: EditorState.createEmpty(),
         };
@@ -50,6 +50,7 @@ class WysiwygEditor extends Component{
 
     resetDraft = () => {
         const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));
+        this.clearImages.current.resetImagesAfterMessageSend(); // reset and clear images
         this.setState({ editorState });
     }
 
@@ -66,8 +67,13 @@ class WysiwygEditor extends Component{
         return;
     }
 
+    handleUploadCallback = (values) => {
+        this.props.handleImageUploadCallback(values)
+    }
+
     render(){
         const { editorState } = this.state;
+
         return <div className="">
             <Editor
 
@@ -88,7 +94,7 @@ class WysiwygEditor extends Component{
                     history: { inDropdown: true },
                     // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
                 }}
-                toolbarCustomButtons={[<WysiwygCustomImageUploadIcon />]}
+                toolbarCustomButtons={[<WysiwygCustomImageUploadIcon ref={this.clearImages} handleUploadCallback={(values) => this.handleUploadCallback(values)} />]}
                 // handleKeyCommand={(command) => this.handleKeyCommand(command)}
                 // keyBindingFn={(e) => this.myKeyBindingFn(e)}
                 // mention={{

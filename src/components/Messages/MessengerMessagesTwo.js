@@ -51,6 +51,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [newMessageDisplay, setNewMessageDisplay] = useState(null);
     const [sendButtonDisable, setSendButtonDisable] = useState(false);
     const [selectedMessageGroupKey, setSelectedMessageGroupKey] = useState(null);
+    const [uploadedImages, setUploadedImages] = useState([]);
 
 
     useEffect(() => {
@@ -95,6 +96,24 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
             });
     };
+
+    const postUploadedImagesToMessageGroup = (_key, imageIdsArray) => {
+        if(!_key) return;
+
+        let payload = {
+            "message_group_id": _key,
+            "artifact_ids": imageIdsArray
+        }
+
+        axios
+            .post(`${baseUrl}message-group/artifact`, payload)
+            .then(res => {
+                console.log("image upload res ", res.data.data);
+            })
+            .catch(error => {
+                showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
+            })
+    }
 
     const handleGroupClickCallback = (key) => {
         setClickedMessage([]); // clear selected message
@@ -160,6 +179,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         }
     }
 
+    const handleImageUploadCallback = (values) => {
+        setUploadedImages(values);
+    }
 
     const handleClearInputCallback = (v) => {
         if(!v) return;
@@ -275,12 +297,18 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     handleSelectedItemCallback(selectedMenuItemIndex);
                     handleGroupClickCallback(data.message_group._key);
                 }
+
+                if(uploadedImages.length > 0) {
+                    postUploadedImagesToMessageGroup(selectedMessageGroupKey, uploadedImages); // Upload images to group message
+                }
             })
             .catch(error => {
                 setSendButtonDisable(false);
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
             })
     }
+
+
 
     return (
         <React.Fragment>
@@ -378,6 +406,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                     handleRichTextCallback(value)
                                 }
                                 handleEnterCallback={(value, content) => handleEnterCallback(value, content)}
+                                handleImageUploadCallback={(values) => handleImageUploadCallback(values)}
                             />
                             {/*<div><small>Press enter to send message, CTRL+Enter or Shift+ENTER for carriage return</small></div>*/}
                         </div>

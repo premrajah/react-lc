@@ -15,18 +15,18 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
         value: PropTypes.number.isRequired,
     };
 
-    // useEffect(() => {
-    //     scrollToBottom();
-    // }, [messages]);
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
-    // const messagesEndRef = useRef(null);
+    const messagesEndRef = useRef(null);
 
     const [value, setValue] = React.useState(0);
     const [groupMessageArtifacts, setGroupMessageArtifacts] = useState([]);
 
-    // const scrollToBottom = () => {
-    //     messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: 'nearest', inline: 'start' });
-    // };
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: 'nearest', inline: 'start' });
+    };
 
     const handleTabsChange = (event, newValue) => {
         setValue(newValue);
@@ -70,7 +70,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
                     </Box>
                     <TabPanel value={value} index={0}>
                         {messages.length > 0 && (
-                            <div className="mb-5" style={{ height: "500px", minHeight: "500px", maxHeight: "500px", overflow: "auto" }}>
+                            <div className="mb-5" style={{ height: "400px", minHeight: "400px", maxHeight: "400px", overflow: "auto" }}>
                                 {messages.map((m, i) => (
                                     <React.Fragment key={i}>
                                         <div
@@ -81,7 +81,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
                                         </div>
                                     </React.Fragment>
                                 ))}
-                                {/*<div ref={messagesEndRef} />*/}
+                                <div ref={messagesEndRef} />
                             </div>
                         )}
                     </TabPanel>

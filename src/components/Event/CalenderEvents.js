@@ -94,8 +94,6 @@ class CalenderEvents extends Component {
     getEvents=()=>{
 
 
-
-
         let url=`${baseUrl}${this.props.productId?"product/"+this.props.productId+"/event":"event"}`
         axios
             // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
@@ -109,9 +107,6 @@ class CalenderEvents extends Component {
                         events:responseAll,
                         calendarEvents:this.convertEvents(responseAll)
                     })
-
-
-
 
                 },
                 (error) => {
@@ -142,6 +137,7 @@ class CalenderEvents extends Component {
                     <div className={`bg-white-1 ${this.props.smallView?"col-6":"col-8" }`}
                          // style={{position:"sticky!important",top:0}}
                     >
+                        {/*{(this.props.smallView&&(this.state.events.length>0))||(!this.props.smallView) &&*/}
                         <FullCalendar
                             defaultView="dayGridMonth"
                             header={{
@@ -152,11 +148,15 @@ class CalenderEvents extends Component {
                             plugins={[dayGridPlugin, timeGridPlugin]}
                             events={this.state.calendarEvents}
                         />
+                        {/*// }*/}
                     </div>
 
+                    {this.state.events.length>0 ?
                     <div className={`bg-white-1 ${this.props.smallView?"col-6":"col-4" }`}>
                         <EventItem smallView={this.props.smallView} events={this.state.events}/>
-                    </div>
+                    </div>:
+                        <div className={`bg-white-1 ${this.props.smallView?"col-6":"col-4" }`}>
+                            No Events exist</div>}
                 </div>
 
             </>

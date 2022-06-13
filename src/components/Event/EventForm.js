@@ -429,20 +429,29 @@ class EventForm extends Component {
             // }
             // else {
 
+
+        let eventData=  {
+                title : data.get("title"),
+                description : data.get("description"),
+                resolution_epoch_ms : new Date(this.state.startDate).getTime(),
+
+                process : data.get("process"),
+            // stage:"open"
+        }
+
+
+        if (data.get("interval")){
+
+            eventData.recur_in_epoch_ms = data.get("interval")
+        }
+
                 this.setState({isSubmitButtonPressed: true})
 
                     axios
                         .post(
                             baseUrl+"event",
                             {
-                                event:{
-                                     title : data.get("title"),
-                                     description : data.get("description"),
-                                     resolution_epoch_ms : new Date(this.state.startDate).getTime(),
-                                     recur_in_epoch_ms : data.get("interval"),
-                                     process : data.get("process"),
-                                    // stage:"open"
-                                },
+                                event:eventData,
                                 product_id : this.props.productId,
                                 artifact_ids: this.state.images
 
@@ -491,11 +500,21 @@ class EventForm extends Component {
         const data = new FormData(event.target);
 
 
-        // if (this.props.event&&!this.props.productLines){
-        //
-        //     this.updateSubmitProduct(data)
-        // }
-        // else {
+        let eventData=  {
+            title : data.get("title"),
+            description : data.get("description"),
+            resolution_epoch_ms : new Date(this.state.startDate).getTime(),
+
+            process : data.get("process"),
+            // stage:"open"
+        }
+
+
+        if (data.get("interval")){
+
+            eventData.recur_in_epoch_ms = data.get("interval")
+        }
+
 
         this.setState({isSubmitButtonPressed: true})
 
@@ -505,14 +524,7 @@ class EventForm extends Component {
                 {
                     id:this.props.event.event._key,
                     update: {
-                        event: {
-                            title: data.get("title"),
-                            description: data.get("description"),
-                            resolution_epoch_ms: new Date(this.state.startDate).getTime(),
-                            recur_in_epoch_ms: data.get("interval"),
-                            process: data.get("process"),
-                            // stage:"open"
-                        },
+                        event: eventData,
                         product_id: this.props.event.product.product._key,
                         artifact_ids: this.state.images
                     }
@@ -740,6 +752,7 @@ class EventForm extends Component {
                                           // }
                                           initialValue={this.props.event&&this.props.event.event.recur_in_epoch_ms}
 
+                                          select={"Select interval"}
                                           option={"value"}
                                           valueKey={"key"}
                                           onChange={(value)=> {

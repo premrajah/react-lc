@@ -58,7 +58,7 @@ class EventItem extends Component {
             {this.props.events.map(item=>
 
                 <>
-                    <ListItem className="mb-2 bg-white"  onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
+                    <ListItem className={`mb-2 bg-white  ${item.event.resolution_epoch_ms > Date.now()?"new-event":"past-event"}`}  onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
                         <ListItemAvatar>
                             <Avatar alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
@@ -79,13 +79,13 @@ class EventItem extends Component {
                                     <div className="mb-0">{item.event.description}</div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
 
-                                    <ActionIconBtn
+                                    {item.event.resolution_epoch_ms > Date.now() &&  <ActionIconBtn
                                         className="ml-4 right-btn"
                                         onClick={(e)=>{
                                             e.stopPropagation()
                                             e.preventDefault()
                                            this.showEditEventPopup(item)
-                                        }}><Edit/></ActionIconBtn>
+                                        }}><Edit/></ActionIconBtn>}
                                 </React.Fragment>
                             }
                         />

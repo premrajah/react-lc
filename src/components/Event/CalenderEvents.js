@@ -63,6 +63,7 @@ class CalenderEvents extends Component {
         calenderEvents.push({
             title:item.event.title,
             start:removeTime(item.event.resolution_epoch_ms),
+            className:"fc-event-"+item.event.process
 
         })
         )
@@ -93,6 +94,9 @@ class CalenderEvents extends Component {
 
     getEvents=()=>{
 
+        this.setState({
+            events:[]
+        })
 
         let url=`${baseUrl}${this.props.productId?"product/"+this.props.productId+"/event":"event"}`
         axios
@@ -134,7 +138,7 @@ class CalenderEvents extends Component {
 
                 <div className={"row justify-content-center create-product-row"}>
 
-                    <div className={`bg-white-1 ${this.props.smallView?"col-6":"col-8" }`}
+                    <div className={`bg-white-1 ${this.props.smallView?"col-6 fc-small-calender":"col-8" }`}
                          style={{position:"sticky!important",top:0}}
                     >
                         {/*{(this.props.smallView&&(this.state.events.length>0))||(!this.props.smallView) &&*/}
@@ -152,7 +156,7 @@ class CalenderEvents extends Component {
                     </div>
 
                     {this.state.events.length>0 ?
-                    <div className={`bg-white-1 ${this.props.smallView?"col-6":"col-4" }`}>
+                    <div  className={`bg-white-1 ${this.props.smallView?"small-log-view col-6":"col-4" }`}>
                         <EventItem smallView={this.props.smallView} events={this.state.events}/>
                     </div>:
                         <div className={`bg-white-1 ${this.props.smallView?"col-6":"col-4" }`}>

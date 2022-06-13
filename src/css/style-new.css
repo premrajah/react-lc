@@ -4336,7 +4336,7 @@ select,select option {text-transform:capitalize!important;}
     width:42px;
 }
 .fc-h-event{
-    background-color: #D31169!important;
+    /*background-color: #D31169!important;*/
     border: none!important;
     box-shadow: 2px 2px 1px 1px #888888;
 
@@ -4351,3 +4351,36 @@ select,select option {text-transform:capitalize!important;}
 .fc-scrollgrid-liquid{
     border-radius: 8px!important;
 }
+
+
+.fc-event-service{
+    background: #27245C!important;
+}
+
+.fc-event-warranty{
+    background: #dc3545!important;
+}
+
+.fc-event-repair_or_replace{
+    background: #D31169!important;
+}
+.fc-event-other{
+    background: #000000aa!important;
+}
+.fc-event-clean{
+    background: #07AD89!important;
+
+}
+.fc-small-calender .fc .fc-toolbar-title{
+    font-size: 1em!important;
+    font-weight: bold;
+}
+.fc-small-calender button{
+
+    font-size: 0.5em!important;
+}
+.small-log-view{
+    height: 320px;
+    overflow-y: scroll!important;
+}
+.past-event{background: #eee!important;}

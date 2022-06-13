@@ -22,6 +22,7 @@ import {convertToRaw} from "draft-js";
 
 const newMessagePlaceHOlder = {"message_group": {"_id": 0}, "orgs": [{"name": "New Message", "email": "new@new.com"}]}
 
+
 const useStyles = makeStyles(theme => ({
     customHoverFocus: {
         "&:hover, &.Mui-focusVisible": { color: "var(--lc-purple)" }
@@ -32,6 +33,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
+
+    let trackedGroups = [];
 
     const classes = useStyles();
 
@@ -61,10 +64,17 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     }, []);
 
     const getAllMessageGroups = () => {
+        trackedGroups = [];
+
         axios
             .get(`${baseUrl}message-group/non-empty/expand`)
             .then((res) => {
                 const data = res.data.data;
+
+                // track lists
+                data.forEach((d, index) => {
+                    trackedGroups.push({groupKey: d._key, index: index})
+                })
 
                 setAllGroups(data);
                 setFilteredGroups(data);
@@ -291,11 +301,13 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 // getAllMessageGroups();
 
                 if(messageType === "N") {
+                    console.log("New Message")
                     handleClearOrgSearch(); // clear selected orgs
                     getAllMessageGroups();
                 }
 
                 if(messageType === "R") {
+                    console.log("Replayed Message")
                     handleSelectedItemCallback(selectedMenuItemIndex);
                     handleGroupClickCallback(data.message_group._key);
                 }

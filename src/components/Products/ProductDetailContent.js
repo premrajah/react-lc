@@ -1041,11 +1041,14 @@ class ProductDetailContent extends Component {
                             show={this.state.showEventPopUp}
                             hide={()=> {
                                 this.showEvent();
-                            }} >
+                            }}
+                        >
 
                             <div className="form-col-left col-12">
                                 <EventForm
-
+                                    hide={()=> {
+                                        this.showEvent();
+                                    }}
                                     productId={this.state.item.product._key}
                                     triggerCallback={(action) => this.callBackSubmit(action)}   />
                             </div>

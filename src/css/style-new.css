@@ -4320,3 +4320,11 @@ select,select option {text-transform:capitalize!important;}
 
     color: #dc3545 !important;
 }
+.right-btn{
+    position: absolute!important;
+    right: 10px;
+    top: 10px;
+    bottom: 0;
+    height:42px;
+    width:42px;
+}

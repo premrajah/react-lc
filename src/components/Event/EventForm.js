@@ -1,33 +1,26 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import Select from "@mui/material/Select";
 import "../../Util/upload-file.css";
-import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
+import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import axios from "axios/index";
 import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import _ from "lodash";
 import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
-import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
-import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
-import SiteFormNew from "../Sites/SiteFormNew";
-import Slider from '@mui/material/Slider';
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
-import ProductExpandItemNew from "../Products/ProductExpandItemNew";
-import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+
 var slugify = require('slugify')
 
 
@@ -126,9 +119,11 @@ class EventForm extends Component {
             artifacts:[],
             is_manufacturer:false,
             intervals:[
-                {key:1000,value:"Weekly"},
-                {key:2000,value:"Montly"},
-                {key:1000,value:"Annualy"},
+                {key:86400 ,value:"Every Day"},
+                {key:604800 ,value:"Every Week"},
+                {key:864000,value:"Every 10 Days"},
+                {key:2629743 ,value:"Every Month"},
+                {key:31556926 ,value:"Every Year"},
             ],
             processes:[
 
@@ -150,8 +145,7 @@ class EventForm extends Component {
         this.handleChangeFile = this.handleChangeFile.bind(this);
         this.uploadImage = this.uploadImage.bind(this);
 
-        this.checkListable = this.checkListable.bind(this);
-        this.showMoreDetails = this.showMoreDetails.bind(this);
+
     }
 
     showSubmitSite=()=> {
@@ -181,12 +175,12 @@ class EventForm extends Component {
                         categories: responseAll,
                     });
 
-                    if (responseAll.length>0&&this.props.item){
+                    if (responseAll.length>0&&this.props.event){
 
-                        let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        let cat=responseAll.filter((item) => item.name === this.props.event.product.category)
                         let subCategories=cat.length>0?cat[0].types:[]
-                       let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
-                          let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                       let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.event.product.category)[0].types.filter((item) => item.name === this.props.event.product.type)[0].state:[]
+                          let  units = states.length>0?responseAll.filter((item) => item.name === this.props.event.product.category)[0].types.filter((item) => item.name === this.props.event.product.type)[0].units:[]
 
                         this.setState({
                             subCategories:subCategories,
@@ -367,26 +361,7 @@ class EventForm extends Component {
         });
     }
 
-    showMoreDetails() {
-        this.setState({
-            moreDetail: !this.state.moreDetail,
-        });
-    }
 
-    setUpYearList() {
-        let years = [];
-
-        let currentYear = new Date().getFullYear();
-
-        //Loop and add the Year values to DropDownList.
-        for (let i = currentYear; i >= 1950; i--) {
-            years.push(i);
-        }
-
-        this.setState({
-            yearsList: years,
-        });
-    }
 
 
     handleValidationProduct() {
@@ -430,27 +405,6 @@ class EventForm extends Component {
     }
 
 
-    showProductSelection=() =>{
-
-
-        this.props.loadProductsWithoutParentNoListing({offset:0,size:this.props.productPageSize, refresh:true});
-
-
-        if (!this.props.parentProduct) {
-            this.props.setProduct(this.state.product);
-            this.props.setParentProduct(this.state.parentProduct);
-        } else {
-        }
-
-        // this.props.loadProducts(this.props.userDetail.token);
-        // this.props.loadProductsWithoutParent(this.props.userDetail.token);
-
-        this.props.showProductPopUp({ type: "sub_product_view", show: true });
-
-        this.props.loadProductsWithoutParent({offset:0,size:this.props.productPageSize, refresh:true});
-
-    }
-
     handleSubmit = (event) => {
 
 
@@ -469,7 +423,7 @@ class EventForm extends Component {
             const data = new FormData(event.target);
 
 
-            // if (this.props.item&&!this.props.productLines){
+            // if (this.props.event&&!this.props.productLines){
             //
             //     this.updateSubmitProduct(data)
             // }
@@ -504,6 +458,7 @@ class EventForm extends Component {
                                 message:   "Event created successfully. Thanks"
                             })
 
+                            this.props.hide()
                         })
                         .catch((error) => {
                             this.setState({
@@ -518,6 +473,75 @@ class EventForm extends Component {
 
     };
 
+    updateEvent = (event) => {
+
+        event.preventDefault();
+        event.stopPropagation()
+
+        if (!this.handleValidationProduct()){
+            return
+        }
+        const form = event.currentTarget;
+
+        this.setState({
+            btnLoading: true,
+            loading:true
+        });
+
+        const data = new FormData(event.target);
+
+
+        // if (this.props.event&&!this.props.productLines){
+        //
+        //     this.updateSubmitProduct(data)
+        // }
+        // else {
+
+        this.setState({isSubmitButtonPressed: true})
+
+        axios
+            .post(
+                baseUrl+"event/update",
+                {
+                    id:this.props.event.event._key,
+                    update: {
+                        event: {
+                            title: data.get("title"),
+                            description: data.get("description"),
+                            resolution_epoch_ms: new Date(this.state.startDate).getTime(),
+                            recur_in_epoch_ms: data.get("interval"),
+                            process: data.get("process"),
+                            // stage:"open"
+                        },
+                        product_id: this.props.event.product.product._key,
+                        artifact_ids: this.state.images
+                    }
+                },
+            )
+            .then((res) => {
+
+
+
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message:   "Event updated successfully. Thanks"
+                })
+
+                this.props.hide()
+            })
+            .catch((error) => {
+                this.setState({
+                    btnLoading: false,
+                    loading: false,
+                    isSubmitButtonPressed: false
+                });
+                this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+
+            });
+        // }
+
+    };
 
 
 
@@ -560,7 +584,7 @@ class EventForm extends Component {
                 baseUrl + "product/artifact/replace",
 
                 {
-                    product_id: this.props.item.product._key,
+                    product_id: this.props.event.product._key,
                     artifact_ids: this.state.images,
                 },
             )
@@ -580,100 +604,7 @@ class EventForm extends Component {
             });
     }
 
-    updateSite(site) {
-        axios
-            .post(
-                baseUrl + "product/site",
 
-                {
-                    product_id: this.props.item.product._key,
-                    site_id: site,
-                },
-            )
-            .then((res) => {})
-            .catch((error) => {
-
-            });
-    }
-
-    updateSubmitProduct = (formData) => {
-
-            const data = formData;
-            const title = data.get("title");
-            const purpose = data.get("purpose");
-            const condition = data.get("condition");
-            const description = data.get("description");
-            const category = data.get("category");
-            const type = data.get("type");
-            const units = data.get("units");
-
-            const serial = data.get("serial");
-            const model = data.get("model");
-            const brand = data.get("brand");
-
-            const volume = data.get("volume");
-            const sku = data.get("sku");
-            const upc = data.get("upc");
-            const part_no = data.get("part_no");
-            const state = data.get("state");
-           const external_reference = data.get("external_reference")
-            const site = data.get("deliver");
-           const power_supply = data.get("power_supply");
-
-            const productData = {
-                id: this.props.item.product._key,
-                is_manufacturer: this.state.is_manufacturer,
-                update: {
-                    artifacts: this.state.images,
-                    purpose: purpose.toLowerCase(),
-                    condition: condition.toLowerCase(),
-                    name: title,
-                    description: description,
-                    category: category,
-                    type: type,
-                    units: units,
-                    state: state,
-                    volume: Number(volume),
-                    stage: "certified",
-                    energy_rating : this.state.energyRating,
-                    external_reference : external_reference,
-                    is_listable: this.state.is_listable,
-
-
-                    sku: {
-                        serial: serial,
-                        model: model,
-                        brand: brand,
-                        sku: sku,
-                        upc: upc,
-                        part_no: part_no,
-                        power_supply: power_supply,
-                    },
-                    year_of_making: Number(data.get("manufacturedDate")),
-
-                },
-            };
-
-            axios
-                .post(
-                    baseUrl + "product",
-
-                    productData
-                )
-                .then((res) => {
-
-                        this.updateSite(site);
-                        this.updateImages();
-                       this.props.loadCurrentProduct(this.props.item.product._key)
-                    this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
-
-                    this.props.triggerCallback("edit")
-
-
-                })
-                .catch((error) => {});
-
-    };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps!=this.props){
@@ -682,88 +613,23 @@ class EventForm extends Component {
         }
     }
 
-    fetchCache=()=> {
-
-        this.setState({
-            btnLoading: true,
-
-        });
-        axios
-            .get(baseUrl + "org/cache")
-            .then(
-                (response) => {
-
-                    // this.setState({
-                    //     btnLoading: false,
-                    //
-                    // });
-
-                    let responseObj=response.data.data
-
-                    let keys=Object.keys(responseObj)
-
-                    let templates=[]
-                    keys.forEach((item)=> {
-
-                            if (item.includes("product_line"))
-                                templates.push({key: item, value: JSON.parse(responseObj[item])})
-                        }
-                    )
-                    // console.log(templates)
-
-                    this.setState({
-                        templates: templates,
-
-                    });
-
-
-                },
-                (error) => {
-                    // var status = error.response.status
-                }
-            );
-    }
 
     componentDidMount() {
 
         window.scrollTo(0, 0);
 
-        // console.log(this.props.productId,this.props.type)
-        this.setState({
-            parentProductId:null
-        }, ()=>{
 
-            this.handleView(this.props.productId,this.props.type)
 
-        })
-
-      // alert("called")
-
-        if (this.props.item){
-            this.loadImages(this.props.item.artifacts)
+        if (this.props.event){
+            this.loadImages(this.props.event.artifacts)
             this.setState({
                 isEditProduct:true,
+                startDate:this.props.event.event.resolution_epoch_ms
             })
         }
 
 
-        this.setUpYearList();
 
-        this.props.loadSites(this.props.userDetail.token);
-
-        // if (this.props.productId){
-        //     this.setState({
-        //         productId:this.props.productId,
-        //         showForm:false
-        //     })
-        // }else{
-        //     this.setState({
-        //         productId:null,
-        //         showForm:true
-        //     })
-        // }
-
-        this.fetchCache()
 
     }
 
@@ -776,34 +642,6 @@ class EventForm extends Component {
     }
 
 
-    handleView=(productId,type)=>{
-
-        this.setState({
-            categories:[],
-            subCategories:[],
-            states :[],
-            units : []
-        })
-        this.getFiltersCategories();
-
-        if (type=='new') {
-            this.setState({
-                parentProductId: productId?productId:null,
-                showForm: true
-            })
-        }
-        else if (type=='parent') {
-            this.setState({
-                parentProductId: productId,
-                showForm: false
-            })
-        }
-
-
-        // this.props.setMultiplePopUp({show:true,type:"isProduct"})
-        // this.props.showProductPopUp({ action: "hide_all", show: false });
-
-    }
 
 
 
@@ -818,16 +656,14 @@ class EventForm extends Component {
 
                 <div className={"row justify-content-center create-product-row"}>
                     <div className={"col-12"}>
-                          <form onSubmit={this.handleSubmit}>
+                          <form onSubmit={this.props.event?this.updateEvent:this.handleSubmit}>
                             <div className="row ">
 
                                 <div className="col-12 mt-2">
 
                                    <TextFieldWrapper
                                        details="The name of a event"
-                                     initialValue={(this.props.item?this.props.item.product.name:"")
-                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.name:"")
-                                     }
+                                     initialValue={(this.props.event?this.props.event.event.title:"")}
                                      onChange={(value)=>this.handleChangeProduct(value,"title")}
                                      error={this.state.errors["title"]}
                                      name="title" title="Title"
@@ -841,9 +677,7 @@ class EventForm extends Component {
                                 <div className="col-12">
 
                                     <TextFieldWrapper  details="Describe the product your adding"
-                                        initialValue={this.props.item&&this.props.item.product.description
-                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.description:"")
-                                        }
+                                        initialValue={this.props.event&&this.props.event.event.description}
                                         onChange={(value)=>this.handleChangeProduct(value,"description")}
                                         error={this.state.errors["description"]}
                                         multiline
@@ -879,7 +713,7 @@ class EventForm extends Component {
                                           inputFormat="dd/MM/yyyy"
                                           value={this.state.startDate}
 
-                                          // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
+                                          // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.event&&this.props.event.campaign.start_ts}
                                           // onChange={this.handleChangeDateStartDate.bind(
                                           //     this
                                           // )}
@@ -901,9 +735,10 @@ class EventForm extends Component {
                                           //       Aggregate: a product made up from other products,
                                           //       Prototype: a first version of a product"
 
-                                          // initialValue={this.props.item?(this.props.item.product.purpose):""
+                                          // initialValue={this.props.event?(this.props.event.product.purpose):""
                                           //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.purpose:"")
                                           // }
+                                          initialValue={this.props.event&&this.props.event.event.recur_in_epoch_ms}
 
                                           option={"value"}
                                           valueKey={"key"}
@@ -924,9 +759,11 @@ class EventForm extends Component {
                                           //       Aggregate: a product made up from other products,
                                           //       Prototype: a first version of a product"
 
-                                          // initialValue={this.props.item?(this.props.item.product.purpose):""
+                                          // initialValue={this.props.event?(this.props.event.product.purpose):""
                                           //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.purpose:"")
                                           // }
+
+                                          initialValue={this.props.event&&this.props.event.event.process}
                                           onChange={(value)=> {
                                               this.handleChangeProduct(value,"process")
 
@@ -1109,7 +946,7 @@ class EventForm extends Component {
 
                                     ) : (
                                     <GreenButton
-                                        title={this.props.item?"Update Product":"Add Product"}
+                                        title={this.props.event?"Update Event":"Add Event"}
                                         type={"submit"}
                                         loading={this.state.loading}
                                         disabled={this.state.loading||this.state.isSubmitButtonPressed}
@@ -1120,7 +957,7 @@ class EventForm extends Component {
                                     )
                                 ) : (
                                     <GreenButton
-                                    title={this.props.item?"Update Product":"Add Product"}
+                                    title={this.props.event?"Update Event":"Add Event"}
                                     type={"submit"}
                                     loading={this.state.loading}
 

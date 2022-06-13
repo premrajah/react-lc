@@ -12,6 +12,9 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import moment from "moment/moment";
 import {checkImage} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
+import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
+import {Edit} from "@mui/icons-material";
+import EventForm from "./EventForm";
 
 class EventItem extends Component {
         constructor(props) {
@@ -23,7 +26,9 @@ class EventItem extends Component {
                 events:[],
                 calendarEvents:[],
                 showEvent:false,
-                selectedEvent:null
+                showEditEvent:false,
+                selectedEvent:null,
+                editEvent:null
             }
         }
 
@@ -33,6 +38,12 @@ class EventItem extends Component {
                 selectedEvent:item,
                 showEvent:!this.state.showEvent
             })
+    }
+    showEditEventPopup=(item)=>{
+        this.setState({
+            editEvent:item,
+            showEditEvent:!this.state.showEditEvent
+        })
     }
 
         render() {
@@ -48,7 +59,8 @@ class EventItem extends Component {
 
                 <>
                     <ListItem className="mb-2 bg-white"  onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
-                        {!this.props.smallView && <ListItemAvatar>
+                        {!this.props.smallView &&
+                        <ListItemAvatar>
                             <Avatar alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
                         </ListItemAvatar>}
                         <ListItemText
@@ -66,6 +78,14 @@ class EventItem extends Component {
                                     </Typography>
                                     <div className="mb-0">{item.event.description}</div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
+
+                                    <ActionIconBtn
+                                        className="ml-4 right-btn"
+                                        onClick={(e)=>{
+                                            e.stopPropagation()
+                                            e.preventDefault()
+                                           this.showEditEventPopup(item)
+                                        }}><Edit/></ActionIconBtn>
                                 </React.Fragment>
                             }
                         />
@@ -235,6 +255,17 @@ class EventItem extends Component {
                         </div>
 
                     </GlobalDialog>
+
+                    <GlobalDialog
+                        heading={this.state.editEvent?this.state.editEvent.event.title:null}
+                        show={this.state.showEditEvent}
+                        hide={this.showEditEventPopup}
+                    ><div className={"col-12"}>
+                        {this.state.editEvent && <EventForm  hide={this.showEditEventPopup} event={this.state.editEvent} />}
+                        </div>
+                    </GlobalDialog>
+
+
                     </>
             );
         }

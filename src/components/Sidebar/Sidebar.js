@@ -156,6 +156,14 @@ class Sidebar extends Component {
                                         </Link>
                                         <Link
                                             onClick={this.toggleMenu}
+                                            to={"/my-diary"}
+                                            className="white-text list-group-item list-group-item-action">
+                                            My Diary
+                                        </Link>
+
+
+                                        <Link
+                                            onClick={this.toggleMenu}
                                             to={"/my-campaigns"}
                                             className="white-text list-group-item list-group-item-action">
                                             My Campaigns

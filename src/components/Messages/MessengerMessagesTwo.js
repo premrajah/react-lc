@@ -258,7 +258,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     text: messageText,
                 },
                 to_org_ids: orgIds,
-                linked_artifact_ids: uploadedImages.length > 0 && uploadedImages
+                linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : []
             };
 
             postMessage(payload, "N")
@@ -272,7 +272,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 },
                 to_org_ids: [],
                 message_group_id: clickedMessageKey,
-                linked_artifact_ids: uploadedImages.length > 0 && uploadedImages
+                linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : []
             };
 
             postMessage(payload, "R");

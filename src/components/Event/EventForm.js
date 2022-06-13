@@ -523,11 +523,11 @@ class EventForm extends Component {
                 baseUrl+"event/update",
                 {
                     id:this.props.event.event._key,
-                    update: {
-                        event: eventData,
-                        product_id: this.props.event.product.product._key,
-                        artifact_ids: this.state.images
-                    }
+                    update:
+                         eventData,
+                        // product_id: this.props.event.product.product._key,
+                        // artifact_ids: this.state.images
+
                 },
             )
             .then((res) => {

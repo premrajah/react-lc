@@ -861,7 +861,16 @@ class ProductForm extends Component {
 
 
                 })
-                .catch((error) => {});
+                .catch((error) => {
+
+                    this.setState({
+                        btnLoading: false,
+                        loading: false,
+                        isSubmitButtonPressed: false
+                    });
+                    this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+
+                });
 
     };
 

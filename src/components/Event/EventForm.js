@@ -131,7 +131,14 @@ class EventForm extends Component {
                 {key:1000,value:"Annualy"},
             ],
             processes:[
-                "Service","Warranty Expire","Clean","Repair / Replacement of parts"
+
+
+                {key:"service",value:"Service"},
+                {key:"warranty",value:"Warranty Expire"},
+                {key:"clean",value:"Clean"},
+                {key:"repair_or_replace",value:"Repair / Replacement of parts"},
+                {key:"other",value:"Other"},
+
             ]
 
 
@@ -474,12 +481,13 @@ class EventForm extends Component {
                         .post(
                             baseUrl+"event",
                             {
-                                issue:{
+                                event:{
                                      title : data.get("title"),
                                      description : data.get("description"),
                                      resolution_epoch_ms : new Date(this.state.startDate).getTime(),
                                      recur_in_epoch_ms : data.get("interval"),
-                                    process : data.get("process"),
+                                     process : data.get("process"),
+                                    // stage:"open"
                                 },
                                 product_id : this.props.productId,
                                 artifact_ids: this.state.images
@@ -852,7 +860,7 @@ class EventForm extends Component {
                                       className={
                                           "custom-label text-bold text-blue "
                                       }>
-                                      Required From
+                                      Date
                                   </div>
 
                                   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -905,7 +913,7 @@ class EventForm extends Component {
                                           }}
 
                                           options={this.state.intervals} name={"interval"}
-                                          title="Set Interval"/>
+                                          title="Recurring interval"/>
 
                                   </div>
                                   <div className="col-md-4  col-sm-12 col-xs-12  ">
@@ -923,7 +931,8 @@ class EventForm extends Component {
                                               this.handleChangeProduct(value,"process")
 
                                           }}
-
+                                          option={"value"}
+                                          valueKey={"key"}
                                           options={this.state.processes} name={"process"}
                                           title="Process"/>
 

@@ -4,14 +4,16 @@ import {connect} from "react-redux";
 import "../../Util/upload-file.css";
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import TextField from '@mui/material/TextField';
-import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
-import {StaticDatePicker,DatePicker} from "@mui/lab";
 import EventItem from "./EventItem";
-import Badge from '@mui/material/Badge';
-import { PickersDay } from '@mui/x-date-pickers/PickersDay';
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import {removeTime} from "../../Util/GlobalFunctions";
+
+
+
 function getRandomNumber(min, max) {
     return Math.round(Math.random() * (max - min) + min);
 }
@@ -40,7 +42,9 @@ class CalenderEvents extends Component {
 
         this.state = {
           date:null,
-            highlightedDays:[1,2,15]
+            highlightedDays:[1,2,15],
+            events:[],
+            calendarEvents:[]
         }
     }
 
@@ -52,6 +56,20 @@ class CalenderEvents extends Component {
 
     }
 
+    convertEvents=(events)=>{
+        let calenderEvents=[]
+        events.forEach(item=>
+
+        calenderEvents.push({
+            title:item.event.title,
+            start:removeTime(item.event.resolution_epoch_ms),
+
+        })
+        )
+
+        return calenderEvents
+
+    }
 
 
      popperSx = {
@@ -72,6 +90,47 @@ class CalenderEvents extends Component {
         "& .MuiTabs-root": { backgroundColor: "rgba(120, 120, 120, 0.4)" }
     };
 
+
+    getEvents=()=>{
+
+
+
+
+        let url=`${baseUrl}${this.props.productId?"product/"+this.props.productId+"/event":"event"}`
+        axios
+            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
+            .get(url)
+            .then(
+                (response) => {
+
+                    var responseAll = response.data.data;
+
+                    this.setState({
+                        events:responseAll,
+                        calendarEvents:this.convertEvents(responseAll)
+                    })
+
+
+
+
+                },
+                (error) => {
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+                }
+            );
+
+
+
+    }
+
+
+    componentDidMount() {
+
+        this.getEvents()
+    }
+
     render() {
 
 
@@ -79,94 +138,24 @@ class CalenderEvents extends Component {
             <>
 
                 <div className={"row justify-content-center create-product-row"}>
-                    <div className={"col-8"}>
 
-                        <LocalizationProvider   dateAdapter={AdapterDateFns}>
-                            <CalendarPicker
-
-                                renderDay={(day, _value, DayComponentProps) => {
-                                    const isSelected =
-                                        !DayComponentProps.outsideCurrentMonth &&
-                                        this.state.highlightedDays.indexOf(day.getDate()) > 0;
-
-                                    return (
-                                        <>
-                                            {isSelected ? <Badge
-                                                key={day.toString()}
-                                                // overlap="circular"
-                                                color={"secondary"}
-                                                badgeContent={ '2' }
-                                            >
-                                                <PickersDay {...DayComponentProps} />
-                                            </Badge>: <PickersDay {...DayComponentProps} />}
-                                        </>
-                                    );
-                                }}
-
-                                style={{width:"500px"}}
-                                PopperProps={{
-                                    sx: this.popperSx
-                                }}
-                                date={this.state.date} onChange={(newDate) => this.handleChange(newDate)} />
-                            <StaticDatePicker
-
-                                PopperProps={{
-                                    sx: this.popperSx
-                                }}
-                                renderDay={(day, _value, DayComponentProps) => {
-                                    const isSelected =
-                                        !DayComponentProps.outsideCurrentMonth &&
-                                        this.state.highlightedDays.indexOf(day.getDate()) > 0;
-
-                                    return (
-                                        <>
-                                            {isSelected ? <Badge
-                                            key={day.toString()}
-                                            // overlap="circular"
-                                            color={"secondary"}
-                                            badgeContent={ '2' }
-                                        >
-                                            <PickersDay {...DayComponentProps} />
-                                        </Badge>: <PickersDay {...DayComponentProps} />}
-                                            </>
-                                    );
-                                }}
-
-
-                                // displayStaticWrapperAs="mobile"
-                                // minDate={addDays(new Date(0, 0, 0, 8), days)}
-                                // shouldDisableDate={disableWeekends}
-
-                                inputFormat={"yyyy-MM-dd HH:mm"}
-                                // ampm={false}
-                                // variant="inline"
-                                // toolbarTitle={"Datum und Uhrzeit auswählen"}
-                                variant="inline"
-                                value={this.state.date}
-                                label={""}
-                                toolbarPlaceholder={""}
-                                onChange={(newValue) => {
-                                    this.handleChange(newValue)
-                                }}
-
-                                // minTime={new Date(0, 0, 0, 8)}
-                                // maxTime={new Date(0, 0, 0, 17, 0)}
-                                // shouldDisableTime={(timeValue, clockType) => {
-                                //     if (clockType === 'hours' && (timeValue ==12)) {
-                                //         return true;
-                                //     }
-                                //
-                                //     return false;
-                                // }}
-                                renderInput={(params) => <TextField
-                                    sx={{width: '100%'}} {...params} />}
-                            />
-                        </LocalizationProvider>
-
+                    <div className={`bg-white-1 ${this.props.smallView?"col-6":"col-8" }`}
+                         // style={{position:"sticky!important",top:0}}
+                    >
+                        <FullCalendar
+                            defaultView="dayGridMonth"
+                            header={{
+                                left: "prev,next",
+                                center: "title",
+                                right: "dayGridMonth,timeGridWeek,timeGridDay"
+                            }}
+                            plugins={[dayGridPlugin, timeGridPlugin]}
+                            events={this.state.calendarEvents}
+                        />
                     </div>
-                    <div className={"col-4"}>
 
-                        <EventItem/>
+                    <div className={`bg-white-1 ${this.props.smallView?"col-6":"col-4" }`}>
+                        <EventItem smallView={this.props.smallView} events={this.state.events}/>
                     </div>
                 </div>
 

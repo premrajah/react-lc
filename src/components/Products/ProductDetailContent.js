@@ -38,6 +38,7 @@ import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
+import CalenderEvents from "../Event/CalenderEvents";
 
 
 class ProductDetailContent extends Component {
@@ -928,6 +929,7 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
+                                                        <Tab label="Events" value="8" />
 
                                                     </TabList>
                                                 </Box>
@@ -1001,6 +1003,9 @@ class ProductDetailContent extends Component {
                                                     <ArtifactProductsTab item={this.props.item}/>
                                                 </TabPanel>
 
+                                                <TabPanel value="8">
+                                                    <CalenderEvents productId={this.state.item.product._key} smallView  />
+                                                </TabPanel>
                                             </TabContext>
                                         </Box>
 
@@ -1041,7 +1046,7 @@ class ProductDetailContent extends Component {
                             <div className="form-col-left col-12">
                                 <EventForm
 
-                                    productId={this.state.item.product._id}
+                                    productId={this.state.item.product._key}
                                     triggerCallback={(action) => this.callBackSubmit(action)}   />
                             </div>
 

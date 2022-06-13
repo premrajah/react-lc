@@ -1,20 +1,12 @@
 import React, {useEffect} from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import {makeStyles} from '@mui/styles';
 import CustomizedSelect from "./CustomizedSelect";
 import CustomPopover from "../CustomPopover";
 import InfoIcon from "./InfoIcon";
 
 
-const useStyles = makeStyles((theme) => ({
-    formControl: {
 
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
 
 const SelectArrayWrapper = (props) => {
 
@@ -23,7 +15,7 @@ const SelectArrayWrapper = (props) => {
         defaultValue,options,multiple,error, ...rest} = props;
 
     const [value, setValue] = React.useState();
-    const classes = useStyles();
+
     const handleChange = (event) => {
         setValue(event.target.value);
            if (onChange)
@@ -55,7 +47,7 @@ const SelectArrayWrapper = (props) => {
 
             </div>}
             <div className={"field-box mb-2"}>
-                <FormControl variant="standard" >
+                <FormControl variant="outlined" >
                 {label && <InputLabel >{label}</InputLabel>}
 
 

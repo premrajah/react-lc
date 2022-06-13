@@ -4328,3 +4328,19 @@ select,select option {text-transform:capitalize!important;}
     height:42px;
     width:42px;
 }
+.fc-h-event{
+    background-color: #D31169!important;
+    border: none!important;
+    box-shadow: 2px 2px 1px 1px #888888;
+
+}
+.fc-today-button {
+    display: none!important;
+}
+
+.fc-daygrid-day.fc-day-today{
+    background-color: var(--lc-bg-gray) !important;
+}
+.fc-scrollgrid-liquid{
+    border-radius: 8px!important;
+}

@@ -135,7 +135,7 @@ class CalenderEvents extends Component {
                 <div className={"row justify-content-center create-product-row"}>
 
                     <div className={`bg-white-1 ${this.props.smallView?"col-6":"col-8" }`}
-                         // style={{position:"sticky!important",top:0}}
+                         style={{position:"sticky!important",top:0}}
                     >
                         {/*{(this.props.smallView&&(this.state.events.length>0))||(!this.props.smallView) &&*/}
                         <FullCalendar

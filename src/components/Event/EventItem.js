@@ -41,13 +41,13 @@ class EventItem extends Component {
             return (
 
                 <>
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        <List sx={{ width: '100%', maxWidth: 360 }}>
 
 
             {this.props.events.map(item=>
 
                 <>
-                    <ListItem onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
+                    <ListItem className="mb-2 bg-white"  onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView && <ListItemAvatar>
                             <Avatar alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
                         </ListItemAvatar>}
@@ -70,7 +70,7 @@ class EventItem extends Component {
                             }
                         />
                     </ListItem>
-                    <Divider variant="inset" component="li" />
+                    {/*<Divider variant="inset" component="li" />*/}
                 </>
             )}
 

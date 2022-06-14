@@ -34,14 +34,13 @@ const useStyles = makeStyles(theme => ({
 
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
-    let trackedGroups = [];
-
     const classes = useStyles();
 
     const resetDraftRef = useRef(null);
     const orgSearchRef = useRef(null);
 
     const [allGroups, setAllGroups] = useState([]);
+    const [trackedMessageGroups, setTrackedMessageGroups] = useState([]);
     const [clickedMessage, setClickedMessage] = useState([]);
     const [clickedMessageKey, setClickedMessageKey] = useState(null);
     const [selectedMenuItemIndex, setSelectedMenuItemIndex] = useState(null);
@@ -57,6 +56,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [uploadedImages, setUploadedImages] = useState([]);
 
 
+
     useEffect(() => {
         handleSelectedItemCallback(0);
         getAllMessageGroups();
@@ -64,20 +64,20 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     }, []);
 
     const getAllMessageGroups = () => {
-        trackedGroups = [];
-
+        setTrackedMessageGroups([]);
         axios
             .get(`${baseUrl}message-group/non-empty/expand`)
             .then((res) => {
                 const data = res.data.data;
-
+                let tempTrackedMessageGroups = [];
                 // track lists
                 data.forEach((d, index) => {
-                    trackedGroups.push({groupKey: d._key, index: index})
+                    tempTrackedMessageGroups.push({groupKey: d.message_group._key, index: index})
                 })
 
                 setAllGroups(data);
                 setFilteredGroups(data);
+                setTrackedMessageGroups(tempTrackedMessageGroups);
 
                 // on first load handle click
                 // if (selectedMenuItemIndex === 0) {
@@ -326,6 +326,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
     return (
         <React.Fragment>
+            {console.log(trackedMessageGroups)}
             <div className="row" style={{ height: "45px" }}>
                 <div className="col-md-4">
                     <div className="row">

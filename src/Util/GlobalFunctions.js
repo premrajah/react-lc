@@ -248,4 +248,37 @@ export const getActionName=(actionName)=>{
 }
 
 
+export const  removeTimeToStart=(date = new Date())=> {
 
+    let timestampConvertedDate=new Date(date)
+    let dateConverted=new Date(
+        timestampConvertedDate.getFullYear(),
+        timestampConvertedDate.getMonth(),
+        timestampConvertedDate.getDate()
+    );
+    console.log(dateConverted)
+    return dateConverted
+}
+
+
+export const removeTime=(date = new Date())=> {
+
+    let timestampConvertedDate=new Date(date)
+
+    let dateString=
+        timestampConvertedDate.getFullYear()+ "-"
+        +("0" +(timestampConvertedDate.getMonth() + 1)).slice(-2)  +"-"
+        +("0" +timestampConvertedDate.getDate()).slice(-2) ;
+
+    console.log(dateString)
+
+    return  dateString
+}
+
+
+export  const getInitials=(name = '') => name
+    .replace(/\s+/, ' ')
+    .split(' ')
+    .slice(0, 2)
+    .map((v) => v && v[0].toUpperCase())
+    .join('');

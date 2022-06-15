@@ -37,6 +37,8 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
+import EventForm from "../Event/EventForm";
+import CalenderEvents from "../Event/CalenderEvents";
 
 
 class ProductDetailContent extends Component {
@@ -286,6 +288,15 @@ class ProductDetailContent extends Component {
         });
     }
 
+
+    showEvent() {
+
+        this.setState({
+            showEventPopUp: !this.state.showEventPopUp,
+        });
+    }
+
+
     componentWillUnmount() {
         clearInterval(this.interval);
     }
@@ -366,8 +377,12 @@ class ProductDetailContent extends Component {
             this.submitDuplicateProduct();
         } else if (action === "release") {
             this.showReleaseProductPopUp();
-        } else if (action === "serviceAgent") {
+        }
+        else if (action === "serviceAgent") {
             this.showServiceAgent();
+        }
+        else if (action === "addevent") {
+            this.showEvent();
         }
     }
 
@@ -831,6 +846,11 @@ class ProductDetailContent extends Component {
                                                                 ? true
                                                                 : false
                                                         }
+
+                                                        addEvent={(action)=>
+                                                            this.callBackResult(action)
+                                                        }
+
                                                     />
 
                                                     }
@@ -909,6 +929,7 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
+                                                        <Tab label="Events" value="8" />
 
                                                     </TabList>
                                                 </Box>
@@ -982,6 +1003,9 @@ class ProductDetailContent extends Component {
                                                     <ArtifactProductsTab item={this.props.item}/>
                                                 </TabPanel>
 
+                                                <TabPanel value="8">
+                                                    <CalenderEvents productId={this.state.item.product._key} smallView  />
+                                                </TabPanel>
                                             </TabContext>
                                         </Box>
 
@@ -1007,6 +1031,29 @@ class ProductDetailContent extends Component {
                         {/*        </div>*/}
                         {/*    </div>*/}
 
+
+
+
+                        <GlobalDialog
+                            size="sm"
+                            heading={"Add event"}
+
+                            show={this.state.showEventPopUp}
+                            hide={()=> {
+                                this.showEvent();
+                            }}
+                        >
+
+                            <div className="form-col-left col-12">
+                                <EventForm
+                                    hide={()=> {
+                                        this.showEvent();
+                                    }}
+                                    productId={this.state.item.product._key}
+                                    triggerCallback={(action) => this.callBackSubmit(action)}   />
+                            </div>
+
+                        </GlobalDialog>
 
 
                         <GlobalDialog

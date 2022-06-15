@@ -47,7 +47,7 @@ const MessengerMessageTwoMessageBubble = ({m, userDetail}) => {
             </div>
         </div>
 
-        <div className="row mt-2">
+        <div className="row mt-2 mb-2">
             <div className="col">
                 <div
                     dangerouslySetInnerHTML={createMarkup(

@@ -365,10 +365,16 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Products
                                         </Link>
+                                        <Link className={"dropdown-item"} to="/my-diary">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            My Diary
+                                        </Link>
                                         <Link className={"dropdown-item"} to="/my-campaigns">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Campaigns
                                         </Link>
+
+
 
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />

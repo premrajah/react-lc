@@ -22,6 +22,7 @@ import {convertToRaw} from "draft-js";
 
 const newMessagePlaceHOlder = {"message_group": {"_id": 0}, "orgs": [{"name": "New Message", "email": "new@new.com"}]}
 
+
 const useStyles = makeStyles(theme => ({
     customHoverFocus: {
         "&:hover, &.Mui-focusVisible": { color: "var(--lc-purple)" }
@@ -32,6 +33,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
+
+    let trackedGroups = [];
 
     const classes = useStyles();
 
@@ -50,6 +53,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [selectedOrgs, setSelectedOrgs] = useState([]);
     const [newMessageDisplay, setNewMessageDisplay] = useState(null);
     const [sendButtonDisable, setSendButtonDisable] = useState(false);
+    const [selectedMessageGroupKey, setSelectedMessageGroupKey] = useState(null);
+    const [uploadedImages, setUploadedImages] = useState([]);
 
 
     useEffect(() => {
@@ -59,10 +64,17 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     }, []);
 
     const getAllMessageGroups = () => {
+        trackedGroups = [];
+
         axios
             .get(`${baseUrl}message-group/non-empty/expand`)
             .then((res) => {
                 const data = res.data.data;
+
+                // track lists
+                data.forEach((d, index) => {
+                    trackedGroups.push({groupKey: d._key, index: index})
+                })
 
                 setAllGroups(data);
                 setFilteredGroups(data);
@@ -95,9 +107,28 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             });
     };
 
+    const postUploadedImagesToMessageGroup = (_key, imageIdsArray) => {
+        if(!_key) return;
+
+        let payload = {
+            "message_group_id": _key,
+            "artifact_ids": imageIdsArray
+        }
+
+        axios
+            .post(`${baseUrl}message-group/artifact`, payload)
+            .then(res => {
+                console.log("image upload res ", res.data.data);
+            })
+            .catch(error => {
+                showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
+            })
+    }
+
     const handleGroupClickCallback = (key) => {
         setClickedMessage([]); // clear selected message
         setNewMessageDisplay(null); // clear org visibility message
+        setSelectedMessageGroupKey(key);
 
         if(orgSearchVisibility) {
             setOrgSearchVisibility(false);
@@ -158,6 +189,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         }
     }
 
+    const handleImageUploadCallback = (values) => {
+        setUploadedImages(values);
+    }
 
     const handleClearInputCallback = (v) => {
         if(!v) return;
@@ -176,8 +210,16 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         } else {
             setMessageText(null);
         }
-
     };
+
+    const handleEnterCallback = (keyCode) => {
+        if(!keyCode) return;
+
+        // for enter command
+        if(keyCode === 13 && messageText) {
+            handleSendMessage() // send message
+        }
+    }
 
     const handleOrgSelectedCallback = (value) => {
         setSelectedOrgs(value);
@@ -226,6 +268,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     text: messageText,
                 },
                 to_org_ids: orgIds,
+                linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : []
             };
 
             postMessage(payload, "N")
@@ -239,6 +282,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 },
                 to_org_ids: [],
                 message_group_id: clickedMessageKey,
+                linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : []
             };
 
             postMessage(payload, "R");
@@ -257,20 +301,28 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 // getAllMessageGroups();
 
                 if(messageType === "N") {
+                    console.log("New Message")
                     handleClearOrgSearch(); // clear selected orgs
                     getAllMessageGroups();
                 }
 
                 if(messageType === "R") {
+                    console.log("Replayed Message")
                     handleSelectedItemCallback(selectedMenuItemIndex);
                     handleGroupClickCallback(data.message_group._key);
                 }
+
+                // if(uploadedImages.length > 0) {
+                //     postUploadedImagesToMessageGroup(selectedMessageGroupKey, uploadedImages); // Upload images to group message
+                // }
             })
             .catch(error => {
                 setSendButtonDisable(false);
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
             })
     }
+
+
 
     return (
         <React.Fragment>
@@ -343,8 +395,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         <div className="col" style={{ height: "500px", minHeight: "500px"}}>
                             {(clickedMessage.length === 0 && (filteredGroups.length > 0 && filteredGroups[0].message_group._id !== 0)) && <div>{LoaderAnimated()}</div>}
                             {clickedMessage.length > 0 && (
-                                <div style={{ height: "500px", minHeight: "500px", maxHeight: "500px", overflow: "auto" }}>
-                                    <MessengerMessagesTwoSelectedMessage messages={clickedMessage} />
+                                <div style={{ height: "500px", minHeight: "500px", maxHeight: "500px" }}>
+                                    <MessengerMessagesTwoSelectedMessage groupMessageKey={selectedMessageGroupKey} messages={clickedMessage} />
                                 </div>
                             )}
                             {newMessageDisplay && <div className="row mt-2">
@@ -367,7 +419,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                 richTextHandleCallback={(value) =>
                                     handleRichTextCallback(value)
                                 }
+                                handleEnterCallback={(value, content) => handleEnterCallback(value, content)}
+                                handleImageUploadCallback={(values) => handleImageUploadCallback(values)}
                             />
+                            {/*<div><small>Press enter to send message, CTRL+Enter or Shift+ENTER for carriage return</small></div>*/}
                         </div>
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>

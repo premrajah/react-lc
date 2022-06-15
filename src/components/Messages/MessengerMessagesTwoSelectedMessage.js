@@ -1,12 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { Box, Skeleton, Tab, Tabs } from "@mui/material";
 import PropTypes from "prop-types";
 import MessengerMessagesFilesDisplay from "./MessengerMessagesFilesDisplay";
 import MessengerMessageTwoMessageBubble from "./MessengerMessageTwoMessageBubble";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
 
-const MessengerMessagesTwoSelectedMessage = ({ messages, userDetail }) => {
+const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDetail }) => {
     TabPanel.propTypes = {
         children: PropTypes.node,
         index: PropTypes.number.isRequired,
@@ -20,6 +22,7 @@ const MessengerMessagesTwoSelectedMessage = ({ messages, userDetail }) => {
     const messagesEndRef = useRef(null);
 
     const [value, setValue] = React.useState(0);
+    const [groupMessageArtifacts, setGroupMessageArtifacts] = useState([]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: 'nearest', inline: 'start' });
@@ -40,6 +43,21 @@ const MessengerMessagesTwoSelectedMessage = ({ messages, userDetail }) => {
     }
 
 
+    const getArtifacts = () => {
+        setGroupMessageArtifacts([]); // clear artifacts
+        if(groupMessageKey) {
+            axios
+                .get(`${baseUrl}message-group/${groupMessageKey}/artifact`)
+                .then((res) => {
+                    let data = res.data.data;
+                    setGroupMessageArtifacts(data);
+                })
+                .catch(error => {
+
+                })
+        }
+    }
+
     return (
         <>
             {messages.length > 0 ? (
@@ -47,12 +65,12 @@ const MessengerMessagesTwoSelectedMessage = ({ messages, userDetail }) => {
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                         <Tabs value={value} onChange={handleTabsChange} aria-label="message-tabs">
                             <Tab label="Chats" {...a11yProps(0)} />
-                            <Tab label="Files" {...a11yProps(1)} />
+                            <Tab label="Group Files" {...a11yProps(1)} onClick={() => getArtifacts()} />
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
                         {messages.length > 0 && (
-                            <>
+                            <div className="mb-5" style={{ height: "400px", minHeight: "400px", maxHeight: "400px", overflow: "auto", overflowX: "hidden" }}>
                                 {messages.map((m, i) => (
                                     <React.Fragment key={i}>
                                         <div
@@ -64,23 +82,18 @@ const MessengerMessagesTwoSelectedMessage = ({ messages, userDetail }) => {
                                     </React.Fragment>
                                 ))}
                                 <div ref={messagesEndRef} />
-                            </>
+                            </div>
                         )}
                     </TabPanel>
+
                     <TabPanel value={value} index={1}>
-                        {messages.length > 0 &&
-                            messages.map((m, ind) => (
-                                <div key={ind}>
-                                    {m.artifacts.map((a, j) => (
-                                        <MessengerMessagesFilesDisplay key={j} artifacts={a} />
-                                    ))}
-                                </div>
-                            ))}
+                        {groupMessageArtifacts.length > 0 ? groupMessageArtifacts.map((a, index) => {
+                            return <MessengerMessagesFilesDisplay key={index} artifacts={a} />
+                        }) : <div>No group files yet.</div>}
                     </TabPanel>
                 </Box>
             ) : (
                 <div>
-                    abc
                     <Skeleton variant="rectangular" height="40px" />
                 </div>
             )}

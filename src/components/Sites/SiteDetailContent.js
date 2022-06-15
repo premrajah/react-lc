@@ -629,7 +629,7 @@ class SiteDetailContent extends Component {
 
                         <GlobalDialog
 
-                            size={"lg"}
+                            size={"md"}
                             hide={this.toggleSite}
                             show={this.state.showCreateSite}
                             heading={"Edit site"}>

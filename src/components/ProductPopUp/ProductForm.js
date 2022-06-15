@@ -1085,7 +1085,8 @@ class ProductForm extends Component {
                                 <TextFieldWrapper
 
                                     details="The name of  template"
-                                      initialValue={this.props.item&&this.props.item.name}
+
+                                    initialValue={(this.props.item?this.props.item.name:"")}
                                     hidden={this.props.item?true:false}
                                         onChange={(value)=>this.handleChangeProduct(value,"templateName")}
                                         error={this.state.errors["templateName"]}

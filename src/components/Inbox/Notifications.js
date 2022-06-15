@@ -323,7 +323,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 // to={`/event/${match}`}
-                onClick={() => {this.messageRead(messageId); this.showStageEventPopup(match) }}>
+                onClick={() => {this.showStageEventPopup(match); this.messageRead(messageId);  }}>
                 View Event
             </Link>
         ));

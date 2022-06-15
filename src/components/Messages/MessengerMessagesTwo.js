@@ -298,12 +298,11 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
                 handleResetWysiwygEditor()
                 setSendButtonDisable(false);
-                // getAllMessageGroups();
+                getAllMessageGroups();
 
                 if(messageType === "N") {
                     console.log("New Message")
                     handleClearOrgSearch(); // clear selected orgs
-                    getAllMessageGroups();
                 }
 
                 if(messageType === "R") {
@@ -326,7 +325,6 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
     return (
         <React.Fragment>
-            {console.log(trackedMessageGroups)}
             <div className="row" style={{ height: "45px" }}>
                 <div className="col-md-4">
                     <div className="row">

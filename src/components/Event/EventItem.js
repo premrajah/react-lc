@@ -10,11 +10,13 @@ import {getInitials, getTimeFormat} from "../../Util/GlobalFunctions";
 import {Component} from "react";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import moment from "moment/moment";
-import {checkImage} from "../../Util/Constants";
+import {baseUrl, checkImage} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import {Edit} from "@mui/icons-material";
+import {Done, Edit} from "@mui/icons-material";
 import EventForm from "./EventForm";
+import axios from "axios";
+import EventStatus from "./EventStatus";
 
 class EventItem extends Component {
         constructor(props) {
@@ -28,25 +30,107 @@ class EventItem extends Component {
                 showEvent:false,
                 showEditEvent:false,
                 selectedEvent:null,
-                editEvent:null
+                editEvent:null,
+                stageEventId:null,
+                showStagePopup:false,
             }
         }
 
 
     showEventPopup=(item)=>{
             this.setState({
-                selectedEvent:item,
+                // selectedEvent:item,
                 showEvent:!this.state.showEvent
             })
+
+        if (item)
+            this.getEvent(item.event._key,"show")
+        else{
+            this.setState({
+                selectedEvent:null
+            })
+        }
     }
     showEditEventPopup=(item)=>{
         this.setState({
-            editEvent:item,
+
             showEditEvent:!this.state.showEditEvent
         })
+
+
+        if (item)
+        this.getEvent(item.event._key,"edit")
+        else{
+            this.setState({
+                editEvent:null
+            })
+        }
     }
 
-        render() {
+
+    showStageEventPopup=(stageEventId)=>{
+        this.setState({
+            stageEventId:stageEventId,
+            showStagePopup:!this.state.showStagePopup
+        })
+
+        if (stageEventId)
+        {
+
+        }
+        else{
+            this.setState({
+                stageEventId:null
+            })
+        }
+    }
+
+
+    getEvent=(eventId,type)=>{
+
+
+        let url=`${baseUrl}event/${eventId}`
+        axios
+            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
+            .get(url)
+            .then(
+                (response) => {
+
+                    var responseAll = response.data.data;
+
+
+                    if (type=="edit")
+                    this.setState({
+                        editEvent:responseAll,
+                    })
+
+                    else{
+                        this.setState({
+                            selectedEvent:responseAll,
+                        })
+
+                    }
+
+                },
+                (error) => {
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+                }
+            );
+
+
+
+    }
+
+    componentDidMount() {
+            if (this.props.statusChange){
+
+            }
+    }
+
+
+    render() {
 
 
             return (
@@ -79,13 +163,25 @@ class EventItem extends Component {
                                     <div className="mb-0">{item.event.description}</div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
 
-                                    {item.event.resolution_epoch_ms > Date.now() &&  <ActionIconBtn
+                                    {item.event.resolution_epoch_ms > Date.now() &&
+                                    <ActionIconBtn
                                         className="ml-4 right-btn"
                                         onClick={(e)=>{
                                             e.stopPropagation()
                                             e.preventDefault()
                                            this.showEditEventPopup(item)
-                                        }}><Edit/></ActionIconBtn>}
+                                        }}><Edit/></ActionIconBtn>
+                                    }
+                                    {/*<ActionIconBtn*/}
+                                    {/*    className="ml-4 right-btn"*/}
+                                    {/*    onClick={(e)=>{*/}
+                                    {/*        e.stopPropagation()*/}
+                                    {/*        e.preventDefault()*/}
+                                    {/*        this.showStageEventPopup(item.event._key)*/}
+                                    {/*    }}><Done/>*/}
+                                    {/*</ActionIconBtn>*/}
+
+
                                 </React.Fragment>
                             }
                         />
@@ -265,6 +361,16 @@ class EventItem extends Component {
                         </div>
                     </GlobalDialog>
 
+
+                    <GlobalDialog
+                        heading={"Update Stage"}
+                        show={this.state.showStagePopup}
+                        hide={this.showStageEventPopup}
+                    ><div className={"col-12"}>
+                        <EventStatus eventId={this.state.stageEventId}/>
+
+                    </div>
+                    </GlobalDialog>
 
                     </>
             );

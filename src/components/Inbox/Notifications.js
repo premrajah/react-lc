@@ -505,7 +505,7 @@ class Notifications extends Component {
                     show={this.state.showStagePopup}
                     hide={this.showStageEventPopup}
                 ><div className="col-12">
-                    <EventStatus eventId={this.state.stageEventId}/>
+                    <EventStatus hide={this.showStageEventPopup} eventId={this.state.stageEventId}/>
 
                 </div>
                 </GlobalDialog>

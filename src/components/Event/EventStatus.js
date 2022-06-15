@@ -147,7 +147,7 @@ class EventForm extends Component {
                             baseUrl+"event/stage",
                             {
                                 id:this.props.eventId,
-                              stage:  data.get("stage")
+                              new_stage:  data.get("stage")
 
                             },
                         )

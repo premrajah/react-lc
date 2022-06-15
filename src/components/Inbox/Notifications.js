@@ -19,6 +19,8 @@ import TabPanel from "@mui/lab/TabPanel";
 import CustomPopover from "../FormsUI/CustomPopover";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {CheckCircle} from "@mui/icons-material";
+import EventStatus from "../Event/EventStatus";
+import GlobalDialog from "../RightBar/GlobalDialog";
 
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
@@ -30,6 +32,7 @@ const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
 const PRODUCT_REGISTRATION = /ProductRegistration\/([\w\d]+)/g;
 const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
 const SITE_RELEASE_REGEX = /Site\/([\w\d]+)/g;
+const EVENTS_STATUS_REGEX = /Event\/([\w\d]+)/g;
 
 const BRACKETS_REGEX = /[(\[)(\])]/g;
 const A_TAG_REGEX = /\<a(.*)\<\/a\>"/g;
@@ -48,6 +51,8 @@ class Notifications extends Component {
         loadingResults: false,
         count: 0,
         activeReleaseTabKey:"1",
+        stageEventId:null,
+        showStagePopup:false,
     };
 
     getAllNotificationsCount = () => {
@@ -182,6 +187,23 @@ class Notifications extends Component {
         }
     };
 
+    showStageEventPopup=(stageEventId)=>{
+        this.setState({
+            stageEventId:stageEventId,
+            showStagePopup:!this.state.showStagePopup
+        })
+
+        if (stageEventId)
+        {
+
+        }
+        else{
+            this.setState({
+                stageEventId:null
+            })
+        }
+    }
+
     checkNotifications = (item, index) => {
         if (!item) return;
 
@@ -297,6 +319,15 @@ class Notifications extends Component {
             </Link>
         ));
 
+        text = reactStringReplace(text, EVENTS_STATUS_REGEX, (match, i) => (
+            <Link
+                key={`${i}_${match}`}
+                // to={`/event/${match}`}
+                onClick={() => {this.showStageEventPopup(match); this.messageRead(messageId);  }}>
+                View Event
+            </Link>
+        ));
+
         text = reactStringReplace(text, ISSUE_REGEX, (match, i) => (
             <Link
                 key={`${i}_${match}`}
@@ -316,70 +347,72 @@ class Notifications extends Component {
         ));
 
         return (
-            <Card
-                key={index}
-                variant="outlined"
-                className="mb-3 rad-8  bg-white  "
-            >
+            <>
+                <Card
+                    key={index}
+                    variant="outlined"
+                    className="mb-3 rad-8  bg-white  "
+                >
 
 
-                <CardContent className={"hover-bg"}>
-                    <div className="row ">
-                        <div className="col-11">
-                            <NotIcon
-                                style={{
-                                    color: flags ? "#eee" : "var(--lc-purple)",
-                                    float: "left",
-                                    marginRight: "15px",
-                                    marginTop: "3px",
-                                }}
-                            />
+                    <CardContent className={"hover-bg"}>
+                        <div className="row ">
+                            <div className="col-11">
+                                <NotIcon
+                                    style={{
+                                        color: flags ? "#eee" : "var(--lc-purple)",
+                                        float: "left",
+                                        marginRight: "15px",
+                                        marginTop: "3px",
+                                    }}
+                                />
 
 
-                            <div >{text}</div>
+                                <div >{text}</div>
 
 
-                            <span className="text-gray-light time-text">
+                                <span className="text-gray-light time-text">
                                 <span className="mr-4">
                                     {moment(message._ts_epoch_ms).fromNow()}
                                 </span>
-                                {item.options && !item.options.is_owned && (
-                                    <React.Fragment>
-                                        {message.text.match(PRODUCT_REGEX) &&
-                                        !item.options.is_tracked ? (
-                                            <span
-                                                className="ml-4 blue-text"
-                                                style={{ cursor: "pointer" }}
-                                                onClick={() => this.handleTrackProduct(message)}>
+                                    {item.options && !item.options.is_owned && (
+                                        <React.Fragment>
+                                            {message.text.match(PRODUCT_REGEX) &&
+                                            !item.options.is_tracked ? (
+                                                <span
+                                                    className="ml-4 blue-text"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => this.handleTrackProduct(message)}>
                                                 <b>Track</b>
                                             </span>
-                                        ) : (
-                                            item.options.is_tracked && <span
-                                                className="ml-4 text-danger"
-                                                style={{ cursor: "pointer" }}
-                                                onClick={() => this.handleUnTrackProduct(message)}>
+                                            ) : (
+                                                item.options.is_tracked && <span
+                                                    className="ml-4 text-danger"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => this.handleUnTrackProduct(message)}>
                                                 <b>Un-track</b>
                                             </span>
-                                        )}
-                                    </React.Fragment>
-                                )}
+                                            )}
+                                        </React.Fragment>
+                                    )}
                             </span>
+                            </div>
+
+                            {!flags &&  <div className="col-1 text-right">
+                                <CustomPopover text={"Mark as read"}>
+
+                                    <ActionIconBtn
+                                        className="ml-4"
+                                        onClick={()=>this.messageRead(messageId)}>
+                                        <CheckCircle style={{color:"#07AD89"}} />
+                                    </ActionIconBtn>
+                                </CustomPopover>
+                            </div>}
                         </div>
+                    </CardContent>
 
-                        {!flags &&  <div className="col-1 text-right">
-                            <CustomPopover text={"Mark as read"}>
-
-                                <ActionIconBtn
-                                    className="ml-4"
-                                    onClick={()=>this.messageRead(messageId)}>
-                                    <CheckCircle style={{color:"#07AD89"}} />
-                                </ActionIconBtn>
-                            </CustomPopover>
-                        </div>}
-                    </div>
-                </CardContent>
-
-            </Card>
+                </Card>
+            </>
         );
     };
 
@@ -466,6 +499,16 @@ class Notifications extends Component {
 
 
                 </div>
+
+                <GlobalDialog
+                    heading="Update Stage"
+                    show={this.state.showStagePopup}
+                    hide={this.showStageEventPopup}
+                ><div className="col-12">
+                    <EventStatus hide={this.showStageEventPopup} eventId={this.state.stageEventId}/>
+
+                </div>
+                </GlobalDialog>
             </div>
         );
     }

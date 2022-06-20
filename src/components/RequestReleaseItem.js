@@ -444,14 +444,15 @@ class RequestReleaseItem extends Component {
                                 {this.state.initiateAction === "complete" && (
                                     <>
                                         <FormControl
+
                                             variant="outlined"
                                             className={classes.formControl}>
 
+                                            <div className="d-none">
                                             <div
                                                 className={"custom-label text-bold text-blue mb-3"}>
                                                 Parent Product
                                             </div>
-
 
                                             <CustomizedSelect
                                                 variant={"standard"}
@@ -476,7 +477,7 @@ class RequestReleaseItem extends Component {
 
 
                                             </CustomizedSelect>
-
+                                            </div>
                                             <div
                                                 className={"custom-label text-bold text-blue mb-3"}>
                                                 Select the location of product

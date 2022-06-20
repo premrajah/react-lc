@@ -72,8 +72,6 @@ class FindResourcePage extends Component {
 
     setFilters=(data)=>{
 
-
-
         let searchValue= data.searchValue
         let activeFilter= data.searchFilter
 
@@ -90,13 +88,16 @@ class FindResourcePage extends Component {
                 if (activeFilter=="name")
                     this.setState({
 
-                        searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%`)
+                        // searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%`)
+                        searchUrl:this.state.url+(`&or=name~%${searchValue}%`)
+
                     })
 
                 if (activeFilter=="product_name")
                     this.setState({
+                        searchUrl:this.state.url+(`&find-also-to=Product:listing_of:name~%${searchValue}%`)
 
-                        searchUrl:this.state.url+(`&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
+                        // searchUrl:this.state.url+(`&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
                     })
 
             }else{
@@ -123,9 +124,7 @@ class FindResourcePage extends Component {
     seekCount=async () => {
 
 
-
-        let result = await seekAxiosGet(this.state.searchUrl+
-            "&count=true&offset="+this.state.offset+"&size="+this.state.pageSize+"&or=stage==active")
+        let result = await seekAxiosGet(this.state.searchUrl+ "&count=true&offset="+this.state.offset+"&size="+this.state.pageSize+"&or=stage==active")
 
 
         this.setState({

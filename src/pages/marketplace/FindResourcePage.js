@@ -124,7 +124,7 @@ class FindResourcePage extends Component {
     seekCount=async () => {
 
 
-        let result = await seekAxiosGet(this.state.searchUrl+ "&count=true&offset="+this.state.offset+"&size="+this.state.pageSize+"&or=stage==active")
+        let result = await seekAxiosGet(this.state.searchUrl+ "&count=true&offset="+this.state.offset+"&size="+this.state.pageSize+"&and=stage==active")
 
 
         this.setState({
@@ -156,7 +156,7 @@ class FindResourcePage extends Component {
         let newOffset = this.state.offset
 
         let result = await seekAxiosGet(this.state.searchUrl+
-            "&count=false&offset="+this.state.offset+"&size="+this.state.pageSize+"&or=stage==active")
+            "&count=false&offset="+this.state.offset+"&size="+this.state.pageSize+"&and=stage==active")
 
 
         if (result && result.data && result.data.data) {

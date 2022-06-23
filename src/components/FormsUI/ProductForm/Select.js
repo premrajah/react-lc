@@ -1,20 +1,12 @@
 import React, {useEffect} from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import {makeStyles} from '@mui/styles';
 import CustomizedSelect from "./CustomizedSelect";
 import CustomPopover from "../CustomPopover";
 import InfoIcon from "./InfoIcon";
 
 
-const useStyles = makeStyles((theme) => ({
-    formControl: {
 
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
 
 const SelectArrayWrapper = (props) => {
 
@@ -23,7 +15,7 @@ const SelectArrayWrapper = (props) => {
         defaultValue,options,multiple,error, ...rest} = props;
 
     const [value, setValue] = React.useState();
-    const classes = useStyles();
+
     const handleChange = (event) => {
         setValue(event.target.value);
            if (onChange)
@@ -31,19 +23,31 @@ const SelectArrayWrapper = (props) => {
     };
 
     useEffect(()=>{
-        if (onChange)
-            onChange(initialValue)
-    },[])
+        if (onChange) {
+
+            // if (name=="state"){
+            //     // setValue(initialValue)
+            //     onChange(initialValue)
+            //
+            // }else{
+            //
+            // }
+            console.log(initialValue)
+              setValue(initialValue)
+                onChange(initialValue)
+
+        }
+    },[initialValue])
 
 
     return (
         <>
             {title&& <div className={"custom-label text-bold ellipsis-end text-blue mb-0"}>
                 {title} {details&&<CustomPopover heading={detailsHeading} text={details}><InfoIcon/></CustomPopover>}
-                {initialValue}
+
             </div>}
             <div className={"field-box mb-2"}>
-                <FormControl variant="standard" >
+                <FormControl variant="outlined" >
                 {label && <InputLabel >{label}</InputLabel>}
 
 
@@ -59,7 +63,7 @@ const SelectArrayWrapper = (props) => {
                 style={{width:"100%"}}
                 disabled={disabled}
                 name={name}
-                className={` ${error&&"border-red-error"}  ${textAlignRight&&"select-text-right"}  ${noBorder&&"select-no-border"} `}
+                className={` ${error&&"border-red-error"} txt-capitalize ${textAlignRight&&"select-text-right"}  ${noBorder&&"select-no-border"} `}
                 // defaultValue={defaultValue ? defaultValue : ""}
             >
                 {select&&

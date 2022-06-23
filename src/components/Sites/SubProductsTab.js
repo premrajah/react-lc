@@ -223,6 +223,7 @@ class SubProductsTab extends Component {
                         {this.state.products.map(
                             (item, index) => (
                                 <SubproductItem
+                                    smallImage
                                     noLinking={this.props.noLinking}
                                     hideMoreMenu={true}
                                     key={index+"_"+item._key}

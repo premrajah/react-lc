@@ -66,7 +66,8 @@ class SiteDetailContent extends Component {
             initialValues:{},
             activeKey:1,
             zoomQrCode:false,
-            siteQrCode:null
+            siteQrCode:null,
+            releases:[]
 
 
         };
@@ -443,7 +444,28 @@ class SiteDetailContent extends Component {
 
         this.getQrCode()
 
+        this.fetchReleases()
+
     }
+
+    fetchReleases=()=> {
+        axios
+            .get(baseUrl + "site-release/no-auth?s="+this.props.item.site._key+"&o="+this.props.userDetail.orgId.replace("Org/",""))
+            .then(
+                (response) => {
+
+                    this.setState({
+                        releases: response.data.data,
+
+                    });
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
+
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         //
         // if (prevProps!==this.props) {
@@ -629,7 +651,7 @@ class SiteDetailContent extends Component {
 
                         <GlobalDialog
 
-                            size={"lg"}
+                            size={"md"}
                             hide={this.toggleSite}
                             show={this.state.showCreateSite}
                             heading={"Edit site"}>

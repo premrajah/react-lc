@@ -27,7 +27,7 @@ const MessengerMessagesTwoGroupItem = ({
 
     return (
         <>
-            <ListItem onClick={() => handleListItemClick()}>
+            <ListItem onClick={() => handleListItemClick()} component="div">
                 <ListItemText
                     primary={
                         group.orgs.length > 0 &&

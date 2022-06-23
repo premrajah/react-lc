@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {ContentState, convertToRaw, EditorState} from "draft-js";
+import React, {Component, createRef} from 'react';
+import {ContentState, EditorState} from "draft-js";
 import {Editor} from "react-draft-wysiwyg"
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import draftToHtml from 'draftjs-to-html';
+import WysiwygCustomImageUploadIcon from "./WysiwygCustomImageUploadIcon";
 
 
 function uploadImageCallBack(file) {
@@ -30,6 +30,7 @@ function uploadImageCallBack(file) {
 class WysiwygEditor extends Component{
     constructor(props){
         super(props);
+        this.clearImages = createRef();
         this.state = {
             editorState: EditorState.createEmpty(),
         };
@@ -39,18 +40,40 @@ class WysiwygEditor extends Component{
         this.setState({
             editorState,
         }, () => {
-            this.props.richTextHandleCallback(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())));
+
+            const content = this.state.editorState.getCurrentContent();
+            // this.props.richTextHandleCallback(draftToHtml(convertToRaw(content)));
+            this.props.richTextHandleCallback(content);
         });
 
     };
 
     resetDraft = () => {
         const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));
+        this.clearImages.current.resetImagesAfterMessageSend(); // reset and clear images
         this.setState({ editorState });
+    }
+
+    handleKeyCommand = (command) => {
+        console.log("> ", command)
+    }
+
+    myKeyBindingFn = (e) => {
+        if (e.keyCode === 13) {
+            this.props.handleEnterCallback(e.keyCode);
+            return e.keyCode;
+        }
+
+        return;
+    }
+
+    handleUploadCallback = (values) => {
+        this.props.handleImageUploadCallback(values)
     }
 
     render(){
         const { editorState } = this.state;
+
         return <div className="">
             <Editor
 
@@ -62,7 +85,7 @@ class WysiwygEditor extends Component{
                 editorState={editorState}
                 onEditorStateChange={this.onEditorStateChange}
                 toolbar={{
-                    options: ['inline', 'blockType', 'fontSize', 'fontFamily','list','textAlign','link','colorPicker','emoji','remove','history'],
+                    options: ['inline', 'blockType', 'fontSize', 'fontFamily','list','textAlign','link','colorPicker','emoji','remove','history', /*'image'*/],
 
                     inline: { inDropdown: true },
                     list: { inDropdown: true },
@@ -71,7 +94,9 @@ class WysiwygEditor extends Component{
                     history: { inDropdown: true },
                     // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
                 }}
-
+                toolbarCustomButtons={[<WysiwygCustomImageUploadIcon ref={this.clearImages} handleUploadCallback={(values) => this.handleUploadCallback(values)} />]}
+                // handleKeyCommand={(command) => this.handleKeyCommand(command)}
+                // keyBindingFn={(e) => this.myKeyBindingFn(e)}
                 // mention={{
                 //     separator: ' ',
                 //     trigger: '@',

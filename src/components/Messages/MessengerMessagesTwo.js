@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import {IconButton, List, Skeleton, Tooltip} from "@mui/material";
+import {makeStyles} from "@mui/styles";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
 import MessengerMessagesTwoSelectedMessage from "./MessengerMessagesTwoSelectedMessage";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,11 +16,27 @@ import WysiwygEditor from "./WysiwygEditor";
 import SendIcon from '@mui/icons-material/Send';
 import ClearIcon from '@mui/icons-material/Clear';
 import {LoaderAnimated} from "../../Util/GlobalFunctions";
+import draftToHtml from "draftjs-to-html";
+import {convertToRaw} from "draft-js";
+
 
 const newMessagePlaceHOlder = {"message_group": {"_id": 0}, "orgs": [{"name": "New Message", "email": "new@new.com"}]}
 
 
+const useStyles = makeStyles(theme => ({
+    customHoverFocus: {
+        "&:hover, &.Mui-focusVisible": { color: "var(--lc-purple)" }
+    },
+    customHoverFocusClearText: {
+        "&:hover, &.Mui-focusVisible": { color: "orange" }
+    }
+}));
+
 const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
+
+    let trackedGroups = [];
+
+    const classes = useStyles();
 
     const resetDraftRef = useRef(null);
     const orgSearchRef = useRef(null);
@@ -35,17 +52,29 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [messageText, setMessageText] = useState("");
     const [selectedOrgs, setSelectedOrgs] = useState([]);
     const [newMessageDisplay, setNewMessageDisplay] = useState(null);
+    const [sendButtonDisable, setSendButtonDisable] = useState(false);
+    const [selectedMessageGroupKey, setSelectedMessageGroupKey] = useState(null);
+    const [uploadedImages, setUploadedImages] = useState([]);
+
 
     useEffect(() => {
         handleSelectedItemCallback(0);
         getAllMessageGroups();
+        setSendButtonDisable(false);
     }, []);
 
     const getAllMessageGroups = () => {
+        trackedGroups = [];
+
         axios
             .get(`${baseUrl}message-group/non-empty/expand`)
             .then((res) => {
                 const data = res.data.data;
+
+                // track lists
+                data.forEach((d, index) => {
+                    trackedGroups.push({groupKey: d._key, index: index})
+                })
 
                 setAllGroups(data);
                 setFilteredGroups(data);
@@ -53,7 +82,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 // on first load handle click
                 // if (selectedMenuItemIndex === 0) {
                     handleSelectedItemCallback(0);
-                    handleGroupClickCallback(data[0].message_group._key);
+                    data.length > 0 && handleGroupClickCallback(data[0].message_group._key);
                 // }
             })
             .catch((error) => {
@@ -65,11 +94,12 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         if(!key) return;
 
         setClickedMessageKey(key);
+        setSendButtonDisable(false);
 
         axios
             .get(`${baseUrl}message-group/${key}/message`)
             .then((res) => {
-                setClickedMessage(res.data.data.reverse());
+                setClickedMessage(res.data.data);
                 handleResetWysiwygEditor();
             })
             .catch((error) => {
@@ -77,8 +107,38 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             });
     };
 
+    const postUploadedImagesToMessageGroup = (_key, imageIdsArray) => {
+        if(!_key) return;
+
+        let payload = {
+            "message_group_id": _key,
+            "artifact_ids": imageIdsArray
+        }
+
+        axios
+            .post(`${baseUrl}message-group/artifact`, payload)
+            .then(res => {
+                console.log("image upload res ", res.data.data);
+            })
+            .catch(error => {
+                showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
+            })
+    }
+
     const handleGroupClickCallback = (key) => {
         setClickedMessage([]); // clear selected message
+        setNewMessageDisplay(null); // clear org visibility message
+        setSelectedMessageGroupKey(key);
+
+        if(orgSearchVisibility) {
+            setOrgSearchVisibility(false);
+            setFilteredGroups(allGroups); // remove temp new message
+        }
+
+        if(allGroups.length > 0 && filteredGroups.length > 0 && filteredGroups[0].message_group._id === 0) {
+             getSelectedGroupMessage(allGroups[0].message_group._key)
+        }
+
         getSelectedGroupMessage(key);
     };
 
@@ -117,7 +177,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             setFilteredGroups([newMessagePlaceHOlder, ...allGroups]);
             handleSelectedItemCallback(0)
             handleGroupClickCallback("")
-            setNewMessageDisplay("Select Orgs to send New Message");
+            setNewMessageDisplay("Select organisations to send new message");
         }
 
         if(filteredGroups[0].message_group._id === 0) {
@@ -129,18 +189,37 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         }
     }
 
+    const handleImageUploadCallback = (values) => {
+        setUploadedImages(values);
+    }
 
     const handleClearInputCallback = (v) => {
-      if(!v) return;
+        if(!v) return;
 
-      setFilteredGroups(allGroups);
+        setFilteredGroups(allGroups);
         handleSelectedItemCallback(0);
         handleGroupClickCallback(allGroups[0].message_group._key);
     }
 
     const handleRichTextCallback = (value) => {
-        setMessageText(value);
+
+        const content = draftToHtml(convertToRaw(value))
+
+        if(value.hasText()) {
+            setMessageText(content);
+        } else {
+            setMessageText(null);
+        }
     };
+
+    const handleEnterCallback = (keyCode) => {
+        if(!keyCode) return;
+
+        // for enter command
+        if(keyCode === 13 && messageText) {
+            handleSendMessage() // send message
+        }
+    }
 
     const handleOrgSelectedCallback = (value) => {
         setSelectedOrgs(value);
@@ -176,6 +255,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     }
 
     const handleSendMessage = () => {
+        setSendButtonDisable(true);
         let payload = {};
         if(selectedOrgs.length > 0 && messageText) {
 
@@ -188,6 +268,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     text: messageText,
                 },
                 to_org_ids: orgIds,
+                linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : []
             };
 
             postMessage(payload, "N")
@@ -201,6 +282,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 },
                 to_org_ids: [],
                 message_group_id: clickedMessageKey,
+                linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : []
             };
 
             postMessage(payload, "R");
@@ -214,28 +296,33 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             .then((response) => {
                 let data = response.data.data;
 
-                resetDraftRef.current.resetDraft();
+                handleResetWysiwygEditor()
+                setSendButtonDisable(false);
                 // getAllMessageGroups();
 
                 if(messageType === "N") {
-                    // console.log('N ', data)
-
+                    console.log("New Message")
                     handleClearOrgSearch(); // clear selected orgs
                     getAllMessageGroups();
                 }
 
                 if(messageType === "R") {
-                    // console.log('R ', data)
+                    console.log("Replayed Message")
                     handleSelectedItemCallback(selectedMenuItemIndex);
                     handleGroupClickCallback(data.message_group._key);
-                    // const returned = allGroups.filter(m => m.message_group._key === data.message_group._key);
-                    // console.log("r ", returned)
                 }
+
+                // if(uploadedImages.length > 0) {
+                //     postUploadedImagesToMessageGroup(selectedMessageGroupKey, uploadedImages); // Upload images to group message
+                // }
             })
             .catch(error => {
+                setSendButtonDisable(false);
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
             })
     }
+
+
 
     return (
         <React.Fragment>
@@ -296,6 +383,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                             {filteredGroups.map((g, index) => handleGroupDataDisplay(g, index))}
                         </List>
                     ) : <div>
+                        {filteredGroups.length === 0 && <div>No groups yet.</div>}
                         <Skeleton className="mb-1" variant="rectangular" height="40px" />
                         <Skeleton className="mb-1" variant="rectangular" height="40px" />
                         <Skeleton className="mb-1" variant="rectangular" height="40px" />
@@ -305,9 +393,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 <div className="col-md-8">
                     <div className="row">
                         <div className="col" style={{ height: "500px", minHeight: "500px"}}>
+                            {(clickedMessage.length === 0 && (filteredGroups.length > 0 && filteredGroups[0].message_group._id !== 0)) && <div>{LoaderAnimated()}</div>}
                             {clickedMessage.length > 0 && (
-                                <div style={{ height: "500px", minHeight: "500px", maxHeight: "500px", overflow: "auto" }}>
-                                    <MessengerMessagesTwoSelectedMessage messages={clickedMessage} />
+                                <div style={{ height: "500px", minHeight: "500px", maxHeight: "500px" }}>
+                                    <MessengerMessagesTwoSelectedMessage groupMessageKey={selectedMessageGroupKey} messages={clickedMessage} />
                                 </div>
                             )}
                             {newMessageDisplay && <div className="row mt-2">
@@ -330,19 +419,26 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                 richTextHandleCallback={(value) =>
                                     handleRichTextCallback(value)
                                 }
+                                handleEnterCallback={(value, content) => handleEnterCallback(value, content)}
+                                handleImageUploadCallback={(values) => handleImageUploadCallback(values)}
                             />
+                            {/*<div><small>Press enter to send message, CTRL+Enter or Shift+ENTER for carriage return</small></div>*/}
                         </div>
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>
                                 <Tooltip title="Clear" placement="right-start" arrow>
-                                    <IconButton disabled={!messageText} onClick={() => handleResetWysiwygEditor()}>
-                                        <ClearIcon fontSize="large" />
-                                    </IconButton>
+                                    <div>
+                                        <IconButton className={classes.customHoverFocusClearText} disabled={!messageText} onClick={() => handleResetWysiwygEditor()}>
+                                            <ClearIcon fontSize="large" />
+                                        </IconButton>
+                                    </div>
                                 </Tooltip>
                                 <Tooltip title="Send" placement="right-end" arrow>
-                                    <IconButton disabled={!messageText} onClick={() => handleSendMessage()}>
-                                        <SendIcon fontSize="large" />
-                                    </IconButton>
+                                    <div>
+                                        <IconButton className={classes.customHoverFocus} disabled={!messageText ? !sendButtonDisable : sendButtonDisable} onClick={() => handleSendMessage()}>
+                                            <SendIcon fontSize="large" />
+                                        </IconButton>
+                                    </div>
                                 </Tooltip>
                             </div>
                         </div>

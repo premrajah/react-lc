@@ -1,38 +1,14 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import Close from "@mui/icons-material/Close";
 import "../../Util/upload-file.css";
 import {makeStyles} from "@mui/styles";
-import Toolbar from "@mui/material/Toolbar";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import LinearProgress from "@mui/material/LinearProgress";
-import ProductBlue from "../../img/icons/product-blue.png";
-
-import ItemDetailPreview from "../../components/ItemDetailPreview";
-import ProductTreeView from "../../components/ProductTreeView";
-
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
-
-
-import PageHeader from "../../components/PageHeader";
-import EditSite from "../../components/Sites/EditSite";
-import ProductItem from "../../components/Products/Item/ProductItem";
-import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
-import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
-import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import Layout from "../../components/Layout/Layout";
-import {Link} from "react-router-dom";
-import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
-import GlobalDialog from "../../components/RightBar/GlobalDialog";
-import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
-import SiteFormNew from "../../components/Sites/SiteFormNew";
 import ListForm from "../../components/Listings/ListForm";
 
 
@@ -880,7 +856,7 @@ class ListFormPage extends Component {
 
     getProductsNoParentNoListingNoRelease=async () => {
 
-        const url = baseUrl + "seek?name=Product&no_parent=true&&relation=&count=false&no-from-relation=Listing:listing_of&no-from-relation=ProductRelease:release_for";
+        const url = baseUrl + "seek?name=Product&no_parent=true&relation=belongs_to&count=false&no-from-relation=Listing:listing_of&no-from-relation=ProductRelease:release_for";
 
 
         let items = await axios.get(url).catch((error) => {

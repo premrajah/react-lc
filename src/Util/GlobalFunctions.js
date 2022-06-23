@@ -43,17 +43,24 @@ const addAndFilters=(filters)=>{
 
 export const fetchErrorMessage=(e)=>{
 
+
     let errorString=""
-    if (e.response.data.errors&&e.response.data.errors.length>0) {
-        e.response.data.errors.forEach(item => {
-            errorString =errorString+" "+ item.message
 
-        })
-    }else{
+    try {
+        if (e.response.data.errors&&e.response.data.errors.length>0) {
+            e.response.data.errors.forEach(item => {
+                errorString =errorString+" "+ item.message
 
-        errorString=e.response.status +" error received from server"
+            })
+        }else{
 
+            errorString=e.response.status +" error received from server"
+
+        }
+    }catch (e){
+        errorString="Unknown error occurred."
     }
+
     return errorString
 }
 
@@ -146,11 +153,8 @@ export const  seekAxiosGet=  (url,doNotEncode)=> {
 
 
     return   axios.get(urlEncode).catch((error)=>{
-
         console.error(error);
-
-
-        return  fetchErrorMessage(error)
+        return  "Unknown error occurred."
 
     });
 
@@ -244,4 +248,37 @@ export const getActionName=(actionName)=>{
 }
 
 
+export const  removeTimeToStart=(date = new Date())=> {
 
+    let timestampConvertedDate=new Date(date)
+    let dateConverted=new Date(
+        timestampConvertedDate.getFullYear(),
+        timestampConvertedDate.getMonth(),
+        timestampConvertedDate.getDate()
+    );
+    console.log(dateConverted)
+    return dateConverted
+}
+
+
+export const removeTime=(date = new Date())=> {
+
+    let timestampConvertedDate=new Date(date)
+
+    let dateString=
+        timestampConvertedDate.getFullYear()+ "-"
+        +("0" +(timestampConvertedDate.getMonth() + 1)).slice(-2)  +"-"
+        +("0" +timestampConvertedDate.getDate()).slice(-2) ;
+
+    console.log(dateString)
+
+    return  dateString
+}
+
+
+export  const getInitials=(name = '') => name
+    .replace(/\s+/, ' ')
+    .split(' ')
+    .slice(0, 2)
+    .map((v) => v && v[0].toUpperCase())
+    .join('');

@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loop-react-ui-${ENVIRONMENT}-liveness-config
+data:
+  entrypoint.sh: |-
+    #!/bin/sh
+    HTTPS_URL="http://loop-react-ui-${ENVIRONMENT}.default.svc.cluster.local/"
+    CURL_CMD="curl -w httpcode=%{http_code}"
+
+    # -m, --max-time <seconds> FOR curl operation
+    CURL_MAX_CONNECTION_TIMEOUT="-m 100"
+
+    # perform curl operation
+    CURL_RETURN_CODE=0
+    CURL_OUTPUT=`${CURL_CMD} ${CURL_MAX_CONNECTION_TIMEOUT} ${HTTPS_URL} 2> /dev/null` || CURL_RETURN_CODE=$?
+    if [ ${CURL_RETURN_CODE} -ne 0 ]; then
+        echo "Curl connection failed with return code - ${CURL_RETURN_CODE}"
+    else
+        echo "Curl connection success"
+        # Check http code for curl operation/response in  CURL_OUTPUT
+        httpCode=$(echo "${CURL_OUTPUT}" | sed -e 's/.*\httpcode=//')
+        if [ ${httpCode} -ne 200 ]; then
+            echo "Curl operation/command failed due to server return code - ${httpCode}"
+            curl -X POST -H "Content-Type: application/json" \
+                -d '{"text":"${ENVIRONMENT} Frontend FAILED: Liveness Check of http://loop-react-ui-${ENVIRONMENT}.default.svc.cluster.local/"}' \
+                https://netorgft4168503.webhook.office.com/webhookb2/8c2429fc-b4dc-41da-87c0-c2fe090f57a8@c3483efd-38e0-49b4-9693-881fd828e542/IncomingWebhook/f8c59f7194bb4a0ca7a6f1b70404b731/479f5c58-c4c4-421e-a4cd-6ff34f0091aa
+        fi
+    fi
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: loop-react-ui-${ENVIRONMENT}-liveness
+spec:
+  schedule: "*/1 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: loop-react-ui-${ENVIRONMENT}-liveness
+              image: curlimages/curl
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/entrypoint.sh
+              volumeMounts:
+                - name: configmap-volume
+                  mountPath: /bin/entrypoint.sh
+                  readOnly: true
+                  subPath: entrypoint.sh
+          volumes:
+            - name: configmap-volume
+              configMap:
+                defaultMode: 0755
+                name: loop-react-ui-${ENVIRONMENT}-liveness-config

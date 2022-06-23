@@ -893,7 +893,7 @@ class ListFormNew extends Component {
 
     getProductsNoParentNoListingNoRelease=async () => {
 
-        const url = baseUrl + "seek?name=Product&no_parent=true&&relation=&count=false&no-from-relation=Listing:listing_of&no-from-relation=ProductRelease:release_for";
+        const url = baseUrl + "seek?name=Product&no_parent=true&relation=belongs_to&count=false&no-from-relation=Listing:listing_of&no-from-relation=ProductRelease:release_for";
 
 
         let items = await axios.get(url).catch((error) => {

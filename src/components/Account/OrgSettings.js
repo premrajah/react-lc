@@ -96,8 +96,15 @@ class OrgSettings extends Component {
 
 
     fetchOrgSettings=(orgId)=> {
+
+        let url=baseUrl + "org"
+
+        if (orgId){
+            url=url+"/"+orgId
+        }
+
         axios
-            .get(baseUrl + "org")
+            .get(url)
             .then(
                 (response) => {
 

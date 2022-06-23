@@ -235,6 +235,12 @@ class MoreMenu extends Component {
                                     Select Company
                                 </MenuItem>
                             )}
+
+                            {this.props.rent && (
+                                <MenuItem data-action={"rent"} onClick={this.handleClose}>
+                                    Rental Request
+                                </MenuItem>
+                            )}
                         </Menu>
                     </Button>
 

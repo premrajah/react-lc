@@ -61,7 +61,9 @@ class ItemDetail extends Component {
             <Layout>
 
                         <>
-                          <ListingDetail type={"detail"}
+                          <ListingDetail
+                              type={"detail"}
+                              hideMatchesTab={this.marketplace=="marketplace"}
                                          marketplace={this.marketplace}
                                          search={this.search}
                                          listingId={this.slug}  />

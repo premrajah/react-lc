@@ -69,6 +69,8 @@ class ProductDetailCycle extends Component {
             showDeletePopUp: false,
             isVisibleReportModal: false,
             showRegisterSuccess: false,
+            showRentalSuccess: false,
+            showRentalPopUp:false,
             showOrgInput: false,
             showOrgInputSuccess: false,
             showApproveRelease: false,
@@ -127,9 +129,15 @@ class ProductDetailCycle extends Component {
     callBackResult(action) {
         if (action === "report") {
             this.showReportModal();
-        } else if (action === "register") {
+        }
+        else if (action === "register") {
             this.showRegister();
-        } else if (action === "selectCompany") {
+        }
+        else if (action === "rent") {
+            this.showRental();
+        }
+
+        else if (action === "selectCompany") {
             this.showOrgInput();
         } else if (action === "approveRelease") {
             this.showApproveReleasePopUp();
@@ -313,6 +321,47 @@ class ProductDetailCycle extends Component {
                 });
             });
     };
+
+    submitRentProduct = (event) => {
+        this.setState({
+            errorRegister: null,
+        });
+
+        event.preventDefault();
+
+        const form = event.currentTarget;
+
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+
+        const site = data.get("site");
+
+        axios
+            .post(
+                baseUrl + "rental-request",
+
+                {
+                    site_id: site,
+                    product_id: this.props.item.product._key,
+                }
+            )
+            .then((res) => {
+
+                this.setState({
+                    showRentalSuccess: true,
+                });
+
+            })
+            .catch((error) => {
+                this.setState({
+                    errorRegister: error.response.data.errors[0].message,
+                });
+            });
+    };
+
     companyDetails = (detail) => {
         if (detail.org) {
             this.setState({
@@ -437,6 +486,13 @@ class ProductDetailCycle extends Component {
             showOrgInput: !this.state.showOrgInput,
         });
     };
+
+    showRental=()=> {
+        // this.getSites();
+        this.setState({
+            showRentalPopUp: !this.state.showRentalPopUp,
+        });
+    }
 
     showRegister() {
         this.getSites();
@@ -770,6 +826,11 @@ class ProductDetailCycle extends Component {
                                                         this.props.userDetail.orgId !==
                                                         this.props.item.org._id
                                                     }
+
+                                                    rent={
+                                                        this.props.userDetail.orgId !==
+                                                        this.props.item.org._id
+                                                    }
                                                 />}
                                                 </div>
                                             )}
@@ -1018,6 +1079,288 @@ class ProductDetailCycle extends Component {
 
                         )}
 
+                </GlobalDialog>
+
+                <GlobalDialog
+                    size="sm"
+
+                    heading={"Rent Product: "+this.props.item.product.name}
+                    show={this.state.showRentalPopUp}
+                    hide={this.showRental}
+                >
+<div className="col-12">
+
+                    {!this.state.showRentalSuccess ? (
+                        <form onSubmit={this.submitRentProduct}>
+                            <div className={"row justify-content-center p-2"}>
+                                <div className={"col-12 text-center mt-2"}>
+                                    <div className={"row justify-content-center"}>
+                                        <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                            <div
+                                                className={
+                                                    "custom-label text-bold  mb-1 text-left"
+                                                }>
+                                                Select Site
+                                            </div>
+
+                                            <FormControl
+                                                variant="outlined"
+                                                className={classes.formControl}>
+                                                <Select
+                                                    name={"deliver"}
+                                                    native
+                                                    // onChange={this.handleChangeProduct.bind(this, "deliver")}
+                                                    inputProps={{
+                                                        name: "site",
+                                                        id: "outlined-age-native-simple",
+                                                    }}>
+                                                    <option value={null}>Select</option>
+
+                                                    {this.state.sites.map((item, index) => (
+                                                        <option
+                                                            key={index}
+                                                            value={item._key}>
+                                                            {item.name +
+                                                            "(" +
+                                                            item.address +
+                                                            ")"}
+                                                        </option>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+
+                                            <p
+                                                className={"text-left"}
+                                                style={{ margin: "10px 0" }}>
+                                                Don’t see it on here?
+                                                <span
+                                                    onClick={this.showSubmitSite}
+                                                    className={
+                                                        "green-text forgot-password-link text-mute small"
+                                                    }>
+                                                        Add a site
+                                                    </span>
+                                            </p>
+                                        </div>
+
+                                        {this.state.errorRegister && (
+                                            <div className={"row justify-content-center"}>
+                                                <div
+                                                    className={"col-12"}
+                                                    style={{ textAlign: "center" }}>
+                                                    <Alert key={"alert"} variant={"danger"}>
+                                                        {this.state.errorRegister}
+                                                    </Alert>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {!this.state.showSubmitSite && (
+                                            <div className={"col-12 justify-content-center "}>
+                                                <div className={"row justify-content-center"}>
+                                                    <div
+                                                        className={"col-6"}
+                                                        style={{ textAlign: "center" }}>
+                                                        <button
+                                                            style={{ minWidth: "120px" }}
+                                                            className={
+                                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
+                                                            }
+                                                            type={"submit"}>
+                                                            Yes
+                                                        </button>
+                                                    </div>
+                                                    <div
+                                                        className={"col-6"}
+                                                        style={{ textAlign: "center" }}>
+                                                        <p
+                                                            onClick={this.showRegister}
+                                                            className={
+                                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
+                                                            }>
+                                                            Cancel
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    ) : (
+                        <div className={"row justify-content-center"}>
+                            <div className={"col-10 text-center"}>
+                                <Alert key={"alert"} variant={"success"}>
+                                    Your request to rent this product has been submitted successfully.
+                                    Thanks
+                                </Alert>
+                            </div>
+                        </div>
+                    )}
+
+                    {this.state.showSubmitSite && (
+                        <div className={"row justify-content-center p-2"}>
+                            <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                <div className={"custom-label text-bold text-blue mb-1"}>
+                                    Add New Site
+                                </div>
+                            </div>
+                            <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                <div className={"row"}>
+                                    <div className={"col-12"}>
+                                        <form onSubmit={this.handleSubmitSite}>
+                                            <div className="row no-gutters justify-content-center ">
+                                                <div className="col-12 mt-4">
+                                                    <TextField
+                                                        id="outlined-basic"
+                                                        label=" Name"
+                                                        variant="outlined"
+                                                        fullWidth={true}
+                                                        name={"name"}
+                                                        onChange={this.handleChangeSite.bind(
+                                                            this,
+                                                            "name"
+                                                        )}
+                                                    />
+
+                                                    {this.state.errorsSite["name"] && (
+                                                        <span className={"text-mute small"}>
+                                                                <span style={{ color: "red" }}>
+                                                                    *
+                                                                </span>
+                                                            {this.state.errorsSite["name"]}
+                                                            </span>
+                                                    )}
+                                                </div>
+
+                                                <div className="col-12 mt-4">
+                                                    <TextField
+                                                        id="outlined-basic"
+                                                        label="Contact"
+                                                        variant="outlined"
+                                                        fullWidth={true}
+                                                        name={"contact"}
+                                                        onChange={this.handleChangeSite.bind(
+                                                            this,
+                                                            "contact"
+                                                        )}
+                                                    />
+
+                                                    {this.state.errorsSite["contact"] && (
+                                                        <span className={"text-mute small"}>
+                                                                <span style={{ color: "red" }}>
+                                                                    *
+                                                                </span>
+                                                            {this.state.errorsSite["contact"]}
+                                                            </span>
+                                                    )}
+                                                </div>
+
+                                                <div className="col-12 mt-4">
+                                                    <TextField
+                                                        id="outlined-basic"
+                                                        label="Address"
+                                                        variant="outlined"
+                                                        fullWidth={true}
+                                                        name={"address"}
+                                                        type={"text"}
+                                                        onChange={this.handleChangeSite.bind(
+                                                            this,
+                                                            "address"
+                                                        )}
+                                                    />
+
+                                                    {this.state.errorsSite["address"] && (
+                                                        <span className={"text-mute small"}>
+                                                                <span style={{ color: "red" }}>
+                                                                    *
+                                                                </span>
+                                                            {this.state.errorsSite["address"]}
+                                                            </span>
+                                                    )}
+                                                </div>
+                                                <div className="col-12 mt-4">
+                                                    <TextField
+                                                        id="outlined-basic"
+                                                        type={"number"}
+                                                        name={"phone"}
+                                                        onChange={this.handleChangeSite.bind(
+                                                            this,
+                                                            "phone"
+                                                        )}
+                                                        label="Phone"
+                                                        variant="outlined"
+                                                        fullWidth={true}
+                                                    />
+
+                                                    {this.state.errorsSite["phone"] && (
+                                                        <span className={"text-mute small"}>
+                                                                <span style={{ color: "red" }}>
+                                                                    *
+                                                                </span>
+                                                            {this.state.errorsSite["phone"]}
+                                                            </span>
+                                                    )}
+                                                </div>
+
+                                                <div className="col-12 mt-4">
+                                                    <TextField
+                                                        id="outlined-basic"
+                                                        label="Email"
+                                                        variant="outlined"
+                                                        fullWidth={true}
+                                                        name={"email"}
+                                                        type={"email"}
+                                                        onChange={this.handleChangeSite.bind(
+                                                            this,
+                                                            "email"
+                                                        )}
+                                                    />
+
+                                                    {this.state.errorsSite["email"] && (
+                                                        <span className={"text-mute small"}>
+                                                                <span style={{ color: "red" }}>
+                                                                    *
+                                                                </span>
+                                                            {this.state.errorsSite["email"]}
+                                                            </span>
+                                                    )}
+                                                </div>
+                                                <div className="col-12 mt-4">
+                                                    <TextField
+                                                        onChange={this.handleChangeSite.bind(
+                                                            this,
+                                                            "others"
+                                                        )}
+                                                        name={"others"}
+                                                        id="outlined-basic"
+                                                        label="Others"
+                                                        variant="outlined"
+                                                        fullWidth={true}
+                                                        type={"others"}
+                                                    />
+
+                                                    {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
+                                                </div>
+
+                                                <div className="col-12 mt-4">
+                                                    <button
+                                                        type={"submit"}
+                                                        className={
+                                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                        }>
+                                                        Add Site
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+</div>
                 </GlobalDialog>
 
                 <Modal

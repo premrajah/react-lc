@@ -451,7 +451,7 @@ class SiteDetailContent extends Component {
 
     fetchReleases=()=> {
         axios
-            .get(baseUrl + "site-release/no-auth?s="+this.props.item.site._key+"&o="+this.props.userDetail.orgId.replace("Org/",""))
+            .get(baseUrl + "site-release/site/"+this.props.item.site._key)
             .then(
                 (response) => {
 

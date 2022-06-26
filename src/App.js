@@ -88,6 +88,7 @@ import RouteChangeTracker from './RouteChangeTracker'
 import Help from "./pages/help/Help";
 import CompanyDetailsPopUp from "./components/Account/CompanyDetailsPopUp";
 import MyDiary from "./pages/diary/MyDiary";
+import RentalReleaseRecords from "./pages/approvals/RentalReleaseRecords";
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -157,6 +158,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/approved" component={ApprovedReleases} />
+                        <LoggedInRoute exact path="/rental-records" component={RentalReleaseRecords} />
                         <LoggedInRoute exact path="/register-record" component={RegisterRecord} />
                         <LoggedInRoute exact path="/service-agent-record" component={ServiceAgentRecord} />
                         <LoggedInRoute exact path="/issues" component={Issues} />

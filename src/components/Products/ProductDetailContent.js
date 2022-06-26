@@ -5,7 +5,6 @@ import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 import {Alert, Modal, ModalBody} from "react-bootstrap";
-
 import {withStyles} from "@mui/styles/index";
 import {Link} from "react-router-dom";
 import SearchItem from "../Searches/search-item";
@@ -13,7 +12,6 @@ import ResourceItem from "../../pages/create-search/ResourceItem";
 import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteCustom";
-import Close from "@mui/icons-material/Close";
 import ImageHeader from "../UIComponents/ImageHeader";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";
@@ -30,7 +28,6 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
@@ -126,7 +123,10 @@ class ProductDetailContent extends Component {
 
 
         this.setState({
-            activeReleaseTabKey:key
+            activeReleaseTabKey:key,
+            errorRelease: null,
+            showReleaseSuccess:false
+
         })
 
 
@@ -513,6 +513,7 @@ class ProductDetailContent extends Component {
                 {
                     org_id: site,
                     product_id: this.props.item.product._key,
+                    rental_stage:"start_rental"
                 }
             )
             .then((res) => {

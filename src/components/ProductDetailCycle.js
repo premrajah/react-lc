@@ -346,6 +346,7 @@ class ProductDetailCycle extends Component {
                 {
                     site_id: site,
                     product_id: this.props.item.product._key,
+                    rental_stage:"start_rental"
                 }
             )
             .then((res) => {

@@ -3,9 +3,9 @@ import PageHeader from "../../components/PageHeader";
 import {connect} from "react-redux";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import RequestReleaseItem from "../../components/RequestReleaseItem";
-import RequestRegisterItem from "../../components/RequestRegisterItem";
-import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
+import RequestReleaseItem from "../../components/Approvals/RequestReleaseItem";
+import RequestRegisterItem from "../../components/Approvals/RequestRegisterItem";
+import RequestServiceAgentItem from "../../components/Approvals/RequestServiceAgentItem";
 import {Link} from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import Layout from "../../components/Layout/Layout";
@@ -14,7 +14,8 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from '@mui/lab/TabPanel';
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
-import RequestSiteReleaseItem from "../../components/RequestSiteReleaseItem";
+import RequestSiteReleaseItem from "../../components/Approvals/RequestSiteReleaseItem";
+import RequestRentalReleaseItem from "../../components/Approvals/RequestRentalReleaseItem";
 
 
 class Approvals extends Component {
@@ -27,6 +28,7 @@ class Approvals extends Component {
             nextIntervalFlag: false,
             releaseRequests: [],
             registerRequests: [],
+            rentalRequests: [],
             serviceAgentRequests: [],
             value: 0,
             loading: false,
@@ -90,6 +92,8 @@ class Approvals extends Component {
             else if (this.props.location.search.includes("tab=3"))
                 this.setActiveKey(null,"4")
 
+            else if (this.props.location.search.includes("tab=4"))
+                this.setActiveKey(null,"5")
 
         }
 
@@ -114,14 +118,40 @@ class Approvals extends Component {
         this.props.fetchRegisterRequest();
         this.props.fetchServiceAgentRequest()
         this.fetchSiteReleaseRequests()
+        this.fetchRentalRequests()
 
     this.interval = setInterval(() => {
         this.props.fetchReleaseRequest();
         this.props.fetchRegisterRequest();
         this.props.fetchServiceAgentRequest()
         this.fetchSiteReleaseRequests()
+        this.fetchRentalRequests()
     }, 30000);
 }
+
+
+     fetchRentalRequests = () => {
+
+        axios.get(baseUrl + "rental-release").then(
+            (response) => {
+
+                let responseAll = response.data.data;
+
+                this.setState({
+                    rentalRequests:responseAll
+                })
+
+                // dispatch()
+            },
+            (error) => {
+                // let status = error.response.status
+                // dispatch({ type: "PRODUCT_LIST", value: [] })
+            }
+        )
+            .catch(error => {});
+
+        // dispatch({ type: "PRODUCT_LIST", value: [] })
+    };
 
 componentWillUnmount() {
     clearInterval(this.interval);
@@ -158,11 +188,11 @@ render() {
 
                                             aria-label="lab API tabs example">
 
-                                            <Tab label="Product Release Request" value="1" />
-                                            <Tab label="Product Register Request" value="2"/>
-                                            <Tab label="Change Service Agent Request" value="3" />
-                                            <Tab label="Site Release Requests" value="4" />
-
+                                            <Tab label="Product Release " value="1" />
+                                            <Tab label="Product Register" value="2"/>
+                                            <Tab label="Change Service Agent" value="3" />
+                                            <Tab label="Site Release " value="4" />
+                                            <Tab label="Rental Release " value="5" />
                                         </TabList>
                                     </Box>
 
@@ -343,6 +373,56 @@ render() {
                                                     />
 
                                                 </div>
+
+                                                </>
+                                            )}
+
+
+                                            {this.state.siteReleases.length === 0 && (
+                                                <div className={" column--message"}>
+                                                    <p>
+                                                        {this.state.loading
+                                                            ? "Loading..."
+                                                            : "This search currently has no results"}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                        </div>
+                                    </TabPanel>
+
+                                    <TabPanel value="5">
+                                        <div className={"row"} >
+                                            <div className="col-12 mt-3 mb-3">
+                                                <div className="col d-flex justify-content-end">
+                                                    <Link to="/rental-records" className="btn btn-sm blue-btn"
+                                                          style={{color: "#fff"}}>
+                                                        Rental Release Request Records
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                            <div className={"listing-row-border "}></div>
+
+
+                                            {this.state.rentalRequests.filter(r =>
+                                                r.Release.stage !== "complete" &&
+                                                r.Release.stage !== "cancelled" &&
+                                                r.Release.stage !== "invalidated").map((item, index) =>
+                                                <>
+                                                    <div className="col-12"
+                                                         // key={item.Site_id.replace("Site/","")}
+                                                         // id={item.Site_id.replace("Site/","")}
+                                                         >
+
+                                                        <RequestRentalReleaseItem
+                                                            refresh={()=>{
+                                                                this.fetchRentalRequests();
+                                                            }}
+                                                            history={this.props.history}
+                                                            item={item}
+                                                        />
+
+                                                    </div>
 
                                                 </>
                                             )}

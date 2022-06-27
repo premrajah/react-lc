@@ -7,8 +7,8 @@ import HeaderDark from "../header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import {Link} from "react-router-dom";
-import RequestRegisterItem from "../../components/RequestRegisterItem";
-import RequestServiceAgentItem from "../../components/RequestServiceAgentItem";
+import RequestRegisterItem from "../../components/Approvals/RequestRegisterItem";
+import RequestServiceAgentItem from "../../components/Approvals/RequestServiceAgentItem";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 const ServiceAgentRecord = ({serviceAgentRequests, fetchServiceAgentRequest, history}) => {

@@ -65,9 +65,13 @@ class MapsContainer extends Component {
 
 
 componentDidUpdate(prevProps, prevState, snapshot) {
+
      if (prevProps!=this.props){
 
+
+         // alert("map change")
          setTimeout(()=> {
+
 
              if (!this.props.searchLocation)
              for (let i=0;i<this.props.locations.length;i++){
@@ -75,10 +79,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                  this.polyLine.push( {lat: this.props.locations[i].location.lat, lng: this.props.locations[i].location.lng},)
 
              }else{
-
-
-
-
 
              this.setState({
                  markerLatitude:this.props.latitude,
@@ -88,7 +88,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
              })
          }
 
-         }, 1000);
+         }, 250);
 
      }
 }
@@ -128,7 +128,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 onClick={this.onMapClicked}
                 google={this.props.google}
                 style={{margin:"0",width: "100%"}}
-                initialCenter={{
+                center={{
                     lat: this.props.locations.find((item)=> item.isCenter===true).location.lat,
                     lng: this.props.locations.find((item)=> item.isCenter===true).location.lng,
                 }}
@@ -184,7 +184,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
              onClick={this.onMapClicked}
              google={this.props.google}
              style={{margin:"0",width: "100%"}}
-             initialCenter={{
+             center={{
                  lat: this.props.latitude,
                  lng: this.props.longitude,
              }}

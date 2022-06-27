@@ -456,7 +456,8 @@ marteplace
                                                                         <Tab label="Info" value="0"/>
                                                                         <Tab label="Linked Product" value="1" />
                                                                         <Tab label="Site" value="2" />
-                                                                        {!this.props.hideMatchesTab &&   <Tab label={<Badge color={"primary"} badgeContent={this.state.matches.length}>Matches Received</Badge>} value="3" />}
+                                                                        {!this.props.hideMatchesTab &&
+                                                                        <Tab label={<Badge color={"primary"} badgeContent={this.state.matches.length}>Matches Received</Badge>} value="3" />}
                                                                     </TabList>
                                                                 </Box>
 

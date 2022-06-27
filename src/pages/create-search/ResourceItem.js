@@ -182,7 +182,7 @@ class ResourceItem extends Component {
                                     </span>
                                 </div>}
                                 <div className={"text-gray-light mt-1 mb-1 width-75 text-14"}>
-                                    <span>{getTimeFormat(this.props.item.listing.require_after_epoch_ms)}</span> - <span>{getTimeFormat(this.props.item.listing.expire_after_epoch_ms)}</span>
+                                    <span>{getTimeFormat(this.props.item.listing.available_from_epoch_ms)}</span> - <span>{getTimeFormat(this.props.item.listing.expire_after_epoch_ms)}</span>
                                 </div>
                                 {/*{this.props.item.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>*/}
                                 {/*    <OrgComponent org={this.props.item.org }/>*/}

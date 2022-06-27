@@ -445,26 +445,11 @@ class SiteDetailContent extends Component {
 
         this.getQrCode()
 
-        this.fetchReleases()
+        // this.fetchReleases()
 
     }
 
-    fetchReleases=()=> {
-        axios
-            .get(baseUrl + "site-release/site/"+this.props.item.site._key)
-            .then(
-                (response) => {
 
-                    this.setState({
-                        releases: response.data.data,
-
-                    });
-                },
-                (error) => {
-                    // var status = error.response.status
-                }
-            );
-    }
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -617,11 +602,7 @@ class SiteDetailContent extends Component {
                                                         {this.props.isLoggedIn  &&
                                                         <Tab label="Products" value="3" />
                                                         }
-
-
                                                         <Tab label="Attachments" value="4" />
-
-
                                                     </TabList>
                                                 </Box>
 

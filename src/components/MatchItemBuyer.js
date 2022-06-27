@@ -432,7 +432,7 @@ class MatchItemBuyer extends Component {
                     )}
                 </div>
 
-                <div style={{ textAlign: "right" }} className={"col-12 mb-4"}>
+                <div style={{ textAlign: "right" }} className={"col-12 d-flex mb-4"}>
 
 
                     {(this.props.item.match.stage === "accepted" ||

@@ -1,2 +1,3 @@
 include:
   - local: .aws.gitlab-ci.yml
+  - local: .gcp.gitlab-ci.yml

@@ -203,7 +203,7 @@ send_to_teams:
   stage: notify
   image: curlimages/curl
   script: |
-    TEXT="${CI_PROJECT_NAME} ${CI_COMMIT_REF_NAME} ${CI_COMMIT_AUTHOR} - ${CI_COMMIT_MESSAGE:No release notes.}"
+    TEXT="${CI_PROJECT_NAME} ${CI_COMMIT_REF_NAME} ${CI_COMMIT_AUTHOR} ${CI_COMMIT_MESSAGE:No release notes.}"
     curl -X POST -H "Content-Type: application/json" \
         -d "{\"text\":\"Build Complete -> $TEXT\"}" \
         https://netorgft4168503.webhook.office.com/webhookb2/8c2429fc-b4dc-41da-87c0-c2fe090f57a8@c3483efd-38e0-49b4-9693-881fd828e542/IncomingWebhook/1a1024eea62c4ae6a06358794c4d3c35/479f5c58-c4c4-421e-a4cd-6ff34f0091aa

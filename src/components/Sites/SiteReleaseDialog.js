@@ -26,6 +26,8 @@ import BlueButton from "../FormsUI/Buttons/BlueButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
+import {getTimeFormat} from "../../Util/GlobalFunctions";
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 
 
 class SiteReleaseDialog extends Component {
@@ -46,6 +48,7 @@ class SiteReleaseDialog extends Component {
             showReleaseProduct: false,
             showServiceAgent: false,
             showReleaseSuccess: false,
+            releases:[]
 
 
         };
@@ -87,7 +90,9 @@ class SiteReleaseDialog extends Component {
                 this.setState({
                     currentReleaseId: res.data.data._key,
                     showReleaseSuccess: true,
-                });
+                })
+
+                this.fetchReleases()
             })
             .catch((error) => {
                 this.setState({
@@ -96,10 +101,25 @@ class SiteReleaseDialog extends Component {
             });
     };
 
+    fetchReleases=()=> {
+        axios
+            .get(baseUrl + "site-release/site/"+this.props.item.site._key)
+            .then(
+                (response) => {
 
+                    this.setState({
+                        releases: response.data.data,
+
+                    });
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
 
     componentDidMount() {
-
+this.fetchReleases()
 
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -127,6 +147,37 @@ class SiteReleaseDialog extends Component {
     };
 
 
+    actionSubmit = () => {
+
+        if (this.state.releases&&this.state.releases.length>0) {
+            var data = {
+                id: this.state.releases[0].Release._key,
+                new_stage: "cancelled",
+                // "site_id": this.state.site
+            };
+
+            axios
+                .post(baseUrl + "site-release/stage", data)
+                .then((res) => {
+
+
+                    this.fetchReleases()
+
+                    this.props.showSnackbar({show:true,severity:"success",message:"Release request cancelled successfully. Thanks"})
+
+
+                })
+                .catch((error) => {
+                    // this.setState({
+                    //
+                    //     showPopUp: true,
+                    //     loopError: error.response.data.content.message
+                    // })
+                });
+
+        }
+    };
+
 
     render() {
         const classes = withStyles();
@@ -146,7 +197,37 @@ class SiteReleaseDialog extends Component {
                                 <div className={"col-12 "}>
 
 
-                                                {!this.state.showReleaseSuccess ? (
+                                    {this.state.releases&&this.state.releases.length>0
+                                    && this.state.releases.filter(item=>item.Release.stage!=="cancelled").map((release)=>
+
+                                        <div className={"col-12 mt-3 "}>
+
+                                            <div className="row mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
+                                                <div className={"col-11 text-blue "}>
+                                                    Site Release request to  <b>{release.responder.name}</b> <br/>
+                                                    Status: <span className="text-pink text-capitlize">{release.Release.stage}</span>
+                                                    <br/><small className="text-gray-light mr-2">{getTimeFormat(release.Release._ts_epoch_ms)}</small>
+                                                </div>
+
+                                                <div className={"col-1 text-right "}>
+                                                    <CloseButtonPopUp
+                                                        // onClick={()=>this.removeCompany(2,item._key)}
+
+                                                        onClick={this.actionSubmit}
+                                                    />
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    )}
+
+                                    {!(this.state.releases&&
+                                        this.state.releases.length&&
+                                        this.state.releases.filter(item=>item.Release.stage!=="cancelled").length>0)&&     <>
+
+
                                                     <> <div className={"row "}>
                                                         <div className={"col-12 "}>
 
@@ -228,7 +309,7 @@ class SiteReleaseDialog extends Component {
                                                                                             </BlueButton>
                                                                                         </div>
                                                                                         <div
-                                                                                            className={"col-6"}
+                                                                                            className={"col-6 d-none"}
                                                                                             style={{
                                                                                                 textAlign: "center",
                                                                                             }}>
@@ -318,63 +399,9 @@ class SiteReleaseDialog extends Component {
                                                         )}
                                                     </div>
                                                     </>
-                                                ) : (
-                                                    <>
-                                                        {!this.state.cancelReleaseSuccess && (
-                                                            <div className={"row justify-content-center"}>
-                                                                <div className={"col-12 mt-3 text-center"}>
-                                                                    <Alert key={"alert"} variant={"success"}>
-                                                                        Your release request has been submitted
-                                                                        successfully. Thanks
-                                                                    </Alert>
-                                                                </div>
-                                                            </div>
-                                                        )}
-
-                                                        {this.state.cancelReleaseSuccess && (
-                                                            <div className={"row justify-content-center"}>
-                                                                <div className={"col-12 text-center"}>
-                                                                    <Alert key={"alert"} variant={"success"}>
-                                                                        Your release request has been cancelled
-                                                                        successfully. Thanks
-                                                                    </Alert>
-                                                                </div>
-                                                            </div>
-                                                        )}
-
-                                                        <div className={"row justify-content-center"}>
-                                                            <div
-                                                                className={"col-6"}
-                                                                style={{ textAlign: "center" }}>
-                                                                <BlueButton
-                                                                    title={"OK"}
-                                                                    fullWidth
-                                                                    type="button"
-                                                                    onClick={this.showReleaseProductPopUp}
 
 
-                                                                >
-
-                                                                    Ok
-                                                                </BlueButton>
-                                                            </div>
-                                                            <div
-                                                                className={"col-6"}
-                                                                style={{ textAlign: "center" }}>
-                                                                <BlueBorderLink
-                                                                    title={" Cancel Release"}
-                                                                    fullWidth
-                                                                    onClick={this.actionSubmit}
-
-                                                                >
-
-                                                                </BlueBorderLink>
-                                                            </div>
-                                                        </div>
-                                                    </>
-                                                )}
-
-
+</>}
 
                                 </div>
 

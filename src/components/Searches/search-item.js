@@ -149,7 +149,7 @@ class SearchItem extends Component {
                         <div className={"add-top-button pl-3-desktop"}>
 
                         <p className={"  status text-right"}>
-                                <span className={this.props.item.search.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
+                                <span className={(this.props.item.search.stage!="inactive"&&this.props.item.search.stage!="expired")?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.search.stage}
                                 </span>
                         </p>

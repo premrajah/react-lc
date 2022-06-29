@@ -162,8 +162,8 @@ class ItemDetailPreview extends Component {
                                                     </div>
                                                     {this.props.site &&  <div className="row justify-content-start search-container ">
                                                         <div className="col-auto"><p
-                                                            className=" text-bold text-label text-blue mb-1">Located At
-                                                            From</p><p className="text-gray-light mb "> {this.props.site.name}</p>
+                                                            className=" text-bold text-label text-blue mb-1">Located At</p>
+                                                            <p className="text-gray-light mb "> {this.props.site.name}</p>
                                                         </div>
                                                     </div>}
 

@@ -1085,7 +1085,8 @@ class ProductForm extends Component {
                                 <TextFieldWrapper
 
                                     details="The name of  template"
-                                      initialValue={this.props.item&&this.props.item.name}
+
+                                    initialValue={(this.props.item?this.props.item.name:"")}
                                     hidden={this.props.item?true:false}
                                         onChange={(value)=>this.handleChangeProduct(value,"templateName")}
                                         error={this.state.errors["templateName"]}
@@ -1457,7 +1458,7 @@ class ProductForm extends Component {
 
                                             </div>
 
-                                            <div className="col-md-4 col-sm-6 col-xs-6">
+                                {!this.props.productLines &&     <div className="col-md-4 col-sm-6 col-xs-6">
 
                                                 <TextFieldWrapper
                                                     initialValue={this.props.item?this.props.item.product.sku.model:""
@@ -1469,7 +1470,7 @@ class ProductForm extends Component {
 
                                                 />
 
-                                            </div>
+                                            </div>}
 
                                 {!this.props.productLines &&
                                 <div className="col-md-4 col-sm-6 col-xs-6">

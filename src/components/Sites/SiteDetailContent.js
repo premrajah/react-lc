@@ -22,6 +22,7 @@ import {ownerCheck} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import SiteFormNew from "./SiteFormNew";
 import Layout from "../Layout/Layout";
+import ArtifactSiteTab from "./ArtifactSiteTab";
 
 
 class SiteDetailContent extends Component {
@@ -66,7 +67,8 @@ class SiteDetailContent extends Component {
             initialValues:{},
             activeKey:1,
             zoomQrCode:false,
-            siteQrCode:null
+            siteQrCode:null,
+            releases:[]
 
 
         };
@@ -443,7 +445,13 @@ class SiteDetailContent extends Component {
 
         this.getQrCode()
 
+        // this.fetchReleases()
+
     }
+
+
+
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         //
         // if (prevProps!==this.props) {
@@ -594,7 +602,7 @@ class SiteDetailContent extends Component {
                                                         {this.props.isLoggedIn  &&
                                                         <Tab label="Products" value="3" />
                                                         }
-
+                                                        <Tab label="Attachments" value="4" />
                                                     </TabList>
                                                 </Box>
 
@@ -614,7 +622,9 @@ class SiteDetailContent extends Component {
                                                 <TabPanel value="3">
                                                 <SubProductsTab item={this.props.item.site} />
                                                 </TabPanel>}
-
+                                                <TabPanel value="4">
+                                                    <ArtifactSiteTab item={this.props.item}/>
+                                                </TabPanel>
 
                                             </TabContext>
                                         </Box>
@@ -636,7 +646,10 @@ class SiteDetailContent extends Component {
                             <>
                                 <div className="col-12 ">
 
-                                    <SiteFormNew  hide={this.toggleSite} edit item={this.props.item} refresh={()=>this.toggleSite(true)} />
+                                    <SiteFormNew
+                                        hide={this.toggleSite} edit item={this.props.item}
+                                                  refresh={()=>this.toggleSite(true)}
+                                    />
                                 </div>
                             </>
                         </GlobalDialog>

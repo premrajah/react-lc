@@ -1,19 +1,19 @@
 import React, { Component } from "react";
-import PlaceholderImg from "../img/place-holder-lc.png";
+import PlaceholderImg from "../../img/place-holder-lc.png";
 import axios from "axios/index";
-import { baseUrl } from "../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import { connect } from "react-redux";
-import * as actionCreator from "../store/actions/actions";
+import * as actionCreator from "../../store/actions/actions";
 import { Modal, ModalBody } from "react-bootstrap";
 import moment from "moment/moment";
 import { withStyles } from "@mui/styles/index";
-import Org from "./Org/Org";
-import ImageOnlyThumbnail from "./ImageOnlyThumbnail";
+import Org from "../Org/Org";
+import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
-import {capitalize, fetchErrorMessage} from "../Util/GlobalFunctions";
-import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
-import GreenButton from "./FormsUI/Buttons/GreenButton";
-import GlobalDialog from "./RightBar/GlobalDialog";
+import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
+import GlobalDialog from "../RightBar/GlobalDialog";
 
 class RequestRegisterItem extends Component {
     constructor(props) {

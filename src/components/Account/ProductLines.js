@@ -59,7 +59,13 @@ class ProductLines extends Component {
             );
     }
 
-    toggleAddUser=async (loadRoles) => {
+    toggleAddUser=async (item) => {
+
+
+
+        this.setState({
+            editItem:item?item:null
+        })
 
         this.setState({
             showAddPopUp: !this.state.showAddPopUp,
@@ -172,31 +178,6 @@ class ProductLines extends Component {
 
 
     };
-    fetchRoles=()=> {
-
-        this.setState({
-            btnLoading: true,
-
-        });
-        axios
-            .get(baseUrl + "role")
-            .then(
-                (response) => {
-
-                    this.setState({
-                        btnLoading: false,
-
-                    });
-                    this.setState({
-                        roles: response.data.data,
-
-                    });
-                },
-                (error) => {
-                    // var status = error.response.status
-                }
-            );
-    }
 
 
 
@@ -249,22 +230,6 @@ class ProductLines extends Component {
         this.fetchCache()
     }
 
-    fetchUsers=()=> {
-        axios
-            .get(baseUrl + "org/user")
-            .then(
-                (response) => {
-
-                    this.setState({
-                        items: response.data.data,
-
-                    });
-                },
-                (error) => {
-                    // var status = error.response.status
-                }
-            );
-    }
 
     handleDelete = (key) => {
 
@@ -310,7 +275,7 @@ class ProductLines extends Component {
 
                 <div className="row mt-4">
                     <div className="col-12 text-right text-blue">
-                        <button onClick={()=>this.toggleAddUser(true)}
+                        <button onClick={()=>this.toggleAddUser(null)}
                                 className=" btn-sm btn-gray-border  mr-2"><>
                             <Add  style={{fontSize:"20px"}} />
                             Add New</></button>
@@ -326,10 +291,8 @@ class ProductLines extends Component {
                                             <ManageTemplateItem
                                                 onClickEdit={(item)=>
                                                 {
-                                                    this.setState({
-                                                        editItem:item
-                                                    })
-                                                    this.toggleAddUser()
+
+                                                    this.toggleAddUser(item)
 
                                                 }}
                                                 onClick={()=>this.handleDelete(item.key)}

@@ -182,14 +182,15 @@ class ResourceItem extends Component {
                                     </span>
                                 </div>}
                                 <div className={"text-gray-light mt-1 mb-1 width-75 text-14"}>
-                                    <span>{getTimeFormat(this.props.item.listing.require_after_epoch_ms)}</span> - <span>{getTimeFormat(this.props.item.listing.expire_after_epoch_ms)}</span>
+                                    <span>{getTimeFormat(this.props.item.listing.available_from_epoch_ms)}</span> - <span>{getTimeFormat(this.props.item.listing.expire_after_epoch_ms)}</span>
                                 </div>
-                                {this.props.item.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>
-                                    <OrgComponent org={this.props.item.org }/>
-                                </div>}
-                                {this.props.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>
-                                    <OrgComponent org={this.props.org }/>
-                                </div>}
+                                {/*{this.props.item.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>*/}
+                                {/*    <OrgComponent org={this.props.item.org }/>*/}
+                                {/*</div>}*/}
+
+                                {/*{this.props.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>*/}
+                                {/*    <OrgComponent org={this.props.org }/>*/}
+                                {/*</div>}*/}
 
 
                                 {(this.props.fromSearch ||this.props.matchedItem) &&
@@ -217,7 +218,7 @@ class ResourceItem extends Component {
                                 <p className={"status text-right"}>
 
 
-                                    <span className={this.props.item.listing.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
+                                    <span className={this.props.item.listing.stage!="inactive"&&this.props.item.listing.stage!="expired"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.listing.stage}
                                 </span>
                                 </p>

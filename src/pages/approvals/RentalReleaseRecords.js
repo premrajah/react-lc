@@ -8,14 +8,46 @@ import {connect} from "react-redux";
 import RequestReleaseItem from "../../components/Approvals/RequestReleaseItem";
 import * as actionCreator from "../../store/actions/actions";
 import Layout from "../../components/Layout/Layout";
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
+import RequestRentalReleaseItem from "../../components/Approvals/RequestRentalReleaseItem";
 
-class ApprovedReleases extends Component {
+class RentalReleaseRecords extends Component {
 
-    state = {}
+    state = {
+        rentalRequests:[]
+    }
 
     componentDidMount() {
-        this.props.fetchReleaseRequest();
+
+
+        this.fetchRentalRequests()
+
     }
+
+    fetchRentalRequests = () => {
+
+        axios.get(baseUrl + "rental-release").then(
+            (response) => {
+
+                let responseAll = response.data.data;
+
+                this.setState({
+                    rentalRequests:responseAll
+                })
+
+                // dispatch()
+            },
+            (error) => {
+                // let status = error.response.status
+                // dispatch({ type: "PRODUCT_LIST", value: [] })
+            }
+        )
+            .catch(error => {});
+
+        // dispatch({ type: "PRODUCT_LIST", value: [] })
+    };
+
 
     render() {
         return (
@@ -23,7 +55,7 @@ class ApprovedReleases extends Component {
                     <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={ArchiveIcon}
-                            pageTitle="Release Request Records"
+                            pageTitle="Rental  Records"
                             subTitle="Your previously released requests"
                             bottomLine={<hr />}
                         />
@@ -36,15 +68,19 @@ class ApprovedReleases extends Component {
                             </div>
                         </div>
 
-                        {this.props.productReleaseRequests.length > 0 ? <div className="row">
+                        {this.state.rentalRequests.length > 0 ?
+                            <div className="row">
                             <div className="col">
                                 {
                                     <>
-                                        {this.props.productReleaseRequests.length !== 0 ? this.props.productReleaseRequests.filter(r => r.Release.stage !== "requested").map((item, index) => (
+                                        {this.state.rentalRequests.length !== 0 ?
+                                            this.state.rentalRequests
+                                                .filter(r => r.Release.stage !== "requested")
+                                                .map((item, index) => (
                                             <div className="row" key={index}>
                                                 <div className="col">
                                                     <Link to={`/product/${item.product_id}`}>
-                                                        <RequestReleaseItem
+                                                        <RequestRentalReleaseItem
                                                             history={this.props.history}
                                                             item={item}
                                                         />
@@ -79,4 +115,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ApprovedReleases);
+export default connect(mapStateToProps, mapDispatchToProps)(RentalReleaseRecords);

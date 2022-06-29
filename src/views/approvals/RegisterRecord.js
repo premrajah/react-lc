@@ -6,7 +6,7 @@ import HeaderDark from "../header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import {Link} from "react-router-dom";
-import RequestRegisterItem from "../../components/RequestRegisterItem";
+import RequestRegisterItem from "../../components/Approvals/RequestRegisterItem";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 const RegisterRecord = ({ productRegisterRequests, fetchRegisterRequest, history }) => {

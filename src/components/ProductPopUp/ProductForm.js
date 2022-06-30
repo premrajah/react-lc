@@ -708,7 +708,7 @@ class ProductForm extends Component {
 
 
     loadImages=(artifacts)=> {
-        // console.log(artifacts)
+
         let images = [];
 
         let currentFiles = [];
@@ -878,6 +878,12 @@ class ProductForm extends Component {
         if (prevProps!=this.props){
               // alert("called")
 
+            if (this.props.item){
+
+                this.loadImages(this.props.item.artifacts)
+
+            }
+
         }
     }
 
@@ -939,6 +945,7 @@ class ProductForm extends Component {
       // alert("called")
 
         if (this.props.item){
+
             this.loadImages(this.props.item.artifacts)
             this.setState({
                 isEditProduct:true,

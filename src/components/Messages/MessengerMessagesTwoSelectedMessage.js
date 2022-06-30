@@ -93,9 +93,13 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
                                 <WysiwygGroupImageUpload groupKey={groupMessageKey} />
                             </div>
                         </div>
-                        {groupMessageArtifacts.length > 0 ? groupMessageArtifacts.map((a, index) => {
-                            return <MessengerMessagesFilesDisplay key={index} artifacts={a} />
-                        }) : <div>No group files yet.</div>}
+
+                        <div style={{ height: "350px", minHeight: "350px", maxHeight: "350px", overflow: "auto", overflowX: "hidden" }}>
+
+                            {groupMessageArtifacts.length > 0 ? groupMessageArtifacts.map((a, index) => {
+                                return <MessengerMessagesFilesDisplay key={index} artifacts={a} />
+                            }) : <div>No group files yet.</div>}
+                        </div>
                     </TabPanel>
                 </Box>
             ) : (

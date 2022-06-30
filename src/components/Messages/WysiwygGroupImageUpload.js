@@ -185,6 +185,7 @@ class WysiwygGroupImageUpload extends Component {
             .then((res) => {
                 if(res.status === 200) {
                     this.resetImagesAfterMessageSend(); // reset
+                    this.props.showSnackbar({ show: true, severity: "success", message: `Successfully upload.` });
                 }
             })
             .catch((error) => {
@@ -223,7 +224,7 @@ class WysiwygGroupImageUpload extends Component {
                 </div>
 
 
-                <div className="message-upload-images-container d-flex flex-row-reverse" style={{position: "absolute", right: "0", top: "-90px"}}>
+                <div className="message-upload-images-container d-flex" style={{position: "absolute", left: "0", top: "-90px"}}>
                     {this.state.files &&
                     this.state.files.map((item, index) => (
                         <div key={index} className={"file-uploader-thumbnail-container"}>

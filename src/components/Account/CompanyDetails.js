@@ -568,6 +568,15 @@ class CompanyDetails extends Component {
             });
     };
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps!=this.props){
+            this.setState({
+                orgs:[]
+            })
+            this.getOrgsForUser();
+        }
+    }
+
     componentDidMount() {
 
         this.getOrgsForUser();
@@ -1248,6 +1257,7 @@ class CompanyDetails extends Component {
                                         hideAddNew
                                         orgs={true}
                                         companies={true}
+                                        filterOrgs={this.state.orgs}
                                         suggestions={this.state.orgNames}
 
                                         selectedCompany={(action) => this.companyDetails(action)}

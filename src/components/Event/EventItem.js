@@ -1,22 +1,24 @@
 import * as React from 'react';
+import {Component} from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import {getInitials, getTimeFormat} from "../../Util/GlobalFunctions";
-import {Component} from "react";
+import {fetchErrorMessage, getInitials, getTimeFormat} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import moment from "moment/moment";
 import {baseUrl, checkImage} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import {Done, Edit} from "@mui/icons-material";
+import {Delete, Done, Edit, FactCheck} from "@mui/icons-material";
 import EventForm from "./EventForm";
 import axios from "axios";
 import EventStatus from "./EventStatus";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import * as actionCreator from "../../store/actions/actions";
+import {connect} from "react-redux";
 
 class EventItem extends Component {
         constructor(props) {
@@ -33,9 +35,29 @@ class EventItem extends Component {
                 editEvent:null,
                 stageEventId:null,
                 showStagePopup:false,
+                deleteEvent:false
             }
         }
 
+
+
+    toggleDelete=(eventId)=>{
+
+        if (eventId)
+            this.getEvent(eventId,"delete")
+
+        else{
+            this.setState({
+                    selectedEvent:null
+                })
+            }
+
+
+        this.setState({
+            // selectedEvent:item,
+            deleteEvent:!this.state.deleteEvent
+        })
+    }
 
     showEventPopup=(item)=>{
             this.setState({
@@ -123,6 +145,41 @@ class EventItem extends Component {
 
     }
 
+    deleteEvent=(eventId,type)=>{
+
+
+
+        let url=`${baseUrl}event/${eventId}`
+        axios
+            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
+            .delete(url)
+            .then(
+                (response) => {
+
+                    this.props.refresh()
+
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "success",
+                        message:   "Event deleted successfully. Thanks"
+                    })
+
+                },
+                (error) => {
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+
+                    this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+
+                }
+            );
+
+
+
+    }
+
+
     componentDidMount() {
             if (this.props.statusChange){
 
@@ -163,24 +220,37 @@ class EventItem extends Component {
                                     <div className="mb-0">{item.event.description}</div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
 
-                                    {item.event.resolution_epoch_ms > Date.now() &&
-                                    <ActionIconBtn
-                                        className="ml-4 right-btn"
+
+                                        <div className="d-flex flex-column right-btn-auto">
+                                            {item.event.resolution_epoch_ms > Date.now() &&
+                                            <ActionIconBtn
+                                        size="small"
+
                                         onClick={(e)=>{
                                             e.stopPropagation()
                                             e.preventDefault()
                                            this.showEditEventPopup(item)
-                                        }}><Edit/></ActionIconBtn>
-                                    }
-                                    {/*<ActionIconBtn*/}
-                                    {/*    className="ml-4 right-btn"*/}
-                                    {/*    onClick={(e)=>{*/}
-                                    {/*        e.stopPropagation()*/}
-                                    {/*        e.preventDefault()*/}
-                                    {/*        this.showStageEventPopup(item.event._key)*/}
-                                    {/*    }}><Done/>*/}
-                                    {/*</ActionIconBtn>*/}
+                                        }}><Edit /></ActionIconBtn>}
 
+                                    <ActionIconBtn
+                                        size="small"
+
+                                    onClick={(e)=>{
+                                    e.stopPropagation()
+                                    e.preventDefault()
+                                    this.showStageEventPopup(item.event._key)
+                                }}><FactCheck/>
+                                </ActionIconBtn>
+
+                                            <ActionIconBtn
+                                                size="small"
+                                                onClick={(e)=>{
+                                                    e.stopPropagation()
+                                                    e.preventDefault()
+                                                    this.toggleDelete(item.event._key)
+                                                }}><Delete/>
+                                            </ActionIconBtn>
+                                        </div>
 
                                 </React.Fragment>
                             }
@@ -196,7 +266,7 @@ class EventItem extends Component {
 
                     <GlobalDialog
 
-                        heading={this.state.selectedEvent?this.state.selectedEvent.event.title:null}
+                        heading={this.state.selectedEvent&&this.state.selectedEvent.event?this.state.selectedEvent.event.title:null}
                         show={this.state.showEvent}
                         hide={this.showEventPopup}
                     >
@@ -352,6 +422,53 @@ class EventItem extends Component {
 
                     </GlobalDialog>
 
+
+                    <GlobalDialog
+
+                        heading={this.state.selectedEvent&&this.state.selectedEvent.event?"Delete "+this.state.selectedEvent.event.title:null}
+                        show={this.state.deleteEvent}
+                        hide={this.toggleDelete}
+                    >
+                        <div className={"col-12"}>
+                            <div className={"bg-white  rad-8  "}>
+
+                                {this.state.selectedEvent &&
+                                <>
+
+                                    <div className="col-12 ">
+                                        <div className="row mt-4 no-gutters">
+                                            <div
+                                                className={"col-6 pr-1"}
+                                                style={{
+                                                    textAlign: "center",
+                                                }}>
+                                                <GreenButton
+                                                    onClick={() => this.deleteEvent(this.state.selectedEvent.event._key)}
+                                                    title={"Delete"}
+                                                    type={"submit"}></GreenButton>
+                                            </div>
+                                            <div
+                                                className={"col-6 pl-1"}
+                                                style={{
+                                                    textAlign: "center",
+                                                }}>
+                                                <BlueBorderButton
+                                                    type="button"
+                                                    title={"Cancel"}
+                                                    onClick={() => this.toggleDelete()}></BlueBorderButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                                }
+
+
+
+                            </div>
+                        </div>
+
+                    </GlobalDialog>
+
                     <GlobalDialog
                         heading={this.state.editEvent?this.state.editEvent.event.title:null}
                         show={this.state.showEditEvent}
@@ -378,4 +495,20 @@ class EventItem extends Component {
     }
 
 
-    export default EventItem;
+
+const mapStateToProps = (state) => {
+    return {
+
+    };
+};
+
+const mapDispachToProps = (dispatch) => {
+    return {
+
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
+
+    };
+};
+
+export default  connect(mapStateToProps, mapDispachToProps)(EventItem);

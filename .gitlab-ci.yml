@@ -1,3 +1,37 @@
+stages:
+  - setup
+  - dev_build
+  - dev_deploy
+  - stage_build
+  - stage_deploy
+  - prod_build
+  - prod_deploy
+  - notify
+
+variables:
+  #  CI_DEBUG_TRACE: "true"
+  CONTAINER_IMAGE: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}
+  CONTAINER_IMAGE_LATEST: ${CI_REGISTRY}/${CI_PROJECT_PATH}:latest
+  DOCKER_DRIVER: overlay2
+
+start_to_teams:
+  stage: setup
+  image: curlimages/curl
+  script: |
+    TEXT=$(echo "${CI_PROJECT_PATH}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF} ${CI_COMMIT_AUTHOR} ${CI_COMMIT_MESSAGE}")
+    curl -X POST -H "Content-Type: application/json" \
+        -d "{\"text\":\"Started -> $TEXT\"}" \
+        https://netorgft4168503.webhook.office.com/webhookb2/8c2429fc-b4dc-41da-87c0-c2fe090f57a8@c3483efd-38e0-49b4-9693-881fd828e542/IncomingWebhook/1a1024eea62c4ae6a06358794c4d3c35/479f5c58-c4c4-421e-a4cd-6ff34f0091aa
+
 include:
   - local: .aws.gitlab-ci.yml
   - local: .gcp.gitlab-ci.yml
+
+send_to_teams:
+  stage: notify
+  image: curlimages/curl
+  script: |
+    TEXT=$(echo "${CI_PROJECT_PATH}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF} ${CI_COMMIT_AUTHOR} ${CI_COMMIT_MESSAGE}")
+    curl -X POST -H "Content-Type: application/json" \
+        -d "{\"text\":\"Build Complete -> $TEXT\"}" \
+        https://netorgft4168503.webhook.office.com/webhookb2/8c2429fc-b4dc-41da-87c0-c2fe090f57a8@c3483efd-38e0-49b4-9693-881fd828e542/IncomingWebhook/1a1024eea62c4ae6a06358794c4d3c35/479f5c58-c4c4-421e-a4cd-6ff34f0091aa

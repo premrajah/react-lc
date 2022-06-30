@@ -1,23 +1,42 @@
-#cache:
-#  untracked: true
-#  key: "$CI_BUILD_REF_NAME"
-#  paths:
-#  - vendor/
+.gcp_deploy_template: &gcp_deploy
+  script:
+    - echo $GKE_ACCOUNT > /tmp/$CI_PIPELINE_DEPLOY.json
+    - gcloud auth activate-service-account --key-file=/tmp/$CI_PIPELINE_DEPLOY.json
+    - gcloud config set project ${GCP_PROJECT_ID}
+    - gcloud config set container/cluster ${GKE_CLUSTER}
+    - gcloud config set compute/region ${GKE_REGION}
+    - gcloud container clusters get-credentials ${GKE_CLUSTER} --region ${GKE_REGION}
 
-stages:
-- dev_build
-- dev_deploy
-- stage_build
-- stage_deploy
-- prod_build
-- prod_deploy
+    - export IMAGE_TAG=$(cat aws_image_tag.txt)
+    - echo $IMAGE_TAG
 
-variables:
-#  CI_DEBUG_TRACE: "true"
-  CONTAINER_IMAGE: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}
-  CONTAINER_IMAGE_LATEST: ${CI_REGISTRY}/${CI_PROJECT_PATH}:latest
-  DOCKER_DRIVER: overlay2
+    - ls -latr ./scripts/k8s
 
+    - sed -i.bak "s#\\\${API_IMAGE}#$IMAGE_TAG#" ./scripts/k8s/deployment.yaml
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/deployment.yaml
+
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/service.yaml
+
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/ingress.yaml
+    - sed -i.bak "s#\\\${INGRESS_SUFFIX}#$INGRESS_SUFFIX#" ./scripts/k8s/ingress.yaml
+    - sed -i.bak "s#\\\${LPCY_PREFIX}#$LPCY_PREFIX#" ./scripts/k8s/ingress.yaml
+
+    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/cronjob.yaml
+
+    - export PATH=$PATH:.
+
+    - kubectl get svc
+    - kubectl config view
+
+    - cat ./scripts/k8s/deployment.yaml
+    - cat ./scripts/k8s/service.yaml
+    - cat ./scripts/k8s/ingress.yaml
+    - cat ./scripts/k8s/cronjob.yaml
+
+    - kubectl apply -f ./scripts/k8s/deployment.yaml
+    - kubectl apply -f ./scripts/k8s/service.yaml
+    - kubectl apply -f ./scripts/k8s/ingress.yaml
+    - kubectl apply -f ./scripts/k8s/cronjob.yaml
 
 gcp_build_dev:
   stage: dev_build
@@ -44,32 +63,15 @@ gcp_build_dev:
   only:
     - develop
     - develop_refactor
-    - develop-api2
-
 
 gcp_deploy_dev:
   stage: dev_deploy
   image: kiwigrid/gcloud-kubectl-helm
-  # <<: *deploy_precursor
-  script:
-#  - apk add --update -t curl
+  <<: *gcp_deploy
+  before_script:
   - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
-  - echo $GKE_ACCOUNT > /tmp/$CI_PIPELINE_DEPLOY.json
-  - gcloud auth activate-service-account --key-file=/tmp/$CI_PIPELINE_DEPLOY.json
-  - gcloud config set project ${GCP_PROJECT_ID}
-  - gcloud config set container/cluster ${GKE_CLUSTER}
-  - gcloud config set compute/zone ${GKE_ZONE}
-  - gcloud container clusters get-credentials ${GKE_CLUSTER} --zone ${GKE_ZONE}
-  - export IMAGE_TAG=$(cat gcp_image_tag.txt)
-  - echo $IMAGE_TAG
-
-  - sed -i.bak "s#\\\${API_IMAGE}#$IMAGE_TAG#" ./scripts/k8s/deployment.yaml
-  - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/deployment.yaml
-  - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/service.yaml
-  - cat ./scripts/k8s/deployment.yaml
-#  - kubectl delete -f ./scripts/k8s/deployment.yaml
-  - kubectl apply -f ./scripts/k8s/deployment.yaml
-  - kubectl apply -f ./scripts/k8s/service.yaml
+  - export INGRESS_SUFFIX="-${ENVIRONMENT}"
+  - export LPCY_PREFIX="d"
   only:
     - develop
     - develop_refactor
@@ -103,26 +105,11 @@ gcp_build_prod:
 gcp_deploy_prod:
   stage: prod_deploy
   image: kiwigrid/gcloud-kubectl-helm
-  # <<: *deploy_precursor
-  script:
-    #  - apk add --update -t curl
+  <<: *gcp_deploy
+  before_script:
     - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
-    - echo $GKE_ACCOUNT > /tmp/$CI_PIPELINE_DEPLOY.json
-    - gcloud auth activate-service-account --key-file=/tmp/$CI_PIPELINE_DEPLOY.json
-    - gcloud config set project ${GCP_PROJECT_ID}
-    - gcloud config set container/cluster ${GKE_CLUSTER}
-    - gcloud config set compute/zone ${GKE_ZONE}
-    - gcloud container clusters get-credentials ${GKE_CLUSTER} --zone ${GKE_ZONE}
-    - export IMAGE_TAG=$(cat gcp_image_tag.txt)
-    - echo $IMAGE_TAG
-
-    - sed -i.bak "s#\\\${API_IMAGE}#$IMAGE_TAG#" ./scripts/k8s/deployment.yaml
-    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/deployment.yaml
-    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/service.yaml
-    - cat ./scripts/k8s/deployment.yaml
-    #  - kubectl delete -f ./scripts/k8s/deployment.yaml
-    - kubectl apply -f ./scripts/k8s/deployment.yaml
-    - kubectl apply -f ./scripts/k8s/service.yaml
+    - export INGRESS_SUFFIX=""
+    - export LPCY_PREFIX="u"
   only:
     - master
   when: manual
@@ -155,26 +142,11 @@ gcp_build_stage:
 gcp_deploy_stage:
   stage: stage_deploy
   image: kiwigrid/gcloud-kubectl-helm
-  # <<: *deploy_precursor
-  script:
-    #  - apk add --update -t curl
+  <<: *gcp_deploy
+  before_script:
     - export ENVIRONMENT=stage
-    - echo $GKE_ACCOUNT > /tmp/$CI_PIPELINE_DEPLOY.json
-    - gcloud auth activate-service-account --key-file=/tmp/$CI_PIPELINE_DEPLOY.json
-    - gcloud config set project ${GCP_PROJECT_ID}
-    - gcloud config set container/cluster ${GKE_CLUSTER}
-    - gcloud config set compute/zone ${GKE_ZONE}
-    - gcloud container clusters get-credentials ${GKE_CLUSTER} --zone ${GKE_ZONE}
-    - export IMAGE_TAG=$(cat gcp_image_tag.txt)
-    - echo $IMAGE_TAG
-
-    - sed -i.bak "s#\\\${API_IMAGE}#$IMAGE_TAG#" ./scripts/k8s/deployment.yaml
-    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/deployment.yaml
-    - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./scripts/k8s/service.yaml
-    - cat ./scripts/k8s/deployment.yaml
-    #  - kubectl delete -f ./scripts/k8s/deployment.yaml
-    - kubectl apply -f ./scripts/k8s/deployment.yaml
-    - kubectl apply -f ./scripts/k8s/service.yaml
+    - export INGRESS_SUFFIX="-${ENVIRONMENT}"
+    - export LPCY_PREFIX="s"
   only:
     - master
 

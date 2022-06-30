@@ -4327,14 +4327,31 @@ select,select option {text-transform:capitalize!important;}
 
     color: #dc3545 !important;
 }
-.right-btn{
+.right-btn {
+    position: absolute !important;
+    right: 10px;
+    top: 10px;
+    bottom: 0;
+    height: 42px;
+    width: 42px;
+}
+.right-btn-md{
     position: absolute!important;
     right: 10px;
     top: 10px;
     bottom: 0;
-    height:42px;
-    width:42px;
+    height:48px;
+    width:48px;
 }
+.right-btn-auto{
+    position: absolute!important;
+    right: 10px;
+    top: 10px;
+    bottom: 0;
+    height:auto;
+    width:auto;
+}
+
 .fc-h-event{
     /*background-color: #D31169!important;*/
     border: none!important;

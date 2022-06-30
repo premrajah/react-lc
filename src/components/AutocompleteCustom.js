@@ -154,8 +154,13 @@ class AutocompleteCustom extends Component {
 
 
 
-                if (this.props.orgs)
+                if (this.props.orgs) {
                     for (let i = 0; i < responseAll.orgs.length; i++) {
+
+                        if (this.props.filterOrgs&&this.props.filterOrgs.length>0
+                            &&this.props.filterOrgs.find((item)=> item._key==responseAll.orgs[i]._key)){
+                         continue
+                        }
                         companies.push({
                             name: responseAll.orgs[i].name,
                             org: responseAll.orgs[i]._key,
@@ -163,6 +168,8 @@ class AutocompleteCustom extends Component {
                     }
 
 
+
+                }
                 if (this.props.companies)
                     for (let i = 0; i < responseAll.companies.length; i++) {
                         companies.push({
@@ -170,6 +177,8 @@ class AutocompleteCustom extends Component {
                             company: responseAll.companies[i].company_number,
                         });
                     }
+
+
 
                 this.setState({
                     orgNames: companies,

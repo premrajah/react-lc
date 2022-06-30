@@ -4,11 +4,11 @@ import {useFormikContext} from 'formik'
 import IconButton from "@mui/material/IconButton";
 import {Add} from "@mui/icons-material";
 
-const ActionIconBtn = ({onClick,children, ...otherProps}) => {
+const ActionIconBtn = ({onClick,children,size, ...otherProps}) => {
 
 
 
-    return   <IconButton {...otherProps} onClick={onClick}>
+    return   <IconButton {...otherProps} onClick={onClick} size={size?size:""}>
                   {children}
              </IconButton>
 

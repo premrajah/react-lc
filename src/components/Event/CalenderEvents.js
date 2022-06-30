@@ -157,7 +157,7 @@ class CalenderEvents extends Component {
 
                     {this.state.events.length>0 ?
                     <div  className={`bg-white-1 ${this.props.smallView?"small-log-view col-6":"col-4" }`}>
-                        <EventItem smallView={this.props.smallView} events={this.state.events}/>
+                        <EventItem refresh={()=>this.getEvents()} smallView={this.props.smallView} events={this.state.events}/>
                     </div>:
                         <div className={`bg-white-1 ${this.props.smallView?"col-6":"col-4" }`}>
                             No Events exist</div>}

@@ -4401,3 +4401,4 @@ select,select option {text-transform:capitalize!important;}
     overflow-y: scroll!important;
 }
 .past-event{background: #eee!important;}
+.popover{z-index: 1111111!important;}

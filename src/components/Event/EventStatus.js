@@ -2,24 +2,14 @@ import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import "../../Util/upload-file.css";
-import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import axios from "axios/index";
-import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
-import _ from "lodash";
-import {Spinner} from "react-bootstrap";
-import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
+import {baseUrl} from "../../Util/Constants";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
-import CustomPopover from "../FormsUI/CustomPopover";
-import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 
 var slugify = require('slugify')
 
@@ -260,7 +250,6 @@ class EventForm extends Component {
                                                 type={"submit"}
                                                 loading={this.state.isSubmitButtonPressed}
                                                 disabled={this.state.isSubmitButtonPressed}
-
                                             >
                                             </GreenButton>
 

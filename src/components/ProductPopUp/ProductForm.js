@@ -635,8 +635,7 @@ class ProductForm extends Component {
 
         completeData.artifacts=this.state.artifacts
 
-        // console.log(this.state.artifacts)
-
+        console.log(completeData)
 
         axios
             .post(
@@ -708,11 +707,15 @@ class ProductForm extends Component {
 
 
     loadImages=(artifacts)=> {
-        // console.log(artifacts)
+
         let images = [];
 
         let currentFiles = [];
 
+
+        this.setState({
+            artifacts:artifacts
+        })
         for (let k = 0; k < artifacts.length; k++) {
 
             var fileItem = {
@@ -878,6 +881,14 @@ class ProductForm extends Component {
         if (prevProps!=this.props){
               // alert("called")
 
+            console.log(this.props.item)
+
+            if (this.props.item){
+
+                this.loadImages(this.props.item.artifacts)
+
+            }
+
         }
     }
 
@@ -939,6 +950,7 @@ class ProductForm extends Component {
       // alert("called")
 
         if (this.props.item){
+
             this.loadImages(this.props.item.artifacts)
             this.setState({
                 isEditProduct:true,
@@ -1695,7 +1707,7 @@ class ProductForm extends Component {
 
                                     ) : (
                                     <GreenButton
-                                        title={this.props.item?"Update Product":"Add Product"}
+                                        title={this.props.productLines?"Submit":this.props.item?"Update Product":"Add Product"}
                                         type={"submit"}
                                         loading={this.state.loading}
                                         disabled={this.state.loading||this.state.isSubmitButtonPressed}
@@ -1706,7 +1718,7 @@ class ProductForm extends Component {
                                     )
                                 ) : (
                                     <GreenButton
-                                    title={this.props.item?"Update Product":"Add Product"}
+                                    title={this.props.productLines?"Submit":this.props.item?"Update Product":"Add Product"}
                                     type={"submit"}
                                     loading={this.state.loading}
 

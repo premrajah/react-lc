@@ -1,12 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
-import { Box, Skeleton, Tab, Tabs } from "@mui/material";
+import {Box, Button, Skeleton, Tab, Tabs} from "@mui/material";
 import PropTypes from "prop-types";
 import MessengerMessagesFilesDisplay from "./MessengerMessagesFilesDisplay";
 import MessengerMessageTwoMessageBubble from "./MessengerMessageTwoMessageBubble";
 import {connect} from "react-redux";
-import * as actionCreator from "../../store/actions/actions";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
+import WysiwygGroupImageUpload from "./WysiwygGroupImageUpload";
+import PublishIcon from '@mui/icons-material/Publish';
 
 const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDetail }) => {
     TabPanel.propTypes = {
@@ -87,9 +88,18 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
                     </TabPanel>
 
                     <TabPanel value={value} index={1}>
-                        {groupMessageArtifacts.length > 0 ? groupMessageArtifacts.map((a, index) => {
-                            return <MessengerMessagesFilesDisplay key={index} artifacts={a} />
-                        }) : <div>No group files yet.</div>}
+                        <div className="row">
+                            <div className="col-1">
+                                <WysiwygGroupImageUpload groupKey={groupMessageKey} />
+                            </div>
+                        </div>
+
+                        <div style={{ height: "350px", minHeight: "350px", maxHeight: "350px", overflow: "auto", overflowX: "hidden" }}>
+
+                            {groupMessageArtifacts.length > 0 ? groupMessageArtifacts.map((a, index) => {
+                                return <MessengerMessagesFilesDisplay key={index} artifacts={a} />
+                            }) : <div>No group files yet.</div>}
+                        </div>
                     </TabPanel>
                 </Box>
             ) : (

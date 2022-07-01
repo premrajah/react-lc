@@ -1,22 +1,18 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import history from "../../History/history";
-import { makeStyles } from "@mui/styles";
-import { Alert } from "react-bootstrap";
-import { Checkbox, IconButton, InputAdornment, TextField } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { baseUrl } from "../../Util/Constants";
+import {makeStyles} from "@mui/styles";
+import {Alert} from "react-bootstrap";
+import {IconButton, InputAdornment} from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import AutocompleteCustom from "../../components/AutocompleteCustom";
-import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
-import {capitalize} from "../../Util/GlobalFunctions";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import {Link} from "react-router-dom";
-import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
-import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenBorderButton from "../FormsUI/Buttons/GreenBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 
@@ -203,8 +199,10 @@ class SignUp extends Component {
             validateFormatCreate("lastName", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("email", [{check: Validators.required, message: 'Required'},{check: Validators.email, message: 'Required'}],fields),
             validateFormatCreate("phone", [{check: Validators.number, message: 'This field should be a number.'}],fields),
-            validateFormatCreate("password", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("confirmPassword", [{check: Validators.required, message: 'Required'},{check: Validators.confirmPassword, message: 'Confirm password do not match.'}],fields),
+            validateFormatCreate("password",
+                [{check: Validators.password, message: "Minimum of 8 characters, should contain at least 3 of the following 4 types of characters: lower case, upper case, numbers, special characters "}],fields),
+
+                validateFormatCreate("confirmPassword", [{check: Validators.required, message: 'Required'},{check: Validators.confirmPassword, message: 'Confirm password do not match.'}],fields),
             validateFormatCreate("agree", [{check: Validators.requiredCheck, message: 'Required'}],fields),
             validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'This field should be a number.'}],fields),
 

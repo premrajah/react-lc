@@ -179,7 +179,7 @@ class SignUp extends Component {
             validateFormatCreate("lastName", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("email", [{check: Validators.required, message: 'Required'},{check: Validators.email, message: 'Required'}],fields),
             validateFormatCreate("phone", [{check: Validators.number, message: 'This field should be a number.'}],fields),
-            validateFormatCreate("password", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("password", [{check: Validators.password, message: 'Minimum of 8 char, 1 lower case, 1 upper case,1 numbers (i.e. 0-9), 1 special characters is required.'}],fields),
             validateFormatCreate("confirmPassword", [{check: Validators.required, message: 'Required'},{check: Validators.confirmPassword, message: 'Confirm password do not match.'}],fields),
             validateFormatCreate("agree", [{check: Validators.requiredCheck, message: 'Required'}],fields),
             validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'This field should be a number.'}],fields),
@@ -191,6 +191,7 @@ class SignUp extends Component {
         let {formIsValid,errors}= validateInputs(validations)
 
         this.setState({ errors: errors });
+        console.log(errors)
         return formIsValid;
     }
 

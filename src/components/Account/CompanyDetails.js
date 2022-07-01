@@ -947,15 +947,18 @@ class CompanyDetails extends Component {
                                     alt="logo"
                                     style={{ maxHeight: "150px", objectFit: "contain" }}
                                 />
-                            ) : (
-                                <img
+                            ) : <>
+                            {this.state.org.name!=this.state.org.email &&<img
                                     className={"rad-8"}
                                     src={PlaceholderImg}
                                     alt="logo"
                                     style={{ maxHeight: "150px", objectFit: "contain" }}
-                                />
-                            )}
+                                />}
+                            </>
+                            }
 
+                            {this.state.org.name!=this.state.org.email &&
+                            <>
                             <label className={"edit-icon d-flex"} htmlFor="fileInput-2">
                                 <EditIcon
                                     className={""}
@@ -974,6 +977,7 @@ class CompanyDetails extends Component {
                                 type="file"
                                 onChange={this.handleChangeFile.bind(this)}
                             />
+                            </>}
                         </div>
 
                         {this.state.org &&
@@ -1044,11 +1048,11 @@ class CompanyDetails extends Component {
                                         height: "100%",
                                         position: "relative",
                                         minHeight: "120px"
-                                    }} className={"p-1 d-flex align-items-start"}>
+                                    }} className={"p-1 d-flex align-items-center "}>
                                         <div className=" text-blue">
-                                            <span className="   text-blue mb-1 mr-1">Name:</span>
-                                            <span className={"text-gray-light"}>
-                                                {this.state.org.name}
+
+                                            <span className={"text-blue"}>
+                                                {this.state.org.name==this.state.org.email?"Thank you for signing up! We've received your details, our team will get in touch wih you with in 48 hours.":this.state.org.name}
                                             </span>
                                         </div>
 
@@ -1105,7 +1109,7 @@ class CompanyDetails extends Component {
 
                                        <Tab label="General" value="1" />
 
-                                       {this.props.userContext.perms.includes("OrgAdminWrite") &&        <Tab label="Settings" value="2"/>}
+                                       {this.props.userContext&&this.props.userContext.perms&&this.props.userContext.perms.includes("OrgAdminWrite") &&        <Tab label="Settings" value="2"/>}
 
                                    </TabList>
                                </Box>

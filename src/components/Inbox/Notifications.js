@@ -240,7 +240,7 @@ class Notifications extends Component {
 
                 <Link
                     key={`${i}_${match}`}
-                    to={`p/${match}`}
+                    to={`product/${match}`}
                     onClick={() => this.messageRead(messageId)}>
                     View Product
                 </Link>

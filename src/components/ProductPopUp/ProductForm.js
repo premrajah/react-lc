@@ -1470,10 +1470,11 @@ class ProductForm extends Component {
 
                                             </div>
 
-                                {!this.props.productLines &&     <div className="col-md-4 col-sm-6 col-xs-6">
+                                {this.props.productLines &&     <div className="col-md-4 col-sm-6 col-xs-6">
 
                                                 <TextFieldWrapper
-                                                    initialValue={this.props.item?this.props.item.product.sku.model:""}
+                                                    initialValue={this.props.item?this.props.item.product.sku.model:""
+                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.model:"")}
                                                     name="model"
                                                     title="Model"
 

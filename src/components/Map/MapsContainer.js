@@ -188,6 +188,10 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                  lat: this.props.latitude,
                  lng: this.props.longitude,
              }}
+             initialCenter={{
+                 lat: this.props.latitude,
+                 lng: this.props.longitude,
+             }}
              zoom={12}
 
          >

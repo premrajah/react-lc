@@ -457,18 +457,18 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         </div>
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>
-                                <Tooltip title="Clear" placement="right-start" arrow>
-                                    <div>
+                                <div style={{minHeight: "51px"}}>
+                                    {messageText && <Tooltip title="Clear" placement="right-start" arrow>
                                         <IconButton
                                             className={classes.customHoverFocusClearText}
                                             disabled={!messageText}
                                             onClick={() => handleResetWysiwygEditor()}>
-                                            <ClearIcon fontSize="large" />
+                                            <ClearIcon fontSize="large"/>
                                         </IconButton>
-                                    </div>
-                                </Tooltip>
-                                <Tooltip title="Send" placement="right-end" arrow>
-                                    <div>
+                                    </Tooltip>}
+                                </div>
+                                <div>
+                                    <Tooltip title="Send" placement="right-end" arrow>
                                         <IconButton
                                             className={classes.customHoverFocus}
                                             disabled={
@@ -479,8 +479,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                             onClick={() => handleSendMessage()}>
                                             <SendIcon fontSize="large" />
                                         </IconButton>
-                                    </div>
-                                </Tooltip>
+                                    </Tooltip>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -271,10 +271,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             payload = {
                 message: {
                     type: "message",
-                    text: uploadedImages.length > 0 ? `${uploadedFiles.map(i => i.file.name)} ${messageText ? messageText : " "}` : messageText ? messageText : " ",
+                    text: messageText,
                 },
                 to_org_ids: orgIds,
-                linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : [],
+                ...(uploadedImages.length > 0 && {linked_artifact_ids: uploadedImages}),
             };
 
             postMessage(payload, "N");
@@ -282,11 +282,11 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             payload = {
                 message: {
                     type: "message",
-                    text: uploadedImages.length > 0 ? `${uploadedFiles.map(i => i.file.name)} ${messageText ? messageText : " "}` : messageText ? messageText : " ",
+                    text: messageText,
                 },
                 to_org_ids: [],
                 message_group_id: clickedMessageKey,
-                linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : [],
+                ...(uploadedImages.length > 0 && {linked_artifact_ids: uploadedImages}),
             };
 
             postMessage(payload, "R");

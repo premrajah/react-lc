@@ -95,6 +95,11 @@
     background: var(--lc-bg-gray) !important;
 }
 
+.messenger-message-bubble  a{
+    color: var(--lc-pink);
+    cursor: pointer;
+}
+
 .rdw-image-custom-option {
     border: 1px solid #F1F1F1;
     background-color: white;

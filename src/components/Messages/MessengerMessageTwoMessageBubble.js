@@ -35,7 +35,7 @@ const MessengerMessageTwoMessageBubble = ({m, userDetail}) => {
         return LC_PURPLE;
     }
 
-    return <div className="w-75 p-2 mb-2 chat-msg-box border-rounded text-blue gray-border">
+    return <div className="w-75 p-2 mb-2 chat-msg-box border-rounded text-blue gray-border messenger-message-bubble">
         <div className="row">
             <div className="col">
                 {m && m.orgs.map((o, index) => o.actor === "message_from" && <div key={index} className="d-flex justify-content-between">

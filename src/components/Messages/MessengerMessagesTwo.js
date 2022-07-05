@@ -55,6 +55,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [selectedMessageGroupKey, setSelectedMessageGroupKey] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [sentMessageGroupKey, setSentMessageGroupKey] = useState(null);
 
     useEffect(() => {
         handleSelectedItemCallback(0);
@@ -108,23 +109,6 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             });
     };
 
-    const postUploadedImagesToMessageGroup = (_key, imageIdsArray) => {
-        if (!_key) return;
-
-        let payload = {
-            message_group_id: _key,
-            artifact_ids: imageIdsArray,
-        };
-
-        axios
-            .post(`${baseUrl}message-group/artifact`, payload)
-            .then((res) => {
-                console.log("image upload res ", res.data.data);
-            })
-            .catch((error) => {
-                showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
-            });
-    };
 
     const handleGroupClickCallback = (key) => {
         setClickedMessage([]); // clear selected message
@@ -294,10 +278,12 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     };
 
     const postMessage = (payload, messageType) => {
+        setSentMessageGroupKey(null); // reset
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
                 let data = response.data.data;
+                setSentMessageGroupKey(data.message_group._key); // store the response message_group key
 
                 handleResetWysiwygEditor();
                 setSendButtonDisable(false);
@@ -306,6 +292,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 if (messageType === "N") {
                     console.log("New Message");
                     handleClearOrgSearch(); // clear selected orgs
+                    getAllMessageGroups();
                 }
 
                 if (messageType === "R") {

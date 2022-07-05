@@ -186,6 +186,7 @@ class WysiwygGroupImageUpload extends Component {
                 if(res.status === 200) {
                     this.resetImagesAfterMessageSend(); // reset
                     this.props.showSnackbar({ show: true, severity: "success", message: `Successfully upload.` });
+                    this.props.afterUploadCallback();
                 }
             })
             .catch((error) => {

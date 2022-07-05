@@ -59,6 +59,10 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
         }
     }
 
+    const afterUploadedImagesCallback = () => {
+        getArtifacts()
+    }
+
     return (
         <>
             {messages.length > 0 ? (
@@ -90,7 +94,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
                     <TabPanel value={value} index={1}>
                         <div className="row">
                             <div className="col-1">
-                                <WysiwygGroupImageUpload groupKey={groupMessageKey} />
+                                <WysiwygGroupImageUpload groupKey={groupMessageKey} afterUploadCallback={() => afterUploadedImagesCallback()} />
                             </div>
                         </div>
 

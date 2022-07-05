@@ -122,6 +122,7 @@
 
 .rdw-link-modal {
     height: 280px !important;
+    top: -290px !important;
 }
 
 .filter-conversations-data::after {

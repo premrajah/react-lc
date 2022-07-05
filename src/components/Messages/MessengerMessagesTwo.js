@@ -472,7 +472,6 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                     </Tooltip>}
                                 </div>
                                 <div>
-                                    {uploadedImages.length}
                                     <Tooltip title="Send" placement="right-end" arrow>
                                         <IconButton
                                             className={classes.customHoverFocus}

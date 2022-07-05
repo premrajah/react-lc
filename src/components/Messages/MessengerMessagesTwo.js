@@ -59,6 +59,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         handleSelectedItemCallback(0);
         getAllMessageGroups();
         setSendButtonDisable(false);
+        setUploadedImages([]); // reset uploaded images
     }, []);
 
     const getAllMessageGroups = () => {
@@ -249,6 +250,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const handleResetWysiwygEditor = () => {
         resetDraftRef.current.resetDraft();
         setMessageText("");
+        setUploadedImages([]); // reset uploaded images
     };
 
     const handleClearOrgSearch = () => {
@@ -295,7 +297,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
                 handleResetWysiwygEditor();
                 setSendButtonDisable(false);
-                getAllMessageGroups();
+                // getAllMessageGroups();
 
                 if (messageType === "N") {
                     console.log("New Message");
@@ -307,6 +309,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     handleSelectedItemCallback(selectedMenuItemIndex);
                     handleGroupClickCallback(data.message_group._key);
                 }
+
+                setUploadedImages([]); //reset uploaded images
 
                 // if(uploadedImages.length > 0) {
                 //     postUploadedImagesToMessageGroup(selectedMessageGroupKey, uploadedImages); // Upload images to group message
@@ -458,24 +462,21 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>
                                 <div style={{minHeight: "51px"}}>
-                                    {messageText && <Tooltip title="Clear" placement="right-start" arrow>
+                                    {(messageText || uploadedImages.length > 0) && <Tooltip title="Clear" placement="right-start" arrow>
                                         <IconButton
                                             className={classes.customHoverFocusClearText}
-                                            disabled={!messageText}
+                                            disabled={!(messageText || uploadedImages.length > 0) }
                                             onClick={() => handleResetWysiwygEditor()}>
                                             <ClearIcon fontSize="large"/>
                                         </IconButton>
                                     </Tooltip>}
                                 </div>
                                 <div>
+                                    {uploadedImages.length}
                                     <Tooltip title="Send" placement="right-end" arrow>
                                         <IconButton
                                             className={classes.customHoverFocus}
-                                            disabled={
-                                                !messageText
-                                                    ? !sendButtonDisable
-                                                    : sendButtonDisable
-                                            }
+                                            disabled={!(messageText || uploadedImages.length > 0) }
                                             onClick={() => handleSendMessage()}>
                                             <SendIcon fontSize="large" />
                                         </IconButton>

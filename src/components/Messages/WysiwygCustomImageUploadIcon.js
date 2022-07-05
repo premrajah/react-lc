@@ -143,7 +143,7 @@ class WysiwygCustomImageUploadIcon extends Component {
                                         files: currentFiles,
                                     });
 
-                                    this.props.handleUploadCallback(images);
+                                    this.props.handleUploadCallback(images, this.state.files);
                                 })
                                 .catch((error) => {
                                     let currentFiles = [...this.state.files];

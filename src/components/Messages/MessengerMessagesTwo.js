@@ -54,12 +54,14 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [sendButtonDisable, setSendButtonDisable] = useState(false);
     const [selectedMessageGroupKey, setSelectedMessageGroupKey] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([]);
+    const [uploadedFiles, setUploadedFiles] = useState([]);
 
     useEffect(() => {
         handleSelectedItemCallback(0);
         getAllMessageGroups();
         setSendButtonDisable(false);
         setUploadedImages([]); // reset uploaded images
+        setUploadedFiles([]); // reset uploaded image files
     }, []);
 
     const getAllMessageGroups = () => {
@@ -192,8 +194,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         }
     };
 
-    const handleImageUploadCallback = (values) => {
+    const handleImageUploadCallback = (values, files) => {
         setUploadedImages(values);
+        setUploadedFiles(files);
     };
 
     const handleClearInputCallback = (v) => {
@@ -251,6 +254,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         resetDraftRef.current.resetDraft();
         setMessageText("");
         setUploadedImages([]); // reset uploaded images
+        setUploadedFiles([]); // reset uploaded image files
     };
 
     const handleClearOrgSearch = () => {
@@ -258,6 +262,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     };
 
     const handleSendMessage = () => {
+        console.log(uploadedImages, uploadedFiles);
         setSendButtonDisable(true);
         let payload = {};
         if (selectedOrgs.length > 0 && messageText) {
@@ -267,7 +272,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             payload = {
                 message: {
                     type: "message",
-                    text: messageText,
+                    text: uploadedImages.length > 0 ? `${uploadedFiles.map(i => i.file.name)} ${messageText ? messageText : " "}` : messageText ? messageText : " ",
                 },
                 to_org_ids: orgIds,
                 linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : [],
@@ -278,7 +283,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             payload = {
                 message: {
                     type: "message",
-                    text: messageText,
+                    text: uploadedImages.length > 0 ? `${uploadedFiles.map(i => i.file.name)} ${messageText ? messageText : " "}` : messageText ? messageText : " ",
                 },
                 to_org_ids: [],
                 message_group_id: clickedMessageKey,
@@ -311,6 +316,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 }
 
                 setUploadedImages([]); //reset uploaded images
+                setUploadedFiles([]); // reset uploaded image files
 
                 // if(uploadedImages.length > 0) {
                 //     postUploadedImagesToMessageGroup(selectedMessageGroupKey, uploadedImages); // Upload images to group message
@@ -453,8 +459,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                 handleEnterCallback={(value, content) =>
                                     handleEnterCallback(value, content)
                                 }
-                                handleImageUploadCallback={(values) =>
-                                    handleImageUploadCallback(values)
+                                handleImageUploadCallback={(values, files) =>
+                                    handleImageUploadCallback(values, files)
                                 }
                             />
                             {/*<div><small>Press enter to send message, CTRL+Enter or Shift+ENTER for carriage return</small></div>*/}

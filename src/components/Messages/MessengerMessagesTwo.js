@@ -262,7 +262,6 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     };
 
     const handleSendMessage = () => {
-        console.log(uploadedImages, uploadedFiles);
         setSendButtonDisable(true);
         let payload = {};
         if (selectedOrgs.length > 0 && messageText) {

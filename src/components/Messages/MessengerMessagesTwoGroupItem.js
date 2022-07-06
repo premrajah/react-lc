@@ -13,9 +13,9 @@ const MessengerMessagesTwoGroupItem = ({
         return (
             <React.Fragment
                 key={`${index}_${org._ts_epoch_ms}`}>
-                <TooltipDisplay org={org}>
+                {/*<TooltipDisplay org={org}>*/}
                     <Chip label={org.name ? org.name : ""} className="mr-1 mb-1" variant="outlined" />
-                </TooltipDisplay>
+                {/*</TooltipDisplay>*/}
             </React.Fragment>
         );
     };

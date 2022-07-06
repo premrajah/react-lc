@@ -561,9 +561,11 @@ class MyCampaigns extends Component {
 
 
                                             <PaginationLayout
+                                                element={"tr"}
+                                                colspan={5}
                                                 hideSearch
                                                 hideCount
-
+                                                type="table"
                                                 dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
                                                 count={this.state.count}
                                                 visibleCount={this.state.items.length}

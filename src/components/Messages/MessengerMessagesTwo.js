@@ -136,6 +136,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     };
 
     const handleFilterCallback = (values) => {
+        console.log("hfc ", values)
         setFilterValues(values);
         if (filterValues) {
             let temp = allGroups.filter((g, index) => {
@@ -147,6 +148,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
             setFilteredGroups(temp);
         } else {
+            console.log("hfc1")
             setFilteredGroups(allGroups);
         }
     };

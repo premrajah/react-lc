@@ -265,15 +265,15 @@ class CampaignDetail extends Component {
 
                                                         <div  className="mt-3 mb-3 text-left pt-3 pb-3 ">
 
-                                                            <div className={"col-12"}>
-                                                        {this.props.item.artifacts&&this.props.item.artifacts.length > 0  &&
-                                                        <p className=" custom-label text-bold text-blue mt-4 mb-4">
+                                                        {/*    <div className={"col-12"}>*/}
+                                                        {/*{this.props.item.artifacts&&this.props.item.artifacts.length > 0  &&*/}
+                                                        {/*<p className=" custom-label text-bold text-blue mt-4 mb-4">*/}
 
-                                                            Files Uploaded
+                                                        {/*    Files Uploaded*/}
 
-                                                        </p>}
+                                                        {/*</p>}*/}
 
-                                                            </div>
+                                                        {/*    </div>*/}
 
                                                             {this.props.item.artifacts&&this.props.item.artifacts.length > 0 ? (
                                                                 this.props.item.artifacts.map((artifact, index) => {

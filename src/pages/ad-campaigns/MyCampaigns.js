@@ -474,7 +474,9 @@ class MyCampaigns extends Component {
 <>
 
                         {this.state.campaignMode ==1 &&
-                        <CreateCampaign  refreshData={
+                        <CreateCampaign
+                            draft
+                            refreshData={
                             ()=> {
                                 this.setState({
                                     campaignMode:0

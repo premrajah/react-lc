@@ -26,6 +26,8 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
+import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+var slugify = require('slugify')
 
 class CreateCampaign extends Component {
 
@@ -425,7 +427,7 @@ class CreateCampaign extends Component {
             .post(campaignStrategyUrl, data)
             .then(
                 (response) => {
-                    
+
                     this.setState({
 
                         strategyProducts:response.data.data
@@ -671,6 +673,98 @@ class CreateCampaign extends Component {
             .catch((error) => {
                 this.setState({isSubmitButtonPressed: false,loading:false})
             });
+
+
+    };
+
+
+
+    saveDraft = () => {
+
+        let fields=this.state.fields
+
+        const name = fields["name"];
+        const description = fields["description"];
+        const startDate = new Date(fields["startDate"]).getTime() ;
+        const endDate =  new Date(fields["endDate"]).getTime();
+        const messageTemplate = fields["messageTemplate"];
+
+        let conditionAll=[]
+        let conditionAny=[]
+
+
+        for (let i=0;i<this.state.countAll;i++) {
+
+            conditionAll.push({
+                predicate: fields[`propertyAnd[${i}]`],
+                operator: fields[`operatorAnd[${i}]`],
+                value: fields[`valueAnd[${i}]`]
+
+            })
+        }
+
+        for (let i=0;i<this.state.countAny;i++) {
+
+            conditionAny.push({
+                predicate: fields[`propertyOr[${i}]`],
+                operator: fields[`operatorOr[${i}]`],
+                value: fields[`valueOr[${i}]`]
+
+            })
+        }
+
+
+        const campaignData = {
+
+            campaign:{
+                name:name,
+                description:description,
+                start_ts:startDate,
+                end_ts:endDate,
+                all_of:conditionAll,
+                any_of:conditionAny
+            },
+            message_template:messageTemplate,
+            artifact_ids:this.state.images,
+        };
+
+        this.setState({isSubmitButtonPressed: true,loading:true})
+
+        axios
+            .post(
+                `${baseUrl}org/cache`, {
+                    key: "campaign_"+slugify(name,{
+                        lower: true,
+                        replacement: '_',
+                    },),
+                    value:   JSON.stringify(campaignData),
+                },
+            )
+            .then((res) => {
+
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message:  "Saved as draft successfully. Thanks"
+                })
+                this.props.refreshData()
+
+                this.setState({isSubmitButtonPressed: false,loading:false})
+
+
+            })
+            .catch((error) => {
+                this.setState({
+                    btnLoading: false,
+                    loading: false,
+                    isSubmitButtonPressed: false
+                });
+                this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+                this.props.refreshData()
+
+                this.setState({isSubmitButtonPressed: false,loading:false})
+            });
+
 
 
     };
@@ -1093,9 +1187,6 @@ class CreateCampaign extends Component {
 
                                 <div>
 
-                                    {/*{getStepContent(this.state.activeStep)}*/}
-
-
 
                                     <div className={this.state.activeStep===0?"":"d-none"}>
                                         <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
@@ -1207,8 +1298,6 @@ class CreateCampaign extends Component {
                                         </form>
 
                                     </div>
-
-
 
 
                                     <div className={this.state.activeStep===1?"":"d-none"}>
@@ -1672,6 +1761,8 @@ class CreateCampaign extends Component {
 
 
                                     <div>
+                                        <div className="row mt-3 ">
+                                            <div className="col-6 mt-0">
                                         <Button  disabled={this.state.activeStep === 0} onClick={this.handleBack} className={" btn-back"}>
                                             Back
                                         </Button>
@@ -1685,27 +1776,43 @@ class CreateCampaign extends Component {
                                                 Skip
                                             </Button>
                                         )}
+                                                <GreenSmallBtn
 
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={this.handleNext}
+
+                                                    loading={this.state.loading}
+                                                    disabled={this.state.loading}
+
+                                                    className={" btn-gray-border "}
+                                                    title={this.state.files.length > 0 ? (
+                                                            this.state.files.filter((item) => item.status === 0).length >
+                                                            0 ?"Upload In Progress":this.state.activeStep!==2?"Next":"Submit"):
+                                                        this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
+                                                >
+
+                                                </GreenSmallBtn>
+                                            </div>
+                                            <div className="col-6 text-right pr-5 mt-0">
+                                        {this.state.activeStep===2&&
                                         <GreenSmallBtn
 
                                             variant="contained"
                                             color="primary"
-                                            onClick={this.handleNext}
+                                            onClick={this.saveDraft}
 
                                             loading={this.state.loading}
                                             disabled={this.state.loading}
 
                                             className={" btn-gray-border "}
-                                            title={this.state.files.length > 0 ? (
-                                                        this.state.files.filter((item) => item.status === 0).length >
-                                                        0 ?"Upload In Progress":this.state.activeStep!==2?"Next":"Submit"):
-                                                    this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
+                                            title={"Save As Draft"}
                                         >
 
+                                        </GreenSmallBtn>}
 
-
-                                        </GreenSmallBtn>
-
+</div>
+                                        </div>
 
                                     </div>
 

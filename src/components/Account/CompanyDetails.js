@@ -1052,7 +1052,7 @@ class CompanyDetails extends Component {
                                         <div className=" text-blue">
 
                                             <span className={"text-blue"}>
-                                                {this.state.org.name==this.state.org.email?"Thank you for signing up! We've received your details, our team will get in touch with you with in 48 hours.":this.state.org.name}
+                                                {this.state.org.name==this.state.org.email?"Thank you for signing up. We have received your request to join, we will review within 48 hours. Any questions, please message Loopcycle on the platform.":this.state.org.name}
                                             </span>
                                         </div>
 

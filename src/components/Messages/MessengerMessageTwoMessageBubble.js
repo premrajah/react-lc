@@ -35,7 +35,7 @@ const MessengerMessageTwoMessageBubble = ({m, userDetail}) => {
         return LC_PURPLE;
     }
 
-    return <div className="w-75 p-2 mb-2 chat-msg-box border-rounded text-blue gray-border">
+    return <div className="w-75 p-2 mb-2 chat-msg-box border-rounded text-blue gray-border messenger-message-bubble">
         <div className="row">
             <div className="col">
                 {m && m.orgs.map((o, index) => o.actor === "message_from" && <div key={index} className="d-flex justify-content-between">
@@ -66,7 +66,7 @@ const MessengerMessageTwoMessageBubble = ({m, userDetail}) => {
             <div className="col">
                 {m.message && <div className="d-flex">
                     {m.message.entity_type === "Product" && <div className="mr-2 text-mute">{m.message.entity_type}</div>}
-                    {m.message.entity_as_json && <div className="text-pink">
+                    {m.message.entity_as_json && <div className="text-pink" style={{cursor: "pointer"}}>
                         <div onClick={() => toggleEntity(m.message.entity_as_json, m.message.entity_type)}>
                             {m.message.entity_as_json.name}
                         </div>

@@ -54,11 +54,15 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [sendButtonDisable, setSendButtonDisable] = useState(false);
     const [selectedMessageGroupKey, setSelectedMessageGroupKey] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([]);
+    const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [sentMessageGroupKey, setSentMessageGroupKey] = useState(null);
 
     useEffect(() => {
         handleSelectedItemCallback(0);
         getAllMessageGroups();
         setSendButtonDisable(false);
+        setUploadedImages([]); // reset uploaded images
+        setUploadedFiles([]); // reset uploaded image files
     }, []);
 
     const getAllMessageGroups = () => {
@@ -105,23 +109,6 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             });
     };
 
-    const postUploadedImagesToMessageGroup = (_key, imageIdsArray) => {
-        if (!_key) return;
-
-        let payload = {
-            message_group_id: _key,
-            artifact_ids: imageIdsArray,
-        };
-
-        axios
-            .post(`${baseUrl}message-group/artifact`, payload)
-            .then((res) => {
-                console.log("image upload res ", res.data.data);
-            })
-            .catch((error) => {
-                showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
-            });
-    };
 
     const handleGroupClickCallback = (key) => {
         setClickedMessage([]); // clear selected message
@@ -149,6 +136,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     };
 
     const handleFilterCallback = (values) => {
+        console.log("hfc ", values)
         setFilterValues(values);
         if (filterValues) {
             let temp = allGroups.filter((g, index) => {
@@ -160,6 +148,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
             setFilteredGroups(temp);
         } else {
+            console.log("hfc1")
             setFilteredGroups(allGroups);
         }
     };
@@ -191,8 +180,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         }
     };
 
-    const handleImageUploadCallback = (values) => {
+    const handleImageUploadCallback = (values, files) => {
         setUploadedImages(values);
+        setUploadedFiles(files);
     };
 
     const handleClearInputCallback = (v) => {
@@ -249,6 +239,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const handleResetWysiwygEditor = () => {
         resetDraftRef.current.resetDraft();
         setMessageText("");
+        setUploadedImages([]); // reset uploaded images
+        setUploadedFiles([]); // reset uploaded image files
     };
 
     const handleClearOrgSearch = () => {
@@ -268,7 +260,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     text: messageText,
                 },
                 to_org_ids: orgIds,
-                linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : [],
+                ...(uploadedImages.length > 0 && {linked_artifact_ids: uploadedImages}),
             };
 
             postMessage(payload, "N");
@@ -280,7 +272,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 },
                 to_org_ids: [],
                 message_group_id: clickedMessageKey,
-                linked_artifact_ids: uploadedImages.length > 0 ? uploadedImages : [],
+                ...(uploadedImages.length > 0 && {linked_artifact_ids: uploadedImages}),
             };
 
             postMessage(payload, "R");
@@ -288,18 +280,21 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     };
 
     const postMessage = (payload, messageType) => {
+        setSentMessageGroupKey(null); // reset
         axios
             .post(`${baseUrl}message/chat`, payload)
             .then((response) => {
                 let data = response.data.data;
+                setSentMessageGroupKey(data.message_group._key); // store the response message_group key
 
                 handleResetWysiwygEditor();
                 setSendButtonDisable(false);
-                getAllMessageGroups();
+                // getAllMessageGroups();
 
                 if (messageType === "N") {
                     console.log("New Message");
                     handleClearOrgSearch(); // clear selected orgs
+                    getAllMessageGroups();
                 }
 
                 if (messageType === "R") {
@@ -307,6 +302,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     handleSelectedItemCallback(selectedMenuItemIndex);
                     handleGroupClickCallback(data.message_group._key);
                 }
+
+                setUploadedImages([]); //reset uploaded images
+                setUploadedFiles([]); // reset uploaded image files
 
                 // if(uploadedImages.length > 0) {
                 //     postUploadedImagesToMessageGroup(selectedMessageGroupKey, uploadedImages); // Upload images to group message
@@ -449,38 +447,34 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                 handleEnterCallback={(value, content) =>
                                     handleEnterCallback(value, content)
                                 }
-                                handleImageUploadCallback={(values) =>
-                                    handleImageUploadCallback(values)
+                                handleImageUploadCallback={(values, files) =>
+                                    handleImageUploadCallback(values, files)
                                 }
                             />
                             {/*<div><small>Press enter to send message, CTRL+Enter or Shift+ENTER for carriage return</small></div>*/}
                         </div>
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>
-                                <Tooltip title="Clear" placement="right-start" arrow>
-                                    <div>
+                                <div style={{minHeight: "51px"}}>
+                                    {(messageText || uploadedImages.length > 0) && <Tooltip title="Clear" placement="right-start" arrow>
                                         <IconButton
                                             className={classes.customHoverFocusClearText}
-                                            disabled={!messageText}
+                                            disabled={!(messageText || uploadedImages.length > 0) }
                                             onClick={() => handleResetWysiwygEditor()}>
-                                            <ClearIcon fontSize="large" />
+                                            <ClearIcon fontSize="large"/>
                                         </IconButton>
-                                    </div>
-                                </Tooltip>
-                                <Tooltip title="Send" placement="right-end" arrow>
-                                    <div>
+                                    </Tooltip>}
+                                </div>
+                                <div>
+                                    <Tooltip title="Send" placement="right-end" arrow>
                                         <IconButton
                                             className={classes.customHoverFocus}
-                                            disabled={
-                                                !messageText
-                                                    ? !sendButtonDisable
-                                                    : sendButtonDisable
-                                            }
+                                            disabled={!(messageText || uploadedImages.length > 0) }
                                             onClick={() => handleSendMessage()}>
                                             <SendIcon fontSize="large" />
                                         </IconButton>
-                                    </div>
-                                </Tooltip>
+                                    </Tooltip>
+                                </div>
                             </div>
                         </div>
                     </div>

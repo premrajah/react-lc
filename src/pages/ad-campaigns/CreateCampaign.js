@@ -722,7 +722,8 @@ class CreateCampaign extends Component {
                 start_ts:startDate,
                 end_ts:endDate,
                 all_of:conditionAll,
-                any_of:conditionAny
+                any_of:conditionAny,
+                createdAt:Date.now()
             },
             message_template:messageTemplate,
             artifact_ids:this.state.images,

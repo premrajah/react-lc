@@ -416,13 +416,15 @@ class ManageUserItem extends Component {
                                         {/*>*/}
                                         {/*    <Done/>*/}
                                         {/*</ActionIconBtn></CustomPopover>*/}
-                                        <CustomPopover text={"Cancel"}> <ActionIconBtn className={"mb-2"}
+                                        <CustomPopover text={"Cancel"}>
+                                            <ActionIconBtn className={"mb-2"}
                                                                                        onClick={this.toggleEdit}
                                                                                        type={"button"}
                                                                                        title={"Submit"}
                                         >
                                             <Close/>
-                                        </ActionIconBtn></CustomPopover>
+                                        </ActionIconBtn>
+                                        </CustomPopover>
                                     </div>
 
 

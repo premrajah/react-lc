@@ -201,6 +201,8 @@ class MyCampaigns extends Component {
 
 
     refreshList=()=>{
+
+        this.fetchCacheDrafts()
         this.setState({
             items:[],
             offset:0
@@ -700,8 +702,9 @@ class MyCampaigns extends Component {
                                                                     <th>&nbsp;</th>
                                                                     <th>Campaign Name</th>
                                                                     <th>Validity</th>
-                                                                    <th>Stage</th>
+                                                                    <th>Last Edited</th>
                                                                     <th>Artifacts</th>
+                                                                    <th>&nbsp;</th>
                                                                     <th>&nbsp;</th>
                                                                 </tr>
                                                                 </thead>
@@ -713,6 +716,8 @@ class MyCampaigns extends Component {
                                                                         .map((item, index) => (
 
                                                                                 <CampaignDraftItem
+
+                                                                                    refresh={this.fetchCacheDrafts}
                                                                                     item={item}
                                                                                     index={index}
                                                                                     toggleRightBar={(data)=>{

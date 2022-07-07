@@ -6,6 +6,9 @@ import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import moment from "moment/moment";
 import DescriptionIcon from "@mui/icons-material/Description";
+import CustomPopover from "../FormsUI/CustomPopover";
+import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
+import {Close} from "@mui/icons-material";
 
 class CampaignDraftItem extends Component {
     constructor(props) {
@@ -67,6 +70,35 @@ class CampaignDraftItem extends Component {
 
 
 
+    deleteDraftItem=(item)=>{
+
+            axios
+                .delete(
+                    baseUrl + "org/cache/"+item.key
+
+                )
+                .then((res) => {
+
+                    this.props.refresh()
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "success",
+                        message: `Draft deleted successfully. Thanks`
+                    })
+
+
+                })
+                .catch((error) => {
+                    this.setState({isSubmitButtonPressed: false})
+                });
+
+
+
+        };
+
+
+
+
 
     render() {
 
@@ -89,8 +121,9 @@ class CampaignDraftItem extends Component {
                         </div>
                     </td>
                     <td className={"text-gray-light"}>{moment(this.state.item.value.campaign.start_ts).format("DD MMM YYYY")} - {moment(this.state.item.value.campaign.end_ts).format("DD MMM YYYY")}</td>
-                    <td className="status text-capitlize"><span
-                        className={this.state.item.value.campaign.stage === "active" ? "active" : "waiting"}>{this.state.item.value.campaign.stage}</span>
+                    <td className="text-gray-light">
+
+                        {moment(this.state.item.value.campaign.createdAt).format("DD MMM YYYY")}
                     </td>
 
                     <td className={""}>
@@ -137,7 +170,17 @@ class CampaignDraftItem extends Component {
 
                               }}> View Details</span>
                     </td>
+                   <td>
+                       <CustomPopover text={"Delete"}>
+                           <ActionIconBtn className={"mb-2"}
+                                          onClick={()=>this.deleteDraftItem(this.state.item)}
+                                          type={"button"}
 
+                           >
+                               <Close/>
+                           </ActionIconBtn>
+                       </CustomPopover>
+                   </td>
                 </tr>}
             </>
         );

@@ -282,3 +282,20 @@ export  const getInitials=(name = '') => name
     .slice(0, 2)
     .map((v) => v && v[0].toUpperCase())
     .join('');
+
+
+export  const  hasNumber=(myString) =>{
+    return /\d/.test(myString);
+}
+
+
+export  const  hasUpperCase=(myString) =>{
+    return  /[A-Z]/.test(myString);
+}
+
+export  const  hasLowerCase=(myString) =>{
+    return  /[a-z]/.test(myString);
+}
+export  const  hasSplChar=(myString) =>{
+    return  /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(myString);
+}

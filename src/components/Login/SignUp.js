@@ -16,6 +16,7 @@ import {Link} from "react-router-dom";
 import GreenBorderButton from "../FormsUI/Buttons/GreenBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 
+import PasswordStrength from "../FormsUI/PasswordStrength";
 const useStyles = makeStyles((theme) => ({
     root: {
         "& > *": {
@@ -48,8 +49,7 @@ class SignUp extends Component {
             industryOtherShow:false,
             businessFieldOtherShow:false,
             isLoopCycleCompany:false,
-            companyNumber:null
-
+            companyNumber:null,
 
         };
 
@@ -199,10 +199,14 @@ class SignUp extends Component {
             validateFormatCreate("lastName", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("email", [{check: Validators.required, message: 'Required'},{check: Validators.email, message: 'Required'}],fields),
             validateFormatCreate("phone", [{check: Validators.number, message: 'This field should be a number.'}],fields),
-            validateFormatCreate("password",
-                [{check: Validators.password, message: "Minimum of 8 characters, should contain at least 3 of the following 4 types of characters: lower case, upper case, numbers, special characters "}],fields),
+            // validateFormatCreate("password",
+            //     [{check: Validators.password, message: "Minimum of 8 characters, should contain at least 3 of the following 4 types of characters: lower case, upper case, numbers, special characters "}],fields),
 
-                validateFormatCreate("confirmPassword", [{check: Validators.required, message: 'Required'},{check: Validators.confirmPassword, message: 'Confirm password do not match.'}],fields),
+            validateFormatCreate("password",
+                [{check: Validators.password, message: "Required"}],fields),
+
+
+            validateFormatCreate("confirmPassword", [{check: Validators.required, message: 'Required'},{check: Validators.confirmPassword, message: 'Confirm password do not match.'}],fields),
             validateFormatCreate("agree", [{check: Validators.requiredCheck, message: 'Required'}],fields),
             validateFormatCreate("no_of_staff", [{check: Validators.number, message: 'This field should be a number.'}],fields),
 
@@ -220,8 +224,12 @@ class SignUp extends Component {
     }
 
 
-
     handleChange(value,field ) {
+
+        // if (field==="password"){
+        //
+        //     this.checkPasswordInputs(value)
+        // }
 
         let fields = this.state.fields;
         fields[field] = value;
@@ -415,6 +423,9 @@ class SignUp extends Component {
                                             ),
                                         }}
                                     />
+                                  <PasswordStrength
+                                      error={this.state.errors["password"]}
+                                      input={this.state.fields["password"]} />
                                 </div>
                                     <div className="col-6 ">
                                         <TextFieldWrapper

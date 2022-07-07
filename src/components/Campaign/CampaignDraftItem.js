@@ -107,7 +107,7 @@ class CampaignDraftItem extends Component {
         return (
             <>
                 {this.state.item &&
-                <tr className="" role="alert">
+                <tr className="" role="alert" id={`draft-c-${this.state.item.key}`}  key={`draft-c-${this.state.item.key}`}>
 
                     <td>{index + 1}</td>
 
@@ -129,7 +129,7 @@ class CampaignDraftItem extends Component {
                     <td className={""}>
                         <ul className="persons  align-items-start d-flex">
 
-                            {this.state.item.artifacts && this.state.item.artifacts.map((artifact, i) =>
+                            {this.state.item.value.artifacts && this.state.item.value.artifacts.map((artifact, i) =>
                                 <li key={i}>
                                     <>
                                     <div className="d-flex justify-content-center "
@@ -166,7 +166,7 @@ class CampaignDraftItem extends Component {
                         <span className={"text-bold"} style={{cursor: "pointer"}}
                               onClick={() => {
 
-                                  this.props.toggleRightBar({campaign: this.state.item.value.campaign})
+                                  this.props.toggleRightBar({campaign: this.state.item})
 
                               }}> View Details</span>
                     </td>

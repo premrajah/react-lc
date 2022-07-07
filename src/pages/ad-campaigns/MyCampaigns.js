@@ -55,6 +55,7 @@ class MyCampaigns extends Component {
             count:0,
             selectedItem:null,
             activeKey:1,
+            editType:null
 
         }
 
@@ -370,7 +371,8 @@ class MyCampaigns extends Component {
                 site.address,
                 service_agent.name,
                 qr_artifact.name,
-                qr_artifact.blob_url
+                qr_artifact.blob_url,
+
             ])
         })
 
@@ -407,7 +409,7 @@ class MyCampaigns extends Component {
         })
     }
 
-    toggleRightBar=(item)=>{
+    toggleRightBar=(item,type)=>{
 
         this.setState({
             toggleBar:!this.state.toggleBar
@@ -417,14 +419,17 @@ class MyCampaigns extends Component {
 
             this.setState({
                 editMode:true,
-                editItem:item
+                editItem:item,
+                editType:type
             })
 
         }else{
 
             this.setState({
                 editMode:false,
-                editItem:null
+                editItem:null,
+                editType:type
+
             })
         }
               this.props.toggleRightBar()
@@ -546,7 +551,10 @@ class MyCampaigns extends Component {
                             }} />
                         }
                         {this.state.campaignMode ==3 && this.state.selectedItem&&
-                        <CreateCampaign item={this.state.selectedItem}
+                        <CreateCampaign
+
+                            item={this.state.selectedItem}
+                            type={this.state.editType}
                               refreshData={ ()=> { this.toggleRightBar()
                                         this.refreshList()
                                          this.setState({
@@ -724,7 +732,7 @@ class MyCampaigns extends Component {
                                                                                                   this.setState({
                                                                                                       campaignMode:2
                                                                                                   });
-                                                                                                  this.toggleRightBar(data);
+                                                                                                  this.toggleRightBar(data,"draft");
                                                                                               }}
                                                                                 />
                                                                             )

@@ -35,6 +35,7 @@ class CreateCampaign extends Component {
         super(props);
         this.state = {
             searchValue: '',
+            artifacts:[],
             selectOptionError:false,
             filterValue: '',
             startDate:null,
@@ -277,14 +278,29 @@ class CreateCampaign extends Component {
 
         if (this.props.item) {
 
-            await this.loadSavedValues()
+            await this.loadSavedValues(this.props.item,this.props.type)
+
             this.callStrategy()
 
-            this.loadImages()
-            this.setState({
-                startDate: this.props.item.campaign.start_ts,
-                endDate: this.props.item.campaign.end_ts
-            })
+
+
+            if (this.props.type!="draft"){
+
+                this.loadImages(this.props.item.artifacts)
+                this.setState({
+                    startDate: this.props.item.campaign.start_ts,
+                    endDate: this.props.item.campaign.end_ts
+                })
+            }
+            else{
+                this.loadImages(this.props.item.value.artifacts)
+                    this.setState({
+                        startDate: this.props.item.value.campaign.start_ts,
+                        endDate: this.props.item.value.campaign.end_ts
+                    })}
+
+
+
         }
 
 
@@ -443,46 +459,54 @@ class CreateCampaign extends Component {
     }
 
 
-    loadSavedValues=()=> {
+    loadSavedValues=(data,type)=> {
 
+let item=null
+
+        if (type!="draft"){
+             item=data
+        }else{
+            item=data.value
+
+        }
 
 
         this.setState({
-            countAll:this.props.item.campaign.all_of.length,
-            countAny:this.props.item.campaign.any_of.length,
+            countAll:item.campaign.all_of.length,
+            countAny:item.campaign.any_of.length,
 
-            conditionAll:this.props.item.campaign.all_of,
-            conditionAny:this.props.item.campaign.any_of,
+            conditionAll:item.campaign.all_of,
+            conditionAny:item.campaign.any_of,
 
-            addCountAll:Array.from({length: this.props.item.campaign.all_of.length}, () => Math.floor(Math.random() * 10000)),
-            addCountAny:Array.from({length: this.props.item.campaign.any_of.length}, () => Math.floor(Math.random() * 10000)),
+            addCountAll:Array.from({length: item.campaign.all_of.length}, () => Math.floor(Math.random() * 10000)),
+            addCountAny:Array.from({length: item.campaign.any_of.length}, () => Math.floor(Math.random() * 10000)),
 
         })
 
 
     }
 
-    loadImages=()=> {
+    loadImages=(artifacts)=> {
         let images = [];
 
         let currentFiles = [];
 
-        for (let k = 0; k < this.props.item.artifacts.length; k++) {
+        for (let k = 0; k < artifacts.length; k++) {
 
             var fileItem = {
                 status: 1,
-                id: this.props.item.artifacts[k]._key,
-                imgUrl: this.props.item.artifacts[k].blob_url,
+                id: artifacts[k]._key,
+                imgUrl: artifacts[k].blob_url,
                 file: {
-                    mime_type: this.props.item.artifacts[k].mime_type,
-                    name: this.props.item.artifacts[k].name,
+                    mime_type:artifacts[k].mime_type,
+                    name: artifacts[k].name,
                 },
             };
             // fileItem.status = 1  //success
             // fileItem.id = this.state.item.artifacts[k]._key
             // fileItem.url = this.state.item.artifacts[k].blob_url
 
-            images.push(this.props.item.artifacts[k]._key);
+            images.push(artifacts[k]._key);
 
             currentFiles.push(fileItem);
         }
@@ -727,6 +751,8 @@ class CreateCampaign extends Component {
             },
             message_template:messageTemplate,
             artifact_ids:this.state.images,
+            artifacts:this.state.artifacts,
+
         };
 
         this.setState({isSubmitButtonPressed: true,loading:true})
@@ -935,6 +961,11 @@ class CreateCampaign extends Component {
         var url = e.currentTarget.dataset.url;
 
         var files = this.state.files.filter((item) => item.file.name !== name);
+
+        this.setState({
+            artifacts: this.state.artifacts.filter((item) => item.file.name !== name)
+        })
+
         // var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
         // var images = this.state.images.filter((item)=> item !==index )
@@ -999,8 +1030,19 @@ class CreateCampaign extends Component {
                                     let images = [...this.state.images];
                                     images.push(res.data.data._key);
 
+                                    // this.setState({
+                                    //     artifacts:this.state.artifacts.push(res.data.data)
+                                    // })
+
+
+                                    let artifacts=this.state.artifacts
+
+                                    artifacts.push(res.data.data)
+
                                     this.setState({
                                         images: images,
+                                        artifacts:artifacts
+
                                     });
 
                                     let currentFiles = this.state.files;

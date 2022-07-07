@@ -993,7 +993,8 @@ class ProductForm extends Component {
             categories:[],
             subCategories:[],
             states :[],
-            units : []
+            units : [],
+            selectedTemplate:null
         })
         this.getFiltersCategories();
 

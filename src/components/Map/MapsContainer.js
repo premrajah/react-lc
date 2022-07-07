@@ -133,6 +133,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                     lng: this.props.locations.find((item)=> item.isCenter===true).location.lng,
                 }}
 
+                    initialCenter={{
+                        lat: this.props.locations.find((item)=> item.isCenter===true).location.lat,
+                        lng: this.props.locations.find((item)=> item.isCenter===true).location.lng,
+                }}
+
                 zoom={14}
             >
 

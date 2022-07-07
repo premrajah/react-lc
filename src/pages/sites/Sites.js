@@ -324,7 +324,7 @@ class Sites extends Component {
                         <div className="row">
                             <div className="col-md-12  justify-content-start">
                                 <Link onClick={()=> {
-                                    this.toggleSite(true)
+                                    this.toggleSite(false)
                                 }}  className="btn-gray-border  mr-2  click-item">
                                     Add Sites / Address
                                 </Link>

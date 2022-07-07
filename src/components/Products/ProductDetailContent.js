@@ -1088,16 +1088,16 @@ class ProductDetailContent extends Component {
                                 this.showEvent();
                             }}
                         >
-
-                            <div className="form-col-left col-12">
+<>
+    {this.state.showEventPopUp&&      <div className="form-col-left col-12">
                                 <EventForm
                                     hide={()=> {
                                         this.showEvent();
                                     }}
                                     productId={this.state.item.product._key}
                                     triggerCallback={(action) => this.callBackSubmit(action)}   />
-                            </div>
-
+                            </div>}
+</>
                         </GlobalDialog>
 
 

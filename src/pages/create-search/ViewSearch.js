@@ -288,14 +288,22 @@ class ViewSearch extends Component {
 
         const data = new FormData(event.target);
 
+
+        let formData={
+            listing_id: this.state.item.listing._key,
+            search_id: this.state.createSearchData.search._key,
+
+        }
+
+        if (data.get("message")){
+
+            formData.note=data.get("message")
+        }
+
         axios
             .post(
                 baseUrl + "match",
-                {
-                    listing_id: this.state.listingSelected._key,
-                    search_id: this.state.createSearchData.search._key,
-                    note:data.get("message")
-                },
+                formData,
             )
             .then((res) => {
 

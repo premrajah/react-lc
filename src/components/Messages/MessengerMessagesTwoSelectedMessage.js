@@ -82,7 +82,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
                                             className={`d-flex ${
                                                 (m.orgs.map((o, i) => handleWhoseMessage(o, i)).filter((s) => s === "justify-content-end").length > 0) ? "justify-content-end" : "justify-content-start"
                                             }`}>
-                                            <MessengerMessageTwoMessgeBubble m={m} />
+                                            <MessengerMessageTwoMessageBubble m={m} />
                                         </div>
                                     </React.Fragment>
                                 ))}

@@ -153,7 +153,7 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
                                             </Link>
                                         }
 
-                                        {matchData && matchData.listing && <SubproductItem hideMoreMenu smallImage item={matchData.listing.product} />}
+                                        {matchData && matchData.listing && <SubproductItem hideMoreMenu smallImage noLinking item={matchData.listing.product} />}
 
                                     </div>}
                                 </div>

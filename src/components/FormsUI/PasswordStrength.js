@@ -2,7 +2,7 @@ import React from "react";
 import {OverlayTrigger, Popover} from "react-bootstrap";
 import LinearProgress from "@mui/material/LinearProgress";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from '@mui/icons-material/CheckCircle';
 import {hasNumber, hasSplChar, hasUpperCase} from "../../Util/GlobalFunctions";
 
 class PasswordStrength extends React.Component {
@@ -151,7 +151,7 @@ class PasswordStrength extends React.Component {
 const GetIcon=(props)=>{
 
     return !props.check?<FiberManualRecordIcon style={{color:"gray"}}  fontSize="small" />:
-        <CheckIcon fontSize="small" style={{color:"#D31169"}} />
+        <CheckIcon fontSize="small" style={{color:"#07ad88"}} />
 
 }
 export default PasswordStrength;

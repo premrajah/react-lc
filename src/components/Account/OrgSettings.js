@@ -463,9 +463,15 @@ class OrgSettings extends Component {
                                         className="col-6 text-center "
                                        >
                                         <form className={"d-flex flex-row align-items-center "}
+
                                               onSubmit={(event)=>
-                                              { event.preventDefault(); event.stopPropagation();
-                                              this.addOption(event,"matching_brands",null,false)  }}>
+                                              { event.preventDefault();
+                                              event.stopPropagation();
+                                              this.addOption(event,"matching_brands",null,false) ;
+                                                  event.target.reset();
+                                              }
+
+                                              }>
 
                                         <TextFieldWrapper
                                             name={`option`}

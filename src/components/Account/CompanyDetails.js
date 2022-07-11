@@ -894,13 +894,15 @@ class CompanyDetails extends Component {
                                 </>}
                             <div className="col-md-3 ">
 
-                                    <button
+                                    <BlueBorderButton
                                         // style={{ minWidth: "180px" }}
                                         onClick={this.addCompany}
+                                        title={"Join Company"}
+
                                         className="  btn-gray-border  ">
                                         <Add style={{ fontSize: "20px" }} />
-                                        Join New Company
-                                    </button>
+
+                                    </BlueBorderButton>
                                 </div>
 
                         </>

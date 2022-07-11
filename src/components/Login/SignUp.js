@@ -17,14 +17,9 @@ import GreenBorderButton from "../FormsUI/Buttons/GreenBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 import PasswordStrength from "../FormsUI/PasswordStrength";
-const useStyles = makeStyles((theme) => ({
-    root: {
-        "& > *": {
-            margin: theme.spacing(1),
-            width: "25ch",
-        },
-    },
-}));
+import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/style.css'
+
 
 class SignUp extends Component {
     constructor(props) {
@@ -361,10 +356,33 @@ class SignUp extends Component {
                             </div>
 
                             <div className="col-6  pl-2">
-                                <TextFieldWrapper
-                                    onChange={(value)=>this.handleChange(value,"phone")}
-                                    error={this.state.errors["phone"]}
-                                    name="phone" title="Phone" />
+                                {/*<TextFieldWrapper*/}
+                                {/*    onChange={(value)=>this.handleChange(value,"phone")}*/}
+                                {/*    error={this.state.errors["phone"]}*/}
+                                {/*    name="phone" title="Phone" />*/}
+
+                                <div
+                                    className="custom-label text-bold text-blue mb-0 ellipsis-end">Phone
+                                </div>
+
+                                <PhoneInput
+
+                                    value={this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.phone}
+                                    onChange={this.handleChange.bind(this, "phone")}
+                                    inputClass={this.state.phoneNumberInValid ? "is-invalid" : ""}
+                                    inputProps={{
+                                        name: 'phone',
+                                        // required: true,
+                                        defaultErrorMessage: "Invalid",
+                                        // minLength:9,
+                                    }}
+                                    country={'gb'}
+                                />
+                                {this.state.errors["phone"] &&
+                                <span style="color: rgb(244, 67, 54);"
+                                      className="text-danger">Required</span>}
+
+
                             </div>
 
                             <div className="col-12 mb-2 ">
@@ -433,7 +451,8 @@ class SignUp extends Component {
                                             type="password"
                                             onChange={(value)=>this.handleChange(value,"confirmPassword")}
                                             error={this.state.errors["confirmPassword"]}
-                                            name="confirmPassword" title="Confirm Password" />
+                                            name="confirmPassword" title="Confirm Password"
+                                        />
                                     </div>
                                 </div>
 

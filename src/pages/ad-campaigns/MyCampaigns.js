@@ -111,7 +111,7 @@ class MyCampaigns extends Component {
         this.setActiveKey(null,"1")
 
         // this.loadCampaigns()
-        this.fetchCacheDrafts()
+        // this.fetchCacheDrafts()
 
     }
 
@@ -637,7 +637,7 @@ class MyCampaigns extends Component {
                                                     <Tab label="Active" value="1" />
 
 
-                                                    <Tab label="Drafts" value="2"/>
+                                                    {/*<Tab label="Drafts" value="2"/>*/}
 
                                                 </TabList>
                                             </Box>

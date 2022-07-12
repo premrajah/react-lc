@@ -1328,7 +1328,8 @@ class ProductForm extends Component {
                                             name="brand"
                                             title="Brand" />
                                         </div>
-                                        {!this.props.productLines &&         <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                        {!this.props.productLines &&
+                                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
                                             <SelectArrayWrapper
                                                 details="Select product’s location from the existing sites or add new address below"

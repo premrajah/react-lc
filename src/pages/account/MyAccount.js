@@ -19,6 +19,7 @@ import ManageOrgUsers from "../../components/Account/ManageOrgUsers";
 import AssumeRoles from "../../components/Account/AssumeRoles";
 import ManageOrgSettings from "../../components/Account/ManageOrgSettings";
 import ProductLines from "../../components/Account/ProductLines";
+import Login from "../../views/login/Login";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -77,9 +78,10 @@ function MyAccount(props) {
                     bottomLine={""}
                 />
 
-                <div className="row">
+                {(props.isLoggedIn && props.userContext )? (
+                    <div className="row">
                     <div className="col-md-12">
-                        {props.isLoggedIn && props.userContext && (
+
                             <div className="row">
                                 <div className="col-md-3">
                                     <Tabs
@@ -168,9 +170,16 @@ function MyAccount(props) {
 
                                 </div>
                             </div>
-                        )}
+
                     </div>
-                </div>
+
+                </div>):
+                    <div className="row justify-content-center">
+                        <div className="col-md-6 col-12">
+                    <Login hideSignUp />
+                        </div>
+                    </div>
+                }
             </div>
         </Layout>
     );

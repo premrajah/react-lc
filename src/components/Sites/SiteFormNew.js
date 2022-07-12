@@ -11,7 +11,6 @@ import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import FormControl from "@mui/material/FormControl";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import AddLinkIcon from "@mui/icons-material/AddLink";
@@ -21,7 +20,6 @@ import BlueButton from "../FormsUI/Buttons/BlueButton";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
-import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 
 class SiteFormNew extends Component {

@@ -521,7 +521,7 @@ class SiteDetailContent extends Component {
 
                                     <div className={"p-2 gray-border rad-8 bg-white"}>
                                     <GoogleMap width={"100%"} height={"300px"}
-                                               _id={this.props.item.site._key}
+                                               siteId={this.props.item.site._key}
                                                locations={[{
                                         name: this.props.item.site.name,
 

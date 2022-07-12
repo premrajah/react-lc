@@ -343,7 +343,6 @@ class ProductForm extends Component {
     }
     checkListableManufacturer(checked) {
 
-
         this.setState({
             is_manufacturer: checked,
         });
@@ -889,6 +888,7 @@ class ProductForm extends Component {
 
                 this.loadImages(this.props.item.artifacts)
 
+                this.isManufacturer()
             }
 
         }
@@ -936,6 +936,20 @@ class ProductForm extends Component {
             );
     }
 
+
+    isManufacturer = () => {
+
+        axios.get(baseUrl + "product/"+this.props.item.product._key+"/oc-vc" ).then(
+            (response) => {
+
+                console.log(response.data.data.ownership_context)
+                this.setState({
+                    is_manufacturer:response.data.data.ownership_context.is_manufacturer
+                })
+            }
+        ).catch(error => {});
+
+    };
     componentDidMount() {
 
         window.scrollTo(0, 0);
@@ -957,6 +971,7 @@ class ProductForm extends Component {
             this.setState({
                 isEditProduct:true,
             })
+            this.isManufacturer()
         }
 
 
@@ -1040,7 +1055,9 @@ class ProductForm extends Component {
                     <div className="col-md-8  col-xs-12">
                         <h4 className={"blue-text text-heading "}>
                             {this.props.edit?"Edit Product":this.props.productLines?this.props.item?"Edit "+this.props.item.name:"Add Product Line":this.state.parentProductId?"Add subproduct":"Add product"}
+
                         </h4>
+
                     </div>
                         {!this.props.hideUpload&&!this.props.productLines &&
                         <div className="col-md-4  col-xs-12 desktop-right">
@@ -1139,7 +1156,7 @@ class ProductForm extends Component {
 
                                     <CheckboxWrapper
                                         details="Is Manufacturer ?"
-                                        initialValue={this.props.item&&this.props.item.product.is_manufacturer}
+                                        initialValue={this.state.is_manufacturer}
                                         onChange={(checked)=>this.checkListableManufacturer(checked)} color="primary"
                                         name={"is_manufacturer"} title="Manufacturer" />
 

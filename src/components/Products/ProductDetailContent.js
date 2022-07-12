@@ -183,6 +183,9 @@ class ProductDetailContent extends Component {
         }
     };
 
+
+
+
     phonenumber(inputtxt) {
         var phoneNoWithCode = /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
 

@@ -8,9 +8,12 @@ const CheckboxWrapper = ({name,showErrorMessage, title,details,detailsHeading,on
     const [field,setField] = useState(initialValue)
 
     useEffect(()=>{
-        if (onChange&&initialValue)
+
             onChange(initialValue)
-    },[])
+
+       setField(initialValue)
+
+    },[initialValue])
 
     const handleChange = e => {
         const { checked } = e.target;
@@ -43,11 +46,6 @@ const CheckboxWrapper = ({name,showErrorMessage, title,details,detailsHeading,on
             <Checkbox
                 className={error?"border-red-error":""} checked={field} onChange={handleChange} {...configCheckbox} />
             </span>
-
-
-
-
-
 
 
         </>

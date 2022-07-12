@@ -369,7 +369,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             </div>
 
             <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-4 msg-group-box">
                     {filteredGroups.length > 0 ? (
                         <List
                             sx={{
@@ -391,7 +391,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         </div>
                     )}
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-8 msg-conversation-box">
                     <div className="row">
                         <div className="col" style={{ height: "500px", minHeight: "500px" }}>
                             {clickedMessage.length === 0 &&

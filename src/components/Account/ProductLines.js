@@ -362,11 +362,11 @@ class ProductLines extends Component {
                   size={"md"} hide={()=>this.toggleAddUser()}
                   show={this.state.showAddPopUp} heading={"Add New"} >
         <div className="col-12">
-          <ProductForm
+            {this.state.showAddPopUp &&  <ProductForm
               item={this.state.editItem}
               hide={()=>this.toggleAddUser()}
                        refresh={()=>this.fetchCache()}
-                       productLines />
+                       productLines />}
     </div>
     </GlobalDialog>
 

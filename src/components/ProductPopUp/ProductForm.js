@@ -498,7 +498,7 @@ class ProductForm extends Component {
                 const upc = data.get("upc");
                 const part_no = data.get("part_no");
                 const state = data.get("state");
-                const is_listable = this.state.is_listable;
+                const is_listable = this.state.is_listable?true:false;
                 const is_manufacturer = this.state.is_manufacturer;
 
                 const site = data.get("deliver")

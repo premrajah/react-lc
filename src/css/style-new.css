@@ -4411,3 +4411,7 @@ select,select option {text-transform:capitalize!important;}
 .file-uploader-thumbnail-container .file-upload-img-thumbnail-check {
     color:#D31169!important;
 }
+.MuiBadge-root>span{
+    right: -6px!important;
+    top: -2px!important;
+}

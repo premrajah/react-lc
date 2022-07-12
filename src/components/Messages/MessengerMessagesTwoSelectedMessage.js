@@ -17,7 +17,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
     };
 
     useEffect(() => {
-        // scrollToBottom();
+        scrollToBottom();
     }, [messages]);
 
     const messagesEndRef = useRef(null);

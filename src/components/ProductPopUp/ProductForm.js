@@ -24,6 +24,8 @@ import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+import docs from '../../img/icons/docs.png';
+
 var slugify = require('slugify')
 
 
@@ -1603,7 +1605,7 @@ class ProductForm extends Component {
                                                                             }
 
                                                                             style={{
-                                                                                backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
+                                                                                backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}"),url(${docs})`
 
                                                                             }}
                                                                         >

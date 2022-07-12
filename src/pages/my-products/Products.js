@@ -124,7 +124,7 @@ class Products extends Component {
 
     seekCount=async () => {
 
-        let url = `${baseUrl}seek?name=Product&no_parent=true&count=true`;
+        let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=true`;
 
         this.filters.forEach((item)=>{
 
@@ -204,7 +204,7 @@ class Products extends Component {
         //     false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
 
 
-        let url = `${baseUrl}seek?name=Product&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
+        let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
 
         this.filters.forEach((item)=>{
 

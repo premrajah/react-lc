@@ -414,77 +414,77 @@ class RequestSiteReleaseItem extends Component {
                                     </div>
 
 
-                                {this.state.initiateAction === "complete" && (
-                                    <>
-                                        <FormControl
-                                            variant="outlined"
-                                            className={classes.formControl}>
+                                {/*{this.state.initiateAction === "complete" && (*/}
+                                {/*    <>*/}
+                                {/*        <FormControl*/}
+                                {/*            variant="outlined"*/}
+                                {/*            className={classes.formControl}>*/}
 
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-3"}>
-                                                Parent Product
-                                            </div>
-
-
-                                            <CustomizedSelect
-                                                variant={"standard"}
-                                                name={`parent_parent_id}]`}
-                                                // label={"Link a product"}
-                                                required={true}
-                                                native
-                                                onChange={this.handleChange.bind(
-                                                    this,
-                                                    "parent_parent_id"
-                                                )}
-                                                inputProps={{
-                                                    // name: {`product[${index}]`},
-                                                    id: "outlined-age-native-simple",
-                                                }}>
-                                                <option value={null}>Select</option>
-                                                {this.props.productWithoutParentList.map((item) => (
-                                                        <option value={item._key}>
-                                                            {item.name}
-                                                        </option>
-                                                    ))}
+                                {/*            <div*/}
+                                {/*                className={"custom-label text-bold text-blue mb-3"}>*/}
+                                {/*                Parent Product*/}
+                                {/*            </div>*/}
 
 
-                                            </CustomizedSelect>
+                                {/*            <CustomizedSelect*/}
+                                {/*                variant={"standard"}*/}
+                                {/*                name={`parent_parent_id}]`}*/}
+                                {/*                // label={"Link a product"}*/}
+                                {/*                required={true}*/}
+                                {/*                native*/}
+                                {/*                onChange={this.handleChange.bind(*/}
+                                {/*                    this,*/}
+                                {/*                    "parent_parent_id"*/}
+                                {/*                )}*/}
+                                {/*                inputProps={{*/}
+                                {/*                    // name: {`product[${index}]`},*/}
+                                {/*                    id: "outlined-age-native-simple",*/}
+                                {/*                }}>*/}
+                                {/*                <option value={null}>Select</option>*/}
+                                {/*                {this.props.productWithoutParentList.map((item) => (*/}
+                                {/*                        <option value={item._key}>*/}
+                                {/*                            {item.name}*/}
+                                {/*                        </option>*/}
+                                {/*                    ))}*/}
 
-                                            <div
-                                                className={"custom-label text-bold text-blue mb-3"}>
-                                                Select the location of product
-                                            </div>
 
-                                            <CustomizedSelect
-                                                variant={"standard"}
-                                                required={true}
-                                                name={"site"}
-                                                native
-                                                onChange={this.handleChange.bind(this, "site")}
-                                                inputProps={{
-                                                    name: "site",
-                                                    id: "outlined-age-native-simple",
-                                                }}>
-                                                <option value={""}>Select</option>
+                                {/*            </CustomizedSelect>*/}
 
-                                                {this.props.siteList.map((item, index) => (
-                                                    <option value={item._key} key={index}>
-                                                        {item.name + "(" + item.address + ")"}
-                                                    </option>
-                                                ))}
-                                            </CustomizedSelect>
-                                        </FormControl>
+                                {/*            <div*/}
+                                {/*                className={"custom-label text-bold text-blue mb-3"}>*/}
+                                {/*                Select the location of product*/}
+                                {/*            </div>*/}
 
-                                        <p className="text-left" style={{ margin: "10px 0" }}>
-                                            Don’t see it on here?
-                                            <span
-                                                onClick={this.showSubmitSite}
-                                                className="green-text forgot-password-link text-gray-light small ml-1">
-                                                Add a site
-                                            </span>
-                                        </p>
-                                    </>
-                                )}
+                                {/*            <CustomizedSelect*/}
+                                {/*                variant={"standard"}*/}
+                                {/*                required={true}*/}
+                                {/*                name={"site"}*/}
+                                {/*                native*/}
+                                {/*                onChange={this.handleChange.bind(this, "site")}*/}
+                                {/*                inputProps={{*/}
+                                {/*                    name: "site",*/}
+                                {/*                    id: "outlined-age-native-simple",*/}
+                                {/*                }}>*/}
+                                {/*                <option value={""}>Select</option>*/}
+
+                                {/*                {this.props.siteList.map((item, index) => (*/}
+                                {/*                    <option value={item._key} key={index}>*/}
+                                {/*                        {item.name + "(" + item.address + ")"}*/}
+                                {/*                    </option>*/}
+                                {/*                ))}*/}
+                                {/*            </CustomizedSelect>*/}
+                                {/*        </FormControl>*/}
+
+                                {/*        <p className="text-left" style={{ margin: "10px 0" }}>*/}
+                                {/*            Don’t see it on here?*/}
+                                {/*            <span*/}
+                                {/*                onClick={this.showSubmitSite}*/}
+                                {/*                className="green-text forgot-password-link text-gray-light small ml-1">*/}
+                                {/*                Add a site*/}
+                                {/*            </span>*/}
+                                {/*        </p>*/}
+                                {/*    </>*/}
+                                {/*)}*/}
 
                                 {!this.state.showSubmitSite && (
                                     <div className={"row justify-content-center"}>

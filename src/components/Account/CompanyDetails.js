@@ -568,6 +568,15 @@ class CompanyDetails extends Component {
             });
     };
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps!=this.props){
+            this.setState({
+                orgs:[]
+            })
+            this.getOrgsForUser();
+        }
+    }
+
     componentDidMount() {
 
         this.getOrgsForUser();
@@ -885,13 +894,15 @@ class CompanyDetails extends Component {
                                 </>}
                             <div className="col-md-3 ">
 
-                                    <button
+                                    <BlueBorderButton
                                         // style={{ minWidth: "180px" }}
                                         onClick={this.addCompany}
+                                        title={"Join Company"}
+
                                         className="  btn-gray-border  ">
                                         <Add style={{ fontSize: "20px" }} />
-                                        Join New Company
-                                    </button>
+
+                                    </BlueBorderButton>
                                 </div>
 
                         </>
@@ -938,15 +949,18 @@ class CompanyDetails extends Component {
                                     alt="logo"
                                     style={{ maxHeight: "150px", objectFit: "contain" }}
                                 />
-                            ) : (
-                                <img
+                            ) : <>
+                            {this.state.org.name!=this.state.org.email &&<img
                                     className={"rad-8"}
                                     src={PlaceholderImg}
                                     alt="logo"
                                     style={{ maxHeight: "150px", objectFit: "contain" }}
-                                />
-                            )}
+                                />}
+                            </>
+                            }
 
+                            {this.state.org.name!=this.state.org.email &&
+                            <>
                             <label className={"edit-icon d-flex"} htmlFor="fileInput-2">
                                 <EditIcon
                                     className={""}
@@ -965,6 +979,7 @@ class CompanyDetails extends Component {
                                 type="file"
                                 onChange={this.handleChangeFile.bind(this)}
                             />
+                            </>}
                         </div>
 
                         {this.state.org &&
@@ -1035,11 +1050,11 @@ class CompanyDetails extends Component {
                                         height: "100%",
                                         position: "relative",
                                         minHeight: "120px"
-                                    }} className={"p-1 d-flex align-items-start"}>
+                                    }} className={"p-1 d-flex align-items-center "}>
                                         <div className=" text-blue">
-                                            <span className="   text-blue mb-1 mr-1">Name:</span>
-                                            <span className={"text-gray-light"}>
-                                                {this.state.org.name}
+
+                                            <span className={"text-blue"}>
+                                                {this.state.org.name==this.state.org.email?"Thank you for signing up. We have received your request to join, we will review within 48 hours. Any questions, please message Loopcycle on the platform.":this.state.org.name}
                                             </span>
                                         </div>
 
@@ -1096,7 +1111,7 @@ class CompanyDetails extends Component {
 
                                        <Tab label="General" value="1" />
 
-                                       {this.props.userContext.perms.includes("OrgAdminWrite") &&        <Tab label="Settings" value="2"/>}
+                                       {this.props.userContext&&this.props.userContext.perms&&this.props.userContext.perms.includes("OrgAdminWrite") &&        <Tab label="Settings" value="2"/>}
 
                                    </TabList>
                                </Box>
@@ -1248,6 +1263,7 @@ class CompanyDetails extends Component {
                                         hideAddNew
                                         orgs={true}
                                         companies={true}
+                                        filterOrgs={this.state.orgs}
                                         suggestions={this.state.orgNames}
 
                                         selectedCompany={(action) => this.companyDetails(action)}

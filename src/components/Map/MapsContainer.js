@@ -133,6 +133,11 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                     lng: this.props.locations.find((item)=> item.isCenter===true).location.lng,
                 }}
 
+                    initialCenter={{
+                        lat: this.props.locations.find((item)=> item.isCenter===true).location.lat,
+                        lng: this.props.locations.find((item)=> item.isCenter===true).location.lng,
+                }}
+
                 zoom={14}
             >
 
@@ -185,6 +190,10 @@ componentDidUpdate(prevProps, prevState, snapshot) {
              google={this.props.google}
              style={{margin:"0",width: "100%"}}
              center={{
+                 lat: this.props.latitude,
+                 lng: this.props.longitude,
+             }}
+             initialCenter={{
                  lat: this.props.latitude,
                  lng: this.props.longitude,
              }}

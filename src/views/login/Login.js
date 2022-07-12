@@ -272,7 +272,8 @@ class Login extends Component {
                                                     type={"submit"}
                                                     disabled={!this.state.formValid}></GreenButton>
                                             </div>
-
+                                            {!this.props.hideSignUp&&
+                                                <>
                                             <div className="col-12 mt-2">
                                                 <p className={"or-text-divider"}>
                                                     <span>or</span>
@@ -295,7 +296,9 @@ class Login extends Component {
                                                         }></GreenBorderButton>
                                                 )}
                                             </div>
-                                        </div>
+
+                                            </>}
+                                            </div>
                                     </form>
                                 </div>
                             </div>

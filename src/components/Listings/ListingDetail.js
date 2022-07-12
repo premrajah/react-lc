@@ -6,14 +6,11 @@ import PlaceholderImg from "../../img/place-holder-lc.png";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {Modal, ModalBody} from "react-bootstrap";
 import {withStyles} from "@mui/styles/index";
-import TextField from "@mui/material/TextField";
 import MatchItemSeller from "../../components/MatchItemSeller";
 import NotFound from "../../views/NotFound";
 import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import MoreMenu from "../../components/MoreMenu";
-import ListEditForm from "./ListEditForm";
 import OrgComponent from "../../components/Org/OrgComponent";
 import Box from "@mui/material/Box";
 import TabContext from "@mui/lab/TabContext";
@@ -25,7 +22,10 @@ import {GoogleMap} from "../../components/Map/MapsContainer";
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import Badge from "@mui/material/Badge";
 import GlobalDialog from "../RightBar/GlobalDialog";
-
+import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 class ListingDetail extends Component {
     slug;
     search;
@@ -44,6 +44,8 @@ marteplace
             site: null,
             previewImage: null,
             showEdit: false,
+            fields: {},
+            errors: {},
         };
 
 
@@ -62,7 +64,29 @@ marteplace
         this.showEdit = this.showEdit.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
     }
+    handleChange=(value, field) =>{
 
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({fields});
+
+    }
+    handleValidation=()=> {
+
+
+        let fields = this.state.fields;
+
+
+        let validations = [
+            // validateFormatCreate("message", [{check: Validators.required, message: 'Required'}], fields),
+        ]
+
+
+        let {formIsValid, errors} = validateInputs(validations)
+
+        this.setState({errors: errors});
+        return formIsValid;
+    }
     deleteItem() {
         axios
             .delete(baseUrl + "listing/" + this.props.item.listing._key, )
@@ -121,33 +145,6 @@ marteplace
             );
     }
 
-    acceptMatch() {
-        axios
-            .post(
-                baseUrl + "match",
-                {
-                    listing_id: this.slug,
-                    search_id: this.search,
-                    // note for message
-                },
-
-            )
-            .then((res) => {
-                this.setState({
-                    showPopUp: true,
-                });
-
-                // this.getResources()
-            })
-            .catch((error) => {
-                //
-
-                this.setState({
-                    showPopUp: true,
-                    loopError: fetchErrorMessage(error),
-                });
-            });
-    }
 
     showPopUp() {
         this.setState({
@@ -203,6 +200,22 @@ marteplace
                     });
                 }
             );
+    }
+
+
+    toggleRequestMatch = async (listing) => {
+
+        this.setState({
+
+            requestMatch: !this.state.requestMatch,
+            listingSelected:listing,
+            showListing: false,
+            showMatches: false,
+            // editMode: edit,
+            // selectedKey: key,
+            // selectedEditItem: item,
+        })
+
     }
 
     getMatches() {
@@ -278,6 +291,96 @@ marteplace
 
         }
     }
+    acceptMatch(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        axios
+            .post(
+                baseUrl + "match",
+                {
+                    listing_id: this.slug,
+                    search_id: this.search,
+                    // note for message
+                },
+
+            )
+            .then((res) => {
+
+                // this.getResources()
+            })
+            .catch((error) => {
+                //
+
+                this.setState({
+                    showPopUp: true,
+                    loopError: fetchErrorMessage(error),
+                });
+            });
+    }
+
+
+    submitRequestMatch= (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        // let parentId;
+
+        if (!this.handleValidation()) {
+
+            return
+        }
+
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+
+        let formData={
+            listing_id: this.state.item.listing._key,
+            // search_id: this.state.createSearchData.search._key,
+
+        }
+
+        if (data.get("message")){
+
+            formData.note=data.get("message")
+        }
+
+        axios
+            .post(
+                baseUrl + "match",
+                formData
+                ,
+            )
+            .then((res) => {
+
+                // this.setState({
+                //     showPopUp: false,
+                //     matchExist: true,
+                // });
+                //
+                // this.checkMatch();
+
+                this.toggleRequestMatch()
+
+                this.props.showSnackbar({show:true,severity:"success",message:"Match request has been generated successfully. Thanks"})
+
+                // this.loadMatches()
+
+                // this.getResources()
+            })
+            .catch((error) => {
+
+                this.toggleRequestMatch()
+                this.props.showSnackbar({show:true,severity:"warning",message:fetchErrorMessage(error)})
+
+
+            });
+    }
+
 
     componentDidMount() {
 
@@ -566,85 +669,73 @@ marteplace
                                             </>
                                         </GlobalDialog>
 
+                                    <GlobalDialog size={"xs"}
+                                                  hide={this.toggleRequestMatch}
+                                                  show={this.state.requestMatch} heading={"Request Match"} >
+                                        <div className="col-12">
+                                            <p>
+
+                                                We’ll let the seller know that your
+                                                interested in this product. Do you
+                                                want to send a message?
+                                            </p>
+                                            <div className="row">
+                                            <form className={"full-width-field"} onSubmit={this.submitRequestMatch}>
 
 
+                                                <div className="col-12 ">
 
+                                                    <div className="row no-gutters">
+                                                        <div className="col-12 ">
 
-                                    <Modal
-                                        className={"loop-popup"}
-                                        aria-labelledby="contained-modal-title-vcenter"
-                                        centered
-                                        show={this.state.showPopUp}
-                                        onHide={this.showPopUp}
-                                        animation={false}>
-                                        <ModalBody>
-                                            {/*<div className={"row justify-content-center"}>*/}
-                                            {/*<div className={"col-4 text-center"}>*/}
-                                            {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
-                                            {/*</div>*/}
-                                            {/*</div>*/}
+                                                            <TextFieldWrapper
+                                                                onChange={(value)=>this.handleChange(value,"message")}
+                                                                error={this.state.errors["message"]}
+                                                                name="message" title="Message(Optional)" />
 
-                                            {this.state.loopError ? (
-                                                <>
-                                                    <div className={"row justify-content-center"}>
-                                                        <div className={"col-12 text-center"}>
-                                                            <p className={"text-bold "}>Failed</p>
-                                                            <p> {this.state.loopError}</p>
                                                         </div>
                                                     </div>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <div className={"row justify-content-center"}>
-                                                        <div className={"col-10 text-center"}>
-                                                            <p className={"text-bold"}>
-                                                                Start a match
-                                                            </p>
-                                                            <p>
 
-                                                                We’ll let the seller know that your
-                                                                interested in this product. Do you
-                                                                want to send a message?
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div className={"row justify-content-center"}>
-                                                        <div
-                                                            className={"col-12"}
-                                                            style={{ textAlign: "center" }}>
-                                                            <div className={"col-12"}>
-                                                                <TextField
-                                                                    id="outlined-basic"
-                                                                    label="Message"
-                                                                    variant="outlined"
-                                                                    fullWidth={true}
-                                                                    name={"text"}
-                                                                    type={"text"}
-                                                                />
-                                                            </div>
 
-                                                            {/*<p style={{minWidth:"120px"}} className={"shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"}>*/}
-                                                            {/*/!*<Link onClick={this.showPopUp} to={"/message-seller/" + this.slug}>Chat</Link></p>*!/*/}
+                                                </div>
+                                                <div className="col-12 ">
 
-                                                            {/*<Link onClick={this.showPopUp} to={"/message-seller/" + this.slug}>Check </Link></p>*/}
+                                                    <div className="row mt-4 no-gutters">
+                                                        <div  className={"col-6 pr-2"}
+                                                              style={{
+                                                                  textAlign: "center",
+                                                              }}>
+                                                            <GreenButton
+
+                                                                title={"Submit"}
+                                                                type={"submit"}>
+
+                                                            </GreenButton>
                                                         </div>
                                                         <div
-                                                            className={"col-12"}
-                                                            style={{ textAlign: "center" }}>
-                                                            <p
-                                                                onClick={this.showPopUp}
-                                                                className={
-                                                                    "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                                }>
-                                                                Ok
-                                                            </p>
+                                                            className={"col-6 pl-2"}
+                                                            style={{
+                                                                textAlign: "center",
+                                                            }}>
+                                                            <BlueBorderButton
+                                                                type="button"
+
+                                                                title={"Cancel"}
+
+                                                                onClick={()=>
+                                                                    this
+                                                                        .toggleRequestMatch()
+                                                                }
+                                                            >
+
+                                                            </BlueBorderButton>
                                                         </div>
                                                     </div>
-                                                </>
-                                            )}
-                                        </ModalBody>
-                                    </Modal>
-
+                                                </div>
+                                            </form>
+                                            </div>
+                                        </div>
+                                    </GlobalDialog>
 
 
 
@@ -670,12 +761,13 @@ marteplace
 
                             >
                                 <div className="col-12 text-center">
-                                    <button
-                                        onClick={this.props.type==="search"?this.props.requestMatch:this.acceptMatch}
+                                    <GreenButton
+                                        onClick={this.props.type==="search"?this.props.requestMatch:this.toggleRequestMatch}
                                         type="button"
-                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue">
+                                        title={"Request A Match"}
+                                    >
                                         Request A Match
-                                    </button>
+                                    </GreenButton>
                                 </div>
                             </div>
 
@@ -711,6 +803,7 @@ const mapDispachToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ListingDetail);

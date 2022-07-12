@@ -24,6 +24,8 @@ import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+import docs from '../../img/icons/docs.png';
+
 var slugify = require('slugify')
 
 
@@ -341,7 +343,6 @@ class ProductForm extends Component {
     }
     checkListableManufacturer(checked) {
 
-
         this.setState({
             is_manufacturer: checked,
         });
@@ -635,8 +636,7 @@ class ProductForm extends Component {
 
         completeData.artifacts=this.state.artifacts
 
-        // console.log(this.state.artifacts)
-
+        console.log(completeData)
 
         axios
             .post(
@@ -708,11 +708,15 @@ class ProductForm extends Component {
 
 
     loadImages=(artifacts)=> {
-        // console.log(artifacts)
+
         let images = [];
 
         let currentFiles = [];
 
+
+        this.setState({
+            artifacts:artifacts
+        })
         for (let k = 0; k < artifacts.length; k++) {
 
             var fileItem = {
@@ -878,6 +882,15 @@ class ProductForm extends Component {
         if (prevProps!=this.props){
               // alert("called")
 
+            console.log(this.props.item)
+
+            if (this.props.item){
+
+                this.loadImages(this.props.item.artifacts)
+
+                this.isManufacturer()
+            }
+
         }
     }
 
@@ -923,6 +936,20 @@ class ProductForm extends Component {
             );
     }
 
+
+    isManufacturer = () => {
+
+        axios.get(baseUrl + "product/"+this.props.item.product._key+"/oc-vc" ).then(
+            (response) => {
+
+                console.log(response.data.data.ownership_context)
+                this.setState({
+                    is_manufacturer:response.data.data.ownership_context.is_manufacturer
+                })
+            }
+        ).catch(error => {});
+
+    };
     componentDidMount() {
 
         window.scrollTo(0, 0);
@@ -939,10 +966,12 @@ class ProductForm extends Component {
       // alert("called")
 
         if (this.props.item){
+
             this.loadImages(this.props.item.artifacts)
             this.setState({
                 isEditProduct:true,
             })
+            this.isManufacturer()
         }
 
 
@@ -981,7 +1010,8 @@ class ProductForm extends Component {
             categories:[],
             subCategories:[],
             states :[],
-            units : []
+            units : [],
+            selectedTemplate:null
         })
         this.getFiltersCategories();
 
@@ -1025,7 +1055,9 @@ class ProductForm extends Component {
                     <div className="col-md-8  col-xs-12">
                         <h4 className={"blue-text text-heading "}>
                             {this.props.edit?"Edit Product":this.props.productLines?this.props.item?"Edit "+this.props.item.name:"Add Product Line":this.state.parentProductId?"Add subproduct":"Add product"}
+
                         </h4>
+
                     </div>
                         {!this.props.hideUpload&&!this.props.productLines &&
                         <div className="col-md-4  col-xs-12 desktop-right">
@@ -1124,7 +1156,7 @@ class ProductForm extends Component {
 
                                     <CheckboxWrapper
                                         details="Is Manufacturer ?"
-                                        initialValue={this.props.item&&this.props.item.product.is_manufacturer}
+                                        initialValue={this.state.is_manufacturer}
                                         onChange={(checked)=>this.checkListableManufacturer(checked)} color="primary"
                                         name={"is_manufacturer"} title="Manufacturer" />
 
@@ -1296,7 +1328,8 @@ class ProductForm extends Component {
                                             name="brand"
                                             title="Brand" />
                                         </div>
-                                        {!this.props.productLines &&         <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                        {!this.props.productLines &&
+                                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
                                             <SelectArrayWrapper
                                                 details="Select product’s location from the existing sites or add new address below"
@@ -1458,11 +1491,12 @@ class ProductForm extends Component {
 
                                             </div>
 
-                                {!this.props.productLines &&     <div className="col-md-4 col-sm-6 col-xs-6">
+
+                                <div className="col-md-4 col-sm-6 col-xs-6">
 
                                                 <TextFieldWrapper
                                                     initialValue={this.props.item?this.props.item.product.sku.model:""
-                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.model:"model")}
+                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.model:"")}
                                                     name="model"
                                                     title="Model"
 
@@ -1470,7 +1504,7 @@ class ProductForm extends Component {
 
                                                 />
 
-                                            </div>}
+                                            </div>
 
                                 {!this.props.productLines &&
                                 <div className="col-md-4 col-sm-6 col-xs-6">
@@ -1589,7 +1623,7 @@ class ProductForm extends Component {
                                                                             }
 
                                                                             style={{
-                                                                                backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
+                                                                                backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}"),url(${docs})`
 
                                                                             }}
                                                                         >
@@ -1695,7 +1729,7 @@ class ProductForm extends Component {
 
                                     ) : (
                                     <GreenButton
-                                        title={this.props.item?"Update Product":"Add Product"}
+                                        title={this.props.productLines?"Submit":this.props.item?"Update Product":"Add Product"}
                                         type={"submit"}
                                         loading={this.state.loading}
                                         disabled={this.state.loading||this.state.isSubmitButtonPressed}
@@ -1706,7 +1740,7 @@ class ProductForm extends Component {
                                     )
                                 ) : (
                                     <GreenButton
-                                    title={this.props.item?"Update Product":"Add Product"}
+                                    title={this.props.productLines?"Submit":this.props.item?"Update Product":"Add Product"}
                                     type={"submit"}
                                     loading={this.state.loading}
 

@@ -155,12 +155,16 @@ const loadProduct=(id)=> {
 
 
                 </div>
-                    <p className="text-gray-light mt-2 text-capitlize ">
-                        {item.purpose}
-                    </p>
+                    {/*<p className="text-gray-light mt-2 text-capitlize ">*/}
+                    {/*    {item.sku.brand}*/}
+                    {/*</p>*/}
+
+                    {item.sku&&item.sku.brand&&
+                    <p className={"text-capitalize text-gray-light"}>Brand: <span className={"sub-title-text-pink"}>{item.sku.brand}</span></p>}
 
 
-                {item.search_ids && <div className="text-gray-light">
+
+                    {item.search_ids && <div className="text-gray-light">
                         <span className="mr-1">{item.search_ids.length}</span>
                         <span>Searches</span>
                     </div>

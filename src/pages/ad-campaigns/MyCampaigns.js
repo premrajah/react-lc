@@ -17,6 +17,12 @@ import CampaignDetailContent from "../../components/Campaign/CampaignDetailConte
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {seekAxiosGet} from "../../Util/GlobalFunctions";
 import CampaignItem from "../../components/Campaign/CampaignItem";
+import Box from "@mui/material/Box";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import Tab from "@mui/material/Tab";
+import TabPanel from "@mui/lab/TabPanel";
+import CampaignDraftItem from "../../components/Campaign/CampaignDraftItem";
 
 class MyCampaigns extends Component {
 
@@ -36,6 +42,8 @@ class MyCampaigns extends Component {
             errors: {},
             loading:false,
             items:[],
+            drafts:[],
+
             createNew:false,
             toggleBar:false,
             editItem:null,
@@ -45,7 +53,9 @@ class MyCampaigns extends Component {
             pageSize:50,
             loadingResults:false,
             count:0,
-            selectedItem:null
+            selectedItem:null,
+            activeKey:1,
+            editType:null
 
         }
 
@@ -98,12 +108,50 @@ class MyCampaigns extends Component {
         // }
     }
     componentDidMount() {
-
+        this.setActiveKey(null,"1")
 
         // this.loadCampaigns()
+        // this.fetchCacheDrafts()
 
     }
 
+
+    fetchCacheDrafts=()=> {
+
+        this.setState({
+            btnLoading: true,
+
+        });
+        axios
+            .get(baseUrl + "org/cache")
+            .then(
+                (response) => {
+
+                    let responseObj=response.data.data
+
+                    let keys=Object.keys(responseObj)
+
+                    let templates=[]
+                    keys.forEach((item)=> {
+
+                            if (item.includes("campaign_"))
+                                templates.push({key: item, value: JSON.parse(responseObj[item])})
+                        }
+                    )
+                    console.log(templates)
+
+                    this.setState({
+                        drafts: templates,
+
+                    });
+
+
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
 
 
     setFilters=(data)=>{
@@ -154,6 +202,8 @@ class MyCampaigns extends Component {
 
 
     refreshList=()=>{
+
+        this.fetchCacheDrafts()
         this.setState({
             items:[],
             offset:0
@@ -293,6 +343,16 @@ class MyCampaigns extends Component {
         })
     }
 
+    setActiveKey=(event,key)=>{
+
+
+        this.setState({
+            activeKey:key
+        })
+
+
+    }
+
     handleSaveCSV = () => {
 
 
@@ -311,7 +371,8 @@ class MyCampaigns extends Component {
                 site.address,
                 service_agent.name,
                 qr_artifact.name,
-                qr_artifact.blob_url
+                qr_artifact.blob_url,
+
             ])
         })
 
@@ -348,7 +409,7 @@ class MyCampaigns extends Component {
         })
     }
 
-    toggleRightBar=(item)=>{
+    toggleRightBar=(item,type)=>{
 
         this.setState({
             toggleBar:!this.state.toggleBar
@@ -358,14 +419,17 @@ class MyCampaigns extends Component {
 
             this.setState({
                 editMode:true,
-                editItem:item
+                editItem:item,
+                editType:type
             })
 
         }else{
 
             this.setState({
                 editMode:false,
-                editItem:null
+                editItem:null,
+                editType:type
+
             })
         }
               this.props.toggleRightBar()
@@ -474,7 +538,9 @@ class MyCampaigns extends Component {
 <>
 
                         {this.state.campaignMode ==1 &&
-                        <CreateCampaign  refreshData={
+                        <CreateCampaign
+                            draft
+                            refreshData={
                             ()=> {
                                 this.setState({
                                     campaignMode:0
@@ -485,7 +551,10 @@ class MyCampaigns extends Component {
                             }} />
                         }
                         {this.state.campaignMode ==3 && this.state.selectedItem&&
-                        <CreateCampaign item={this.state.selectedItem}
+                        <CreateCampaign
+
+                            item={this.state.selectedItem}
+                            type={this.state.editType}
                               refreshData={ ()=> { this.toggleRightBar()
                                         this.refreshList()
                                          this.setState({
@@ -545,54 +614,147 @@ class MyCampaigns extends Component {
 
                         <div className="row">
                                 <div className="col-md-12">
-                                    <div className="table-wrap">
-                                        <table className="table custom-table ">
-                                            <thead>
-                                            <tr className={"text-bold"}>
-                                                <th>&nbsp;</th>
-                                                <th>Campaign Name</th>
-                                                <th>Validity</th>
-                                                <th>Stage</th>
-                                                <th>Artifacts</th>
-                                                <th>&nbsp;</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
+
+                                    <Box sx={{ width: '100%', typography: 'body1' }}>
+                                        <TabContext value={this.state.activeKey}>
+                                            <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
+                                                <TabList
+                                                    allowScrollButtonsMobile
+                                                    variant="scrollable"
+                                                    scrollButtons="auto"
+                                                    textColor={"#27245C"}
+                                                    TabIndicatorProps={{
+                                                        style: {
+                                                            backgroundColor: "#27245C",
+                                                            padding: '2px',
+                                                            borderRadius:"2px"
+                                                        }
+                                                    }}
+                                                    onChange={this.setActiveKey}
+
+                                                >
+
+                                                    <Tab label="Active" value="1" />
 
 
-                                            <PaginationLayout
-                                                hideSearch
-                                                hideCount
+                                                    {/*<Tab label="Drafts" value="2"/>*/}
 
-                                                dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
-                                                count={this.state.count}
-                                                visibleCount={this.state.items.length}
-                                                loadingResults={this.state.loadingResults}
-                                                lastPageReached={this.state.lastPageReached}
-                                                loadMore={(data)=>this.loadCampaignsPageWise(data)} >
+                                                </TabList>
+                                            </Box>
 
-                                                {this.state.items
-                                                    .map((item, index) => (
-
-
-                                                            <CampaignItem item={item} index={index}
-                                                                          toggleRightBar={(data)=>{
-                                                                              this.setState({
-                                                                                  campaignMode:2
-                                                                              });
-                                                                              this.toggleRightBar(data);
-                                                                          }}
-                                                            />
-                                                        )
-                                                    )}
-                                            </PaginationLayout>
+                                            <TabPanel value="1">
+                                                <div className={"row mt-4"}>
+                                                    <div className={"col-12 text-left"}>
+                                                        <div className="table-wrap">
+                                                            <table className="table custom-table ">
+                                                                <thead>
+                                                                <tr className={"text-bold"}>
+                                                                    <th>&nbsp;</th>
+                                                                    <th>Campaign Name</th>
+                                                                    <th>Validity</th>
+                                                                    <th>Stage</th>
+                                                                    <th>Artifacts</th>
+                                                                    <th>&nbsp;</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
 
 
+                                                                <PaginationLayout
+                                                                    element={"tr"}
+                                                                    colspan={5}
+                                                                    hideSearch
+                                                                    hideCount
+                                                                    type="table"
+                                                                    dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
+                                                                    count={this.state.count}
+                                                                    visibleCount={this.state.items.length}
+                                                                    loadingResults={this.state.loadingResults}
+                                                                    lastPageReached={this.state.lastPageReached}
+                                                                    loadMore={(data)=>this.loadCampaignsPageWise(data)} >
+
+                                                                    {this.state.items
+                                                                        .map((item, index) => (
 
 
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                                                <CampaignItem item={item} index={index}
+                                                                                              toggleRightBar={(data)=>{
+                                                                                                  this.setState({
+                                                                                                      campaignMode:2
+                                                                                                  });
+                                                                                                  this.toggleRightBar(data);
+                                                                                              }}
+                                                                                />
+                                                                            )
+                                                                        )}
+                                                                </PaginationLayout>
+
+
+
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </TabPanel>
+                                            <TabPanel value="2">
+                                                <div className={"row mt-4"}>
+                                                    <div className={"col-12 text-left"}>
+                                                        <div className="table-wrap">
+                                                            <table className="table custom-table ">
+                                                                <thead>
+                                                                <tr className={"text-bold"}>
+                                                                    <th>&nbsp;</th>
+                                                                    <th>Campaign Name</th>
+                                                                    <th>Validity</th>
+                                                                    <th>Last Edited</th>
+                                                                    <th>Artifacts</th>
+                                                                    <th>&nbsp;</th>
+                                                                    <th>&nbsp;</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+
+
+
+                                                                    {this.state.drafts&&this.state.drafts
+                                                                        .map((item, index) => (
+
+                                                                                <CampaignDraftItem
+
+                                                                                    refresh={this.fetchCacheDrafts}
+                                                                                    item={item}
+                                                                                    index={index}
+                                                                                    toggleRightBar={(data)=>{
+                                                                                                  this.setState({
+                                                                                                      campaignMode:2
+                                                                                                  });
+                                                                                                  this.toggleRightBar(data,"draft");
+                                                                                              }}
+                                                                                />
+                                                                            )
+                                                                        )}
+
+
+
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </TabPanel>
+
+
+                                        </TabContext>
+                                    </Box>
+
+
+
 
                             </div>
                         </div>

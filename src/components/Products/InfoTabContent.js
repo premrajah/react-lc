@@ -54,12 +54,12 @@ class InfoTabContent extends Component {
                         <p className="text-gray-light" >{this.props.item.product.volume} {capitalizeFirstLetter( this.props.item.product.units)}</p>
                     </div>
                 </div> }
-                {(this.props.item && this.props.item.product.purpose) && <div className="row justify-content-start search-container  pb-2">
-                    <div className="col-auto">
-                        <p  className=" text-label text-blue mb-1">Purpose</p>
-                        <p className="text-gray-light">{capitalizeFirstLetter(this.props.item.product.purpose)}</p>
-                    </div>
-                </div> }
+                {/*{(this.props.item && this.props.item.product.purpose) && <div className="row justify-content-start search-container  pb-2">*/}
+                {/*    <div className="col-auto">*/}
+                {/*        <p  className=" text-label text-blue mb-1">Purpose</p>*/}
+                {/*        <p className="text-gray-light">{capitalizeFirstLetter(this.props.item.product.purpose)}</p>*/}
+                {/*    </div>*/}
+                {/*</div> }*/}
 
                 {(this.props.item && this.props.item.product.condition) && <div className="row justify-content-start search-container  pb-2">
                     <div className="col-auto">

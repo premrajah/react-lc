@@ -95,6 +95,11 @@
     background: var(--lc-bg-gray) !important;
 }
 
+.messenger-message-bubble  a{
+    color: var(--lc-pink);
+    cursor: pointer;
+}
+
 .rdw-image-custom-option {
     border: 1px solid #F1F1F1;
     background-color: white;
@@ -122,6 +127,7 @@
 
 .rdw-link-modal {
     height: 280px !important;
+    top: -290px !important;
 }
 
 .filter-conversations-data::after {
@@ -4327,14 +4333,31 @@ select,select option {text-transform:capitalize!important;}
 
     color: #dc3545 !important;
 }
-.right-btn{
+.right-btn {
+    position: absolute !important;
+    right: 10px;
+    top: 10px;
+    bottom: 0;
+    height: 42px;
+    width: 42px;
+}
+.right-btn-md{
     position: absolute!important;
     right: 10px;
     top: 10px;
     bottom: 0;
-    height:42px;
-    width:42px;
+    height:48px;
+    width:48px;
 }
+.right-btn-auto{
+    position: absolute!important;
+    right: 10px;
+    top: 10px;
+    bottom: 0;
+    height:auto;
+    width:auto;
+}
+
 .fc-h-event{
     /*background-color: #D31169!important;*/
     border: none!important;
@@ -4384,3 +4407,11 @@ select,select option {text-transform:capitalize!important;}
     overflow-y: scroll!important;
 }
 .past-event{background: #eee!important;}
+.popover{z-index: 1111111!important;}
+.file-uploader-thumbnail-container .file-upload-img-thumbnail-check {
+    color:#D31169!important;
+}
+.MuiBadge-root>span{
+    right: -6px!important;
+    top: -2px!important;
+}

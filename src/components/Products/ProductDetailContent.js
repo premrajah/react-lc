@@ -183,6 +183,9 @@ class ProductDetailContent extends Component {
         }
     };
 
+
+
+
     phonenumber(inputtxt) {
         var phoneNoWithCode = /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
 
@@ -517,6 +520,7 @@ class ProductDetailContent extends Component {
                 }
             )
             .then((res) => {
+
                 this.setState({
                     currentReleaseId: res.data.data._key,
                     showReleaseSuccess: true,
@@ -892,9 +896,9 @@ class ProductDetailContent extends Component {
                                                                 : false
                                                         }
 
-                                                        addEvent={(action)=>
-                                                            this.callBackResult(action)
-                                                        }
+                                                        // addEvent={(action)=>
+                                                        //     this.callBackResult(action)
+                                                        // }
 
                                                     />
 
@@ -974,7 +978,7 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
-                                                        <Tab label="Events" value="8" />
+                                                        {/*<Tab label="Events" value="8" />*/}
 
                                                     </TabList>
                                                 </Box>
@@ -1088,16 +1092,16 @@ class ProductDetailContent extends Component {
                                 this.showEvent();
                             }}
                         >
-
-                            <div className="form-col-left col-12">
+<>
+    {this.state.showEventPopUp&&      <div className="form-col-left col-12">
                                 <EventForm
                                     hide={()=> {
                                         this.showEvent();
                                     }}
                                     productId={this.state.item.product._key}
                                     triggerCallback={(action) => this.callBackSubmit(action)}   />
-                            </div>
-
+                            </div>}
+</>
                         </GlobalDialog>
 
 
@@ -1166,7 +1170,7 @@ class ProductDetailContent extends Component {
                                                     <Tab label="Release Internally" value="1" />
 
                                                     <Tab label="Release Externally" value="2"/>
-                                                    <Tab label="Rental" value="3"/>
+                                                    {/*<Tab label="Rental" value="3"/>*/}
 
 
 

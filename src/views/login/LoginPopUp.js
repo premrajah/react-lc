@@ -1,18 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import LogoNew from "../../img/logo-cropped.png";
-import LogoText from "../../img/logo-text.png";
-import { Link } from "react-router-dom";
-import Close from "@mui/icons-material/Close";
-import { makeStyles } from "@mui/styles";
+import {connect} from "react-redux";
+import {makeStyles} from "@mui/styles";
 import Login from "./Login";
 import ResetPassword from "./ResetPassword";
 import RecoverPassword from "./RecoverPassword";
 import SuccessSignUp from "./SuccessSignUp";
 import ForgotPassword from "./ForgotPassword";
 import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
-import {Modal} from "react-bootstrap";
 import SignUp from "../../components/Login/SignUp";
 
 const useStyles = makeStyles((theme) => ({

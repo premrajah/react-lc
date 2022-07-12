@@ -67,8 +67,8 @@ class WysiwygEditor extends Component{
         return;
     }
 
-    handleUploadCallback = (values) => {
-        this.props.handleImageUploadCallback(values)
+    handleUploadCallback = (values, files) => {
+        this.props.handleImageUploadCallback(values, files)
     }
 
     render(){
@@ -94,7 +94,7 @@ class WysiwygEditor extends Component{
                     history: { inDropdown: true },
                     // image: { uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true } },
                 }}
-                toolbarCustomButtons={[<WysiwygCustomImageUploadIcon ref={this.clearImages} handleUploadCallback={(values) => this.handleUploadCallback(values)} />]}
+                toolbarCustomButtons={[<WysiwygCustomImageUploadIcon ref={this.clearImages} handleUploadCallback={(values, files) => this.handleUploadCallback(values, files)} />]}
                 // handleKeyCommand={(command) => this.handleKeyCommand(command)}
                 // keyBindingFn={(e) => this.myKeyBindingFn(e)}
                 // mention={{

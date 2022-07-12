@@ -26,6 +26,8 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
+import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+var slugify = require('slugify')
 
 class CreateCampaign extends Component {
 
@@ -33,6 +35,7 @@ class CreateCampaign extends Component {
         super(props);
         this.state = {
             searchValue: '',
+            artifacts:[],
             selectOptionError:false,
             filterValue: '',
             startDate:null,
@@ -275,14 +278,29 @@ class CreateCampaign extends Component {
 
         if (this.props.item) {
 
-            await this.loadSavedValues()
+            await this.loadSavedValues(this.props.item,this.props.type)
+
             this.callStrategy()
 
-            this.loadImages()
-            this.setState({
-                startDate: this.props.item.campaign.start_ts,
-                endDate: this.props.item.campaign.end_ts
-            })
+
+
+            if (this.props.type!="draft"){
+
+                this.loadImages(this.props.item.artifacts)
+                this.setState({
+                    startDate: this.props.item.campaign.start_ts,
+                    endDate: this.props.item.campaign.end_ts
+                })
+            }
+            else{
+                this.loadImages(this.props.item.value.artifacts)
+                    this.setState({
+                        startDate: this.props.item.value.campaign.start_ts,
+                        endDate: this.props.item.value.campaign.end_ts
+                    })}
+
+
+
         }
 
 
@@ -425,7 +443,7 @@ class CreateCampaign extends Component {
             .post(campaignStrategyUrl, data)
             .then(
                 (response) => {
-                    
+
                     this.setState({
 
                         strategyProducts:response.data.data
@@ -441,46 +459,54 @@ class CreateCampaign extends Component {
     }
 
 
-    loadSavedValues=()=> {
+    loadSavedValues=(data,type)=> {
 
+let item=null
+
+        if (type!="draft"){
+             item=data
+        }else{
+            item=data.value
+
+        }
 
 
         this.setState({
-            countAll:this.props.item.campaign.all_of.length,
-            countAny:this.props.item.campaign.any_of.length,
+            countAll:item.campaign.all_of.length,
+            countAny:item.campaign.any_of.length,
 
-            conditionAll:this.props.item.campaign.all_of,
-            conditionAny:this.props.item.campaign.any_of,
+            conditionAll:item.campaign.all_of,
+            conditionAny:item.campaign.any_of,
 
-            addCountAll:Array.from({length: this.props.item.campaign.all_of.length}, () => Math.floor(Math.random() * 10000)),
-            addCountAny:Array.from({length: this.props.item.campaign.any_of.length}, () => Math.floor(Math.random() * 10000)),
+            addCountAll:Array.from({length: item.campaign.all_of.length}, () => Math.floor(Math.random() * 10000)),
+            addCountAny:Array.from({length: item.campaign.any_of.length}, () => Math.floor(Math.random() * 10000)),
 
         })
 
 
     }
 
-    loadImages=()=> {
+    loadImages=(artifacts)=> {
         let images = [];
 
         let currentFiles = [];
 
-        for (let k = 0; k < this.props.item.artifacts.length; k++) {
+        for (let k = 0; k < artifacts.length; k++) {
 
             var fileItem = {
                 status: 1,
-                id: this.props.item.artifacts[k]._key,
-                imgUrl: this.props.item.artifacts[k].blob_url,
+                id: artifacts[k]._key,
+                imgUrl: artifacts[k].blob_url,
                 file: {
-                    mime_type: this.props.item.artifacts[k].mime_type,
-                    name: this.props.item.artifacts[k].name,
+                    mime_type:artifacts[k].mime_type,
+                    name: artifacts[k].name,
                 },
             };
             // fileItem.status = 1  //success
             // fileItem.id = this.state.item.artifacts[k]._key
             // fileItem.url = this.state.item.artifacts[k].blob_url
 
-            images.push(this.props.item.artifacts[k]._key);
+            images.push(artifacts[k]._key);
 
             currentFiles.push(fileItem);
         }
@@ -676,6 +702,101 @@ class CreateCampaign extends Component {
     };
 
 
+
+    saveDraft = () => {
+
+        let fields=this.state.fields
+
+        const name = fields["name"];
+        const description = fields["description"];
+        const startDate = new Date(fields["startDate"]).getTime() ;
+        const endDate =  new Date(fields["endDate"]).getTime();
+        const messageTemplate = fields["messageTemplate"];
+
+        let conditionAll=[]
+        let conditionAny=[]
+
+
+        for (let i=0;i<this.state.countAll;i++) {
+
+            conditionAll.push({
+                predicate: fields[`propertyAnd[${i}]`],
+                operator: fields[`operatorAnd[${i}]`],
+                value: fields[`valueAnd[${i}]`]
+
+            })
+        }
+
+        for (let i=0;i<this.state.countAny;i++) {
+
+            conditionAny.push({
+                predicate: fields[`propertyOr[${i}]`],
+                operator: fields[`operatorOr[${i}]`],
+                value: fields[`valueOr[${i}]`]
+
+            })
+        }
+
+
+        const campaignData = {
+
+            campaign:{
+                name:name,
+                description:description,
+                start_ts:startDate,
+                end_ts:endDate,
+                all_of:conditionAll,
+                any_of:conditionAny,
+                createdAt:Date.now()
+            },
+            message_template:messageTemplate,
+            artifact_ids:this.state.images,
+            artifacts:this.state.artifacts,
+
+        };
+
+        this.setState({isSubmitButtonPressed: true,loading:true})
+
+        axios
+            .post(
+                `${baseUrl}org/cache`, {
+                    key: "campaign_"+slugify(name,{
+                        lower: true,
+                        replacement: '_',
+                    },),
+                    value:   JSON.stringify(campaignData),
+                },
+            )
+            .then((res) => {
+
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message:  "Saved as draft successfully. Thanks"
+                })
+                this.props.refreshData()
+
+                this.setState({isSubmitButtonPressed: false,loading:false})
+
+
+            })
+            .catch((error) => {
+                this.setState({
+                    btnLoading: false,
+                    loading: false,
+                    isSubmitButtonPressed: false
+                });
+                this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+                this.props.refreshData()
+
+                this.setState({isSubmitButtonPressed: false,loading:false})
+            });
+
+
+
+    };
+
+
     handleUpdate = () => {
 
         let fields=this.state.fields
@@ -840,6 +961,11 @@ class CreateCampaign extends Component {
         var url = e.currentTarget.dataset.url;
 
         var files = this.state.files.filter((item) => item.file.name !== name);
+
+        this.setState({
+            artifacts: this.state.artifacts.filter((item) => item.file.name !== name)
+        })
+
         // var filesUrl = this.state.filesUrl.filter((item) => item.url !== url)
 
         // var images = this.state.images.filter((item)=> item !==index )
@@ -904,8 +1030,19 @@ class CreateCampaign extends Component {
                                     let images = [...this.state.images];
                                     images.push(res.data.data._key);
 
+                                    // this.setState({
+                                    //     artifacts:this.state.artifacts.push(res.data.data)
+                                    // })
+
+
+                                    let artifacts=this.state.artifacts
+
+                                    artifacts.push(res.data.data)
+
                                     this.setState({
                                         images: images,
+                                        artifacts:artifacts
+
                                     });
 
                                     let currentFiles = this.state.files;
@@ -1093,9 +1230,6 @@ class CreateCampaign extends Component {
 
                                 <div>
 
-                                    {/*{getStepContent(this.state.activeStep)}*/}
-
-
 
                                     <div className={this.state.activeStep===0?"":"d-none"}>
                                         <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
@@ -1207,8 +1341,6 @@ class CreateCampaign extends Component {
                                         </form>
 
                                     </div>
-
-
 
 
                                     <div className={this.state.activeStep===1?"":"d-none"}>
@@ -1672,6 +1804,8 @@ class CreateCampaign extends Component {
 
 
                                     <div>
+                                        <div className="row mt-3 ">
+                                            <div className="col-6 mt-0">
                                         <Button  disabled={this.state.activeStep === 0} onClick={this.handleBack} className={" btn-back"}>
                                             Back
                                         </Button>
@@ -1685,27 +1819,43 @@ class CreateCampaign extends Component {
                                                 Skip
                                             </Button>
                                         )}
+                                                <GreenSmallBtn
 
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={this.handleNext}
+
+                                                    loading={this.state.loading}
+                                                    disabled={this.state.loading}
+
+                                                    className={" btn-gray-border "}
+                                                    title={this.state.files.length > 0 ? (
+                                                            this.state.files.filter((item) => item.status === 0).length >
+                                                            0 ?"Upload In Progress":this.state.activeStep!==2?"Next":"Submit"):
+                                                        this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
+                                                >
+
+                                                </GreenSmallBtn>
+                                            </div>
+                                            <div className="col-6 text-right pr-5 mt-0">
+                                        {this.state.activeStep===2&&
                                         <GreenSmallBtn
 
                                             variant="contained"
                                             color="primary"
-                                            onClick={this.handleNext}
+                                            onClick={this.saveDraft}
 
                                             loading={this.state.loading}
                                             disabled={this.state.loading}
 
                                             className={" btn-gray-border "}
-                                            title={this.state.files.length > 0 ? (
-                                                        this.state.files.filter((item) => item.status === 0).length >
-                                                        0 ?"Upload In Progress":this.state.activeStep!==2?"Next":"Submit"):
-                                                    this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
+                                            title={"Save As Draft"}
                                         >
 
+                                        </GreenSmallBtn>}
 
-
-                                        </GreenSmallBtn>
-
+</div>
+                                        </div>
 
                                     </div>
 

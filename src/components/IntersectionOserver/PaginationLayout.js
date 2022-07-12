@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import SearchBar from "../SearchBar";
 import {LoaderAnimated} from "../../Util/GlobalFunctions";
+import DynamicElement from "../UIComponents/DynamicElement";
 
 class PaginationLayout extends Component {
     constructor(props) {
@@ -141,16 +142,22 @@ class PaginationLayout extends Component {
                     <div ref={(loadingRef) => (this.loadingRef = loadingRef)} className="col"></div>
                 </div>
 
-                <div
+                <DynamicElement
+                    element={this.props.element}
                     className={
                         this.props.loadingResults
-                            ? "row  justify-content-center filter-row  pt-3 pb-3"
-                            : "d-none"
-                    }>
-                    <div className="col-12 justify-content-center text-center">
+                            ?this.props.element=="tr"?"" : "row  justify-content-center filter-row  pt-3 pb-3"
+                            : "d-none"}
+                    >
+                    <DynamicElement
+                        element={this.props.element=="tr"?"td":""}
+                        colspan={this.props.colspan}
+                        className={
+                            this.props.element=="tr"?"" :"col-12 justify-content-center text-center"}
+                        >
                         <LoaderAnimated />
-                    </div>
-                </div>
+                    </DynamicElement>
+                </DynamicElement>
 
                 <div
                     className={

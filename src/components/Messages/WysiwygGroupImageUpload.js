@@ -4,8 +4,12 @@ import { Cancel, Check, Error, Publish } from "@mui/icons-material";
 import { baseUrl, MIME_TYPES_ACCEPT } from "../../Util/Constants";
 import { Spinner } from "react-bootstrap";
 import axios from "axios";
+import {Button} from "@mui/material";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import * as actionCreator from "../../store/actions/actions";
+import {connect} from "react-redux";
 
-class WysiwygCustomImageUploadIcon extends Component {
+class WysiwygGroupImageUpload extends Component {
     constructor(props) {
         super(props);
 
@@ -143,9 +147,9 @@ class WysiwygCustomImageUploadIcon extends Component {
                                         files: currentFiles,
                                     });
 
-                                    this.props.handleUploadCallback(images, this.state.files);
                                 })
                                 .catch((error) => {
+                                    console.log('upload image error  ', error)
                                     let currentFiles = [...this.state.files];
                                     for (let k = 0; k < currentFiles.length; k++) {
                                         if (currentFiles[k].file.name === imgFile.file.name) {
@@ -168,10 +172,32 @@ class WysiwygCustomImageUploadIcon extends Component {
         }
     }
 
+    postUploadedImagesToMessageGroup = (_key) => {
+        if (!_key) return;
+
+        let payload = {
+            message_group_id: _key,
+            artifact_ids: this.state.images,
+        };
+
+        axios
+            .post(`${baseUrl}message-group/artifact`, payload)
+            .then((res) => {
+                if(res.status === 200) {
+                    this.resetImagesAfterMessageSend(); // reset
+                    this.props.showSnackbar({ show: true, severity: "success", message: `Successfully upload.` });
+                    this.props.afterUploadCallback();
+                }
+            })
+            .catch((error) => {
+                this.props.showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
+            });
+    };
+
     render() {
         return (
-            <div className="rdw-image-custom-option">
-                <div className={" d-flex justify-content-center align-items-center"}>
+            <div className="rdw-image-custom-option mb-3">
+                <div className="d-flex align-items-center">
                     <>
                         <label htmlFor="fileInput">
                             <Publish
@@ -191,9 +217,15 @@ class WysiwygCustomImageUploadIcon extends Component {
                             onChange={this.handleChangeFile.bind(this)}
                         />
                     </>
+                    <div className="ml-4">
+                        <Button variant="outlined" startIcon={<AddBoxIcon />} disabled={!this.state.images.length > 0} onClick={() => this.postUploadedImagesToMessageGroup(this.props.groupKey)}>
+                            Add
+                        </Button>
+                    </div>
                 </div>
 
-                <div className="message-upload-images-container d-flex flex-row-reverse" style={{position: "absolute", right: "0", top: "-90px"}}>
+
+                <div className="message-upload-images-container d-flex" style={{position: "absolute", left: "0", top: "-90px"}}>
                     {this.state.files &&
                     this.state.files.map((item, index) => (
                         <div key={index} className={"file-uploader-thumbnail-container"}>
@@ -254,4 +286,17 @@ class WysiwygCustomImageUploadIcon extends Component {
     }
 }
 
-export default WysiwygCustomImageUploadIcon;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        userDetail: state.userDetail,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WysiwygGroupImageUpload);

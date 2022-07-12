@@ -8,6 +8,9 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
+import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/style.css'
+
 
 class EditAccount extends Component {
     constructor(props) {
@@ -281,11 +284,34 @@ class EditAccount extends Component {
                                             </div>
 
                                             <div className="col-6 mt-2 pl-2">
-                                                <TextFieldWrapper
-                                                    initialValue={this.state.phone}
+                                                {/*<TextFieldWrapper*/}
+                                                {/*    initialValue={this.state.phone}*/}
+                                                {/*    onChange={(value)=>this.handleChange(value,"phone")}*/}
+                                                {/*    error={this.state.errors["phone"]}*/}
+                                                {/*    name="phone" title="Phone" />*/}
+
+                                                <div
+                                                    className="custom-label text-bold text-blue mb-0 ellipsis-end">Phone
+                                                </div>
+
+                                                <PhoneInput
+
+                                                    value={this.state.phone}
+                                                    // onChange={this.handleChange.bind(this, "phone")}
                                                     onChange={(value)=>this.handleChange(value,"phone")}
-                                                    error={this.state.errors["phone"]}
-                                                    name="phone" title="Phone" />
+                                                    inputClass={this.state.phoneNumberInValid ? "is-invalid" : ""}
+                                                    inputProps={{
+                                                        name: 'phone',
+                                                        // required: true,
+                                                        defaultErrorMessage: "Invalid",
+                                                        // minLength:9,
+                                                    }}
+                                                    country={'gb'}
+                                                />
+                                                {this.state.errors["phone"] &&
+                                                <span style="color: rgb(244, 67, 54);"
+                                                      className="text-danger">Required</span>}
+
                                             </div>
 
                                             <div className="col-12 mt-2 ">

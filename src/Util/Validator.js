@@ -23,6 +23,28 @@ export class Validators {
         return false;
     }
 
+    static password(value, message) {
+
+
+        if (!value || !value.toString().trim().length) {
+
+            return { error: true, message };
+        }
+
+        else if (value.toString().trim().length<6||!CheckPassword(value)) {
+
+
+
+
+            return { error: true, message:message };
+        }
+
+
+        return false;
+    }
+
+
+
     static requiredCheck(value, message) {
         if (!value) {
 
@@ -142,6 +164,20 @@ export const validateFormatCreate = (title, validations,fields)=> {
         validations: validations,
         password:fields["password"]
 
+    }
+}
+
+function CheckPassword(inputtxt)
+{
+
+    var decimal=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+    if(inputtxt.match(decimal))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 

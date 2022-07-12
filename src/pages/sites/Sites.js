@@ -324,7 +324,7 @@ class Sites extends Component {
                         <div className="row">
                             <div className="col-md-12  justify-content-start">
                                 <Link onClick={()=> {
-                                    this.toggleSite(true)
+                                    this.toggleSite(false)
                                 }}  className="btn-gray-border  mr-2  click-item">
                                     Add Sites / Address
                                 </Link>
@@ -384,10 +384,10 @@ class Sites extends Component {
                     show={this.state.showCreateSite}
                     heading={"Add new site"}>
                     <>
-                        <div className="col-12 ">
+                        {this.state.showCreateSite && <div className="col-12 ">
 
                             <SiteFormNew refresh={()=>this.toggleSite(true)} />
-                        </div>
+                        </div>}
                     </>
                 </GlobalDialog>
             </Layout>

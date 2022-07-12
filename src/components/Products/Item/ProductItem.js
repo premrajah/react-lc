@@ -272,9 +272,9 @@ class ProductItemNew extends Component {
                                                 className="badge badge-info ml-2">Listed</span>}  <small className={""}><small> - {this.props.item._key}</small></small></Link>
                                       </p>
 
-                                    <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">
-                                      Purpose: <span className={"text-blue"}> {this.props.item.purpose}</span>
-                                    </p>
+                                    {/*<p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">*/}
+                                    {/*  Purpose: <span className={"text-blue"}> {this.props.item.purpose}</span>*/}
+                                    {/*</p>*/}
                                     <div className={"text-gray-light mt-1 mb-1"}>
                                     Category:
                                     <span
@@ -296,7 +296,8 @@ class ProductItemNew extends Component {
                                         {this.props.item.purpose!=="aggregate"?"Qty:":""} {this.props.item.purpose!=="aggregate"&&  <span className={"text-blue"}>{this.props.item.volume} </span>}
                                         {this.props.item.purpose!=="aggregate"&&     <span  className={"text-blue"}>{this.props.item.units}</span>}
                                     </p>
-                                    {this.props.item.sku&&this.props.item.sku.brand&& <p className={"text-capitalize text-gray-light"}>Brand: <span className={"sub-title-text-pink"}>{this.props.item.sku.brand}</span></p>}
+                                    {this.props.item.sku&&this.props.item.sku.brand&&
+                                    <p className={"text-capitalize text-gray-light"}>Brand: <span className={"sub-title-text-pink"}>{this.props.item.sku.brand}</span></p>}
 
 
 

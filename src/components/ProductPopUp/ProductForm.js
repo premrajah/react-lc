@@ -24,6 +24,8 @@ import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
+import docs from '../../img/icons/docs.png';
+
 var slugify = require('slugify')
 
 
@@ -340,7 +342,6 @@ class ProductForm extends Component {
         });
     }
     checkListableManufacturer(checked) {
-
 
         this.setState({
             is_manufacturer: checked,
@@ -887,6 +888,7 @@ class ProductForm extends Component {
 
                 this.loadImages(this.props.item.artifacts)
 
+                this.isManufacturer()
             }
 
         }
@@ -934,6 +936,20 @@ class ProductForm extends Component {
             );
     }
 
+
+    isManufacturer = () => {
+
+        axios.get(baseUrl + "product/"+this.props.item.product._key+"/oc-vc" ).then(
+            (response) => {
+
+                console.log(response.data.data.ownership_context)
+                this.setState({
+                    is_manufacturer:response.data.data.ownership_context.is_manufacturer
+                })
+            }
+        ).catch(error => {});
+
+    };
     componentDidMount() {
 
         window.scrollTo(0, 0);
@@ -955,6 +971,7 @@ class ProductForm extends Component {
             this.setState({
                 isEditProduct:true,
             })
+            this.isManufacturer()
         }
 
 
@@ -1038,7 +1055,9 @@ class ProductForm extends Component {
                     <div className="col-md-8  col-xs-12">
                         <h4 className={"blue-text text-heading "}>
                             {this.props.edit?"Edit Product":this.props.productLines?this.props.item?"Edit "+this.props.item.name:"Add Product Line":this.state.parentProductId?"Add subproduct":"Add product"}
+
                         </h4>
+
                     </div>
                         {!this.props.hideUpload&&!this.props.productLines &&
                         <div className="col-md-4  col-xs-12 desktop-right">
@@ -1137,7 +1156,7 @@ class ProductForm extends Component {
 
                                     <CheckboxWrapper
                                         details="Is Manufacturer ?"
-                                        initialValue={this.props.item&&this.props.item.product.is_manufacturer}
+                                        initialValue={this.state.is_manufacturer}
                                         onChange={(checked)=>this.checkListableManufacturer(checked)} color="primary"
                                         name={"is_manufacturer"} title="Manufacturer" />
 
@@ -1309,7 +1328,8 @@ class ProductForm extends Component {
                                             name="brand"
                                             title="Brand" />
                                         </div>
-                                        {!this.props.productLines &&         <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
+                                        {!this.props.productLines &&
+                                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
                                             <SelectArrayWrapper
                                                 details="Select product’s location from the existing sites or add new address below"
@@ -1603,7 +1623,7 @@ class ProductForm extends Component {
                                                                             }
 
                                                                             style={{
-                                                                                backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
+                                                                                backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}"),url(${docs})`
 
                                                                             }}
                                                                         >

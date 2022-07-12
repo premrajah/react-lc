@@ -192,7 +192,7 @@ render() {
                                             <Tab label="Product Register" value="2"/>
                                             <Tab label="Change Service Agent" value="3" />
                                             <Tab label="Site Release " value="4" />
-                                            <Tab label="Rental Release " value="5" />
+                                            {/*<Tab label="Rental Release " value="5" />*/}
                                         </TabList>
                                     </Box>
 

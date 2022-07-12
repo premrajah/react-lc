@@ -183,6 +183,9 @@ class ProductDetailContent extends Component {
         }
     };
 
+
+
+
     phonenumber(inputtxt) {
         var phoneNoWithCode = /^[+#*\\(\\)\\[\\]]*([0-9][ ext+-pw#*\\(\\)\\[\\]]*){6,45}$/;
 
@@ -893,9 +896,9 @@ class ProductDetailContent extends Component {
                                                                 : false
                                                         }
 
-                                                        addEvent={(action)=>
-                                                            this.callBackResult(action)
-                                                        }
+                                                        // addEvent={(action)=>
+                                                        //     this.callBackResult(action)
+                                                        // }
 
                                                     />
 
@@ -975,7 +978,7 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
-                                                        <Tab label="Events" value="8" />
+                                                        {/*<Tab label="Events" value="8" />*/}
 
                                                     </TabList>
                                                 </Box>
@@ -1167,7 +1170,7 @@ class ProductDetailContent extends Component {
                                                     <Tab label="Release Internally" value="1" />
 
                                                     <Tab label="Release Externally" value="2"/>
-                                                    <Tab label="Rental" value="3"/>
+                                                    {/*<Tab label="Rental" value="3"/>*/}
 
 
 

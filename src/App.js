@@ -89,6 +89,7 @@ import Help from "./pages/help/Help";
 import CompanyDetailsPopUp from "./components/Account/CompanyDetailsPopUp";
 import MyDiary from "./pages/diary/MyDiary";
 import RentalReleaseRecords from "./pages/approvals/RentalReleaseRecords";
+import PromptLoginRoute from "./Util/PromptLoginRoute";
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -182,7 +183,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/code" component={CycleCode} />
                         <Route exact path="/find-resources" component={FindResourcePage} />
                         <LoggedInRoute exact path="/resource/:slug" component={ResourceItem} />
-                        <Route exact path="/account" component={MyAccount} />
+                        <PromptLoginRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/help" component={Help} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exaedit-accountct path="/edit-account" component={EditAccount} />

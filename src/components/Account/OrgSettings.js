@@ -462,14 +462,17 @@ class OrgSettings extends Component {
                                     <div
                                         className="col-6 text-center "
                                        >
-                                        <form className={"d-flex flex-row align-items-center "}
+                                        <form id="brand-form" className={"d-flex flex-row align-items-center "}
 
                                               onSubmit={(event)=>
-                                              { event.preventDefault();
+                                              {
+                                                  event.preventDefault();
                                               event.stopPropagation();
                                               this.addOption(event,"matching_brands",null,false) ;
-                                                  event.target.reset();
+
+                                                  document.getElementById("brand-form").reset();
                                               }
+
 
                                               }>
 

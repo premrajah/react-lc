@@ -4415,3 +4415,10 @@ select,select option {text-transform:capitalize!important;}
     right: -6px!important;
     top: -2px!important;
 }
+.my-msg-class>span{
+
+    width: auto;
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap
+}

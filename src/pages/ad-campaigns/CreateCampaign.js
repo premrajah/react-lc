@@ -1837,7 +1837,7 @@ let item=null
 
                                                 </GreenSmallBtn>
                                             </div>
-                                            <div className="col-6 text-right pr-5 mt-0">
+                                            <div className="col-6 d-none text-right pr-5 mt-0">
                                         {this.state.activeStep===2&&
                                         <GreenSmallBtn
 

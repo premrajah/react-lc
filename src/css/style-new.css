@@ -4408,3 +4408,6 @@ select,select option {text-transform:capitalize!important;}
 }
 .past-event{background: #eee!important;}
 .popover{z-index: 1111111!important;}
+.file-uploader-thumbnail-container .file-upload-img-thumbnail-check {
+    color:#D31169!important;
+}

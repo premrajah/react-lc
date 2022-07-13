@@ -4422,3 +4422,13 @@ select,select option {text-transform:capitalize!important;}
     flex-flow: row;
     flex-wrap: wrap
 }
+.msg-group-box>ul{
+    border: 1px solid rgba(0, 0, 0, 0.12);
+
+}
+
+.msg-group-box>ul{
+
+    padding-top: 0!important;
+
+}

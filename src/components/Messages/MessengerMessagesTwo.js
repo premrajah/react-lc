@@ -373,9 +373,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     {filteredGroups.length > 0 ? (
                         <List
                             sx={{
-                                height: "500px",
-                                minHeight: "500px",
-                                maxHeight: "500px",
+                                height: "625px",
+                                minHeight: "625px",
+                                maxHeight: "625px",
                                 overflow: "auto",
                                 bgColor: "background.paper",
                             }}>

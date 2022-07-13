@@ -387,6 +387,15 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                             <Skeleton className="mb-1" variant="rectangular" height="40px" />
                             <Skeleton className="mb-1" variant="rectangular" height="40px" />
                             <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
                             <Skeleton variant="rectangular" height="40px" />
                         </div>
                     )}

@@ -16,6 +16,7 @@ import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import RequestSiteReleaseItem from "../../components/Approvals/RequestSiteReleaseItem";
 import RequestRentalReleaseItem from "../../components/Approvals/RequestRentalReleaseItem";
+import RentalRequestItem from "../../components/Approvals/RentalRequestItem";
 
 
 class Approvals extends Component {
@@ -29,6 +30,7 @@ class Approvals extends Component {
             releaseRequests: [],
             registerRequests: [],
             rentalRequests: [],
+            rentalReleases: [],
             serviceAgentRequests: [],
             value: 0,
             loading: false,
@@ -95,6 +97,8 @@ class Approvals extends Component {
             else if (this.props.location.search.includes("tab=4"))
                 this.setActiveKey(null,"5")
 
+            else if (this.props.location.search.includes("tab=5"))
+                this.setActiveKey(null,"6")
         }
 
         const query = new URLSearchParams(this.props.location.search);
@@ -119,6 +123,7 @@ class Approvals extends Component {
         this.props.fetchServiceAgentRequest()
         this.fetchSiteReleaseRequests()
         this.fetchRentalRequests()
+        this.fetchRentalReleases()
 
     this.interval = setInterval(() => {
         this.props.fetchReleaseRequest();
@@ -132,13 +137,35 @@ class Approvals extends Component {
 
      fetchRentalRequests = () => {
 
-        axios.get(baseUrl + "rental-release").then(
+        axios.get(baseUrl + "rental-request").then(
             (response) => {
 
                 let responseAll = response.data.data;
 
                 this.setState({
                     rentalRequests:responseAll
+                })
+
+                // dispatch()
+            },
+            (error) => {
+                // let status = error.response.status
+                // dispatch({ type: "PRODUCT_LIST", value: [] })
+            }
+        )
+            .catch(error => {});
+
+        // dispatch({ type: "PRODUCT_LIST", value: [] })
+    };
+    fetchRentalReleases = () => {
+
+        axios.get(baseUrl + "rental-release").then(
+            (response) => {
+
+                let responseAll = response.data.data;
+
+                this.setState({
+                    rentalReleases:responseAll
                 })
 
                 // dispatch()
@@ -193,6 +220,7 @@ render() {
                                             <Tab label="Change Service Agent" value="3" />
                                             <Tab label="Site Release " value="4" />
                                             <Tab label="Rental Release " value="5" />
+                                            <Tab label="Rental Requests " value="6" />
                                         </TabList>
                                     </Box>
 
@@ -348,7 +376,7 @@ render() {
                                                 <div className="col d-flex justify-content-end">
                                                     <Link to="/approved" className="btn btn-sm blue-btn"
                                                           style={{color: "#fff"}}>
-                                                       Site Release Request Records
+                                                       Site Release  Records
                                                     </Link>
                                                 </div>
                                             </div>
@@ -397,7 +425,56 @@ render() {
                                                 <div className="col d-flex justify-content-end">
                                                     <Link to="/rental-records" className="btn btn-sm blue-btn"
                                                           style={{color: "#fff"}}>
-                                                        Rental Release Request Records
+                                                        Rental Release Records
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                            <div className={"listing-row-border "}></div>
+
+
+                                            {this.state.rentalReleases.filter(r =>
+                                                r.Release.stage !== "complete" &&
+                                                r.Release.stage !== "cancelled" &&
+                                                r.Release.stage !== "invalidated").map((item, index) =>
+                                                <>
+                                                    <div className="col-12"
+                                                         key={item.Release._key}
+                                                         id={item.Release._key}
+                                                         >
+
+                                                        <RequestRentalReleaseItem
+                                                            refresh={()=>{
+                                                                this.fetchRentalReleases();
+                                                            }}
+                                                            history={this.props.history}
+                                                            item={item}
+                                                        />
+
+                                                    </div>
+
+                                                </>
+                                            )}
+
+
+                                            {this.state.siteReleases.length === 0 && (
+                                                <div className={" column--message"}>
+                                                    <p>
+                                                        {this.state.loading
+                                                            ? "Loading..."
+                                                            : "This search currently has no results"}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                        </div>
+                                    </TabPanel>
+                                    <TabPanel value="6">
+                                        <div className={"row"} >
+                                            <div className="col-12 mt-3 mb-3">
+                                                <div className="col d-flex justify-content-end">
+                                                    <Link to="/rental-request-records" className="btn btn-sm blue-btn"
+                                                          style={{color: "#fff"}}>
+                                                        Rental Request Records
                                                     </Link>
                                                 </div>
                                             </div>
@@ -405,16 +482,16 @@ render() {
 
 
                                             {this.state.rentalRequests.filter(r =>
-                                                r.Release.stage !== "complete" &&
-                                                r.Release.stage !== "cancelled" &&
-                                                r.Release.stage !== "invalidated").map((item, index) =>
+                                                r.registration.stage !== "complete" &&
+                                                r.registration.stage !== "cancelled" &&
+                                                r.registration.stage !== "invalidated").map((item, index) =>
                                                 <>
                                                     <div className="col-12"
-                                                         // key={item.Site_id.replace("Site/","")}
-                                                         // id={item.Site_id.replace("Site/","")}
-                                                         >
+                                                         key={item.registration._key}
+                                                         id={item.registration._key}
+                                                    >
 
-                                                        <RequestRentalReleaseItem
+                                                        <RentalRequestItem
                                                             refresh={()=>{
                                                                 this.fetchRentalRequests();
                                                             }}

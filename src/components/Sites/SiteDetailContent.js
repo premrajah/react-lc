@@ -602,7 +602,7 @@ class SiteDetailContent extends Component {
                                                         {this.props.isLoggedIn  &&
                                                         <Tab label="Products" value="3" />
                                                         }
-                                                        {/*<Tab label="Attachments" value="4" />*/}
+                                                        <Tab label="Attachments" value="4" />
                                                     </TabList>
                                                 </Box>
 

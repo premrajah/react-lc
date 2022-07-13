@@ -318,7 +318,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
     return (
         <React.Fragment>
-            <div className="row" style={{ height: "45px" }}>
+            <div className="row " style={{ height: "45px" }}>
                 <div className="col-md-4">
                     <div className="row">
                         <div className="col-md-10 d-flex justify-content-around">
@@ -368,7 +368,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 </div>
             </div>
 
-            <div className="row">
+            <div className="row no-gutters">
                 <div className="col-md-4 msg-group-box">
                     {filteredGroups.length > 0 ? (
                         <List
@@ -447,7 +447,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                             )}
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row no-gutters editor-box " >
                         <div className="col-sm-11">
                             <WysiwygEditor
                                 allOrgs={allGroups}
@@ -465,9 +465,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>
                                 <div style={{minHeight: "51px"}}>
-                                    {(messageText || uploadedImages.length > 0) && <Tooltip title="Clear" placement="right-start" arrow>
+                                    {(messageText || uploadedImages.length > 0) &&
+                                    <Tooltip title="Clear" placement="right-start" arrow>
                                         <IconButton
-                                            className={classes.customHoverFocusClearText}
+                                            className={`${classes.customHoverFocusClearText}`}
                                             disabled={!(messageText || uploadedImages.length > 0) }
                                             onClick={() => handleResetWysiwygEditor()}>
                                             <ClearIcon fontSize="large"/>

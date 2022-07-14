@@ -498,9 +498,7 @@ render() {
                                                             history={this.props.history}
                                                             item={item}
                                                         />
-
                                                     </div>
-
                                                 </>
                                             )}
 

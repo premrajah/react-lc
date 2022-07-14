@@ -267,13 +267,11 @@ class RequestRentalReleaseItem extends Component {
         this.loadCurrentProductSync()
         this.getArtifactsForProduct()
     }
-
     getArtifactsForProduct = () => {
 
         axios.get(`${baseUrl}product/${this.props.item.product_id.replace("Product/","")}/artifact`)
             .then(res => {
                 const data = res.data.data;
-
 
                 this.setState({
                     artifacts:data

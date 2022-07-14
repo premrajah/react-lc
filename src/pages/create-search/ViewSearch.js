@@ -186,7 +186,6 @@ class ViewSearch extends Component {
 
     toggleMakeOffer = async (matchSelected,acceptOffer,headingOffer) => {
 
-        console.log(matchSelected)
 
         this.setState({
             showMakeOffer: !this.state.showMakeOffer,

@@ -213,7 +213,6 @@ class SignUp extends Component {
 
         this.setState({ errors: errors });
 
-        console.log(errors)
 
         return formIsValid;
     }

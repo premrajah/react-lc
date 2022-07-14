@@ -75,13 +75,11 @@ class MyListings extends Component {
         let searchValue= data.searchValue
         let activeFilter= data.searchFilter
 
-        console.log(data)
 
         if (searchValue){
 
             if (activeFilter){
 
-                console.log(activeFilter)
 
                 if (activeFilter=="name")
                 this.setState({

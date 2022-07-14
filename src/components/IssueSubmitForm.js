@@ -47,11 +47,10 @@ timeout=0
 
         if (this.timeout) clearTimeout(this.timeout);
 
-        // this.timeout = setTimeout(() => {
+
         keywords=this.state.keywordSelected?this.state.keywordSelected:[]
 
-        // }, 200);
-        console.log(keyword,add)
+
 
         if (add) {
 
@@ -63,7 +62,7 @@ timeout=0
                 keywords = keywords.filter((item) => keyword != item)
             }
         }
-        console.log(keywords)
+
 
         this.setState({
             keywordSelected: keywords
@@ -169,7 +168,6 @@ timeout=0
 
     postCreateIssue = (payload) => {
 
-        console.log(payload)
 
         axios
             .post(`${baseUrl}issue`, payload)

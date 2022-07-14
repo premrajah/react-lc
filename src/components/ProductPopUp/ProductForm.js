@@ -636,7 +636,6 @@ class ProductForm extends Component {
 
         completeData.artifacts=this.state.artifacts
 
-        console.log(completeData)
 
         axios
             .post(
@@ -880,9 +879,6 @@ class ProductForm extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps!=this.props){
-              // alert("called")
-
-            console.log(this.props.item)
 
             if (this.props.item){
 

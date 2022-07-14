@@ -253,7 +253,6 @@ class ManageUser extends Component {
 
     toggleDeletePopUp= (key, item) => {
 
-     console.log(key,item)
         this.setState({
             selectedEditItem: item,
             showDeletePopUp: !this.state.showDeletePopUp,

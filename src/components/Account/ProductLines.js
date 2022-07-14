@@ -208,7 +208,7 @@ class ProductLines extends Component {
                             templates.push({key: item, value: JSON.parse(responseObj[item])})
                         }
                     )
-                  console.log(templates)
+
 
                     this.setState({
                         templates: templates,
@@ -259,7 +259,7 @@ class ProductLines extends Component {
 
     toggleDeletePopUp= (key, item) => {
 
-     console.log(key,item)
+
         this.setState({
             selectedEditItem: item,
             showDeletePopUp: !this.state.showDeletePopUp,

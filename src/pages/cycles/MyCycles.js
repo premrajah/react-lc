@@ -72,7 +72,6 @@ class MyCycles extends Component {
         let searchValue= data.searchValue
         let activeFilter= data.searchFilter
 
-        console.log(data)
 
 
         if (searchValue){
@@ -80,7 +79,6 @@ class MyCycles extends Component {
 
             if (activeFilter){
 
-                console.log(activeFilter)
 
 
                 if (activeFilter=="listing_name")

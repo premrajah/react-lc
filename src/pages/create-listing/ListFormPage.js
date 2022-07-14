@@ -675,7 +675,6 @@ class ListFormPage extends Component {
                     loading:false
                 })
 
-                console.log(error.response)
                 if (error&&error.response){
 
                     this.setState({

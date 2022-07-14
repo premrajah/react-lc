@@ -64,7 +64,6 @@ class ManageRole extends Component {
             .then(
                 (response) => {
 
-                    console.log(arrangeObjectKeysAlphabatically(response.data.data))
 
                     this.setState({
 
@@ -121,7 +120,7 @@ class ManageRole extends Component {
 
         let fields = this.state.fields;
         fields[field] = value;
-        console.log(value)
+
         this.setState({fields});
 
     }
@@ -129,7 +128,7 @@ class ManageRole extends Component {
 
         let fields = this.state.fields;
         fields.perms=selected
-        console.log(fields)
+
         this.setState({fields});
 
 

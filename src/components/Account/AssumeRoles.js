@@ -121,9 +121,7 @@ class AssumeRoles extends Component {
 
             )
             .then((res) => {
-                console.log("user",getKey("user"))
-
-                console.log("token",getKey("token"))
+                
                 removeKey("token")
                 // removeKey("user")
                 saveKey("assumedRole",true)

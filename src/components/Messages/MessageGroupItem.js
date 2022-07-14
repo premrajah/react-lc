@@ -64,7 +64,7 @@ class MessageGroupItem extends Component {
                 //     allOrgs: this.props.allOrgs.value
                 // })
 
-                console.log(this.props.allOrgs)
+
 
             }
 

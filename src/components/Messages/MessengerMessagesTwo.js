@@ -101,6 +101,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         axios
             .get(`${baseUrl}message-group/${key}/message`)
             .then((res) => {
+                setClickedMessage([]); // clear selected message
+
                 setClickedMessage(res.data.data);
                 handleResetWysiwygEditor();
             })
@@ -111,7 +113,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
 
     const handleGroupClickCallback = (key) => {
-        setClickedMessage([]); // clear selected message
+        // setClickedMessage([]); // clear selected message
         setNewMessageDisplay(null); // clear org visibility message
         setSelectedMessageGroupKey(key);
 
@@ -126,6 +128,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             filteredGroups[0].message_group._id === 0
         ) {
             getSelectedGroupMessage(allGroups[0].message_group._key);
+            return
         }
 
         getSelectedGroupMessage(key);

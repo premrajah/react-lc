@@ -448,7 +448,6 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                     handleImageUploadCallback(values, files)
                                 }
                             />
-                            {/*<div><small>Press enter to send message, CTRL+Enter or Shift+ENTER for carriage return</small></div>*/}
                         </div>
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>

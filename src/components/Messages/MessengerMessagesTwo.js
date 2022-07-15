@@ -65,6 +65,13 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         setUploadedFiles([]); // reset uploaded image files
     }, []);
 
+    // useEffect(() => {
+    //
+    //     // getAllMessageGroups();
+    //     console.log("all groups changed")
+    //
+    // }, [allGroups]);
+
     const getAllMessageGroups = () => {
         setTrackedMessageGroups([]);
         axios
@@ -101,6 +108,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         axios
             .get(`${baseUrl}message-group/${key}/message`)
             .then((res) => {
+                setClickedMessage([]); // clear previous chat
+
                 setClickedMessage(res.data.data);
                 handleResetWysiwygEditor();
             })
@@ -111,7 +120,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
 
     const handleGroupClickCallback = (key) => {
-        setClickedMessage([]); // clear selected message
+
+        if (!key) {
+            setClickedMessage([]); // clear selected message for new chat
+          }
         setNewMessageDisplay(null); // clear org visibility message
         setSelectedMessageGroupKey(key);
 
@@ -126,6 +138,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             filteredGroups[0].message_group._id === 0
         ) {
             getSelectedGroupMessage(allGroups[0].message_group._key);
+            return
         }
 
         getSelectedGroupMessage(key);
@@ -214,25 +227,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         setSelectedOrgs(value);
     };
 
-    const handleGroupDataDisplay = (group, index) => {
-        return (
-            <MenuItem
-                button
-                divider
-                dense
-                disableGutters
-                key={`${index}_${group.message_group._key}`}
-                selected={selectedMenuItemIndex === index}
-                style={{ whiteSpace: "normal" }}>
-                <MessengerMessagesTwoGroupItem
-                    group={group}
-                    index={index}
-                    handleGroupClickCallback={handleGroupClickCallback}
-                    handleSelectedItemCallback={handleSelectedItemCallback}
-                />
-            </MenuItem>
-        );
-    };
+
 
     const handleResetWysiwygEditor = () => {
         resetDraftRef.current.resetDraft();
@@ -297,8 +292,9 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
                 if (messageType === "R") {
                     console.log("Replayed Message");
-                    handleSelectedItemCallback(selectedMenuItemIndex);
-                    handleGroupClickCallback(data.message_group._key);
+                    // handleSelectedItemCallback(selectedMenuItemIndex);
+                    // handleGroupClickCallback(data.message_group._key);
+                    getAllMessageGroups();
                 }
 
                 setUploadedImages([]); //reset uploaded images
@@ -377,7 +373,19 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                                 overflow: "auto",
                                 bgColor: "background.paper",
                             }}>
-                            {filteredGroups.map((g, index) => handleGroupDataDisplay(g, index))}
+                            {filteredGroups.map((g, index) =>
+                                <>
+                                <HandleGroupDataDisplay
+
+                                    userOrg={userDetail.orgId}
+                                    selectedMenuItemIndex={selectedMenuItemIndex}
+                                    group={g} index={index}
+                                    handleGroupClickCallback={handleGroupClickCallback}
+                                     handleSelectedItemCallback={handleSelectedItemCallback}
+                                />
+
+                                    </>
+                            )}
                         </List>
                     ) : (
                         <div>
@@ -448,7 +456,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     <div className="row no-gutters editor-box " >
                         <div className="col-sm-11">
                             <WysiwygEditor
-                                allOrgs={allGroups}
+                                // allOrgs={allGroups}
                                 ref={resetDraftRef}
                                 richTextHandleCallback={(value) => handleRichTextCallback(value)}
                                 handleEnterCallback={(value, content) =>
@@ -489,6 +497,43 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 </div>
             </div>
         </React.Fragment>
+    );
+};
+
+
+const HandleGroupDataDisplay = ({group, userOrg,index,selectedMenuItemIndex,
+                                    handleGroupClickCallback,handleSelectedItemCallback, ...props}) => {
+
+const [groupListItem,setGroupListItem]=useState(group)
+
+    useEffect(()=>{
+      console.log("group list item hanged "+group.message_group._key, index)
+        setGroupListItem(group)
+    },[group])
+
+    return (
+        <>
+            {/*<p>userOrg={props.userDetail.orgId}</p>*/}
+        <MenuItem
+
+            button
+            divider
+            dense
+            disableGutters
+            key={`${index}-${groupListItem.message_group._key}`}
+            id={`group-item-${index}-${groupListItem.message_group._key}`}
+            selected={selectedMenuItemIndex === index}
+            style={{ whiteSpace: "normal" }}>
+            <MessengerMessagesTwoGroupItem
+
+                userOrg={userOrg}
+                group={groupListItem}
+                index={index}
+                handleGroupClickCallback={handleGroupClickCallback}
+                handleSelectedItemCallback={handleSelectedItemCallback}
+            />
+        </MenuItem>
+            </>
     );
 };
 

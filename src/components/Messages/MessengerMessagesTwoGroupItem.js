@@ -1,45 +1,58 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Chip, Divider, ListItem, ListItemText } from "@mui/material";
 import OrgComponent from "../Org/OrgComponent";
 import TooltipDisplay from "../Org/TooltipDisplay";
 
 const MessengerMessagesTwoGroupItem = ({
     group,
-    index,
+    index,userOrg,
     handleGroupClickCallback,
-    handleSelectedItemCallback,
+    handleSelectedItemCallback,...props
 }) => {
-    const handleOrgDisplay = (org, index) => {
-        return (
-            <div
 
-                id={`${index}_${org._ts_epoch_ms}`}
-                key={`${index}_${org._ts_epoch_ms}`}>
-                {/*<TooltipDisplay org={org}>*/}
-                    <Chip label={org.name ? org.name : ""} className="mr-1 mb-1 " variant="outlined" />
-                {/*</TooltipDisplay>*/}
-            </div>
-        );
-    };
 
     const handleListItemClick = () => {
+        console.log("handle click")
         handleSelectedItemCallback(index);
         handleGroupClickCallback(group.message_group._key);
     };
 
     return (
         <>
-            <ListItem  onClick={() => handleListItemClick()} component="div">
+            <ListItem id={`group-${group._key}`} key={`group-${group._key}`} onClick={() => handleListItemClick()} component="div">
                 <ListItemText
 
                     className={"my-msg-class"}
                     primary={
                         group.orgs.length > 0 &&
-                        group.orgs.map((org, index) => handleOrgDisplay(org, index))
+                        group.orgs.filter(item=> item._id!=userOrg).map((org, index) => <HandleOrgDisplay org={org} index={index} />)
                     }
                 />
+
             </ListItem>
         </>
+    );
+};
+
+
+const HandleOrgDisplay = ({org, index}) => {
+
+    const [orgItem,setOrgItem]=useState(org)
+    useEffect(()=>{
+
+        console.log("changed org name")
+        setOrgItem(org)
+    },[org])
+    return (
+        <div
+
+            id={`${index}_${orgItem._ts_epoch_ms}`}
+            key={`${index}_${orgItem._ts_epoch_ms}`}>
+            {/*<TooltipDisplay org={org}>*/}
+            <Chip label={orgItem.name ? orgItem.name : ""} className="mr-1 mb-1 " variant="outlined" />
+            {/*</TooltipDisplay>*/}
+
+        </div>
     );
 };
 

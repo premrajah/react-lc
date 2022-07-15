@@ -75,7 +75,10 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
                     </Box>
                     <TabPanel value={value} index={0}>
                         {messages.length > 0 && (
-                            <div className="mb-5" style={{ height: "400px", minHeight: "400px", maxHeight: "400px", overflow: "auto", overflowX: "hidden" }}>
+                            <div  className="mb-5" style={{
+                                // flexFlow:"column-reverse",
+                                // display: "flex",
+                                height: "400px", minHeight: "400px", maxHeight: "400px", overflow: "auto", overflowX: "hidden" }}>
                                 {messages.map((m, i) => (
                                     <React.Fragment key={i}>
                                         <div
@@ -88,6 +91,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
                                 ))}
                                 <div ref={messagesEndRef} />
                             </div>
+
                         )}
                     </TabPanel>
 

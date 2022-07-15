@@ -129,17 +129,19 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
         if (orgSearchVisibility) {
             setOrgSearchVisibility(false);
-            setFilteredGroups(allGroups); // remove temp new message
+            // setFilteredGroups(allGroups); // remove temp new message
         }
-
-        if (
-            allGroups.length > 0 &&
-            filteredGroups.length > 0 &&
-            filteredGroups[0].message_group._id === 0
-        ) {
-            getSelectedGroupMessage(allGroups[0].message_group._key);
-            return
-        }
+        //
+        // if (
+        //     allGroups.length > 0 &&
+        //     filteredGroups.length > 0 &&
+        //     filteredGroups[0].message_group._id === 0
+        // ) {
+        //     // getSelectedGroupMessage(allGroups[0].message_group._key);
+        //     getSelectedGroupMessage(key);
+        //
+        //     return
+        // }
 
         getSelectedGroupMessage(key);
     };

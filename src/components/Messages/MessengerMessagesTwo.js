@@ -67,12 +67,6 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
         setUploadedFiles([]); // reset uploaded image files
     }, []);
 
-    // useEffect(() => {
-    //
-    //     // getAllMessageGroups();
-    //     console.log("all groups changed")
-    //
-    // }, [allGroups]);
 
     const getAllMessageGroups = () => {
         setTrackedMessageGroups([]);
@@ -538,7 +532,6 @@ const HandleGroupDataDisplay = ({group, userOrg,index,selectedMenuItemIndex,
 const [groupListItem,setGroupListItem]=useState(group)
 
     useEffect(()=>{
-      console.log("group list item hanged "+group.message_group._key, index)
         setGroupListItem(group)
     },[group])
 

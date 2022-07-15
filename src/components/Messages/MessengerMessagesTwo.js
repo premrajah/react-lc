@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
+const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
     const classes = useStyles();
 
     const resetDraftRef = useRef(null);
@@ -56,6 +56,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     const [uploadedImages, setUploadedImages] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [sentMessageGroupKey, setSentMessageGroupKey] = useState(null);
+      const [loading,setLoading]=useState(false)
+
 
     useEffect(() => {
         handleSelectedItemCallback(0);
@@ -100,6 +102,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     };
 
     const getSelectedGroupMessage = (key) => {
+
         if (!key) return;
 
         setClickedMessageKey(key);
@@ -151,13 +154,28 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     };
 
     const handleFilterCallback = (values) => {
+
+        setClickedMessage([])
+
         setFilterValues(values);
         if (filterValues) {
-            let temp = allGroups.filter((g, index) => {
-                return (
-                    g.message_group.name &&
-                    g.message_group.name.toLowerCase().includes(values.toLowerCase())
-                );
+            let temp = allGroups
+                .filter((item, index) => {
+
+                    let orgs=item.orgs.filter(org=> org._id!=userDetail.orgId)
+
+                    let existFlag=false
+                    for (let i=0;i<orgs.length;i++){
+                        if (orgs[i].name &&
+                            orgs[i].name.toLowerCase().includes(values.toLowerCase())){
+                            existFlag=true
+                            break
+                        }
+                    }
+
+               return existFlag
+
+
             });
 
             setFilteredGroups(temp);
@@ -296,7 +314,12 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     console.log("Replayed Message");
                     // handleSelectedItemCallback(selectedMenuItemIndex);
                     // handleGroupClickCallback(data.message_group._key);
+
+                    if (filterVisibility) {
+                        handleFilterVisibility()
+                    }
                     getAllMessageGroups();
+
                 }
 
                 setUploadedImages([]); //reset uploaded images
@@ -357,6 +380,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 <div className="col-md-8">
                     {orgSearchVisibility && (
                         <MessengerMessagesTwoOrgSearch
+
                             ref={orgSearchRef}
                             handleOrgSelectedCallback={(v) => handleOrgSelectedCallback(v)}
                         />
@@ -411,11 +435,16 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 <div className="col-md-8 msg-conversation-box">
                     <div className="row">
                         <div className="col" style={{ height: "500px", minHeight: "500px" }}>
-                            {clickedMessage.length === 0 &&
-                                filteredGroups.length > 0 &&
-                                filteredGroups[0].message_group._id !== 0 && (
-                                    <div>{LoaderAnimated()}</div>
-                                )}
+                            {/*{clickedMessage.length === 0 &&*/}
+                            {/*    filteredGroups.length > 0 &&*/}
+                            {/*    filteredGroups[0].message_group._id !== 0 && (*/}
+                            {/*        <div>{LoaderAnimated()}</div>*/}
+                            {/*    )}*/}
+
+                            {loading &&
+
+                                <div>{LoaderAnimated()}</div>
+                            }
                             {clickedMessage.length > 0 && (
                                 <div
                                     style={{
@@ -541,7 +570,7 @@ const [groupListItem,setGroupListItem]=useState(group)
 
 const mapStateToProps = (state) => {
     return {
-        loading: state.loading,
+
         userDetail: state.userDetail,
     };
 };

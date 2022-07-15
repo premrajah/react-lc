@@ -173,7 +173,6 @@ const reducer = (state = initialState, action) => {
             break;
         case CURRENT_PRODUCT:
 
-            console.log("curent")
             newState.loading=false
             newState.productNotFound = false;
             newState.currentProduct = action.value;
@@ -182,7 +181,7 @@ const reducer = (state = initialState, action) => {
 
 
         case EMPTY_CURRENT:
-console.log("empty")
+
             newState.loading=true
             newState.currentProduct = null;
             newState.currentProductLoading = true;

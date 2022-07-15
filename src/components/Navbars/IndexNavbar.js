@@ -16,6 +16,7 @@ import {Badge, Snackbar, Tooltip} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Menu from '@mui/material/Menu';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import DevelopmentUserInfoDisplay from "./DevelopmentUserInfoDisplay";
 
 
 const LightTooltip = withStyles((theme) => ({
@@ -178,6 +179,9 @@ class ComponentsNavbar extends React.Component {
                 <Snackbar open={this.props.notificationAlert} autoHideDuration={6000}  onClick={() => this.props.dispatchNotificationAlert(false)} onClose={() => this.props.dispatchNotificationAlert(false)}>
                     <Alert  severity="success">You have new notifications.</Alert>
                 </Snackbar>
+
+
+                {(baseUrl && this.props.isLoggedIn && baseUrl  === "https://graph-dev.makealoop.io/api/2/") && <DevelopmentUserInfoDisplay userDetail={this.props.userDetail} /> }
 
                 <Navbar className={"container-blue "} color-on-scroll="100" expand="lg">
                     <Nav className={"justify-content-start "}>
@@ -365,10 +369,10 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Products
                                         </Link>
-                                        {/*<Link className={"dropdown-item"} to="/my-diary">*/}
-                                        {/*    <i className="tim-icons icon-bullet-list-67" />*/}
-                                        {/*    My Diary*/}
-                                        {/*</Link>*/}
+                                        <Link className={"dropdown-item"} to="/my-diary">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            My Diary
+                                        </Link>
                                         <Link className={"dropdown-item"} to="/my-campaigns">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             My Campaigns

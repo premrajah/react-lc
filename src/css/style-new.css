@@ -4422,3 +4422,27 @@ select,select option {text-transform:capitalize!important;}
     flex-flow: row;
     flex-wrap: wrap
 }
+.msg-group-box>ul{
+    border: 1px solid rgba(0, 0, 0, 0.12);
+
+}
+
+.msg-group-box>ul{
+
+    padding-top: 0!important;
+
+}
+/*>ul{*/
+/*    border: 1px solid rgba(0, 0, 0, 0.12);*/
+
+/*}*/
+
+.msg-conversation-box{
+
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+.editor-box{
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}

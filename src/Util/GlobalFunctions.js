@@ -256,7 +256,7 @@ export const  removeTimeToStart=(date = new Date())=> {
         timestampConvertedDate.getMonth(),
         timestampConvertedDate.getDate()
     );
-    console.log(dateConverted)
+
     return dateConverted
 }
 
@@ -270,7 +270,6 @@ export const removeTime=(date = new Date())=> {
         +("0" +(timestampConvertedDate.getMonth() + 1)).slice(-2)  +"-"
         +("0" +timestampConvertedDate.getDate()).slice(-2) ;
 
-    console.log(dateString)
 
     return  dateString
 }
@@ -302,9 +301,7 @@ export  const  hasSplChar=(myString) =>{
 
 
 export const checkIfDocument=(file)=>{
-    console.log(file)
     let artifact=file.file
-    console.log(artifact.mime_type,artifact.type)
 
     if (
         artifact.mime_type === "application/pdf" ||

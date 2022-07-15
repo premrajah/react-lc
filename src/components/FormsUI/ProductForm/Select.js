@@ -25,14 +25,7 @@ const SelectArrayWrapper = (props) => {
     useEffect(()=>{
         if (onChange) {
 
-            // if (name=="state"){
-            //     // setValue(initialValue)
-            //     onChange(initialValue)
-            //
-            // }else{
-            //
-            // }
-            console.log(initialValue)
+
               setValue(initialValue)
                 onChange(initialValue)
 

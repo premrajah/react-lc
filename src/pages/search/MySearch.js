@@ -76,7 +76,6 @@ class MySearch extends Component {
         let searchValue= data.searchValue
         let activeFilter= data.searchFilter
 
-        console.log(data)
 
 
         if (searchValue){
@@ -84,7 +83,6 @@ class MySearch extends Component {
 
             if (activeFilter){
 
-                console.log(activeFilter)
 
                 if (activeFilter=="name")
                     this.setState({

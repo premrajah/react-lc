@@ -382,7 +382,7 @@ class EventForm extends Component {
         let {formIsValid,errors}= validateInputs(validations)
 
         this.setState({ errors: errors });
-            // console.log(errors)
+
         return formIsValid;
     }
 
@@ -558,7 +558,7 @@ class EventForm extends Component {
 
 
     loadImages=(artifacts)=> {
-        // console.log(artifacts)
+
         let images = [];
 
         let currentFiles = [];

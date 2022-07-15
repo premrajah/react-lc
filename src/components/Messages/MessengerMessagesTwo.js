@@ -101,6 +101,8 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
         axios
             .get(`${baseUrl}message-group/${key}/message`)
             .then((res) => {
+                setClickedMessage([]); // clear selected message
+
                 setClickedMessage(res.data.data);
                 handleResetWysiwygEditor();
             })
@@ -111,7 +113,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
 
     const handleGroupClickCallback = (key) => {
-        setClickedMessage([]); // clear selected message
+        // setClickedMessage([]); // clear selected message
         setNewMessageDisplay(null); // clear org visibility message
         setSelectedMessageGroupKey(key);
 
@@ -126,6 +128,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
             filteredGroups[0].message_group._id === 0
         ) {
             getSelectedGroupMessage(allGroups[0].message_group._key);
+            return
         }
 
         getSelectedGroupMessage(key);
@@ -136,7 +139,6 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
     };
 
     const handleFilterCallback = (values) => {
-        console.log("hfc ", values)
         setFilterValues(values);
         if (filterValues) {
             let temp = allGroups.filter((g, index) => {
@@ -148,7 +150,6 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
             setFilteredGroups(temp);
         } else {
-            console.log("hfc1")
             setFilteredGroups(allGroups);
         }
     };
@@ -318,7 +319,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
 
     return (
         <React.Fragment>
-            <div className="row" style={{ height: "45px" }}>
+            <div className="row " style={{ height: "45px" }}>
                 <div className="col-md-4">
                     <div className="row">
                         <div className="col-md-10 d-flex justify-content-around">
@@ -368,14 +369,14 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                 </div>
             </div>
 
-            <div className="row">
+            <div className="row no-gutters">
                 <div className="col-md-4 msg-group-box">
                     {filteredGroups.length > 0 ? (
                         <List
                             sx={{
-                                height: "500px",
-                                minHeight: "500px",
-                                maxHeight: "500px",
+                                height: "625px",
+                                minHeight: "625px",
+                                maxHeight: "625px",
                                 overflow: "auto",
                                 bgColor: "background.paper",
                             }}>
@@ -384,6 +385,15 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                     ) : (
                         <div>
                             {filteredGroups.length === 0 && <div>No groups yet.</div>}
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
                             <Skeleton className="mb-1" variant="rectangular" height="40px" />
                             <Skeleton className="mb-1" variant="rectangular" height="40px" />
                             <Skeleton className="mb-1" variant="rectangular" height="40px" />
@@ -438,7 +448,7 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                             )}
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row no-gutters editor-box " >
                         <div className="col-sm-11">
                             <WysiwygEditor
                                 allOrgs={allGroups}
@@ -456,9 +466,10 @@ const MessengerMessagesTwo = ({ loading, userDetail, showSnackbar }) => {
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>
                                 <div style={{minHeight: "51px"}}>
-                                    {(messageText || uploadedImages.length > 0) && <Tooltip title="Clear" placement="right-start" arrow>
+                                    {(messageText || uploadedImages.length > 0) &&
+                                    <Tooltip title="Clear" placement="right-start" arrow>
                                         <IconButton
-                                            className={classes.customHoverFocusClearText}
+                                            className={`${classes.customHoverFocusClearText}`}
                                             disabled={!(messageText || uploadedImages.length > 0) }
                                             onClick={() => handleResetWysiwygEditor()}>
                                             <ClearIcon fontSize="large"/>

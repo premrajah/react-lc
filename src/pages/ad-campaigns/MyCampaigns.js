@@ -111,7 +111,7 @@ class MyCampaigns extends Component {
         this.setActiveKey(null,"1")
 
         // this.loadCampaigns()
-        // this.fetchCacheDrafts()
+        this.fetchCacheDrafts()
 
     }
 
@@ -138,7 +138,7 @@ class MyCampaigns extends Component {
                                 templates.push({key: item, value: JSON.parse(responseObj[item])})
                         }
                     )
-                    console.log(templates)
+
 
                     this.setState({
                         drafts: templates,
@@ -516,7 +516,6 @@ class MyCampaigns extends Component {
 
     toggleEditMode=(item)=> {
 
-        console.log(item)
         this.setState({
             selectedItem:item,
             campaignMode:3
@@ -637,7 +636,7 @@ class MyCampaigns extends Component {
                                                     <Tab label="Active" value="1" />
 
 
-                                                    {/*<Tab label="Drafts" value="2"/>*/}
+                                                    <Tab label="Drafts" value="2"/>
 
                                                 </TabList>
                                             </Box>

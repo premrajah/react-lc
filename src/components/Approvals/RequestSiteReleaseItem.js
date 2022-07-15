@@ -262,7 +262,7 @@ class RequestSiteReleaseItem extends Component {
     componentDidMount() {
         this.loadSiteSync()
         // this.getArtifactsForProduct()
-        console.log(this.props.item)
+
     }
 
     getArtifactsForProduct = () => {

@@ -119,7 +119,6 @@ class ChangePassword extends Component {
 
         this.setState({ errors: errors });
 
-        console.log(errors)
 
         return formIsValid;
     }

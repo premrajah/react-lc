@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
+const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     const classes = useStyles();
 
     const resetDraftRef = useRef(null);
@@ -56,8 +56,7 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
     const [uploadedImages, setUploadedImages] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [sentMessageGroupKey, setSentMessageGroupKey] = useState(null);
-      const [loading,setLoading]=useState(false)
-
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         handleSelectedItemCallback(0);
@@ -66,7 +65,6 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
         setUploadedImages([]); // reset uploaded images
         setUploadedFiles([]); // reset uploaded image files
     }, []);
-
 
     const getAllMessageGroups = () => {
         setTrackedMessageGroups([]);
@@ -85,10 +83,8 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
                 setTrackedMessageGroups(tempTrackedMessageGroups);
 
                 // on first load handle click
-                // if (selectedMenuItemIndex === 0) {
                 handleSelectedItemCallback(0);
                 data.length > 0 && handleGroupClickCallback(data[0].message_group._key);
-                // }
             })
             .catch((error) => {
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
@@ -96,7 +92,6 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
     };
 
     const getSelectedGroupMessage = (key) => {
-
         if (!key) return;
 
         setClickedMessageKey(key);
@@ -115,30 +110,17 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
             });
     };
 
-
     const handleGroupClickCallback = (key) => {
-
         if (!key) {
             setClickedMessage([]); // clear selected message for new chat
-          }
+        }
         setNewMessageDisplay(null); // clear org visibility message
         setSelectedMessageGroupKey(key);
 
         if (orgSearchVisibility) {
             setOrgSearchVisibility(false);
-            // setFilteredGroups(allGroups); // remove temp new message
         }
-        //
-        // if (
-        //     allGroups.length > 0 &&
-        //     filteredGroups.length > 0 &&
-        //     filteredGroups[0].message_group._id === 0
-        // ) {
-        //     // getSelectedGroupMessage(allGroups[0].message_group._key);
-        //     getSelectedGroupMessage(key);
-        //
-        //     return
-        // }
+
 
         getSelectedGroupMessage(key);
     };
@@ -148,28 +130,22 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
     };
 
     const handleFilterCallback = (values) => {
-
-        setClickedMessage([])
+        setClickedMessage([]);
 
         setFilterValues(values);
         if (filterValues) {
-            let temp = allGroups
-                .filter((item, index) => {
+            let temp = allGroups.filter((item, index) => {
+                let orgs = item.orgs.filter((org) => org._id != userDetail.orgId);
 
-                    let orgs=item.orgs.filter(org=> org._id!=userDetail.orgId)
-
-                    let existFlag=false
-                    for (let i=0;i<orgs.length;i++){
-                        if (orgs[i].name &&
-                            orgs[i].name.toLowerCase().includes(values.toLowerCase())){
-                            existFlag=true
-                            break
-                        }
+                let existFlag = false;
+                for (let i = 0; i < orgs.length; i++) {
+                    if (orgs[i].name && orgs[i].name.toLowerCase().includes(values.toLowerCase())) {
+                        existFlag = true;
+                        break;
                     }
+                }
 
-               return existFlag
-
-
+                return existFlag;
             });
 
             setFilteredGroups(temp);
@@ -241,8 +217,6 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
         setSelectedOrgs(value);
     };
 
-
-
     const handleResetWysiwygEditor = () => {
         resetDraftRef.current.resetDraft();
         setMessageText("");
@@ -267,7 +241,7 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
                     text: messageText,
                 },
                 to_org_ids: orgIds,
-                ...(uploadedImages.length > 0 && {linked_artifact_ids: uploadedImages}),
+                ...(uploadedImages.length > 0 && { linked_artifact_ids: uploadedImages }),
             };
 
             postMessage(payload, "N");
@@ -279,7 +253,7 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
                 },
                 to_org_ids: [],
                 message_group_id: clickedMessageKey,
-                ...(uploadedImages.length > 0 && {linked_artifact_ids: uploadedImages}),
+                ...(uploadedImages.length > 0 && { linked_artifact_ids: uploadedImages }),
             };
 
             postMessage(payload, "R");
@@ -296,7 +270,6 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
 
                 handleResetWysiwygEditor();
                 setSendButtonDisable(false);
-                // getAllMessageGroups();
 
                 if (messageType === "N") {
                     console.log("New Message");
@@ -306,22 +279,16 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
 
                 if (messageType === "R") {
                     console.log("Replayed Message");
-                    // handleSelectedItemCallback(selectedMenuItemIndex);
-                    // handleGroupClickCallback(data.message_group._key);
 
                     if (filterVisibility) {
-                        handleFilterVisibility()
+                        handleFilterVisibility();
                     }
                     getAllMessageGroups();
-
                 }
 
                 setUploadedImages([]); //reset uploaded images
                 setUploadedFiles([]); // reset uploaded image files
 
-                // if(uploadedImages.length > 0) {
-                //     postUploadedImagesToMessageGroup(selectedMessageGroupKey, uploadedImages); // Upload images to group message
-                // }
             })
             .catch((error) => {
                 setSendButtonDisable(false);
@@ -374,7 +341,6 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
                 <div className="col-md-8">
                     {orgSearchVisibility && (
                         <MessengerMessagesTwoOrgSearch
-
                             ref={orgSearchRef}
                             handleOrgSelectedCallback={(v) => handleOrgSelectedCallback(v)}
                         />
@@ -393,19 +359,18 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
                                 overflow: "auto",
                                 bgColor: "background.paper",
                             }}>
-                            {filteredGroups.map((g, index) =>
+                            {filteredGroups.map((g, index) => (
                                 <>
-                                <HandleGroupDataDisplay
-
-                                    userOrg={userDetail.orgId}
-                                    selectedMenuItemIndex={selectedMenuItemIndex}
-                                    group={g} index={index}
-                                    handleGroupClickCallback={handleGroupClickCallback}
-                                     handleSelectedItemCallback={handleSelectedItemCallback}
-                                />
-
-                                    </>
-                            )}
+                                    <HandleGroupDataDisplay
+                                        userOrg={userDetail.orgId}
+                                        selectedMenuItemIndex={selectedMenuItemIndex}
+                                        group={g}
+                                        index={index}
+                                        handleGroupClickCallback={handleGroupClickCallback}
+                                        handleSelectedItemCallback={handleSelectedItemCallback}
+                                    />
+                                </>
+                            ))}
                         </List>
                     ) : (
                         <div>
@@ -429,16 +394,8 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
                 <div className="col-md-8 msg-conversation-box">
                     <div className="row">
                         <div className="col" style={{ height: "500px", minHeight: "500px" }}>
-                            {/*{clickedMessage.length === 0 &&*/}
-                            {/*    filteredGroups.length > 0 &&*/}
-                            {/*    filteredGroups[0].message_group._id !== 0 && (*/}
-                            {/*        <div>{LoaderAnimated()}</div>*/}
-                            {/*    )}*/}
 
-                            {loading &&
-
-                                <div>{LoaderAnimated()}</div>
-                            }
+                            {loading && <div>{LoaderAnimated()}</div>}
                             {clickedMessage.length > 0 && (
                                 <div
                                     style={{
@@ -478,7 +435,7 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
                             )}
                         </div>
                     </div>
-                    <div className="row no-gutters editor-box " >
+                    <div className="row no-gutters editor-box ">
                         <div className="col-sm-11">
                             <WysiwygEditor
                                 // allOrgs={allGroups}
@@ -495,22 +452,25 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
                         </div>
                         <div className="col-sm-1 d-flex justify-content-center align-items-center">
                             <div>
-                                <div style={{minHeight: "51px"}}>
-                                    {(messageText || uploadedImages.length > 0) &&
-                                    <Tooltip title="Clear" placement="right-start" arrow>
-                                        <IconButton
-                                            className={`${classes.customHoverFocusClearText}`}
-                                            disabled={!(messageText || uploadedImages.length > 0) }
-                                            onClick={() => handleResetWysiwygEditor()}>
-                                            <ClearIcon fontSize="large"/>
-                                        </IconButton>
-                                    </Tooltip>}
+                                <div style={{ minHeight: "51px" }}>
+                                    {(messageText || uploadedImages.length > 0) && (
+                                        <Tooltip title="Clear" placement="right-start" arrow>
+                                            <IconButton
+                                                className={`${classes.customHoverFocusClearText}`}
+                                                disabled={
+                                                    !(messageText || uploadedImages.length > 0)
+                                                }
+                                                onClick={() => handleResetWysiwygEditor()}>
+                                                <ClearIcon fontSize="large" />
+                                            </IconButton>
+                                        </Tooltip>
+                                    )}
                                 </div>
                                 <div>
                                     <Tooltip title="Send" placement="right-end" arrow>
                                         <IconButton
                                             className={classes.customHoverFocus}
-                                            disabled={!(messageText || uploadedImages.length > 0) }
+                                            disabled={!(messageText || uploadedImages.length > 0)}
                                             onClick={() => handleSendMessage()}>
                                             <SendIcon fontSize="large" />
                                         </IconButton>
@@ -525,44 +485,46 @@ const MessengerMessagesTwo = ({  userDetail, showSnackbar }) => {
     );
 };
 
+const HandleGroupDataDisplay = ({
+    group,
+    userOrg,
+    index,
+    selectedMenuItemIndex,
+    handleGroupClickCallback,
+    handleSelectedItemCallback,
+    ...props
+}) => {
+    const [groupListItem, setGroupListItem] = useState(group);
 
-const HandleGroupDataDisplay = ({group, userOrg,index,selectedMenuItemIndex,
-                                    handleGroupClickCallback,handleSelectedItemCallback, ...props}) => {
-
-const [groupListItem,setGroupListItem]=useState(group)
-
-    useEffect(()=>{
-        setGroupListItem(group)
-    },[group])
+    useEffect(() => {
+        setGroupListItem(group);
+    }, [group]);
 
     return (
         <>
-        <MenuItem
-
-            button
-            divider
-            dense
-            disableGutters
-            key={`${index}-${groupListItem.message_group._key}`}
-            id={`group-item-${index}-${groupListItem.message_group._key}`}
-            selected={selectedMenuItemIndex === index}
-            style={{ whiteSpace: "normal" }}>
-            <MessengerMessagesTwoGroupItem
-
-                userOrg={userOrg}
-                group={groupListItem}
-                index={index}
-                handleGroupClickCallback={handleGroupClickCallback}
-                handleSelectedItemCallback={handleSelectedItemCallback}
-            />
-        </MenuItem>
-            </>
+            <MenuItem
+                button
+                divider
+                dense
+                disableGutters
+                key={`${index}-${groupListItem.message_group._key}`}
+                id={`group-item-${index}-${groupListItem.message_group._key}`}
+                selected={selectedMenuItemIndex === index}
+                style={{ whiteSpace: "normal" }}>
+                <MessengerMessagesTwoGroupItem
+                    userOrg={userOrg}
+                    group={groupListItem}
+                    index={index}
+                    handleGroupClickCallback={handleGroupClickCallback}
+                    handleSelectedItemCallback={handleSelectedItemCallback}
+                />
+            </MenuItem>
+        </>
     );
 };
 
 const mapStateToProps = (state) => {
     return {
-
         userDetail: state.userDetail,
     };
 };

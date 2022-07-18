@@ -298,13 +298,13 @@ setParams=async () => {
 
 
             this.setState({
-                item: this.props.item.value
+                item: this.props.item.campaign.value
             })
-            // this.loadImages(this.props.item.value.artifacts)
-            // this.setState({
-            //     startDate: this.props.item.value.campaign.start_ts,
-            //     endDate: this.props.item.value.campaign.end_ts
-            // })
+            this.loadImages(this.props.item.campaign.value.artifacts)
+            this.setState({
+                startDate: this.props.item.campaign.value.campaign.start_ts,
+                endDate: this.props.item.campaign.value.campaign.end_ts
+            })
         }
 
 
@@ -1258,6 +1258,7 @@ let item=null
 
                                             <div className="row no-gutters">
                                                 <div className="col-12 ">
+                                                    <h1>{this.state.item?this.state.item.campaign.name:""}</h1>
 
                                                     <TextFieldWrapper
                                                         initialValue={this.state.item?this.state.item.campaign.name:""}
@@ -1630,7 +1631,7 @@ let item=null
                                                                     <TextFieldWrapper
                                                                         multiline
                                                                         rows={4}
-                                                                        initialValue={this.state.item&&this.state.item.message_template.text}
+                                                                        initialValue={this.state.item?this.props.type!=="draft"?this.state.item.message_template.text:this.state.item.message_template:""}
                                                                         onChange={(value)=>this.handleChange(value,"messageTemplate")}
                                                                         error={this.state.errors["messageTemplate"]}
                                                                         name="messageTemplate" title="Message Template" />

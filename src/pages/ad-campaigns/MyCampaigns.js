@@ -636,7 +636,7 @@ class MyCampaigns extends Component {
                                                     <Tab label="Active" value="1" />
 
 
-                                                    {/*<Tab label="Drafts" value="2"/>*/}
+                                                    <Tab label="Drafts" value="2"/>
 
                                                 </TabList>
                                             </Box>

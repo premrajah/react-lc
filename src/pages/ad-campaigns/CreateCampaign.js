@@ -48,6 +48,7 @@ class CreateCampaign extends Component {
             showMap:false,
             showDownloadQrCodes:false,
             fields: {},
+            item:null,
             errors: {},
             files: [],
             filesStatus: [],
@@ -261,8 +262,54 @@ class CreateCampaign extends Component {
 
 
 
+componentDidUpdate(prevProps, prevState, snapshot) {
+
+        if (prevProps!=this.props){
+            this.setParams()
+        }
+}
 
 
+
+setParams=async () => {
+
+    console.log(this.props.item)
+    console.log(this.props.type)
+    if (this.props.item) {
+
+
+        if (this.props.type != "draft") {
+
+            await this.loadSavedValues(this.props.item, this.props.type)
+
+            this.callStrategy()
+
+
+            this.setState({
+                item: this.props.item
+            })
+
+            this.loadImages(this.props.item.artifacts)
+            this.setState({
+                startDate: this.state.item.campaign.start_ts,
+                endDate: this.state.item.campaign.end_ts
+            })
+        } else {
+
+
+            this.setState({
+                item: this.props.item.value
+            })
+            // this.loadImages(this.props.item.value.artifacts)
+            // this.setState({
+            //     startDate: this.props.item.value.campaign.start_ts,
+            //     endDate: this.props.item.value.campaign.end_ts
+            // })
+        }
+
+
+    }
+}
 
     async componentDidMount() {
 
@@ -276,32 +323,7 @@ class CreateCampaign extends Component {
         })
 
 
-        if (this.props.item) {
-
-            await this.loadSavedValues(this.props.item,this.props.type)
-
-            this.callStrategy()
-
-
-
-            if (this.props.type!="draft"){
-
-                this.loadImages(this.props.item.artifacts)
-                this.setState({
-                    startDate: this.props.item.campaign.start_ts,
-                    endDate: this.props.item.campaign.end_ts
-                })
-            }
-            else{
-                this.loadImages(this.props.item.value.artifacts)
-                    this.setState({
-                        startDate: this.props.item.value.campaign.start_ts,
-                        endDate: this.props.item.value.campaign.end_ts
-                    })}
-
-
-
-        }
+    this.setParams()
 
 
         this.getFiltersCategories()
@@ -583,7 +605,7 @@ let item=null
         }else{
 
 
-            if (this.props.item){
+            if (this.state.item){
 
                 this.handleUpdate()
 
@@ -834,7 +856,7 @@ let item=null
 
         const campaignData = {
 
-            id:this.props.item.campaign._id,
+            id:this.state.item.campaign._id,
             update:{
                 name:name,
                 description:description,
@@ -1232,13 +1254,13 @@ let item=null
 
 
                                     <div className={this.state.activeStep===0?"":"d-none"}>
-                                        <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
+                                        <form onSubmit={this.state.item?this.updateSite:this.handleSubmit}>
 
                                             <div className="row no-gutters">
                                                 <div className="col-12 ">
 
                                                     <TextFieldWrapper
-                                                        initialValue={this.props.item&&this.props.item.campaign.name}
+                                                        initialValue={this.state.item?this.state.item.campaign.name:""}
                                                         onChange={(value)=>this.handleChange(value,"name")}
                                                         error={this.state.errors["name"]}
                                                         name="name" title="Name" />
@@ -1253,7 +1275,7 @@ let item=null
                                                     <TextFieldWrapper
                                                         multiline
                                                         rows={4}
-                                                        initialValue={this.props.item&&this.props.item.campaign.description}
+                                                        initialValue={this.state.item&&this.state.item.campaign.description}
                                                         onChange={(value)=>this.handleChange(value,"description")}
                                                         error={this.state.errors["description"]}
                                                         name="description" title="Description" />
@@ -1288,7 +1310,7 @@ let item=null
                                                             inputFormat="dd/MM/yyyy"
                                                             value={this.state.startDate}
 
-                                                            // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
+                                                            // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.state.item&&this.state.item.campaign.start_ts}
                                                             // onChange={this.handleChangeDateStartDate.bind(
                                                             //     this
                                                             // )}
@@ -1323,7 +1345,7 @@ let item=null
                                                             id="date-picker-dialog"
                                                             inputFormat="dd/MM/yyyy"
                                                             value={this.state.endDate}
-                                                            // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
+                                                            // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.state.item&&this.state.item.campaign.end_ts}
 
                                                             renderInput={(params) => <CustomizedInput {...params} />}
                                                             onChange={(value)=>this.handleChange(value,"endDate")}
@@ -1352,7 +1374,7 @@ let item=null
 
                                                 <p className={"text-bold "}>Choose must conditions </p>
 
-                                                <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
+                                                <form onSubmit={this.state.item?this.updateSite:this.handleSubmit}>
 
 
                                                     <div className="row no-gutters mt-4">
@@ -1474,7 +1496,7 @@ let item=null
                                             </div>
                                             <div className="col-12 mt-3 p-3 mb-4 bg-white container-light-border">
                                                 <p className={"text-bold "}>Choose optional conditions </p>
-                                                <form onSubmit={this.props.item?this.updateSite:this.handleSubmit}>
+                                                <form onSubmit={this.state.item?this.updateSite:this.handleSubmit}>
 
                                                     <div className="row no-gutters mt-4">
                                                         <div className="col-3">
@@ -1600,7 +1622,7 @@ let item=null
                                                 <div className="row camera-grids   no-gutters   ">
                                                     <div className="col-12  text-left ">
 
-                                                        <form onSubmit={this.props.itemIndex?this.updateSite:this.handleSubmit}>
+                                                        <form onSubmit={this.state.itemIndex?this.updateSite:this.handleSubmit}>
 
                                                             <div className="row no-gutters">
                                                                 <div className="col-12 ">
@@ -1608,7 +1630,7 @@ let item=null
                                                                     <TextFieldWrapper
                                                                         multiline
                                                                         rows={4}
-                                                                        initialValue={this.props.item&&this.props.item.message_template.text}
+                                                                        initialValue={this.state.item&&this.state.item.message_template.text}
                                                                         onChange={(value)=>this.handleChange(value,"messageTemplate")}
                                                                         error={this.state.errors["messageTemplate"]}
                                                                         name="messageTemplate" title="Message Template" />
@@ -1626,7 +1648,7 @@ let item=null
                                                                             "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
                                                                         }
                                                                         disabled={this.state.isSubmitButtonPressed}>
-                                                                        {this.props.item?"Update Site":"Add Site"}
+                                                                        {this.state.item?"Update Site":"Add Site"}
                                                                     </button>
 
                                                                 </div>
@@ -1838,7 +1860,7 @@ let item=null
                                                 </GreenSmallBtn>
                                             </div>
                                             <div className="col-6 text-right pr-5 mt-0">
-                                        {this.state.activeStep===2&&
+                                        {/*{this.state.activeStep===2&&*/}
                                         <GreenSmallBtn
 
                                             variant="contained"
@@ -1852,7 +1874,8 @@ let item=null
                                             title={"Save As Draft"}
                                         >
 
-                                        </GreenSmallBtn>}
+                                        </GreenSmallBtn>
+                                                {/*}*/}
 
 </div>
                                         </div>

@@ -636,7 +636,7 @@ class MyCampaigns extends Component {
                                                     <Tab label="Active" value="1" />
 
 
-                                                    <Tab label="Drafts" value="2"/>
+                                                    {/*<Tab label="Drafts" value="2"/>*/}
 
                                                 </TabList>
                                             </Box>
@@ -729,9 +729,15 @@ class MyCampaigns extends Component {
                                                                                     index={index}
                                                                                     toggleRightBar={(data)=>{
                                                                                                   this.setState({
-                                                                                                      campaignMode:2
+                                                                                                      campaignMode:3,
+                                                                                                      selectedItem:data,
+                                                                                                      editType:"draft"
+                                                                                                  },()=>{
+                                                                                                      this.toggleRightBar(data,"draft");
                                                                                                   });
-                                                                                                  this.toggleRightBar(data,"draft");
+
+
+
                                                                                               }}
                                                                                 />
                                                                             )

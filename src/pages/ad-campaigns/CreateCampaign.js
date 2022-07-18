@@ -301,9 +301,15 @@ setParams=async () => {
                 item: this.props.item.campaign.value
             })
             this.loadImages(this.props.item.campaign.value.artifacts)
+
+            let fields=this.state.fields
+            fields["startDate"]=this.props.item.campaign.value.campaign.start_ts
+            fields["startDate"]=this.props.item.campaign.value.campaign.end_ts
+
             this.setState({
                 startDate: this.props.item.campaign.value.campaign.start_ts,
-                endDate: this.props.item.campaign.value.campaign.end_ts
+                endDate: this.props.item.campaign.value.campaign.end_ts,
+                fields:fields
             })
         }
 

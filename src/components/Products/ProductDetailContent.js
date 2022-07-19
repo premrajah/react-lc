@@ -1170,7 +1170,7 @@ class ProductDetailContent extends Component {
                                                     <Tab label="Release Internally" value="1" />
 
                                                     <Tab label="Release Externally" value="2"/>
-                                                    {/*<Tab label="Rental" value="3"/>*/}
+                                                    <Tab label="Rental" value="3"/>
 
 
 

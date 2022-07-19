@@ -828,10 +828,10 @@ class ProductDetailCycle extends Component {
                                                         this.props.item.org._id
                                                     }
 
-                                                    // rent={
-                                                    //     this.props.userDetail.orgId !==
-                                                    //     this.props.item.org._id
-                                                    // }
+                                                    rent={
+                                                        this.props.userDetail.orgId !==
+                                                        this.props.item.org._id
+                                                    }
                                                 />}
                                                 </div>
                                             )}

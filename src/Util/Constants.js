@@ -107,7 +107,7 @@ export const CYCLE_FILTER_VALUES = [
    ];
 
 export const MATCH_STRATEGY_OPTIONS = ["exact_match", "partial_p90", "partial_p80", "partial_p75"];
-export const MERGE_STRATEGY_OPTIONS = ["pick_first","always_new", "always_fail",  "pick_any"];
+export const MERGE_STRATEGY_OPTIONS = ["always_new","pick_first", "always_fail",  "pick_any"];
 export const ISSUES_PRIORITY = ["low", "medium", "high"];
 
 export const capitalizeFirstLetter = (string) => (

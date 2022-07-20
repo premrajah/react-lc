@@ -21,6 +21,8 @@ import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {CheckCircle} from "@mui/icons-material";
 import EventStatus from "../Event/EventStatus";
 import GlobalDialog from "../RightBar/GlobalDialog";
+import OrgFull from "../Org/OrgFull";
+import OrgComponent from "../Org/OrgComponent";
 
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
@@ -231,9 +233,11 @@ class Notifications extends Component {
                 .map((org) => org.read_flag)[0];
         const messageId = item.message._id;
 
+
         text = reactStringReplace(message.text, ORG_REGEX, (match, i) => (
-            <Org key={`${i}_${match}`} orgId={match} />
+            <OrgComponent key={`${i}_${match}`} orgId={match.replace("Org/","")} />
         ));
+
 
         text = reactStringReplace(text, PRODUCT_REGEX, (match, i) => (
             <>

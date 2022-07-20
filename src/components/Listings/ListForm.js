@@ -1319,7 +1319,7 @@ class ListFormNew extends Component {
 
                                                 <SelectArrayWrapper
 
-                                                    select={"Select"}
+                                                    // select={"Select"}
                                                     onChange={(value)=> {
                                                         this.handleChange(value,"listing_type")
 

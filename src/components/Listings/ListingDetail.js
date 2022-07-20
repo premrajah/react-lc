@@ -761,7 +761,7 @@ marteplace
                                 className="row  justify-content-center search-container "
 
                             >
-                                <div className="col-12 text-center">
+                                <div className="col-12 pt-1 pb-1 text-center">
                                     <GreenButton
                                         onClick={this.props.type==="search"?this.props.requestMatch:this.toggleRequestMatch}
                                         type="button"

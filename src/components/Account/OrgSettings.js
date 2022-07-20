@@ -57,6 +57,7 @@ class OrgSettings extends Component {
             nextIntervalFlag: false,
             fields: {},
             errors: {},
+            resets: {},
             loading: false,
             items:[],
             roles:[],
@@ -89,6 +90,7 @@ class OrgSettings extends Component {
 
     }
 
+    // myForm=document.getElementById("my-form")
 
      handleExpandClick = () => {
         this.setState({expanded:!this.state.expanded});
@@ -205,7 +207,7 @@ class OrgSettings extends Component {
         }
 
         this.setState({
-            [field]:values
+            [field]:  [...new Set(values)]
         })
 
 
@@ -214,7 +216,7 @@ class OrgSettings extends Component {
 
         // if (field==="matching_brands"){
 
-            fields[field] = {value:values};
+            fields[field] = {value:[...new Set(values)]};
         // }
 
 
@@ -259,6 +261,27 @@ class OrgSettings extends Component {
 
     }
 
+
+    resetForm=(formId)=>{
+
+        let resets=this.state.resets
+
+        resets[formId]=true
+
+        this.setState({
+            resets: resets
+        })
+
+
+        setTimeout(()=>{
+            resets[formId]=false
+
+            this.setState({
+                resets: resets
+            })
+
+        }, 100);
+    }
 
     componentDidMount() {
 
@@ -409,12 +432,20 @@ class OrgSettings extends Component {
                                 <div
                                     className="col-6 text-center "
                                 >
-                                    <form className={"d-flex flex-row align-items-center "}
+                                    <form id={"acceptable_domains"} className={"d-flex flex-row align-items-center "}
                                           onSubmit={(event)=>
                                           { event.preventDefault(); event.stopPropagation();
-                                              this.addOption(event,"acceptable_domains",null,false)  }}>
+                                              this.addOption(event,"acceptable_domains",null,false)
+
+                                              this.resetForm("acceptable_domains")
+
+
+                                          }}
+                                    >
 
                                         <TextFieldWrapper
+
+                                            reset={this.state.resets["acceptable_domains"]}
                                             name={`option`}
                                             variant={"standard"}
                                             required={true}
@@ -462,21 +493,31 @@ class OrgSettings extends Component {
                                     <div
                                         className="col-6 text-center "
                                        >
-                                        <form id="brand-form" className={"d-flex flex-row align-items-center "}
+                                        <form
+                                            id="matching_brands"
+                                            ref={(el) => this.myFormRef = el}
+                                             className={"d-flex flex-row align-items-center "}
 
                                               onSubmit={(event)=>
                                               {
+
                                                   event.preventDefault();
                                               event.stopPropagation();
-                                              this.addOption(event,"matching_brands",null,false) ;
 
-                                                  document.getElementById("brand-form").reset();
+
+
+                                              this.addOption(event,"matching_brands",null,false) ;
+                                                  this.resetForm("matching_brands")
+
                                               }
 
 
                                               }>
 
                                         <TextFieldWrapper
+                                            reset={this.state.resets["matching_brands"]}
+                                            ref="inputField"
+                                            id={'my-field'}
                                             name={`option`}
                                             variant={"standard"}
                                             required={true}

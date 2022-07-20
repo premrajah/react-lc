@@ -29,7 +29,7 @@ const TextFieldWrapper = ({
     initialValue,
     disabled,
     readonly,
-    customReadOnly,
+    customReadOnly,reset,
     ...otherProps
 }) => {
     // const [field, mata] = useField(name)
@@ -38,11 +38,6 @@ const TextFieldWrapper = ({
 
     useEffect(() => {
 
-        // if (initialValue) {
-        // if (name=="model"){
-        //     alert(initialValue)
-        // }
-
             if (onChange) {
                 setField(initialValue)
                 // alert(initialValue)
@@ -50,6 +45,21 @@ const TextFieldWrapper = ({
             }
         // }
     }, [initialValue]);
+
+
+
+    useEffect(() => {
+
+        if (reset) {
+
+            setField("")
+            // alert(initialValue)
+            onChange(initialValue);
+        }
+        // }
+    }, [reset]);
+
+
     const configTextField = {
         // ...field,
         ...otherProps,

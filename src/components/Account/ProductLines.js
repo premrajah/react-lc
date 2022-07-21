@@ -4,16 +4,15 @@ import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import * as actionCreator from "../../store/actions/actions";
-import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {arrangeAlphabatically, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
-import ManageUserItem from "./ManageUserItem";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import Add from "@mui/icons-material/Add";
 import ProductForm from "../ProductPopUp/ProductForm";
 import ManageTemplateItem from "./ManageTemplateItem";
+import InfoTabContent from "../Products/InfoTabContent";
+import ProductLineContent from "./ProductLineContent";
 
 class ProductLines extends Component {
     constructor(props) {
@@ -35,8 +34,10 @@ class ProductLines extends Component {
             selectedEditItem:null,
             showDeletePopUp: false,
             showAddPopUp: false,
+            showViewPopUp:false,
             templates:[],
-            editItem:null
+            editItem:null,
+            viewItem:null
         };
 
     }
@@ -69,6 +70,20 @@ class ProductLines extends Component {
 
         this.setState({
             showAddPopUp: !this.state.showAddPopUp,
+        })
+
+    }
+
+    toggleView=async (item) => {
+
+
+
+        this.setState({
+            viewItem:item?item:null
+        })
+
+        this.setState({
+            showViewPopUp: !this.state.showViewPopUp,
         })
 
     }
@@ -295,6 +310,13 @@ class ProductLines extends Component {
                                                     this.toggleAddUser(item)
 
                                                 }}
+
+                                                onClickView={(item)=>
+                                                {
+
+                                                    this.toggleView(item)
+
+                                                }}
                                                 onClick={()=>this.handleDelete(item.key)}
                                                 key={index}
                                                 toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)}
@@ -368,6 +390,21 @@ class ProductLines extends Component {
                        refresh={()=>this.fetchCache()}
                        productLines />}
     </div>
+    </GlobalDialog>
+
+
+    <GlobalDialog
+        heading={this.state.viewItem?this.state.viewItem.name:""}
+        size={"md"} hide={()=>this.toggleView()}
+        show={this.state.showViewPopUp}  >
+        <div className="col-12">
+            {this.state.viewItem &&
+           <>
+                <ProductLineContent  item={this.state.viewItem}/>
+
+           </>
+            }
+        </div>
     </GlobalDialog>
 
 

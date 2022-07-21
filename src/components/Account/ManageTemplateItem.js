@@ -328,7 +328,7 @@ class ManageTemplateItem extends Component {
         return (
             <>
 
-                <div key={index} className="row no-gutters min-row-height-90 d-flex hover-bg flex-row pb-2 pt-2 border-top align-items-start justify-content-start">
+                <div onClick={()=>this.props.onClickView(this.props.item)} key={index} className="row no-gutters min-row-height-90 d-flex hover-bg flex-row pb-2 pt-2 border-top align-items-start justify-content-start">
                     <div className=" col-1  align-items-start d-flex ">
                         <span className={"text-blue"}>{index+1}. </span>
 
@@ -337,7 +337,8 @@ class ManageTemplateItem extends Component {
 
                             <p className={`text-blue text-capitalize mb-0`}> {this.props.item.name} </p>
                         <p className="text-gray-light text-capitalize mb-0"> {this.props.item.product.name}, {this.props.item.product.category}, {this.props.item.product.type}, {this.props.item.product.state}, {this.props.item.product.year_of_making} </p>
-                        <p>   <ul style={{listStyle:"none",margin: "0", padding: "0"}} className="persons  align-items-start d-flex">
+                        <p>
+                            <ul style={{listStyle:"none",margin: "0", padding: "0"}} className="persons  align-items-start d-flex">
 
                             {this.props.item.artifacts && this.props.item.artifacts.map((artifact, i) =>
                                 <li key={i}>
@@ -376,7 +377,7 @@ class ManageTemplateItem extends Component {
                         <CustomPopover text={"Edit"}>
                             <ActionIconBtn
                                 className={"mb-2"}
-                                onClick={()=>this.props.onClickEdit(this.props.item)}
+                                onClick={(event)=> {event.stopPropagation();  this.props.onClickEdit(this.props.item)}}
                                 type={"submit"}
                                 title={"Submit"}
                             >
@@ -385,7 +386,8 @@ class ManageTemplateItem extends Component {
                         <CustomPopover text={"Cancel"}>
                             <ActionIconBtn
                                 className={"mb-2"}
-                                onClick={this.props.onClick}
+                                onClick={(event)=> {event.stopPropagation();  this.props.onClick()  }}
+
                                 type={"button"}
                                 title={"Submit"}
                             >

@@ -105,7 +105,7 @@ class ProductForm extends Component {
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["new", "used", "salvage"],
-            powerSupply: ["gas", "electric", "hybrid", "solid_fuel"],
+            powerSupply: ["gas", "electric" ],
             product: null,
             parentProduct: null,
             parentProductId: null,

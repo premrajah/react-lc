@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {baseUrl} from "../../Util/Constants";
+import {baseUrl, checkImage} from "../../Util/Constants";
 import axios from "axios/index";
 import {Cancel, CheckCircle, Close, Delete, Done, Edit, Info} from "@mui/icons-material";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
@@ -12,6 +12,7 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import OrgComponent from "../Org/OrgComponent";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 class ManageTemplateItem extends Component {
     constructor(props) {
@@ -336,6 +337,38 @@ class ManageTemplateItem extends Component {
 
                             <p className={`text-blue text-capitalize mb-0`}> {this.props.item.name} </p>
                         <p className="text-gray-light text-capitalize mb-0"> {this.props.item.product.name}, {this.props.item.product.category}, {this.props.item.product.type}, {this.props.item.product.state}, {this.props.item.product.year_of_making} </p>
+                        <p>   <ul style={{listStyle:"none",margin: "0", padding: "0"}} className="persons  align-items-start d-flex">
+
+                            {this.props.item.artifacts && this.props.item.artifacts.map((artifact, i) =>
+                                <li key={i}>
+                                    <>
+                                        <div className="d-flex justify-content-center "
+                                             style={{width: "40px", height: "40px"}}>
+                                            <div className="d-flex justify-content-center "
+                                                // style={{width: "50%", height: "50%"}}
+                                            >
+
+
+                                                {checkImage(artifact.blob_url)? <img
+                                                        src={artifact ? artifact.blob_url : ""}
+                                                        className="img-fluid "
+                                                        alt={artifact.name}
+                                                        style={{ objectFit: "contain",width: "32px", height: "32px",background:"#EAEAEF",padding:"2px"}}
+                                                    />:
+                                                    <>
+                                                        <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
+                                                        {/*<Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />*/}
+                                                    </>
+                                                }
+
+                                            </div>
+                                        </div>
+
+                                    </>
+                                </li>
+                            )}
+
+                        </ul></p>
 
                     </div>
                     <div className=" col-2 text-right  ">
@@ -430,6 +463,7 @@ class ManageTemplateItem extends Component {
                         </form>
                     </>
                 </GlobalDialog>
+
 
 
             </>

@@ -17,7 +17,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
     };
 
     useEffect(() => {
-        scrollToBottom();
+        // scrollToBottom();
     }, [messages]);
 
     const messagesEndRef = useRef(null);
@@ -76,8 +76,8 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
                     <TabPanel value={value} index={0}>
                         {messages.length > 0 && (
                             <div  className="mb-5" style={{
-                                // flexFlow:"column-reverse",
-                                // display: "flex",
+                                flexFlow:"column-reverse",
+                                display: "flex",
                                 height: "400px", minHeight: "400px", maxHeight: "400px", overflow: "auto", overflowX: "hidden" }}>
                                 {messages.map((m, i) => (
                                     <React.Fragment key={i}>

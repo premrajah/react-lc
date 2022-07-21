@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import MessengerMessagesTwoFilterChats from "./MessengerMessagesTwoFilterChats";
-import FilterListIcon from "@mui/icons-material/FilterList";
+import FilterListIcon from "@mui/icons-material/Search";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import MessengerMessagesTwoOrgSearch from "./MessengerMessagesTwoOrgSearch";
 import WysiwygEditor from "./WysiwygEditor";

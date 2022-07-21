@@ -530,11 +530,16 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
-                        power_supply: power_supply.toLowerCase(),
+                        // power_supply: power_supply?power_supply.toLowerCase():,
                     },
-
                     year_of_making: year_of_making,
                 };
+
+                if (power_supply){
+
+                    productData.sku.power_supply=  power_supply.toLowerCase()
+
+                }
 
                 if (this.props.createProductId) {
 
@@ -840,13 +845,19 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
-                        power_supply: power_supply,
+                        // power_supply: power_supply,
                     },
                     year_of_making: Number(data.get("manufacturedDate")),
 
                 },
             };
 
+
+        if (power_supply){
+
+            productData.sku.power_supply=  power_supply.toLowerCase()
+
+        }
             axios
                 .post(
                     baseUrl + "product",
@@ -1364,7 +1375,7 @@ class ProductForm extends Component {
                                                 initialValue={this.props.item&&this.props.item.product.sku.power_supply
                                                 ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.power_supply:"")
                                                 }
-                                                // select={"Select"}
+                                                select={"Select"}
 
                                                 onChange={(value)=> {
                                                     this.handleChangeProduct(value,"power_supply")

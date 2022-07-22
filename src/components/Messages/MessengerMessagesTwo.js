@@ -272,13 +272,11 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                 setSendButtonDisable(false);
 
                 if (messageType === "N") {
-                    console.log("New Message");
                     handleClearOrgSearch(); // clear selected orgs
                     getAllMessageGroups();
                 }
 
                 if (messageType === "R") {
-                    console.log("Replayed Message");
 
                     if (filterVisibility) {
                         handleFilterVisibility();

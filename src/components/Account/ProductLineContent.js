@@ -12,9 +12,7 @@ class ProductLineContent extends Component {
         super(props);
 
     }
-    componentDidMount() {
-        console.log(this.props.item)
-    }
+
 
     render() {
 

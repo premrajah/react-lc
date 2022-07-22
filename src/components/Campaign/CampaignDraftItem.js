@@ -29,15 +29,13 @@ class CampaignDraftItem extends Component {
 
     let item=this.props.item
 
-        // console.log( item.CampaignToMessage[0].entries[0].Message)
-        //
         // if (item.CampaignToMessage && item.CampaignToMessage[0] && item.CampaignToMessage[0].entries
         //     && item.CampaignToMessage[0].entries[0] && item.CampaignToMessage[0].entries[0].Message) {
         //
         //     let message=item.CampaignToMessage[0].entries[0].Message
         //
         //     item.Campaign.message_template=message
-        //     console.log(item)
+
         //
         //
         //     axios
@@ -49,7 +47,7 @@ class CampaignDraftItem extends Component {
         //
         //                 item.artifacts=res
         //
-        //                 console.log(item)
+
         //
         //
         //             },

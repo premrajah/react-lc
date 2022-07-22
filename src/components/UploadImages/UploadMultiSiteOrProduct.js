@@ -594,8 +594,6 @@ const UploadMultiSiteOrProduct = (props) => {
 
             try {
 
-
-                // console.log(payload)
                 const result = await axios.post(`${baseUrl}load/site`, payload);
 
             }

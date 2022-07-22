@@ -134,8 +134,6 @@ class AssumeRoles extends Component {
                 saveKey("token",JSON.stringify(res.data.data.token)+"")
 
                 // saveKey("user",usrObject)
-                // console.log("token",getKey("token"))
-                // console.log("user",getKey("user"))
 
                 this.props.showSnackbar({show: true, severity: "success", message: "User assumed successfully. Thanks"})
 

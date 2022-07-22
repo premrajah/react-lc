@@ -12,7 +12,6 @@ const MessengerMessagesTwoGroupItem = ({
 
 
     const handleListItemClick = () => {
-        console.log("handle click")
         handleSelectedItemCallback(index);
         handleGroupClickCallback(group.message_group._key);
     };
@@ -40,7 +39,6 @@ const HandleOrgDisplay = ({org, index}) => {
     const [orgItem,setOrgItem]=useState(org)
     useEffect(()=>{
 
-        console.log("changed org name")
         setOrgItem(org)
     },[org])
     return (

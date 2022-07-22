@@ -338,7 +338,9 @@ class EventItem extends Component {
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
-                                                {this.state.intervals.find(item=> item.key==this.state.selectedEvent.event.resolution_epoch_ms).value}
+                                                {
+                                                    getTimeFormat(this.state.selectedEvent.event.resolution_epoch_ms)
+                                                }
                                             </p>
                                         </div>
                                         {this.state.selectedEvent.event.recur_in_epoch_ms &&  <div className={"col-6"}>
@@ -350,9 +352,11 @@ class EventItem extends Component {
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
-                                                {
-                                                   getTimeFormat( this.state.selectedEvent.event.recur_in_epoch_ms)
-                                                }
+                                                {/*{*/}
+                                                {/*   getTimeFormat( this.state.selectedEvent.event.recur_in_epoch_ms)*/}
+                                                {/*}*/}
+
+                                                {this.state.intervals.find(item=> item.key==this.state.selectedEvent.event.recur_in_epoch_ms).value}
                                             </p>
                                         </div>}
 

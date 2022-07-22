@@ -35,7 +35,14 @@ class EventItem extends Component {
                 editEvent:null,
                 stageEventId:null,
                 showStagePopup:false,
-                deleteEvent:false
+                deleteEvent:false,
+                intervals:[
+                    {key:86400 ,value:"Every Day"},
+                    {key:604800 ,value:"Every Week"},
+                    {key:864000,value:"Every 10 Days"},
+                    {key:2629743 ,value:"Every Month"},
+                    {key:31556926 ,value:"Every Year"},
+                ],
             }
         }
 
@@ -331,12 +338,10 @@ class EventItem extends Component {
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
-                                                {
-                                                    getTimeFormat(this.state.selectedEvent.event.resolution_epoch_ms)
-                                                }
+                                                {this.state.intervals.find(item=> item.key==this.state.selectedEvent.event.resolution_epoch_ms).value}
                                             </p>
                                         </div>
-                                        <div className={"col-6"}>
+                                        {this.state.selectedEvent.event.recur_in_epoch_ms &&  <div className={"col-6"}>
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">
@@ -346,10 +351,10 @@ class EventItem extends Component {
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
                                                 {
-                                                   getTimeFormat( this.state.selectedEvent.event.resolution_epoch_ms)
+                                                   getTimeFormat( this.state.selectedEvent.event.recur_in_epoch_ms)
                                                 }
                                             </p>
-                                        </div>
+                                        </div>}
 
                                     </div>
                                     <div className="row  justify-content-start search-container  pb-2">
@@ -376,13 +381,13 @@ class EventItem extends Component {
                                             <div
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
-                                                <ul style={{listStyle:"none"}} className="persons  align-items-start d-flex">
+                                                <ul style={{listStyle:"none"}} className="persons p-0 m-0 align-items-start d-flex">
 
                                                     {this.state.selectedEvent.artifacts && this.state.selectedEvent.artifacts.map((artifact, i) =>
                                                         <li key={i}>
                                                             <>
                                                                 <div className="d-flex justify-content-center "
-                                                                     style={{width: "80px", height: "80px"}}>
+                                                                     style={{width: "32px", height: "32px"}}>
                                                                     <div className="d-flex justify-content-center "
                                                                         // style={{width: "50%", height: "50%"}}
                                                                     >
@@ -392,10 +397,10 @@ class EventItem extends Component {
                                                                                 src={artifact ? artifact.blob_url : ""}
                                                                                 className="img-fluid "
                                                                                 alt={artifact.name}
-                                                                                style={{ objectFit: "contain",width: "80px", height: "80px",background:"#EAEAEF",padding:"2px"}}
+                                                                                style={{ objectFit: "contain",width: "32px", height: "32px",background:"#EAEAEF",padding:"2px"}}
                                                                             />:
                                                                             <>
-                                                                                <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
+                                                                                <DescriptionIcon style={{ opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
                                                                                 {/*<Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />*/}
                                                                             </>
                                                                         }

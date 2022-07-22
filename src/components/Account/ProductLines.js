@@ -37,7 +37,8 @@ class ProductLines extends Component {
             showViewPopUp:false,
             templates:[],
             editItem:null,
-            viewItem:null
+            viewItem:null,
+            selectedDeleteItem:null
         };
 
     }
@@ -246,20 +247,21 @@ class ProductLines extends Component {
     }
 
 
-    handleDelete = (key) => {
+    handleDelete = () => {
 
             axios
                 .delete(
-                    baseUrl + "org/cache/"+key
+                    baseUrl + "org/cache/"+this.state.selectedDeleteItem
 
                 )
                 .then((res) => {
 
                     this.fetchCache()
+                    this.toggleDeletePopUp()
                     this.props.showSnackbar({
                         show: true,
                         severity: "success",
-                        message: `Template  removed successfully. Thanks`
+                        message: `Template  deleted successfully. Thanks`
                     })
 
 
@@ -272,11 +274,13 @@ class ProductLines extends Component {
 
     };
 
-    toggleDeletePopUp= (key, item) => {
+    toggleDeletePopUp= ( item) => {
 
+        console.log(item)
 
         this.setState({
-            selectedEditItem: item,
+            // selectedDeleteItem: item,
+            selectedDeleteItem:item?item:null,
             showDeletePopUp: !this.state.showDeletePopUp,
 
         })
@@ -317,9 +321,9 @@ class ProductLines extends Component {
                                                     this.toggleView(item)
 
                                                 }}
-                                                onClick={()=>this.handleDelete(item.key)}
+                                                // onClick={()=>this.handleDelete(item.key)}
                                                 key={index}
-                                                toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)}
+                                                toggleDeletePopUp={()=>this.toggleDeletePopUp(item.key)}
                                                 refreshList={this.fetchUsers}
                                                 item={item.value}
                                                 index={index}
@@ -337,10 +341,10 @@ class ProductLines extends Component {
 
 
 
-    <GlobalDialog size={"xs"} hide={this.toggleDeletePopUp} show={this.state.showDeletePopUp} heading={"Remove User"} >
+    <GlobalDialog size={"xs"} hide={this.toggleDeletePopUp} show={this.state.showDeletePopUp} heading={"Delete"} >
         <div
             className={"col-12 mb-3 text-left"}>
-            Are you sure you want to remove this user ?
+            Are you sure you want to delete ?
         </div>
 
         <div

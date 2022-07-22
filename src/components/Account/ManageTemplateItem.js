@@ -386,7 +386,7 @@ class ManageTemplateItem extends Component {
                         <CustomPopover text={"Cancel"}>
                             <ActionIconBtn
                                 className={"mb-2"}
-                                onClick={(event)=> {event.stopPropagation();  this.props.onClick()  }}
+                                onClick={(event)=> {event.stopPropagation();  this.props.toggleDeletePopUp(this.props.item)  }}
 
                                 type={"button"}
                                 title={"Submit"}

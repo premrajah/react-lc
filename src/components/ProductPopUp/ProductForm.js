@@ -902,14 +902,15 @@ class ProductForm extends Component {
 
     };
 
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps!=this.props){
 
             if (this.props.item){
-
+                this.isManufacturer()
                 this.loadImages(this.props.item.artifacts)
 
-                this.isManufacturer()
+
             }
 
         }

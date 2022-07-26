@@ -273,8 +273,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 setParams=async () => {
 
-    console.log(this.props.item)
-    console.log(this.props.type)
     if (this.props.item) {
 
 
@@ -369,10 +367,6 @@ setParams=async () => {
 
                     }
 
-
-                    // console.log(categories)
-                    // console.log(states)
-                    // console.log(types)
 
 
                     this.setState({

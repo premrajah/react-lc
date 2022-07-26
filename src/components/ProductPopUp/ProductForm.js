@@ -942,7 +942,7 @@ class ProductForm extends Component {
                                 templates.push({key: item, value: JSON.parse(responseObj[item])})
                         }
                     )
-                    // console.log(templates)
+
 
                     this.setState({
                         templates: templates,
@@ -963,7 +963,6 @@ class ProductForm extends Component {
         axios.get(baseUrl + "product/"+this.props.item.product._key+"/oc-vc" ).then(
             (response) => {
 
-                console.log(response.data.data.ownership_context)
                 this.setState({
                     is_manufacturer:response.data.data.ownership_context.is_manufacturer
                 })
@@ -975,7 +974,6 @@ class ProductForm extends Component {
 
         window.scrollTo(0, 0);
 
-        // console.log(this.props.productId,this.props.type)
         this.setState({
             parentProductId:null
         }, ()=>{

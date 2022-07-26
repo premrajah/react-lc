@@ -11,27 +11,29 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import {removeTime} from "../../Util/GlobalFunctions";
-
-
+import interactionPlugin from "@fullcalendar/interaction" // needed for dayClick
+import "@fullcalendar/daygrid/main.css";
+// import { Tooltip } from "react-bootstrap";
+// import CustomCalenderView from './CustomCalenderView';
 
 function getRandomNumber(min, max) {
     return Math.round(Math.random() * (max - min) + min);
 }
 
-function ValueLabelComponent(props) {
-    const { children, value } = props;
-
-    return (
-        <Tooltip enterTouchDelay={0} placement="top" title={value}>
-            {children}
-        </Tooltip>
-    );
-}
-
-ValueLabelComponent.propTypes = {
-    children: PropTypes.element.isRequired,
-    value: PropTypes.number.isRequired,
-};
+// function ValueLabelComponent(props) {
+//     const { children, value } = props;
+//
+//     return (
+//         <Tooltip enterTouchDelay={0} placement="top" title={value}>
+//             {children}
+//         </Tooltip>
+//     );
+// }
+//
+// ValueLabelComponent.propTypes = {
+//     children: PropTypes.element.isRequired,
+//     value: PropTypes.number.isRequired,
+// };
 
 class CalenderEvents extends Component {
 
@@ -55,6 +57,33 @@ class CalenderEvents extends Component {
 
 
     }
+
+
+    tooltipInstance = null;
+
+    handleMouseLeave = (info) => {
+        console.log("mouse leave")
+        if (this.tooltipInstance) {
+            this.tooltipInstance.dispose();
+            this.tooltipInstance = null;
+        }
+    };
+     handleMouseEnter = (info) => {
+         console.log("mouse enter")
+        if (info.event.extendedProps.description) {
+            this.tooltipInstance = new Tooltip(info.el, {
+                // title: info.event.extendedProps.description,
+                title: "some description",
+
+                html: true,
+                placement: "top",
+                trigger: "hover",
+                container: "body"
+            });
+
+            this.tooltipInstance.show();
+        }
+    };
 
     convertEvents=(events)=>{
         let calenderEvents=[]
@@ -92,13 +121,21 @@ class CalenderEvents extends Component {
     };
 
 
-    getEvents=()=>{
+    getEvents=(start,end)=>{
 
         this.setState({
             events:[]
         })
 
-        let url=`${baseUrl}${this.props.productId?"product/"+this.props.productId+"/event":"event"}`
+        let url=`${baseUrl}${this.props.productId?"product/"+this.props.productId+"/event":"event"}?`
+
+        if (start){
+            url=`${url}start=${start}`
+        }
+        if (end){
+            url=`${url}&end=${end}`
+        }
+
         axios
             // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
             .get(url)
@@ -124,6 +161,28 @@ class CalenderEvents extends Component {
 
     }
 
+    handleDateClick = (arg) => { // bind with an arrow function
+
+        console.log(arg)
+        var now = arg.date;
+        var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        // var timestamp = startOfDay / 1000;
+
+        // alert(arg.dateStr)
+
+
+        this.getEvents(startOfDay, startOfDay+86400000)
+
+    }
+
+    renderEventContent=(eventInfo) =>{
+        return (
+            <>
+                <b>{eventInfo.timeText}</b>
+                <i>{eventInfo.event.title}</i>
+            </>
+        )
+    }
 
     componentDidMount() {
 
@@ -144,13 +203,19 @@ class CalenderEvents extends Component {
                         {/*{(this.props.smallView&&(this.state.events.length>0))||(!this.props.smallView) &&*/}
                         <FullCalendar
                             defaultView="dayGridMonth"
-                            header={{
-                                left: "prev,next",
-                                center: "title",
-                                right: "dayGridMonth,timeGridWeek,timeGridDay"
-                            }}
-                            plugins={[dayGridPlugin, timeGridPlugin]}
+                            dateClick={this.handleDateClick}
+                            // header={{
+                            //     left: "prev,next today",
+                            //     center: "title",
+                            //     right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+                            // }}
+                            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                             events={this.state.calendarEvents}
+                            eventContent={this.renderEventContent}
+                            eventMouseEnter={this.handleMouseEnter}
+                            eventMouseLeave={this.handleMouseLeave}
+                            // eventDisplay={}
+
                         />
                         {/*// }*/}
                     </div>

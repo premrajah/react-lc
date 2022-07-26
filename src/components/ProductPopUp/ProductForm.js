@@ -499,7 +499,7 @@ class ProductForm extends Component {
                 const part_no = data.get("part_no");
                 const state = data.get("state");
                 const is_listable = this.state.is_listable?true:false;
-                const is_manufacturer = this.state.is_manufacturer;
+                const is_manufacturer = this.state.is_manufacturer?true:false;
 
                 const site = data.get("deliver")
                 const year_of_making = data.get("manufacturedDate") ? data.get("manufacturedDate") : 0
@@ -508,7 +508,7 @@ class ProductForm extends Component {
                 const energy_rating = this.state.energyRating;
 
 
-                const productData = {
+                let productData = {
                     purpose: purpose.toLowerCase(),
                     condition: condition.toLowerCase(),
                     name: title,
@@ -576,6 +576,7 @@ class ProductForm extends Component {
                     completeData.name=data.get("templateName")
 
                     this.saveProductLines(data.get("templateName") ,completeData)
+
                 } else {
                     axios
                         .put(
@@ -794,6 +795,10 @@ class ProductForm extends Component {
 
 
 
+        try {
+
+
+
              const data = formData;
 
 
@@ -818,9 +823,9 @@ class ProductForm extends Component {
             const site = data.get("deliver");
            const power_supply = data.get("power_supply");
 
-            const productData = {
+            let productData = {
                 id: this.props.item.product._key,
-                is_manufacturer: this.state.is_manufacturer,
+                is_manufacturer: this.state.is_manufacturer?true:false,
                 update: {
                     artifacts: this.state.images,
                     purpose: purpose.toLowerCase(),
@@ -855,7 +860,7 @@ class ProductForm extends Component {
 
         if (power_supply){
 
-            productData.sku.power_supply=  power_supply.toLowerCase()
+            productData.update.sku.power_supply=  power_supply.toLowerCase()
 
         }
             axios
@@ -885,6 +890,15 @@ class ProductForm extends Component {
                     this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
 
                 });
+
+        }catch (e){
+            console.log(e)
+            this.setState({
+                btnLoading: false,
+                loading: false,
+                isSubmitButtonPressed: false
+            });
+        }
 
     };
 

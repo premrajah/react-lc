@@ -4365,7 +4365,7 @@ select,select option {text-transform:capitalize!important;}
 
 }
 .fc-today-button {
-    display: none!important;
+    /*display: none!important;*/
 }
 
 .fc-daygrid-day.fc-day-today{

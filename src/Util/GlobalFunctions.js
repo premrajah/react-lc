@@ -330,3 +330,6 @@ export const checkIfDocument=(file)=>{
     }
     else  return false
 }
+
+
+export  const  weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

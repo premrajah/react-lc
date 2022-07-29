@@ -236,7 +236,7 @@ class EventForm extends Component {
                                           option={"value"}
                                           valueKey={"key"}
                                           options={this.state.stages} name={"stage"}
-                                          title="Update Stage"/>
+                                          title="Select Stage"/>
 
                                   </div>
                               </div>

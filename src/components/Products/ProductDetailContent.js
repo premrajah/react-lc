@@ -11,7 +11,7 @@ import SearchItem from "../Searches/search-item";
 import ResourceItem from "../../pages/create-search/ResourceItem";
 import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
-import AutocompleteCustom from "../AutocompleteCustom";
+import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import ImageHeader from "../UIComponents/ImageHeader";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";
@@ -36,6 +36,7 @@ import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
 import CalenderEvents from "../Event/CalenderEvents";
+import BigCalenderEvents from "../Event/BigCalenderEvents";
 
 
 class ProductDetailContent extends Component {
@@ -1053,7 +1054,7 @@ class ProductDetailContent extends Component {
                                                 </TabPanel>
 
                                                 <TabPanel value="8">
-                                                    <CalenderEvents productId={this.state.item.product._key} smallView  />
+                                                    <BigCalenderEvents productId={this.state.item.product._key} smallView  />
                                                 </TabPanel>
                                             </TabContext>
                                         </Box>
@@ -1093,11 +1094,13 @@ class ProductDetailContent extends Component {
                             }}
                         >
 <>
-    {this.state.showEventPopUp&&      <div className="form-col-left col-12">
+                    {this.state.showEventPopUp&&
+                    <div className="form-col-left col-12">
                                 <EventForm
                                     hide={()=> {
                                         this.showEvent();
                                     }}
+
                                     productId={this.state.item.product._key}
                                     triggerCallback={(action) => this.callBackSubmit(action)}   />
                             </div>}

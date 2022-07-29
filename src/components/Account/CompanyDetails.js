@@ -4,7 +4,7 @@ import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
 import {Alert, Modal, ModalBody} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
+import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import PlaceholderImg from "../../img/sq_placeholder.png";
 import EditIcon from "@mui/icons-material/Edit";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";

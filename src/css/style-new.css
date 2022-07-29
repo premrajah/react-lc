@@ -4028,6 +4028,10 @@ input:active,input:focus{
 .text-14{
     font-size: 14px;
 }
+
+.text-12{
+    font-size: 14px;
+}
 .date-bottom{
     position: absolute;
     right: 0;
@@ -4376,21 +4380,21 @@ select,select option {text-transform:capitalize!important;}
 }
 
 
-.fc-event-service{
+.fc-event-service,.fc-event-service .MuiBadge-dot{
     background: #27245C!important;
 }
 
-.fc-event-warranty{
+.fc-event-warranty,.fc-event-warranty .MuiBadge-dot{
     background: #dc3545!important;
 }
 
-.fc-event-repair_or_replace{
+.fc-event-repair_or_replace,.fc-event-repair_or_replace .MuiBadge-dot{
     background: #D31169!important;
 }
-.fc-event-other{
+.fc-event-other,.fc-event-other .MuiBadge-dot{
     background: #000000aa!important;
 }
-.fc-event-clean{
+.fc-event-clean,.fc-event-clean .MuiBadge-dot{
     background: #07AD89!important;
 
 }
@@ -4401,6 +4405,25 @@ select,select option {text-transform:capitalize!important;}
 .fc-small-calender button{
 
     font-size: 0.5em!important;
+}
+.rbc-overlay{
+    z-index: 20000!important;
+}
+
+.rbc-event, .rbc-day-slot .rbc-background-event{
+    background: none!important;
+    border: none!important;
+
+}
+.rbc-event .MuiBadge-root {
+
+    top: -10px;
+
+}
+.rbc-overlay .MuiBadge-root{
+    left: -10px!important;
+    top: 0!important;
+    z-index: 11111!important;
 }
 .small-log-view{
     height: 320px;
@@ -4445,4 +4468,10 @@ select,select option {text-transform:capitalize!important;}
 .editor-box{
     border-right: 1px solid rgba(0, 0, 0, 0.12);
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.custom-day-cell{
+    background: white!important;
+    width: 100%;
+    height:100%;
+    border: 1px solid #eee;
 }

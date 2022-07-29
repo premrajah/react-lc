@@ -21,7 +21,7 @@ import ResourceItem from "../../pages/create-search/ResourceItem";
 import TextField from "@mui/material/TextField";
 import Org from "../Org/Org";
 import MoreMenu from "../MoreMenu";
-import AutocompleteCustom from "../AutocompleteCustom";
+import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import Close from "@mui/icons-material/Close";
 import AddImagesToProduct from "../UploadImages/AddImagesToProduct";
 import AddedDocumentsDisplay from "../UploadImages/AddedDocumentsDisplay";

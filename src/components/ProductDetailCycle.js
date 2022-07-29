@@ -20,7 +20,7 @@ import Org from "./Org/Org";
 import LoopcycleLogo from "../img/logo-text.png";
 import MoreMenu from "./MoreMenu";
 import IssueSubmitForm from "./IssueSubmitForm";
-import AutocompleteCustom from "./AutocompleteCustom";
+import AutocompleteCustom from "./AutocompleteSearch/AutocompleteCustom";
 import OrgTrailsTimeline from "./OrgTrailsTimeline";
 import SiteTrailsTimeline from "./SiteTrailsTimeline";
 import {FormControlLabel, Radio, RadioGroup} from "@mui/material";

@@ -200,7 +200,7 @@ class EventItem extends Component {
             return (
 
                 <>
-        <List sx={{ width: '100%', maxWidth: 360 }}>
+        <List sx={{ width: '100%' }}>
 
 
             {this.props.events.map(item=>
@@ -209,7 +209,7 @@ class EventItem extends Component {
                     <ListItem className={`mb-2 bg-white  ${item.event.resolution_epoch_ms > Date.now()?"new-event":"past-event"}`}  onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
                         <ListItemAvatar>
-                            <Avatar alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
+                            <Avatar className={"fc-event-"+item.event.process} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
                         </ListItemAvatar>}
                         <ListItemText
                             className="title-bold"

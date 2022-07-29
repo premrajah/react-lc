@@ -8,7 +8,7 @@ import {IconButton, InputAdornment} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
+import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";

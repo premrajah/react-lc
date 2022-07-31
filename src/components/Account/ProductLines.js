@@ -13,6 +13,9 @@ import ProductForm from "../ProductPopUp/ProductForm";
 import ManageTemplateItem from "./ManageTemplateItem";
 import InfoTabContent from "../Products/InfoTabContent";
 import ProductLineContent from "./ProductLineContent";
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
+import {Edit} from "@mui/icons-material";
 
 class ProductLines extends Component {
     constructor(props) {
@@ -398,12 +401,33 @@ class ProductLines extends Component {
 
 
     <GlobalDialog
-        heading={this.state.viewItem?this.state.viewItem.name:""}
+        hideHeading
+        hideClose
+
         size={"md"} hide={()=>this.toggleView()}
         show={this.state.showViewPopUp}  >
         <div className="col-12">
             {this.state.viewItem &&
            <>
+           <div className=" col-12">
+               <div className=" row  justify-content-center align-items-center">
+                   <div className="col-10">
+                       <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>
+                           {this.state.viewItem?this.state.viewItem.name:""}  <ActionIconBtn onClick={
+
+                               ()=>{
+                                   this.toggleView()
+                                   this.toggleAddUser(this.state.viewItem)}}>
+                           <Edit/>
+                       </ActionIconBtn></h4>
+
+                   </div>
+                   <div className="col-2 text-right">
+
+                        <CloseButtonPopUp onClick={()=>this.toggleView()}/>
+                   </div>
+               </div>
+           </div>
                 <ProductLineContent  item={this.state.viewItem}/>
 
            </>

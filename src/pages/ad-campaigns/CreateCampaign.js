@@ -288,6 +288,7 @@ setParams=async () => {
             })
 
             this.loadImages(this.props.item.artifacts)
+            if (this.state.item)
             this.setState({
                 startDate: this.state.item.campaign.start_ts,
                 endDate: this.state.item.campaign.end_ts
@@ -315,7 +316,26 @@ setParams=async () => {
     }
 }
 
+    keyDownHandler = event => {
+        // console.log('User pressed: ', event.key);
+
+        if (event.key === 'Enter') {
+            event.preventDefault();
+
+        }
+    };
+
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keyDownHandler);
+
+    }
+
     async componentDidMount() {
+
+
+
+            document.addEventListener('keydown', this.keyDownHandler);
 
         this.setState({
             conditionAll: [],
@@ -551,8 +571,21 @@ let item=null
         return this.state.skipped.has(step);
     };
 
-    handleNext = () => {
 
+
+
+    handleNext = (event) => {
+
+
+        console.log("clicked", event.target)
+
+        console.log(event.nativeEvent)
+
+        if(event.keyCode == 13) {
+            console.log("Enter pressed")
+            event.preventDefault();
+            return false;
+        }
 
         if (this.state.activeStep==0)
             this.countStrategyProducts()
@@ -643,7 +676,15 @@ let item=null
         this.setState({ fields });
     };
 
-    handleSubmit = () => {
+    handleSubmit = (event) => {
+
+        console.log(event)
+
+        // if(event.keyCode == 13) {
+        //     console.log("enter pressed")
+        //     event.preventDefault();
+        //     return false;
+        // }
 
         let fields=this.state.fields
 
@@ -1846,7 +1887,11 @@ let item=null
 
                                                     variant="contained"
                                                     color="primary"
-                                                    onClick={this.handleNext}
+                                                    onClick={(e)=> {
+
+                                                        this.handleNext(e)}}
+
+
 
                                                     loading={this.state.loading}
                                                     disabled={this.state.loading}

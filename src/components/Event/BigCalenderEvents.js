@@ -275,27 +275,37 @@ export default function BigCalenderEvents({
   const  handleSelectSlot = (arg) => { // bind with an arrow function
 
       // console.log("single click",arg.action);
+if (!smallView) {
 
-      switch (arg.action) {
-          case "click":
-              console.log("single click");
-              if (!smallView) {
-                  setSelectedDate(arg.start)
-                  getEvents(new Date(arg.start).getTime(), new Date(arg.end).getTime())
-              }
-              break;
-          case "doubleClick":
-              console.log("double click");
+    switch (arg.action) {
+        case "click":
+            console.log("single click");
+            if (!smallView) {
+                setSelectedDate(arg.start)
 
-              setShowAddEventPopUp(!showAddEventPopUp)
-              break;
-          // case 3:
-          //     console.log("triple click");
-          //     break;
-          default:
-              return;
-      }
+                console.log(moment(arg.start).startOf('day').format("x"),
+                    moment(arg.start).endOf('day').format("x"))
 
+                // getEvents(new Date(arg.start).valueOf(), new Date(arg.end).valueOf())
+
+                getEvents(moment(arg.start).startOf('day').format("x"),
+                    moment(arg.start).endOf('day').format("x"))
+
+            }
+            break;
+        case "doubleClick":
+            console.log("double click");
+
+            setShowAddEventPopUp(!showAddEventPopUp)
+            break;
+        // case 3:
+        //     console.log("triple click");
+        //     break;
+        default:
+            return;
+    }
+
+}
     }
 
 
@@ -412,13 +422,7 @@ export default function BigCalenderEvents({
 
                 <div className={"row justify-content-center create-product-row "}>
 
-                {/*<div className={`col-6 mt-4 fc-small-calender d-none" }`}*/}
 
-                {/*>*/}
-
-                {/*    <div*/}
-                {/*        className="sticky-top"*/}
-                {/*    >*/}
 
                     <GlobalDialog
                         size="md"
@@ -445,10 +449,10 @@ export default function BigCalenderEvents({
                                 startAccessor="start"
                                 endAccessor="end"
                                 // popup
-                                selectable
+                                // selectable
                                 // onSelectEvent={handleSelectEvent}
-                                onSelectSlot={handleSelectSlot}
-                                onNavigate={handleNaviation }
+                                // onSelectSlot={handleSelectSlot}
+                                // onNavigate={handleNaviation }
 
                             />
                         </>

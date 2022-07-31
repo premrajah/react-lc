@@ -1097,6 +1097,7 @@ class ProductDetailContent extends Component {
                     {this.state.showEventPopUp&&
                     <div className="form-col-left col-12">
                                 <EventForm
+                                    hideProduct
                                     hide={()=> {
                                         this.showEvent();
                                     }}

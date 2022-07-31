@@ -331,7 +331,6 @@ export default function BigCalenderEvents({
                     {showAddEventPopUp&&      <div className="form-col-left col-12">
                         <EventForm
                             date={selectedDate}
-
                             hide={()=> {
 
                                 showAddEvent();

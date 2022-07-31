@@ -699,7 +699,7 @@ class EventForm extends Component {
                     <div className={"col-12"}>
                           <form onSubmit={this.props.event?this.updateEvent:this.handleSubmit}>
 
-                              {!this.props.productId &&  <ProductAutocomplete
+                              {!this.props.hideProduct &&  <ProductAutocomplete
                                   suggestions={this.state.orgNames}
                                   selectedProduct={(data) =>
                                       this.selectedProduct(data)

@@ -203,6 +203,8 @@ class OrgSettings extends Component {
 
             const data = new FormData(event.target);
             const option = data.get("option");
+
+            if (!values.find(item=> item.toLowerCase()==option.toLowerCase()))
                 values.push(option)
         }
 
@@ -214,10 +216,8 @@ class OrgSettings extends Component {
         let fields = this.state.fields
 
 
-        // if (field==="matching_brands"){
 
             fields[field] = {value:[...new Set(values)]};
-        // }
 
 
         this.setState({

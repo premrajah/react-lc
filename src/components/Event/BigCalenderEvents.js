@@ -351,7 +351,7 @@ export default function BigCalenderEvents({
 
 
 
-                <div className={`bg-white-1 ${smallView?"col-12 mt-4 fc-small-calender":"col-8" }`}
+                <div className={`bg-white-1 ${smallView?"col-12 mt-4 fc-small-calender":"col-md-8" }`}
 
                 >
 
@@ -386,7 +386,7 @@ export default function BigCalenderEvents({
                 </div>
 
                 </div>
-                <div  className={`bg-white-1 ${smallView?"small-log-view mt-4 col-12":"col-4" }`}>
+                <div  className={`bg-white-1 ${smallView?"small-log-view mt-4 col-12":"col-md-4" }`}>
                     {!smallView && <div className="title-bold">{weekday[selectedDate.getDay()]+", "+selectedDate.toLocaleString('default', { month: 'long' })+" "+selectedDate.getDate()+" ,"+selectedDate.getFullYear() }</div>}
 
                     {loading&& <LoaderAnimated/>}

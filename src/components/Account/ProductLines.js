@@ -413,8 +413,8 @@ class ProductLines extends Component {
                <div className=" row  justify-content-center align-items-center">
                    <div className="col-10">
                        <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>
-                           {this.state.viewItem?this.state.viewItem.name:""}  <ActionIconBtn onClick={
-
+                           {this.state.viewItem?this.state.viewItem.name:""}
+                           <ActionIconBtn onClick={
                                ()=>{
                                    this.toggleView()
                                    this.toggleAddUser(this.state.viewItem)}}>

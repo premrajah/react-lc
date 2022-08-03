@@ -881,8 +881,8 @@ class CompanyDetails extends Component {
 
                         <>
                             {this.state.orgs.length > 1 && <>
-                            <div className="col-md-3 ">Switch Company:</div>
-                            <div className="col-md-6 ">
+                            <div className="col-md-4 ">Switch Company:</div>
+                            <div className="col-md-4 ">
                                 <MenuDropdown
                                     setSelection={this.switchOrg}
                                     initialValue={this.props.userContext.orgId}
@@ -892,7 +892,7 @@ class CompanyDetails extends Component {
                                 />
                             </div>
                                 </>}
-                            <div className="col-md-3 ">
+                            <div className="col-md-4 ">
 
                                     <BlueBorderButton
                                         // style={{ minWidth: "180px" }}

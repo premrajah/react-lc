@@ -23,6 +23,7 @@ import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import docs from "../../img/icons/docs.png";
 import ProductAutocomplete from "../AutocompleteSearch/ProductAutocomplete";
 import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
+import moment from "moment";
 
 var slugify = require('slugify')
 
@@ -441,7 +442,10 @@ class EventForm extends Component {
         let eventData=  {
                 title : data.get("title"),
                 description : data.get("description"),
-                resolution_epoch_ms : new Date(this.state.startDate.getFullYear(), this.state.startDate.getMonth(), this.state.startDate.getDate(), 0, 0, 0).getTime(),
+                // resolution_epoch_ms:  moment(this.state.startDate).utc().format('x'),
+            resolution_epoch_ms : new Date(this.state.startDate).getTime(),
+
+            // resolution_epoch_ms : new Date(this.state.startDate.getFullYear(), this.state.startDate.getMonth(), this.state.startDate.getDate(), 1, 0, 0).getTime(),
                 process : data.get("process"),
             // stage:"open"
         }
@@ -452,6 +456,9 @@ class EventForm extends Component {
             eventData.recur_in_epoch_ms = data.get("interval")
         }
 
+        // console.log(eventData.resolution_epoch_ms)
+
+        // return
                 this.setState({isSubmitButtonPressed: true})
 
                     axios
@@ -465,8 +472,6 @@ class EventForm extends Component {
                             },
                         )
                         .then((res) => {
-
-
 
                             this.props.showSnackbar({
                                 show: true,
@@ -661,11 +666,13 @@ class EventForm extends Component {
 
 
         if (this.props.event){
-            this.loadImages(this.props.event.artifacts)
+
             this.setState({
                 isEditProduct:true,
                 startDate:this.props.event.event.resolution_epoch_ms
             })
+
+            this.loadImages(this.props.event.artifacts)
         }
 
 
@@ -698,7 +705,10 @@ class EventForm extends Component {
                     <div className={"col-12"}>
                           <form onSubmit={this.props.event?this.updateEvent:this.handleSubmit}>
 
-                              {!this.props.hideProduct &&  <ProductAutocomplete
+                              {!this.props.hideProduct &&
+                              <ProductAutocomplete
+
+
                                   suggestions={this.state.orgNames}
                                   selectedProduct={(data) =>
                                       this.selectedProduct(data)
@@ -780,14 +790,7 @@ class EventForm extends Component {
                                   <div className="col-md-4  col-sm-12 col-xs-12  ">
 
                                       <SelectArrayWrapper
-                                          // detailsHeading="What is the purpose of your product?"
-                                          // details="Defined: a whole product,
-                                          //       Aggregate: a product made up from other products,
-                                          //       Prototype: a first version of a product"
 
-                                          // initialValue={this.props.event?(this.props.event.product.purpose):""
-                                          //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.purpose:"")
-                                          // }
                                           initialValue={this.props.event&&this.props.event.event.recur_in_epoch_ms}
 
                                           select={"Select interval"}
@@ -805,14 +808,6 @@ class EventForm extends Component {
                                   <div className="col-md-4  col-sm-12 col-xs-12  ">
 
                                       <SelectArrayWrapper
-                                          // detailsHeading="What is the purpose of your product?"
-                                          // details="Defined: a whole product,
-                                          //       Aggregate: a product made up from other products,
-                                          //       Prototype: a first version of a product"
-
-                                          // initialValue={this.props.event?(this.props.event.product.purpose):""
-                                          //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.purpose:"")
-                                          // }
 
                                           initialValue={this.props.event&&this.props.event.event.process}
                                           onChange={(value)=> {

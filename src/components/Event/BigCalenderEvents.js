@@ -342,7 +342,6 @@ if (!smallView) {
                         <EventForm
                             date={selectedDate}
                             hide={()=> {
-
                                 showAddEvent();
 
                                 getEventsByMonth(  moment(selectedDate).startOf('month').format("x"),

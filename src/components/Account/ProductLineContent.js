@@ -14,6 +14,13 @@ class ProductLineContent extends Component {
     }
 
 
+     downloadDoc=(blob_url) =>{
+
+
+            window.location.href = blob_url
+
+    }
+
     render() {
 
 
@@ -253,7 +260,14 @@ class ProductLineContent extends Component {
                 )}
 
                 <div className="row  justify-content-start search-container  pb-2 ">
-                    <div className={"col-auto"}>
+
+                    {this.props.item.artifacts && this.props.item.artifacts.length>0  &&
+                    <div className={"col-12"}><p
+
+                        className=" text-label text-blue mb-1 text-label">
+                        Attachments
+                    </p></div>}
+                    <div className={"col-12"}>
                 <ul style={{listStyle:"none",margin: "0", padding: "0"}} className="persons  align-items-start d-flex">
 
                     {this.props.item.artifacts && this.props.item.artifacts.map((artifact, i) =>
@@ -267,13 +281,18 @@ class ProductLineContent extends Component {
 
 
                                         {checkImage(artifact.blob_url)? <img
+
+                                            onClick={()=>this.downloadDoc(artifact.blob_url)}
                                                 src={artifact ? artifact.blob_url : ""}
-                                                className="img-fluid "
+                                                className="img-fluid click-item"
                                                 alt={artifact.name}
                                                 style={{ objectFit: "contain",width: "32px", height: "32px",background:"#EAEAEF",padding:"2px"}}
                                             />:
                                             <>
-                                                <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
+                                                <DescriptionIcon
+
+                                                    onClick={()=>this.downloadDoc(artifact.blob_url)}
+                                                    style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 click-item rad-4"} />
                                                 {/*<Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />*/}
                                             </>
                                         }

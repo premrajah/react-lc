@@ -11,7 +11,7 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import {baseUrl, checkImage} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import {Delete, Done, Edit, FactCheck} from "@mui/icons-material";
+import {Close, Delete, Done, Edit, FactCheck} from "@mui/icons-material";
 import EventForm from "./EventForm";
 import axios from "axios";
 import EventStatus from "./EventStatus";
@@ -19,6 +19,7 @@ import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
+import CustomPopover from "../FormsUI/CustomPopover";
 
 class EventItem extends Component {
         constructor(props) {
@@ -230,15 +231,17 @@ class EventItem extends Component {
 
                                         <div className="d-flex flex-column right-btn-auto">
                                             {item.event.resolution_epoch_ms > Date.now() &&
-                                            <ActionIconBtn
+                                            <CustomPopover text={"Edit"}>   <ActionIconBtn
                                         size="small"
 
                                         onClick={(e)=>{
                                             e.stopPropagation()
                                             e.preventDefault()
                                            this.showEditEventPopup(item)
-                                        }}><Edit /></ActionIconBtn>}
-
+                                        }}><Edit /></ActionIconBtn>
+                                            </CustomPopover>
+                                                }
+                                            <CustomPopover text={"Update Stage"}>
                                     <ActionIconBtn
                                         size="small"
 
@@ -248,15 +251,17 @@ class EventItem extends Component {
                                     this.showStageEventPopup(item.event._key)
                                 }}><FactCheck/>
                                 </ActionIconBtn>
-
+                                            </CustomPopover>
+                                            <CustomPopover text={"Delete"}>
                                             <ActionIconBtn
                                                 size="small"
                                                 onClick={(e)=>{
                                                     e.stopPropagation()
                                                     e.preventDefault()
                                                     this.toggleDelete(item.event._key)
-                                                }}><Delete/>
+                                                }}><Close/>
                                             </ActionIconBtn>
+                                            </CustomPopover>
                                         </div>
 
                                 </React.Fragment>

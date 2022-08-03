@@ -474,7 +474,7 @@ marteplace
                                                                     }>
                                                                     {this.state.item.listing.name}
                                                                 </h4>
-                                                                { this.props.isLoggedIn&&(this.state.item.org._id ===
+                                                                { this.props.isLoggedIn&&this.props.userDetail&&(this.state.item.org._id ===
                                                                     this.props.userDetail.orgId) &&    <div className="top-right text-right">
                                                                     <MoreMenu
                                                                         triggerCallback={(action) =>
@@ -506,7 +506,7 @@ marteplace
                                                             </div>
 
                                                             <div className="col-5 blue-text text-blue text-bold  text-right">
-                                                                {this.state.item.listing.price ? (
+                                                                {this.state.item.listing.price&&(this.state.item.listing.price.value!=0) ? (
                                                                     <>
                                                                         GBP {
                                                                             this.state.item.listing

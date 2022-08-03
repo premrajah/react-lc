@@ -102,6 +102,7 @@ class ListFormNew extends Component {
             items:[],
             loading:false,
             types: ["sale", "rental"],
+            addressMismatch:false
         };
 
         this.handleBack = this.handleBack.bind(this);
@@ -154,8 +155,10 @@ class ListFormNew extends Component {
                         if (response.data&&response.data.data) {
                             var responseAll = response.data;
 
+                            let product=responseAll.data.product
+                            product.site_id=responseAll.data.site_id
                             this.setState({
-                                previewProduct: responseAll.data.product
+                                previewProduct: product
                             })
                             this.setState({
                                 selectedLoading: false
@@ -460,6 +463,14 @@ class ListFormNew extends Component {
             this.setState({
                 siteSelected:this.props.siteList.filter((site)=> site._key===value)[0]
             })
+            console.log("preview product",this.state.previewProduct )
+
+
+            if (this.state.previewProduct&&this.state.previewProduct.site_id&&
+                value!=this.state.previewProduct.site_id.replace("Site/","")){
+
+                this.showAddressMismatch()
+            }
 
         }
 
@@ -1057,6 +1068,16 @@ class ListFormNew extends Component {
     };
 
 
+    showAddressMismatch=()=>{
+
+
+        this.setState({
+            addressMismatch: !this.state.addressMismatch,
+        });
+
+
+    }
+
     goToStepOne=()=>{
 
 
@@ -1264,14 +1285,8 @@ class ListFormNew extends Component {
                                                         variant={"outlined"}
                                                         margin="normal"
                                                         id="date-picker-dialog-1"
-                                                        // label="Available From"
                                                         inputFormat="dd/MM/yyyy"
                                                         value={this.state.startDate}
-
-                                                        // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.item&&this.props.item.campaign.start_ts}
-                                                        // onChange={this.handleChangeDateStartDate.bind(
-                                                        //     this
-                                                        // )}
                                                         renderInput={(params) => <CustomizedInput {...params} />}
                                                         onChange={(value)=>this.handleChange(value,"startDate")}
 
@@ -1512,6 +1527,30 @@ class ListFormNew extends Component {
 
 
 
+                <GlobalDialog size={"xs"}
+                              hide={this.showAddressMismatch} show={this.state.addressMismatch}
+                              heading={"Address"} >
+
+                    <div className={"col-12 mb-3"}>
+                        <p>Selected address do not match the linked product's address , do you still want to continue with the different address ?</p>
+                    </div>
+
+
+                    <div
+                        className={"col-6"}
+                        style={{
+                            textAlign: "center",
+                        }}>
+                        <BlueBorderButton
+                            type="button"
+                            title={"Ok"}
+                            onClick={this.showAddressMismatch}
+                        >
+
+                        </BlueBorderButton>
+                    </div>
+
+                </GlobalDialog>
 
 
                 <GlobalDialog size={"xs"} hide={this.goToStepOne} show={this.state.createListingError} heading={"Error"} >

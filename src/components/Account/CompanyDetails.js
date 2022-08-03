@@ -932,6 +932,7 @@ class CompanyDetails extends Component {
                 )}
 
 
+                {this.state.org &&
                 <div className="row company-box no-gutters bg-light border-box rad-8 align-items-center">
                     <div style={{ display: "flex", position: "relative" }} className="col-md-12 align-items-center  ">
                         <div className={"img-box"} style={{ position: "relative" }}>
@@ -1068,7 +1069,7 @@ class CompanyDetails extends Component {
 
                     </div>
 
-                </div>
+                </div>}
 
 
 
@@ -1086,7 +1087,7 @@ class CompanyDetails extends Component {
 
                    </div>
                </div>
-                   <div className="row  mb-4 d-flex align-items-center justify-content-end   ">
+                {this.state.org &&   <div className="row  mb-4 d-flex align-items-center justify-content-end   ">
 
                    <div className="col-md-12 d-flex  flex-row align-items-center   ">
 
@@ -1234,7 +1235,7 @@ class CompanyDetails extends Component {
 
                    </div>
 
-                </div>
+                </div>}
 
 
 

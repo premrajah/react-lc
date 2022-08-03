@@ -194,6 +194,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={Product} />
+                        <LoggedInRoute exact path="/product/preview/:slug" component={Product} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <Route exact path="/ps/:slug" component={Site} />
                         <LoggedInRoute
@@ -217,7 +218,7 @@ class App extends Component {
                         />
                         <Route exact path="/marketplace/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
-                        <Route exact path="/:slug" component={ItemDetail} />
+                        <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
                         <Route component={NotFound} />
 

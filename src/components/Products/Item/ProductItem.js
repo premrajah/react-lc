@@ -30,7 +30,8 @@ class ProductItemNew extends Component {
             showProductEdit: false,
             productDuplicate: false,
             showProductHide: false,
-            showTrackPopUp:false
+            showTrackPopUp:false,
+            showPreview:false
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -255,7 +256,13 @@ class ProductItemNew extends Component {
             <>
                 <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center align-items-center mb-4 bg-white rad-8  p-3">
                                 <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-md-4  col-xs-12":"col-md-2  col-xs-12"}>
-                                    <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
+                                    <Link onMouseEnter={()=> this.setState({
+                                        showPreview:true
+                                    })}
+                                          onMouseLeave={()=> this.setState({
+                                              showPreview:false
+                                          })}
+                                           className="product-link " onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
                                         <>
                                     {this.state.images.length > 0 ? (
                                         <ImageOnlyThumbnail images={this.state.images} />
@@ -264,6 +271,11 @@ class ProductItemNew extends Component {
                                     )}
                                     </>
                                     </Link>
+
+                                    {/*{this.props.showPreview &&this.state.showPreview && <div className="product-preview-box">*/}
+                                    {/*    <iframe style={{border:"none", borderRadius:"8px", padding:"5px"}} src={`/product/preview/${this.props.item._key}`} width="500px" height="500px">*/}
+                                    {/*    </iframe>*/}
+                                    {/*</div>}*/}
                                 </div>
                                 <div className={this.props.biggerImage?"col-md-8 pl-3-desktop  content-box-listing":"col-md-10 pl-3-desktop  content-box-listing"}>
 

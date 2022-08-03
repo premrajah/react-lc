@@ -82,11 +82,11 @@ export default function BigCalenderEvents({
         return (
             <span className="text-blue text-12">
 
-            <b> <Badge  anchorOrigin={{
+            <span> <Badge  anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
             }} className={"fc-event-"+event.process} color="secondary" overlap="circular" badgeContent="" variant="dot">
-                  </Badge> {event.title}</b>
+                  </Badge> {event.title}</span>
 
                 {event.desc && ':  ' + event.desc}
     </span>

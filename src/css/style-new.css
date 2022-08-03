@@ -4030,7 +4030,7 @@ input:active,input:focus{
 }
 
 .text-12{
-    font-size: 14px;
+    font-size: 12px;
 }
 .date-bottom{
     position: absolute;
@@ -4474,4 +4474,16 @@ select,select option {text-transform:capitalize!important;}
     width: 100%;
     height:100%;
     border: 1px solid #eee;
+}
+
+.rbc-button-link, .rbc-header, .rbc-btn-group>button{
+    color: rgba(0, 0, 0, 0.6)!important;
+}
+.rbc-toolbar-label{
+    display: none;
+}
+.rbc-toolbar {
+
+    justify-content: end!important;
+    margin-top: 10px;
 }

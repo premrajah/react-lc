@@ -254,7 +254,7 @@ class ProductItemNew extends Component {
     render() {
         return (
             <>
-                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center align-items-center mb-4 bg-white rad-8  p-3">
+                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center  mb-4 bg-white rad-8  p-3">
                                 <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-md-4  col-xs-12":"col-md-2  col-xs-12"}>
                                     <Link onMouseEnter={()=> this.setState({
                                         showPreview:true
@@ -303,11 +303,17 @@ class ProductItemNew extends Component {
                                                             </span>
                                     </span>
                                     </div>
-                                    <p  className=" text-capitalize  text-gray-light mb-1">
+                                    {/*<p  className=" text-capitalize  text-gray-light mb-1">*/}
 
-                                        {this.props.item.purpose!=="aggregate"?"Qty:":""} {this.props.item.purpose!=="aggregate"&&  <span className={"text-blue"}>{this.props.item.volume} </span>}
-                                        {this.props.item.purpose!=="aggregate"&&     <span  className={"text-blue"}>{this.props.item.units}</span>}
-                                    </p>
+                                    {/*    {this.props.item.purpose!=="aggregate"?"Qty:":""} {this.props.item.purpose!=="aggregate"&&  <span className={"text-blue"}>{this.props.item.volume} </span>}*/}
+                                    {/*    {this.props.item.purpose!=="aggregate"&&     <span  className={"text-blue"}>{this.props.item.units}</span>}*/}
+                                    {/*</p>*/}
+
+
+                                    {this.props.item.sku&&this.props.item.sku.serial&&
+                                    <p className={"text-capitalize text-gray-light mb-1"}>Serial No.: <span className={"text-blue"}>{this.props.item.sku.serial}</span></p>}
+
+
                                     {this.props.item.sku&&this.props.item.sku.brand&&
                                     <p className={"text-capitalize text-gray-light"}>Brand: <span className={"sub-title-text-pink"}>{this.props.item.sku.brand}</span></p>}
 

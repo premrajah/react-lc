@@ -1571,6 +1571,7 @@ class ListEditFormNew extends Component {
 
                                                         <div className="col-md-12 col-sm-12 col-xs-12 mb-2">
                                                             <button
+                                                                type="button"
                                                                 onClick={this.toggleSale}
                                                                 className={
                                                                     !this.state.free
@@ -1581,6 +1582,7 @@ class ListEditFormNew extends Component {
                                                             </button>
 
                                                             <button
+                                                                type="button"
                                                                 onClick={this.toggleFree}
                                                                 className={
                                                                     this.state.free

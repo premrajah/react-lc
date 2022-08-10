@@ -661,7 +661,8 @@ marteplace
 
 
                                         <ListEditFormNew
-                                            triggerCallback={this.showEdit}
+
+                                            hide={this.showEdit}
                                             item={this.state.item}
                                         />
 

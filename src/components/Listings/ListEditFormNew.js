@@ -246,23 +246,18 @@ class ListEditFormNew extends Component {
         })
     }
 
-    handleValidationProduct() {
-        let fields = this.state.fields;
-alert("check v")
-        let validations=[]
+    handleValidationEdit=()=> {
 
-            validations = [
+        let fields = this.state.fields;
+
+        let validations= [
                 // validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
                 validateFormatCreate("title", [{check: Validators.required, message: 'Required'}], fields),
                 validateFormatCreate("description", [{check: Validators.required, message: 'Required'}], fields),
-
-            ]
-
-
-            validations = [
                 validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields)
 
             ]
+
 
             if (!this.state.free){
                 validations .push(
@@ -276,6 +271,7 @@ alert("check v")
         let {formIsValid, errors} = validateInputs(validations)
 
         this.setState({errors: errors});
+            console.log(errors)
 
         return formIsValid;
     }
@@ -839,50 +835,6 @@ alert("check v")
         this.setState({ fields });
     };
 
-    handleValidationList=(activeStep)=> {
-
-
-        let fields = this.state.fields;
-
-        let validations=[]
-
-
-
-        if (activeStep===0) {
-
-            validations = [
-                validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
-
-                validateFormatCreate("title", [{check: Validators.required, message: 'Required'}], fields),
-                validateFormatCreate("description", [{check: Validators.required, message: 'Required'}], fields),
-
-            ]
-
-        }
-        else if (activeStep===1) {
-            validations = [
-                validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields)
-
-            ]
-
-            if (!this.state.free){
-                validations .push(
-                    validateFormatCreate("price", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'Invalid input.'}], fields)
-                )
-            }
-
-        }
-        else if (activeStep===2) {
-
-        }
-
-        let {formIsValid, errors} = validateInputs(validations)
-
-        this.setState({errors: errors});
-
-        return formIsValid;
-
-    }
 
 
 
@@ -1223,9 +1175,19 @@ alert("check v")
         e.stopPropagation()
 
 
-        if (!this.handleValidationProduct()){
+        if (!this.handleValidationEdit()){
+
+            this.setState({
+                showFieldErrors:true
+            })
             return
+        }else {
+            this.setState({
+                showFieldErrors:true
+            })
         }
+
+
 
 
 
@@ -1312,6 +1274,8 @@ alert("check v")
                     this.setState({
                         loading: false
                     })
+
+                    this.props.hide()
 
                 })
                 .catch((error) => {

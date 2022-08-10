@@ -299,7 +299,7 @@ const mapDispachToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-
+        loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
     };
 };

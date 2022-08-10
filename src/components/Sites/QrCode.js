@@ -8,6 +8,7 @@ import {getProductProvenanceSlug} from "../../Util/GlobalUrl";
 import QrCodeBg from "../../img/qr-code-bg.png";
 import LoopcycleLogo from "../../img/logo-text.png";
 import {baseUrl, frontEndUrl} from "../../Util/Constants";
+import axios from "axios";
 
 class QrCode extends Component {
     slug;
@@ -149,6 +150,21 @@ class QrCode extends Component {
 
     }
 
+
+    refreshQrcode=()=>{
+
+
+        axios.get(baseUrl + "site/" +this.props.item._key + "/code-artifact?r=true").then(
+            (response) => {
+                let responseAll = response.data;
+
+                this.props.loadCurrentSite(this.props.item._key);
+            },
+            (error) => {}
+        );
+
+    }
+
     render() {
 
 
@@ -173,6 +189,15 @@ class QrCode extends Component {
                     <div className="col-9 pl-2 zoom-in-cursor" onClick={this.callZoom}>
                         <div className="row justify-content-start  ">
                             <div className="col-12 ">
+                                {!this.props.hideRefresh&&this.props.userDetail.is_org_admin &&
+                                <span
+                                    className={"mr-1 btn btn-sm btn-gray-border-small top-right"}
+                                    onClick={
+                                        (e)=> {e.stopPropagation(); this.refreshQrcode()}}
+                                >
+                                        R
+                                    </span>}
+
                                     <span className={"title-bold blue-text text-caps  p-0 "}>
                                         Site Code
                                     </span>

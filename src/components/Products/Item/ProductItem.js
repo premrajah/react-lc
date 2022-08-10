@@ -31,7 +31,8 @@ class ProductItemNew extends Component {
             productDuplicate: false,
             showProductHide: false,
             showTrackPopUp:false,
-            showPreview:false
+            showPreview:false,
+            releases:[]
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -51,6 +52,9 @@ class ProductItemNew extends Component {
 
     componentDidMount() {
         this.getArtifacts()
+
+        if (this.props.item)
+        this.fetchReleases()
     }
 
     callBackSubmit() {
@@ -112,6 +116,24 @@ class ProductItemNew extends Component {
 
 
         }
+    }
+
+
+    fetchReleases=()=> {
+        axios
+            .get(baseUrl + "release/product/"+this.props.item._key)
+            .then(
+                (response) => {
+
+                    this.setState({
+                        releases: response.data.data,
+
+                    });
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
     }
 
 
@@ -281,7 +303,11 @@ class ProductItemNew extends Component {
 
                                         <p style={{ fontSize: "18px" }} className="text-capitalize mb-1 width-70 ellipsis-end">
                                             <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>{this.props.item.is_listable&&<span
-                                                className="badge badge-info ml-2">Listed</span>}  <small className={""}><small> - {this.props.item._key}</small></small></Link>
+                                                className="badge badge-info ml-2">Listed</span>}                                             {this.state.releases&&this.state.releases.length>0
+                                            && this.state.releases.filter(item=>item.Release.stage!=="cancelled").map(item=> <small className="ml-2">{item.responder._id!=this.props.userDetail.orgId && item.Release.stage=="requested"?"(Awaiting release approval)":""}</small>)} <small className={""}><small> - {this.props.item._key}</small></small></Link>
+
+
+
                                       </p>
 
                                     {/*<p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">*/}

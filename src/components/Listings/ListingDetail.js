@@ -27,6 +27,8 @@ import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import ListEditForm from "./ListEditFormOld";
+import ListForm from "./ListForm";
+import ListEditFormNew from "./ListEditFormNew";
 class ListingDetail extends Component {
     slug;
     search;
@@ -658,9 +660,9 @@ marteplace
                                                 <div className="col-12 ">
 
 
-                                        <ListEditForm
+                                        <ListEditFormNew
                                             triggerCallback={this.showEdit}
-                                            listingId={this.state.item.listing._key}
+                                            item={this.state.item}
                                         />
 
 

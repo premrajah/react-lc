@@ -187,6 +187,13 @@ class EventItem extends Component {
 
     }
 
+    downloadDoc=(blob_url) =>{
+
+
+        window.location.href = blob_url
+
+    }
+
 
     componentDidMount() {
             if (this.props.statusChange){
@@ -404,12 +411,15 @@ class EventItem extends Component {
 
                                                                         {checkImage(artifact.blob_url)? <img
                                                                                 src={artifact ? artifact.blob_url : ""}
+                                                                                onClick={()=>this.downloadDoc(artifact.blob_url)}
                                                                                 className="img-fluid "
                                                                                 alt={artifact.name}
                                                                                 style={{ objectFit: "contain",width: "32px", height: "32px",background:"#EAEAEF",padding:"2px"}}
                                                                             />:
                                                                             <>
-                                                                                <DescriptionIcon style={{ opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
+                                                                                <DescriptionIcon
+                                                                                    onClick={()=>this.downloadDoc(artifact.blob_url)}
+                                                                                    style={{ opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
                                                                                 {/*<Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />*/}
                                                                             </>
                                                                         }

@@ -4,6 +4,10 @@ import React from "react";
 import moment from "moment/moment";
 
 export const  capitalize=(sentence)=> {
+
+    if (!sentence)
+
+        return ""
     return sentence.toLowerCase()
         .split(' ')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))

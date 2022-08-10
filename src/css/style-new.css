@@ -4503,10 +4503,12 @@ select,select option {text-transform:capitalize!important;}
 /*    z-index: 100;*/
 /*}*/
 
-.product-preview-box{
-    position: absolute!important;
-    left: 100%!important;
-    top:0!important;
-    border-radius: 25px;
-    z-index: 100;
-}
+/*.product-preview-box{*/
+/*    position: absolute!important;*/
+/*    left: 100%!important;*/
+/*    top:0!important;*/
+/*    border-radius: 25px;*/
+/*    z-index: 100;*/
+/*}*/
+
+

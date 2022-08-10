@@ -535,39 +535,6 @@ class ListFormNew extends Component {
 
         }
     }
-    handleChangeOld(field, e) {
-        let fields = this.state.fields;
-
-        fields[field] = e.target.value;
-
-        this.setState({ fields });
-
-        this.setState({
-            price: fields["price"],
-        });
-
-        if (this.state.selectedProductId === "product") {
-            this.setState({
-                productSelected: e.target.value,
-            });
-
-            this.getPreviewImage(e.target.value);
-        }
-
-        if (field === "deliver") {
-            this.setState({
-                siteSelected: this.props.siteList.filter((item) => item._key === e.target.value)[0],
-            });
-        }
-
-        if (this.state.page === 1) {
-            this.handleValidateOne();
-        }
-
-        if (this.state.page === 2) {
-            this.handleValidateTwo();
-        }
-    }
 
 
 

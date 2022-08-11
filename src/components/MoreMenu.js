@@ -7,6 +7,7 @@ import { Modal, ModalBody } from "react-bootstrap";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 import GreenButton from "./FormsUI/Buttons/GreenButton";
 import GreenBorderButton from "./FormsUI/Buttons/GreenBorderButton";
+import GlobalDialog from "./RightBar/GlobalDialog";
 
 class MoreMenu extends Component {
     constructor(props) {
@@ -293,56 +294,65 @@ class MoreMenu extends Component {
                         </Modal>
                     </div>
 
-                    <div onClick={(e) => e.stopPropagation()}>
-                        <Modal
-                            className={"loop-popup"}
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered
-                            show={this.state.showDuplicatePopUp}
-                            onHide={this.showDuplicatePopUp}
-                            animation={false}>
-                            <ModalBody>
+                    {/*<div onClick={(e) => e.stopPropagation()}>*/}
+                        {/*<Modal*/}
+                        {/*    className={"loop-popup"}*/}
+                        {/*    aria-labelledby="contained-modal-title-vcenter"*/}
+                        {/*    centered*/}
+                        {/*    show={this.state.showDuplicatePopUp}*/}
+                        {/*    onHide={this.showDuplicatePopUp}*/}
+                        {/*    animation={false}>*/}
+                        {/*    <ModalBody>*/}
+
+                                <GlobalDialog
+                                    size="sm"
+
+                                    heading={"Duplicate "}
+                                    show={this.state.showDuplicatePopUp}
+                                    hide={this.showDuplicatePopUp}
+                                >
+                                    <div className={"col-12"}>
                                 <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p className={"text-bold text-caps"}>Duplicate</p>
+                                    <div className={"col-12"}>
+
                                         <p>
                                             Are you sure you want to duplicate this item?
                                         </p>
                                     </div>
                                 </div>
 
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-12 text-center mt-2"}>
+                                <div className={"row mt-4 justify-content-center"}>
+                                    <div className={"col-12 text-center "}>
                                         <div className={"row justify-content-center"}>
                                             <div
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
-                                                <button
+                                                <GreenButton
                                                     onClick={this.duplicateAction}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                    }
+
+                                                    title={"Submit"}
                                                     type={"submit"}>
-                                                    Submit
-                                                </button>
+
+                                                </GreenButton>
                                             </div>
                                             <div
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
-                                                <button
+                                                <BlueBorderButton
                                                     onClick={this.showDuplicatePopUp}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                    }>
-                                                    Cancel
-                                                </button>
+                                                    title={"Cancel"}
+                                                >
+
+                                                </BlueBorderButton>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </ModalBody>
-                        </Modal>
-                    </div>
+                                    </div>
+                                </GlobalDialog>
+                        {/*    </ModalBody>*/}
+                        {/*</Modal>*/}
+                    {/*</div>*/}
 
                     <div onClick={(e) => e.stopPropagation()}>
                         <Modal

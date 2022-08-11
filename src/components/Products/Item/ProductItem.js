@@ -32,7 +32,8 @@ class ProductItemNew extends Component {
             showProductHide: false,
             showTrackPopUp:false,
             showPreview:false,
-            releases:[]
+            releases:[],
+            productSite:null
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -53,8 +54,14 @@ class ProductItemNew extends Component {
     componentDidMount() {
         this.getArtifacts()
 
-        if (this.props.item)
-        this.fetchReleases()
+        if (this.props.item){
+            this.fetchSite()
+            this.fetchReleases()
+
+        }
+
+
+
     }
 
     callBackSubmit() {
@@ -127,6 +134,22 @@ class ProductItemNew extends Component {
 
                     this.setState({
                         releases: response.data.data,
+
+                    });
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
+    fetchSite=()=> {
+        axios
+            .get(baseUrl + "product/"+this.props.item._key+"/site")
+            .then(
+                (response) => {
+
+                    this.setState({
+                        productSite: response.data.data,
 
                     });
                 },
@@ -336,13 +359,16 @@ class ProductItemNew extends Component {
                                     {/*</p>*/}
 
 
+
+                                    {this.props.item.sku&&this.props.item.sku.brand&&
+                                    <p className={"text-capitalize text-gray-light mb-1"}>Brand: <span className={"sub-title-text-pink"}>{this.props.item.sku.brand}</span></p>}
+
+
                                     {this.props.item.sku&&this.props.item.sku.serial&&
                                     <p className={"text-capitalize text-gray-light mb-1"}>Serial No.: <span className={"text-blue"}>{this.props.item.sku.serial}</span></p>}
 
-
-                                    {this.props.item.sku&&this.props.item.sku.brand&&
-                                    <p className={"text-capitalize text-gray-light"}>Brand: <span className={"sub-title-text-pink"}>{this.props.item.sku.brand}</span></p>}
-
+                                    {this.state.productSite&&
+                                    <p className={"text-capitalize text-gray-light mb-1"}>Site: <span className={"text-blue"}>{this.state.productSite.name}</span></p>}
 
 
 

@@ -673,6 +673,11 @@ class EventForm extends Component {
             })
 
             this.loadImages(this.props.event.artifacts)
+        }else{
+            this.setState({
+                isEditProduct:true,
+                startDate: new Date()
+            })
         }
 
 
@@ -771,6 +776,7 @@ class EventForm extends Component {
                                           id="date-picker-dialog-1"
                                           // label="Available From"
                                           inputFormat="dd/MM/yyyy"
+                                          hintText="Select Date"
                                           value={this.state.startDate||this.props.date}
 
                                           // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.event&&this.props.event.campaign.start_ts}

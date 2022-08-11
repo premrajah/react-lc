@@ -122,8 +122,8 @@ class Approvals extends Component {
         this.props.fetchRegisterRequest();
         this.props.fetchServiceAgentRequest()
         this.fetchSiteReleaseRequests()
-        this.fetchRentalRequests()
-        this.fetchRentalReleases()
+        // this.fetchRentalRequests()
+        // this.fetchRentalReleases()
 
     this.interval = setInterval(() => {
         this.props.fetchReleaseRequest();
@@ -219,8 +219,8 @@ render() {
                                             <Tab label="Product Register" value="2"/>
                                             <Tab label="Change Service Agent" value="3" />
                                             <Tab label="Site Release " value="4" />
-                                            <Tab label="Rental Release " value="5" />
-                                            <Tab label="Rental Requests " value="6" />
+                                            {/*<Tab label="Rental Release " value="5" />*/}
+                                            {/*<Tab label="Rental Requests " value="6" />*/}
                                         </TabList>
                                     </Box>
 

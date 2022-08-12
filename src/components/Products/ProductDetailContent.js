@@ -897,9 +897,9 @@ class ProductDetailContent extends Component {
                                                                 : false
                                                         }
 
-                                                        addEvent={(action)=>
-                                                            this.callBackResult(action)
-                                                        }
+                                                        // addEvent={(action)=>
+                                                        //     this.callBackResult(action)
+                                                        // }
 
                                                     />
 
@@ -979,7 +979,7 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
-                                                        <Tab label="Events" value="8" />
+                                                        {/*<Tab label="Events" value="8" />*/}
 
                                                     </TabList>
                                                 </Box>

@@ -279,12 +279,11 @@ if (!smallView) {
 
     switch (arg.action) {
         case "click":
-            console.log("single click");
+
             if (!smallView) {
                 setSelectedDate(arg.start)
 
-                console.log(moment(arg.start).startOf('day').format("x"),
-                    moment(arg.start).endOf('day').format("x"))
+
 
                 // getEvents(new Date(arg.start).valueOf(), new Date(arg.end).valueOf())
 
@@ -294,7 +293,7 @@ if (!smallView) {
             }
             break;
         case "doubleClick":
-            console.log("double click");
+
 
             setShowAddEventPopUp(!showAddEventPopUp)
             break;
@@ -311,7 +310,7 @@ if (!smallView) {
 
     const  handleNaviation = (arg) => { // bind with an arrow function
 
-        console.log(arg)
+
         if (!smallView) {
 
             getEventsByMonth(getEventsByMonth(moment(arg).startOf('month').format("x"),

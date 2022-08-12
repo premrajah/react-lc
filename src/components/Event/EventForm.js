@@ -603,7 +603,7 @@ class EventForm extends Component {
 
 
     selectedProduct = (data) => {
-        console.log(data)
+
         this.setState({
             productId:data.key
         })

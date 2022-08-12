@@ -96,7 +96,7 @@ class ProductAutocomplete extends Component {
 
     changeInput = (key) => {
 
-        console.log(key)
+
 
         this.setState({
             loading:true

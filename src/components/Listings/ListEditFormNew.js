@@ -271,7 +271,7 @@ class ListEditFormNew extends Component {
         let {formIsValid, errors} = validateInputs(validations)
 
         this.setState({errors: errors});
-            console.log(errors)
+
 
         return formIsValid;
     }
@@ -846,7 +846,7 @@ class ListEditFormNew extends Component {
             this.setState({
                 siteSelected:this.props.siteList.filter((site)=> site._key===value)[0]
             })
-            console.log("preview product",this.state.previewProduct )
+
 
 
             if (this.state.previewProduct&&this.state.previewProduct.site_id&&
@@ -1255,7 +1255,7 @@ class ListEditFormNew extends Component {
             //     },
             // }
 
-            console.log(postData)
+
 
 
             axios

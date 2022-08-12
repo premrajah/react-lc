@@ -577,12 +577,8 @@ let item=null
     handleNext = (event) => {
 
 
-        console.log("clicked", event.target)
-
-        console.log(event.nativeEvent)
-
         if(event.keyCode == 13) {
-            console.log("Enter pressed")
+
             event.preventDefault();
             return false;
         }
@@ -678,7 +674,6 @@ let item=null
 
     handleSubmit = (event) => {
 
-        console.log(event)
 
         // if(event.keyCode == 13) {
         //     console.log("enter pressed")

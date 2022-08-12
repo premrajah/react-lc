@@ -62,14 +62,14 @@ class CalenderEvents extends Component {
     tooltipInstance = null;
 
     handleMouseLeave = (info) => {
-        console.log("mouse leave")
+
         if (this.tooltipInstance) {
             this.tooltipInstance.dispose();
             this.tooltipInstance = null;
         }
     };
      handleMouseEnter = (info) => {
-         console.log("mouse enter")
+
         if (info.event.extendedProps.description) {
             this.tooltipInstance = new Tooltip(info.el, {
                 // title: info.event.extendedProps.description,
@@ -163,7 +163,7 @@ class CalenderEvents extends Component {
 
     handleDateClick = (arg) => { // bind with an arrow function
 
-        console.log(arg)
+
         var now = arg.date;
         var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
         // var timestamp = startOfDay / 1000;

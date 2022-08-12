@@ -279,7 +279,7 @@ class ProductLines extends Component {
 
     toggleDeletePopUp= ( item) => {
 
-        console.log(item)
+
 
         this.setState({
             // selectedDeleteItem: item,

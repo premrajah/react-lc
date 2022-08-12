@@ -4,16 +4,18 @@ import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import * as actionCreator from "../../store/actions/actions";
-import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {arrangeAlphabatically, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
-import ManageUserItem from "./ManageUserItem";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import Add from "@mui/icons-material/Add";
 import ProductForm from "../ProductPopUp/ProductForm";
 import ManageTemplateItem from "./ManageTemplateItem";
+import InfoTabContent from "../Products/InfoTabContent";
+import ProductLineContent from "./ProductLineContent";
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
+import {Edit} from "@mui/icons-material";
 
 class ProductLines extends Component {
     constructor(props) {
@@ -35,8 +37,11 @@ class ProductLines extends Component {
             selectedEditItem:null,
             showDeletePopUp: false,
             showAddPopUp: false,
+            showViewPopUp:false,
             templates:[],
-            editItem:null
+            editItem:null,
+            viewItem:null,
+            selectedDeleteItem:null
         };
 
     }
@@ -69,6 +74,20 @@ class ProductLines extends Component {
 
         this.setState({
             showAddPopUp: !this.state.showAddPopUp,
+        })
+
+    }
+
+    toggleView=async (item) => {
+
+
+
+        this.setState({
+            viewItem:item?item:null
+        })
+
+        this.setState({
+            showViewPopUp: !this.state.showViewPopUp,
         })
 
     }
@@ -231,20 +250,21 @@ class ProductLines extends Component {
     }
 
 
-    handleDelete = (key) => {
+    handleDelete = () => {
 
             axios
                 .delete(
-                    baseUrl + "org/cache/"+key
+                    baseUrl + "org/cache/"+this.state.selectedDeleteItem
 
                 )
                 .then((res) => {
 
                     this.fetchCache()
+                    this.toggleDeletePopUp()
                     this.props.showSnackbar({
                         show: true,
                         severity: "success",
-                        message: `Template  removed successfully. Thanks`
+                        message: `Template  deleted successfully. Thanks`
                     })
 
 
@@ -257,11 +277,13 @@ class ProductLines extends Component {
 
     };
 
-    toggleDeletePopUp= (key, item) => {
+    toggleDeletePopUp= ( item) => {
+
 
 
         this.setState({
-            selectedEditItem: item,
+            // selectedDeleteItem: item,
+            selectedDeleteItem:item?item:null,
             showDeletePopUp: !this.state.showDeletePopUp,
 
         })
@@ -295,9 +317,16 @@ class ProductLines extends Component {
                                                     this.toggleAddUser(item)
 
                                                 }}
-                                                onClick={()=>this.handleDelete(item.key)}
+
+                                                onClickView={(item)=>
+                                                {
+
+                                                    this.toggleView(item)
+
+                                                }}
+                                                // onClick={()=>this.handleDelete(item.key)}
                                                 key={index}
-                                                toggleDeletePopUp={(key,selection)=>this.toggleDeletePopUp(key,selection)}
+                                                toggleDeletePopUp={()=>this.toggleDeletePopUp(item.key)}
                                                 refreshList={this.fetchUsers}
                                                 item={item.value}
                                                 index={index}
@@ -315,10 +344,10 @@ class ProductLines extends Component {
 
 
 
-    <GlobalDialog size={"xs"} hide={this.toggleDeletePopUp} show={this.state.showDeletePopUp} heading={"Remove User"} >
+    <GlobalDialog size={"xs"} hide={this.toggleDeletePopUp} show={this.state.showDeletePopUp} heading={"Delete"} >
         <div
             className={"col-12 mb-3 text-left"}>
-            Are you sure you want to remove this user ?
+            Are you sure you want to delete ?
         </div>
 
         <div
@@ -368,6 +397,42 @@ class ProductLines extends Component {
                        refresh={()=>this.fetchCache()}
                        productLines />}
     </div>
+    </GlobalDialog>
+
+
+    <GlobalDialog
+        hideHeading
+        hideClose
+
+        size={"md"} hide={()=>this.toggleView()}
+        show={this.state.showViewPopUp}  >
+        <div className="col-12">
+            {this.state.viewItem &&
+           <>
+           <div className=" col-12">
+               <div className=" row  justify-content-center align-items-center">
+                   <div className="col-10">
+                       <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>
+                           {this.state.viewItem?this.state.viewItem.name:""}
+                           <ActionIconBtn onClick={
+                               ()=>{
+                                   this.toggleView()
+                                   this.toggleAddUser(this.state.viewItem)}}>
+                           <Edit/>
+                       </ActionIconBtn></h4>
+
+                   </div>
+                   <div className="col-2 text-right">
+
+                        <CloseButtonPopUp onClick={()=>this.toggleView()}/>
+                   </div>
+               </div>
+           </div>
+                <ProductLineContent  item={this.state.viewItem}/>
+
+           </>
+            }
+        </div>
     </GlobalDialog>
 
 

@@ -11,7 +11,7 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import {baseUrl, checkImage} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import {Delete, Done, Edit, FactCheck} from "@mui/icons-material";
+import {Close, Delete, Done, Edit, FactCheck} from "@mui/icons-material";
 import EventForm from "./EventForm";
 import axios from "axios";
 import EventStatus from "./EventStatus";
@@ -19,6 +19,7 @@ import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
+import CustomPopover from "../FormsUI/CustomPopover";
 
 class EventItem extends Component {
         constructor(props) {
@@ -35,7 +36,14 @@ class EventItem extends Component {
                 editEvent:null,
                 stageEventId:null,
                 showStagePopup:false,
-                deleteEvent:false
+                deleteEvent:false,
+                intervals:[
+                    {key:86400 ,value:"Every Day"},
+                    {key:604800 ,value:"Every Week"},
+                    {key:864000,value:"Every 10 Days"},
+                    {key:2629743 ,value:"Every Month"},
+                    {key:31556926 ,value:"Every Year"},
+                ],
             }
         }
 
@@ -179,6 +187,13 @@ class EventItem extends Component {
 
     }
 
+    downloadDoc=(blob_url) =>{
+
+
+        window.location.href = blob_url
+
+    }
+
 
     componentDidMount() {
             if (this.props.statusChange){
@@ -193,7 +208,7 @@ class EventItem extends Component {
             return (
 
                 <>
-        <List sx={{ width: '100%', maxWidth: 360 }}>
+        <List sx={{ width: '100%' }}>
 
 
             {this.props.events.map(item=>
@@ -202,7 +217,7 @@ class EventItem extends Component {
                     <ListItem className={`mb-2 bg-white  ${item.event.resolution_epoch_ms > Date.now()?"new-event":"past-event"}`}  onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
                         <ListItemAvatar>
-                            <Avatar alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
+                            <Avatar className={"fc-event-"+item.event.process} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
                         </ListItemAvatar>}
                         <ListItemText
                             className="title-bold"
@@ -223,15 +238,17 @@ class EventItem extends Component {
 
                                         <div className="d-flex flex-column right-btn-auto">
                                             {item.event.resolution_epoch_ms > Date.now() &&
-                                            <ActionIconBtn
+                                            <CustomPopover text={"Edit"}>   <ActionIconBtn
                                         size="small"
 
                                         onClick={(e)=>{
                                             e.stopPropagation()
                                             e.preventDefault()
                                            this.showEditEventPopup(item)
-                                        }}><Edit /></ActionIconBtn>}
-
+                                        }}><Edit /></ActionIconBtn>
+                                            </CustomPopover>
+                                                }
+                                            <CustomPopover text={"Update Stage"}>
                                     <ActionIconBtn
                                         size="small"
 
@@ -241,15 +258,17 @@ class EventItem extends Component {
                                     this.showStageEventPopup(item.event._key)
                                 }}><FactCheck/>
                                 </ActionIconBtn>
-
+                                            </CustomPopover>
+                                            <CustomPopover text={"Delete"}>
                                             <ActionIconBtn
                                                 size="small"
                                                 onClick={(e)=>{
                                                     e.stopPropagation()
                                                     e.preventDefault()
                                                     this.toggleDelete(item.event._key)
-                                                }}><Delete/>
+                                                }}><Close/>
                                             </ActionIconBtn>
+                                            </CustomPopover>
                                         </div>
 
                                 </React.Fragment>
@@ -336,7 +355,7 @@ class EventItem extends Component {
                                                 }
                                             </p>
                                         </div>
-                                        <div className={"col-6"}>
+                                        {this.state.selectedEvent.event.recur_in_epoch_ms &&  <div className={"col-6"}>
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">
@@ -345,11 +364,13 @@ class EventItem extends Component {
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
-                                                {
-                                                   getTimeFormat( this.state.selectedEvent.event.resolution_epoch_ms)
-                                                }
+                                                {/*{*/}
+                                                {/*   getTimeFormat( this.state.selectedEvent.event.recur_in_epoch_ms)*/}
+                                                {/*}*/}
+
+                                                {this.state.intervals.find(item=> item.key==this.state.selectedEvent.event.recur_in_epoch_ms).value}
                                             </p>
-                                        </div>
+                                        </div>}
 
                                     </div>
                                     <div className="row  justify-content-start search-container  pb-2">
@@ -376,13 +397,13 @@ class EventItem extends Component {
                                             <div
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
-                                                <ul style={{listStyle:"none"}} className="persons  align-items-start d-flex">
+                                                <ul style={{listStyle:"none"}} className="persons p-0 m-0 align-items-start d-flex">
 
                                                     {this.state.selectedEvent.artifacts && this.state.selectedEvent.artifacts.map((artifact, i) =>
                                                         <li key={i}>
                                                             <>
                                                                 <div className="d-flex justify-content-center "
-                                                                     style={{width: "80px", height: "80px"}}>
+                                                                     style={{width: "32px", height: "32px"}}>
                                                                     <div className="d-flex justify-content-center "
                                                                         // style={{width: "50%", height: "50%"}}
                                                                     >
@@ -390,12 +411,15 @@ class EventItem extends Component {
 
                                                                         {checkImage(artifact.blob_url)? <img
                                                                                 src={artifact ? artifact.blob_url : ""}
+                                                                                onClick={()=>this.downloadDoc(artifact.blob_url)}
                                                                                 className="img-fluid "
                                                                                 alt={artifact.name}
-                                                                                style={{ objectFit: "contain",width: "80px", height: "80px",background:"#EAEAEF",padding:"2px"}}
+                                                                                style={{ objectFit: "contain",width: "32px", height: "32px",background:"#EAEAEF",padding:"2px"}}
                                                                             />:
                                                                             <>
-                                                                                <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
+                                                                                <DescriptionIcon
+                                                                                    onClick={()=>this.downloadDoc(artifact.blob_url)}
+                                                                                    style={{ opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
                                                                                 {/*<Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />*/}
                                                                             </>
                                                                         }
@@ -474,7 +498,7 @@ class EventItem extends Component {
                         show={this.state.showEditEvent}
                         hide={this.showEditEventPopup}
                     ><div className={"col-12"}>
-                        {this.state.editEvent && <EventForm  hide={this.showEditEventPopup} event={this.state.editEvent} />}
+                        {this.state.editEvent && <EventForm hideProduct  hide={this.showEditEventPopup} event={this.state.editEvent} />}
                         </div>
                     </GlobalDialog>
 

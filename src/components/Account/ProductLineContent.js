@@ -1,14 +1,23 @@
 import React, {Component} from "react";
-import {capitalizeFirstLetter} from "../../Util/Constants";
+import {capitalizeFirstLetter, checkImage} from "../../Util/Constants";
 import {capitalize} from "../../Util/GlobalFunctions";
 import OrgComponent from "../Org/OrgComponent";
+import DescriptionIcon from "@mui/icons-material/Description";
 
-class InfoTabContent extends Component {
+class ProductLineContent extends Component {
     slug;
     search;
 
     constructor(props) {
         super(props);
+
+    }
+
+
+     downloadDoc=(blob_url) =>{
+
+
+            window.location.href = blob_url
 
     }
 
@@ -250,48 +259,60 @@ class InfoTabContent extends Component {
                     </div>
                 )}
 
-                {this.props.item.site &&
                 <div className="row  justify-content-start search-container  pb-2 ">
-                    <div className={"col-auto"}>
-                        <p
 
-                            className=" text-label text-blue mb-1">
-                            Located At
-                        </p>
-                        <p
+                    {this.props.item.artifacts && this.props.item.artifacts.length>0  &&
+                    <div className={"col-12"}><p
 
-                            className=" text-gray-light mb-1">
-                                                            <span className="mr-1">
-                                                                {this.props.item.site.name},
-                                                            </span>
-                            <span>
-                                                                {this.props.item.site.address}
-                                                            </span>
-                        </p>
+                        className=" text-label text-blue mb-1 text-label">
+                        Attachments
+                    </p></div>}
+                    <div className={"col-12"}>
+                <ul style={{listStyle:"none",margin: "0", padding: "0"}} className="persons  align-items-start d-flex">
+
+                    {this.props.item.artifacts && this.props.item.artifacts.map((artifact, i) =>
+                        <li key={i}>
+                            <>
+                                <div className="d-flex justify-content-center "
+                                     style={{width: "40px", height: "40px"}}>
+                                    <div className="d-flex justify-content-center "
+                                        // style={{width: "50%", height: "50%"}}
+                                    >
+
+
+                                        {checkImage(artifact.blob_url)? <img
+
+                                            onClick={()=>this.downloadDoc(artifact.blob_url)}
+                                                src={artifact ? artifact.blob_url : ""}
+                                                className="img-fluid click-item"
+                                                alt={artifact.name}
+                                                style={{ objectFit: "contain",width: "32px", height: "32px",background:"#EAEAEF",padding:"2px"}}
+                                            />:
+                                            <>
+                                                <DescriptionIcon
+
+                                                    onClick={()=>this.downloadDoc(artifact.blob_url)}
+                                                    style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 click-item rad-4"} />
+                                                {/*<Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />*/}
+                                            </>
+                                        }
+
+                                    </div>
+                                </div>
+
+                            </>
+                        </li>
+                    )}
+
+                </ul>
                     </div>
-                </div>}
-                {this.props.item.service_agent &&
-                <div className="row  justify-content-start search-container  pb-2 ">
-                    <div className={"col-auto"}>
-                        <p
+                </div>
 
-                            className=" text-label text-label text-blue mb-1">
-                            Service Agent
-                        </p>
-                        <div
-
-                            className="  mb-1">
-                            <OrgComponent
-                                org={this.props.item.service_agent}
-                            />
-                        </div>
-                    </div>
-                </div>}
-            </div>
+    </div>
         );
     }
 }
 
 
 
-export default (InfoTabContent);
+export default (ProductLineContent);

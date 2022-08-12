@@ -566,6 +566,7 @@ class Products extends Component {
                             {this.state.items.map((item, index) =>
                                 <div id={`${item._key}-${index}`}  key={item._key+"-"+index}>
                                     <ProductItem
+                                        showPreview
                                         index={index}
                                         goToLink={true}
                                         delete={false}
@@ -677,27 +678,6 @@ class Products extends Component {
                 </Modal>
 
 
-                {/*<GlobalDialog*/}
-                {/*    size="md"*/}
-                {/*    heading={"Add Product"}*/}
-                {/*    show={this.state.showProductPopUp}*/}
-                {/*    hide={()=> {*/}
-                {/*        this.toggleProductPopUp();*/}
-                {/*        this.setState({*/}
-                {/*            redirect:true*/}
-                {/*        })*/}
-                {/*    }}>*/}
-                {/*    <>*/}
-                {/*        <div className=" col-12">*/}
-                {/*        <ProductForm productId={this.state.productId}  />*/}
-                {/*        </div>*/}
-                {/*        </>*/}
-
-                {/*</GlobalDialog>*/}
-
-                {/*<React.Fragment>*/}
-                {/*    {this.state.redirect && <Redirect to="/my-products" /> }  }*/}
-                {/*</React.Fragment>*/}
 
             </Layout>
         );

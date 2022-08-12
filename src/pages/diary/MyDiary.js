@@ -6,6 +6,7 @@ import Layout from "../../components/Layout/Layout";
 import PageHeader from "../../components/PageHeader";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import CalenderEvents from "../../components/Event/CalenderEvents";
+import BigCalenderEvents from "../../components/Event/BigCalenderEvents";
 
 class MyDiary extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ class MyDiary extends Component {
                     />
 
 
-                    <CalenderEvents/>
+                    <BigCalenderEvents/>
 
                 </div>
             </Layout>

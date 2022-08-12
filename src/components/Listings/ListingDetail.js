@@ -27,6 +27,8 @@ import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import ListEditForm from "./ListEditFormOld";
+import ListForm from "./ListForm";
+import ListEditFormNew from "./ListEditFormNew";
 class ListingDetail extends Component {
     slug;
     search;
@@ -474,7 +476,7 @@ marteplace
                                                                     }>
                                                                     {this.state.item.listing.name}
                                                                 </h4>
-                                                                { this.props.isLoggedIn&&(this.state.item.org._id ===
+                                                                { this.props.isLoggedIn&&this.props.userDetail&&(this.state.item.org._id ===
                                                                     this.props.userDetail.orgId) &&    <div className="top-right text-right">
                                                                     <MoreMenu
                                                                         triggerCallback={(action) =>
@@ -506,7 +508,7 @@ marteplace
                                                             </div>
 
                                                             <div className="col-5 blue-text text-blue text-bold  text-right">
-                                                                {this.state.item.listing.price ? (
+                                                                {this.state.item.listing.price&&(this.state.item.listing.price.value!=0) ? (
                                                                     <>
                                                                         GBP {
                                                                             this.state.item.listing
@@ -658,9 +660,10 @@ marteplace
                                                 <div className="col-12 ">
 
 
-                                        <ListEditForm
-                                            triggerCallback={this.showEdit}
-                                            listingId={this.state.item.listing._key}
+                                        <ListEditFormNew
+
+                                            hide={this.showEdit}
+                                            item={this.state.item}
                                         />
 
 
@@ -761,7 +764,7 @@ marteplace
                                 className="row  justify-content-center search-container "
 
                             >
-                                <div className="col-12 text-center">
+                                <div className="col-12 pt-1 pb-1 text-center">
                                     <GreenButton
                                         onClick={this.props.type==="search"?this.props.requestMatch:this.toggleRequestMatch}
                                         type="button"

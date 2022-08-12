@@ -706,7 +706,7 @@ class ViewSearch extends Component {
         let {formIsValid, errors} = validateInputs(validations)
 
         this.setState({errors: errors});
-        console.log(errors)
+
         return formIsValid;
     }
 

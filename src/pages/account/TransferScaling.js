@@ -8,7 +8,7 @@ import axios from "axios/index";
 import TextField from "@mui/material/TextField";
 import {Modal, ModalBody, Spinner} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
+import AutocompleteCustom from "../../components/AutocompleteSearch/AutocompleteCustom";
 import { Alert } from "react-bootstrap";
 import PageHeader from "../../components/PageHeader";
 import PlaceholderImg from "../../img/place-holder-lc.png";

@@ -9,7 +9,7 @@ import {Alert, Modal, ModalBody} from "react-bootstrap";
 import {withStyles} from "@mui/styles/index";
 import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
-import AutocompleteCustom from "../AutocompleteCustom";
+import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import Close from "@mui/icons-material/Close";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";

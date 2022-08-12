@@ -39,8 +39,6 @@ class CampaignItem extends Component {
             let message=item.CampaignToMessage[0].entries[0].Message
 
             item.Campaign.message_template=message
-            console.log(item)
-
 
             axios
                 .get(baseUrl + "message/" + message._key + "/artifact")
@@ -48,11 +46,7 @@ class CampaignItem extends Component {
                     (response) => {
                         var res = response.data.data;
 
-
                         item.artifacts=res
-
-                        console.log(item)
-
 
                     },
                     (error) => {

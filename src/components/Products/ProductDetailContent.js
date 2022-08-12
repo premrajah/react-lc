@@ -11,7 +11,7 @@ import SearchItem from "../Searches/search-item";
 import ResourceItem from "../../pages/create-search/ResourceItem";
 import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
-import AutocompleteCustom from "../AutocompleteCustom";
+import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import ImageHeader from "../UIComponents/ImageHeader";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";
@@ -36,6 +36,7 @@ import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
 import CalenderEvents from "../Event/CalenderEvents";
+import BigCalenderEvents from "../Event/BigCalenderEvents";
 
 
 class ProductDetailContent extends Component {
@@ -896,9 +897,9 @@ class ProductDetailContent extends Component {
                                                                 : false
                                                         }
 
-                                                        addEvent={(action)=>
-                                                            this.callBackResult(action)
-                                                        }
+                                                        // addEvent={(action)=>
+                                                        //     this.callBackResult(action)
+                                                        // }
 
                                                     />
 
@@ -1053,7 +1054,7 @@ class ProductDetailContent extends Component {
                                                 </TabPanel>
 
                                                 <TabPanel value="8">
-                                                    <CalenderEvents productId={this.state.item.product._key} smallView  />
+                                                    <BigCalenderEvents productId={this.state.item.product._key} smallView  />
                                                 </TabPanel>
                                             </TabContext>
                                         </Box>
@@ -1093,11 +1094,14 @@ class ProductDetailContent extends Component {
                             }}
                         >
 <>
-    {this.state.showEventPopUp&&      <div className="form-col-left col-12">
+                    {this.state.showEventPopUp&&
+                    <div className="form-col-left col-12">
                                 <EventForm
+                                    hideProduct
                                     hide={()=> {
                                         this.showEvent();
                                     }}
+
                                     productId={this.state.item.product._key}
                                     triggerCallback={(action) => this.callBackSubmit(action)}   />
                             </div>}
@@ -1269,7 +1273,7 @@ class ProductDetailContent extends Component {
                                                     <> <div className={"row "}>
                                                         {!(this.state.releases&&
                                                             this.state.releases.length&&
-                                                            this.state.releases.filter(item=>item.Release.stage!=="cancelled").length>0)&&
+                                                            this.state.releases.filter(item=>item.Release.stage==="requested").length>0)&&
                                                         <div className={"col-12 mt-3 "}>
 
                                                             <div style={{position:"relative"}} className="text_fild ">
@@ -1277,6 +1281,8 @@ class ProductDetailContent extends Component {
                                                                     className="custom-label text-bold ellipsis-end text-blue mb-0">Search release company
                                                                 </div>
                                                                 <AutocompleteCustom
+
+                                                                    filterOrgs={[{_id:this.props.userDetail.orgId}]}
                                                                     orgs={true}
                                                                     companies={true}
                                                                     suggestions={this.state.orgNames}
@@ -1288,7 +1294,7 @@ class ProductDetailContent extends Component {
                                                         </div>}
 
                                                         {this.state.releases&&this.state.releases.length>0
-                                                        && this.state.releases.filter(item=>item.Release.stage!=="cancelled").map((release)=>
+                                                        && this.state.releases.filter(item=>item.Release.stage==="requested").map((release)=>
 
                                                             <div className={"col-12 mt-3 "}>
 
@@ -1370,7 +1376,8 @@ class ProductDetailContent extends Component {
                                                                                             }}>
                                                                                             {!(this.state.releases&&
                                                                                                 this.state.releases.length&&
-                                                                                                this.state.releases.filter(item=>item.Release.stage!=="cancelled").length>0)&&         <BlueButton
+                                                                                                this.state.releases.filter(item=>item.Release.stage==="requested").length>0)&&
+                                                                                            <BlueButton
                                                                                                 fullWidth
                                                                                                 title={"Submit"}
                                                                                                 type={"submit"}>
@@ -1536,6 +1543,7 @@ class ProductDetailContent extends Component {
                                                                 className="custom-label text-bold ellipsis-end text-blue mb-0">Search company for rental
                                                             </div>
                                                             <AutocompleteCustom
+                                                                filterOrgs={[{_id:this.props.userDetail.orgId}]}
                                                                 orgs={true}
                                                                 companies={true}
                                                                 suggestions={this.state.orgNames}
@@ -1813,6 +1821,7 @@ class ProductDetailContent extends Component {
                                 {!this.state.showServiceAgentSuccess ? (
                                     <>
                                         <AutocompleteCustom
+                                            filterOrgs={[{_id:this.props.userDetail.orgId}]}
                                             orgs={true}
                                             companies={true}
                                             suggestions={this.state.orgNames}

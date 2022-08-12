@@ -97,7 +97,7 @@ class ProductView extends Component {
 
     componentDidMount() {
 
-
+// console.log("location",this.props.location)
 
         if (this.props.location.search.includes("r=true")&&this.props.userDetail.is_org_admin ){
 
@@ -122,10 +122,14 @@ class ProductView extends Component {
 
             <>
 
+
                 {!this.state.loading &&
                 !this.props.currentProduct ? (
                     <NotFound />
-                ) :  <Layout hideFooter={true}>
+                ) :
+                <>
+                    {!this.props.location.pathname.includes("preview")?
+                    <Layout hideFooter={true}>
                     <div className={"container pb-5 mb-5"}>
                         {!this.state.loading&&this.props.currentProduct &&
                         <ProductDetailContent
@@ -135,7 +139,17 @@ class ProductView extends Component {
                         />}
 
                     </div>
-                </Layout>
+                </Layout>:
+                        <div className={"container pb-5 mb-5"}>
+                            {!this.state.loading&&this.props.currentProduct &&
+                            <ProductDetailContent
+                                history={this.props.history}
+                                hideRegister={true}
+                                item={this.props.currentProduct}
+                            />}
+
+                        </div>}
+                    </>
                 }
 
 

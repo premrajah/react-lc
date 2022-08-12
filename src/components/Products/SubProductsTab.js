@@ -37,7 +37,8 @@ class SubProductsTab extends Component {
                                                     </span>
 
 
-                        {this.props.item.product.unit_conversions&&this.props.item.product.unit_conversions.length>0&&     <span style={{float:"right"}} className={"text-right"}  data-parent={this.props.item.product._key}
+                        {this.props.item.product.unit_conversions&&this.props.item.product.unit_conversions.length>0&&
+                        <span style={{float:"right"}} className={"text-right"}  data-parent={this.props.item.product._key}
                                                                                                                                  onClick={this.editConversion}
                         >Edit Conversions</span>}
                     </button>

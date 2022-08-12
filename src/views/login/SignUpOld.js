@@ -8,7 +8,7 @@ import { Checkbox, IconButton, InputAdornment, TextField } from "@material-ui/co
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
+import AutocompleteCustom from "../../components/AutocompleteSearch/AutocompleteCustom";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import {capitalize} from "../../Util/GlobalFunctions";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";

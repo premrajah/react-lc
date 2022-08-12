@@ -122,8 +122,8 @@ class Approvals extends Component {
         this.props.fetchRegisterRequest();
         this.props.fetchServiceAgentRequest()
         this.fetchSiteReleaseRequests()
-        this.fetchRentalRequests()
-        this.fetchRentalReleases()
+        // this.fetchRentalRequests()
+        // this.fetchRentalReleases()
 
     this.interval = setInterval(() => {
         this.props.fetchReleaseRequest();

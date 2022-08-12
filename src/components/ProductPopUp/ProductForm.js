@@ -105,7 +105,7 @@ class ProductForm extends Component {
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["new", "used", "salvage"],
-            powerSupply: ["gas", "electric", "hybrid", "solid_fuel"],
+            powerSupply: ["gas", "electric" ],
             product: null,
             parentProduct: null,
             parentProductId: null,
@@ -499,7 +499,7 @@ class ProductForm extends Component {
                 const part_no = data.get("part_no");
                 const state = data.get("state");
                 const is_listable = this.state.is_listable?true:false;
-                const is_manufacturer = this.state.is_manufacturer;
+                const is_manufacturer = this.state.is_manufacturer?true:false;
 
                 const site = data.get("deliver")
                 const year_of_making = data.get("manufacturedDate") ? data.get("manufacturedDate") : 0
@@ -508,7 +508,7 @@ class ProductForm extends Component {
                 const energy_rating = this.state.energyRating;
 
 
-                const productData = {
+                let productData = {
                     purpose: purpose.toLowerCase(),
                     condition: condition.toLowerCase(),
                     name: title,
@@ -530,11 +530,16 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
-                        power_supply: power_supply.toLowerCase(),
+                        // power_supply: power_supply?power_supply.toLowerCase():,
                     },
-
                     year_of_making: year_of_making,
                 };
+
+                if (power_supply){
+
+                    productData.sku.power_supply=  power_supply.toLowerCase()
+
+                }
 
                 if (this.props.createProductId) {
 
@@ -571,6 +576,7 @@ class ProductForm extends Component {
                     completeData.name=data.get("templateName")
 
                     this.saveProductLines(data.get("templateName") ,completeData)
+
                 } else {
                     axios
                         .put(
@@ -789,6 +795,10 @@ class ProductForm extends Component {
 
 
 
+        try {
+
+
+
              const data = formData;
 
 
@@ -813,9 +823,9 @@ class ProductForm extends Component {
             const site = data.get("deliver");
            const power_supply = data.get("power_supply");
 
-            const productData = {
+            let productData = {
                 id: this.props.item.product._key,
-                is_manufacturer: this.state.is_manufacturer,
+                is_manufacturer: this.state.is_manufacturer?true:false,
                 update: {
                     artifacts: this.state.images,
                     purpose: purpose.toLowerCase(),
@@ -840,13 +850,19 @@ class ProductForm extends Component {
                         sku: sku,
                         upc: upc,
                         part_no: part_no,
-                        power_supply: power_supply,
+                        // power_supply: power_supply,
                     },
                     year_of_making: Number(data.get("manufacturedDate")),
 
                 },
             };
 
+
+        if (power_supply){
+
+            productData.update.sku.power_supply=  power_supply.toLowerCase()
+
+        }
             axios
                 .post(
                     baseUrl + "product",
@@ -875,16 +891,26 @@ class ProductForm extends Component {
 
                 });
 
+        }catch (e){
+            console.log(e)
+            this.setState({
+                btnLoading: false,
+                loading: false,
+                isSubmitButtonPressed: false
+            });
+        }
+
     };
+
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps!=this.props){
 
             if (this.props.item){
-
+                this.isManufacturer()
                 this.loadImages(this.props.item.artifacts)
 
-                this.isManufacturer()
+
             }
 
         }
@@ -917,7 +943,7 @@ class ProductForm extends Component {
                                 templates.push({key: item, value: JSON.parse(responseObj[item])})
                         }
                     )
-                    // console.log(templates)
+
 
                     this.setState({
                         templates: templates,
@@ -938,7 +964,6 @@ class ProductForm extends Component {
         axios.get(baseUrl + "product/"+this.props.item.product._key+"/oc-vc" ).then(
             (response) => {
 
-                console.log(response.data.data.ownership_context)
                 this.setState({
                     is_manufacturer:response.data.data.ownership_context.is_manufacturer
                 })
@@ -950,7 +975,6 @@ class ProductForm extends Component {
 
         window.scrollTo(0, 0);
 
-        // console.log(this.props.productId,this.props.type)
         this.setState({
             parentProductId:null
         }, ()=>{
@@ -1364,7 +1388,7 @@ class ProductForm extends Component {
                                                 initialValue={this.props.item&&this.props.item.product.sku.power_supply
                                                 ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.power_supply:"")
                                                 }
-                                                // select={"Select"}
+                                                select={"Select"}
 
                                                 onChange={(value)=> {
                                                     this.handleChangeProduct(value,"power_supply")

@@ -79,7 +79,9 @@ function MyAccount(props) {
 
                 <div className="row">
                     <div className="col-md-12">
-                        {props.isLoggedIn && props.userContext && (
+                        {props.isLoggedIn
+                        // && props.userContext
+                        && (
                             <div className="row">
                                 <div className="col-md-3">
                                     <Tabs
@@ -95,23 +97,23 @@ function MyAccount(props) {
                                         <Tab key={2} label="Change Password" value={2} />
                                         <Tab key={3} label="Product Lines" value={3} />
                                         <Tab key={4} label="Statistics" value={4} />
-                                        {props.userContext.perms.includes("OrgAdminWrite") && (
+                                        {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
                                             <Tab key={5} label="Manage Users" value={5} />
                                         )}
-                                        {props.userContext.perms.includes("OrgAdminWrite") && (
+                                        {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
                                             <Tab key={6} label="Manage Roles" value={6} />
                                         )}
-                                        {props.userContext.perms.includes("AdminWrite") && (
+                                        {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
                                             <Tab key={7} label="System Users" value={7} />
                                         )}
-                                        {props.userContext.perms.includes("AdminWrite") &&
+                                        {props.userContext&&props.userContext.perms.includes("AdminWrite") &&
                                             (props.userContext.perms.includes("LcAssumeUserRole") ||
                                                 props.userContext.perms.includes(
                                                     "LcAssumeOrgRole"
                                                 )) && (
                                                 <Tab key={8} label="Assume Users" value={8} />
                                             )}
-                                        {props.userContext.perms.includes("AdminWrite") && (
+                                        {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
                                             <Tab key={9} label="Manage Orgs" value={9} />
                                         )}
                                         }
@@ -134,22 +136,22 @@ function MyAccount(props) {
                                         <Statistics />
                                     </TabPanel>
 
-                                    {props.userContext.perms.includes("OrgAdminWrite") && (
+                                    {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
                                         <TabPanel value={value} index={5}>
                                             <ManageOrgUsers />
                                         </TabPanel>
                                     )}
-                                    {props.userContext.perms.includes("OrgAdminWrite") && (
+                                    {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
                                         <TabPanel value={value} index={6}>
                                             <ManageRole />
                                         </TabPanel>
                                     )}
-                                    {props.userContext.perms.includes("AdminWrite") && (
+                                    {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
                                         <TabPanel value={value} index={7}>
                                             <SystemManageUser />
                                         </TabPanel>
                                     )}
-                                    {props.userContext.perms.includes("AdminWrite") &&
+                                    {props.userContext&&props.userContext.perms.includes("AdminWrite") &&
                                         (props.userContext.perms.includes("LcAssumeUserRole") ||
                                             props.userContext.perms.includes(
                                                 "LcAssumeOrgRole"
@@ -159,7 +161,7 @@ function MyAccount(props) {
                                             </TabPanel>
                                         )}
 
-                                    {props.userContext.perms.includes("AdminWrite") && (
+                                    {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
                                         <TabPanel value={value} index={9}>
                                             <ManageOrgSettings />
                                         </TabPanel>

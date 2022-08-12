@@ -149,7 +149,7 @@ class WysiwygGroupImageUpload extends Component {
 
                                 })
                                 .catch((error) => {
-                                    console.log('upload image error  ', error)
+
                                     let currentFiles = [...this.state.files];
                                     for (let k = 0; k < currentFiles.length; k++) {
                                         if (currentFiles[k].file.name === imgFile.file.name) {

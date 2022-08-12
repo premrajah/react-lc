@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import {Alert, Snackbar} from "@mui/material";
 import SiteFormNew from "../Sites/SiteFormNew";
+import {now} from "moment";
 
 
 let productProperties=[
@@ -41,7 +42,8 @@ let productProperties=[
     {field:"part_no",required:false},
     {field:"line",required:false},
     {field:"is_listable",required:false},
-    {field:"power_supply",required:true},
+    // {field:"is_manufacturer",required:false},
+    {field:"power_supply",required:false},
     {field:"energy_rating",required:false},
 ]
 
@@ -459,12 +461,16 @@ const UploadMultiSiteOrProduct = (props) => {
         let errorsFound=errors
         let uploadError=[];
 
+        let ts=now()
+
         for (let k = 0; k < list.length; k++) {
 
             let listItem = list[k]
             let payload = {
+                "ref": ts.toString(),
                 "match_strategy": match_strategy,
                 "merge_strategy": merge_strategy,
+
                 "site_id": siteId,
                 "row": {
                     "name": listItem.name,
@@ -486,6 +492,8 @@ const UploadMultiSiteOrProduct = (props) => {
                     "part_no": listItem.part_no,
                     "line": listItem.line,
                     "is_listable": listItem.is_listable.toLowerCase()==="true"?true:false,
+                    // "is_manufacturer": listItem.is_manufacturer.toLowerCase()==="true"?true:false,
+                    "power_supply": listItem.power_supply?listItem.power_supply.toLowerCase():null,
                 }
             }
 
@@ -558,7 +566,7 @@ const UploadMultiSiteOrProduct = (props) => {
         let newProgress= 0
         let errorsFound=errors
         let uploadError=[];
-
+        let ts=now()
         for (let k = 0; k < list.length; k++) {
 
 
@@ -567,6 +575,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
 
             let payload = {
+                "ref":ts.toString(),
                 "match_strategy": match_strategy,
                 "merge_strategy": merge_strategy,
                 "row": {
@@ -585,8 +594,6 @@ const UploadMultiSiteOrProduct = (props) => {
 
             try {
 
-
-                // console.log(payload)
                 const result = await axios.post(`${baseUrl}load/site`, payload);
 
             }

@@ -20,6 +20,10 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+import docs from "../../img/icons/docs.png";
+import ProductAutocomplete from "../AutocompleteSearch/ProductAutocomplete";
+import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
+import moment from "moment";
 
 var slugify = require('slugify')
 
@@ -47,6 +51,7 @@ class EventForm extends Component {
         super(props);
 
         this.state = {
+
             timerEnd: false,
             isEditProduct:false,
             count: 0,
@@ -112,7 +117,7 @@ class EventForm extends Component {
             disableVolume:false,
             loading:false,
             energyRating:0,
-            productId:null,
+
             showForm:true,
             templates:[],
             selectedTemplated:null,
@@ -134,7 +139,8 @@ class EventForm extends Component {
                 {key:"repair_or_replace",value:"Repair / Replacement of parts"},
                 {key:"other",value:"Other"},
 
-            ]
+            ],
+            productId:null,
 
 
         };
@@ -395,6 +401,9 @@ class EventForm extends Component {
             })
         }
 
+
+
+
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -433,8 +442,10 @@ class EventForm extends Component {
         let eventData=  {
                 title : data.get("title"),
                 description : data.get("description"),
-                resolution_epoch_ms : new Date(this.state.startDate).getTime(),
+                // resolution_epoch_ms:  moment(this.state.startDate).utc().format('x'),
+            resolution_epoch_ms : new Date(this.state.startDate).getTime(),
 
+            // resolution_epoch_ms : new Date(this.state.startDate.getFullYear(), this.state.startDate.getMonth(), this.state.startDate.getDate(), 1, 0, 0).getTime(),
                 process : data.get("process"),
             // stage:"open"
         }
@@ -445,6 +456,9 @@ class EventForm extends Component {
             eventData.recur_in_epoch_ms = data.get("interval")
         }
 
+        // console.log(eventData.resolution_epoch_ms)
+
+        // return
                 this.setState({isSubmitButtonPressed: true})
 
                     axios
@@ -452,14 +466,12 @@ class EventForm extends Component {
                             baseUrl+"event",
                             {
                                 event:eventData,
-                                product_id : this.props.productId,
+                                product_id : this.state.productId,
                                 artifact_ids: this.state.images
 
                             },
                         )
                         .then((res) => {
-
-
 
                             this.props.showSnackbar({
                                 show: true,
@@ -590,6 +602,17 @@ class EventForm extends Component {
     }
 
 
+    selectedProduct = (data) => {
+
+        this.setState({
+            productId:data.key
+        })
+
+
+    };
+
+
+
     updateImages() {
         axios
             .post(
@@ -622,6 +645,11 @@ class EventForm extends Component {
         if (prevProps!=this.props){
               // alert("called")
 
+            if (this.props.date)
+            this.setState({
+                startDate:this.props.date
+            })
+
         }
     }
 
@@ -630,13 +658,25 @@ class EventForm extends Component {
 
         window.scrollTo(0, 0);
 
+        if (this.props.productId){
+            this.setState({
+                productId:this.props.productId
+            })
+        }
 
 
         if (this.props.event){
-            this.loadImages(this.props.event.artifacts)
+
             this.setState({
                 isEditProduct:true,
                 startDate:this.props.event.event.resolution_epoch_ms
+            })
+
+            this.loadImages(this.props.event.artifacts)
+        }else{
+            this.setState({
+                isEditProduct:true,
+                startDate: new Date()
             })
         }
 
@@ -669,6 +709,19 @@ class EventForm extends Component {
                 <div className={"row justify-content-center create-product-row"}>
                     <div className={"col-12"}>
                           <form onSubmit={this.props.event?this.updateEvent:this.handleSubmit}>
+
+                              {!this.props.hideProduct &&
+                              <ProductAutocomplete
+
+
+                                  suggestions={this.state.orgNames}
+                                  selectedProduct={(data) =>
+                                      this.selectedProduct(data)
+                                  }
+
+
+                              />}
+
                             <div className="row ">
 
                                 <div className="col-12 mt-2">
@@ -706,7 +759,7 @@ class EventForm extends Component {
                                       className={
                                           "custom-label text-bold text-blue "
                                       }>
-                                      Date
+                                      Resolution Date
                                   </div>
 
                                   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -723,7 +776,8 @@ class EventForm extends Component {
                                           id="date-picker-dialog-1"
                                           // label="Available From"
                                           inputFormat="dd/MM/yyyy"
-                                          value={this.state.startDate}
+                                          hintText="Select Date"
+                                          value={this.state.startDate||this.props.date}
 
                                           // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.event&&this.props.event.campaign.start_ts}
                                           // onChange={this.handleChangeDateStartDate.bind(
@@ -742,14 +796,7 @@ class EventForm extends Component {
                                   <div className="col-md-4  col-sm-12 col-xs-12  ">
 
                                       <SelectArrayWrapper
-                                          // detailsHeading="What is the purpose of your product?"
-                                          // details="Defined: a whole product,
-                                          //       Aggregate: a product made up from other products,
-                                          //       Prototype: a first version of a product"
 
-                                          // initialValue={this.props.event?(this.props.event.product.purpose):""
-                                          //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.purpose:"")
-                                          // }
                                           initialValue={this.props.event&&this.props.event.event.recur_in_epoch_ms}
 
                                           select={"Select interval"}
@@ -767,14 +814,6 @@ class EventForm extends Component {
                                   <div className="col-md-4  col-sm-12 col-xs-12  ">
 
                                       <SelectArrayWrapper
-                                          // detailsHeading="What is the purpose of your product?"
-                                          // details="Defined: a whole product,
-                                          //       Aggregate: a product made up from other products,
-                                          //       Prototype: a first version of a product"
-
-                                          // initialValue={this.props.event?(this.props.event.product.purpose):""
-                                          //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.purpose:"")
-                                          // }
 
                                           initialValue={this.props.event&&this.props.event.event.process}
                                           onChange={(value)=> {
@@ -853,7 +892,8 @@ class EventForm extends Component {
                                                                             }
 
                                                                             style={{
-                                                                                backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
+                                                                                // backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
+                                                                                backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}"),url(${docs})`
 
                                                                             }}
                                                                         >

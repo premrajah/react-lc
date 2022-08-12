@@ -30,7 +30,10 @@ class ProductItemNew extends Component {
             showProductEdit: false,
             productDuplicate: false,
             showProductHide: false,
-            showTrackPopUp:false
+            showTrackPopUp:false,
+            showPreview:false,
+            releases:[],
+            productSite:null
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -50,6 +53,15 @@ class ProductItemNew extends Component {
 
     componentDidMount() {
         this.getArtifacts()
+
+        if (this.props.item){
+            this.fetchSite()
+            this.fetchReleases()
+
+        }
+
+
+
     }
 
     callBackSubmit() {
@@ -111,6 +123,40 @@ class ProductItemNew extends Component {
 
 
         }
+    }
+
+
+    fetchReleases=()=> {
+        axios
+            .get(baseUrl + "release/product/"+this.props.item._key)
+            .then(
+                (response) => {
+
+                    this.setState({
+                        releases: response.data.data,
+
+                    });
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
+    fetchSite=()=> {
+        axios
+            .get(baseUrl + "product/"+this.props.item._key+"/site")
+            .then(
+                (response) => {
+
+                    this.setState({
+                        productSite: response.data.data,
+
+                    });
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
     }
 
 
@@ -253,9 +299,15 @@ class ProductItemNew extends Component {
     render() {
         return (
             <>
-                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center align-items-center mb-4 bg-white rad-8  p-3">
+                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center  mb-4 bg-white rad-8  p-3">
                                 <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-md-4  col-xs-12":"col-md-2  col-xs-12"}>
-                                    <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
+                                    <Link onMouseEnter={()=> this.setState({
+                                        showPreview:true
+                                    })}
+                                          onMouseLeave={()=> this.setState({
+                                              showPreview:false
+                                          })}
+                                           className="product-link " onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
                                         <>
                                     {this.state.images.length > 0 ? (
                                         <ImageOnlyThumbnail images={this.state.images} />
@@ -264,12 +316,21 @@ class ProductItemNew extends Component {
                                     )}
                                     </>
                                     </Link>
+
+                                    {/*{this.props.showPreview &&this.state.showPreview && <div className="product-preview-box">*/}
+                                    {/*    <iframe style={{border:"none", borderRadius:"8px", padding:"5px"}} src={`/product/preview/${this.props.item._key}`} width="500px" height="500px">*/}
+                                    {/*    </iframe>*/}
+                                    {/*</div>}*/}
                                 </div>
                                 <div className={this.props.biggerImage?"col-md-8 pl-3-desktop  content-box-listing":"col-md-10 pl-3-desktop  content-box-listing"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-capitalize mb-1 width-70 ellipsis-end">
                                             <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>{this.props.item.is_listable&&<span
-                                                className="badge badge-info ml-2">Listed</span>}  <small className={""}><small> - {this.props.item._key}</small></small></Link>
+                                                className="badge badge-info ml-2">Listed</span>}                                             {this.state.releases&&this.state.releases.length>0
+                                            && this.state.releases.filter(item=>item.Release.stage!=="cancelled").map(item=> <small className="ml-2">{item.responder._id!=this.props.userDetail.orgId && item.Release.stage=="requested"?"(Awaiting release approval)":""}</small>)} <small className={""}><small> - {this.props.item._key}</small></small></Link>
+
+
+
                                       </p>
 
                                     {/*<p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">*/}
@@ -291,14 +352,23 @@ class ProductItemNew extends Component {
                                                             </span>
                                     </span>
                                     </div>
-                                    <p  className=" text-capitalize  text-gray-light mb-1">
+                                    {/*<p  className=" text-capitalize  text-gray-light mb-1">*/}
 
-                                        {this.props.item.purpose!=="aggregate"?"Qty:":""} {this.props.item.purpose!=="aggregate"&&  <span className={"text-blue"}>{this.props.item.volume} </span>}
-                                        {this.props.item.purpose!=="aggregate"&&     <span  className={"text-blue"}>{this.props.item.units}</span>}
-                                    </p>
+                                    {/*    {this.props.item.purpose!=="aggregate"?"Qty:":""} {this.props.item.purpose!=="aggregate"&&  <span className={"text-blue"}>{this.props.item.volume} </span>}*/}
+                                    {/*    {this.props.item.purpose!=="aggregate"&&     <span  className={"text-blue"}>{this.props.item.units}</span>}*/}
+                                    {/*</p>*/}
+
+
+
                                     {this.props.item.sku&&this.props.item.sku.brand&&
-                                    <p className={"text-capitalize text-gray-light"}>Brand: <span className={"sub-title-text-pink"}>{this.props.item.sku.brand}</span></p>}
+                                    <p className={"text-capitalize text-gray-light mb-1"}>Brand: <span className={"sub-title-text-pink"}>{this.props.item.sku.brand}</span></p>}
 
+
+                                    {this.props.item.sku&&this.props.item.sku.serial&&
+                                    <p className={"text-capitalize text-gray-light mb-1"}>Serial No.: <span className={"text-blue"}>{this.props.item.sku.serial}</span></p>}
+
+                                    {this.state.productSite&&
+                                    <p className={"text-capitalize text-gray-light mb-1"}>Site: <span className={"text-blue"}>{this.state.productSite.name}</span></p>}
 
 
 

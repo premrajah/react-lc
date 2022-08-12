@@ -1,20 +1,20 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import "./autocomplete-custom.css";
-import { baseUrl } from "../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import CompaniesHouseLogo from "../img/hmrc.png";
-import LoopcycleLogo from '../img/logo-small.png';
+import CompaniesHouseLogo from "../../img/hmrc.png";
+import LoopcycleLogo from '../../img/logo-small.png';
 import PencilIcon from '@mui/icons-material/Edit';
-import IconBtn from "./FormsUI/Buttons/IconBtn";
-import TextFieldWrapper from "./FormsUI/ProductForm/TextField";
-import CheckboxWrapper from "./FormsUI/ProductForm/Checkbox";
-import SelectArrayWrapper from "./FormsUI/ProductForm/Select";
+import IconBtn from "../FormsUI/Buttons/IconBtn";
+import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
+import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
+import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import PhoneInput from "react-phone-input-2";
-import SearchPlaceAutocomplete from "./FormsUI/ProductForm/SearchPlaceAutocomplete";
-import BlueButton from "./FormsUI/Buttons/BlueButton";
-import {validateFormatCreate, validateInputs, Validators} from "../Util/Validator";
-import CloseButtonPopUp from "./FormsUI/Buttons/CloseButtonPopUp";
+import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 
 class AutocompleteCustom extends Component {
     static propTypes = {
@@ -158,9 +158,12 @@ class AutocompleteCustom extends Component {
                     for (let i = 0; i < responseAll.orgs.length; i++) {
 
                         if (this.props.filterOrgs&&this.props.filterOrgs.length>0
-                            &&this.props.filterOrgs.find((item)=> item._key==responseAll.orgs[i]._key)){
+                            &&this.props.filterOrgs.find((item)=> item._id==responseAll.orgs[i]._id)){
+
                          continue
                         }
+
+
                         companies.push({
                             name: responseAll.orgs[i].name,
                             org: responseAll.orgs[i]._key,
@@ -393,7 +396,7 @@ class AutocompleteCustom extends Component {
             if (filteredSuggestions.length) {
                 suggestionsListComponent =(
                     <div className={"suggestions-box"}>
-                    <ul class="suggestions">
+                    <ul className="suggestions">
                         {!this.props.hideAddNew && <li>
                             <div  className=" no-gutters row">
 

@@ -8,7 +8,7 @@ import { Checkbox, IconButton, InputAdornment, TextField } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
+import AutocompleteCustom from "../../components/AutocompleteSearch/AutocompleteCustom";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import {capitalize} from "../../Util/GlobalFunctions";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
@@ -192,7 +192,7 @@ class SignUp extends Component {
         let {formIsValid,errors}= validateInputs(validations)
 
         this.setState({ errors: errors });
-        console.log(errors)
+
         return formIsValid;
     }
 

@@ -44,6 +44,7 @@ class ListEditForm extends Component {
         this.state = {
             timerEnd: false,
             item: null,
+            items:[],
             count: 0,
             nextIntervalFlag: false,
             active: 0, //0 logn. 1- sign up , 3 -search,
@@ -876,11 +877,22 @@ class ListEditForm extends Component {
     }
 
 
+
     componentDidMount() {
+
         window.scrollTo(0, 0);
         this.props.loadProducts(this.props.userDetail.token);
         this.getSites();
         this.getFiltersCategories();
+
+        if (this.props.item) {
+
+                    this.setState({
+                        startDate: this.state.item.listing.available_from_epoch_ms,
+                        endDate: this.state.item.listing.expire_after_epoch_ms
+                    })
+            }
+
     }
 
     goToSignIn() {

@@ -4,7 +4,7 @@ import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import axios from "axios/index";
 import {Alert, Modal, ModalBody} from "react-bootstrap";
 import * as actionCreator from "../../store/actions/actions";
-import AutocompleteCustom from "../../components/AutocompleteCustom";
+import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import PlaceholderImg from "../../img/sq_placeholder.png";
 import EditIcon from "@mui/icons-material/Edit";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
@@ -881,8 +881,8 @@ class CompanyDetails extends Component {
 
                         <>
                             {this.state.orgs.length > 1 && <>
-                            <div className="col-md-3 ">Switch Company:</div>
-                            <div className="col-md-6 ">
+                            <div className="col-md-4 ">Switch Company:</div>
+                            <div className="col-md-4 ">
                                 <MenuDropdown
                                     setSelection={this.switchOrg}
                                     initialValue={this.props.userContext.orgId}
@@ -892,7 +892,7 @@ class CompanyDetails extends Component {
                                 />
                             </div>
                                 </>}
-                            <div className="col-md-3 ">
+                            <div className="col-md-4 ">
 
                                     <BlueBorderButton
                                         // style={{ minWidth: "180px" }}
@@ -932,6 +932,7 @@ class CompanyDetails extends Component {
                 )}
 
 
+                {this.state.org &&
                 <div className="row company-box no-gutters bg-light border-box rad-8 align-items-center">
                     <div style={{ display: "flex", position: "relative" }} className="col-md-12 align-items-center  ">
                         <div className={"img-box"} style={{ position: "relative" }}>
@@ -1068,7 +1069,7 @@ class CompanyDetails extends Component {
 
                     </div>
 
-                </div>
+                </div>}
 
 
 
@@ -1086,7 +1087,7 @@ class CompanyDetails extends Component {
 
                    </div>
                </div>
-                   <div className="row  mb-4 d-flex align-items-center justify-content-end   ">
+                {this.state.org &&   <div className="row  mb-4 d-flex align-items-center justify-content-end   ">
 
                    <div className="col-md-12 d-flex  flex-row align-items-center   ">
 
@@ -1234,7 +1235,7 @@ class CompanyDetails extends Component {
 
                    </div>
 
-                </div>
+                </div>}
 
 
 

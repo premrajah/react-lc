@@ -158,9 +158,12 @@ class AutocompleteCustom extends Component {
                     for (let i = 0; i < responseAll.orgs.length; i++) {
 
                         if (this.props.filterOrgs&&this.props.filterOrgs.length>0
-                            &&this.props.filterOrgs.find((item)=> item._key==responseAll.orgs[i]._key)){
+                            &&this.props.filterOrgs.find((item)=> item._id==responseAll.orgs[i]._id)){
+                            console.log(this.props.filterOrgs,"found match")
                          continue
                         }
+
+                        console.log(this.props.filterOrgs)
                         companies.push({
                             name: responseAll.orgs[i].name,
                             org: responseAll.orgs[i]._key,

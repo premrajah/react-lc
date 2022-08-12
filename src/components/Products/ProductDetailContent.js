@@ -1273,7 +1273,7 @@ class ProductDetailContent extends Component {
                                                     <> <div className={"row "}>
                                                         {!(this.state.releases&&
                                                             this.state.releases.length&&
-                                                            this.state.releases.filter(item=>item.Release.stage!=="cancelled").length>0)&&
+                                                            this.state.releases.filter(item=>item.Release.stage==="requested").length>0)&&
                                                         <div className={"col-12 mt-3 "}>
 
                                                             <div style={{position:"relative"}} className="text_fild ">
@@ -1281,6 +1281,8 @@ class ProductDetailContent extends Component {
                                                                     className="custom-label text-bold ellipsis-end text-blue mb-0">Search release company
                                                                 </div>
                                                                 <AutocompleteCustom
+
+                                                                    filterOrgs={[{_id:this.props.userDetail.orgId}]}
                                                                     orgs={true}
                                                                     companies={true}
                                                                     suggestions={this.state.orgNames}
@@ -1292,7 +1294,7 @@ class ProductDetailContent extends Component {
                                                         </div>}
 
                                                         {this.state.releases&&this.state.releases.length>0
-                                                        && this.state.releases.filter(item=>item.Release.stage!=="cancelled").map((release)=>
+                                                        && this.state.releases.filter(item=>item.Release.stage==="requested").map((release)=>
 
                                                             <div className={"col-12 mt-3 "}>
 
@@ -1374,7 +1376,8 @@ class ProductDetailContent extends Component {
                                                                                             }}>
                                                                                             {!(this.state.releases&&
                                                                                                 this.state.releases.length&&
-                                                                                                this.state.releases.filter(item=>item.Release.stage!=="cancelled").length>0)&&         <BlueButton
+                                                                                                this.state.releases.filter(item=>item.Release.stage==="requested").length>0)&&
+                                                                                            <BlueButton
                                                                                                 fullWidth
                                                                                                 title={"Submit"}
                                                                                                 type={"submit"}>
@@ -1540,6 +1543,7 @@ class ProductDetailContent extends Component {
                                                                 className="custom-label text-bold ellipsis-end text-blue mb-0">Search company for rental
                                                             </div>
                                                             <AutocompleteCustom
+                                                                filterOrgs={[{_id:this.props.userDetail.orgId}]}
                                                                 orgs={true}
                                                                 companies={true}
                                                                 suggestions={this.state.orgNames}
@@ -1817,6 +1821,7 @@ class ProductDetailContent extends Component {
                                 {!this.state.showServiceAgentSuccess ? (
                                     <>
                                         <AutocompleteCustom
+                                            filterOrgs={[{_id:this.props.userDetail.orgId}]}
                                             orgs={true}
                                             companies={true}
                                             suggestions={this.state.orgNames}

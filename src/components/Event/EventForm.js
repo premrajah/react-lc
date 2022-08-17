@@ -442,7 +442,7 @@ class EventForm extends Component {
                 title : data.get("title"),
                 description : data.get("description"),
                 // resolution_epoch_ms:  moment(this.state.startDate).utc().format('x'),
-            resolution_epoch_ms : new Date(this.state.startDate).getTime(),
+            resolution_epoch_ms : new Date(this.state.startDate).getTime()+100,
 
             // resolution_epoch_ms : new Date(this.state.startDate.getFullYear(), this.state.startDate.getMonth(), this.state.startDate.getDate(), 1, 0, 0).getTime(),
                 process : data.get("process"),

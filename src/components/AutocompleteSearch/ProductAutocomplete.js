@@ -325,7 +325,9 @@ class ProductAutocomplete extends Component {
                     <div className={"suggestions-box"}>
                     <ul className="suggestions">
 
-                        {filteredSuggestions.map((suggestion, index) => {
+                        {filteredSuggestions.map((item, index) => {
+
+                            let suggestion=item.Product
                             let className;
 
                             // Flag the active suggestion with a class

@@ -896,9 +896,9 @@ class ProductDetailContent extends Component {
                                                                 : false
                                                         }
 
-                                                        // addEvent={(action)=>
-                                                        //     this.callBackResult(action)
-                                                        // }
+                                                        addEvent={(action)=>
+                                                            this.callBackResult(action)
+                                                        }
 
                                                     />
 

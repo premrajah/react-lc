@@ -25,6 +25,8 @@ import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import docs from '../../img/icons/docs.png';
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
 
 var slugify = require('slugify')
 
@@ -1081,7 +1083,18 @@ class ProductForm extends Component {
                     </div>
                         {!this.props.hideUpload&&!this.props.productLines &&
                         <div className="col-md-4  col-xs-12 desktop-right">
-                        <button className="btn btn-sm blue-btn pt-2" onClick={() => this.showMultipleUpload()} type="button">Upload Multiple Products</button>
+                        {/*<button className="btn btn-sm blue-btn pt-2" */}
+                        {/*        */}
+                        {/*        ></button>*/}
+                            <BlueButton
+                                sleek
+                                onClick={() => this.showMultipleUpload()}
+                                title={"Upload Multiple Products"}
+                                fullWidth
+                                type="button"
+                            >
+                            </BlueButton>
+
                         </div>}
 
                         {!this.props.item&&!this.props.productLines &&this.state.templates.length>0&&

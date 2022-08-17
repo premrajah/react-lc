@@ -349,7 +349,7 @@ class Sites extends Component {
                         {this.state.items&&this.state.items
                             .map((site, index) =>
                             <React.Fragment key={index}>
-                                <SitePageItem  showEdit={true} item={site}/>
+                                <SitePageItem  showEdit={true} item={site.Site}/>
                             </React.Fragment>
                         )}
                         </PaginationLayout>

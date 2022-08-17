@@ -114,7 +114,7 @@ class SearchItem extends Component {
                             />
                         )}
                     </div>
-                    <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop content-box-listing"}>
+                    <div className={"col-md-10 position-relative col-xs-12 col-sm-12 pl-3-desktop content-box-listing"}>
                         <p  className="text-capitlize mb-1 title-bold width-80 d-block">
                             {this.props.item.search.name}
                         </p>
@@ -148,7 +148,7 @@ class SearchItem extends Component {
                         </div>
                         <div className={"add-top-button pl-3-desktop"}>
 
-                        <p className={"  status text-right"}>
+                        <p className="  status text-right ">
                                 <span className={(this.props.item.search.stage!="inactive"&&this.props.item.search.stage!="expired")?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.search.stage}
                                 </span>

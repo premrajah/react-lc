@@ -2423,9 +2423,9 @@ button.blue-btn-border
     }
 }
 
-.container-fluid {
-    padding: 0;
-}
+/*.container-fluid {*/
+/*    padding: 0;*/
+/*}*/
 
 /*footer */
 
@@ -3462,7 +3462,7 @@ background: white;
 }
 
 .MuiPaper-root {
-    padding: 0 !important;
+    /*padding: 0 !important;*/
 }
 .MuiAlert-root.MuiPaper-root {
     padding: 6px 16px !important;
@@ -3956,7 +3956,7 @@ input:active,input:focus{
 }
 
 .MuiMenu-list{
-    padding: 0!important;
+    /*padding: 0!important;*/
 }
 .Mui-active {
 
@@ -4162,7 +4162,8 @@ input:active,input:focus{
     text-overflow: ellipsis;
 }
 .add-top-button{
-    position: absolute;top: 0;right: 0;
+    position: absolute;
+    top: 0;right: 0;
 }
 .bg-transparent{
     background: transparent;
@@ -4512,3 +4513,22 @@ select,select option {text-transform:capitalize!important;}
 /*}*/
 
 
+.product-item{
+    position: relative;
+}
+
+
+.blue-btn-theme{
+    border: transparent;
+}
+
+.no-radius{
+    border-radius: 0;
+}
+.btn-sleek{
+    height: auto!important;
+    border-radius: 4px!important;
+}
+.custom-dropdown-menu .MuiList-padding{
+    padding: 10px!important;
+}

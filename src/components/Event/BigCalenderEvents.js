@@ -1,27 +1,20 @@
 import React, {Fragment, useEffect, useMemo, useState} from 'react'
 import PropTypes from 'prop-types'
-import moment, {now} from 'moment'
-import {
-    Calendar,
-    Views,
-    DateLocalizer,
-    momentLocalizer,
-} from 'react-big-calendar'
+import moment from 'moment'
+import {Calendar, DateLocalizer, momentLocalizer, Views,} from 'react-big-calendar'
 // import DemoLink from './DemoLink.component'
-import eventDatas from './events'
 import * as dates from './dates'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import EventItem from "./EventItem";
-import {LoaderAnimated, removeTime, weekday} from "../../Util/GlobalFunctions";
+import {LoaderAnimated, weekday} from "../../Util/GlobalFunctions";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios";
 import Badge from '@mui/material/Badge';
 import {Add} from "@mui/icons-material";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import EventForm from "./EventForm";
-import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
-import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
+
 const mLocalizer = momentLocalizer(moment)
 
 const ColoredDateCellWrapper = ({ children }) => {

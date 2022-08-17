@@ -371,7 +371,7 @@ class RequestReleaseItem extends Component {
                                     </span>
                                 </div>}
                             </div>
-                            <div style={{ textAlign: "right" }} className={"col-md-5 col-xs-12 col-sm-12"}>
+                            <div style={{ textAlign: "right" }} className={"col-md-5 position-relative col-xs-12 col-sm-12"}>
 
                                 <p className={"text-gray-light   date-bottom"}>
                                     {moment(this.state.item.Release._ts_epoch_ms).format(
@@ -379,7 +379,7 @@ class RequestReleaseItem extends Component {
                                     )}
                                 </p>
                                 <div className="row  pb-4 pb-4 mb-4">
-                                    <div className="col-12 text-right pb-2 pt-2">
+                                    <div className="col-12 position-relative text-right pb-2 pt-2">
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (

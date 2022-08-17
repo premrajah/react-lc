@@ -101,7 +101,7 @@ class MarketplaceResourceItem extends Component {
                                             <img className={"img-fluid rad-8 img-list"} src={PlaceholderImg} alt="" />
                                     }
                                 </div>
-                                <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
+                                <div className={"col-md-10 position-relative col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
                                     <p  className="text-capitlize mb-2 item-title width-70 ellipsis-end">
                                         {this.props.item.name}
                                     </p>

@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {Nav, Navbar, NavbarBrand, NavItem} from "react-bootstrap";
+import {Nav, Navbar, NavbarBrand, NavItem, Container} from "react-bootstrap";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOutline from "@mui/icons-material/MailOutline";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
@@ -193,9 +193,10 @@ class ComponentsNavbar extends React.Component {
                 {(baseUrl && this.props.isLoggedIn && baseUrl  === "https://graph-dev.makealoop.io/api/2/") && <DevelopmentUserInfoDisplay userDetail={this.props.userDetail} /> }
 
                 <Navbar className={"container-blue "} color-on-scroll="100" expand="lg">
-                    <Nav className={"justify-content-start "}>
+                    <Container fluid>
+                    <Nav className={" me-autojustify-content-start "}>
                         <NavbarBrand to="/" tag={Link} id="navbar-brand">
-                            <div className="row no-gutters">
+                            <div className="row ">
                                 <div className="col-auto">
                                     <Link className={"logo-link"} to={"/"}>
                                         <div className="d-flex justify-content-center align-content-center">
@@ -212,7 +213,7 @@ class ComponentsNavbar extends React.Component {
                         </NavbarBrand>
                     </Nav>
 
-                    <Nav className={"justify-content-end menu-align-right"}>
+                    <Nav className={"me-auto justify-content-end menu-align-right"}>
                         {this.props.isLoggedIn && (
                             <>
                             <NavItem className={"web-only mr-3"}>
@@ -355,7 +356,7 @@ class ComponentsNavbar extends React.Component {
 
                                     <Menu
                                         // className={"p-0"}
-                                        style={{paddingTop:"0!important",paddingBottom:"0!important"}}
+                                        style={{padding:"10px!important"}}
                                         id="basic-menu"
                                         anchorEl={this.state.anchorEl}
                                         open={this.state.menuOpen}
@@ -363,6 +364,7 @@ class ComponentsNavbar extends React.Component {
                                         MenuListProps={{
                                             'aria-labelledby': 'basic-button',
                                         }}
+                                        className="custom-dropdown-menu"
                                     >
                                     {/*<DropdownMenu className="dropdown-with-icons">*/}
                                         <Link className={"dropdown-item"} to="/account">
@@ -449,6 +451,7 @@ class ComponentsNavbar extends React.Component {
                         </NavItem>
                     </Nav>
                     {this.props.loading && <LinearIndeterminate />}
+                    </Container>
                 </Navbar>
             </>
         );

@@ -124,14 +124,13 @@ class EventForm extends Component {
             artifacts:[],
             is_manufacturer:false,
             intervals:[
-                {key:86400 ,value:"Every Day"},
-                {key:604800 ,value:"Every Week"},
-                {key:864000,value:"Every 10 Days"},
-                {key:2629743 ,value:"Every Month"},
-                {key:31556926 ,value:"Every Year"},
+                {key:86400000 ,value:"Every Day"},
+                {key:604800000 ,value:"Every Week"},
+                {key:864000000,value:"Every 10 Days"},
+                {key:2629743000 ,value:"Every Month(30 Days)"},
+                {key:31556926000 ,value:"Every Year(365 Days)"},
             ],
             processes:[
-
 
                 {key:"service",value:"Service"},
                 {key:"warranty",value:"Warranty Expire"},

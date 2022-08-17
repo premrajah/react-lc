@@ -188,7 +188,7 @@ class QrCode extends Component {
                     </div>
                     <div className="col-9 pl-2 zoom-in-cursor" onClick={this.callZoom}>
                         <div className="row justify-content-start  ">
-                            <div className="col-12 ">
+                            <div className="col-12 position-relative">
                                 {!this.props.hideRefresh&&this.props.userDetail&&this.props.userDetail.is_org_admin &&
                                 <span
                                     className={"mr-1 btn btn-sm btn-gray-border-small top-right"}

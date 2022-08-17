@@ -376,7 +376,7 @@ class RentalRequestItem extends Component {
                                     )}
                                 </p>
                                 <div className="row  pb-4 pb-4 mb-4">
-                                    <div className="col-12 text-right pb-2 pt-2">
+                                    <div className="col-12 position-relative text-right pb-2 pt-2">
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (

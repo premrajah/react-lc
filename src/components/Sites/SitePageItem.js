@@ -123,7 +123,7 @@ const SitePageItem = (  props) => {
                     {/*</div>*/}
 
                 </div>
-                   <div  className={`${props.smallItem?"col-md-10":"col-md-10"} col-xs-12 pl-3-desktop `}>
+                   <div  className={`${props.smallItem?"col-md-10":"col-md-10"} position-relative col-xs-12 pl-3-desktop `}>
 
                        <div className={"   content-site content-box-listing"}>
 

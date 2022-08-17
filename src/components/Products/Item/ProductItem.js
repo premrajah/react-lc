@@ -299,7 +299,7 @@ class ProductItemNew extends Component {
     render() {
         return (
             <>
-                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center  mb-4 bg-white rad-8  p-3">
+                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters product-item justify-content-center  mb-4 bg-white rad-8  p-3">
                                 <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-md-4  col-xs-12":"col-md-2  col-xs-12"}>
                                     <Link onMouseEnter={()=> this.setState({
                                         showPreview:true
@@ -322,7 +322,7 @@ class ProductItemNew extends Component {
                                     {/*    </iframe>*/}
                                     {/*</div>}*/}
                                 </div>
-                                <div className={this.props.biggerImage?"col-md-8 pl-3-desktop  content-box-listing":"col-md-10 pl-3-desktop  content-box-listing"}>
+                                <div className={this.props.biggerImage?"col-md-8 position-relative pl-3-desktop  content-box-listing":"col-md-10 position-relative pl-3-desktop  content-box-listing"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-capitalize mb-1 width-70 ellipsis-end">
                                             <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>{this.props.item.is_listable&&<span
@@ -374,7 +374,7 @@ class ProductItemNew extends Component {
 
                                     {!this.props.hideAdd&&this.props.showAddToListButton &&
 
-                                    <><p className={"text-gray-light add-top-button pl-3-desktop"}>
+                                    <><p className="text-gray-light add-top-button pl-3-desktop position-absolute top-0 end-0">
                                         <Add
                                             style={{ cursor: "pointer", fontSize:"1.2rem"}}
                                             onClick={() => {

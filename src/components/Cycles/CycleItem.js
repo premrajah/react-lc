@@ -43,7 +43,7 @@ class CycleItem extends Component {
                         </>
                     </Link>
                 </div>
-                <div className={"col-md-10 col-sm-12 col-xs-12  pl-3-desktop content-box-listing"}>
+                <div className={"col-md-10 position-relative col-sm-12 col-xs-12  pl-3-desktop content-box-listing"}>
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
                             {/*<p  className="text-capitlize mb-1 title-bold">*/}

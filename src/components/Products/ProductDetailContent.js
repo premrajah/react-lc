@@ -35,7 +35,6 @@ import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
-import CalenderEvents from "../Event/CalenderEvents";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
 
 
@@ -864,7 +863,7 @@ class ProductDetailContent extends Component {
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
                                         <div className="row">
-                                            <div className="col-12">
+                                            <div className="col-12 position-relative">
                                                 <h4 className="text-capitalize product-title width-90">
                                                     {this.state.item.product.name}
                                                 </h4>

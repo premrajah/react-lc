@@ -370,7 +370,7 @@ class RequestServiceAgentItem extends Component {
                                     <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
                                 )}
                             </div>
-                            <div className={"col-md-5 col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
+                            <div className={"col-md-5 col-xs-12 position-relative col-sm-12 pl-3-desktop  content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1">
                                     {this.state.product &&  <Link to={`/p/${this.state.product._key}`}>{this.state.product.name}</Link>}
                                 </p>

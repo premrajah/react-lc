@@ -340,7 +340,7 @@ class RequestSiteReleaseItem extends Component {
 
 
                             </div>
-                            <div style={{ textAlign: "right" }} className={"col-md-5 col-xs-12 col-sm-12"}>
+                            <div style={{ textAlign: "right" }} className={"col-md-5 position-relative col-xs-12 col-sm-12"}>
 
                                 <p className={"text-gray-light   date-bottom"}>
                                     {moment(this.state.item.Release._ts_epoch_ms).format(

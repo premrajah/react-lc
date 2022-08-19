@@ -81,7 +81,8 @@ setup_aws:
 
 aws_build_dev:
   stage: dev_build
-  needs: []
+  needs: ['setup_aws']
+  dependencies: ['setup_aws']
   <<: *docker_registry
   script:
     - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
@@ -119,7 +120,8 @@ aws_deploy_dev:
 
 aws_build_prod:
   stage: prod_build
-  needs: []
+  needs: ['setup_aws']
+  dependencies: ['setup_aws']
   <<: *docker_registry
   script:
     - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
@@ -153,7 +155,8 @@ aws_deploy_prod:
 
 aws_build_stage:
   stage: stage_build
-  needs: []
+  needs: ['setup_aws']
+  dependencies: ['setup_aws']
   <<: *docker_registry
   script:
     - export ENVIRONMENT=stage

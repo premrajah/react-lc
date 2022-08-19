@@ -41,6 +41,7 @@
 gcp_build_dev:
   stage: dev_build
   image: docker:git
+  needs: []
   services:
     - docker:dind
   before_script:
@@ -66,6 +67,8 @@ gcp_build_dev:
 
 gcp_deploy_dev:
   stage: dev_deploy
+  needs: ['gcp_build_dev']
+  dependencies: ['gcp_build_dev']
   image: kiwigrid/gcloud-kubectl-helm
   <<: *gcp_deploy
   before_script:
@@ -80,6 +83,7 @@ gcp_deploy_dev:
 gcp_build_prod:
   stage: prod_build
   image: docker:git
+  needs: []
   services:
     - docker:dind
   before_script:
@@ -104,6 +108,8 @@ gcp_build_prod:
 
 gcp_deploy_prod:
   stage: prod_deploy
+  needs: ['gcp_build_prod']
+  dependencies: ['gcp_build_prod']
   image: kiwigrid/gcloud-kubectl-helm
   <<: *gcp_deploy
   before_script:
@@ -117,6 +123,7 @@ gcp_deploy_prod:
 gcp_build_stage:
   stage: stage_build
   image: docker:git
+  needs: []
   services:
     - docker:dind
   before_script:
@@ -141,6 +148,8 @@ gcp_build_stage:
 
 gcp_deploy_stage:
   stage: stage_deploy
+  needs: ['gcp_build_stage']
+  dependencies: ['gcp_build_stage']
   image: kiwigrid/gcloud-kubectl-helm
   <<: *gcp_deploy
   before_script:

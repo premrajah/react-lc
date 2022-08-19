@@ -81,6 +81,7 @@ setup_aws:
 
 aws_build_dev:
   stage: dev_build
+  needs: []
   <<: *docker_registry
   script:
     - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
@@ -103,6 +104,8 @@ aws_build_dev:
 
 aws_deploy_dev:
   stage: dev_deploy
+  needs: ['aws_build_dev']
+  dependencies: ['aws_build_dev']
   image: jshimko/kube-tools-aws
   <<: *aws_deploy
   before_script:
@@ -116,6 +119,7 @@ aws_deploy_dev:
 
 aws_build_prod:
   stage: prod_build
+  needs: []
   <<: *docker_registry
   script:
     - export ENVIRONMENT=${CI_COMMIT_REF_NAME//_}
@@ -135,6 +139,8 @@ aws_build_prod:
 
 aws_deploy_prod:
   stage: prod_deploy
+  needs: ['aws_build_prod']
+  dependencies: ['aws_build_prod']
   image: jshimko/kube-tools-aws
   <<: *aws_deploy
   before_script:
@@ -147,6 +153,7 @@ aws_deploy_prod:
 
 aws_build_stage:
   stage: stage_build
+  needs: []
   <<: *docker_registry
   script:
     - export ENVIRONMENT=stage
@@ -166,6 +173,8 @@ aws_build_stage:
 
 aws_deploy_stage:
   stage: stage_deploy
+  needs: ['aws_build_stage']
+  dependencies: ['aws_build_stage']
   image: jshimko/kube-tools-aws
   <<: *aws_deploy
   before_script:

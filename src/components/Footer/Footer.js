@@ -50,15 +50,7 @@ class Footer extends React.Component {
                                         <b>Company</b>
                                     </a>
                                 </NavItem>|
-                                <NavItem>
-                                    <a
-                                        className={styles.footerlink}
-                                        href="https://loopcycle.io/meet-the-team/"
-                                        target="_blank"
-                                        rel="noopener noreferrer">
-                                        Meet the team
-                                    </a>
-                                </NavItem>
+
                                 <NavItem>
                                     <a
                                         className={styles.footerlink}
@@ -89,54 +81,7 @@ class Footer extends React.Component {
                             </Nav>
                         </Col>
                     </Row>
-                <Row className={"text-center  "}>
-                        <Col md="12">
-                            <Nav>
-                                <NavItem>
-                                    <NavLink className={styles.footerlink} to="/" tag={Link}>
-                                        <b>Platform</b>
-                                    </NavLink>
-                                </NavItem>|
 
-                                <NavItem>
-                                    <NavLink className={styles.footerlink}
-                                             onClick={this.showLoginPopUp}
-                                             to={this.props.isLoggedIn && "/find-resources"}
-                                             tag={Link}>
-                                        Browse all Listings
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className={styles.footerlink}
-                                        onClick={this.showLoginPopUp}
-                                        to={this.props.isLoggedIn && "/my-products"}
-                                        tag={Link}>
-                                        Add Products
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink
-                                        className={styles.footerlink}
-                                        onClick={this.showLoginPopUp}
-                                        to={this.props.isLoggedIn && "/my-search"}
-                                        tag={Link}>
-                                        New Search
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink
-                                        className={styles.footerlink}
-                                        onClick={this.showLoginPopUp}
-                                        to={this.props.isLoggedIn && "/my-listings"}
-                                        tag={Link}>
-                                        New Listing
-                                    </NavLink>
-                                </NavItem>
-
-                            </Nav>
-                        </Col>
-
-                    </Row>
                <div className="row no-gutters    justify-content-center">
                         <div className="col-auto copright-text">
                             <ul className={"nav"}>

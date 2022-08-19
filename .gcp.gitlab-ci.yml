@@ -7,7 +7,7 @@
     - gcloud config set compute/region ${GKE_REGION}
     - gcloud container clusters get-credentials ${GKE_CLUSTER} --region ${GKE_REGION}
 
-    - export IMAGE_TAG=$(cat aws_image_tag.txt)
+    - export IMAGE_TAG=$(cat gcp_image_tag.txt)
     - echo $IMAGE_TAG
 
     - ls -latr ./scripts/k8s

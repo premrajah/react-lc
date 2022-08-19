@@ -330,7 +330,7 @@ class SignUp extends Component {
                                 <div className="col-12 ">
                     <form onSubmit={this.handleSubmit}>
                         <div className="row no-gutters justify-content-center ">
-                            <div className="col-6 pr-2 ">
+                            <div className="col-6 pe-2 ">
 
                                 <TextFieldWrapper
 
@@ -339,7 +339,7 @@ class SignUp extends Component {
                                     name="firstName" title="First Name" />
                             </div>
 
-                            <div className="col-6  pl-2">
+                            <div className="col-6  ps-2">
                                 <TextFieldWrapper
 
                                     onChange={(value)=>this.handleChange(value,"lastName")}
@@ -347,14 +347,14 @@ class SignUp extends Component {
                                     name="lastName" title="Last Name" />
                             </div>
 
-                            <div className="col-6  pr-2">
+                            <div className="col-6  pe-2">
                                 <TextFieldWrapper
                                     onChange={(value)=>this.handleChange(value,"email")}
                                     error={this.state.errors["email"]}
                                     name="email" title="Email" />
                             </div>
 
-                            <div className="col-6  pl-2">
+                            <div className="col-6  ps-2">
                                 {/*<TextFieldWrapper*/}
                                 {/*    onChange={(value)=>this.handleChange(value,"phone")}*/}
                                 {/*    error={this.state.errors["phone"]}*/}

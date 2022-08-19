@@ -618,7 +618,7 @@ class ViewCycle extends Component {
                                                         <button
                                                             onClick={this.showStep}
                                                             type="button"
-                                                            className="shadow-sm mr-2 btn blue-btn-border">
+                                                            className="shadow-sm me-2 btn blue-btn-border">
                                                             <AddIcon style={{ color: "#27245C" }} />
                                                             Add Step
                                                         </button>
@@ -695,23 +695,23 @@ class ViewCycle extends Component {
                                                                                         className={
                                                                                             actionName ===
                                                                                             "accepted"
-                                                                                                ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                                                ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border"
                                                                                                 : actionName ===
                                                                                                   "cancelled"
-                                                                                                ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                                                ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                                                 : actionName ===
                                                                                                   "rejected"
-                                                                                                ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                                                ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                                                 : actionName ===
                                                                                                   "declined"
-                                                                                                ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                                                ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                                                 : actionName ===
                                                                                                   "progress"
-                                                                                                ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                                                ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border"
                                                                                                 : actionName ===
                                                                                                   "completed"
-                                                                                                ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                                                : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                                                ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                                                : "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border"
                                                                                         }>
                                                                                         {actionName ===
                                                                                             "accepted" &&

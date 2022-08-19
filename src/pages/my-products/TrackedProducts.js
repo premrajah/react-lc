@@ -196,15 +196,15 @@ class TrackedProducts extends Component {
 
                         <div className="row ">
                             <div className="col-12 d-flex justify-content-start">
-                                <Link to="/products-service" className="btn btn-sm btn-gray-border mr-2">
+                                <Link to="/products-service" className="btn btn-sm btn-gray-border me-2">
                                     Service
                                 </Link>
 
-                                <Link to="/my-products" className="btn btn-sm btn-gray-border mr-2">
+                                <Link to="/my-products" className="btn btn-sm btn-gray-border me-2">
                                     Products
                                 </Link>
 
-                                <Link to="/product-archive" className="btn btn-sm btn-gray-border mr-2">
+                                <Link to="/product-archive" className="btn btn-sm btn-gray-border me-2">
                                     Records
                                 </Link>
                                 <Link to="/issues" className=" btn-sm btn-gray-border ml-2-desktop ">

@@ -30,7 +30,7 @@ class ApprovedReleases extends Component {
 
                         <div className="row mt-3 mb-3">
                             <div className="col-12 d-flex justify-content-end">
-                                <Link to="/approve" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/approve" className="btn btn-sm blue-btn me-2">
                                     Approvals
                                 </Link>
                             </div>

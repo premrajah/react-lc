@@ -82,7 +82,7 @@ class MyListingsOld extends Component {
                                     2 Searches
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
+                            <div className="text-mute col-auto ps-0">
                                 <span style={{ fontSize: "18px" }}>Status</span>
                             </div>
                         </div>
@@ -91,7 +91,7 @@ class MyListingsOld extends Component {
                             <div className={"col-4"}>
                                 <img className={"img-fluid"} src={Paper} />
                             </div>
-                            <div className={"col-6 pl-3 content-box-listing"}>
+                            <div className={"col-6 ps-3 content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1">
                                     Paper and Card
                                 </p>
@@ -111,7 +111,7 @@ class MyListingsOld extends Component {
                             <div className={"col-4"}>
                                 <img className={"img-fluid"} src={Paper} />
                             </div>
-                            <div className={"col-6 pl-3 content-box-listing"}>
+                            <div className={"col-6 ps-3 content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1">
                                     Metal
                                 </p>

@@ -85,28 +85,28 @@ class ProductTreeView extends Component {
 
             for (let i = 0; i < list.length; i++) {
                 // if (!list[i].parent_product&&!list[i].listing) {
-                if (list[i].is_listable) {
+                if (list[i].Product.is_listable) {
                     var treeItem;
 
                     // treeItem = { id: list[i].product._key, name:list[i].listing? list[i].product.name +"(NA)":list[i].product.name,
                     treeItem = {
-                        id: list[i]._key,
-                        name: list[i].listing ? list[i].name : list[i].name,
+                        id: list[i].Product._key,
+                        name: list[i].Product.listing ? list[i].Product.name : list[i].Product.name,
                         sub_products: [],
-                        canSelect: list[i].listing ? false : true,
+                        canSelect: list[i].Product.listing ? false : true,
                     };
 
-                    if (list[i].sub_products && list[i].sub_products.length > 0) {
+                    if (list[i].Product.sub_products && list[i].Product.sub_products.length > 0) {
                         var sub_products = [];
 
-                        for (let k = 0; k < list[i].sub_products.length; k++) {
+                        for (let k = 0; k < list[i].Product.sub_products.length; k++) {
                             sub_products.push({
-                                id: list[i].sub_products[k]._key,
-                                name: list[i].sub_products[k].name,
+                                id: list[i].Product.sub_products[k]._key,
+                                name: list[i].Product.sub_products[k].name,
                             });
                         }
 
-                        treeItem.sub_products = sub_products;
+                        treeItem.Product.sub_products = sub_products;
                     }
 
                     tree.push(treeItem);

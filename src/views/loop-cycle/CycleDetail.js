@@ -116,7 +116,7 @@ function LoopAccordion(props) {
                                     alt=""
                                 />
                             </div>
-                            <div className={"col-auto pl-3 content-box-listing"}>
+                            <div className={"col-auto ps-3 content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1">
                                     {props.loop.listing.name}
                                 </p>
@@ -155,7 +155,7 @@ function LoopAccordion(props) {
                                     </span>
                                 </figure>
                             </div>
-                            <div className={"col-auto pl-3 content-box-listing"}>
+                            <div className={"col-auto ps-3 content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1">
                                     {props.loop.sender.name}
                                 </p>
@@ -186,7 +186,7 @@ function LoopAccordion(props) {
                                     </span>
                                 </figure>
                             </div>
-                            <div className={"col-auto pl-3 content-box-listing"}>
+                            <div className={"col-auto ps-3 content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1">
                                     {props.loop.receiver.name}
                                 </p>
@@ -210,11 +210,11 @@ function FromContent(props) {
     return (
         <>
             <div className="row no-gutters  justify-content-center">
-                <div className="col-md-3 col-sm-6 col-xs-6 pr-4 ">
+                <div className="col-md-3 col-sm-6 col-xs-6 pe-4 ">
                     <img className={"img-fluid"} src={PaperImg} alt="" />
                 </div>
 
-                <div className="col-md-9 col-sm-6 col-xs-6 pl-4">
+                <div className="col-md-9 col-sm-6 col-xs-6 ps-4">
                     <p className={"green-text text-heading"}>{props.loop.sender._id}</p>
                     <div className="col-12 mt-2">
                         <h5 className={"blue-text text-heading"}>{props.loop.sender.name}</h5>
@@ -264,11 +264,11 @@ function ToContent(props) {
     return (
         <>
             <div className="row no-gutters  justify-content-center">
-                <div className="col-md-3 col-sm-6 col-xs-6 pr-4 ">
+                <div className="col-md-3 col-sm-6 col-xs-6 pe-4 ">
                     <img className={"img-fluid"} src={PaperImg} alt="" />
                 </div>
 
-                <div className="col-md-9 col-sm-6 col-xs-6 pl-4">
+                <div className="col-md-9 col-sm-6 col-xs-6 ps-4">
                     <p className={"green-text text-heading"}>{props.loop.receiver._id}</p>
                     <div className="col-12 mt-2">
                         <h5 className={"blue-text text-heading"}>{props.loop.receiver.name}</h5>

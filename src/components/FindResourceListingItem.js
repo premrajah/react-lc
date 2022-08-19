@@ -13,7 +13,7 @@ const FindResourceListingItem = ({ item }) => {
         <div className="row mb-5 border-bottom">
             <div className="col-lg-2 col-sm-12">
                 <Image
-                    className="mr-2"
+                    className="me-2"
                     src={artifacts.length > 0 ? (artifacts.find((item) => (item.mime_type === "image/jpeg" || item.mime_type === "image/png")).blob_url || PlaceholderImg) : PlaceHolderImage}
                     thumbnail
                     width={120}
@@ -56,7 +56,7 @@ const FindResourceListingItem = ({ item }) => {
                 ) : null}
                 {listing ? (
                     <div align="right">
-                        <span className="mr-2">Available</span>
+                        <span className="me-2">Available</span>
                         <span>{moment(listing.available_from_epoch_ms).format("DD/MM/YY") +
                             " - " +
                         moment(listing.expire_after_epoch_ms).format("DD/MM/YY")}</span>

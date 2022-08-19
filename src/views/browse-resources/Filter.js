@@ -420,14 +420,14 @@ function BottomAppBar() {
                         <div className="col-auto">
                             <button
                                 type="button"
-                                className=" mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
+                                className=" me-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue">
                                 Apply Filter
                             </button>
                         </div>
                         <div className="col-auto">
                             <button
                                 type="button"
-                                className="shadow-sm mr-2 btn btn-link green-btn-min mt-2 mb-2 btn-blue">
+                                className="shadow-sm me-2 btn btn-link green-btn-min mt-2 mb-2 btn-blue">
                                 Reset
                             </button>
                         </div>
@@ -557,7 +557,7 @@ function NavTabs() {
                                 5 out of 5 Listings
                             </p>
                         </div>
-                        <div className="text-mute col-auto pl-0">
+                        <div className="text-mute col-auto ps-0">
                             <span style={{ fontSize: "18px" }}>Filter</span>
                             <img src={FilterImg} className={"filter-icon"} alt="" />
                         </div>
@@ -567,7 +567,7 @@ function NavTabs() {
                         <div className={"col-4"}>
                             <img className={"img-fluid"} src={Paper} alt="" />
                         </div>
-                        <div className={"col-6 pl-3 content-box-listing"}>
+                        <div className={"col-6 ps-3 content-box-listing"}>
                             <p style={{ fontSize: "18px" }} className=" mb-1">
                                 Paper and Card
                             </p>
@@ -587,7 +587,7 @@ function NavTabs() {
                         <div className={"col-4"}>
                             <img className={"img-fluid"} src={Paper} alt="" />
                         </div>
-                        <div className={"col-6 pl-3 content-box-listing"}>
+                        <div className={"col-6 ps-3 content-box-listing"}>
                             <p style={{ fontSize: "18px" }} className=" mb-1">
                                 Metal
                             </p>
@@ -634,7 +634,7 @@ function NavTabs() {
                                 Cycles
                             </p>
                         </div>
-                        {/*<div className="text-mute col-auto pl-0">*/}
+                        {/*<div className="text-mute col-auto ps-0">*/}
 
                         {/*<span style={{fontSize:"18px"}}>Filter</span>   <img src={FilterImg} className={"filter-icon"}  />*/}
 

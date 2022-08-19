@@ -540,7 +540,7 @@ class MatchItemBuyer extends Component {
                                                                 //     actionName === "accepted"
                                                                 //         ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
                                                                 //         : actionName === "cancelled"
-                                                                //         ? "shadow-sm mr-2 btn btn-link  ml-1 mt-2 mb-2 orange-btn-border"
+                                                                //         ? "shadow-sm mr-2 btn btn-link  ms-1 mt-2 mb-2 orange-btn-border"
                                                                 //         : actionName === "rejected"
                                                                 //         ? "shadow-sm mr-2 btn btn-link mt-2 mb-2 orange-btn-border"
                                                                 //         : actionName === "declined"
@@ -550,7 +550,7 @@ class MatchItemBuyer extends Component {
                                                                 //         : actionName === "completed"
                                                                 //         ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
                                                                 //         : actionName === "counter"
-                                                                //         ? "shadow-sm mr-2 btn btn-link ml-1  mt-2 mb-2 blue-btn-border"
+                                                                //         ? "shadow-sm mr-2 btn btn-link ms-1  mt-2 mb-2 blue-btn-border"
                                                                 //         : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
                                                                 // }
                                                             >
@@ -576,7 +576,7 @@ class MatchItemBuyer extends Component {
                                                                </span>
 
                                                             {/*<button data-id={item.offer._key} data-action={actionItem} onClick={this.editPopUp.bind(this)} type="button"*/}
-                                                            {/*className=" text-caps ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
+                                                            {/*className=" text-caps ms-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
                                                             {/*{actionItem}*/}
                                                             {/*</button>*/}
                                                         </>

@@ -217,8 +217,8 @@ componentDidMount() {
                    {this.props.item.product.unit_conversions&&this.props.item.product.unit_conversions.length>0&&   <button
 
                        className={
-                           "btn-gray-border ml-2 "
-                       }><span style={{float:"right"}} className={"text-right ml-2"}  data-parent={this.props.item.product._key}
+                           "btn-gray-border ms-2 "
+                       }><span style={{float:"right"}} className={"text-right ms-2"}  data-parent={this.props.item.product._key}
                                                                                                                                 onClick={this.editConversion}
                        >Edit Conversions</span>
                    </button>}

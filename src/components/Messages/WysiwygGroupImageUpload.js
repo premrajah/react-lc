@@ -217,7 +217,7 @@ class WysiwygGroupImageUpload extends Component {
                             onChange={this.handleChangeFile.bind(this)}
                         />
                     </>
-                    <div className="ml-4">
+                    <div className="ms-4">
                         <Button variant="outlined" startIcon={<AddBoxIcon />} disabled={!this.state.images.length > 0} onClick={() => this.postUploadedImagesToMessageGroup(this.props.groupKey)}>
                             Add
                         </Button>

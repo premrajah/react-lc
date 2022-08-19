@@ -26,7 +26,7 @@ const TrackedProductItem = ({item, handleStatus}) => {
         axios.delete(`${baseUrl}product/track/${product._key}`)
             .then(res => {
                 if(res.status === 200) {
-                    handleUnTrackStatus(<span><span className="mr-2">Product: <b>{product.name}</b> was</span><span className="text-success">Un-Tracked Successfully.</span></span>);
+                    handleUnTrackStatus(<span><span className="me-2">Product: <b>{product.name}</b> was</span><span className="text-success">Un-Tracked Successfully.</span></span>);
                 }
             })
             .catch(error => {
@@ -38,7 +38,7 @@ const TrackedProductItem = ({item, handleStatus}) => {
        <div className="row mb-5 pb-2 border-bottom">
            <div className="col-sm-2">
                <Image
-                   className="mr-2"
+                   className="me-2"
                    // src={artifacts.length > 0 ? <ImageOnlyThumbnail images={artifacts} /> : PlaceHolderImage}
                    src={artifacts.length > 0 ? (artifacts.find((item) => (item.mime_type === "image/jpeg" || item.mime_type === "image/png") || {}).blob_url || PlaceholderImg) : PlaceHolderImage}
                    thumbnail

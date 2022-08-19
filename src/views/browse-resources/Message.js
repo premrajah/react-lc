@@ -152,7 +152,7 @@ class Message extends Component {
                                     5 out of 76 Listings
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
+                            <div className="text-mute col-auto ps-0">
                                 <span style={{ fontSize: "18px" }}>Filter</span>
                                 <img
                                     onClick={this.toggleFilter}

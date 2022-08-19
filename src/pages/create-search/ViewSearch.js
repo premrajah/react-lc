@@ -751,7 +751,7 @@ class ViewSearch extends Component {
                                 <div className="container ">
                                     <div className="row  pt-4 pb-4  justify-content-start">
                                         <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
-                                            <Link to={"/my-search"}>My Searches</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state
+                                            <Link to={"/my-search"}>My Searches</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state
                                             .createSearchData
                                             .search.name}</span>
 
@@ -1097,7 +1097,7 @@ class ViewSearch extends Component {
                                     <div className="col-12 ">
 
                                         <div className="row mt-4 no-gutters">
-                                            <div  className={"col-6 pr-2"}
+                                            <div  className={"col-6 pe-2"}
                                                   style={{
                                                       textAlign: "center",
                                                   }}>
@@ -1109,7 +1109,7 @@ class ViewSearch extends Component {
                                                 </GreenButton>
                                             </div>
                                             <div
-                                                className={"col-6 pl-2"}
+                                                className={"col-6 ps-2"}
                                                 style={{
                                                     textAlign: "center",
                                                 }}>
@@ -1160,7 +1160,7 @@ class ViewSearch extends Component {
                                     <div className="col-12 ">
 
                                         <div className="row mt-4 no-gutters">
-                                            <div  className={"col-6 pr-2"}
+                                            <div  className={"col-6 pe-2"}
                                                   style={{
                                                       textAlign: "center",
                                                   }}>
@@ -1172,7 +1172,7 @@ class ViewSearch extends Component {
                                                 </GreenButton>
                                             </div>
                                             <div
-                                                className={"col-6 pl-2"}
+                                                className={"col-6 ps-2"}
                                                 style={{
                                                     textAlign: "center",
                                                 }}>
@@ -1226,7 +1226,7 @@ class ViewSearch extends Component {
                                     <div className="col-12 ">
 
                                         <div className="row mt-4 no-gutters">
-                                            <div  className={"col-6 pr-2"}
+                                            <div  className={"col-6 pe-2"}
                                                   style={{
                                                       textAlign: "center",
                                                   }}>
@@ -1238,7 +1238,7 @@ class ViewSearch extends Component {
                                                 </GreenButton>
                                             </div>
                                             <div
-                                                className={"col-6 pl-2"}
+                                                className={"col-6 ps-2"}
                                                 style={{
                                                     textAlign: "center",
                                                 }}>

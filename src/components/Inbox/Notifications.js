@@ -384,14 +384,14 @@ class Notifications extends Component {
                                             {message.text.match(PRODUCT_REGEX) &&
                                             !item.options.is_tracked ? (
                                                 <span
-                                                    className="ml-4 blue-text"
+                                                    className="ms-4 blue-text"
                                                     style={{ cursor: "pointer" }}
                                                     onClick={() => this.handleTrackProduct(message)}>
                                                 <b>Track</b>
                                             </span>
                                             ) : (
                                                 item.options.is_tracked && <span
-                                                    className="ml-4 text-danger"
+                                                    className="ms-4 text-danger"
                                                     style={{ cursor: "pointer" }}
                                                     onClick={() => this.handleUnTrackProduct(message)}>
                                                 <b>Un-track</b>
@@ -406,7 +406,7 @@ class Notifications extends Component {
                                 <CustomPopover text={"Mark as read"}>
 
                                     <ActionIconBtn
-                                        className="ml-4"
+                                        className="ms-4"
                                         onClick={()=>this.messageRead(messageId)}>
                                         <CheckCircle style={{color:"#07AD89"}} />
                                     </ActionIconBtn>

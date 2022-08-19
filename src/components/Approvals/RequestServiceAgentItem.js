@@ -393,7 +393,7 @@ class RequestServiceAgentItem extends Component {
                                     Category:
                                     <span
 
-                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                        className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.state.product.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>

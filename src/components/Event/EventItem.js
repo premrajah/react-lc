@@ -462,7 +462,7 @@ class EventItem extends Component {
                                     <div className="col-12 ">
                                         <div className="row mt-4 no-gutters">
                                             <div
-                                                className={"col-6 pr-1"}
+                                                className={"col-6 pe-1"}
                                                 style={{
                                                     textAlign: "center",
                                                 }}>
@@ -472,7 +472,7 @@ class EventItem extends Component {
                                                     type={"submit"}></GreenButton>
                                             </div>
                                             <div
-                                                className={"col-6 pl-1"}
+                                                className={"col-6 ps-1"}
                                                 style={{
                                                     textAlign: "center",
                                                 }}>

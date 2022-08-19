@@ -358,7 +358,7 @@ class RequestReleaseItem extends Component {
                                     Category:
                                     <span
 
-                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                        className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.state.product.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
@@ -507,7 +507,7 @@ class RequestReleaseItem extends Component {
                                             Don’t see it on here?
                                             <span
                                                 onClick={this.showSubmitSite}
-                                                className="green-text forgot-password-link text-gray-light small ml-1">
+                                                className="green-text forgot-password-link text-gray-light small ms-1">
                                                 Add a site
                                             </span>
                                         </p>

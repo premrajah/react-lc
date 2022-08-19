@@ -202,7 +202,7 @@ class ItemDetailMatch extends Component {
                                         </div>
                                     </div>
 
-                                    <div className={"col-md-8 col-sm-12 col-xs-12 pl-4"}>
+                                    <div className={"col-md-8 col-sm-12 col-xs-12 ps-4"}>
                                         <div className="row justify-content-start pb-3 pt-4 listing-row-border">
                                             <div className="col-12 mt-2">
                                                 <h4 className={"blue-text text-heading"}>

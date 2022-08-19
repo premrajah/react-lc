@@ -453,7 +453,7 @@ class MatchItemSeller extends Component {
                                     <button
                                         onClick={this.showPopUp}
                                         type="button"
-                                        className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
+                                        className=" me-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
                                         Make an Offer
                                     </button>
                                 </div>
@@ -510,7 +510,7 @@ class MatchItemSeller extends Component {
                                     {item.next_action.is_mine && (
                                         <>
                                             {item.next_action.possible_actions.map((actionName) => (
-                                                <span className={"mr-1"}>
+                                                <span className={"me-1"}>
                                                     <GrayBorderBtn
                                                         title={getActionName(actionName)}
                                                         data-id={item.offer._key}
@@ -519,20 +519,20 @@ class MatchItemSeller extends Component {
                                                         type="button"
                                                         // className={
                                                         //     actionName === "accepted"
-                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"
+                                                        //         ? "shadow-sm me-2 btn btn-link ms-3  mt-2 mb-2 green-btn-border"
                                                         //         : actionName === "cancelled"
-                                                        //         ? "shadow-sm mr-2 btn btn-link  ml-3 mt-2 mb-2 orange-btn-border"
+                                                        //         ? "shadow-sm me-2 btn btn-link  ms-3 mt-2 mb-2 orange-btn-border"
                                                         //         : actionName === "rejected"
-                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3 mt-2 mb-2 orange-btn-border"
+                                                        //         ? "shadow-sm me-2 btn btn-link ms-3 mt-2 mb-2 orange-btn-border"
                                                         //         : actionName === "declined"
-                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 orange-btn-border"
+                                                        //         ? "shadow-sm me-2 btn btn-link ms-3  mt-2 mb-2 orange-btn-border"
                                                         //         : actionName === "progress"
-                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3 mt-2 mb-2 green-btn-border"
+                                                        //         ? "shadow-sm me-2 btn btn-link ms-3 mt-2 mb-2 green-btn-border"
                                                         //         : actionName === "completed"
-                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"
+                                                        //         ? "shadow-sm me-2 btn btn-link ms-3  mt-2 mb-2 green-btn-border"
                                                         //         : actionName === "counter"
-                                                        //         ? "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 blue-btn-border"
-                                                        //         : "shadow-sm mr-2 btn btn-link ml-3  mt-2 mb-2 green-btn-border"
+                                                        //         ? "shadow-sm me-2 btn btn-link ms-3  mt-2 mb-2 blue-btn-border"
+                                                        //         : "shadow-sm me-2 btn btn-link ms-3  mt-2 mb-2 green-btn-border"
                                                         // }
                                                     >
                                                         {/*{actionName === "accepted" && "Accept"}*/}
@@ -549,7 +549,7 @@ class MatchItemSeller extends Component {
 
                                                     {/*<button data-id={item.offer._key} data-action={actionName} onClick={this.editPopUp.bind(this)}*/}
                                                     {/*type="button"*/}
-                                                    {/*className=" ml-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
+                                                    {/*className=" ms-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
 
                                                     {/*{actionName}*/}
                                                     {/**/}
@@ -589,7 +589,7 @@ class MatchItemSeller extends Component {
                                         <span> Message: <span className="text-gray-light">{message.message.text}</span></span>
                                     </div>
                                     <div className="col-3 text-right">
-                                        <span className="text-gray-light "><span className="mr-4"> {getTimeFormat(message.message._ts_epoch_ms)}</span></span>
+                                        <span className="text-gray-light "><span className="me-4"> {getTimeFormat(message.message._ts_epoch_ms)}</span></span>
                                     </div>
                                 </div>
                                 </>
@@ -681,7 +681,7 @@ class MatchItemSeller extends Component {
                                         <div className={"col-6"} style={{ textAlign: "center" }}>
                                             <button
                                                 className={
-                                                    "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
+                                                    "shadow-sm me-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
                                                 }
                                                 type={"submit"}>
                                                 Submit
@@ -691,7 +691,7 @@ class MatchItemSeller extends Component {
                                             <p
                                                 onClick={this.showPopUp}
                                                 className={
-                                                    "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
+                                                    "shadow-sm me-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
                                                 }>
                                                 Cancel
                                             </p>

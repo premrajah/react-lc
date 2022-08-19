@@ -11,7 +11,7 @@ function ImageOnlyThumbnail(props) {
     return (
         images && (
             <img
-                className={!props.smallThumbnail?`img-fluid rad-4 img-list ${props.smallImage?"small-image":""} `:`rad-4 small-thumbnail-img img-fluid`}
+                className={!props.smallThumbnail?`img-fluid rad-8 img-list ${props.smallImage?"small-image":""} `:`rad-4 small-thumbnail-img img-fluid`}
                 src={
                     (
                         images.find(

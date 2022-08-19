@@ -122,7 +122,7 @@ class MessageGroupItem extends Component {
                 </span>
                 <span
                     id={this.props.item._key + "_thumbnails_name"}
-                    className={`ml-2 group-names text-capitlize `}
+                    className={`ms-2 group-names text-capitlize `}
                     // style={{ fontSize: "0.7em" }}
                 >
                     {this.props.item.group&&this.props.item.group.map((item, index) => (

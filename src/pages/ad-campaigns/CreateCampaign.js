@@ -1321,7 +1321,7 @@ let item=null
                                             </div>
 
                                             <div className="row no-gutters mb-3">
-                                                <div className="col-6 pr-1">
+                                                <div className="col-6 pe-1">
 
                                                     <div
                                                         className={
@@ -1361,7 +1361,7 @@ let item=null
 
                                                 </div>
 
-                                                <div className="col-6 pl-1 ">
+                                                <div className="col-6 ps-1 ">
 
                                                     <div
                                                         className={
@@ -1433,7 +1433,7 @@ let item=null
                                                         <div className="row no-gutters mt-4">
                                                             <div className="col-3">
                                                                 <div className="row camera-grids   no-gutters   ">
-                                                                    <div className="col-md-12 col-sm-12 col-xs-12 pr-2 ">
+                                                                    <div className="col-md-12 col-sm-12 col-xs-12 pe-2 ">
 
                                                                         <SelectArrayWrapper
 
@@ -1455,7 +1455,7 @@ let item=null
                                                                 </div>
                                                             </div>
 
-                                                            <div className="col-3 pr-2">
+                                                            <div className="col-3 pe-2">
                                                                 <SelectArrayWrapper
 
                                                                     initialValue={this.state.conditionAll.length>0&&this.state.conditionAll[index]?this.state.conditionAll[index].operator:null}
@@ -1554,7 +1554,7 @@ let item=null
                                                         <div className="row no-gutters mt-4">
                                                             <div className="col-3">
                                                                 <div className="row camera-grids   no-gutters   ">
-                                                                    <div className="col-md-12 col-sm-12 col-xs-12 pr-2 ">
+                                                                    <div className="col-md-12 col-sm-12 col-xs-12 pe-2 ">
 
                                                                         <SelectArrayWrapper
                                                                             initialValue={this.state.conditionAny.length>0&&this.state.conditionAny[index]?this.state.conditionAny[index].predicate:null}
@@ -1572,7 +1572,7 @@ let item=null
                                                                 </div>
                                                             </div>
 
-                                                            <div className="col-3 pr-2">
+                                                            <div className="col-3 pe-2">
                                                                 <SelectArrayWrapper
 
                                                                     initialValue={this.state.conditionAny.length>0&&this.state.conditionAny[index]?this.state.conditionAny[index].operator:null}
@@ -1900,7 +1900,7 @@ let item=null
 
                                                 </GreenSmallBtn>
                                             </div>
-                                            <div className="col-6 text-right pr-5 mt-0">
+                                            <div className="col-6 text-right pe-5 mt-0">
                                         {/*{this.state.activeStep===2&&*/}
                                         <GreenSmallBtn
 

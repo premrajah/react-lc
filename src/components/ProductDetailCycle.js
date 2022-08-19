@@ -678,13 +678,13 @@ class ProductDetailCycle extends Component {
                     subTitle="See product details and provenance"
                 />
               <div className="row   pb-4  justify-content-start">
-                <div className="text-left pl-0   col-sm-12 col-xs-12 breadcrumb-row">
+                <div className="text-left ps-0   col-sm-12 col-xs-12 breadcrumb-row">
                      <Link
                          onClick={this.showLoginPopUp}
                          to={this.props.isLoggedIn && `/product/${this.props.item.product._key}`}
 
                      >Product Detail</Link>
-                    <span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span>
+                    <span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span>
                     <span className={"text-capitalize text-breadcrumb-light"}> {this.props.item.product.name}</span>
                 </div>
                 </div>

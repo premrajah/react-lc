@@ -688,7 +688,7 @@ class ViewCycle extends Component {
                                 <div className="container " style={{ padding: "0" }}>
                                     <div className="row  pt-4 pb-4  justify-content-start">
                                         <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
-                                            <Link to={"/my-cycles"}>My Cycles</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.listing.name}</span>
+                                            <Link to={"/my-cycles"}>My Cycles</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.listing.name}</span>
                                         </div>
                                     </div>
                                     <div className="row no-gutters  justify-content-center  mb-4 pb-4">
@@ -725,7 +725,7 @@ class ViewCycle extends Component {
                                             </div>
                                         </div>
 
-                                        <div className={"col-md-8 col-sm-12 col-xs-12 pl-4"}>
+                                        <div className={"col-md-8 col-sm-12 col-xs-12 ps-4"}>
                                             <div className="row justify-content-start ">
                                                 <div className="col-12 ">
                                                     <h5 className={"text-capitalize product-title "}>

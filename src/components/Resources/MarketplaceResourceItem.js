@@ -93,7 +93,7 @@ class MarketplaceResourceItem extends Component {
                             <div
                                 // onClick={this.goToPage}
                                 className="row no-gutters justify-content-center p-3 bg-white rad-8 click-item mb-3">
-                                <div className={"col-md-2 col-xs-12 col-sm-12"}>
+                                <div className={"col-md-2 col-xs-12 p-0 col-sm-12"}>
                                     {this.props.item.artifacts &&
                                     this.props.item.artifacts.length > 0 ?
                                         <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.props.item.artifacts} />:
@@ -120,7 +120,7 @@ class MarketplaceResourceItem extends Component {
                                         Category:
                                         <span
 
-                                            className="ml-1 text-capitlize mb-2 cat-box text-left p-1">
+                                            className="ms-1 text-capitlize mb-2 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.props.item.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>

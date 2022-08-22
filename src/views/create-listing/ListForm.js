@@ -1370,7 +1370,7 @@ function ComponentItem({ title, subTitle, serialNo, imageName }) {
                     style={{ maxHeight: "140px", objectFit: "contain" }}
                 />
             </div>
-            <div className={"col-8 pl-3 content-box-listing"}>
+            <div className={"col-8 ps-3 content-box-listing"}>
                 <p style={{ fontSize: "18px" }} className=" mb-1">
                     {title}
                 </p>

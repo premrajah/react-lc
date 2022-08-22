@@ -139,12 +139,12 @@ class ResourceItem extends Component {
                         <div
                             // onClick={this.goToPage}
                             className="row no-gutters justify-content-center p-3 bg-white rad-8 click-item mb-3">
-                            <div className={"col-md-2 col-xs-12 col-sm-12"}>
+                            <div className={"col-md-2 p-0 col-xs-12 col-sm-12"}>
                                 {this.state.artifacts &&
                                 this.state.artifacts.length > 0 ?
                                     <ImageOnlyThumbnail smallImage={this.props.smallImage} images={this.state.artifacts} />:
 
-                                    <img className={`img-fluid img-list  ${this.props.smallImage?"small-image":""}`} src={PlaceholderImg} alt="" />
+                                    <img className={`img-fluid img-list rad-8 ${this.props.smallImage?"small-image":""}`} src={PlaceholderImg} alt="" />
                                 }
 
 

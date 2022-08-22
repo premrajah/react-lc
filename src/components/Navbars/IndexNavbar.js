@@ -194,7 +194,7 @@ class ComponentsNavbar extends React.Component {
 
                 <Navbar className={"container-blue "} color-on-scroll="100" expand="lg">
                     <Container fluid>
-                    <Nav className={" me-autojustify-content-start "}>
+                    <Nav className={"  justify-content-start "}>
                         <NavbarBrand to="/" tag={Link} id="navbar-brand">
                             <div className="row ">
                                 <div className="col-auto">
@@ -213,7 +213,7 @@ class ComponentsNavbar extends React.Component {
                         </NavbarBrand>
                     </Nav>
 
-                    <Nav className={"me-auto justify-content-end menu-align-right"}>
+                    <Nav className={" justify-content-end menu-align-right"}>
                         {this.props.isLoggedIn && (
                             <>
                             <NavItem className={"web-only mr-3"}>

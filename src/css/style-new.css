@@ -4532,3 +4532,4 @@ select,select option {text-transform:capitalize!important;}
 .custom-dropdown-menu .MuiList-padding{
     padding: 10px!important;
 }
+.btn-rows a{margin-right: 7px;}

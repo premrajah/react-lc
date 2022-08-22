@@ -257,7 +257,7 @@ class EditAccount extends Component {
 
                                     <form onSubmit={this.handleSubmit}>
                                         <div className="row no-gutters justify-content-start ">
-                                            <div className="col-6 pr-2 mt-2">
+                                            <div className="col-6 pe-2 mt-2">
 
                                                 <TextFieldWrapper
                                                     initialValue={this.state.firstName}
@@ -266,7 +266,7 @@ class EditAccount extends Component {
                                                     name="firstName" title="First Name" />
                                             </div>
 
-                                            <div className="col-6 mt-2 pl-2">
+                                            <div className="col-6 mt-2 ps-2">
                                                 <TextFieldWrapper
                                                     initialValue={this.state.lastName}
                                                     onChange={(value)=>this.handleChange(value,"lastName")}
@@ -274,7 +274,7 @@ class EditAccount extends Component {
                                                     name="lastName" title="Last Name" />
                                             </div>
 
-                                            <div className="col-6 mt-2 pr-2">
+                                            <div className="col-6 mt-2 pe-2">
                                                 <TextFieldWrapper
                                                     disabled={true}
                                                     initialValue={this.state.email}
@@ -283,7 +283,7 @@ class EditAccount extends Component {
                                                     name="email" title="Email" />
                                             </div>
 
-                                            <div className="col-6 mt-2 pl-2">
+                                            <div className="col-6 mt-2 ps-2">
                                                 {/*<TextFieldWrapper*/}
                                                 {/*    initialValue={this.state.phone}*/}
                                                 {/*    onChange={(value)=>this.handleChange(value,"phone")}*/}

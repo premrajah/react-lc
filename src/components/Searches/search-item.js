@@ -128,7 +128,7 @@ class SearchItem extends Component {
                         </p>
                         <div className={"text-gray-light mt-1 mb-1 width-75 "}>
                             Category:
-                            <span className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                            <span className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.props.item.search.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>

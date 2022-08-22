@@ -166,11 +166,11 @@ class Products extends Component {
                     <HeaderDark />
 
                     {this.state.selectedProducts.length > 0 ?  <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
-                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  border: '1px solid #27245C', backgroundColor: '#fff'}}>
+                        <div className="float-right me-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  border: '1px solid #27245C', backgroundColor: '#fff'}}>
                             <div className="row mb-2 pb-2" style={{borderBottom: '1px solid #27245C'}}>
                                 <div className="col d-flex justify-content-end">
                                     <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className="btn btn-sm btn-green"><b>Save CSV</b></CSVLink>
-                                    <button className="btn btn-sm btn-pink ml-2" onClick={() => this.setState({selectedProducts: []})}><b>Clear</b></button>
+                                    <button className="btn btn-sm btn-pink ms-2" onClick={() => this.setState({selectedProducts: []})}><b>Clear</b></button>
                                 </div>
                             </div>
                             <div className="row mb-1">
@@ -196,11 +196,11 @@ class Products extends Component {
 
                         <div className="row">
                             <div className="col-md-9 d-flex justify-content-start">
-                                <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/products-service" className="btn btn-sm blue-btn me-2">
                                     Product Service
                                 </Link>
 
-                                <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/product-archive" className="btn btn-sm blue-btn me-2">
                                     Records
                                 </Link>
 
@@ -229,10 +229,10 @@ class Products extends Component {
                                             (item) => item.product.is_listable === true
                                         ).length : "... "
                                     }
-                                    <span className="ml-1">Listable Products</span>
+                                    <span className="ms-1">Listable Products</span>
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
+                            <div className="text-mute col-auto ps-0">
                                 <span style={{ fontSize: "18px" }}>Created</span>
                             </div>
                         </div>

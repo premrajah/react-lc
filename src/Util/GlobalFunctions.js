@@ -246,7 +246,7 @@ export const getActionName=(actionName)=>{
                 />
             </svg>
 
-            <span className={"ml-4"}>Loading ...</span>
+            <span className={"m-4"}>Loading ...</span>
         </div>
     );
 }

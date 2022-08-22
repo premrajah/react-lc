@@ -99,7 +99,7 @@ class ListingRecord extends Component {
 
                     <div className="row  justify-content-center filter-row  pt-3 pb-3">
                         <div className="col">
-                            <p  className="text-gray-light ml-2 ">
+                            <p  className="text-gray-light ms-2 ">
                                 {this.state.items&&this.state.items.filter((site)=>
                                     this.state.filterValue?( this.state.filterValue==="name"?
                                         site.listing.name.toLowerCase().includes(this.state.searchValue.toLowerCase()):
@@ -114,7 +114,7 @@ class ListingRecord extends Component {
                                 ).filter(l => l.listing.stage.toLowerCase() === "agreed" ).length
 
                                 }
-                                <span className="ml-1 text-gray-light"> Listing Found</span>
+                                <span className="ms-1 text-gray-light"> Listing Found</span>
                             </p>
                         </div>
 

@@ -479,7 +479,7 @@ class RequestSiteReleaseItem extends Component {
                                 {/*            Don’t see it on here?*/}
                                 {/*            <span*/}
                                 {/*                onClick={this.showSubmitSite}*/}
-                                {/*                className="green-text forgot-password-link text-gray-light small ml-1">*/}
+                                {/*                className="green-text forgot-password-link text-gray-light small ms-1">*/}
                                 {/*                Add a site*/}
                                 {/*            </span>*/}
                                 {/*        </p>*/}

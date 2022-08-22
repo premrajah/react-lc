@@ -1288,7 +1288,7 @@ class SearchEditForm extends Component {
                                     <p></p>
                                 </div>
 
-                                <div className="col-6 pr-2">
+                                <div className="col-6 pe-2">
                                     <FormControl
                                         disabled={this.state.units.length > 0 ? false : true}
                                         variant="outlined"
@@ -1327,7 +1327,7 @@ class SearchEditForm extends Component {
                                         </span>
                                     )}
                                 </div>
-                                <div className="col-6 pl-2">
+                                <div className="col-6 ps-2">
                                     <TextField
                                         value={
                                             this.state.volume

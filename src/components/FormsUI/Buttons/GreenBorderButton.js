@@ -8,7 +8,7 @@ const GreenBorderButton = ({onClick,title,fullWidth,disabled,loading, ...otherPr
 
         {loading && (
             <Spinner
-                className="mr-2"
+                className="me-2"
                 as="span"
                 animation="border"
                 size="sm"

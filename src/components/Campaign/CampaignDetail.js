@@ -163,7 +163,7 @@ class CampaignDetail extends Component {
                         {/*    pageTitle="Cma Details(Provenance)"*/}
                         {/*    subTitle="See product details and provenance"*/}
                         {/*/>*/}
-                        <div className="row  mt-2 ml-2 justify-content-center">
+                        <div className="row  mt-2 ms-2 justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
                                 <div className="row stick-left-box  ">
                                     <div className="col-12  ">
@@ -303,7 +303,7 @@ class CampaignDetail extends Component {
                                                                                         <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.5rem"}} className={" p-1 rad-4"} />
                                                                                         <span
 
-                                                                                            className="ml-4  text-blue text-bold"
+                                                                                            className="ms-4  text-blue text-bold"
                                                                                             // href={artifact.blob_url}
                                                                                             target="_blank"
                                                                                             rel="noopener noreferrer">

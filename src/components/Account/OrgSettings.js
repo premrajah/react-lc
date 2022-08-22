@@ -452,7 +452,7 @@ class OrgSettings extends Component {
                                             native
                                             onChange={()=>{}}
                                         />
-                                        <IconButton className={"ml-2"} type={"submit"}>
+                                        <IconButton className={"ms-2"} type={"submit"}>
                                             <AddIcon    />
                                         </IconButton>
                                     </form>
@@ -524,7 +524,7 @@ class OrgSettings extends Component {
                                             native
                                             onChange={()=>{}}
                                         />
-                                        <IconButton className={"ml-2"} type={"submit"}>
+                                        <IconButton className={"ms-2"} type={"submit"}>
                                         <AddIcon    />
                                         </IconButton>
                                         </form>

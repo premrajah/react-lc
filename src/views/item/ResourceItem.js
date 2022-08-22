@@ -35,7 +35,7 @@ class ResourceItem extends Component {
                                 <img className={"img-fluid"} src={PlaceholderImg} alt="" />
                             )}
                         </div>
-                        <div className={"col-6 pl-3 content-box-listing"}>
+                        <div className={"col-6 ps-3 content-box-listing"}>
                             <p style={{ fontSize: "18px" }} className=" mb-1">
                                 {this.props.item.name}
                             </p>

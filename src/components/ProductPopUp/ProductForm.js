@@ -1437,7 +1437,7 @@ class ProductForm extends Component {
                                                   energyRating:event.target.value
                                               })
                                           }}
-                                      /> <span className={"ml-2"}> &nbsp;&nbsp;{100}</span>
+                                      /> <span className={"ms-2"}> &nbsp;&nbsp;{100}</span>
                                   </div>
 
                                   </div>

@@ -58,7 +58,7 @@ const AggregateItem = (props) => {
                 }
             </div>
 
-            <div className="col-sm-10 pl-2">
+            <div className="col-sm-10 ps-2">
                 <div>
                     <LightTooltip title={"Conversion: "+item.factor_used+" x "+item.volume+" "+item.units}>
                     <Link  to={props.noLinking?"#":`/product/${item.product_id.replace("Product/","")}`}>

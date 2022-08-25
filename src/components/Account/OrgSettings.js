@@ -24,17 +24,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Chip from "@mui/material/Chip";
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
 
-const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
@@ -179,7 +169,7 @@ class OrgSettings extends Component {
     handleChange(value, field) {
         let fields = this.state.fields;
 
-        if (field == "notification_settings") {
+        if (field === "notification_settings") {
             let selectedValues = {};
             value.forEach((item) => {
                 selectedValues[item] = true;
@@ -202,7 +192,6 @@ class OrgSettings extends Component {
         if (remove) {
             values = values.filter((item) => item !== valueToRemove);
         } else {
-            const form = event.currentTarget;
 
             const data = new FormData(event.target);
             const option = data.get("option");
@@ -588,7 +577,7 @@ class OrgSettings extends Component {
                             onClick={this.submitSettings}
                             fullWidth
                             title={"Submit"}
-                            type={"button"}></BlueButton>
+                            type={"button"}/>
                     </div>
                 </div>
 

@@ -1,106 +1,110 @@
-import React, {Fragment, useEffect, useMemo, useState} from 'react'
-import PropTypes from 'prop-types'
-import moment from 'moment'
-import {Calendar, DateLocalizer, momentLocalizer, Views,} from 'react-big-calendar'
+import React, { Fragment, useEffect, useMemo, useState } from "react";
+import PropTypes from "prop-types";
+import moment from "moment";
+import { Calendar, DateLocalizer, momentLocalizer, Views } from "react-big-calendar";
 // import DemoLink from './DemoLink.component'
-import * as dates from './dates'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
+import * as dates from "./dates";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventItem from "./EventItem";
-import {LoaderAnimated, weekday} from "../../Util/GlobalFunctions";
-import {baseUrl} from "../../Util/Constants";
+import { LoaderAnimated, weekday } from "../../Util/GlobalFunctions";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios";
-import Badge from '@mui/material/Badge';
-import {Add} from "@mui/icons-material";
+import Badge from "@mui/material/Badge";
+import { Add } from "@mui/icons-material";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import EventForm from "./EventForm";
 import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
 
-const mLocalizer = momentLocalizer(moment)
+const mLocalizer = momentLocalizer(moment);
 
 const ColoredDateCellWrapper = ({ children }) => {
-
-
     React.cloneElement(React.Children.only(children), {
         style: {
-            backgroundColor: 'white',
+            backgroundColor: "white",
         },
-    })
-}
+    });
+};
 
 const CustomDateCellWrapper = ({ children }) => {
-
-
     return (
         <span className="custom-day-cell">
-            <Add className="add-event-icon"/>
+            <Add className="add-event-icon" />
 
             {children}
-    </span>
-    )
-}
+        </span>
+    );
+};
 /**
  * We are defaulting the localizer here because we are using this same
  * example on the main 'About' page in Storybook
  */
 export default function BigCalenderEvents({
-                                  localizer = mLocalizer,
-                                  showDemoLink = true,
-                                              smallView,
-                                  ...props
-                              }) {
+    localizer = mLocalizer,
+    showDemoLink = true,
+    smallView,
+    ...props
+}) {
+    const [events, setEvents] = useState([]);
+    const [monthEvents, setMonthEvents] = useState([]);
+    const [calanderEvents, setCalanderEvents] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [showEventPopUp, setShowEventPopUp] = useState(false);
+    const [showAddEventPopUp, setShowAddEventPopUp] = useState(false);
 
-    const [events,setEvents]=useState([])
-    const [monthEvents,setMonthEvents]=useState([])
-    const [calanderEvents,setCalanderEvents]=useState([])
-    const [selectedDate,setSelectedDate]=useState(new Date())
-    const [showEventPopUp,setShowEventPopUp]=useState(false)
-    const [showAddEventPopUp,setShowAddEventPopUp]=useState(false)
+    const [loading, setLoading] = useState([]);
 
-    const [loading,setLoading]=useState([])
+    const showEvent = () => {
+        setShowEventPopUp(!showEventPopUp);
+    };
 
+    const showAddEvent = () => {
+        setShowAddEventPopUp(!showAddEventPopUp);
+    };
 
-   const showEvent=()=> {
-
-      setShowEventPopUp(!showEventPopUp)
-
-    }
-
-    const showAddEvent=()=> {
-
-        setShowAddEventPopUp(!showAddEventPopUp)
-
-    }
-
-    const Event=({ event }) =>{
+    const Event = ({ event }) => {
         return (
             <span className="text-blue text-12">
+                <span>
+                    <Badge
+                        anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                        }}
+                        className={"fc-event-" + event.process}
+                        color="secondary"
+                        overlap="circular"
+                        badgeContent=""
+                        variant="dot"
+                    />
+                    {event.title}
+                </span>
 
-            <span> <Badge  anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }} className={"fc-event-"+event.process} color="secondary" overlap="circular" badgeContent="" variant="dot">
-                  </Badge> {event.title}</span>
+                {event.desc && ":  " + event.desc}
+            </span>
+        );
+    };
 
-                {event.desc && ':  ' + event.desc}
-    </span>
-        )
-    }
-
-
-    const Day=({ event }) =>{
+    const Day = ({ event }) => {
         return (
             <span className="text-blue text-12">
+                <b>
+                    <Badge
+                        anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                        }}
+                        className={"fc-event-" + event.process}
+                        color="secondary"
+                        overlap="circular"
+                        badgeContent=""
+                        variant="dot"/>
+                    {event.title}
+                </b>
 
-            <b> <Badge  anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }} className={"fc-event-"+event.process} color="secondary" overlap="circular" badgeContent="" variant="dot">
-                  </Badge> {event.title}</b>
-
-                {event.desc && ':  ' + event.desc}
-    </span>
-        )
-    }
+                {event.desc && ":  " + event.desc}
+            </span>
+        );
+    };
 
     const { components, defaultDate, max, views } = useMemo(
         () => ({
@@ -111,9 +115,9 @@ export default function BigCalenderEvents({
                 // date:CustomDateCellWrapper
             },
             defaultDate: new Date(),
-            max: dates.add(dates.endOf(new Date(2022, 17, 1), 'day'), 1, 'hours'),
+            max: dates.add(dates.endOf(new Date(2022, 17, 1), "day"), 1, "hours"),
             views: Object.keys({
-                MONTH: 'month',
+                MONTH: "month",
                 // WEEK: 'week',
                 // WORK_WEEK: 'work_week',
                 // DAY: 'day',
@@ -121,21 +125,21 @@ export default function BigCalenderEvents({
             }).map((k) => Views[k]),
         }),
         []
-    )
+    );
 
+    const getEvents = (start, end) => {
+        setLoading(true);
 
-  const  getEvents=(start,end)=>{
+        setEvents([]);
+        let url = `${baseUrl}${
+            props.productId ? "product/" + props.productId + "/event" : "event"
+        }?`;
 
-        setLoading(true)
-
-      setEvents([])
-        let url=`${baseUrl}${props.productId?"product/"+props.productId+"/event":"event"}?`
-
-        if (start){
-            url=`${url}resolv_start=${start}`
+        if (start) {
+            url = `${url}resolv_start=${start}`;
         }
-        if (end){
-            url=`${url}&resolv_end=${end}`
+        if (end) {
+            url = `${url}&resolv_end=${end}`;
         }
 
         axios
@@ -143,7 +147,6 @@ export default function BigCalenderEvents({
             .get(url)
             .then(
                 (response) => {
-
                     var responseAll = response.data.data;
 
                     // this.setState({
@@ -151,40 +154,35 @@ export default function BigCalenderEvents({
                     //     calendarEvents:this.convertEvents(responseAll)
                     // })
 
-                    if (smallView){
-
-                        setMonthEvents(convertEvents(responseAll))
+                    if (smallView) {
+                        setMonthEvents(convertEvents(responseAll));
                     }
 
-                    setEvents(responseAll)
-                    setCalanderEvents(convertEvents(responseAll))
+                    setEvents(responseAll);
+                    setCalanderEvents(convertEvents(responseAll));
 
-                    setLoading(false)
+                    setLoading(false);
                 },
                 (error) => {
                     // this.setState({
                     //     notFound: true,
                     // });
-                    setLoading(false)
+                    setLoading(false);
                 }
             );
+    };
 
+    const getEventsByMonth = (start, end) => {
+        setEvents([]);
+        let url = `${baseUrl}${
+            props.productId ? "product/" + props.productId + "/event" : "event"
+        }?`;
 
-
-    }
-
-
-
-    const  getEventsByMonth=(start,end)=>{
-
-        setEvents([])
-        let url=`${baseUrl}${props.productId?"product/"+props.productId+"/event":"event"}?`
-
-        if (start){
-            url=`${url}resolv_start=${start}`
+        if (start) {
+            url = `${url}resolv_start=${start}`;
         }
-        if (end){
-            url=`${url}&resolv_end=${end}`
+        if (end) {
+            url = `${url}&resolv_end=${end}`;
         }
 
         axios
@@ -192,7 +190,6 @@ export default function BigCalenderEvents({
             .get(url)
             .then(
                 (response) => {
-
                     var responseAll = response.data.data;
 
                     // this.setState({
@@ -200,8 +197,7 @@ export default function BigCalenderEvents({
                     //     calendarEvents:this.convertEvents(responseAll)
                     // })
 
-
-                    setMonthEvents(convertEvents(responseAll))
+                    setMonthEvents(convertEvents(responseAll));
                     // setCalanderEvents(convertEvents(responseAll))
                 },
                 (error) => {
@@ -210,224 +206,140 @@ export default function BigCalenderEvents({
                     // });
                 }
             );
+    };
 
+    useEffect(() => {
+        if (!smallView) {
+            getEventsByMonth(
+                moment().startOf("month").format("x"),
+                moment().endOf("month").format("x")
+            );
 
-
-    }
-
-
-    useEffect(()=>{
-
-
-        if (!smallView){
-            getEventsByMonth(moment().startOf('month').format("x"),
-                moment().endOf('month').format("x"))
-
-            getEvents(moment().startOf('day').format("x"),
-                moment().endOf('day').format("x"))
-        }else{
-            getEvents()
+            getEvents(moment().startOf("day").format("x"), moment().endOf("day").format("x"));
+        } else {
+            getEvents();
         }
+    }, []);
 
-
-    },[])
-
-  const  convertEvents=(events)=>{
-
-
-
-        let calenderEvents=[]
-        events.forEach((item,index)=> {
-            let date=new Date(item.event.resolution_epoch_ms)
+    const convertEvents = (events) => {
+        let calenderEvents = [];
+        events.forEach((item, index) => {
+            let date = new Date(item.event.resolution_epoch_ms);
 
             // console.log(date)
             // console.log(item)
-                calenderEvents.push({
-                    id: item.event._key,
-                    index:index+1,
-                    title: item.event.title,
-                   process:item.event.process,
-                    // allDay: true,
-                    start: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
-                    end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
+            calenderEvents.push({
+                id: item.event._key,
+                index: index + 1,
+                title: item.event.title,
+                process: item.event.process,
+                // allDay: true,
+                start: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
+                end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
 
-                    // end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 9, 0, 0),
-                    className:"fc-event-"+item.event.process,
-                    desc: "Some description "+ item.event._key
+                // end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 9, 0, 0),
+                className: "fc-event-" + item.event.process,
+                desc: "Some description " + item.event._key,
+            });
+        });
 
+        return calenderEvents;
+    };
 
-                })
+    const handleSelectSlot = (arg) => {
+        // bind with an arrow function
+
+        // console.log("single click",arg.action);
+        if (!smallView) {
+            switch (arg.action) {
+                case "click":
+                    if (!smallView) {
+                        setSelectedDate(arg.start);
+
+                        // getEvents(new Date(arg.start).valueOf(), new Date(arg.end).valueOf())
+
+                        getEvents(
+                            moment(arg.start).startOf("day").format("x"),
+                            moment(arg.start).endOf("day").format("x")
+                        );
+                    }
+                    break;
+                case "doubleClick":
+                    setShowAddEventPopUp(!showAddEventPopUp);
+                    break;
+                // case 3:
+                //     console.log("triple click");
+                //     break;
+                default:
+                    return;
             }
-        )
+        }
+    };
 
-        return calenderEvents
-
-    }
-
-
-  const  handleSelectSlot = (arg) => { // bind with an arrow function
-
-      // console.log("single click",arg.action);
-if (!smallView) {
-
-    switch (arg.action) {
-        case "click":
-
-            if (!smallView) {
-                setSelectedDate(arg.start)
-
-
-
-                // getEvents(new Date(arg.start).valueOf(), new Date(arg.end).valueOf())
-
-                getEvents(moment(arg.start).startOf('day').format("x"),
-                    moment(arg.start).endOf('day').format("x"))
-
-            }
-            break;
-        case "doubleClick":
-
-
-            setShowAddEventPopUp(!showAddEventPopUp)
-            break;
-        // case 3:
-        //     console.log("triple click");
-        //     break;
-        default:
-            return;
-    }
-
-}
-    }
-
-
-    const  handleNaviation = (arg) => { // bind with an arrow function
-
+    const handleNaviation = (arg) => {
+        // bind with an arrow function
 
         if (!smallView) {
+            getEventsByMonth(
+                getEventsByMonth(
+                    moment(arg).startOf("month").format("x"),
+                    moment(arg).endOf("month").format("x")
+                )
+            );
 
-            getEventsByMonth(getEventsByMonth(moment(arg).startOf('month').format("x"),
-                moment(arg).endOf('month').format("x")))
+            getEvents(
+                moment(arg).startOf("month").format("x"),
+                moment(arg).startOf("month").add(1, "days").format("x")
+            );
 
-            getEvents(moment(arg).startOf('month').format("x"),
-                moment(arg).startOf('month').add(1, 'days').format('x'))
-
-            setSelectedDate(new Date(arg.getFullYear(), arg.getMonth(), 1, 0, 0, 0))
+            setSelectedDate(new Date(arg.getFullYear(), arg.getMonth(), 1, 0, 0, 0));
         }
+    };
 
-    }
-
-        return (
+    return (
         <Fragment>
-
-
             <GlobalDialog
                 size="sm"
                 heading={"Add event"}
                 show={showAddEventPopUp}
-                hide={()=> {
+                hide={() => {
                     showAddEvent();
-                }}
-            >
+                }}>
                 <>
-                    {showAddEventPopUp&&      <div className="form-col-left col-12">
-                        <EventForm
-                            date={selectedDate}
-                            hide={()=> {
-                                showAddEvent();
+                    {showAddEventPopUp && (
+                        <div className="form-col-left col-12">
+                            <EventForm
+                                date={selectedDate}
+                                hide={() => {
+                                    showAddEvent();
 
-                                getEventsByMonth(  moment(selectedDate).startOf('month').format("x"),
-                                    moment(selectedDate).endOf('month').format("x"))
-                                getEvents(moment(selectedDate).startOf('day').format("x"), moment(selectedDate).endOf('day').format("x"))
-                            }}
-
-                               />
-                    </div>}
+                                    getEventsByMonth(
+                                        moment(selectedDate).startOf("month").format("x"),
+                                        moment(selectedDate).endOf("month").format("x")
+                                    );
+                                    getEvents(
+                                        moment(selectedDate).startOf("day").format("x"),
+                                        moment(selectedDate).endOf("day").format("x")
+                                    );
+                                }}
+                            />
+                        </div>
+                    )}
                 </>
             </GlobalDialog>
 
-
-
-            {!smallView ?  <div className={"row justify-content-center create-product-row "}>
-
-
-
-                <div className={`bg-white-1 ${smallView?"col-12 mt-4 fc-small-calender":"col-md-8" }`}
-
-                >
-
-             <div
-                 className="sticky-top"
-             >
-                <Calendar
-
-                    className={` ${smallView?" rbc-small-calender":"rbc-big-calender" }`}
-                    style={{height:"600px"}}
-                    components={components}
-                    defaultDate={defaultDate}
-                    events={monthEvents}
-                    localizer={localizer}
-                    max={1}
-                    showMultiDayTimes
-                    step={60}
-                    views={views}
-
-                    startAccessor="start"
-                    endAccessor="end"
-                    // popup
-                    selectable
-                    // onSelectEvent={handleSelectEvent}
-                    onSelectSlot={handleSelectSlot}
-                    onNavigate={handleNaviation }
-
-                />
-
-
-
-                </div>
-
-                </div>
-                <div  className={`bg-white-1 ${smallView?"small-log-view mt-4 col-12":"col-md-4" }`}>
-                    {!smallView && <div className="title-bold">{weekday[selectedDate.getDay()]+", "+selectedDate.toLocaleString('default', { month: 'long' })+" "+selectedDate.getDate()+" ,"+selectedDate.getFullYear() }</div>}
-
-                    {loading&& <LoaderAnimated/>}
-
-                {events.length>0 ?
-                    <>
-
-                        <span className="">{events.length} {events.length>1?"Events":"Event"}</span>
-
-                        <EventItem refresh={()=>getEvents()} smallView={smallView} events={events}/>
-
-                        </>
-                    :
-                    <>
-                        {!loading &&  <div className={``}>
-                            No Events exist</div>}
-                    </>}
-                </div>
-            </div>
-
-          :
-
-
+            {!smallView ? (
                 <div className={"row justify-content-center create-product-row "}>
-
-
-
-                    <GlobalDialog
-                        size="md"
-                        heading={"Events"}
-                        show={showEventPopUp}
-                        hide={()=> {
-                            showEvent();
-                        }}
-                    >
-                        <>
+                    <div
+                        className={`bg-white-1 ${
+                            smallView ? "col-12 mt-4 fc-small-calender" : "col-md-8"
+                        }`}>
+                        <div className="sticky-top">
                             <Calendar
-
-                                className={` ${smallView?" rbc-small-calender":"rbc-big-calender" }`}
-                                style={{height:"600px", width:"100%"}}
+                                className={` ${
+                                    smallView ? " rbc-small-calender" : "rbc-big-calender"
+                                }`}
+                                style={{ height: "600px" }}
                                 components={components}
                                 defaultDate={defaultDate}
                                 events={monthEvents}
@@ -436,7 +348,74 @@ if (!smallView) {
                                 showMultiDayTimes
                                 step={60}
                                 views={views}
+                                startAccessor="start"
+                                endAccessor="end"
+                                // popup
+                                selectable
+                                // onSelectEvent={handleSelectEvent}
+                                onSelectSlot={handleSelectSlot}
+                                onNavigate={handleNaviation}
+                            />
+                        </div>
+                    </div>
+                    <div
+                        className={`bg-white-1 ${
+                            smallView ? "small-log-view mt-4 col-12" : "col-md-4"
+                        }`}>
+                        {!smallView && (
+                            <div className="title-bold">
+                                {weekday[selectedDate.getDay()] +
+                                    ", " +
+                                    selectedDate.toLocaleString("default", { month: "long" }) +
+                                    " " +
+                                    selectedDate.getDate() +
+                                    " ," +
+                                    selectedDate.getFullYear()}
+                            </div>
+                        )}
 
+                        {loading && <LoaderAnimated />}
+
+                        {events.length > 0 ? (
+                            <>
+                                <span className="">
+                                    {events.length} {events.length > 1 ? "Events" : "Event"}
+                                </span>
+
+                                <EventItem
+                                    refresh={() => getEvents()}
+                                    smallView={smallView}
+                                    events={events}
+                                />
+                            </>
+                        ) : (
+                            <>{!loading && <div className={``}>No Events exist</div>}</>
+                        )}
+                    </div>
+                </div>
+            ) : (
+                <div className={"row justify-content-center create-product-row "}>
+                    <GlobalDialog
+                        size="md"
+                        heading={"Events"}
+                        show={showEventPopUp}
+                        hide={() => {
+                            showEvent();
+                        }}>
+                        <>
+                            <Calendar
+                                className={` ${
+                                    smallView ? " rbc-small-calender" : "rbc-big-calender"
+                                }`}
+                                style={{ height: "600px", width: "100%" }}
+                                components={components}
+                                defaultDate={defaultDate}
+                                events={monthEvents}
+                                localizer={localizer}
+                                max={1}
+                                showMultiDayTimes
+                                step={60}
+                                views={views}
                                 startAccessor="start"
                                 endAccessor="end"
                                 // popup
@@ -444,59 +423,62 @@ if (!smallView) {
                                 // onSelectEvent={handleSelectEvent}
                                 // onSelectSlot={handleSelectSlot}
                                 // onNavigate={handleNaviation }
-
                             />
                         </>
                     </GlobalDialog>
 
+                    {/*    </div>*/}
 
-                {/*    </div>*/}
+                    {/*</div>*/}
+                    <div
+                        className={`bg-white-1 ${
+                            smallView
+                                ? "small-log-view mt-4 justify-content-end text-right col-12"
+                                : "col-4"
+                        }`}>
+                        {loading && <LoaderAnimated />}
 
-                {/*</div>*/}
-                <div  className={`bg-white-1 ${smallView?"small-log-view mt-4 justify-content-end text-right col-12":"col-4" }`}>
+                        {!smallView && (
+                            <div className="title-bold">
+                                {weekday[selectedDate.getDay()] +
+                                    ", " +
+                                    selectedDate.toLocaleString("default", { month: "long" }) +
+                                    " " +
+                                    selectedDate.getDate() +
+                                    " ," +
+                                    selectedDate.getFullYear()}
+                            </div>
+                        )}
 
-                    {loading&& <LoaderAnimated/>}
+                        {events.length > 0 && (
+                            <GrayBorderBtn title={"View Calender"} onClick={showEvent} />
+                        )}
 
-                    {!smallView &&
-                    <div className="title-bold">{weekday[selectedDate.getDay()]+", "
-                    +selectedDate.toLocaleString('default', { month: 'long' })+
-                    " "+selectedDate.getDate()+" ,"+selectedDate.getFullYear() }</div>}
+                        {events.length > 0 ? (
+                            <>
+                                <p className="">
+                                    {events.length} {events.length > 1 ? "Events" : "Event"}
+                                </p>
 
-
-                    {events.length>0 && <GrayBorderBtn  title={"View Calender"}   onClick={showEvent} />}
-
-                    {events.length>0 ?
-                        <>
-                            <p className="">{events.length} {events.length>1?"Events":"Event"}</p>
-
-                            <EventItem   refresh={()=>getEvents()}  events={events}/>
-
-                        </>
-                        :
-                        <>
-                            {!loading &&  <div className={``}>
-                            No Events exist</div>}
-                        </>
-                        }
-
+                                <EventItem refresh={() => getEvents()} events={events} />
+                            </>
+                        ) : (
+                            <>{!loading && <div className={``}>No Events exist</div>}</>
+                        )}
+                    </div>
                 </div>
-            </div>}
+            )}
         </Fragment>
-    )
+    );
 }
 
 function DayComponent(props) {
     const { children, value } = props;
 
-    return (
-        <span className={"custom-day-cell"}>
-            {/*{children}*/}
-        </span>
-    );
+    return <span className={"custom-day-cell"}>{/*{children}*/}</span>;
 }
-
 
 BigCalenderEvents.propTypes = {
     localizer: PropTypes.instanceOf(DateLocalizer),
     showDemoLink: PropTypes.bool,
-}
+};

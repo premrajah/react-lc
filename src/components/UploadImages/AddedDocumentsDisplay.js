@@ -155,7 +155,7 @@ const AddedDocumentsDisplay = (props) => {
                             }
                         })
                     ) : (
-                        <div>No documents added.</div>
+                        <div className="mt-2">No documents added.</div>
                     )}
                 </div>
             </div>

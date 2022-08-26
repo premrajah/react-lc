@@ -38,11 +38,11 @@ class EventItem extends Component {
                 showStagePopup:false,
                 deleteEvent:false,
                 intervals:[
-                    {key:86400 ,value:"Every Day"},
-                    {key:604800 ,value:"Every Week"},
-                    {key:864000,value:"Every 10 Days"},
-                    {key:2629743 ,value:"Every Month"},
-                    {key:31556926 ,value:"Every Year"},
+                    {key:86400000 ,value:"Every Day"},
+                    {key:604800000 ,value:"Every Week"},
+                    {key:864000000,value:"Every 10 Days"},
+                    {key:2629743000 ,value:"Every Month"},
+                    {key:31556926000 ,value:"Every Year"},
                 ],
             }
         }
@@ -355,7 +355,8 @@ class EventItem extends Component {
                                                 }
                                             </p>
                                         </div>
-                                        {this.state.selectedEvent.event.recur_in_epoch_ms &&  <div className={"col-6"}>
+                                        {this.state.selectedEvent.event.recur_in_epoch_ms &&
+                                        <div className={"col-6"}>
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">

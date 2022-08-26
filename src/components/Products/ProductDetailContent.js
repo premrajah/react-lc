@@ -978,7 +978,7 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
-                                                        {/*<Tab label="Events" value="8" />*/}
+                                                        <Tab label="Events" value="8" />
 
                                                     </TabList>
                                                 </Box>

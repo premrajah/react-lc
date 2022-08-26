@@ -4388,11 +4388,11 @@ select option {
     color: rgba(0, 0, 0, 0.6) !important;
 }
 .rbc-toolbar-label {
-    display: none;
+    display: flex;
+    font-weight: bold;
 }
 .rbc-toolbar {
-    justify-content: end !important;
-    margin-top: 10px;
+    flex-direction: row-reverse;
 }
 .rbc-show-more {
     font-size: 12px !important;

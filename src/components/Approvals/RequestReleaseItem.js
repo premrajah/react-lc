@@ -4,8 +4,6 @@ import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-
-import {Modal, ModalBody} from "react-bootstrap";
 import TextField from "@mui/material/TextField";
 import moment from "moment/moment";
 import FormControl from "@mui/material/FormControl";
@@ -15,7 +13,6 @@ import {Link} from "react-router-dom";
 import {capitalize} from "../../Util/GlobalFunctions";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 

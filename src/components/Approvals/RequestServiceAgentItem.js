@@ -4,7 +4,6 @@ import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import {Modal, ModalBody} from "react-bootstrap";
 import moment from "moment/moment";
 import {withStyles} from "@mui/styles/index";
 import ImageOnlyThumbnail from "../ImageOnlyThumbnail";

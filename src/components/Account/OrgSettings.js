@@ -196,8 +196,20 @@ class OrgSettings extends Component {
             const data = new FormData(event.target);
             const option = data.get("option");
 
-            if (!values.find((item) => item.toLowerCase() === option.toLowerCase()))
+            if (!values.find((item) => item.toLowerCase() === option.toLowerCase())){
                 values.push(option);
+
+                this.resetForm(field);
+            }else {
+
+                let errors=this.state.errors
+                errors[field]="Duplicate values not allowed."
+               this.setState({
+                  errors:errors
+               })
+            }
+
+
         }
 
         this.setState({
@@ -399,9 +411,9 @@ class OrgSettings extends Component {
                                     </TableCell>
 
                                     <TableCell align="right">
-                                        <div className="justify-content-end align-items-center d-flex flex-row">
-                                            <div className="row mt-2">
-                                                <div className="col-6">
+                                        <div className=" align-items-center flex-row">
+                                            <div className="row mt-2 ">
+                                                <div className="col-6 text-left">
                                                     {this.state.acceptable_domains.map(
                                                         (item, index) => (
                                                             <Chip
@@ -437,7 +449,7 @@ class OrgSettings extends Component {
                                                                 false
                                                             );
 
-                                                            this.resetForm("acceptable_domains");
+
                                                         }}>
                                                         <TextFieldWrapper
                                                             reset={
@@ -449,7 +461,13 @@ class OrgSettings extends Component {
                                                             variant={"standard"}
                                                             required={true}
                                                             native
-                                                            onChange={() => {}}
+                                                            onChange={() => {
+                                                                let errors= this.state.errors
+                                                                errors["acceptable_domains"]=""
+                                                                    this.setState({
+                                                                        errors:errors
+                                                                    })
+                                                                }}
                                                         />
                                                         <IconButton
                                                             className={"ms-2"}
@@ -457,6 +475,7 @@ class OrgSettings extends Component {
                                                             <AddIcon />
                                                         </IconButton>
                                                     </form>
+                                                    <span className="border-red-error text-12">{this.state.errors&&this.state.errors["acceptable_domains"]}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -511,7 +530,7 @@ class OrgSettings extends Component {
                                                                 null,
                                                                 false
                                                             );
-                                                            this.resetForm("matching_brands");
+
                                                         }}>
                                                         <TextFieldWrapper
                                                             reset={

@@ -1,19 +1,21 @@
-import React, { Fragment, useEffect, useMemo, useState } from "react";
+import React, {Fragment, useEffect, useMemo, useState} from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Calendar, DateLocalizer, momentLocalizer, Views } from "react-big-calendar";
+import {Calendar, DateLocalizer, momentLocalizer, Views} from "react-big-calendar";
 // import DemoLink from './DemoLink.component'
 import * as dates from "./dates";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventItem from "./EventItem";
-import { LoaderAnimated, weekday } from "../../Util/GlobalFunctions";
-import { baseUrl } from "../../Util/Constants";
+import {LoaderAnimated, weekday} from "../../Util/GlobalFunctions";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios";
 import Badge from "@mui/material/Badge";
-import { Add } from "@mui/icons-material";
+import {Add, ArrowBack, ArrowForward} from "@mui/icons-material";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import EventForm from "./EventForm";
 import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
+import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
+import CustomPopover from "../FormsUI/CustomPopover";
 
 const mLocalizer = momentLocalizer(moment);
 
@@ -26,6 +28,49 @@ const ColoredDateCellWrapper = ({ children }) => {
 };
 
 const CustomDateCellWrapper = ({ children }) => {
+    return (
+        <span className="custom-day-cell">
+
+
+            {children}
+        </span>
+    );
+};
+
+
+const CustomDayview = ({ children }) => {
+    return (
+        <span className="custom-day-cell">
+            <Add className="add-event-icon" />
+
+            {children}
+        </span>
+    );
+};
+
+const CustomSlotView = ({ children }) => {
+    return (
+        <span className="custom-day-cell">
+            <Add className="add-event-icon" />
+
+            {children}
+        </span>
+    );
+};
+
+const CustomTimeGutterWrapper = ({ children }) => {
+    return (
+        <span className="custom-day-cell">
+            <Add className="add-event-icon" />
+
+            {children}
+        </span>
+    );
+};
+
+
+const CustomTimeGutterHeader = ({ children }) => {
+    return console.log('>> ')
     return (
         <span className="custom-day-cell">
             <Add className="add-event-icon" />
@@ -61,9 +106,22 @@ export default function BigCalenderEvents({
         setShowAddEventPopUp(!showAddEventPopUp);
     };
 
-    const Event = ({ event }) => {
+    const Event = ( props) => {
+
+        let event=props.event
+
+        // console.log(event)
+
         return (
-            <span className="text-blue text-12">
+            <span onClick={()=>
+            {
+
+                setSelectedDate(event.start)
+                getEvents(
+                    moment(event.start).startOf("day").format("x"),
+                    moment(event.start).endOf("day").format("x")
+                )
+            }} className="text-blue text-12">
                 <span>
                     <Badge
                         anchorOrigin={{
@@ -106,19 +164,87 @@ export default function BigCalenderEvents({
         );
     };
 
+
+    const DateHeader = ( props) => {
+          // console.log(label, date)
+
+
+     return (  <>
+            {/*{props.children}*/}
+
+        <div className="custom-date-header">
+              <Add className="add-event-icon" />
+        </div>
+
+            </>)
+    };
+
+
+    const CustomToolbar = ( props) => {
+        // console.log(label, date)
+
+      let  navigate = action => {
+            console.log(action);
+
+            props.onNavigate(action)
+        }
+
+        return (  <>
+
+            <div className='rbc-toolbar'>
+        <span className="rbc-btn-group">
+
+          <ArrowBack className="arrow-back cal-arrows" onClick={() => navigate('PREV')} />
+             <button className="" type="button" onClick={() => navigate('TODAY')} >today</button>
+          <ArrowForward  className="arrow-forward  cal-arrows" onClick={() => navigate('NEXT')} />
+
+          {/*<button onClick={() => navigate('WEEK')}></button>*/}
+        </span>
+                <span className="rbc-toolbar-label">{props.label}</span>
+            </div>
+        </>)
+    };
+
+
+    const EventWrapper = ({ event, children }) => {
+        const { title, className } = children.props;
+        const customClass = `${className} rbc-event--${event.type}`;
+        const hourStart = moment(event.start).hour();
+        const hourStop = moment(event.end).hour();
+        const gridRowStart = hourStart + 1;
+
+        return (
+            <div
+                title={title}
+                className={customClass}
+                style={{ gridRow: `${gridRowStart} / span ${hourStop - hourStart}` }}
+            >
+                {children.props.children}
+            </div>
+        );
+    };
     const { components, defaultDate, max, views } = useMemo(
         () => ({
             components: {
-                timeSlotWrapper: ColoredDateCellWrapper,
+                toolbar:CustomToolbar,
+                // month: {
+                //     dateHeader: DateHeader,
+                // },
+                // timeSlotWrapper: ColoredDateCellWrapper,
                 // dateCellWrapper:CustomDateCellWrapper,
                 event: Event,
+                eventWrapper:EventWrapper,
+                // timeGutterHeader: CustomTimeGutterHeader,
+                // timeGutterWrapper:function test(){},
+                // dateCellWrapper:()=>{},
                 // date:CustomDateCellWrapper
             },
             defaultDate: new Date(),
             max: dates.add(dates.endOf(new Date(2022, 17, 1), "day"), 1, "hours"),
             views: Object.keys({
+                // YEAR:"year",
                 MONTH: "month",
-                // WEEK: 'week',
+                WEEK: 'week',
                 // WORK_WEEK: 'work_week',
                 // DAY: 'day',
                 // AGENDA: 'agenda'
@@ -247,29 +373,17 @@ export default function BigCalenderEvents({
     };
 
     const handleSelectSlot = (arg) => {
-        // bind with an arrow function
 
-        // console.log("single click",arg.action);
         if (!smallView) {
             switch (arg.action) {
                 case "click":
-                    if (!smallView) {
                         setSelectedDate(arg.start);
-
-                        // getEvents(new Date(arg.start).valueOf(), new Date(arg.end).valueOf())
-
-                        getEvents(
-                            moment(arg.start).startOf("day").format("x"),
-                            moment(arg.start).endOf("day").format("x")
-                        );
-                    }
+                        getEvents(moment(arg.start).startOf("day").format("x"), moment(arg.start).endOf("day").format("x"));
                     break;
                 case "doubleClick":
                     setShowAddEventPopUp(!showAddEventPopUp);
                     break;
-                // case 3:
-                //     console.log("triple click");
-                //     break;
+
                 default:
                     return;
             }
@@ -306,6 +420,7 @@ export default function BigCalenderEvents({
                     showAddEvent();
                 }}>
                 <>
+                    {selectedDate.toString()}
                     {showAddEventPopUp && (
                         <div className="form-col-left col-12">
                             <EventForm
@@ -363,7 +478,8 @@ export default function BigCalenderEvents({
                             smallView ? "small-log-view mt-4 col-12" : "col-md-4"
                         }`}>
                         {!smallView && (
-                            <div className="title-bold">
+                            <div className="title-bold row d-flex align-items-center ">
+                                <div className="text-left col-8 justify-content-start">
                                 {weekday[selectedDate.getDay()] +
                                     ", " +
                                     selectedDate.toLocaleString("default", { month: "long" }) +
@@ -371,6 +487,17 @@ export default function BigCalenderEvents({
                                     selectedDate.getDate() +
                                     " ," +
                                     selectedDate.getFullYear()}
+</div>
+
+                                <div className="text-right col-4 justify-content-end ml-2">
+                                <CustomPopover text={"Add event"}>   <ActionIconBtn
+
+                                                onClick={()=>{
+
+                                                    setShowAddEventPopUp(!showAddEventPopUp)
+                                                }}
+                                ><Add className="add-event-icon" /></ActionIconBtn></CustomPopover>
+                                </div>
                             </div>
                         )}
 
@@ -418,18 +545,12 @@ export default function BigCalenderEvents({
                                 views={views}
                                 startAccessor="start"
                                 endAccessor="end"
-                                // popup
-                                // selectable
-                                // onSelectEvent={handleSelectEvent}
-                                // onSelectSlot={handleSelectSlot}
-                                // onNavigate={handleNaviation }
+
                             />
                         </>
                     </GlobalDialog>
 
-                    {/*    </div>*/}
 
-                    {/*</div>*/}
                     <div
                         className={`bg-white-1 ${
                             smallView

@@ -2,16 +2,14 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {baseUrl, checkImage} from "../../Util/Constants";
 import axios from "axios/index";
-import {Cancel, CheckCircle, Close, Delete, Done, Edit, Info} from "@mui/icons-material";
+import {Close, Edit} from "@mui/icons-material";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import * as actionCreator from "../../store/actions/actions";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CustomPopover from "../FormsUI/CustomPopover";
-import {Spinner} from "react-bootstrap";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
-import OrgComponent from "../Org/OrgComponent";
 import DescriptionIcon from "@mui/icons-material/Description";
 
 class ManageTemplateItem extends Component {

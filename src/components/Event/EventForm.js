@@ -662,28 +662,20 @@ class EventForm extends Component {
                 productId:this.props.productId
             })
         }
-
-
         if (this.props.event){
-
             this.setState({
                 isEditProduct:true,
                 startDate:this.props.event.event.resolution_epoch_ms
             })
-
             this.loadImages(this.props.event.artifacts)
+
         }else{
             this.setState({
                 isEditProduct:true,
                 startDate: new Date()
             })
         }
-
-
-
-
     }
-
 
     showMultipleUpload=()=>{
 

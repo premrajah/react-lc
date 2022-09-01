@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {capitalizeFirstLetter, checkImage} from "../../Util/Constants";
 import {capitalize} from "../../Util/GlobalFunctions";
-import OrgComponent from "../Org/OrgComponent";
 import DescriptionIcon from "@mui/icons-material/Description";
 
 class ProductLineContent extends Component {

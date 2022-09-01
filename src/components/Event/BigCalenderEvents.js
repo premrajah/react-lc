@@ -16,7 +16,20 @@ import EventForm from "./EventForm";
 import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import CustomPopover from "../FormsUI/CustomPopover";
-
+import { styled } from '@mui/material/styles';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 const mLocalizer = momentLocalizer(moment);
 
 const ColoredDateCellWrapper = ({ children }) => {
@@ -181,7 +194,7 @@ export default function BigCalenderEvents({
 
 
     const CustomToolbar = ( props) => {
-        // console.log(label, date)
+        console.log(props)
 
       let  navigate = action => {
             console.log(action);
@@ -189,18 +202,28 @@ export default function BigCalenderEvents({
             props.onNavigate(action)
         }
 
+
+        let  viewSelect = view => {
+            console.log(view);
+
+            props.onView(view)
+        }
+
         return (  <>
 
             <div className='rbc-toolbar'>
+               <span> <CustomizedDividers  viewSelect={viewSelect} /></span>
+
+                <span className="rbc-toolbar-label title-bold pl-2">{props.label}</span>
         <span className="rbc-btn-group">
 
           <ArrowBack className="arrow-back cal-arrows" onClick={() => navigate('PREV')} />
              <button className="" type="button" onClick={() => navigate('TODAY')} >today</button>
           <ArrowForward  className="arrow-forward  cal-arrows" onClick={() => navigate('NEXT')} />
 
-          {/*<button onClick={() => navigate('WEEK')}></button>*/}
+          {/*<button onClick={() => viewSelect( "week")}>Week</button>*/}
         </span>
-                <span className="rbc-toolbar-label">{props.label}</span>
+
             </div>
         </>)
     };
@@ -247,7 +270,7 @@ export default function BigCalenderEvents({
                 WEEK: 'week',
                 // WORK_WEEK: 'work_week',
                 // DAY: 'day',
-                // AGENDA: 'agenda'
+                AGENDA: 'agenda'
             }).map((k) => Views[k]),
         }),
         []
@@ -479,7 +502,7 @@ export default function BigCalenderEvents({
                         }`}>
                         {!smallView && (
                             <div className="title-bold row d-flex align-items-center ">
-                                <div className="text-left col-8 justify-content-start">
+                                <div className="text-left  col-8 justify-content-start">
                                 {weekday[selectedDate.getDay()] +
                                     ", " +
                                     selectedDate.toLocaleString("default", { month: "long" }) +
@@ -593,11 +616,77 @@ export default function BigCalenderEvents({
     );
 }
 
-function DayComponent(props) {
-    const { children, value } = props;
 
-    return <span className={"custom-day-cell"}>{/*{children}*/}</span>;
+
+
+
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+    '& .MuiToggleButtonGroup-grouped': {
+        margin: theme.spacing(0.5),
+        border: 0,
+        '&.Mui-disabled': {
+            border: 0,
+        },
+        '&:not(:first-of-type)': {
+            borderRadius: theme.shape.borderRadius,
+        },
+        '&:first-of-type': {
+            borderRadius: theme.shape.borderRadius,
+        },
+    },
+}));
+
+function CustomizedDividers(props) {
+    const [alignment, setAlignment] = React.useState('month');
+    const [formats, setFormats] = React.useState(() => ['italic']);
+
+    const handleFormat = (event, newFormats) => {
+        setFormats(newFormats);
+    };
+
+    const handleAlignment = (event, newAlignment) => {
+        setAlignment(newAlignment);
+        props.viewSelect(newAlignment)
+    };
+
+    return (
+        <div>
+            <Paper
+                elevation={0}
+                sx={{
+                    display: 'flex',
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    flexWrap: 'wrap',
+                }}
+            >
+                <StyledToggleButtonGroup
+                    size="small"
+                    value={alignment}
+                    exclusive
+                    onChange={handleAlignment}
+                    aria-label="text alignment"
+                >
+                    {/*<ToggleButton value="left" aria-label="left aligned">*/}
+                    {/*   <span>Year</span>*/}
+                    {/*</ToggleButton>*/}
+                    <ToggleButton value="month" aria-label="centered">
+                        <span>Month</span>
+                    </ToggleButton>
+                    <ToggleButton value="week" aria-label="right aligned">
+                        <span>Week</span>
+                    </ToggleButton>
+                    {/*<ToggleButton value="agenda" aria-label="justified" >*/}
+                    {/*    <span>Agenda</span>*/}
+                    {/*</ToggleButton>*/}
+                </StyledToggleButtonGroup>
+
+
+            </Paper>
+        </div>
+    );
 }
+
+
 
 BigCalenderEvents.propTypes = {
     localizer: PropTypes.instanceOf(DateLocalizer),

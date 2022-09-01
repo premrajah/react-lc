@@ -4390,9 +4390,10 @@ select option {
 .rbc-toolbar-label {
     display: flex;
     font-weight: bold;
+    justify-content: center;
 }
 .rbc-toolbar {
-    flex-direction: row-reverse;
+    /*flex-direction: row-reverse;*/
 }
 .rbc-show-more {
     font-size: 12px !important;
@@ -4458,7 +4459,7 @@ select option {
     text-transform: uppercase!important;
     line-height: 1.4em!important;
     letter-spacing: 1px!important;
-    height: 42px!important;
+    height: 35px!important;
     background: transparent!important;
     display: inline-block!important;
     margin: auto!important;
@@ -4472,17 +4473,17 @@ select option {
 .cal-arrows{
     margin: 20px!important;
     cursor: pointer;
-    transition: 0.6s ease-in;
+
 }
 
 .arrow-back:hover{
-    transition: 0.6s ease-in;
+    transition: 0.25s ease-in;
     transform: translateX(-15%);
 
 }
 
 .arrow-forward:hover{
-    transition: 0.6s ease-in;
+     transition: 0.25s ease-in;
     transform: translateX(15%);
 
 }

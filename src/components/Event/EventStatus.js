@@ -220,6 +220,7 @@ class EventForm extends Component {
         return (
             <>
                 <div className={"row justify-content-center create-product-row"}>
+
                     <div className={"col-12"}>
                           <form onSubmit={this.handleSubmit}>
 

@@ -20,6 +20,7 @@ import {styled} from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Year from "./Year";
 
 const mLocalizer = momentLocalizer(moment);
 
@@ -185,17 +186,15 @@ export default function BigCalenderEvents({
 
 
     const CustomToolbar = ( props) => {
-        console.log(props)
+
 
       let  navigate = action => {
-            console.log(action);
 
             props.onNavigate(action)
         }
 
 
         let  viewSelect = view => {
-            console.log(view);
 
             props.onView(view)
         }
@@ -240,7 +239,9 @@ export default function BigCalenderEvents({
     const { components, defaultDate, max, views } = useMemo(
         () => ({
             components: {
+                // year:Year,
                 toolbar:CustomToolbar,
+
                 // month: {
                 //     dateHeader: DateHeader,
                 // },
@@ -256,13 +257,13 @@ export default function BigCalenderEvents({
             defaultDate: new Date(),
             max: dates.add(dates.endOf(new Date(2022, 17, 1), "day"), 1, "hours"),
             views: Object.keys({
-                // YEAR:"year",
+                YEAR:"year",
                 MONTH: "month",
                 WEEK: 'week',
                 // WORK_WEEK: 'work_week',
                 // DAY: 'day',
                 AGENDA: 'agenda'
-            }).map((k) => Views[k]),
+            }).map((k) =>   k!="YEAR"?Views[k]:Year),
         }),
         []
     );
@@ -468,7 +469,7 @@ export default function BigCalenderEvents({
                                 className={` ${
                                     smallView ? " rbc-small-calender" : "rbc-big-calender"
                                 }`}
-                                style={{ height: "600px" }}
+                                style={{ height: "600px", maxHeight:"600px", overflowY:"scroll" }}
                                 components={components}
                                 defaultDate={defaultDate}
                                 events={monthEvents}
@@ -476,7 +477,15 @@ export default function BigCalenderEvents({
                                 max={1}
                                 showMultiDayTimes
                                 step={60}
-                                views={views}
+                                // views={views}
+                                views={{
+                                    day: true,
+                                    week: true,
+                                    month: true,
+                                    year: Year
+                                }}
+                                messages={{ year: 'Year' }}
+
                                 startAccessor="start"
                                 endAccessor="end"
                                 selectable
@@ -650,9 +659,9 @@ function CustomizedDividers(props) {
                     onChange={handleAlignment}
                     aria-label="text alignment"
                 >
-                    {/*<ToggleButton value="left" aria-label="left aligned">*/}
-                    {/*   <span>Year</span>*/}
-                    {/*</ToggleButton>*/}
+                    <ToggleButton value="year" aria-label="left aligned">
+                       <span>Year</span>
+                    </ToggleButton>
                     <ToggleButton value="month" aria-label="centered">
                         <span>Month</span>
                     </ToggleButton>

@@ -10,6 +10,7 @@ import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
+import EventDetail from "./EventDetail";
 
 var slugify = require('slugify')
 
@@ -146,7 +147,10 @@ class EventForm extends Component {
                             this.props.showSnackbar({
                                 show: true,
                                 severity: "success",
-                                message:   "Stage updated successfully. Thanks"
+                                message:   "Stage updated successfully. Thanks",
+                                btnLoading: false,
+                                loading: false,
+                                isSubmitButtonPressed: false
                             })
 
                             this.props.hide()
@@ -201,6 +205,7 @@ class EventForm extends Component {
 
 
 
+
     componentDidMount() {
 
         window.scrollTo(0, 0);
@@ -220,6 +225,8 @@ class EventForm extends Component {
         return (
             <>
                 <div className={"row justify-content-center create-product-row"}>
+
+                    <EventDetail eventId={this.props.eventId} />
 
                     <div className={"col-12"}>
                           <form onSubmit={this.handleSubmit}>

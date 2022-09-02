@@ -54,6 +54,7 @@ class Notifications extends Component {
         count: 0,
         activeReleaseTabKey:"1",
         stageEventId:null,
+        stageEvent:null,
         showStagePopup:false,
     };
 
@@ -190,6 +191,8 @@ class Notifications extends Component {
     };
 
     showStageEventPopup=(stageEventId)=>{
+
+
         this.setState({
             stageEventId:stageEventId,
             showStagePopup:!this.state.showStagePopup
@@ -509,7 +512,10 @@ class Notifications extends Component {
                     show={this.state.showStagePopup}
                     hide={this.showStageEventPopup}
                 ><div className="col-12">
-                    <EventStatus hide={this.showStageEventPopup} eventId={this.state.stageEventId}/>
+                    <EventStatus
+
+                        hide={this.showStageEventPopup} eventId={this.state.stageEventId}
+                    />
 
                 </div>
                 </GlobalDialog>

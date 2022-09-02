@@ -434,7 +434,7 @@ export default function BigCalenderEvents({
                     showAddEvent();
                 }}>
                 <>
-                    {selectedDate.toString()}
+
                     {showAddEventPopUp && (
                         <div className="form-col-left col-12">
                             <EventForm
@@ -479,9 +479,7 @@ export default function BigCalenderEvents({
                                 views={views}
                                 startAccessor="start"
                                 endAccessor="end"
-                                // popup
                                 selectable
-                                // onSelectEvent={handleSelectEvent}
                                 onSelectSlot={handleSelectSlot}
                                 onNavigate={handleNaviation}
                             />
@@ -501,15 +499,10 @@ export default function BigCalenderEvents({
                                     selectedDate.getDate() +
                                     " ," +
                                     selectedDate.getFullYear()}
-</div>
-
+                              </div>
                                 <div className="text-right col-4 justify-content-end ml-2">
-                                <CustomPopover text={"Add event"}>   <ActionIconBtn
-
-                                                onClick={()=>{
-
-                                                    setShowAddEventPopUp(!showAddEventPopUp)
-                                                }}
+                                <CustomPopover text={"Add event"}>   <ActionIconBtn onClick={()=>{
+                                                    setShowAddEventPopUp(!showAddEventPopUp) }}
                                 ><Add className="add-event-icon" /></ActionIconBtn></CustomPopover>
                                 </div>
                             </div>

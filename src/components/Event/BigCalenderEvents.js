@@ -96,12 +96,14 @@ export default function BigCalenderEvents({
 }) {
     const [events, setEvents] = useState([]);
     const [monthEvents, setMonthEvents] = useState([]);
+    const [eventsTemp, setEventsTemp] = useState([]);
     const [calanderEvents, setCalanderEvents] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [showEventPopUp, setShowEventPopUp] = useState(false);
     const [showAddEventPopUp, setShowAddEventPopUp] = useState(false);
-
+    const size=50
     const [loading, setLoading] = useState([]);
+    // const [offset, setOffset] = useState(0);
 
     const showEvent = () => {
         setShowEventPopUp(!showEventPopUp);
@@ -185,7 +187,7 @@ export default function BigCalenderEvents({
     };
 
 
-    const CustomToolbar = ( props) => {
+    const CustomToolbar = (props) => {
 
 
       let  navigate = action => {
@@ -193,11 +195,12 @@ export default function BigCalenderEvents({
             props.onNavigate(action)
         }
 
-
         let  viewSelect = view => {
 
             props.onView(view)
         }
+
+
 
         return (  <>
 
@@ -207,11 +210,38 @@ export default function BigCalenderEvents({
                 <span className="rbc-toolbar-label title-bold pl-2">{props.label}</span>
         <span className="rbc-btn-group">
 
-          <ArrowBack className="arrow-back cal-arrows" onClick={() => navigate('PREV')} />
-             <button className="" type="button" onClick={(data) =>{ setSelectedDate(new Date()); navigate('TODAY')}} >today</button>
-          <ArrowForward  className="arrow-forward  cal-arrows" onClick={() => navigate('NEXT')} />
+          <ArrowBack className="arrow-back cal-arrows" onClick={() =>
+          {
 
-          {/*<button onClick={() => viewSelect( "week")}>Week</button>*/}
+              // setMonthEvents([])
+              navigate('PREV');
+              setSelectedDate(moment(props.date).subtract(1,"M").toDate());
+              handleNaviation(moment(props.date).subtract(1,"M").toDate(),true)
+
+          }}
+
+
+          />
+
+
+             <button className="" type="button" onClick={() =>{
+
+              navigate('TODAY');
+                 setSelectedDate(new Date());
+                 handleNaviation(new Date())
+
+             }
+             } >today</button>
+          <ArrowForward  className="arrow-forward  cal-arrows" onClick={() =>{
+              // setMonthEvents([])
+              navigate('NEXT')
+              setSelectedDate(moment(props.date).add(1,"M").toDate());
+
+              handleNaviation(moment(props.date).add(1,"M").toDate(), true)
+          }
+
+          } />
+
         </span>
 
             </div>
@@ -225,6 +255,8 @@ export default function BigCalenderEvents({
         const hourStart = moment(event.start).hour();
         const hourStop = moment(event.end).hour();
         const gridRowStart = hourStart + 1;
+
+
 
         return (
             <div
@@ -269,6 +301,8 @@ export default function BigCalenderEvents({
     );
 
     const getEvents = (start, end) => {
+
+
         setLoading(true);
 
         setEvents([]);
@@ -283,17 +317,16 @@ export default function BigCalenderEvents({
             url = `${url}&resolv_end=${end}`;
         }
 
+
+
+
+
         axios
-            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
             .get(url)
             .then(
                 (response) => {
                     var responseAll = response.data.data;
 
-                    // this.setState({
-                    //     events:responseAll,
-                    //     calendarEvents:this.convertEvents(responseAll)
-                    // })
 
                     if (smallView) {
                         setMonthEvents(convertEvents(responseAll));
@@ -311,10 +344,45 @@ export default function BigCalenderEvents({
                     setLoading(false);
                 }
             );
+
     };
 
-    const getEventsByMonth = (start, end) => {
-        setEvents([]);
+
+    const fetchMonthEventsPageWise=(start,end, url,offset)=>{
+        axios
+            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
+            .get(url)
+            .then(
+                (response) => {
+
+                    let responseAll = convertEvents(response.data.data,offset);
+
+
+                    setMonthEvents(monthEvents=> monthEvents.concat(responseAll))
+
+                    if (responseAll.length==size){
+
+                        getEventsByMonth(start,end,(offset+size))
+                    }
+
+
+                },
+                (error) => {
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+                }
+            );
+
+    }
+
+
+    const getEventsByMonth = (start, end,offset) => {
+
+
+
+
+
         let url = `${baseUrl}${
             props.productId ? "product/" + props.productId + "/event" : "event"
         }?`;
@@ -326,34 +394,21 @@ export default function BigCalenderEvents({
             url = `${url}&resolv_end=${end}`;
         }
 
-        axios
-            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
-            .get(url)
-            .then(
-                (response) => {
-                    var responseAll = response.data.data;
 
-                    // this.setState({
-                    //     events:responseAll,
-                    //     calendarEvents:this.convertEvents(responseAll)
-                    // })
+        url=`${url}&offset=${offset}&size=${size}`
 
-                    setMonthEvents(convertEvents(responseAll));
-                    // setCalanderEvents(convertEvents(responseAll))
-                },
-                (error) => {
-                    // this.setState({
-                    //     notFound: true,
-                    // });
-                }
-            );
+
+        fetchMonthEventsPageWise(start,end,url,offset)
+
     };
 
     useEffect(() => {
+        console.log("running")
         if (!smallView) {
+            setMonthEvents([])
             getEventsByMonth(
                 moment().startOf("month").format("x"),
-                moment().endOf("month").format("x")
+                moment().endOf("month").format("x"),0
             );
 
             getEvents(moment().startOf("day").format("x"), moment().endOf("day").format("x"));
@@ -362,7 +417,11 @@ export default function BigCalenderEvents({
         }
     }, []);
 
-    const convertEvents = (events) => {
+
+
+    const convertEvents = (events, offset) => {
+
+
         let calenderEvents = [];
         events.forEach((item, index) => {
             let date = new Date(item.event.resolution_epoch_ms);
@@ -380,15 +439,18 @@ export default function BigCalenderEvents({
 
                 // end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 9, 0, 0),
                 className: "fc-event-" + item.event.process,
-                desc: "Some description " + item.event._key,
+                desc:  item.event.description,
             });
         });
 
+        console.log(offset, calenderEvents.length)
+        // console.log("cal events",calenderEvents)
         return calenderEvents;
     };
 
     const handleSelectSlot = (arg) => {
 
+        console.log("<<<<<<<<<< args",arg)
         if (!smallView) {
             switch (arg.action) {
                 case "click":
@@ -405,23 +467,37 @@ export default function BigCalenderEvents({
         }
     };
 
-    const handleNaviation = (arg) => {
+    const handleNaviation = (arg, all) => {
         // bind with an arrow function
 
+
+        console.log(arg)
+
         if (!smallView) {
-            getEventsByMonth(
-                getEventsByMonth(
-                    moment(arg).startOf("month").format("x"),
-                    moment(arg).endOf("month").format("x")
-                )
-            );
+
+
+
+            if (all){
+
+                setMonthEvents([])
+
+
+                    getEventsByMonth(
+                        moment(arg).startOf("month").format("x"),
+                        moment(arg).endOf("month").format("x"),0
+                    );
+
+
+            }
 
             getEvents(
                 moment(arg).startOf("month").format("x"),
                 moment(arg).startOf("month").add(1, "days").format("x")
             );
 
-            setSelectedDate(new Date(arg.getFullYear(), arg.getMonth(), 1, 0, 0, 0));
+            // setSelectedDate(new Date(arg.getFullYear(), arg.getMonth(), 1, 0, 0, 0));
+
+
         }
     };
 
@@ -479,7 +555,7 @@ export default function BigCalenderEvents({
                                 step={60}
                                 // views={views}
                                 views={{
-                                    day: true,
+                                    // day: true,
                                     week: true,
                                     month: true,
                                     year: Year
@@ -490,7 +566,7 @@ export default function BigCalenderEvents({
                                 endAccessor="end"
                                 selectable
                                 onSelectSlot={handleSelectSlot}
-                                onNavigate={handleNaviation}
+                                // onNavigate={handleNaviation}
                             />
                         </div>
                     </div>

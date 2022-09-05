@@ -208,7 +208,7 @@ export default function BigCalenderEvents({
         <span className="rbc-btn-group">
 
           <ArrowBack className="arrow-back cal-arrows" onClick={() => navigate('PREV')} />
-             <button className="" type="button" onClick={() => navigate('TODAY')} >today</button>
+             <button className="" type="button" onClick={(data) =>{ setSelectedDate(new Date()); navigate('TODAY')}} >today</button>
           <ArrowForward  className="arrow-forward  cal-arrows" onClick={() => navigate('NEXT')} />
 
           {/*<button onClick={() => viewSelect( "week")}>Week</button>*/}

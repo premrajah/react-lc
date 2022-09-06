@@ -413,7 +413,7 @@ class EventItem extends Component {
                                                                         {checkImage(artifact.blob_url)? <img
                                                                                 src={artifact ? artifact.blob_url : ""}
                                                                                 onClick={()=>this.downloadDoc(artifact.blob_url)}
-                                                                                className="img-fluid "
+                                                                                className="img-fluid click-item"
                                                                                 alt={artifact.name}
                                                                                 style={{ objectFit: "contain",width: "32px", height: "32px",background:"#EAEAEF",padding:"2px"}}
                                                                             />:

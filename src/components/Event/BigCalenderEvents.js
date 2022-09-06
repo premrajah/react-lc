@@ -163,12 +163,8 @@ export default function BigCalenderEvents({
     };
 
     const DateHeader = (props) => {
-        // console.log(label, date)
-
         return (
             <>
-                {/*{props.children}*/}
-
                 <div className="custom-date-header">
                     <Add className="add-event-icon" />
                 </div>
@@ -210,7 +206,7 @@ export default function BigCalenderEvents({
                             onClick={() => {
                                 navigate("TODAY");
                                 setSelectedDate(new Date());
-                                handleNaviation(new Date());
+                                handleNaviation(new Date(),false);
                             }}>
                             today
                         </button>
@@ -437,8 +433,8 @@ console.log(arg)
             }
 
             getEvents(
-                moment(arg).startOf("month").format("x"),
-                moment(arg).startOf("month").add(1, "days").format("x")
+                moment(arg).startOf("day").format("x"),
+                moment(arg).endOf("day").add(1, "days").format("x")
             );
 
             // setSelectedDate(new Date(arg.getFullYear(), arg.getMonth(), 1, 0, 0, 0));
@@ -495,6 +491,7 @@ console.log(arg)
                                 max={1}
                                 showMultiDayTimes
                                 step={60}
+                                selectable={true}
                                 // views={views}
                                 views={{
                                     // day: true,
@@ -505,7 +502,7 @@ console.log(arg)
                                 messages={{ year: "Year" }}
                                 startAccessor="start"
                                 endAccessor="end"
-                                selectable
+
                                 onSelectSlot={handleSelectSlot}
                                 // onNavigate={handleNaviation}
                             />

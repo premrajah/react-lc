@@ -103,8 +103,11 @@ class Calendar extends React.Component {
                                 key={date.date()}
                                 dateToRender={date}
                                 dateOfMonth={this.state.calendar.currentDate}
-                                onClick={date =>
-                                    alert(`Will go to daily-view of ${date.format('YYYY-MM-DD')}`)
+                                onClick={date => {
+                                    // alert(`Will go to daily-view of ${date.format('YYYY-MM-DD')}`)
+
+                                    this.props.handleYearClick(date)
+                                }
                                 }
                             />
                         ))}
@@ -153,6 +156,8 @@ Year.navigate = (date, action) => {
     }
 }
 
-Year.title = (date, { localizer }) => localizer.format(date, 'yearHeaderFormat')
+Year.title = (date, { localizer }) => localizer.format(date, 'YYYY')
+
+// Year.title="My Title"
 
 export default Year

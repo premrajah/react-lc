@@ -497,7 +497,8 @@ console.log(arg)
                                     // day: true,
                                     week: true,
                                     month: true,
-                                    year: Year,
+                                    // year: <Year handleYearClick={()=>{alert("here")}} />,
+                                    year:Year,
                                 }}
                                 messages={{ year: "Year" }}
                                 startAccessor="start"

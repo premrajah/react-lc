@@ -4539,3 +4539,8 @@ select option {
 .date.next-month {
     color: grey;
 }
+.rbc-current{
+
+    background: var(--lc-pink);
+    height: 2px;
+}

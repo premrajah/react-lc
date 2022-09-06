@@ -188,17 +188,12 @@ class EventItem extends Component {
     }
 
     downloadDoc=(blob_url) =>{
-
-
         window.location.href = blob_url
-
     }
 
 
     componentDidMount() {
-            if (this.props.statusChange){
 
-            }
     }
 
 

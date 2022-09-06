@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState ,useCallback} from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { Calendar, DateLocalizer, momentLocalizer, Views } from "react-big-calendar";
@@ -90,8 +90,14 @@ export default function BigCalenderEvents({
     const [eventsTemp, setEventsTemp] = useState([]);
     const [calanderEvents, setCalanderEvents] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [view, setView] = useState();
+    const [navigate, setNavigate] = useState(new Date());
+
+
     const [showEventPopUp, setShowEventPopUp] = useState(false);
     const [showAddEventPopUp, setShowAddEventPopUp] = useState(false);
+
+
     const size = 50;
     const [loading, setLoading] = useState([]);
     // const [offset, setOffset] = useState(0);
@@ -173,19 +179,58 @@ export default function BigCalenderEvents({
     };
 
     const CustomToolbar = (props) => {
+
+
         let navigate = (action) => {
             props.onNavigate(action);
         };
 
-        let viewSelect = (view) => {
-            props.onView(view);
+        // let viewSelect = (view) => {
+        //     props.onView(view);
+        // };
+
+
+
+
+        const handleAlignment = (event, newAlignment) => {
+            // setCurrentView(newAlignment);
+            onView(newAlignment);
+            // setView(newAlignment)
         };
+
 
         return (
             <>
                 <div className="rbc-toolbar">
                     <span>
-                        <CustomizedDividers viewSelect={viewSelect} />
+                          <div>
+            <Paper
+                elevation={0}
+                sx={{
+                    display: "flex",
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    flexWrap: "wrap",
+                }}>
+                <StyledToggleButtonGroup
+                    size="small"
+                    value={view}
+                    exclusive
+                    onChange={handleAlignment}
+                    aria-label="text alignment">
+                    <ToggleButton value="year" aria-label="Year">
+                        <span>Year</span>
+                    </ToggleButton>
+                    <ToggleButton value="month" aria-label="Month">
+                        <span>Month</span>
+                    </ToggleButton>
+                    <ToggleButton value="week" aria-label="Week">
+                        <span>Week</span>
+                    </ToggleButton>
+
+                </StyledToggleButtonGroup>
+            </Paper>
+        </div>
+
                     </span>
 
                     <span className="rbc-toolbar-label title-bold pl-2">{props.label}</span>
@@ -193,10 +238,10 @@ export default function BigCalenderEvents({
                         <ArrowBack
                             className="arrow-back cal-arrows"
                             onClick={() => {
-                                // setMonthEvents([])
+
                                 navigate("PREV");
                                 setSelectedDate(moment(props.date).subtract(1, "M").toDate());
-                                handleNaviation(moment(props.date).subtract(1, "M").toDate(), true);
+                                handleNavigation(moment(props.date).subtract(1, "M").toDate(), true);
                             }}
                         />
 
@@ -206,18 +251,16 @@ export default function BigCalenderEvents({
                             onClick={() => {
                                 navigate("TODAY");
                                 setSelectedDate(new Date());
-                                handleNaviation(new Date(),false);
+                                handleNavigation(new Date(),false);
                             }}>
                             today
                         </button>
                         <ArrowForward
                             className="arrow-forward  cal-arrows"
                             onClick={() => {
-                                // setMonthEvents([])
                                 navigate("NEXT");
                                 setSelectedDate(moment(props.date).add(1, "M").toDate());
-
-                                handleNaviation(moment(props.date).add(1, "M").toDate(), true);
+                                handleNavigation(moment(props.date).add(1, "M").toDate(), true);
                             }}
                         />
                     </span>
@@ -414,12 +457,9 @@ export default function BigCalenderEvents({
         }
     };
 
-    const handleNaviation = (arg, all) => {
+    const handleNavigation = (arg, all) => {
         // bind with an arrow function
-
-console.log(arg)
-
-
+         console.log(arg)
 
         if (!smallView) {
             if (all) {
@@ -441,10 +481,24 @@ console.log(arg)
         }
     };
 
-    const handleDateCallback = (d) => {
-        console.log("Date from year ", d)
-    }
+        const handleDateCallback = (d) => {
+            console.log("Date from year ", d)
+            // navigate()
+        try{
+                 onView('month')
+                 setSelectedDate(d._d)
+                 handleNavigation(d._d,true)
+            // onNavigate(d._d)
+        }catch (e){
+                    console.log(e)
+        }
 
+
+
+        }
+
+
+    const onView = useCallback((newView) => setView(newView), [setView])
 
     return (
         <Fragment>
@@ -494,6 +548,10 @@ console.log(arg)
                                 events={monthEvents}
                                 localizer={localizer}
                                 max={1}
+                                onView={onView}
+                                view={view}
+                                date={selectedDate}
+
                                 showMultiDayTimes
                                 step={60}
                                 selectable={true}
@@ -510,7 +568,7 @@ console.log(arg)
                                 endAccessor="end"
 
                                 onSelectSlot={handleSelectSlot}
-                                // onNavigate={handleNaviation}
+                                // onNavigate={handleNavigation}
                                 dateCallback={(d) => handleDateCallback(d)}
 
                             />
@@ -554,7 +612,7 @@ console.log(arg)
                                 </span>
 
                                 <EventItem
-                                    refresh={(date) => handleNaviation(date,true)}
+                                    refresh={(date) => handleNavigation(date,true)}
                                     smallView={smallView}
                                     events={events}
                                 />
@@ -651,49 +709,12 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     },
 }));
 
-function CustomizedDividers(props) {
-    const [alignment, setAlignment] = React.useState("month");
-    const [formats, setFormats] = React.useState(() => ["italic"]);
+ const CustomizedDividers=(props)=> {
 
-    const handleFormat = (event, newFormats) => {
-        setFormats(newFormats);
-    };
-
-    const handleAlignment = (event, newAlignment) => {
-        setAlignment(newAlignment);
-        props.viewSelect(newAlignment);
-    };
 
     return (
-        <div>
-            <Paper
-                elevation={0}
-                sx={{
-                    display: "flex",
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    flexWrap: "wrap",
-                }}>
-                <StyledToggleButtonGroup
-                    size="small"
-                    value={alignment}
-                    exclusive
-                    onChange={handleAlignment}
-                    aria-label="text alignment">
-                    <ToggleButton value="year" aria-label="left aligned">
-                        <span>Year</span>
-                    </ToggleButton>
-                    <ToggleButton value="month" aria-label="centered">
-                        <span>Month</span>
-                    </ToggleButton>
-                    <ToggleButton value="week" aria-label="right aligned">
-                        <span>Week</span>
-                    </ToggleButton>
-                    {/*<ToggleButton value="agenda" aria-label="justified" >*/}
-                    {/*    <span>Agenda</span>*/}
-                    {/*</ToggleButton>*/}
-                </StyledToggleButtonGroup>
-            </Paper>
-        </div>
+      <>
+          </>
     );
 }
 

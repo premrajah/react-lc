@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { Calendar, DateLocalizer, momentLocalizer, Views } from "react-big-calendar";
-// import DemoLink from './DemoLink.component'
 import * as dates from "./dates";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventItem from "./EventItem";
@@ -422,7 +421,9 @@ export default function BigCalenderEvents({
     const handleNaviation = (arg, all) => {
         // bind with an arrow function
 
-        console.log(arg);
+console.log(arg)
+
+
 
         if (!smallView) {
             if (all) {
@@ -548,7 +549,7 @@ export default function BigCalenderEvents({
                                 </span>
 
                                 <EventItem
-                                    refresh={() => getEvents()}
+                                    refresh={(date) => handleNaviation(date,true)}
                                     smallView={smallView}
                                     events={events}
                                 />

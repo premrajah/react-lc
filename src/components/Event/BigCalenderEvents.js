@@ -405,7 +405,7 @@ export default function BigCalenderEvents({
                 case "click":
                     setSelectedDate(arg.start);
                     getEvents(
-                        moment(arg.start).startOf("day").format("x"),
+                        moment(arg.start).startOf("day").format("x")-10,
                         moment(arg.start).endOf("day").format("x")
                     );
                     break;

@@ -441,6 +441,11 @@ console.log(arg)
         }
     };
 
+    const handleDateCallback = (d) => {
+        console.log("Date from year ", d)
+    }
+
+
     return (
         <Fragment>
             <GlobalDialog
@@ -506,6 +511,8 @@ console.log(arg)
 
                                 onSelectSlot={handleSelectSlot}
                                 // onNavigate={handleNaviation}
+                                dateCallback={(d) => handleDateCallback(d)}
+
                             />
                         </div>
                     </div>

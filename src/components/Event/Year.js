@@ -81,6 +81,11 @@ class Calendar extends React.Component {
         }
     }
 
+    handleSelectionCallback = (date) => {
+        this.props.dateCallback(date);
+    }
+
+
     render() {
         if (!this.state.calendar) {
             return null
@@ -103,12 +108,7 @@ class Calendar extends React.Component {
                                 key={date.date()}
                                 dateToRender={date}
                                 dateOfMonth={this.state.calendar.currentDate}
-                                onClick={date => {
-                                    // alert(`Will go to daily-view of ${date.format('YYYY-MM-DD')}`)
-
-                                    this.props.handleYearClick(date)
-                                }
-                                }
+                                onClick={date => this.handleSelectionCallback(date)}
                             />
                         ))}
                     </div>
@@ -119,6 +119,12 @@ class Calendar extends React.Component {
 }
 
 class Year extends React.Component {
+
+    handleDateCallback = (value) => {
+        this.props.dateCallback(value)
+    }
+
+
     render() {
         let { date, ...props } = this.props
         let range = Year.range(date)
@@ -127,7 +133,7 @@ class Year extends React.Component {
 
         for (let i = 0; i < 12; i++) {
             months.push(
-                <Calendar key={i + 1} date={dates.add(firstMonth, i, 'month')} />
+                <Calendar key={i + 1} date={dates.add(firstMonth, i, 'month')} dateCallback={(a) => this.handleDateCallback(a)} />
             )
         }
 

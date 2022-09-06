@@ -1,25 +1,25 @@
-import React, {Fragment, useEffect, useMemo, useState} from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import {Calendar, DateLocalizer, momentLocalizer, Views} from "react-big-calendar";
+import { Calendar, DateLocalizer, momentLocalizer, Views } from "react-big-calendar";
 // import DemoLink from './DemoLink.component'
 import * as dates from "./dates";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventItem from "./EventItem";
-import {LoaderAnimated, weekday} from "../../Util/GlobalFunctions";
-import {baseUrl} from "../../Util/Constants";
+import { LoaderAnimated, weekday } from "../../Util/GlobalFunctions";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios";
 import Badge from "@mui/material/Badge";
-import {Add, ArrowBack, ArrowForward} from "@mui/icons-material";
+import { Add, ArrowBack, ArrowForward } from "@mui/icons-material";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import EventForm from "./EventForm";
 import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import CustomPopover from "../FormsUI/CustomPopover";
-import {styled} from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Year from "./Year";
 
 const mLocalizer = momentLocalizer(moment);
@@ -33,15 +33,8 @@ const ColoredDateCellWrapper = ({ children }) => {
 };
 
 const CustomDateCellWrapper = ({ children }) => {
-    return (
-        <span className="custom-day-cell">
-
-
-            {children}
-        </span>
-    );
+    return <span className="custom-day-cell">{children}</span>;
 };
-
 
 const CustomDayview = ({ children }) => {
     return (
@@ -73,9 +66,8 @@ const CustomTimeGutterWrapper = ({ children }) => {
     );
 };
 
-
 const CustomTimeGutterHeader = ({ children }) => {
-    return console.log('>> ')
+    return console.log(">> ");
     return (
         <span className="custom-day-cell">
             <Add className="add-event-icon" />
@@ -101,7 +93,7 @@ export default function BigCalenderEvents({
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [showEventPopUp, setShowEventPopUp] = useState(false);
     const [showAddEventPopUp, setShowAddEventPopUp] = useState(false);
-    const size=50
+    const size = 50;
     const [loading, setLoading] = useState([]);
     // const [offset, setOffset] = useState(0);
 
@@ -113,22 +105,21 @@ export default function BigCalenderEvents({
         setShowAddEventPopUp(!showAddEventPopUp);
     };
 
-    const Event = ( props) => {
-
-        let event=props.event
+    const Event = (props) => {
+        let event = props.event;
 
         // console.log(event)
 
         return (
-            <span onClick={()=>
-            {
-
-                setSelectedDate(event.start)
-                getEvents(
-                    moment(event.start).startOf("day").format("x"),
-                    moment(event.start).endOf("day").format("x")
-                )
-            }} className="text-blue text-12">
+            <span
+                onClick={() => {
+                    setSelectedDate(event.start);
+                    getEvents(
+                        moment(event.start).startOf("day").format("x"),
+                        moment(event.start).endOf("day").format("x")
+                    );
+                }}
+                className="text-blue text-12">
                 <span>
                     <Badge
                         anchorOrigin={{
@@ -162,7 +153,8 @@ export default function BigCalenderEvents({
                         color="secondary"
                         overlap="circular"
                         badgeContent=""
-                        variant="dot"/>
+                        variant="dot"
+                    />
                     {event.title}
                 </b>
 
@@ -171,83 +163,73 @@ export default function BigCalenderEvents({
         );
     };
 
+    const DateHeader = (props) => {
+        // console.log(label, date)
 
-    const DateHeader = ( props) => {
-          // console.log(label, date)
+        return (
+            <>
+                {/*{props.children}*/}
 
-
-     return (  <>
-            {/*{props.children}*/}
-
-        <div className="custom-date-header">
-              <Add className="add-event-icon" />
-        </div>
-
-            </>)
+                <div className="custom-date-header">
+                    <Add className="add-event-icon" />
+                </div>
+            </>
+        );
     };
-
 
     const CustomToolbar = (props) => {
+        let navigate = (action) => {
+            props.onNavigate(action);
+        };
 
+        let viewSelect = (view) => {
+            props.onView(view);
+        };
 
-      let  navigate = action => {
+        return (
+            <>
+                <div className="rbc-toolbar">
+                    <span>
+                        <CustomizedDividers viewSelect={viewSelect} />
+                    </span>
 
-            props.onNavigate(action)
-        }
+                    <span className="rbc-toolbar-label title-bold pl-2">{props.label}</span>
+                    <span className="rbc-btn-group">
+                        <ArrowBack
+                            className="arrow-back cal-arrows"
+                            onClick={() => {
+                                // setMonthEvents([])
+                                navigate("PREV");
+                                setSelectedDate(moment(props.date).subtract(1, "M").toDate());
+                                handleNaviation(moment(props.date).subtract(1, "M").toDate(), true);
+                            }}
+                        />
 
-        let  viewSelect = view => {
+                        <button
+                            className=""
+                            type="button"
+                            onClick={() => {
+                                navigate("TODAY");
+                                setSelectedDate(new Date());
+                                handleNaviation(new Date());
+                            }}>
+                            today
+                        </button>
+                        <ArrowForward
+                            className="arrow-forward  cal-arrows"
+                            onClick={() => {
+                                // setMonthEvents([])
+                                navigate("NEXT");
+                                setSelectedDate(moment(props.date).add(1, "M").toDate());
 
-            props.onView(view)
-        }
-
-
-
-        return (  <>
-
-            <div className='rbc-toolbar'>
-               <span> <CustomizedDividers  viewSelect={viewSelect} /></span>
-
-                <span className="rbc-toolbar-label title-bold pl-2">{props.label}</span>
-        <span className="rbc-btn-group">
-
-          <ArrowBack className="arrow-back cal-arrows" onClick={() =>
-          {
-
-              // setMonthEvents([])
-              navigate('PREV');
-              setSelectedDate(moment(props.date).subtract(1,"M").toDate());
-              handleNaviation(moment(props.date).subtract(1,"M").toDate(),true)
-
-          }}
-
-
-          />
-
-
-             <button className="" type="button" onClick={() =>{
-
-              navigate('TODAY');
-                 setSelectedDate(new Date());
-                 handleNaviation(new Date())
-
-             }
-             } >today</button>
-          <ArrowForward  className="arrow-forward  cal-arrows" onClick={() =>{
-              // setMonthEvents([])
-              navigate('NEXT')
-              setSelectedDate(moment(props.date).add(1,"M").toDate());
-
-              handleNaviation(moment(props.date).add(1,"M").toDate(), true)
-          }
-
-          } />
-
-        </span>
-
-            </div>
-        </>)
+                                handleNaviation(moment(props.date).add(1, "M").toDate(), true);
+                            }}
+                        />
+                    </span>
+                </div>
+            </>
+        );
     };
-
 
     const EventWrapper = ({ event, children }) => {
         const { title, className } = children.props;
@@ -256,14 +238,11 @@ export default function BigCalenderEvents({
         const hourStop = moment(event.end).hour();
         const gridRowStart = hourStart + 1;
 
-
-
         return (
             <div
                 title={title}
                 className={customClass}
-                style={{ gridRow: `${gridRowStart} / span ${hourStop - hourStart}` }}
-            >
+                style={{ gridRow: `${gridRowStart} / span ${hourStop - hourStart}` }}>
                 {children.props.children}
             </div>
         );
@@ -272,7 +251,7 @@ export default function BigCalenderEvents({
         () => ({
             components: {
                 // year:Year,
-                toolbar:CustomToolbar,
+                toolbar: CustomToolbar,
 
                 // month: {
                 //     dateHeader: DateHeader,
@@ -280,7 +259,7 @@ export default function BigCalenderEvents({
                 // timeSlotWrapper: ColoredDateCellWrapper,
                 // dateCellWrapper:CustomDateCellWrapper,
                 event: Event,
-                eventWrapper:EventWrapper,
+                eventWrapper: EventWrapper,
                 // timeGutterHeader: CustomTimeGutterHeader,
                 // timeGutterWrapper:function test(){},
                 // dateCellWrapper:()=>{},
@@ -289,20 +268,18 @@ export default function BigCalenderEvents({
             defaultDate: new Date(),
             max: dates.add(dates.endOf(new Date(2022, 17, 1), "day"), 1, "hours"),
             views: Object.keys({
-                YEAR:"year",
+                YEAR: "year",
                 MONTH: "month",
-                WEEK: 'week',
+                WEEK: "week",
                 // WORK_WEEK: 'work_week',
                 // DAY: 'day',
-                AGENDA: 'agenda'
-            }).map((k) =>   k!="YEAR"?Views[k]:Year),
+                AGENDA: "agenda",
+            }).map((k) => (k != "YEAR" ? Views[k] : Year)),
         }),
         []
     );
 
     const getEvents = (start, end) => {
-
-
         setLoading(true);
 
         setEvents([]);
@@ -317,55 +294,41 @@ export default function BigCalenderEvents({
             url = `${url}&resolv_end=${end}`;
         }
 
+        axios.get(url).then(
+            (response) => {
+                var responseAll = response.data.data;
 
-
-
-
-        axios
-            .get(url)
-            .then(
-                (response) => {
-                    var responseAll = response.data.data;
-
-
-                    if (smallView) {
-                        setMonthEvents(convertEvents(responseAll));
-                    }
-
-                    setEvents(responseAll);
-                    setCalanderEvents(convertEvents(responseAll));
-
-                    setLoading(false);
-                },
-                (error) => {
-                    // this.setState({
-                    //     notFound: true,
-                    // });
-                    setLoading(false);
+                if (smallView) {
+                    setMonthEvents(convertEvents(responseAll));
                 }
-            );
 
+                setEvents(responseAll);
+                setCalanderEvents(convertEvents(responseAll));
+
+                setLoading(false);
+            },
+            (error) => {
+                // this.setState({
+                //     notFound: true,
+                // });
+                setLoading(false);
+            }
+        );
     };
 
-
-    const fetchMonthEventsPageWise=(start,end, url,offset)=>{
+    const fetchMonthEventsPageWise = (start, end, url, offset) => {
         axios
             // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
             .get(url)
             .then(
                 (response) => {
+                    let responseAll = convertEvents(response.data.data, offset);
 
-                    let responseAll = convertEvents(response.data.data,offset);
+                    setMonthEvents((monthEvents) => monthEvents.concat(responseAll));
 
-
-                    setMonthEvents(monthEvents=> monthEvents.concat(responseAll))
-
-                    if (responseAll.length==size){
-
-                        getEventsByMonth(start,end,(offset+size))
+                    if (responseAll.length == size) {
+                        getEventsByMonth(start, end, offset + size);
                     }
-
-
                 },
                 (error) => {
                     // this.setState({
@@ -373,16 +336,9 @@ export default function BigCalenderEvents({
                     // });
                 }
             );
+    };
 
-    }
-
-
-    const getEventsByMonth = (start, end,offset) => {
-
-
-
-
-
+    const getEventsByMonth = (start, end, offset) => {
         let url = `${baseUrl}${
             props.productId ? "product/" + props.productId + "/event" : "event"
         }?`;
@@ -394,21 +350,19 @@ export default function BigCalenderEvents({
             url = `${url}&resolv_end=${end}`;
         }
 
+        url = `${url}&offset=${offset}&size=${size}`;
 
-        url=`${url}&offset=${offset}&size=${size}`
-
-
-        fetchMonthEventsPageWise(start,end,url,offset)
-
+        fetchMonthEventsPageWise(start, end, url, offset);
     };
 
     useEffect(() => {
-        console.log("running")
+        console.log("running");
         if (!smallView) {
-            setMonthEvents([])
+            setMonthEvents([]);
             getEventsByMonth(
                 moment().startOf("month").format("x"),
-                moment().endOf("month").format("x"),0
+                moment().endOf("month").format("x"),
+                0
             );
 
             getEvents(moment().startOf("day").format("x"), moment().endOf("day").format("x"));
@@ -417,11 +371,7 @@ export default function BigCalenderEvents({
         }
     }, []);
 
-
-
     const convertEvents = (events, offset) => {
-
-
         let calenderEvents = [];
         events.forEach((item, index) => {
             let date = new Date(item.event.resolution_epoch_ms);
@@ -439,23 +389,25 @@ export default function BigCalenderEvents({
 
                 // end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 9, 0, 0),
                 className: "fc-event-" + item.event.process,
-                desc:  item.event.description,
+                desc: item.event.description,
             });
         });
 
-        console.log(offset, calenderEvents.length)
+        console.log(offset, calenderEvents.length);
         // console.log("cal events",calenderEvents)
         return calenderEvents;
     };
 
     const handleSelectSlot = (arg) => {
-
-        console.log("<<<<<<<<<< args",arg)
+        console.log("<<<<<<<<<< args", arg);
         if (!smallView) {
             switch (arg.action) {
                 case "click":
-                        setSelectedDate(arg.start);
-                        getEvents(moment(arg.start).startOf("day").format("x"), moment(arg.start).endOf("day").format("x"));
+                    setSelectedDate(arg.start);
+                    getEvents(
+                        moment(arg.start).startOf("day").format("x"),
+                        moment(arg.start).endOf("day").format("x")
+                    );
                     break;
                 case "doubleClick":
                     setShowAddEventPopUp(!showAddEventPopUp);
@@ -470,24 +422,17 @@ export default function BigCalenderEvents({
     const handleNaviation = (arg, all) => {
         // bind with an arrow function
 
-
-        console.log(arg)
+        console.log(arg);
 
         if (!smallView) {
+            if (all) {
+                setMonthEvents([]);
 
-
-
-            if (all){
-
-                setMonthEvents([])
-
-
-                    getEventsByMonth(
-                        moment(arg).startOf("month").format("x"),
-                        moment(arg).endOf("month").format("x"),0
-                    );
-
-
+                getEventsByMonth(
+                    moment(arg).startOf("month").format("x"),
+                    moment(arg).endOf("month").format("x"),
+                    0
+                );
             }
 
             getEvents(
@@ -496,8 +441,6 @@ export default function BigCalenderEvents({
             );
 
             // setSelectedDate(new Date(arg.getFullYear(), arg.getMonth(), 1, 0, 0, 0));
-
-
         }
     };
 
@@ -511,7 +454,6 @@ export default function BigCalenderEvents({
                     showAddEvent();
                 }}>
                 <>
-
                     {showAddEventPopUp && (
                         <div className="form-col-left col-12">
                             <EventForm
@@ -545,7 +487,7 @@ export default function BigCalenderEvents({
                                 className={` ${
                                     smallView ? " rbc-small-calender" : "rbc-big-calender"
                                 }`}
-                                style={{ height: "600px", maxHeight:"600px", overflowY:"scroll" }}
+                                style={{ height: "600px", maxHeight: "600px", overflowY: "scroll" }}
                                 components={components}
                                 defaultDate={defaultDate}
                                 events={monthEvents}
@@ -558,10 +500,9 @@ export default function BigCalenderEvents({
                                     // day: true,
                                     week: true,
                                     month: true,
-                                    year: Year
+                                    year: Year,
                                 }}
-                                messages={{ year: 'Year' }}
-
+                                messages={{ year: "Year" }}
                                 startAccessor="start"
                                 endAccessor="end"
                                 selectable
@@ -577,18 +518,23 @@ export default function BigCalenderEvents({
                         {!smallView && (
                             <div className="title-bold row d-flex align-items-center ">
                                 <div className="text-left  col-8 justify-content-start">
-                                {weekday[selectedDate.getDay()] +
-                                    ", " +
-                                    selectedDate.toLocaleString("default", { month: "long" }) +
-                                    " " +
-                                    selectedDate.getDate() +
-                                    " ," +
-                                    selectedDate.getFullYear()}
-                              </div>
+                                    {weekday[selectedDate.getDay()] +
+                                        ", " +
+                                        selectedDate.toLocaleString("default", { month: "long" }) +
+                                        " " +
+                                        selectedDate.getDate() +
+                                        " ," +
+                                        selectedDate.getFullYear()}
+                                </div>
                                 <div className="text-right col-4 justify-content-end ml-2">
-                                <CustomPopover text={"Add event"}>   <ActionIconBtn onClick={()=>{
-                                                    setShowAddEventPopUp(!showAddEventPopUp) }}
-                                ><Add className="add-event-icon" /></ActionIconBtn></CustomPopover>
+                                    <CustomPopover text={"Add event"}>
+                                        <ActionIconBtn
+                                            onClick={() => {
+                                                setShowAddEventPopUp(!showAddEventPopUp);
+                                            }}>
+                                            <Add className="add-event-icon" />
+                                        </ActionIconBtn>
+                                    </CustomPopover>
                                 </div>
                             </div>
                         )}
@@ -637,11 +583,9 @@ export default function BigCalenderEvents({
                                 views={views}
                                 startAccessor="start"
                                 endAccessor="end"
-
                             />
                         </>
                     </GlobalDialog>
-
 
                     <div
                         className={`bg-white-1 ${
@@ -685,29 +629,25 @@ export default function BigCalenderEvents({
     );
 }
 
-
-
-
-
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-    '& .MuiToggleButtonGroup-grouped': {
+    "& .MuiToggleButtonGroup-grouped": {
         margin: theme.spacing(0.5),
         border: 0,
-        '&.Mui-disabled': {
+        "&.Mui-disabled": {
             border: 0,
         },
-        '&:not(:first-of-type)': {
+        "&:not(:first-of-type)": {
             borderRadius: theme.shape.borderRadius,
         },
-        '&:first-of-type': {
+        "&:first-of-type": {
             borderRadius: theme.shape.borderRadius,
         },
     },
 }));
 
 function CustomizedDividers(props) {
-    const [alignment, setAlignment] = React.useState('month');
-    const [formats, setFormats] = React.useState(() => ['italic']);
+    const [alignment, setAlignment] = React.useState("month");
+    const [formats, setFormats] = React.useState(() => ["italic"]);
 
     const handleFormat = (event, newFormats) => {
         setFormats(newFormats);
@@ -715,7 +655,7 @@ function CustomizedDividers(props) {
 
     const handleAlignment = (event, newAlignment) => {
         setAlignment(newAlignment);
-        props.viewSelect(newAlignment)
+        props.viewSelect(newAlignment);
     };
 
     return (
@@ -723,20 +663,18 @@ function CustomizedDividers(props) {
             <Paper
                 elevation={0}
                 sx={{
-                    display: 'flex',
+                    display: "flex",
                     border: (theme) => `1px solid ${theme.palette.divider}`,
-                    flexWrap: 'wrap',
-                }}
-            >
+                    flexWrap: "wrap",
+                }}>
                 <StyledToggleButtonGroup
                     size="small"
                     value={alignment}
                     exclusive
                     onChange={handleAlignment}
-                    aria-label="text alignment"
-                >
+                    aria-label="text alignment">
                     <ToggleButton value="year" aria-label="left aligned">
-                       <span>Year</span>
+                        <span>Year</span>
                     </ToggleButton>
                     <ToggleButton value="month" aria-label="centered">
                         <span>Month</span>
@@ -748,14 +686,10 @@ function CustomizedDividers(props) {
                     {/*    <span>Agenda</span>*/}
                     {/*</ToggleButton>*/}
                 </StyledToggleButtonGroup>
-
-
             </Paper>
         </div>
     );
 }
-
-
 
 BigCalenderEvents.propTypes = {
     localizer: PropTypes.instanceOf(DateLocalizer),

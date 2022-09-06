@@ -4504,6 +4504,7 @@ select option {
 .month-name {
     color: var(--lc-green);
     font-weight: bold;
+    text-align: center;
 }
 
 .day {
@@ -4517,8 +4518,9 @@ select option {
 .date {
     width: 30px;
     height: 30px;
-    background: white;
+    background: transparent;
     border-radius: 50px;
+
     border: none;
     outline: none;
 }
@@ -4543,4 +4545,9 @@ select option {
 
     background: var(--lc-pink);
     height: 2px;
+}
+.rbc-toolbar {
+    display: flex;
+    justify-content: space-between!important;
+    flex-wrap: wrap;  /* NEW */
 }

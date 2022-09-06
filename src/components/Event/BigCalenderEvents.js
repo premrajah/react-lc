@@ -463,7 +463,7 @@ export default function BigCalenderEvents({
 
                                     getEventsByMonth(
                                         moment(selectedDate).startOf("month").format("x"),
-                                        moment(selectedDate).endOf("month").format("x")
+                                        moment(selectedDate).endOf("month").format("x"),0
                                     );
                                     getEvents(
                                         moment(selectedDate).startOf("day").format("x"),
@@ -530,6 +530,7 @@ export default function BigCalenderEvents({
                                     <CustomPopover text={"Add event"}>
                                         <ActionIconBtn
                                             onClick={() => {
+
                                                 setShowAddEventPopUp(!showAddEventPopUp);
                                             }}>
                                             <Add className="add-event-icon" />

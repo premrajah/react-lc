@@ -471,7 +471,7 @@ class EventForm extends Component {
         let eventData=  {
             title : data.get("title"),
             description : data.get("description"),
-            resolution_epoch_ms : new Date(this.state.startDate).getTime(),
+            resolution_epoch_ms : new Date(this.state.startDate).getTime()+100,
 
             process : data.get("process"),
             // stage:"open"

@@ -460,7 +460,6 @@ export default function BigCalenderEvents({
                                 date={selectedDate}
                                 hide={() => {
                                     showAddEvent();
-
                                     getEventsByMonth(
                                         moment(selectedDate).startOf("month").format("x"),
                                         moment(selectedDate).endOf("month").format("x"),0

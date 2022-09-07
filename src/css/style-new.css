@@ -4514,7 +4514,7 @@ select option {
     text-align: center;
     line-height: 30px;
     font-weight: bold;
-    font-size: 14x;
+
 }
 
 .date {
@@ -4552,4 +4552,8 @@ select option {
     display: flex;
     justify-content: space-between!important;
     flex-wrap: wrap;  /* NEW */
+}
+.rbc-header>button{
+    margin: 0px 0px 10px 0;
+    font-weight: bold;
 }

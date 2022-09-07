@@ -130,7 +130,7 @@ export default function BigCalenderEvents({
                         moment(event.start).endOf("day").format("x")
                     );
                 }}
-                className=" text-12" style={{color:"rgba(0, 0, 0, 0.6) !important"}}>
+                className=" text-12 txt-gray-dark" >
                 <span>
                     <Badge
                         anchorOrigin={{

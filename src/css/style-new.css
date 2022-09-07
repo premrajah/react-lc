@@ -4558,3 +4558,6 @@ select option {
     margin: 0px 0px 10px 0;
     font-weight: bold;
 }
+.txt-gray-dark{
+    color:rgba(0, 0, 0, 0.6)!important;
+}

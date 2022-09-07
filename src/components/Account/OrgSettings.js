@@ -542,14 +542,22 @@ class OrgSettings extends Component {
                                                             variant={"standard"}
                                                             required={true}
                                                             native
-                                                            onChange={() => {}}
+                                                            onChange={() => {
+                                                                let errors= this.state.errors
+                                                                errors["matching_brands"]=""
+                                                                this.setState({
+                                                                    errors:errors
+                                                                })
+                                                            }}
                                                         />
                                                         <IconButton
                                                             className={"ms-2"}
                                                             type={"submit"}>
                                                             <AddIcon />
                                                         </IconButton>
+
                                                     </form>
+                                                    <span className="border-red-error text-12">{this.state.errors&&this.state.errors["matching_brands"]}</span>
                                                 </div>
                                             </div>
                                         </div>

@@ -4513,6 +4513,8 @@ select option {
     height: 30px;
     text-align: center;
     line-height: 30px;
+    font-weight: bold;
+    font-size: 14x;
 }
 
 .date {
@@ -4539,7 +4541,7 @@ select option {
 
 .date.prev-month,
 .date.next-month {
-    color: grey;
+    color: #f8f8f9 !important;
 }
 .rbc-current{
 

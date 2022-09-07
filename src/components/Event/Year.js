@@ -43,9 +43,11 @@ function CalendarDate(props) {
 
     if (dateToRender.month() < dateOfMonth.month()) {
         return (
+            <>
             <button disabled={true} className="date prev-month">
                 {dateToRender.date()}
             </button>
+                </>
         )
     }
 

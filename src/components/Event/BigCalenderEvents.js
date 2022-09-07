@@ -773,7 +773,7 @@ export default function BigCalenderEvents({
 
                         {events.length > 0 ? (
                             <>
-                                <p className="">
+                                <p className="mt-3">
                                     {events.length} {events.length > 1 ? "Events" : "Event"}
                                 </p>
 

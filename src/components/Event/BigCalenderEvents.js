@@ -305,8 +305,23 @@ export default function BigCalenderEvents({
                             className="arrow-forward  cal-arrows"
                             onClick={() => {
                                 // Navigate("NEXT");
-                                setSelectedDate(moment(selectedDate).add(1, "M").toDate());
-                                handleNavigation(moment(selectedDate).add(1, "M").toDate(), true);
+
+
+                                if (view==="year"){
+                                    setSelectedDate(moment(selectedDate).add(1, "years").toDate());
+                                    handleNavigation(moment(selectedDate).add(1, "years").toDate(), true);
+                                }
+                                else if (view==="month"){
+                                    setSelectedDate(moment(selectedDate).add(1, "M").toDate());
+                                    handleNavigation(moment(selectedDate).add(1, "M").toDate(), true);
+                                }
+                                else if (view==="week"){
+                                    setSelectedDate(moment(selectedDate).add(7, "days").toDate());
+                                    handleNavigation(moment(selectedDate).add(7, "days").toDate(), true);
+                                }
+
+
+
                             }}
                         />
                         </span>

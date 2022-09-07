@@ -47,6 +47,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                     <div className="col-10">
                         {!props.hideHeading &&
                         <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>{props.heading}</h4>}
+                        {props.subHeading&&<p className={"ellipsis-end mb-0 text-capitalize"}>{props.subHeading}</p>}
                     </div>
                     <div className="col-2 d-flex  justify-content-end">
                         {!props.hideClose && <CloseButtonPopUp onClick={handleClose}/>}

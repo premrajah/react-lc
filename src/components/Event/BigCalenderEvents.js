@@ -710,6 +710,7 @@ export default function BigCalenderEvents({
                     <GlobalDialog
                         size="md"
                         heading={"Events"}
+                        subHeading={"(View Only)"}
                         show={showEventPopUp}
                         hide={() => {
                             showEvent();

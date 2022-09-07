@@ -337,7 +337,7 @@ export default function BigCalenderEvents({
                         onClick={() => {
                             // Navigate("TODAY");
                             setSelectedDate(new Date());
-                            handleNavigation(new Date(),false);
+                            handleNavigation(new Date(),true);
                         }}>
                         today
                     </button>

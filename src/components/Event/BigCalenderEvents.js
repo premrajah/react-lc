@@ -563,7 +563,9 @@ export default function BigCalenderEvents({
             console.log("Date from year ", d)
             // navigate()
         try{
+            setTmpView('month')
                  onView('month')
+
                  setSelectedDate(d._d)
                  handleNavigation(d._d,true)
             // onNavigate(d._d)

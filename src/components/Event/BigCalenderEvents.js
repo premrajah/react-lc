@@ -629,9 +629,6 @@ export default function BigCalenderEvents({
                                 events={monthEvents}
                                 localizer={localizer}
                                 max={1}
-                                onView={onView}
-                                view={view}
-                                date={selectedDate}
 
                                 showMultiDayTimes
                                 step={60}
@@ -644,6 +641,10 @@ export default function BigCalenderEvents({
                                     // year: <Year handleYearClick={()=>{alert("here")}} />,
                                     year:Year,
                                 }}
+                                onView={onView}
+                                view={view}
+                                date={selectedDate}
+
                                 messages={{ year: "Year" }}
                                 startAccessor="start"
                                 endAccessor="end"
@@ -713,7 +714,11 @@ export default function BigCalenderEvents({
                             showEvent();
                         }}>
                         <>
+                            <CustomToolbar />
                             <Calendar
+
+                                toolbar={false}
+
                                 className={` ${
                                     smallView ? " rbc-small-calender" : "rbc-big-calender"
                                 }`}
@@ -725,9 +730,19 @@ export default function BigCalenderEvents({
                                 max={1}
                                 showMultiDayTimes
                                 step={60}
-                                views={views}
+
                                 startAccessor="start"
                                 endAccessor="end"
+                                views={{
+                                    // day: true,
+                                    week: true,
+                                    month: true,
+                                    // year: <Year handleYearClick={()=>{alert("here")}} />,
+                                    year:Year,
+                                }}
+                                onView={onView}
+                                view={view}
+                                date={selectedDate}
                             />
                         </>
                     </GlobalDialog>

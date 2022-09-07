@@ -4561,3 +4561,6 @@ select option {
 .txt-gray-dark{
     color:rgba(0, 0, 0, 0.6)!important;
 }
+.rbc-header>span, .rbc-header>button{
+    color: var(--lc-green)!important;
+}

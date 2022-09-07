@@ -4514,6 +4514,7 @@ select option {
     text-align: center;
     line-height: 30px;
     font-weight: bold;
+    color: rgba(0, 0, 0, 0.6) !important;
 
 }
 

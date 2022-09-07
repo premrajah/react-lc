@@ -198,15 +198,6 @@ export default function BigCalenderEvents({
 
         const getLabel=( date)=>{
 
-
-            // {weekday[selectedDate.getDay()] +
-            // ", " +
-            // selectedDate.toLocaleString("default", { month: "long" }) +
-            // " " +
-            // selectedDate.getDate() +
-            // " ," +
-            // selectedDate.getFullYear()}
-
             if (view=="year"){
 
                 return date.getFullYear()
@@ -258,9 +249,9 @@ export default function BigCalenderEvents({
                     exclusive
                     onChange={handleAlignment}
                     aria-label="text alignment">
-                    <ToggleButton value="year" aria-label="Year">
+                    {!props.hideYear &&  <ToggleButton value="year" aria-label="Year">
                         <span>Year</span>
-                    </ToggleButton>
+                    </ToggleButton>}
                     <ToggleButton value="month" aria-label="Month">
                         <span>Month</span>
                     </ToggleButton>
@@ -716,7 +707,7 @@ export default function BigCalenderEvents({
                             showEvent();
                         }}>
                         <>
-                            <CustomToolbar />
+                            <CustomToolbar hideYear />
                             <Calendar
 
                                 toolbar={false}
@@ -739,8 +730,7 @@ export default function BigCalenderEvents({
                                     // day: true,
                                     week: true,
                                     month: true,
-                                    // year: <Year handleYearClick={()=>{alert("here")}} />,
-                                    year:Year,
+                                    // year:Year,
                                 }}
                                 onView={onView}
                                 view={view}

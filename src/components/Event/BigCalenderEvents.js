@@ -91,6 +91,7 @@ export default function BigCalenderEvents({
     const [calanderEvents, setCalanderEvents] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [view, setView] = useState('month');
+    const [tmpView, setTmpView] = useState('month');
     // const [navigate, setNavigate] = useState(new Date());
 
 
@@ -228,9 +229,13 @@ export default function BigCalenderEvents({
 
 
         const handleAlignment = (event, newAlignment) => {
-            // setCurrentView(newAlignment);
-            onView(newAlignment);
-            // setView(newAlignment)
+
+            if (newAlignment&&newAlignment!==tmpView){
+                setTmpView(newAlignment)
+                onView(newAlignment);
+            }
+
+
         };
 
 
@@ -570,10 +575,8 @@ export default function BigCalenderEvents({
 
         }
 
+        const onView = useCallback((newView) => setView(newView), [setView])
 
-    // const onView = (newView) => setView(newView)
-    const onView = useCallback((newView) => setView(newView), [setView])
-    // const onNavigate = useCallback((newView) => setNavigate(newView), [setNavigate])
 
     return (
         <Fragment>

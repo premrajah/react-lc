@@ -4471,20 +4471,21 @@ select option {
 }
 
 .cal-arrows{
-    margin: 20px!important;
+    /*margin: 20px!important;*/
     cursor: pointer;
+    padding: 2px;
 
 }
 
 .arrow-back:hover{
     transition: 0.25s ease-in;
-    transform: translateX(-15%);
+    transform: translateX(-5%);
 
 }
 
 .arrow-forward:hover{
      transition: 0.25s ease-in;
-    transform: translateX(15%);
+    transform: translateX(5%);
 
 }
 
@@ -4505,6 +4506,8 @@ select option {
     color: var(--lc-green);
     font-weight: bold;
     text-align: center;
+    font-size: 14px;
+
 }
 
 .day {
@@ -4515,6 +4518,7 @@ select option {
     line-height: 30px;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.6) !important;
+    font-size: 14px;
 
 }
 
@@ -4526,6 +4530,8 @@ select option {
 
     border: none;
     outline: none;
+    font-size: 14px;
+
 }
 
 .date.in-month:hover {
@@ -4549,10 +4555,11 @@ select option {
     background: var(--lc-pink);
     height: 2px;
 }
-.rbc-toolbar {
+.rbc-toolbar-1 {
     display: flex;
     justify-content: space-between!important;
     flex-wrap: wrap;  /* NEW */
+    align-content: center;
 }
 .rbc-header>button{
     margin: 0px 0px 10px 0;

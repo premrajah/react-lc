@@ -20,6 +20,11 @@ import Paper from "@mui/material/Paper";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Year from "./Year";
+import IconBtn from "../FormsUI/Buttons/IconBtn";
+import {IconButton} from "@mui/material";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
+import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import GreenSmallBtn from "../FormsUI/Buttons/GreenSmallBtn";
 
 const mLocalizer = momentLocalizer(moment);
 
@@ -233,8 +238,8 @@ export default function BigCalenderEvents({
 
         return (
             <>
-                <div className="rbc-toolbar">
-                    <span>
+                <div className="rbc-toolbar-1 mb-2">
+                    <div>
                           <div>
             <Paper
                 elevation={0}
@@ -247,6 +252,7 @@ export default function BigCalenderEvents({
                     size="small"
                     value={view}
                     exclusive
+                    color="secondary"
                     onChange={handleAlignment}
                     aria-label="text alignment">
                     {!props.hideYear &&  <ToggleButton value="year" aria-label="Year">
@@ -263,13 +269,16 @@ export default function BigCalenderEvents({
             </Paper>
         </div>
 
-                    </span>
+                    </div>
 
 
 
 
-                    <span className="rbc-btn-group d-flex justify-content-center align-items-center">
-                       <span> <ArrowBack
+                    <div className="rbc-btn-group d-flex justify-content-center align-items-center">
+                       <span>
+                           <IconButton className="">
+                               <ArrowBack
+
                             className="arrow-back cal-arrows"
                             onClick={() => {
                                 console.log(view)
@@ -291,14 +300,15 @@ export default function BigCalenderEvents({
 
 
                             }}
-                        />
+                        /></IconButton>
                         </span>
-  <span className="rbc-toolbar-label title-bold pl-2">
+  <div className=" title-bold ps-4 pe-4">
       {getLabel(selectedDate)}
-  </span>
+  </div>
 
-                     <span>   <ArrowForward
-                            className="arrow-forward  cal-arrows"
+                     <div className="">
+                          <IconButton className={""}><ArrowForward
+                            className="arrow-forward   cal-arrows"
                             onClick={() => {
                                 // Navigate("NEXT");
 
@@ -320,19 +330,20 @@ export default function BigCalenderEvents({
 
                             }}
                         />
-                        </span>
-                    </span>
-                    <span>  <button
-                        className=""
+                          </IconButton>
+                        </div>
+                    </div>
+                    <div>  <GreenSmallBtn
+                       title={"Today"}
                         type="button"
                         onClick={() => {
                             // Navigate("TODAY");
                             setSelectedDate(new Date());
                             handleNavigation(new Date(),true);
                         }}>
-                        today
-                    </button>
-                    </span>
+
+                    </GreenSmallBtn>
+                    </div>
                 </div>
             </>
         );

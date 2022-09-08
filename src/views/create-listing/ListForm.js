@@ -31,6 +31,7 @@ import EditSite from "../../components/Sites/EditSite";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import GlobalDialog from "../../components/RightBar/GlobalDialog";
 
 
 class ListForm extends Component {
@@ -1317,27 +1318,22 @@ class ListForm extends Component {
                         </React.Fragment>
                     )}
 
-                    {this.state.showCreateSite && (
-                        <>
-                            <div className={"body-overlay"}>
-                                <div className={"modal-popup site-popup"}>
-                                    <div className=" text-right ">
-                                        <Close
-                                            onClick={this.toggleSite}
-                                            className="blue-text"
-                                            style={{ fontSize: 32 }}
-                                        />
-                                    </div>
+                            <GlobalDialog
+                                size="sm"
+                                heading={"Add Event"}
+                                show={this.state.showCreateSite}
+                                hide={() => {
+                                    this.toggleSite();
+                                }}>
+                                <>
 
-                                    <div className={"row"}>
                                         <div className={"col-12"}>
                                             <EditSite site={{}} submitCallback={() => this.toggleSite()} />
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    )}
+                            </>
+
+                            </GlobalDialog>
+
                 </div>
             </>
         );

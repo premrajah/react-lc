@@ -36,6 +36,7 @@ import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
+import SiteFormNew from "../Sites/SiteFormNew";
 
 
 class ProductDetailContent extends Component {
@@ -729,6 +730,17 @@ class ProductDetailContent extends Component {
         );
     }
 
+    toggleSite=(refresh)=> {
+        this.setState({
+            showCreateSite: !this.state.showCreateSite,
+        });
+
+
+        if (refresh){
+            this.props.loadSites();
+
+        }
+    }
     loadProduct(productKey) {
         if (productKey)
             axios.get(baseUrl + "product/" + productKey + "/expand").then(
@@ -1066,20 +1078,6 @@ class ProductDetailContent extends Component {
                             </div>
                         </div>
 
-                        {/*<Modal*/}
-                        {/*    size="lg"*/}
-                        {/*    show={this.state.showProductEdit}*/}
-                        {/*    onHide={this.showProductEdit}*/}
-                        {/*    className={"custom-modal-popup popup-form"}>*/}
-                        {/*    <div className="row   justify-content-end">*/}
-                        {/*        <div className="col-auto mr-2 mt-2">*/}
-                        {/*            <CloseButtonPopUp onClick={this.showProductEdit}>*/}
-                        {/*                <Close />*/}
-                        {/*            </CloseButtonPopUp>*/}
-
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-
 
 
 
@@ -1121,6 +1119,21 @@ class ProductDetailContent extends Component {
                                         {this.state.showProductEdit &&  <ProductForm hideUpload edit triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.props.item} />}
                                     </div>
 
+                        </GlobalDialog>
+
+
+                        <GlobalDialog
+
+                            size={"sm"}
+                            hide={this.toggleSite}
+                            show={this.state.showCreateSite}
+                            heading={"Add new site"}>
+                            <>
+                                <div className="col-12 ">
+
+                                    <SiteFormNew refresh={()=>this.toggleSite(true)} />
+                                </div>
+                            </>
                         </GlobalDialog>
 
                         <GlobalDialog
@@ -1204,6 +1217,15 @@ class ProductDetailContent extends Component {
                                                                         title="Select release site"/>
 
                                                                 </div>
+
+                                                                {/*<p className={"text-g"} style={{ marginTop: "10px" }}>*/}
+
+                                                                {/*    or <span*/}
+                                                                {/*    onClick={this.toggleSite}*/}
+                                                                {/*    className={*/}
+                                                                {/*        " forgot-password-link "*/}
+                                                                {/*    }>Add new</span>*/}
+                                                                {/*</p>*/}
 
                                                                 {this.state.errorRelease && (
                                                                     <div

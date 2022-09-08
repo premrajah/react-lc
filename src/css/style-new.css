@@ -4324,10 +4324,10 @@ select option {
 }
 .fc-event-repair_or_replace{
     background: #e9e8eb !important;
-    color: #eea331 !important;
+    color: #bf8318 !important;
 }
 .fc-event-box-repair_or_replace {
-    color: #eea331 !important;
+    color: #bf8318 !important;
     background: #e9e8eb !important;
     padding: 0px 3px;
     font-weight: bold;
@@ -4654,7 +4654,7 @@ select option {
 
 .fc-event-box-repair_or_replace{
     border-left-width: 2px;
-    border-left-color: #eea331;
+    border-left-color: #bf8318;
     border-left-style: solid;
 }
 

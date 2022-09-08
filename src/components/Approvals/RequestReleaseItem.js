@@ -15,6 +15,7 @@ import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import OrgComponent from "../Org/OrgComponent";
 
 class RequestReleaseItem extends Component {
     constructor(props) {
@@ -345,7 +346,9 @@ class RequestReleaseItem extends Component {
                                 <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
                                     Stage: <span className={"text-blue"}>{this.state.item.Release.stage}</span>
                                 </p>
-
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">
+                                    Requested By: <OrgComponent orgId={this.state.item.originator_id.replace("Org/","")}/>
+                                </p>
                                 <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
                                     Purpose: <span className={"text-blue"}> {this.state.product&&this.state.product.purpose}</span>
                                 </p>

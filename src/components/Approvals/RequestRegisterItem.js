@@ -14,6 +14,7 @@ import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import GlobalDialog from "../RightBar/GlobalDialog";
+import OrgComponent from "../Org/OrgComponent";
 
 class RequestRegisterItem extends Component {
     constructor(props) {
@@ -236,18 +237,19 @@ class RequestRegisterItem extends Component {
                                     </Link>
                                 </p>
 
-
-
-                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">
                                     Stage: <span className={"text-blue"}>{this.state.item.registration.stage}</span>
                                 </p>
+                                <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
+                                    Requested By: <OrgComponent orgId={this.state.item.originator_id.replace("Org/","")}/>
+                                </p>
 
-                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1  text-capitalize">
                                     Purpose: <span className={"text-blue"}> {this.state.product&&this.state.product.purpose}</span>
                                 </p>
 
 
-                                {this.state.product&&  <div className={"text-gray-light mt-2 width-75"}>
+                                {this.state.product&&  <div className={"text-gray-light mt-1  width-75"}>
                                     Category:
                                     <span
 

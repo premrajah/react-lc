@@ -71,7 +71,6 @@ const CustomTimeGutterWrapper = ({ children }) => {
 };
 
 const CustomTimeGutterHeader = ({ children }) => {
-    return console.log(">> ");
     return (
         <span className="custom-day-cell">
             <Add className="add-event-icon" />
@@ -104,11 +103,6 @@ export default function BigCalenderEvents({
     const [showAddEventPopUp, setShowAddEventPopUp] = useState(false);
 
 
-    useEffect(()=>{
-
-        console.log("view changed", (view))
-    },[view])
-
     const size = 50;
     const [loading, setLoading] = useState([]);
     // const [offset, setOffset] = useState(0);
@@ -123,8 +117,6 @@ export default function BigCalenderEvents({
 
     const Event = (props) => {
         let event = props.event;
-
-        // console.log(event)
 
         return (
             <div
@@ -188,14 +180,10 @@ export default function BigCalenderEvents({
         );
     };
 
-    const DateHeader = (props) => {
-        return (
-            <>
-                <div className="custom-date-header">
-                    <Add className="add-event-icon" />
+    const DateHeader = ({label}) => {
+        return <div className="custom-date-header">
+            {label}
                 </div>
-            </>
-        );
     };
 
     const CustomToolbar = (props) => {
@@ -290,7 +278,7 @@ export default function BigCalenderEvents({
 
                             className="arrow-back cal-arrows"
                             onClick={() => {
-                                console.log(view)
+
 
 
 
@@ -380,9 +368,9 @@ export default function BigCalenderEvents({
                 // year:Year,
                 // toolbar: CustomToolbar,
                 //
-                // month: {
-                //     dateHeader: DateHeader,
-                // },
+                month: {
+                    dateHeader: DateHeader,
+                },
                 // timeSlotWrapper: ColoredDateCellWrapper,
                 // dateCellWrapper:CustomDateCellWrapper,
                 event: Event,
@@ -483,7 +471,7 @@ export default function BigCalenderEvents({
     };
 
     useEffect(() => {
-        console.log("running");
+
         if (!smallView) {
             setMonthEvents([]);
             getEventsByMonth(
@@ -503,8 +491,6 @@ export default function BigCalenderEvents({
         events.forEach((item, index) => {
             let date = new Date(item.event.resolution_epoch_ms);
 
-            // console.log(date)
-            // console.log(item)
             calenderEvents.push({
                 id: item.event._key,
                 index: index + 1,
@@ -520,13 +506,11 @@ export default function BigCalenderEvents({
             });
         });
 
-        console.log(offset, calenderEvents.length);
-        // console.log("cal events",calenderEvents)
         return calenderEvents;
     };
 
     const handleSelectSlot = (arg) => {
-        console.log("<<<<<<<<<< args", arg);
+
         if (!smallView) {
             switch (arg.action) {
                 case "click":
@@ -548,7 +532,7 @@ export default function BigCalenderEvents({
 
     const handleNavigation = (arg, all) => {
         // bind with an arrow function
-         console.log(arg)
+
 
         if (!smallView) {
             if (all) {
@@ -571,7 +555,6 @@ export default function BigCalenderEvents({
     };
 
         const handleDateCallback = (d) => {
-            console.log("Date from year ", d)
             // navigate()
         try{
                  setTmpView('month')

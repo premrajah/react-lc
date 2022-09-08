@@ -4632,7 +4632,7 @@ select option {
     color:rgba(0, 0, 0, 0.6)!important;
 }
 .rbc-header>span, .rbc-header>button{
-    color: var(--lc-green)!important;
+    /*color: var(--lc-green)!important;*/
 }
 .fc-event-box-service{
     border-left-width: 2px;

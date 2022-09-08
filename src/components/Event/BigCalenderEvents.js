@@ -127,15 +127,24 @@ export default function BigCalenderEvents({
         // console.log(event)
 
         return (
-            <span
-                onClick={() => {
-                    setSelectedDate(event.start);
-                    getEvents(
-                        moment(event.start).startOf("day").format("x"),
-                        moment(event.start).endOf("day").format("x")
-                    );
+            <div
+                onClick={(eventNew) => {
+
+                    if (eventNew.detail==1){
+
+                        setSelectedDate(event.start);
+                        getEvents(
+                            moment(event.start).startOf("day").format("x"),
+                            moment(event.start).endOf("day").format("x")
+                        );
+                    }
+
+                    if (eventNew.detail==2){
+                        setShowAddEventPopUp(!showAddEventPopUp);
+                    }
+
                 }}
-                className=" text-12 txt-gray-dark" >
+                className=" event-bx text-12 txt-gray-dark" >
                 <span>
                     <Badge
                         anchorOrigin={{
@@ -152,7 +161,7 @@ export default function BigCalenderEvents({
                 </span>
 
                 {event.desc && ":  " + event.desc}
-            </span>
+            </div>
         );
     };
 

@@ -132,22 +132,22 @@ export default function BigCalenderEvents({
                     }
                 }}
                 className=" event-bx text-12 txt-gray-dark">
-                <span>
-                    <Badge
-                        anchorOrigin={{
-                            vertical: "top",
-                            horizontal: "right",
-                        }}
-                        className={"fc-event-" + event.process}
-                        color="secondary"
-                        overlap="circular"
-                        badgeContent=""
-                        variant="dot"
-                    />
+                <div   className={"fc-event-box-" + event.process}>
+                    {/*<Badge*/}
+                    {/*    anchorOrigin={{*/}
+                    {/*        vertical: "top",*/}
+                    {/*        horizontal: "right",*/}
+                    {/*    }}*/}
+                    {/*    className={"fc-event-" + event.process}*/}
+                    {/*    color="secondary"*/}
+                    {/*    overlap="circular"*/}
+                    {/*    badgeContent=""*/}
+                    {/*    variant="dot"*/}
+                    {/*/>*/}
                     {event.title}
-                </span>
+                </div>
 
-                {event.desc && ":  " + event.desc}
+                {/*{event.desc && ":  " + event.desc}*/}
             </div>
         );
     };

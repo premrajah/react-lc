@@ -4286,28 +4286,91 @@ select option {
     border-radius: 8px !important;
 }
 
-.fc-event-service,
-.fc-event-service .MuiBadge-dot {
-    background: #27245c !important;
+/*.fc-event-service,*/
+/*.fc-event-service .MuiBadge-dot {*/
+/*    background: #27245c !important;*/
+/*}*/
+.fc-event-service{
+    background: #cce3fe !important;
+    color: #3e83e5 !important;
+}
+.fc-event-box-service {
+    color: #3e83e5 !important;
+    background: #cce3fe !important;
+    padding: 0px 3px;
+    font-weight: bold;
+    border-right-width: 2px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 22px;
+
+}
+.fc-event-warranty{
+    background: #ffd0cb !important;
+    color: #e8574c !important;
+}
+.fc-event-box-warranty {
+    color: #e8574c !important;
+    background: #ffd0cb !important;
+    padding: 0px 3px;
+    font-weight: bold;
+    border-right-width: 2px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 22px;
+
+}
+.fc-event-repair_or_replace{
+    background: #e9e8eb !important;
+    color: #eea331 !important;
+}
+.fc-event-box-repair_or_replace {
+    color: #eea331 !important;
+    background: #e9e8eb !important;
+    padding: 0px 3px;
+    font-weight: bold;
+    border-right-width: 2px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 22px;
 }
 
-.fc-event-warranty,
-.fc-event-warranty .MuiBadge-dot {
-    background: #dc3545 !important;
+.fc-event-other{
+    background: #e9e8eb !important;
+    color: #6f7383 !important;
+}
+.fc-event-box-other {
+    color: #6f7383 !important;
+    background: #e9e8eb !important;
+    padding: 0px 3px;
+    font-weight: bold;
+    border-right-width: 2px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 22px;
 }
 
-.fc-event-repair_or_replace,
-.fc-event-repair_or_replace .MuiBadge-dot {
-    background: #d31169 !important;
+.fc-event-clean{
+    background: #edf6ea !important;
+    color: #489f2b !important;
 }
-.fc-event-other,
-.fc-event-other .MuiBadge-dot {
-    background: #000000aa !important;
+
+.fc-event-box-clean {
+    color: #489f2b !important;
+    background: #edf6ea !important;
+    padding: 0px 3px;
+    font-weight: bold;
+    border-right-width: 2px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 22px;
 }
-.fc-event-clean,
-.fc-event-clean .MuiBadge-dot {
-    background: #07ad89 !important;
-}
+
 .fc-small-calender .fc .fc-toolbar-title {
     font-size: 1em !important;
     font-weight: bold;
@@ -4570,4 +4633,33 @@ select option {
 }
 .rbc-header>span, .rbc-header>button{
     color: var(--lc-green)!important;
+}
+.fc-event-box-service{
+    border-left-width: 2px;
+    border-left-color: #3e83e5;
+    border-left-style: solid;
+}
+
+.fc-event-box-warranty{
+    border-left-width: 2px;
+    border-left-color: #e8574c;
+    border-left-style: solid;
+}
+
+.fc-event-box-other{
+    border-left-width: 2px;
+    border-left-color: #6f7383;
+    border-left-style: solid;
+}
+
+.fc-event-box-repair_or_replace{
+    border-left-width: 2px;
+    border-left-color: #eea331;
+    border-left-style: solid;
+}
+
+.fc-event-box-clean{
+    border-left-width: 2px;
+    border-left-color: #489f2b;
+    border-left-style: solid;
 }

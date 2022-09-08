@@ -127,8 +127,8 @@ class EventForm extends Component {
                 {key:86400000 ,value:"Every Day"},
                 {key:604800000 ,value:"Every Week"},
                 {key:864000000,value:"Every 10 Days"},
-                {key:2629743000 ,value:"Every Month(30 Days)"},
-                {key:31556926000 ,value:"Every Year(365 Days)"},
+                // {key:2629743000 ,value:"Every Month(30 Days)"},
+                // {key:31556926000 ,value:"Every Year(365 Days)"},
             ],
             processes:[
 

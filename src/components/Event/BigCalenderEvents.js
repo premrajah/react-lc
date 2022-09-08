@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useMemo, useState ,useCallback} from "react";
+import React, { Fragment, useEffect, useMemo, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Calendar, DateLocalizer, momentLocalizer, Views,  } from "react-big-calendar";
+import { Calendar, DateLocalizer, momentLocalizer, Views } from "react-big-calendar";
 import * as dates from "./dates";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventItem from "./EventItem";
-import {addDays, LoaderAnimated, weekday} from "../../Util/GlobalFunctions";
+import { addDays, LoaderAnimated, weekday } from "../../Util/GlobalFunctions";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios";
 import Badge from "@mui/material/Badge";
@@ -21,7 +21,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Year from "./Year";
 import IconBtn from "../FormsUI/Buttons/IconBtn";
-import {IconButton} from "@mui/material";
+import { IconButton } from "@mui/material";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenSmallBtn from "../FormsUI/Buttons/GreenSmallBtn";
@@ -71,7 +71,6 @@ const CustomTimeGutterWrapper = ({ children }) => {
 };
 
 const CustomTimeGutterHeader = ({ children }) => {
-    return console.log(">> ");
     return (
         <span className="custom-day-cell">
             <Add className="add-event-icon" />
@@ -95,19 +94,12 @@ export default function BigCalenderEvents({
     const [eventsTemp, setEventsTemp] = useState([]);
     const [calanderEvents, setCalanderEvents] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [view, setView] = useState('month');
-    const [tmpView, setTmpView] = useState('month');
+    const [view, setView] = useState("month");
+    const [tmpView, setTmpView] = useState("month");
     // const [navigate, setNavigate] = useState(new Date());
-
 
     const [showEventPopUp, setShowEventPopUp] = useState(false);
     const [showAddEventPopUp, setShowAddEventPopUp] = useState(false);
-
-
-    useEffect(()=>{
-
-        console.log("view changed", (view))
-    },[view])
 
     const size = 50;
     const [loading, setLoading] = useState([]);
@@ -124,14 +116,10 @@ export default function BigCalenderEvents({
     const Event = (props) => {
         let event = props.event;
 
-        // console.log(event)
-
         return (
             <div
                 onClick={(eventNew) => {
-
-                    if (eventNew.detail==1){
-
+                    if (eventNew.detail == 1) {
                         setSelectedDate(event.start);
                         getEvents(
                             moment(event.start).startOf("day").format("x"),
@@ -139,12 +127,11 @@ export default function BigCalenderEvents({
                         );
                     }
 
-                    if (eventNew.detail==2){
+                    if (eventNew.detail == 2) {
                         setShowAddEventPopUp(!showAddEventPopUp);
                     }
-
                 }}
-                className=" event-bx text-12 txt-gray-dark" >
+                className=" event-bx text-12 txt-gray-dark">
                 <span>
                     <Badge
                         anchorOrigin={{
@@ -188,19 +175,11 @@ export default function BigCalenderEvents({
         );
     };
 
-    const DateHeader = (props) => {
-        return (
-            <>
-                <div className="custom-date-header">
-                    <Add className="add-event-icon" />
-                </div>
-            </>
-        );
+    const DateHeader = ({ label }) => {
+        return <div className="custom-date-header">{label}</div>;
     };
 
     const CustomToolbar = (props) => {
-
-
         let navigate = (action) => {
             props.onNavigate(action);
         };
@@ -209,149 +188,158 @@ export default function BigCalenderEvents({
         //     props.onView(view);
         // };
 
+        const getLabel = (date) => {
+            if (view == "year") {
+                return date.getFullYear();
+            } else if (view == "month") {
+                return (
+                    date.toLocaleString("default", { month: "long" }) + ", " + date.getFullYear()
+                );
+            } else if (view == "week") {
+                const startDate = moment(date).startOf("week").toDate();
+                const endDate = moment(date).endOf("week").toDate();
 
-        const getLabel=( date)=>{
-
-            if (view=="year"){
-
-                return date.getFullYear()
+                return (
+                    startDate.getDate() +
+                    " " +
+                    startDate.toLocaleString("default", { month: "short" }) +
+                    " " +
+                    startDate.getFullYear() +
+                    " - " +
+                    endDate.getDate() +
+                    " " +
+                    endDate.toLocaleString("default", { month: "short" }) +
+                    " " +
+                    endDate.getFullYear()
+                );
             }
-            else  if (view=="month") {
-                return date.toLocaleString("default", { month: "long" })+", "+date.getFullYear()
-            }
-            else  if (view=="week") {
-
-                const startDate= moment(date).startOf('week').toDate()
-                const endDate=moment(date).endOf('week').toDate()
-
-              return  startDate.getDate()+" "+startDate.toLocaleString("default", { month: "short" })+" "+ startDate.getFullYear()+
-              " - "
-              +endDate.getDate()+" "+endDate.toLocaleString("default", { month: "short" })+" "+ endDate.getFullYear()
-
-            }
-
-        }
-
-
-        const handleAlignment = (event, newAlignment) => {
-
-            if (newAlignment&&newAlignment!==tmpView){
-                setTmpView(newAlignment)
-                onView(newAlignment);
-            }
-
-
         };
 
-
+        const handleAlignment = (event, newAlignment) => {
+            if (newAlignment && newAlignment !== tmpView) {
+                setTmpView(newAlignment);
+                onView(newAlignment);
+            }
+        };
 
         return (
             <>
                 <div className="rbc-toolbar-1 mb-2">
                     <div>
-                          <div>
-            <Paper
-                elevation={0}
-                sx={{
-                    display: "flex",
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    flexWrap: "wrap",
-                }}>
-                <StyledToggleButtonGroup
-                    size="small"
-                    value={view}
-                    exclusive
-                    color="secondary"
-                    onChange={handleAlignment}
-                    aria-label="text alignment">
-                    {!props.hideYear &&  <ToggleButton value="year" aria-label="Year">
-                        <span>Year</span>
-                    </ToggleButton>}
-                    <ToggleButton value="month" aria-label="Month">
-                        <span>Month</span>
-                    </ToggleButton>
-                    <ToggleButton value="week" aria-label="Week">
-                        <span>Week</span>
-                    </ToggleButton>
-
-                </StyledToggleButtonGroup>
-            </Paper>
-        </div>
-
-                    </div>
-
-
-
-
-                    <div className="rbc-btn-group d-flex justify-content-center align-items-center">
-                       <span>
-                           <IconButton className="">
-                               <ArrowBack
-
-                            className="arrow-back cal-arrows"
-                            onClick={() => {
-                                console.log(view)
-
-
-
-                                if (view==="year"){
-                                    setSelectedDate(moment(selectedDate).subtract(1, "years").toDate());
-                                    handleNavigation(moment(selectedDate).subtract(1, "years").toDate(), true);
-                                }
-                               else if (view==="month"){
-                                    setSelectedDate(moment(selectedDate).subtract(1, "M").toDate());
-                                    handleNavigation(moment(selectedDate).subtract(1, "M").toDate(), true);
-                                }
-                               else if (view==="week"){
-                                    setSelectedDate(moment(selectedDate).subtract(7, "days").toDate());
-                                    handleNavigation(moment(selectedDate).subtract(7, "days").toDate(), true);
-                                }
-
-
-                            }}
-                        /></IconButton>
-                        </span>
-  <div className=" title-bold ps-4 pe-4">
-      {getLabel(selectedDate)}
-  </div>
-
-                     <div className="">
-                          <IconButton className={""}><ArrowForward
-                            className="arrow-forward   cal-arrows"
-                            onClick={() => {
-                                // Navigate("NEXT");
-
-
-                                if (view==="year"){
-                                    setSelectedDate(moment(selectedDate).add(1, "years").toDate());
-                                    handleNavigation(moment(selectedDate).add(1, "years").toDate(), true);
-                                }
-                                else if (view==="month"){
-                                    setSelectedDate(moment(selectedDate).add(1, "M").toDate());
-                                    handleNavigation(moment(selectedDate).add(1, "M").toDate(), true);
-                                }
-                                else if (view==="week"){
-                                    setSelectedDate(moment(selectedDate).add(7, "days").toDate());
-                                    handleNavigation(moment(selectedDate).add(7, "days").toDate(), true);
-                                }
-
-
-
-                            }}
-                        />
-                          </IconButton>
+                        <div>
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    display: "flex",
+                                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                                    flexWrap: "wrap",
+                                }}>
+                                <StyledToggleButtonGroup
+                                    size="small"
+                                    value={view}
+                                    exclusive
+                                    color="secondary"
+                                    onChange={handleAlignment}
+                                    aria-label="text alignment">
+                                    {!props.hideYear && (
+                                        <ToggleButton value="year" aria-label="Year">
+                                            <span>Year</span>
+                                        </ToggleButton>
+                                    )}
+                                    <ToggleButton value="month" aria-label="Month">
+                                        <span>Month</span>
+                                    </ToggleButton>
+                                    <ToggleButton value="week" aria-label="Week">
+                                        <span>Week</span>
+                                    </ToggleButton>
+                                </StyledToggleButtonGroup>
+                            </Paper>
                         </div>
                     </div>
-                    <div>  <GreenSmallBtn
-                       title={"Today"}
-                        type="button"
-                        onClick={() => {
-                            // Navigate("TODAY");
-                            setSelectedDate(new Date());
-                            handleNavigation(new Date(),true);
-                        }}>
 
-                    </GreenSmallBtn>
+                    <div className="rbc-btn-group d-flex justify-content-center align-items-center">
+                        <span>
+                            <IconButton className="">
+                                <ArrowBack
+                                    className="arrow-back cal-arrows"
+                                    onClick={() => {
+                                        if (view === "year") {
+                                            setSelectedDate(
+                                                moment(selectedDate).subtract(1, "years").toDate()
+                                            );
+                                            handleNavigation(
+                                                moment(selectedDate).subtract(1, "years").toDate(),
+                                                true
+                                            );
+                                        } else if (view === "month") {
+                                            setSelectedDate(
+                                                moment(selectedDate).subtract(1, "M").toDate()
+                                            );
+                                            handleNavigation(
+                                                moment(selectedDate).subtract(1, "M").toDate(),
+                                                true
+                                            );
+                                        } else if (view === "week") {
+                                            setSelectedDate(
+                                                moment(selectedDate).subtract(7, "days").toDate()
+                                            );
+                                            handleNavigation(
+                                                moment(selectedDate).subtract(7, "days").toDate(),
+                                                true
+                                            );
+                                        }
+                                    }}
+                                />
+                            </IconButton>
+                        </span>
+                        <div className=" title-bold ps-4 pe-4">{getLabel(selectedDate)}</div>
+
+                        <div className="">
+                            <IconButton className={""}>
+                                <ArrowForward
+                                    className="arrow-forward   cal-arrows"
+                                    onClick={() => {
+                                        // Navigate("NEXT");
+
+                                        if (view === "year") {
+                                            setSelectedDate(
+                                                moment(selectedDate).add(1, "years").toDate()
+                                            );
+                                            handleNavigation(
+                                                moment(selectedDate).add(1, "years").toDate(),
+                                                true
+                                            );
+                                        } else if (view === "month") {
+                                            setSelectedDate(
+                                                moment(selectedDate).add(1, "M").toDate()
+                                            );
+                                            handleNavigation(
+                                                moment(selectedDate).add(1, "M").toDate(),
+                                                true
+                                            );
+                                        } else if (view === "week") {
+                                            setSelectedDate(
+                                                moment(selectedDate).add(7, "days").toDate()
+                                            );
+                                            handleNavigation(
+                                                moment(selectedDate).add(7, "days").toDate(),
+                                                true
+                                            );
+                                        }
+                                    }}
+                                />
+                            </IconButton>
+                        </div>
+                    </div>
+                    <div>
+                        <GreenSmallBtn
+                            title={"Today"}
+                            type="button"
+                            onClick={() => {
+                                // Navigate("TODAY");
+                                setSelectedDate(new Date());
+                                handleNavigation(new Date(), true);
+                            }}/>
                     </div>
                 </div>
             </>
@@ -380,9 +368,9 @@ export default function BigCalenderEvents({
                 // year:Year,
                 // toolbar: CustomToolbar,
                 //
-                // month: {
-                //     dateHeader: DateHeader,
-                // },
+                month: {
+                    dateHeader: DateHeader,
+                },
                 // timeSlotWrapper: ColoredDateCellWrapper,
                 // dateCellWrapper:CustomDateCellWrapper,
                 event: Event,
@@ -483,7 +471,6 @@ export default function BigCalenderEvents({
     };
 
     useEffect(() => {
-        console.log("running");
         if (!smallView) {
             setMonthEvents([]);
             getEventsByMonth(
@@ -503,8 +490,6 @@ export default function BigCalenderEvents({
         events.forEach((item, index) => {
             let date = new Date(item.event.resolution_epoch_ms);
 
-            // console.log(date)
-            // console.log(item)
             calenderEvents.push({
                 id: item.event._key,
                 index: index + 1,
@@ -520,19 +505,16 @@ export default function BigCalenderEvents({
             });
         });
 
-        console.log(offset, calenderEvents.length);
-        // console.log("cal events",calenderEvents)
         return calenderEvents;
     };
 
     const handleSelectSlot = (arg) => {
-        console.log("<<<<<<<<<< args", arg);
         if (!smallView) {
             switch (arg.action) {
                 case "click":
                     setSelectedDate(arg.start);
                     getEvents(
-                        moment(arg.start).startOf("day").format("x")-10,
+                        moment(arg.start).startOf("day").format("x") - 10,
                         moment(arg.start).endOf("day").format("x")
                     );
                     break;
@@ -548,7 +530,6 @@ export default function BigCalenderEvents({
 
     const handleNavigation = (arg, all) => {
         // bind with an arrow function
-         console.log(arg)
 
         if (!smallView) {
             if (all) {
@@ -570,25 +551,20 @@ export default function BigCalenderEvents({
         }
     };
 
-        const handleDateCallback = (d) => {
-            console.log("Date from year ", d)
-            // navigate()
-        try{
-                 setTmpView('month')
-                 onView('month')
-                 setSelectedDate(d._d)
-                 handleNavigation(d._d,true)
+    const handleDateCallback = (d) => {
+        // navigate()
+        try {
+            setTmpView("month");
+            onView("month");
+            setSelectedDate(d._d);
+            handleNavigation(d._d, true);
             // onNavigate(d._d)
-        }catch (e){
-                    console.log(e)
+        } catch (e) {
+            console.log(e);
         }
+    };
 
-
-
-        }
-
-        const onView = useCallback((newView) => setView(newView), [setView])
-
+    const onView = useCallback((newView) => setView(newView), [setView]);
 
     return (
         <Fragment>
@@ -609,7 +585,8 @@ export default function BigCalenderEvents({
                                     showAddEvent();
                                     getEventsByMonth(
                                         moment(selectedDate).startOf("month").format("x"),
-                                        moment(selectedDate).endOf("month").format("x"),0
+                                        moment(selectedDate).endOf("month").format("x"),
+                                        0
                                     );
                                     getEvents(
                                         moment(selectedDate).startOf("day").format("x"),
@@ -629,7 +606,6 @@ export default function BigCalenderEvents({
                             smallView ? "col-12 mt-4 fc-small-calender" : "col-md-8"
                         }`}>
                         <div className="sticky-top">
-
                             <CustomToolbar />
                             <Calendar
                                 toolbar={false}
@@ -642,7 +618,6 @@ export default function BigCalenderEvents({
                                 events={monthEvents}
                                 localizer={localizer}
                                 max={1}
-
                                 showMultiDayTimes
                                 step={60}
                                 selectable={true}
@@ -652,20 +627,17 @@ export default function BigCalenderEvents({
                                     week: true,
                                     month: true,
                                     // year: <Year handleYearClick={()=>{alert("here")}} />,
-                                    year:Year,
+                                    year: Year,
                                 }}
                                 onView={onView}
                                 view={view}
                                 date={selectedDate}
-
                                 messages={{ year: "Year" }}
                                 startAccessor="start"
                                 endAccessor="end"
-
                                 onSelectSlot={handleSelectSlot}
                                 // onNavigate={handleNavigation}
                                 dateCallback={(d) => handleDateCallback(d)}
-
                             />
                         </div>
                     </div>
@@ -688,7 +660,6 @@ export default function BigCalenderEvents({
                                     <CustomPopover text={"Add event"}>
                                         <ActionIconBtn
                                             onClick={() => {
-
                                                 setShowAddEventPopUp(!showAddEventPopUp);
                                             }}>
                                             <Add className="add-event-icon" />
@@ -707,7 +678,7 @@ export default function BigCalenderEvents({
                                 </span>
 
                                 <EventItem
-                                    refresh={(date) => handleNavigation(date,true)}
+                                    refresh={(date) => handleNavigation(date, true)}
                                     smallView={smallView}
                                     events={events}
                                 />
@@ -730,9 +701,7 @@ export default function BigCalenderEvents({
                         <>
                             <CustomToolbar hideYear />
                             <Calendar
-
                                 toolbar={false}
-
                                 className={` ${
                                     smallView ? " rbc-small-calender" : "rbc-big-calender"
                                 }`}
@@ -744,7 +713,6 @@ export default function BigCalenderEvents({
                                 max={1}
                                 showMultiDayTimes
                                 step={60}
-
                                 startAccessor="start"
                                 endAccessor="end"
                                 views={{
@@ -818,47 +786,44 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     },
 }));
 
- const CustomizedDividers=(props)=> {
+const CustomizedDividers = (props) => {
+    const [view, setView] = React.useState("month");
 
-     const [view, setView] = React.useState('month');
+    const handleAlignment = (event, newAlignment) => {
+        // setCurrentView(newAlignment);
+        // onView(newAlignment);
+        setView(newAlignment);
+    };
 
-     const handleAlignment = (event, newAlignment) => {
-         // setCurrentView(newAlignment);
-         // onView(newAlignment);
-         setView(newAlignment)
-     };
-
-
-     return (
-      <>
-          <Paper
-              elevation={0}
-              sx={{
-                  display: "flex",
-                  border: (theme) => `1px solid ${theme.palette.divider}`,
-                  flexWrap: "wrap",
-              }}>
-              <StyledToggleButtonGroup
-                  size="small"
-                  value={view}
-                  exclusive
-                  onChange={handleAlignment}
-                  aria-label="text alignment">
-                  <ToggleButton value="year" aria-label="Year">
-                      <span>Year</span>
-                  </ToggleButton>
-                  <ToggleButton value="month" aria-label="Month">
-                      <span>Month</span>
-                  </ToggleButton>
-                  <ToggleButton value="week" aria-label="Week">
-                      <span>Week</span>
-                  </ToggleButton>
-
-              </StyledToggleButtonGroup>
-          </Paper>
-          </>
+    return (
+        <>
+            <Paper
+                elevation={0}
+                sx={{
+                    display: "flex",
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    flexWrap: "wrap",
+                }}>
+                <StyledToggleButtonGroup
+                    size="small"
+                    value={view}
+                    exclusive
+                    onChange={handleAlignment}
+                    aria-label="text alignment">
+                    <ToggleButton value="year" aria-label="Year">
+                        <span>Year</span>
+                    </ToggleButton>
+                    <ToggleButton value="month" aria-label="Month">
+                        <span>Month</span>
+                    </ToggleButton>
+                    <ToggleButton value="week" aria-label="Week">
+                        <span>Week</span>
+                    </ToggleButton>
+                </StyledToggleButtonGroup>
+            </Paper>
+        </>
     );
-}
+};
 
 BigCalenderEvents.propTypes = {
     localizer: PropTypes.instanceOf(DateLocalizer),

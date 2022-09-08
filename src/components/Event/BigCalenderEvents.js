@@ -596,6 +596,7 @@ export default function BigCalenderEvents({
                             <EventForm
                                 date={selectedDate}
                                 hide={() => {
+                                    setMonthEvents([]);
                                     showAddEvent();
                                     getEventsByMonth(
                                         moment(selectedDate).startOf("month").format("x"),

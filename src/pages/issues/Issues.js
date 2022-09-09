@@ -26,7 +26,9 @@ class Issues extends Component {
     getAllIssues = () => {
 
         let newOffset=this.state.currentOffset
-
+        this.setState({
+        loadingResults:true,
+        })
         axios
             .get(`${baseUrl}issue?offset=${this.state.currentOffset}&size=${this.state.productPageSize}`)
             .then((response) => {

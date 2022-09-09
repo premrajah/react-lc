@@ -131,7 +131,12 @@ class ProductAutocomplete extends Component {
                     // userInput: key
                 });
             },
-            (error) => {}
+            (error) => {
+
+                this.setState({
+                    loading:false
+                })
+            }
         );
     };
 

@@ -4697,3 +4697,9 @@ select option {
 .rbc-time-content{
     display: none;
 }
+.custom-spinner{
+    position: absolute;
+    right: 5%;
+    top: 40%;
+    margin: auto;
+}

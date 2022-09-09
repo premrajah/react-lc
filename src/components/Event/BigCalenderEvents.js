@@ -675,8 +675,8 @@ export default function BigCalenderEvents({
                             smallView ? "small-log-view mt-4 col-12" : "col-md-4"
                         }`}>
                         {!smallView && (
-                            <div className="title-bold row d-flex align-items-center ">
-                                <div className="text-left  col-8 justify-content-start">
+                            <div className="title-bold  d-flex align-items-center justify-content-between ">
+                                <span className="   ">
                                     {weekday[selectedDate.getDay()] +
                                         ", " +
                                         selectedDate.toLocaleString("default", { month: "long" }) +
@@ -684,8 +684,8 @@ export default function BigCalenderEvents({
                                         selectedDate.getDate() +
                                         " ," +
                                         selectedDate.getFullYear()}
-                                </div>
-                                <div className="text-right col-4 justify-content-end ml-2">
+                                </span>
+                                <span className="">
                                     <CustomPopover text={"Add event"}>
                                         <ActionIconBtn
                                             onClick={() => {
@@ -694,7 +694,7 @@ export default function BigCalenderEvents({
                                             <Add className="add-event-icon" />
                                         </ActionIconBtn>
                                     </CustomPopover>
-                                </div>
+                                </span>
                             </div>
                         )}
 

@@ -15,6 +15,7 @@ import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocompl
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import {Spinner} from "react-bootstrap";
 
 class ProductAutocomplete extends Component {
     static propTypes = {
@@ -366,9 +367,12 @@ class ProductAutocomplete extends Component {
 
         return (
             <Fragment>
+
+                <div className="position-relative">
+
                 <input
 
-                    className={`${this.state.selected&&"d-none "} custom-input`}
+                    className={`${this.state.selected&&"d-none "} custom-input `}
                     onChange={onChange}
                     // onKeyDown={onKeyDown}
                     value={this.state.userInput}
@@ -377,6 +381,18 @@ class ProductAutocomplete extends Component {
                     ref="itemInput"
 
                 />
+
+                    {(this.state.loading) && (
+                        <Spinner
+                            className="me-2 custom-spinner"
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                    )}
+                </div>
                 {this.state.selected &&
                 <div className=" search-card p-2 m-1 d-flex align-items-center" style={{width: "100%"}}>
 

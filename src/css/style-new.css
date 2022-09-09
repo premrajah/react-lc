@@ -4691,12 +4691,10 @@ select option {
     color: #9a9c9e !important;
 }
 .rbc-time-content{
-    display: none;
+    display: none!important;
 }
 
-.rbc-time-content{
-    display: none;
-}
+
 .custom-spinner{
     position: absolute;
     right: 5%;

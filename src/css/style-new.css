@@ -4339,12 +4339,12 @@ select option {
 }
 
 .fc-event-other{
-    background: #e9e8eb !important;
-    color: #6f7383 !important;
+    background: #d8dfeb !important;
+    color: #8c11fa !important;
 }
 .fc-event-box-other {
-    color: #6f7383 !important;
-    background: #e9e8eb !important;
+    color: #8c11fa !important;
+    background: #d8dfeb !important;
     padding: 0px 3px;
     font-weight: bold;
     border-right-width: 2px;
@@ -4400,7 +4400,7 @@ select option {
     overflow-y: scroll !important;
 }
 .past-event {
-    background: #eee !important;
+    /*background: #eee !important;*/
 }
 .popover {
     z-index: 1111111 !important;
@@ -4648,7 +4648,7 @@ select option {
 
 .fc-event-box-other{
     border-left-width: 2px;
-    border-left-color: #6f7383;
+    border-left-color: #8c11fa;
     border-left-style: solid;
 }
 
@@ -4662,4 +4662,31 @@ select option {
     border-left-width: 2px;
     border-left-color: #489f2b;
     border-left-style: solid;
+}
+
+
+.fc-event-box-disabled{
+
+    background: #f2f4f5;
+    color: #9a9c9e!important;
+    border-left-width: 2px;
+    border-left-color: #9a9c9e;
+    border-left-style: solid;
+    padding: 0px 3px;
+    font-weight: bold;
+    border-right-width: 2px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 22px;
+}
+.fc-event-disabled{
+    background: #f2f4f5 !important;
+    color: #9a9c9e !important;
+}
+.past-event{
+    color: #9a9c9e !important;
+}
+.past-event div,.past-event span{
+    color: #9a9c9e !important;
 }

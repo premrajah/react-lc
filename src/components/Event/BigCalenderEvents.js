@@ -25,8 +25,13 @@ import { IconButton } from "@mui/material";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenSmallBtn from "../FormsUI/Buttons/GreenSmallBtn";
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
+
 
 const mLocalizer = momentLocalizer(moment);
+
 
 const ColoredDateCellWrapper = ({ children }) => {
     React.cloneElement(React.Children.only(children), {
@@ -95,6 +100,7 @@ export default function BigCalenderEvents({
     const [calanderEvents, setCalanderEvents] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [view, setView] = useState("month");
+    const [showAll, setShowAll] = useState(false);
     const [tmpView, setTmpView] = useState("month");
     // const [navigate, setNavigate] = useState(new Date());
 
@@ -135,19 +141,8 @@ export default function BigCalenderEvents({
                     }
                 }}
                 className=" event-bx text-12 txt-gray-dark">
-                <div   className={"fc-event-box-" + event.process}>
-                    {/*<Badge*/}
-                    {/*    anchorOrigin={{*/}
-                    {/*        vertical: "top",*/}
-                    {/*        horizontal: "right",*/}
-                    {/*    }}*/}
-                    {/*    className={"fc-event-" + event.process}*/}
-                    {/*    color="secondary"*/}
-                    {/*    overlap="circular"*/}
-                    {/*    badgeContent=""*/}
-                    {/*    variant="dot"*/}
-                    {/*/>*/}
-                    {event.title}
+                <div   className={`${event.stage==='responded'?"fc-event-box-disabled":"fc-event-box-" + event.process}`}>
+                    {event.stage==="responded"?<del>event.title</del>:event.title}
                 </div>
 
                 {/*{event.desc && ":  " + event.desc}*/}
@@ -460,6 +455,18 @@ export default function BigCalenderEvents({
             );
     };
 
+    const handleChangeSwitch = (event) => {
+
+        console.log(event.target.checked)
+
+        setShowAll(event.target.checked)
+
+        // setState({
+        //     ...state,
+        //     [event.target.name]: event.target.checked,
+        // });
+    };
+
     const getEventsByMonth = (start, end, offset) => {
         let url = `${baseUrl}${
             props.productId ? "product/" + props.productId + "/event" : "event"
@@ -502,6 +509,7 @@ export default function BigCalenderEvents({
                 index: index + 1,
                 title: item.event.title,
                 process: item.event.process,
+                stage: item.event.stage,
                 // allDay: true,
                 start: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
                 end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
@@ -577,6 +585,8 @@ export default function BigCalenderEvents({
         },
     };
 
+    const label = { inputProps: { 'aria-label': 'Show All' } };
+
     const onView = useCallback((newView) => setView(newView), [setView]);
 
     return (
@@ -630,7 +640,9 @@ export default function BigCalenderEvents({
                                 style={{ height: "600px", maxHeight: "600px", overflowY: "scroll" }}
                                 components={components}
                                 defaultDate={defaultDate}
-                                events={monthEvents}
+
+                                events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="responded")}
+
                                 localizer={localizer}
                                 max={1}
                                 showMultiDayTimes
@@ -686,21 +698,27 @@ export default function BigCalenderEvents({
 
                         {loading && <LoaderAnimated />}
 
-                        {events.length > 0 ? (
-                            <>
-                                <span className="">
-                                    {events.length} {events.length > 1 ? "Events" : "Event"}
-                                </span>
-
                                 <EventItem
+                                    loading={loading}
+                                    showAll={showAll}
                                     refresh={(date) => handleNavigation(date, true)}
                                     smallView={smallView}
-                                    events={events}
+                                    events={events.filter((item)=>
+                                        {if (showAll){
+                                            return item
+                                        }
+                                        else if(!showAll&&item.event.stage!=="responded"){
+
+                                            return item
+                                        }}
+
+                                    )}
+                                    handleChangeSwitch={handleChangeSwitch}
                                 />
-                            </>
-                        ) : (
-                            <>{!loading && <div className={``}>No Events exist</div>}</>
-                        )}
+
+
+
+
                     </div>
                 </div>
             ) : (
@@ -723,7 +741,7 @@ export default function BigCalenderEvents({
                                 style={{ height: "600px", width: "100%" }}
                                 components={components}
                                 defaultDate={defaultDate}
-                                events={monthEvents}
+                                events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="responded")}
                                 localizer={localizer}
                                 max={1}
                                 showMultiDayTimes
@@ -767,17 +785,22 @@ export default function BigCalenderEvents({
                             <GrayBorderBtn title={"View Calender"} onClick={showEvent} />
                         )}
 
-                        {events.length > 0 ? (
-                            <>
-                                <p className="mt-3">
-                                    {events.length} {events.length > 1 ? "Events" : "Event"}
-                                </p>
+                        <EventItem loading={loading}
 
-                                <EventItem refresh={() => getEvents()} events={events} />
-                            </>
-                        ) : (
-                            <>{!loading && <div className={``}>No Events exist</div>}</>
-                        )}
+                                           events={events.filter((item)=>
+                                               {if (showAll){
+                                                   return item
+                                               }
+                                               else if(!showAll&&item.event.stage!=="responded"){
+
+                                                   return item
+                                               }}
+
+                                           )}
+                                           handleChangeSwitch={handleChangeSwitch}  showAll={showAll} refresh={() => getEvents()}
+                                />
+
+
                     </div>
                 </div>
             )}

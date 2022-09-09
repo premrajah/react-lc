@@ -7,6 +7,7 @@ import axios from "axios";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
+import SubproductItem from "../Products/Item/SubproductItem";
 
 class EventDetail extends Component {
         constructor(props) {
@@ -208,23 +209,8 @@ class EventDetail extends Component {
                                             className=" text-bold text-blue mb-1">
                                             Product
                                         </p>
-                                        <ProductExpandItemNew  smallImage={false} productId={this.state.event.product.product._key} />
+                                        <SubproductItem  smallImage={true} productId={this.state.event.product.product._key} />
 
-
-                                        {/*<div className={"col-12"}>*/}
-                                        {/*    <p*/}
-                                        {/*        style={{ fontSize: "18px" }}*/}
-                                        {/*        className=" text-bold text-blue mb-1">*/}
-                                        {/*        Product*/}
-                                        {/*    </p>*/}
-                                        {/*    <p*/}
-                                        {/*        style={{ fontSize: "18px" }}*/}
-                                        {/*        className="text-gray-light  mb-1">*/}
-                                        {/*        {*/}
-                                        {/*            this.state.event.product.product.name*/}
-                                        {/*        }*/}
-                                        {/*    </p>*/}
-                                        {/*</div>*/}
                                         <div className={"col-6"}>
                                             <p
                                                 style={{ fontSize: "18px" }}

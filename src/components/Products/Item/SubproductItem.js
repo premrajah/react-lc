@@ -117,14 +117,14 @@ const loadProduct=(id)=> {
 
         {item &&
         <div className="row no-gutters align-items-center justify-content-center mb-2 white-bg p-2 rad-8">
-            <div className="col-2">
+            <div className={`${props.smallImage?"col-2 ":"col-3 "}`}>
                 {artifacts.length > 0
                     ? <ImageOnlyThumbnail smallImage={props.smallImage} images={artifacts} />
                     : <img className={"img-fluid img-list small-image"} src={PlaceholderImg} alt="" />
                 }
             </div>
 
-            <div className="col-10 pl-2">
+            <div className={`${props.smallImage?"col-10 ":"col-9 "}pl-2`}>
                 <div>
                     <Link  to={props.noLinking?"#":`/product/${item._key}`}>
                         <span className={"title-bold"}>{item.name}</span>

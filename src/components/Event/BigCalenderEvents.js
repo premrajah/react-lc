@@ -119,16 +119,19 @@ export default function BigCalenderEvents({
         return (
             <div
                 onClick={(eventNew) => {
-                    if (eventNew.detail == 1) {
-                        setSelectedDate(event.start);
-                        getEvents(
-                            moment(event.start).startOf("day").format("x"),
-                            moment(event.start).endOf("day").format("x")
-                        );
-                    }
 
-                    if (eventNew.detail == 2) {
-                        setShowAddEventPopUp(!showAddEventPopUp);
+                    if(!smallView) {
+                        if (eventNew.detail == 1) {
+                            setSelectedDate(event.start);
+                            getEvents(
+                                moment(event.start).startOf("day").format("x"),
+                                moment(event.start).endOf("day").format("x")
+                            );
+                        }
+
+                        if (eventNew.detail == 2) {
+                            setShowAddEventPopUp(!showAddEventPopUp);
+                        }
                     }
                 }}
                 className=" event-bx text-12 txt-gray-dark">
@@ -259,74 +262,78 @@ export default function BigCalenderEvents({
 
                     <div className="rbc-btn-group d-flex justify-content-center align-items-center">
                         <span>
-                            <IconButton className="">
+                            <IconButton
+                                onClick={() => {
+                                    if (view === "year") {
+                                        setSelectedDate(
+                                            moment(selectedDate).subtract(1, "years").toDate()
+                                        );
+                                        handleNavigation(
+                                            moment(selectedDate).subtract(1, "years").toDate(),
+                                            true
+                                        );
+                                    } else if (view === "month") {
+                                        setSelectedDate(
+                                            moment(selectedDate).subtract(1, "M").toDate()
+                                        );
+                                        handleNavigation(
+                                            moment(selectedDate).subtract(1, "M").toDate(),
+                                            true
+                                        );
+                                    } else if (view === "week") {
+                                        setSelectedDate(
+                                            moment(selectedDate).subtract(7, "days").toDate()
+                                        );
+                                        handleNavigation(
+                                            moment(selectedDate).subtract(7, "days").toDate(),
+                                            true
+                                        );
+                                    }
+                                }}
+                                className="">
                                 <ArrowBack
                                     className="arrow-back cal-arrows"
-                                    onClick={() => {
-                                        if (view === "year") {
-                                            setSelectedDate(
-                                                moment(selectedDate).subtract(1, "years").toDate()
-                                            );
-                                            handleNavigation(
-                                                moment(selectedDate).subtract(1, "years").toDate(),
-                                                true
-                                            );
-                                        } else if (view === "month") {
-                                            setSelectedDate(
-                                                moment(selectedDate).subtract(1, "M").toDate()
-                                            );
-                                            handleNavigation(
-                                                moment(selectedDate).subtract(1, "M").toDate(),
-                                                true
-                                            );
-                                        } else if (view === "week") {
-                                            setSelectedDate(
-                                                moment(selectedDate).subtract(7, "days").toDate()
-                                            );
-                                            handleNavigation(
-                                                moment(selectedDate).subtract(7, "days").toDate(),
-                                                true
-                                            );
-                                        }
-                                    }}
+
                                 />
                             </IconButton>
                         </span>
                         <div className=" title-bold ps-4 pe-4">{getLabel(selectedDate)}</div>
 
                         <div className="">
-                            <IconButton className={""}>
+                            <IconButton
+                                onClick={() => {
+                                    // Navigate("NEXT");
+
+                                    if (view === "year") {
+                                        setSelectedDate(
+                                            moment(selectedDate).add(1, "years").toDate()
+                                        );
+                                        handleNavigation(
+                                            moment(selectedDate).add(1, "years").toDate(),
+                                            true
+                                        );
+                                    } else if (view === "month") {
+                                        setSelectedDate(
+                                            moment(selectedDate).add(1, "M").toDate()
+                                        );
+                                        handleNavigation(
+                                            moment(selectedDate).add(1, "M").toDate(),
+                                            true
+                                        );
+                                    } else if (view === "week") {
+                                        setSelectedDate(
+                                            moment(selectedDate).add(7, "days").toDate()
+                                        );
+                                        handleNavigation(
+                                            moment(selectedDate).add(7, "days").toDate(),
+                                            true
+                                        );
+                                    }
+                                }}
+                                className={""}>
                                 <ArrowForward
                                     className="arrow-forward   cal-arrows"
-                                    onClick={() => {
-                                        // Navigate("NEXT");
 
-                                        if (view === "year") {
-                                            setSelectedDate(
-                                                moment(selectedDate).add(1, "years").toDate()
-                                            );
-                                            handleNavigation(
-                                                moment(selectedDate).add(1, "years").toDate(),
-                                                true
-                                            );
-                                        } else if (view === "month") {
-                                            setSelectedDate(
-                                                moment(selectedDate).add(1, "M").toDate()
-                                            );
-                                            handleNavigation(
-                                                moment(selectedDate).add(1, "M").toDate(),
-                                                true
-                                            );
-                                        } else if (view === "week") {
-                                            setSelectedDate(
-                                                moment(selectedDate).add(7, "days").toDate()
-                                            );
-                                            handleNavigation(
-                                                moment(selectedDate).add(7, "days").toDate(),
-                                                true
-                                            );
-                                        }
-                                    }}
                                 />
                             </IconButton>
                         </div>
@@ -564,6 +571,12 @@ export default function BigCalenderEvents({
         }
     };
 
+    const formats = {
+        eventTimeRangeFormat: () => {
+            return "";
+        },
+    };
+
     const onView = useCallback((newView) => setView(newView), [setView]);
 
     return (
@@ -608,6 +621,8 @@ export default function BigCalenderEvents({
                         <div className="sticky-top">
                             <CustomToolbar />
                             <Calendar
+
+                                formats={formats}
                                 toolbar={false}
                                 className={` ${
                                     smallView ? " rbc-small-calender" : "rbc-big-calender"

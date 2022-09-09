@@ -20,6 +20,8 @@ import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CustomPopover from "../FormsUI/CustomPopover";
+import SubproductItem from "../Products/Item/SubproductItem";
+import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 
 class EventItem extends Component {
         constructor(props) {
@@ -233,7 +235,8 @@ class EventItem extends Component {
 
                                         <div className="d-flex flex-column right-btn-auto">
                                             {item.event.resolution_epoch_ms > Date.now() &&
-                                            <CustomPopover text={"Edit"}>   <ActionIconBtn
+                                            <CustomPopover text={"Edit"}>
+                                                <ActionIconBtn
                                         size="small"
 
                                         onClick={(e)=>{
@@ -283,6 +286,7 @@ class EventItem extends Component {
                         heading={this.state.selectedEvent&&this.state.selectedEvent.event?this.state.selectedEvent.event.title:null}
                         show={this.state.showEvent}
                         hide={this.showEventPopup}
+                        size={"md"}
                     >
                         <div className={"col-12"}>
                             <div className={"bg-white  rad-8  "}>
@@ -370,20 +374,24 @@ class EventItem extends Component {
 
                                     </div>
                                     <div className="row  justify-content-start search-container  pb-2">
-                                        <div className={"col-12"}>
+                                        {/*<div className={"col-12"}>*/}
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">
                                                 Product
                                             </p>
-                                            <p
-                                                style={{ fontSize: "18px" }}
-                                                className="text-gray-light  mb-1">
-                                                {
-                                                    this.state.selectedEvent.product.product.name
-                                                }
-                                            </p>
-                                        </div>
+                                        <ProductExpandItemNew  smallImage={false}
+                                                               productId={this.state.selectedEvent.product.product._key} />
+
+                                        {/*<p*/}
+                                            {/*    style={{ fontSize: "18px" }}*/}
+                                            {/*    className="text-gray-light  mb-1">*/}
+                                            {/*    {*/}
+                                            {/*        this.state.selectedEvent.product.product.name*/}
+                                            {/*    }*/}
+                                            {/*</p>*/}
+
+                                        {/*</div>*/}
                                         <div className={"col-6"}>
                                             <p
                                                 style={{ fontSize: "18px" }}
@@ -506,6 +514,7 @@ class EventItem extends Component {
 
 
                     <GlobalDialog
+                        size={"md"}
                         heading={"Update Stage"}
                         show={this.state.showStagePopup}
                         hide={this.showStageEventPopup}

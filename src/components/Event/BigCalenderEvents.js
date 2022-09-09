@@ -637,7 +637,9 @@ export default function BigCalenderEvents({
                                 className={` ${
                                     smallView ? " rbc-small-calender" : "rbc-big-calender"
                                 }`}
-                                style={{ height: "600px", maxHeight: "600px", overflowY: "scroll" }}
+                                style={{ height: tmpView=="week"?"auto":"600px", maxHeight: "600px", overflowY: "scroll" }}
+
+
                                 components={components}
                                 defaultDate={defaultDate}
 
@@ -738,7 +740,9 @@ export default function BigCalenderEvents({
                                 className={` ${
                                     smallView ? " rbc-small-calender" : "rbc-big-calender"
                                 }`}
-                                style={{ height: "600px", width: "100%" }}
+                                style={{
+                                    height: tmpView=="week"?"auto":"600px", width: "100%"
+                                }}
                                 components={components}
                                 defaultDate={defaultDate}
                                 events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="responded")}

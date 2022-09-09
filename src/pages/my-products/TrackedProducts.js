@@ -238,7 +238,7 @@ class TrackedProducts extends Component {
                                         edit={false}
                                         remove={false}
                                         duplicate={false}
-                                        item={item}
+                                        item={item.Product}
                                         untrack={true}
                                         reload={()=>{this.getTrackedProducts()}}
                                     />

@@ -217,15 +217,15 @@ class ProductArchive extends Component {
 
                         <div className="row ">
                             <div className="col-12 d-flex justify-content-start">
-                                <Link to="/products-service" className="btn btn-sm btn-gray-border mr-2">
+                                <Link to="/products-service" className="btn btn-sm btn-gray-border me-2">
                                     Service
                                 </Link>
 
-                                <Link to="/my-products" className="btn btn-sm btn-gray-border mr-2">
+                                <Link to="/my-products" className="btn btn-sm btn-gray-border me-2">
                                     Products
                                 </Link>
 
-                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border mr-2">
+                                <Link to="/product-tracked" className="btn btn-sm btn-gray-border me-2">
                                     Tracked
                                 </Link>
                                 <Link to="/issues" className=" btn-sm btn-gray-border ml-2-desktop ">
@@ -259,7 +259,7 @@ class ProductArchive extends Component {
                                     edit={true}
                                     remove={false}
                                     duplicate={true}
-                                    item={item}
+                                    item={item.Product}
                                     hideMore={true}
                                 />
                                 </ErrorBoundary>

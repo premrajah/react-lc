@@ -95,6 +95,17 @@ class ProductAutocomplete extends Component {
         }
     }
 
+    timeout = 0;
+
+    timeoutSearch=(key) =>{
+        if (this.timeout) clearTimeout(this.timeout);
+
+        this.timeout = setTimeout(() => {
+
+            this.changeInput(key)
+        }, 1500);
+    }
+
     changeInput = (key) => {
 
 
@@ -235,7 +246,7 @@ class ProductAutocomplete extends Component {
             userInput: e.currentTarget.value,
         });
 
-        this.changeInput(userInput);
+        this.timeoutSearch(userInput);
 
     };
 

@@ -103,7 +103,7 @@ class ProductAutocomplete extends Component {
         this.timeout = setTimeout(() => {
 
             this.changeInput(key)
-        }, 1500);
+        }, 1000);
     }
 
     changeInput = (key) => {

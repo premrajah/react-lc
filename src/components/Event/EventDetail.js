@@ -107,7 +107,10 @@ class EventDetail extends Component {
 
     componentDidMount() {
 
-        this.getEvent(this.props.eventId)
+            if (this.props.eventId){
+                this.getEvent(this.props.eventId)
+            }
+
 
     }
 

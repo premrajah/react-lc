@@ -176,6 +176,8 @@ class EventItem extends Component {
                         message:   "Event deleted successfully. Thanks"
                     })
 
+                    this.toggleDelete()
+
                 },
                 (error) => {
                     // this.setState({

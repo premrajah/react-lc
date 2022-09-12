@@ -559,7 +559,7 @@ export default function BigCalenderEvents({
 
             getEvents(
                 moment(arg).startOf("day").format("x"),
-                moment(arg).endOf("day").add(1, "days").format("x")
+                moment(arg).startOf("day").add(1, "days").format("x")
             );
 
             // setSelectedDate(new Date(arg.getFullYear(), arg.getMonth(), 1, 0, 0, 0));

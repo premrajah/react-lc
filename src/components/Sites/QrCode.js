@@ -186,12 +186,12 @@ class QrCode extends Component {
                             )}
 
                     </div>
-                    <div className="col-9 pl-2 zoom-in-cursor" onClick={this.callZoom}>
+                    <div className="col-9 ps-2 zoom-in-cursor" onClick={this.callZoom}>
                         <div className="row justify-content-start  ">
-                            <div className="col-12 ">
+                            <div className="col-12 position-relative">
                                 {!this.props.hideRefresh&&this.props.userDetail&&this.props.userDetail.is_org_admin &&
                                 <span
-                                    className={"mr-1 btn btn-sm btn-gray-border-small top-right"}
+                                    className={"me-1 btn btn-sm btn-gray-border-small top-right"}
                                     onClick={
                                         (e)=> {e.stopPropagation(); this.refreshQrcode()}}
                                 >
@@ -216,7 +216,7 @@ class QrCode extends Component {
                                         {/*        e.stopPropagation();*/}
                                         {/*    }}*/}
 
-                                        {/*    className={"mr-1 btn btn-sm btn-gray-border-small"}*/}
+                                        {/*    className={"me-1 btn btn-sm btn-gray-border-small"}*/}
                                         {/*    to={*/}
                                         {/*        getProductProvenanceSlug(this.props.item.product._key)*/}
 
@@ -225,7 +225,7 @@ class QrCode extends Component {
                                         {/*</Link>*/}
                                         <span
                                             to={`/site/${this.state.item._key}`}
-                                            className={"mr-1 click-item btn btn-sm btn-gray-border-small"}
+                                            className={"me-1 click-item btn btn-sm btn-gray-border-small"}
                                             onClick={(e) => {
                                                 e.stopPropagation();
 
@@ -242,7 +242,7 @@ class QrCode extends Component {
                                             onClick={(e)=>{
                                                 e.stopPropagation();
                                             }}
-                                            className={"mr-1 btn btn-sm btn-gray-border-small "}
+                                            className={"me-1 btn btn-sm btn-gray-border-small "}
                                             href={
                                                 baseUrl + "site/" + this.state.item._key + "/code?style=blue&format=png&u=" + frontEndUrl + "p"
                                             } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.state.item._key + ".png" }>Alt</a>
@@ -250,7 +250,7 @@ class QrCode extends Component {
                                             onClick={(e)=>{
                                                 e.stopPropagation();
                                             }}
-                                            className={"mr-1 btn btn-sm btn-gray-border-small "}
+                                            className={"me-1 btn btn-sm btn-gray-border-small "}
                                             href={
                                                 baseUrl + "site/" + this.state.item._key + "/code?style=mono&mode=mono&format=png&u=" + frontEndUrl + "p"
                                             } type="image/png" target='_blank' download={ "Loopcycle_QRCode_" + this.state.item._key + ".png" }>Mono</a>

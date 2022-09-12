@@ -14,6 +14,7 @@ import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import GlobalDialog from "../RightBar/GlobalDialog";
+import OrgComponent from "../Org/OrgComponent";
 
 class RequestRegisterItem extends Component {
     constructor(props) {
@@ -236,22 +237,23 @@ class RequestRegisterItem extends Component {
                                     </Link>
                                 </p>
 
-
-
-                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">
                                     Stage: <span className={"text-blue"}>{this.state.item.registration.stage}</span>
                                 </p>
+                                <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
+                                    Requested By: <OrgComponent orgId={this.state.item.originator_id.replace("Org/","")}/>
+                                </p>
 
-                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1  text-capitalize">
                                     Purpose: <span className={"text-blue"}> {this.state.product&&this.state.product.purpose}</span>
                                 </p>
 
 
-                                {this.state.product&&  <div className={"text-gray-light mt-2 width-75"}>
+                                {this.state.product&&  <div className={"text-gray-light mt-1  width-75"}>
                                     Category:
                                     <span
 
-                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                        className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.state.product.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
@@ -285,18 +287,18 @@ class RequestRegisterItem extends Component {
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "cancelled"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "rejected"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "declined"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "progress"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "complete"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
-                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                             }>
                                                             {actionName === "accepted" && "Accept"}
                                                             {actionName === "cancelled" && "Cancel"}

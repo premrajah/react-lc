@@ -5,10 +5,8 @@ import {baseUrl} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import moment from "moment/moment";
-import FormControl from "@mui/material/FormControl";
 import {withStyles} from "@mui/styles/index";
 import {Link} from "react-router-dom";
-import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
@@ -340,7 +338,7 @@ class RequestSiteReleaseItem extends Component {
 
 
                             </div>
-                            <div style={{ textAlign: "right" }} className={"col-md-5 col-xs-12 col-sm-12"}>
+                            <div style={{ textAlign: "right" }} className={"col-md-5 position-relative col-xs-12 col-sm-12"}>
 
                                 <p className={"text-gray-light   date-bottom"}>
                                     {moment(this.state.item.Release._ts_epoch_ms).format(
@@ -479,7 +477,7 @@ class RequestSiteReleaseItem extends Component {
                                 {/*            Don’t see it on here?*/}
                                 {/*            <span*/}
                                 {/*                onClick={this.showSubmitSite}*/}
-                                {/*                className="green-text forgot-password-link text-gray-light small ml-1">*/}
+                                {/*                className="green-text forgot-password-link text-gray-light small ms-1">*/}
                                 {/*                Add a site*/}
                                 {/*            </span>*/}
                                 {/*        </p>*/}

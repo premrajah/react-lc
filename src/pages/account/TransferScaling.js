@@ -813,7 +813,7 @@ class TransferScaling extends Component {
                                                                     </div>
                                                                 </div>
                                                                 <div className="row mb-2">
-                                                                    <div className="col-6 pr-2">
+                                                                    <div className="col-6 pe-2">
                                                                         <SelectArrayWrapper
                                                                             select={"Select"}
                                                                             initialValue={this.state.selectedItem&&this.state.selectedItem.units}
@@ -824,7 +824,7 @@ class TransferScaling extends Component {
                                                                             options={this.state.units} name={"units"} title="Units"/>
                                                                     </div>
 
-                                                                    <div className="col-6 pl-2">
+                                                                    <div className="col-6 ps-2">
 
                                                                         <TextFieldWrapper
                                                                             // readonly ={this.state.disableVolume}

@@ -20,6 +20,10 @@ import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CustomPopover from "../FormsUI/CustomPopover";
+import SubproductItem from "../Products/Item/SubproductItem";
+import ProductExpandItemNew from "../Products/ProductExpandItemNew";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 
 class EventItem extends Component {
         constructor(props) {
@@ -38,11 +42,11 @@ class EventItem extends Component {
                 showStagePopup:false,
                 deleteEvent:false,
                 intervals:[
-                    {key:86400 ,value:"Every Day"},
-                    {key:604800 ,value:"Every Week"},
-                    {key:864000,value:"Every 10 Days"},
-                    {key:2629743 ,value:"Every Month"},
-                    {key:31556926 ,value:"Every Year"},
+                    {key:86400000 ,value:"Every Day"},
+                    {key:604800000 ,value:"Every Week"},
+                    {key:864000000,value:"Every 10 Days"},
+                    {key:2629743000 ,value:"Every Month"},
+                    {key:31556926000 ,value:"Every Year"},
                 ],
             }
         }
@@ -188,17 +192,12 @@ class EventItem extends Component {
     }
 
     downloadDoc=(blob_url) =>{
-
-
         window.location.href = blob_url
-
     }
 
 
     componentDidMount() {
-            if (this.props.statusChange){
 
-            }
     }
 
 
@@ -208,20 +207,48 @@ class EventItem extends Component {
             return (
 
                 <>
+
+                    <div className="d-flex mt-4 justify-content-between">
+                        {this.props.events.length > 0 ?
+                            <span className="">
+                                    {this.props.events.length} {this.props.events.length > 1 ? "Events" : "Event"}
+                                </span>:
+                            <>{!this.props.loading && <div className={``}>No Events exist</div>}</>
+                        }
+                        <span  className={`${this.props.events.length==0?"d-none":""}`}>
+
+                                         <FormControlLabel
+                                             value="all"
+                                             onChange={this.props.handleChangeSwitch}
+
+                                             control={<Switch
+                                                 color="primary"   />}
+                                             label="Show All"
+                                             labelPlacement="start"
+                                         />
+                                    </span>
+                    </div>
         <List sx={{ width: '100%' }}>
 
 
-            {this.props.events.map(item=>
+            {this.props.events.filter(item=> item.event.stage!=="responded").map(item=>
 
                 <>
-                    <ListItem className={`mb-2 bg-white  ${item.event.resolution_epoch_ms > Date.now()?"new-event":"past-event"}`}  onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
+
+                        <ListItem className={`mb-2 bg-white 
+                     ${item.event.stage !=="responded"?"new-event":"past-event"}`}
+                              onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
                         <ListItemAvatar>
-                            <Avatar className={"fc-event-"+item.event.process} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
+                            <Avatar className={`${item.event.stage==='responded'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
                         </ListItemAvatar>}
                         <ListItemText
                             className="title-bold"
-                            primary={item.event.title}
+                            primary={
+                                item.event.stage==="responded"?<del>{item.event.title}</del>:
+                                        item.event.title
+                                }
+
                             secondary={
                                 <React.Fragment>
                                     <Typography
@@ -232,13 +259,18 @@ class EventItem extends Component {
                                     >
                                        <span className="text-capitalize"> {item.event.process}, {item.event.stage}</span>
                                     </Typography>
-                                    <div className="mb-0">{item.event.description}</div>
+                                    <div className="mb-0">
+                                        {item.event.description}
+
+                                    </div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
 
 
-                                        <div className="d-flex flex-column right-btn-auto">
-                                            {item.event.resolution_epoch_ms > Date.now() &&
-                                            <CustomPopover text={"Edit"}>   <ActionIconBtn
+                                    {item.event.stage!=='responded'   &&
+                                    <div className="d-flex flex-column right-btn-auto">
+                                            {/*{item.event.resolution_epoch_ms > Date.now() &&*/}
+                                            <CustomPopover text={"Edit"}>
+                                                <ActionIconBtn
                                         size="small"
 
                                         onClick={(e)=>{
@@ -247,7 +279,7 @@ class EventItem extends Component {
                                            this.showEditEventPopup(item)
                                         }}><Edit /></ActionIconBtn>
                                             </CustomPopover>
-                                                }
+                                                {/*}*/}
                                             <CustomPopover text={"Update Stage"}>
                                     <ActionIconBtn
                                         size="small"
@@ -269,16 +301,94 @@ class EventItem extends Component {
                                                 }}><Close/>
                                             </ActionIconBtn>
                                             </CustomPopover>
-                                        </div>
+                                        </div>}
 
                                 </React.Fragment>
                             }
                         />
                     </ListItem>
-                    {/*<Divider variant="inset" component="li" />*/}
+
                 </>
             )}
+            {this.props.events.filter(item=> item.event.stage==="responded").map(item=>
 
+                <>
+
+                    <ListItem className={`mb-2 bg-white 
+                     ${item.event.stage !=="responded"?"new-event":"past-event"}`}
+                              onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
+                        {!this.props.smallView &&
+                        <ListItemAvatar>
+                            <Avatar className={`${item.event.stage==='responded'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
+                        </ListItemAvatar>}
+                        <ListItemText
+                            className="title-bold"
+                            primary={
+                                item.event.stage==="responded"?<del>{item.event.title}</del>:
+                                    item.event.title
+                            }
+
+                            secondary={
+                                <React.Fragment>
+                                    <Typography
+                                        sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                                    >
+                                        <span className="text-capitalize"> {item.event.process}, {item.event.stage}</span>
+                                    </Typography>
+                                    <div className="mb-0">
+                                        {item.event.description}
+
+                                    </div>
+                                    <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
+
+
+                                    {item.event.stage!=='responded'   &&
+                                    <div className="d-flex flex-column right-btn-auto">
+                                        {/*{item.event.resolution_epoch_ms > Date.now() &&*/}
+                                        <CustomPopover text={"Edit"}>
+                                            <ActionIconBtn
+                                                size="small"
+
+                                                onClick={(e)=>{
+                                                    e.stopPropagation()
+                                                    e.preventDefault()
+                                                    this.showEditEventPopup(item)
+                                                }}><Edit /></ActionIconBtn>
+                                        </CustomPopover>
+                                        {/*}*/}
+                                        <CustomPopover text={"Update Stage"}>
+                                            <ActionIconBtn
+                                                size="small"
+
+                                                onClick={(e)=>{
+                                                    e.stopPropagation()
+                                                    e.preventDefault()
+                                                    this.showStageEventPopup(item.event._key)
+                                                }}><FactCheck/>
+                                            </ActionIconBtn>
+                                        </CustomPopover>
+                                        <CustomPopover text={"Delete"}>
+                                            <ActionIconBtn
+                                                size="small"
+                                                onClick={(e)=>{
+                                                    e.stopPropagation()
+                                                    e.preventDefault()
+                                                    this.toggleDelete(item.event._key)
+                                                }}><Close/>
+                                            </ActionIconBtn>
+                                        </CustomPopover>
+                                    </div>}
+
+                                </React.Fragment>
+                            }
+                        />
+                    </ListItem>
+
+                </>
+            )}
 
         </List>
 
@@ -288,6 +398,7 @@ class EventItem extends Component {
                         heading={this.state.selectedEvent&&this.state.selectedEvent.event?this.state.selectedEvent.event.title:null}
                         show={this.state.showEvent}
                         hide={this.showEventPopup}
+                        size={"md"}
                     >
                         <div className={"col-12"}>
                             <div className={"bg-white  rad-8  "}>
@@ -355,7 +466,8 @@ class EventItem extends Component {
                                                 }
                                             </p>
                                         </div>
-                                        {this.state.selectedEvent.event.recur_in_epoch_ms &&  <div className={"col-6"}>
+                                        {this.state.selectedEvent.event.recur_in_epoch_ms &&
+                                        <div className={"col-6"}>
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">
@@ -374,20 +486,19 @@ class EventItem extends Component {
 
                                     </div>
                                     <div className="row  justify-content-start search-container  pb-2">
-                                        <div className={"col-12"}>
+                                        {/*<div className={"col-12"}>*/}
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">
                                                 Product
                                             </p>
-                                            <p
-                                                style={{ fontSize: "18px" }}
-                                                className="text-gray-light  mb-1">
-                                                {
-                                                    this.state.selectedEvent.product.product.name
-                                                }
-                                            </p>
-                                        </div>
+                                        <SubproductItem hideMoreMenu
+                                                        hideDate
+                                                        smallImage={true}
+                                                               productId={this.state.selectedEvent.product.product._key} />
+
+
+                                        {/*</div>*/}
                                         <div className={"col-6"}>
                                             <p
                                                 style={{ fontSize: "18px" }}
@@ -412,7 +523,7 @@ class EventItem extends Component {
                                                                         {checkImage(artifact.blob_url)? <img
                                                                                 src={artifact ? artifact.blob_url : ""}
                                                                                 onClick={()=>this.downloadDoc(artifact.blob_url)}
-                                                                                className="img-fluid "
+                                                                                className="img-fluid click-item"
                                                                                 alt={artifact.name}
                                                                                 style={{ objectFit: "contain",width: "32px", height: "32px",background:"#EAEAEF",padding:"2px"}}
                                                                             />:
@@ -462,7 +573,7 @@ class EventItem extends Component {
                                     <div className="col-12 ">
                                         <div className="row mt-4 no-gutters">
                                             <div
-                                                className={"col-6 pr-1"}
+                                                className={"col-6 pe-1"}
                                                 style={{
                                                     textAlign: "center",
                                                 }}>
@@ -472,7 +583,7 @@ class EventItem extends Component {
                                                     type={"submit"}></GreenButton>
                                             </div>
                                             <div
-                                                className={"col-6 pl-1"}
+                                                className={"col-6 ps-1"}
                                                 style={{
                                                     textAlign: "center",
                                                 }}>
@@ -498,12 +609,19 @@ class EventItem extends Component {
                         show={this.state.showEditEvent}
                         hide={this.showEditEventPopup}
                     ><div className={"col-12"}>
-                        {this.state.editEvent && <EventForm hideProduct  hide={this.showEditEventPopup} event={this.state.editEvent} />}
+                        {this.state.editEvent && <EventForm hideProduct  hide={()=>{
+
+                            this.props.refresh(this.state.editEvent.event.resolution_epoch_ms)
+                            this.showEditEventPopup();
+
+
+                        }} event={this.state.editEvent} />}
                         </div>
                     </GlobalDialog>
 
 
                     <GlobalDialog
+                        size={"md"}
                         heading={"Update Stage"}
                         show={this.state.showStagePopup}
                         hide={this.showStageEventPopup}

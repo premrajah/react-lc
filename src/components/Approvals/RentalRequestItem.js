@@ -4,14 +4,11 @@ import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import TextField from "@mui/material/TextField";
 import moment from "moment/moment";
-import FormControl from "@mui/material/FormControl";
 import {withStyles} from "@mui/styles/index";
 import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
 import {Link} from "react-router-dom";
 import {capitalize} from "../../Util/GlobalFunctions";
-import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
@@ -355,7 +352,7 @@ class RentalRequestItem extends Component {
                                     Category:
                                     <span
 
-                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                        className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.state.product.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
@@ -376,7 +373,7 @@ class RentalRequestItem extends Component {
                                     )}
                                 </p>
                                 <div className="row  pb-4 pb-4 mb-4">
-                                    <div className="col-12 text-right pb-2 pt-2">
+                                    <div className="col-12 position-relative text-right pb-2 pt-2">
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (

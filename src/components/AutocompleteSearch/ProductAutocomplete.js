@@ -15,6 +15,7 @@ import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocompl
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import {Spinner} from "react-bootstrap";
 
 class ProductAutocomplete extends Component {
     static propTypes = {
@@ -94,6 +95,17 @@ class ProductAutocomplete extends Component {
         }
     }
 
+    timeout = 0;
+
+    timeoutSearch=(key) =>{
+        if (this.timeout) clearTimeout(this.timeout);
+
+        this.timeout = setTimeout(() => {
+
+            this.changeInput(key)
+        }, 1000);
+    }
+
     changeInput = (key) => {
 
 
@@ -101,7 +113,7 @@ class ProductAutocomplete extends Component {
         this.setState({
             loading:true
         })
-            axios.get(encodeURI(`${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&or=name~%${key}%`))
+            axios.get(encodeURI(`${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&or=name~%${key}%&sort_by=name:ASC`))
                 .then((response) => {
 
                 this.setState({
@@ -130,7 +142,12 @@ class ProductAutocomplete extends Component {
                     // userInput: key
                 });
             },
-            (error) => {}
+            (error) => {
+
+                this.setState({
+                    loading:false
+                })
+            }
         );
     };
 
@@ -229,7 +246,7 @@ class ProductAutocomplete extends Component {
             userInput: e.currentTarget.value,
         });
 
-        this.changeInput(userInput);
+        this.timeoutSearch(userInput);
 
     };
 
@@ -325,7 +342,9 @@ class ProductAutocomplete extends Component {
                     <div className={"suggestions-box"}>
                     <ul className="suggestions">
 
-                        {filteredSuggestions.map((suggestion, index) => {
+                        {filteredSuggestions.map((item, index) => {
+
+                            let suggestion=item.Product
                             let className;
 
                             // Flag the active suggestion with a class
@@ -364,9 +383,12 @@ class ProductAutocomplete extends Component {
 
         return (
             <Fragment>
+
+                <div className="position-relative">
+
                 <input
 
-                    className={`${this.state.selected&&"d-none "} custom-input`}
+                    className={`${this.state.selected&&"d-none "} custom-input `}
                     onChange={onChange}
                     // onKeyDown={onKeyDown}
                     value={this.state.userInput}
@@ -375,6 +397,18 @@ class ProductAutocomplete extends Component {
                     ref="itemInput"
 
                 />
+
+                    {(this.state.loading) && (
+                        <Spinner
+                            className="me-2 custom-spinner"
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                    )}
+                </div>
                 {this.state.selected &&
                 <div className=" search-card p-2 m-1 d-flex align-items-center" style={{width: "100%"}}>
 

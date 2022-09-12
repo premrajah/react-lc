@@ -442,7 +442,7 @@ marteplace
 
                                         {!this.props.hideBreadcrumbs &&    <div className="row  pt-4   justify-content-start">
                                             <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
-                                                <Link to={"/"+this.marketplace}>{this.marketplace=="marketplace"?"All Listings":"My Listings"}</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.listing.name}</span>
+                                                <Link to={"/"+this.marketplace}>{this.marketplace=="marketplace"?"All Listings":"My Listings"}</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.listing.name}</span>
                                             </div>
                                         </div>}
                                         <div className="row   justify-content-center mt-4 mb-4 pb-4">
@@ -705,7 +705,7 @@ marteplace
                                                 <div className="col-12 ">
 
                                                     <div className="row mt-4 no-gutters">
-                                                        <div  className={"col-6 pr-2"}
+                                                        <div  className={"col-6 pe-2"}
                                                               style={{
                                                                   textAlign: "center",
                                                               }}>
@@ -717,7 +717,7 @@ marteplace
                                                             </GreenButton>
                                                         </div>
                                                         <div
-                                                            className={"col-6 pl-2"}
+                                                            className={"col-6 ps-2"}
                                                             style={{
                                                                 textAlign: "center",
                                                             }}>

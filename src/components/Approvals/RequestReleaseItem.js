@@ -4,8 +4,6 @@ import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-
-import {Modal, ModalBody} from "react-bootstrap";
 import TextField from "@mui/material/TextField";
 import moment from "moment/moment";
 import FormControl from "@mui/material/FormControl";
@@ -15,9 +13,9 @@ import {Link} from "react-router-dom";
 import {capitalize} from "../../Util/GlobalFunctions";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import OrgComponent from "../Org/OrgComponent";
 
 class RequestReleaseItem extends Component {
     constructor(props) {
@@ -348,7 +346,9 @@ class RequestReleaseItem extends Component {
                                 <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
                                     Stage: <span className={"text-blue"}>{this.state.item.Release.stage}</span>
                                 </p>
-
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">
+                                    Requested By: <OrgComponent orgId={this.state.item.originator_id.replace("Org/","")}/>
+                                </p>
                                 <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
                                     Purpose: <span className={"text-blue"}> {this.state.product&&this.state.product.purpose}</span>
                                 </p>
@@ -358,7 +358,7 @@ class RequestReleaseItem extends Component {
                                     Category:
                                     <span
 
-                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                        className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.state.product.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
@@ -371,7 +371,7 @@ class RequestReleaseItem extends Component {
                                     </span>
                                 </div>}
                             </div>
-                            <div style={{ textAlign: "right" }} className={"col-md-5 col-xs-12 col-sm-12"}>
+                            <div style={{ textAlign: "right" }} className={"col-md-5 position-relative col-xs-12 col-sm-12"}>
 
                                 <p className={"text-gray-light   date-bottom"}>
                                     {moment(this.state.item.Release._ts_epoch_ms).format(
@@ -379,7 +379,7 @@ class RequestReleaseItem extends Component {
                                     )}
                                 </p>
                                 <div className="row  pb-4 pb-4 mb-4">
-                                    <div className="col-12 text-right pb-2 pt-2">
+                                    <div className="col-12 position-relative text-right pb-2 pt-2">
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
@@ -507,7 +507,7 @@ class RequestReleaseItem extends Component {
                                             Don’t see it on here?
                                             <span
                                                 onClick={this.showSubmitSite}
-                                                className="green-text forgot-password-link text-gray-light small ml-1">
+                                                className="green-text forgot-password-link text-gray-light small ms-1">
                                                 Add a site
                                             </span>
                                         </p>

@@ -881,8 +881,8 @@ class CompanyDetails extends Component {
 
                         <>
                             {this.state.orgs.length > 1 && <>
-                            <div className="col-md-4 ">Switch Company:</div>
-                            <div className="col-md-4 ">
+                            <div className="col-lg-4 col-md-6 mt-2">Switch Company:</div>
+                            <div className="col-lg-4 col-md-6 mt-2 ">
                                 <MenuDropdown
                                     setSelection={this.switchOrg}
                                     initialValue={this.props.userContext.orgId}
@@ -892,7 +892,7 @@ class CompanyDetails extends Component {
                                 />
                             </div>
                                 </>}
-                            <div className="col-md-4 ">
+                            <div className="col-lg-4 col-md-6 mt-2 ">
 
                                     <BlueBorderButton
                                         // style={{ minWidth: "180px" }}
@@ -984,19 +984,19 @@ class CompanyDetails extends Component {
                         </div>
 
                         {this.state.org &&
-                            <div className={"pl-3 info-box"}>
+                            <div className={"ps-3 info-box"}>
                             { this.state.org.company ?
                                 <>
                                     <div className={"p-1"}>
                                         <div className=" text-blue">
-                                            <span className="   text-blue mb-1 mr-1">Name:</span>
+                                            <span className="   text-blue mb-1 me-1">Name:</span>
                                             <span className={"text-gray-light"}>
                                                 {this.state.org.company.company_name}
                                             </span>
                                         </div>
 
                                         <div>
-                                            <span className="   text-blue mb-1 mr-1">
+                                            <span className="   text-blue mb-1 me-1">
                                                 Company Number:
                                             </span>
                                             <span className={"text-gray-light"}>
@@ -1005,10 +1005,10 @@ class CompanyDetails extends Component {
                                         </div>
 
                                         <div>
-                                            <span className="   text-blue mb-1 mr-1">
+                                            <span className="   text-blue mb-1 me-1">
                                                 Registered Address:
                                             </span>
-                                            <span className="mr-1 text-gray-light">
+                                            <span className="me-1 text-gray-light">
                                                 {
                                                     this.state.org.company.registered_office_address
                                                         .address_line_1
@@ -1024,10 +1024,10 @@ class CompanyDetails extends Component {
                                         </div>
 
                                         <div>
-                                            <span className="   text-blue mb-1 mr-1">
+                                            <span className="   text-blue mb-1 me-1">
                                                 Locality:
                                             </span>
-                                            <span className="mr-1 text-gray-light">
+                                            <span className="me-1 text-gray-light">
                                                 {
                                                     this.state.org.company.registered_office_address
                                                         .locality
@@ -1080,7 +1080,7 @@ class CompanyDetails extends Component {
                             <button
                             // style={{ minWidth: "180px" }}
                             onClick={()=>this.removeCompany(1)}
-                            className="  btn-gray-border mr-2 ">
+                            className="  btn-gray-border me-2 ">
                             <Minus style={{ fontSize: "20px" }} /> Un-join {this.state.org.name}
                         </button>)}
 
@@ -1290,7 +1290,7 @@ class CompanyDetails extends Component {
                             <div className="col-12 ">
                             <div className="row mt-4 no-gutters">
                             <div
-                            className={"col-6 pr-1"}
+                            className={"col-6 pe-1"}
                             style={{
                             textAlign: "center",
                         }}>
@@ -1300,7 +1300,7 @@ class CompanyDetails extends Component {
                             type={"submit"}></GreenButton>
                             </div>
                             <div
-                            className={"col-6 pl-1"}
+                            className={"col-6 ps-1"}
                             style={{
                             textAlign: "center",
                         }}>
@@ -1347,7 +1347,7 @@ class CompanyDetails extends Component {
                         <div className="col-12 ">
                             <div className="row mt-4 no-gutters">
                                 <div
-                                    className={"col-6 pr-1"}
+                                    className={"col-6 pe-1"}
                                     style={{
                                         textAlign: "center",
                                     }}>
@@ -1357,7 +1357,7 @@ class CompanyDetails extends Component {
                                         type={"submit"}></GreenButton>
                                 </div>
                                 <div
-                                    className={"col-6 pl-1"}
+                                    className={"col-6 ps-1"}
                                     style={{
                                         textAlign: "center",
                                     }}>

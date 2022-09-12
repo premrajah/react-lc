@@ -114,7 +114,7 @@ class SearchItem extends Component {
                             />
                         )}
                     </div>
-                    <div className={"col-md-10 col-xs-12 col-sm-12 pl-3-desktop content-box-listing"}>
+                    <div className={"col-md-10 position-relative col-xs-12 col-sm-12 pl-3-desktop content-box-listing"}>
                         <p  className="text-capitlize mb-1 title-bold width-80 d-block">
                             {this.props.item.search.name}
                         </p>
@@ -128,7 +128,7 @@ class SearchItem extends Component {
                         </p>
                         <div className={"text-gray-light mt-1 mb-1 width-75 "}>
                             Category:
-                            <span className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                            <span className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.props.item.search.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
@@ -148,7 +148,7 @@ class SearchItem extends Component {
                         </div>
                         <div className={"add-top-button pl-3-desktop"}>
 
-                        <p className={"  status text-right"}>
+                        <p className="  status text-right ">
                                 <span className={(this.props.item.search.stage!="inactive"&&this.props.item.search.stage!="expired")?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.search.stage}
                                 </span>

@@ -302,7 +302,7 @@ class MatchItem extends Component {
                         alt=""
                     />
                 </div>
-                <div className={"col-6 pl-3 content-box-listing"}>
+                <div className={"col-6 ps-3 content-box-listing"}>
                     <p style={{ fontSize: "18px" }} className=" mb-1 list-title">
                         {this.props.item.listing.listing.name}
                     </p>

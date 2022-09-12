@@ -16,7 +16,6 @@ import ResourceItem from "../pages/create-search/ResourceItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import Org from "./Org/Org";
 import LoopcycleLogo from "../img/logo-text.png";
 import MoreMenu from "./MoreMenu";
 import IssueSubmitForm from "./IssueSubmitForm";
@@ -32,7 +31,6 @@ import {GoogleMap} from "./Map/MapsContainer";
 import AggregatesTab from "./Products/AggregatesTab";
 import PageHeader from "./PageHeader";
 import CubeBlue from "../img/icons/product-icon-big.png";
-import Layout from "./Layout/Layout";
 import OrgComponent from "./Org/OrgComponent";
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -40,8 +38,8 @@ import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import QrCode from "./Products/QrCode";
-import {NavLink} from "reactstrap";
 import GlobalDialog from "./RightBar/GlobalDialog";
+
 class ProductDetailCycle extends Component {
     slug;
     search;
@@ -680,13 +678,13 @@ class ProductDetailCycle extends Component {
                     subTitle="See product details and provenance"
                 />
               <div className="row   pb-4  justify-content-start">
-                <div className="text-left pl-0   col-sm-12 col-xs-12 breadcrumb-row">
+                <div className="text-left ps-0   col-sm-12 col-xs-12 breadcrumb-row">
                      <Link
                          onClick={this.showLoginPopUp}
                          to={this.props.isLoggedIn && `/product/${this.props.item.product._key}`}
 
                      >Product Detail</Link>
-                    <span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span>
+                    <span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span>
                     <span className={"text-capitalize text-breadcrumb-light"}> {this.props.item.product.name}</span>
                 </div>
                 </div>
@@ -797,7 +795,7 @@ class ProductDetailCycle extends Component {
                         <div className="row justify-content-start pb-3  ">
                             <div className="col-12 ">
                                 <div className="row">
-                                    <div className="col-12">
+                                    <div className="col-12 position-relative">
                                         <h4 className="text-capitalize product-title width-80">
                                                 {this.props.item.product.name}</h4>
 

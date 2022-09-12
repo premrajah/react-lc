@@ -660,7 +660,7 @@ class ViewCycleOld extends Component {
                                                         </span>
                                                     </figure>
                                                 </div>
-                                                <div className="col pl-2 align-self-center">
+                                                <div className="col ps-2 align-self-center">
                                                     <div className="row no-gutters">
                                                         <div className="col-12">
                                                             <p

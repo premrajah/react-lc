@@ -124,14 +124,13 @@ class EventForm extends Component {
             artifacts:[],
             is_manufacturer:false,
             intervals:[
-                {key:86400 ,value:"Every Day"},
-                {key:604800 ,value:"Every Week"},
-                {key:864000,value:"Every 10 Days"},
-                {key:2629743 ,value:"Every Month"},
-                {key:31556926 ,value:"Every Year"},
+                {key:86400000 ,value:"Every Day"},
+                {key:604800000 ,value:"Every Week"},
+                {key:864000000,value:"Every 10 Days"},
+                // {key:2629743000 ,value:"Every Month(30 Days)"},
+                // {key:31556926000 ,value:"Every Year(365 Days)"},
             ],
             processes:[
-
 
                 {key:"service",value:"Service"},
                 {key:"warranty",value:"Warranty Expire"},
@@ -169,37 +168,6 @@ class EventForm extends Component {
         this.props.loadSites(this.props.userDetail.token);
     }
 
-
-    getFiltersCategories() {
-        axios.get(baseUrl + "category")
-            .then(
-                (response) => {
-                    let   responseAll=[]
-                     responseAll = _.sortBy(response.data.data, ["name"]);
-
-                    this.setState({
-                        categories: responseAll,
-                    });
-
-                    if (responseAll.length>0&&this.props.event){
-
-                        let cat=responseAll.filter((item) => item.name === this.props.event.product.category)
-                        let subCategories=cat.length>0?cat[0].types:[]
-                       let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.event.product.category)[0].types.filter((item) => item.name === this.props.event.product.type)[0].state:[]
-                          let  units = states.length>0?responseAll.filter((item) => item.name === this.props.event.product.category)[0].types.filter((item) => item.name === this.props.event.product.type)[0].units:[]
-
-                        this.setState({
-                            subCategories:subCategories,
-                            states : states,
-                            units : units
-                        })
-
-                    }
-
-                },
-                (error) => {}
-            );
-    }
 
 
 
@@ -432,22 +400,13 @@ class EventForm extends Component {
             const data = new FormData(event.target);
 
 
-            // if (this.props.event&&!this.props.productLines){
-            //
-            //     this.updateSubmitProduct(data)
-            // }
-            // else {
-
 
         let eventData=  {
                 title : data.get("title"),
                 description : data.get("description"),
-                // resolution_epoch_ms:  moment(this.state.startDate).utc().format('x'),
-            resolution_epoch_ms : new Date(this.state.startDate).getTime(),
-
-            // resolution_epoch_ms : new Date(this.state.startDate.getFullYear(), this.state.startDate.getMonth(), this.state.startDate.getDate(), 1, 0, 0).getTime(),
+               resolution_epoch_ms : new Date(this.state.startDate).getTime()+100,
                 process : data.get("process"),
-            // stage:"open"
+
         }
 
 
@@ -456,9 +415,6 @@ class EventForm extends Component {
             eventData.recur_in_epoch_ms = data.get("interval")
         }
 
-        // console.log(eventData.resolution_epoch_ms)
-
-        // return
                 this.setState({isSubmitButtonPressed: true})
 
                     axios
@@ -515,7 +471,7 @@ class EventForm extends Component {
         let eventData=  {
             title : data.get("title"),
             description : data.get("description"),
-            resolution_epoch_ms : new Date(this.state.startDate).getTime(),
+            resolution_epoch_ms : new Date(this.state.startDate).getTime()+100,
 
             process : data.get("process"),
             // stage:"open"
@@ -642,13 +598,47 @@ class EventForm extends Component {
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps!=this.props){
-              // alert("called")
 
-            if (this.props.date)
+        console.log("1")
+
+
+        if (prevProps!=this.props){
+
+            console.log("2")
+
+         this.updateProps()
+
+
+        }
+    }
+
+
+    updateProps=()=>{
+        if (this.props.event){
             this.setState({
-                startDate:this.props.date
+                isEditProduct:true,
+                startDate:this.props.event.event.resolution_epoch_ms
             })
+            this.loadImages(this.props.event.artifacts)
+
+        }else{
+
+            this.setState({
+                isEditProduct:true,
+
+            })
+
+            if (this.props.date) {
+                this.setState({
+                    startDate: this.props.date
+                })
+            }
+            else{
+
+                this.setState({
+                    startDate: new Date()
+                })
+            }
 
         }
     }
@@ -664,27 +654,9 @@ class EventForm extends Component {
             })
         }
 
-
-        if (this.props.event){
-
-            this.setState({
-                isEditProduct:true,
-                startDate:this.props.event.event.resolution_epoch_ms
-            })
-
-            this.loadImages(this.props.event.artifacts)
-        }else{
-            this.setState({
-                isEditProduct:true,
-                startDate: new Date()
-            })
-        }
-
-
-
+        this.updateProps()
 
     }
-
 
     showMultipleUpload=()=>{
 
@@ -708,6 +680,8 @@ class EventForm extends Component {
 
                 <div className={"row justify-content-center create-product-row"}>
                     <div className={"col-12"}>
+
+
                           <form onSubmit={this.props.event?this.updateEvent:this.handleSubmit}>
 
                               {!this.props.hideProduct &&

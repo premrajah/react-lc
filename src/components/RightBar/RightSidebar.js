@@ -59,7 +59,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
                 open={props.open}
             >
                 <DrawerHeader className={"align-items-center d-flex"}>
-                    <IconButton onClick={props.toggleOpen} className={"mr-4"}>
+                    <IconButton onClick={props.toggleOpen} className={"me-4"}>
                         <ChevronRight />
                     </IconButton>
 

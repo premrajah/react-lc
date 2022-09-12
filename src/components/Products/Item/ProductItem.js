@@ -299,8 +299,8 @@ class ProductItemNew extends Component {
     render() {
         return (
             <>
-                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters justify-content-center  mb-4 bg-white rad-8  p-3">
-                                <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-md-4  col-xs-12":"col-md-2  col-xs-12"}>
+                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters product-item justify-content-center  mb-4 bg-white rad-8  p-3">
+                                <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-md-4 p-0  col-xs-12":"col-md-2 p-0  col-xs-12"}>
                                     <Link onMouseEnter={()=> this.setState({
                                         showPreview:true
                                     })}
@@ -312,7 +312,7 @@ class ProductItemNew extends Component {
                                     {this.state.images.length > 0 ? (
                                         <ImageOnlyThumbnail images={this.state.images} />
                                     ) : (
-                                        <img className={"img-fluid img-list rad-4"} src={PlaceholderImg} alt="" />
+                                        <img className={"img-fluid img-list rad-8"} src={PlaceholderImg} alt="" />
                                     )}
                                     </>
                                     </Link>
@@ -322,12 +322,12 @@ class ProductItemNew extends Component {
                                     {/*    </iframe>*/}
                                     {/*</div>}*/}
                                 </div>
-                                <div className={this.props.biggerImage?"col-md-8 pl-3-desktop  content-box-listing":"col-md-10 pl-3-desktop  content-box-listing"}>
+                                <div className={this.props.biggerImage?"col-md-8 position-relative pl-3-desktop  content-box-listing":"col-md-10 position-relative pl-3-desktop  content-box-listing"}>
 
                                         <p style={{ fontSize: "18px" }} className="text-capitalize mb-1 width-70 ellipsis-end">
                                             <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>{this.props.item.is_listable&&<span
-                                                className="badge badge-info ml-2">Listed</span>}                                             {this.state.releases&&this.state.releases.length>0
-                                            && this.state.releases.filter(item=>item.Release.stage!=="cancelled").map(item=> <small className="ml-2">{item.responder._id!=this.props.userDetail.orgId && item.Release.stage=="requested"?"(Awaiting release approval)":""}</small>)} <small className={""}><small> - {this.props.item._key}</small></small></Link>
+                                                className="badge badge-info ms-2">Listed</span>}                                             {this.state.releases&&this.state.releases.length>0
+                                            && this.state.releases.filter(item=>item.Release.stage!=="cancelled").map(item=> <small className="ms-2">{item.responder._id!=this.props.userDetail.orgId && item.Release.stage=="requested"?"(Awaiting release approval)":""}</small>)} <small className={""}><small> - {this.props.item._key}</small></small></Link>
 
 
 
@@ -340,7 +340,7 @@ class ProductItemNew extends Component {
                                     Category:
                                     <span
 
-                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                        className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.props.item.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
@@ -374,7 +374,7 @@ class ProductItemNew extends Component {
 
                                     {!this.props.hideAdd&&this.props.showAddToListButton &&
 
-                                    <><p className={"text-gray-light add-top-button pl-3-desktop"}>
+                                    <><p className="text-gray-light add-top-button pl-3-desktop position-absolute top-0 end-0">
                                         <Add
                                             style={{ cursor: "pointer", fontSize:"1.2rem"}}
                                             onClick={() => {
@@ -455,7 +455,7 @@ class ProductItemNew extends Component {
                 </Modal>
 
                 {this.state.showProductHide && (
-                    <div className={"container pl-5 mb-5 full-width-product-popup"}>
+                    <div className={"container ps-5 mb-5 full-width-product-popup"}>
                         <div className="row">
                             <div className="col-12">
                                 <button

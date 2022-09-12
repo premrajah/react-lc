@@ -703,7 +703,7 @@ class SiteFormNew extends Component {
                                 <span onClick={this.toggleCreateNew} className="btn-gray-border click-item mr-2 "
                                       data-parent="cWkY0KVYEM"><AddIcon /> Create New</span><span
                     onClick={this.toggleAddExisting}
-                    className="btn-gray-border ml-2 click-item"
+                    className="btn-gray-border ms-2 click-item"
                     > <AddLinkIcon /> Add Existing</span></p>
                     </div>
                 </div>
@@ -903,7 +903,7 @@ class SiteFormNew extends Component {
                                 </div>
 
                                 <div className="row no-gutters">
-                                    <div className="col-6 pr-1">
+                                    <div className="col-6 pe-1">
 
 
                                         <TextFieldWrapper
@@ -913,7 +913,7 @@ class SiteFormNew extends Component {
                                             name="external_reference" title="External Reference"/>
                                     </div>
 
-                                    <div className="col-6 pl-1 ">
+                                    <div className="col-6 ps-1 ">
 
                                         <SelectArrayWrapper
                                             initialValue={this.props.edit?
@@ -954,7 +954,7 @@ class SiteFormNew extends Component {
                                     <div className="col-12">
                                         <div className="row no-gutters justify-content-center ">
 
-                                            <div className="col-6 pr-2">
+                                            <div className="col-6 pe-2">
                                                 <div
                                                     className="custom-label text-bold text-blue mb-0 ellipsis-end">Phone
                                                 </div>
@@ -978,7 +978,7 @@ class SiteFormNew extends Component {
 
 
                                             </div>
-                                            <div className="col-6 pl-2">
+                                            <div className="col-6 ps-2">
 
 
                                                 <TextFieldWrapper

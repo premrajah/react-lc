@@ -232,14 +232,14 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
                     <div className="col-12 d-none ">
                         <div className="row mt-4 no-gutters">
                             <div
-                                className={"col-6 pr-1"}
+                                className={"col-6 pe-1"}
                                 style={{
                                     textAlign: "center",
                                 }}>
                                 <GreenButton title="View Details" type="submit" />
                             </div>
                             <div
-                                className={"col-6 pl-1"}
+                                className={"col-6 ps-1"}
                                 style={{
                                     textAlign: "center",
                                 }}>

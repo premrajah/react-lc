@@ -9,6 +9,8 @@ import {validateFormatCreate, validateInputs, Validators} from "../Util/Validato
 import {createProductUrl} from "../Util/Api";
 import * as actionCreator from "../store/actions/actions";
 import KeywordChip from "./issues/KeywordChip";
+import BlueButton from "./FormsUI/Buttons/BlueButton";
+import GreenButton from "./FormsUI/Buttons/GreenButton";
 
 
 
@@ -282,7 +284,14 @@ timeout=0
                              </div>
                             <div className="row">
                                 <div className="col">
-                                    <button type="submit"  className="btn btn-green btn-block">Submit</button>
+                                    <GreenButton
+                                        title={"Submit"}
+                                        fullWidth
+                                        type="Submit"
+                                        onClick={this.showReleaseProductPopUp}
+                                    >
+                                    </GreenButton>
+
                                 </div>
                             </div>
                         </form>

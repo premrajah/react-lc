@@ -272,11 +272,11 @@ class FindResourcePage extends Component {
                     </div>
                     <div className="row mobile-only">
                         <div className="col-12 ">
-                            <Link to="/search-form" className=" btn-sm btn-gray-border mr-2">
+                            <Link to="/search-form" className=" btn-sm btn-gray-border me-2">
                                 New Search
                             </Link>
 
-                            <Link to="/list-form" className=" btn-sm btn-gray-border  mr-2">
+                            <Link to="/list-form" className=" btn-sm btn-gray-border  me-2">
                                 New Listing
                             </Link>
                         </div>

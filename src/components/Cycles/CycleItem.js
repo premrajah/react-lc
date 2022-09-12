@@ -32,18 +32,18 @@ class CycleItem extends Component {
     render() {
         return (
             <div className="row no-gutters justify-content-left mb-3 p-3 rad-8 bg-white ">
-                <div className={"col-md-2 col-sm-12 col-xs-12 text-left"}>
+                <div className={"col-md-2 p-0 col-sm-12 col-xs-12 text-left"}>
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
                             {this.props.product.artifacts&&this.props.product.artifacts.length > 0 ? (
                                 <ImageOnlyThumbnail images={this.props.product.artifacts} />
                             ) : (
-                                <img className={"img-fluid img-list"} src={Paper} alt="" />
+                                <img className={"img-fluid img-list rad-8"} src={Paper} alt="" />
                             )}
                         </>
                     </Link>
                 </div>
-                <div className={"col-md-10 col-sm-12 col-xs-12  pl-3-desktop content-box-listing"}>
+                <div className={"col-md-10 position-relative col-sm-12 col-xs-12  pl-3-desktop content-box-listing"}>
                     <Link to={"cycle/" + this.props.item.cycle._key}>
                         <>
                             {/*<p  className="text-capitlize mb-1 title-bold">*/}
@@ -69,7 +69,7 @@ class CycleItem extends Component {
                                 Category:
                                 <span
 
-                                    className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                    className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.props.product.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>

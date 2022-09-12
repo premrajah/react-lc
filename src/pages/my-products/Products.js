@@ -204,6 +204,7 @@ class Products extends Component {
         //     false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
 
 
+        //&with-edge=true
         let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
 
         this.filters.forEach((item)=>{
@@ -489,14 +490,14 @@ class Products extends Component {
 
                     {this.state.selectedProducts.length > 0 ?
                         <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
-                            <div className="float-right mr-1 p-3" style={{width: '240px', maxWidth: '300px', height: 'auto',  boxShadow: '0 2px 30px 0 rgba(0,0,0,.15)', backgroundColor: '#fff'}}>
+                            <div className="float-right me-1 p-3" style={{width: '240px', maxWidth: '300px', height: 'auto',  boxShadow: '0 2px 30px 0 rgba(0,0,0,.15)', backgroundColor: '#fff'}}>
                                 <div className="row no-gutters mb-2 pb-2 " style={{borderBottom: '1px solid #70707062'}}>
                                     <div className="col-12  ">
-                                        <a onClick={this.getSitesForProducts}  className=" btn-sm btn-gray-border  mr-2">
+                                        <a onClick={this.getSitesForProducts}  className=" btn-sm btn-gray-border  me-2">
                                             {/*<MapIcon style={{fontSize:"20px"}} /> */}
                                             Locations</a>
 
-                                        <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className=" btn-sm btn-gray-border  mr-2"><>
+                                        <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`product_list_${new Date().getDate()}.csv`} className=" btn-sm btn-gray-border  me-2"><>
                                             <DownloadIcon  style={{fontSize:"20px"}} />
                                             CSV</></CSVLink>
                                     </div>
@@ -530,22 +531,22 @@ class Products extends Component {
 
                         <div className="row">
                             <div className="col-md-12 btn-rows">
-                                <Link to="/products-service" className=" btn-sm btn-gray-border mr-2">
+                                <Link to="/products-service" className=" btn-sm btn-gray-border me-2">
                                     <CustomPopover text={" All of the products that you are responsible for as the Service Agent. The service agent is responsible for solving any issues that are reported by the owner of the product. "}>Service</CustomPopover>
                                 </Link>
 
-                                <Link to="/product-archive" className=" btn-sm btn-gray-border  mr-2">
+                                <Link to="/product-archive" className=" btn-sm btn-gray-border  me-2">
                                     <CustomPopover
                                         text={"All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "}> Records</CustomPopover>
                                 </Link>
 
-                                <Link to="/product-tracked" className=" btn-sm btn-gray-border  mr-2">
+                                <Link to="/product-tracked" className=" btn-sm btn-gray-border  me-2">
                                     <CustomPopover text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}>Tracked</CustomPopover>
                                 </Link>
 
-                                <Link to="/issues" className=" btn-sm btn-gray-border mr-2  ">Issues</Link>
+                                <Link to="/issues" className=" btn-sm btn-gray-border me-2  ">Issues</Link>
                                 <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products."><button className="btn btn-sm mt-mobile btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Open Cyclecodes</button></CustomPopover>
-                                <button className="d-none btn btn-sm btn-gray-border ml-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
+                                <button className="d-none btn btn-sm btn-gray-border ms-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
                             </div>
 
 
@@ -573,7 +574,7 @@ class Products extends Component {
                                         edit={false}
                                         remove={false}
                                         duplicate={false}
-                                        item={item}
+                                        item={item.Product}
                                         hideMore
                                         listOfProducts={(returnedItem) => this.handleAddToProductsExportList(returnedItem)}
                                         showAddToListButton

@@ -337,7 +337,7 @@ class Campaign extends Component {
 
                     {this.state.selectedProducts.length > 0 ?
                         <div className="sticky-top-csv slide-rl" style={{top: '68px',position:"fixed",zIndex:"100"}}>
-                        <div className="float-right mr-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  boxShadow: '0 2px 30px 0 rgba(0,0,0,.15)', backgroundColor: '#fff'}}>
+                        <div className="float-right me-1 p-3" style={{width: '220px', maxWidth: '300px', height: 'auto',  boxShadow: '0 2px 30px 0 rgba(0,0,0,.15)', backgroundColor: '#fff'}}>
                             <div className="row no-gutters mb-2 pb-2 " style={{borderBottom: '1px solid #70707062'}}>
                                 <div className="col-7  ">
                                     <a onClick={this.getSitesForProducts}  className="btn btn-sm btn-green"><MapIcon style={{fontSize:"20px"}} /> Locations</a>
@@ -375,11 +375,11 @@ class Campaign extends Component {
 
                         <div className="row">
                             <div className="col-md-8 d-flex justify-content-start">
-                                <Link to="/products-service" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/products-service" className="btn btn-sm blue-btn me-2">
                                     Product Service
                                 </Link>
 
-                                <Link to="/product-archive" className="btn btn-sm blue-btn mr-2">
+                                <Link to="/product-archive" className="btn btn-sm blue-btn me-2">
                                     Records
                                 </Link>
 
@@ -439,7 +439,7 @@ class Campaign extends Component {
                                     <span className="ml-1">Listable Products</span>
                                 </p>
                             </div>
-                            <div className="text-mute col-auto pl-0">
+                            <div className="text-mute col-auto ps-0">
                                 <span style={{ fontSize: "18px" }}>Created</span>
                             </div>
                         </div>

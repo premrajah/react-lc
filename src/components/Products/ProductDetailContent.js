@@ -35,8 +35,8 @@ import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
-import CalenderEvents from "../Event/CalenderEvents";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
+import SiteFormNew from "../Sites/SiteFormNew";
 
 
 class ProductDetailContent extends Component {
@@ -730,6 +730,17 @@ class ProductDetailContent extends Component {
         );
     }
 
+    toggleSite=(refresh)=> {
+        this.setState({
+            showCreateSite: !this.state.showCreateSite,
+        });
+
+
+        if (refresh){
+            this.props.loadSites();
+
+        }
+    }
     loadProduct(productKey) {
         if (productKey)
             axios.get(baseUrl + "product/" + productKey + "/expand").then(
@@ -814,8 +825,8 @@ class ProductDetailContent extends Component {
                             )}
                         </div>}
                         <div className="row  pt-4 pb-4  justify-content-start">
-                            <div className="text-left pl-0   col-sm-12 col-xs-12 breadcrumb-row">
-                                <Link to={"/my-products"}>My Products</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
+                            <div className="text-left ps-0   col-sm-12 col-xs-12 breadcrumb-row">
+                                <Link to={"/my-products"}>My Products</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
 
                             </div>
                         </div>
@@ -864,7 +875,7 @@ class ProductDetailContent extends Component {
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
                                         <div className="row">
-                                            <div className="col-12">
+                                            <div className="col-12 position-relative">
                                                 <h4 className="text-capitalize product-title width-90">
                                                     {this.state.item.product.name}
                                                 </h4>
@@ -897,9 +908,9 @@ class ProductDetailContent extends Component {
                                                                 : false
                                                         }
 
-                                                        // addEvent={(action)=>
-                                                        //     this.callBackResult(action)
-                                                        // }
+                                                        addEvent={(action)=>
+                                                            this.callBackResult(action)
+                                                        }
 
                                                     />
 
@@ -920,7 +931,7 @@ class ProductDetailContent extends Component {
                                                 {this.state.item.org._id ===
                                                 this.props.userDetail.orgId
                                                     ?  <span onClick={this.showReleaseProductPopUp} className="click-item d-flex flex-row align-items-center">
-                                               Release   <ReportIcon className="click-Item ml-2 mr-1 text-blue" />
+                                               Release   <ReportIcon className="click-Item ms-2 mr-1 text-blue" />
                                                 </span>:""}
                                             </div>
                                         </div>
@@ -979,7 +990,7 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
-                                                        {/*<Tab label="Events" value="8" />*/}
+                                                        <Tab label="Events" value="8" />
 
                                                     </TabList>
                                                 </Box>
@@ -1067,20 +1078,6 @@ class ProductDetailContent extends Component {
                             </div>
                         </div>
 
-                        {/*<Modal*/}
-                        {/*    size="lg"*/}
-                        {/*    show={this.state.showProductEdit}*/}
-                        {/*    onHide={this.showProductEdit}*/}
-                        {/*    className={"custom-modal-popup popup-form"}>*/}
-                        {/*    <div className="row   justify-content-end">*/}
-                        {/*        <div className="col-auto mr-2 mt-2">*/}
-                        {/*            <CloseButtonPopUp onClick={this.showProductEdit}>*/}
-                        {/*                <Close />*/}
-                        {/*            </CloseButtonPopUp>*/}
-
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-
 
 
 
@@ -1122,6 +1119,21 @@ class ProductDetailContent extends Component {
                                         {this.state.showProductEdit &&  <ProductForm hideUpload edit triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.props.item} />}
                                     </div>
 
+                        </GlobalDialog>
+
+
+                        <GlobalDialog
+
+                            size={"sm"}
+                            hide={this.toggleSite}
+                            show={this.state.showCreateSite}
+                            heading={"Add new site"}>
+                            <>
+                                <div className="col-12 ">
+
+                                    <SiteFormNew refresh={()=>this.toggleSite(true)} />
+                                </div>
+                            </>
                         </GlobalDialog>
 
                         <GlobalDialog
@@ -1205,6 +1217,15 @@ class ProductDetailContent extends Component {
                                                                         title="Select release site"/>
 
                                                                 </div>
+
+                                                                {/*<p className={"text-g"} style={{ marginTop: "10px" }}>*/}
+
+                                                                {/*    or <span*/}
+                                                                {/*    onClick={this.toggleSite}*/}
+                                                                {/*    className={*/}
+                                                                {/*        " forgot-password-link "*/}
+                                                                {/*    }>Add new</span>*/}
+                                                                {/*</p>*/}
 
                                                                 {this.state.errorRelease && (
                                                                     <div

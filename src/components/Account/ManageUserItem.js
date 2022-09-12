@@ -340,7 +340,7 @@ class ManageUserItem extends Component {
 
 
                         {this.state.user &&   this.state.user.email===this.props.userDetail.email&&
-                        <p  className={`text-pink ml-2 `}>Logged In User</p>}
+                        <p  className={`text-pink ms-2 `}>Logged In User</p>}
 
 
                     </div>
@@ -376,7 +376,7 @@ class ManageUserItem extends Component {
 
                                         </span>
                                 <ActionIconBtn
-                                    className="ml-4"
+                                    className="ms-4"
                                     onClick={()=>this.toggleEdit(true,this.state.user._key,this.props.item)}><Edit/></ActionIconBtn>
 
                                 <ActionIconBtn onClick={()=>this.props.toggleDeletePopUp(this.state.user._key,this.state.user)}><Delete/></ActionIconBtn>
@@ -407,7 +407,7 @@ class ManageUserItem extends Component {
 
                                     />
 
-                                    <div className={"ml-4 "}>
+                                    <div className={"ms-4 "}>
                                         {/*<CustomPopover text={"Save Role"}> <ActionIconBtn*/}
 
 
@@ -461,7 +461,7 @@ class ManageUserItem extends Component {
 
                                 <CustomPopover text={"Approve"}>
                                     <ActionIconBtn
-                                        className="ml-4"
+                                        className="ms-4"
                                         onClick={()=>this.toggleApprove(true,this.state.user._key,this.props.item)}>
                                         <CheckCircle style={{color:"#07AD89"}} />
                                     </ActionIconBtn>
@@ -493,7 +493,7 @@ class ManageUserItem extends Component {
 
                                     />
 
-                                    <div className={"ml-4 "}>
+                                    <div className={"ms-4 "}>
                                         <CustomPopover text={"Assign Role"}>
                                             <ActionIconBtn
                                                 type={"submit"}
@@ -555,7 +555,7 @@ class ManageUserItem extends Component {
                             <div className="col-12 ">
 
                                 <div className="row mt-4 no-gutters">
-                                    <div  className={"col-6 pr-1"}
+                                    <div  className={"col-6 pe-1"}
                                           style={{
                                               textAlign: "center",
                                           }}>
@@ -567,7 +567,7 @@ class ManageUserItem extends Component {
                                         </GreenButton>
                                     </div>
                                     <div
-                                        className={"col-6 pl-1"}
+                                        className={"col-6 ps-1"}
                                         style={{
                                             textAlign: "center",
                                         }}>

@@ -492,7 +492,9 @@ class EventItem extends Component {
                                                 className=" text-bold text-blue mb-1">
                                                 Product
                                             </p>
-                                        <SubproductItem   smallImage={true}
+                                        <SubproductItem hideMoreMenu
+                                                        hideDate
+                                                        smallImage={true}
                                                                productId={this.state.selectedEvent.product.product._key} />
 
 

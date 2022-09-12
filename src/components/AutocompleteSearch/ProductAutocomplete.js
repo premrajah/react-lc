@@ -102,7 +102,7 @@ class ProductAutocomplete extends Component {
         this.setState({
             loading:true
         })
-            axios.get(encodeURI(`${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&or=name~%${key}%`))
+            axios.get(encodeURI(`${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&or=name~%${key}%&sort_by=name:ASC`))
                 .then((response) => {
 
                 this.setState({

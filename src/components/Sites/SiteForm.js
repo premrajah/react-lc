@@ -731,7 +731,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
     </div>
     </div>
 
-    <div className={"row justify-content-start create-product-row pl-3 pb-3 pr-3"}>
+    <div className={"row justify-content-start create-product-row ps-3 pb-3 pe-3"}>
 
             <form className={"full-width-field"} onSubmit={this.handleSubmit}>
 
@@ -785,7 +785,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                     </div>
 
                                     <div className="row no-gutters">
-                                        <div className="col-6 pr-2">
+                                        <div className="col-6 pe-2">
                                             <SelectArrayWrapper
 
                                                 initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key}
@@ -801,7 +801,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                                         </div>
 
-                                        <div className="col-6 pl-2 ">
+                                        <div className="col-6 ps-2 ">
 
 
                                             <div className="custom-label text-bold ellipsis-end text-blue mb-0">
@@ -830,7 +830,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         <div className="col-12">
                                             <div className="row no-gutters justify-content-center ">
 
-                                                <div className="col-6 pr-2">
+                                                <div className="col-6 pe-2">
 
                                                     <TextFieldWrapper
                                                         onChange={(value)=>this.handleChange(value,"email")}
@@ -838,7 +838,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                         name="email" title="Email" />
 
                                                 </div>
-                                                <div className="col-6 pl-2">
+                                                <div className="col-6 ps-2">
                                                     <TextFieldWrapper
                                                         onChange={(value)=>this.handleChange(value,"other")}
                                                         error={this.state.errors["description"]}
@@ -908,7 +908,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 
                         <div className="row   justify-content-end">
-                            <div className="col-auto mr-2 mt-2">
+                            <div className="col-auto me-2 mt-2">
                                 <CloseButtonPopUp onClick={this.hidePopUp}>
                                     <Close />
                                 </CloseButtonPopUp>
@@ -916,7 +916,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             </div>
                         </div>
 
-                    <div className="row   justify-content-start mobile-menu-row pr-3 pl-3 pb-3 ml-2 mb-3 mr-3">
+                    <div className="row   justify-content-start mobile-menu-row pe-3 ps-3 pb-3 ms-2 mb-3 me-3">
 
                     <div className="col-12 p-0 ">
                         <h4 className={"blue-text text-heading text-left"}>
@@ -927,10 +927,10 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                         {this.props.showSiteForm.type==="link"
                         && !this.state.createNew&& <p style={{margin: "10px 0px"}} className="  small">
-                                <span onClick={this.toggleCreateNew} className="btn-gray-border click-item mr-2 "
+                                <span onClick={this.toggleCreateNew} className="btn-gray-border click-item me-2 "
                                       data-parent="cWkY0KVYEM"><AddIcon /> Create New</span><span
                             onClick={this.toggleAddExisting}
-                            className="btn-gray-border ml-2 click-item"
+                            className="btn-gray-border ms-2 click-item"
                             data-parent="cWkY0KVYEM"> <AddLinkIcon /> Add Existing</span></p>
                         }
 
@@ -989,7 +989,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                             </div>
 
                             <div className="row no-gutters">
-                                <div className="col-6 pr-1">
+                                <div className="col-6 pe-1">
 
 
                                     <TextFieldWrapper
@@ -999,7 +999,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                         name="external_reference" title="External Reference" />
                                 </div>
 
-                                <div className="col-6 pl-1 ">
+                                <div className="col-6 ps-1 ">
 
                                     <SelectArrayWrapper
                                         initialValue={this.props.showSiteForm.parent&&this.props.showSiteForm.parent._key?this.props.showSiteForm.parent._key:this.props.showSiteForm.parent}
@@ -1019,7 +1019,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                 <div className="col-12">
                                     <div className="row no-gutters justify-content-center ">
 
-                                        <div className="col-6 pr-2">
+                                        <div className="col-6 pe-2">
                                             <div className="custom-label text-bold text-blue mb-0 ellipsis-end">Phone
                                             </div>
 
@@ -1046,7 +1046,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                 {/*    name="phone" title="Phone" />*/}
 
                                         </div>
-                                        <div className="col-6 pl-2">
+                                        <div className="col-6 ps-2">
 
 
 

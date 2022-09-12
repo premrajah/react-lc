@@ -56,7 +56,7 @@ class EditItem extends Component {
 
         return (
             <>
-                <EditIcon className={"mr-2"} onClick={this.showDeletePopUp} />
+                <EditIcon className={"me-2"} onClick={this.showDeletePopUp} />
 
                 <Modal
                     className={"loop-popup"}
@@ -81,7 +81,7 @@ class EditItem extends Component {
                                         <button
                                             onClick={this.deleteItem}
                                             className={
-                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
+                                                "shadow-sm me-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
                                             }
                                             type={"submit"}>
                                             Submit
@@ -91,7 +91,7 @@ class EditItem extends Component {
                                         <p
                                             onClick={this.showDeletePopUp}
                                             className={
-                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
+                                                "shadow-sm me-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
                                             }>
                                             Cancel
                                         </p>

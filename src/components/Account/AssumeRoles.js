@@ -9,7 +9,7 @@ import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {arrangeAlphabatically, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import MenuDropdown from "../FormsUI/MenuDropdown";
-import {getKey, removeKey, saveKey} from "../../LocalStorage/user-session";
+import {removeKey, saveKey} from "../../LocalStorage/user-session";
 import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 
 class AssumeRoles extends Component {

@@ -261,7 +261,7 @@ class InfoTabContent extends Component {
                         <p
 
                             className=" text-gray-light mb-1">
-                                                            <span className="mr-1">
+                                                            <span className="me-1">
                                                                 {this.props.item.site.name},
                                                             </span>
                             <span>

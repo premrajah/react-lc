@@ -1027,7 +1027,7 @@ updateSite=(search,site)=>{
                                             </div>
                                         </div>
 
-                                        <div className="col-6 pr-2">
+                                        <div className="col-6 pe-2">
                                             <SelectArrayWrapper
                                                 select={"Select"}
                                                 initialValue={this.props.item&&this.props.item.search.units}
@@ -1037,7 +1037,7 @@ updateSite=(search,site)=>{
                                                 disabled={ (this.state.units.length > 0) ? false : true}
                                                 options={this.state.units} name={"units"} title="(Units)"/>
                                         </div>
-                                        <div className="col-6 pl-2">
+                                        <div className="col-6 ps-2">
 
                                             <TextFieldWrapper
                                                 initialValue={this.props.item&&this.props.item.search.volume}
@@ -1053,7 +1053,7 @@ updateSite=(search,site)=>{
                             <div className="row no-gutters mt-4">
                                 <div className="col-12">
                                     <div className="row camera-grids   no-gutters   ">
-                                        <div className="col-md-6 col-sm-12 col-xs-12 pr-2 ">
+                                        <div className="col-md-6 col-sm-12 col-xs-12 pe-2 ">
                                             <SelectArrayWrapper
 
                                                 initialValue={this.props.item&&this.props.item.product&&this.props.item.product._key}
@@ -1068,7 +1068,7 @@ updateSite=(search,site)=>{
 
                                         </div>
 
-                                        <div className="col-md-6 col-sm-12 col-xs-12 pl-2">
+                                        <div className="col-md-6 col-sm-12 col-xs-12 ps-2">
 
                                             <SelectArrayWrapper
 
@@ -1153,7 +1153,7 @@ updateSite=(search,site)=>{
                                 </div>
                             </div>
                             <div className="row no-gutters mt-2">
-                            <div className="col-6 mb-2 pr-2">
+                            <div className="col-6 mb-2 pe-2">
                                 <div className={"custom-label text-bold text-blue "}>
                                     Required From
                                 </div>

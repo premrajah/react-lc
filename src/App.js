@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import "animate.css";
 import "./css/style-new.css";
 import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";

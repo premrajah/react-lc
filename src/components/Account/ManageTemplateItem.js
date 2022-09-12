@@ -2,16 +2,14 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {baseUrl, checkImage} from "../../Util/Constants";
 import axios from "axios/index";
-import {Cancel, CheckCircle, Close, Delete, Done, Edit, Info} from "@mui/icons-material";
+import {Close, Edit} from "@mui/icons-material";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import * as actionCreator from "../../store/actions/actions";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CustomPopover from "../FormsUI/CustomPopover";
-import {Spinner} from "react-bootstrap";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
-import OrgComponent from "../Org/OrgComponent";
 import DescriptionIcon from "@mui/icons-material/Description";
 
 class ManageTemplateItem extends Component {
@@ -431,7 +429,7 @@ class ManageTemplateItem extends Component {
                             <div className="col-12 ">
 
                                 <div className="row mt-4 no-gutters">
-                                    <div  className={"col-6 pr-1"}
+                                    <div  className={"col-6 pe-1"}
                                           style={{
                                               textAlign: "center",
                                           }}>
@@ -443,7 +441,7 @@ class ManageTemplateItem extends Component {
                                         </GreenButton>
                                     </div>
                                     <div
-                                        className={"col-6 pl-1"}
+                                        className={"col-6 ps-1"}
                                         style={{
                                             textAlign: "center",
                                         }}>

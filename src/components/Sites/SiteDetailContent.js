@@ -509,7 +509,7 @@ class SiteDetailContent extends Component {
 
                         <div className="row  pt-4 pb-4  justify-content-center">
                             <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
-                                <Link to={"/sites"}>My Sites</Link><span className={"divider-breadcrumb pl-2 pr-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.props.item&&this.props.item.site.name}</span>
+                                <Link to={"/sites"}>My Sites</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.props.item&&this.props.item.site.name}</span>
 
                             </div>
                         </div>

@@ -3,7 +3,7 @@ import {Spinner} from "react-bootstrap";
 
 const GreenSmallBtn = ({onClick,title,fullWidth,disabled,loading,classAdd, ...otherProps}) => {
 
-    return <button disabled={disabled}   className={`${classAdd}  ${disabled?" btn-gray":" btn btn-sm btn-green-small"}  ${fullWidth?" btn-block":""}`}
+    return <button disabled={disabled}   className={`${classAdd}  ${disabled?" btn-gray":"  btn-sm btn-green-small"}  ${fullWidth?" btn-block":""}`}
                    onClick={onClick} {...otherProps}>
 
         {loading && (

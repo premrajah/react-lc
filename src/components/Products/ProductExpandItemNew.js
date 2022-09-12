@@ -275,7 +275,7 @@ class ProductExpandItem extends Component {
 
                                                                         <IndeterminateCheckBoxIcon
                                                                             classname={
-                                                                                "click-item ml-3 text-blue"
+                                                                                "click-item ms-3 text-blue"
                                                                             }
                                                                             data-id={item._key}
                                                                             style={{
@@ -315,7 +315,7 @@ class ProductExpandItem extends Component {
 
                                                 <button
                                                     className={
-                                                        "btn-gray-border click-item ml-2"
+                                                        "btn-gray-border click-item ms-2"
                                                     }
                                                     data-parent={this.state.item.product._key}
                                                     onClick={this.showExisting}>

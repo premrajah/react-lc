@@ -325,11 +325,11 @@ class Sites extends Component {
                             <div className="col-md-12  justify-content-start">
                                 <Link onClick={()=> {
                                     this.toggleSite(false)
-                                }}  className="btn-gray-border  mr-2  click-item">
+                                }}  className="btn-gray-border  me-2  click-item">
                                     Add Sites / Address
                                 </Link>
 
-                                <Link onClick={this.toggleMultiSite} className="btn-gray-border    mr-2 click-item">
+                                <Link onClick={this.toggleMultiSite} className="btn-gray-border    me-2 click-item">
                                     Upload Multiple Sites (CSV)
                                 </Link>
                             </div>
@@ -349,7 +349,7 @@ class Sites extends Component {
                         {this.state.items&&this.state.items
                             .map((site, index) =>
                             <React.Fragment key={index}>
-                                <SitePageItem  showEdit={true} item={site}/>
+                                <SitePageItem  showEdit={true} item={site.Site}/>
                             </React.Fragment>
                         )}
                         </PaginationLayout>

@@ -11,7 +11,6 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import Add from "@mui/icons-material/Add";
 import ProductForm from "../ProductPopUp/ProductForm";
 import ManageTemplateItem from "./ManageTemplateItem";
-import InfoTabContent from "../Products/InfoTabContent";
 import ProductLineContent from "./ProductLineContent";
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";

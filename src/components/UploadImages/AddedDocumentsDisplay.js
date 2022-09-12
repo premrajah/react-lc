@@ -113,7 +113,7 @@ const AddedDocumentsDisplay = (props) => {
                                         <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.5rem"}} className={" p-1 rad-4"} />
                                         <span
 
-                                            className="ml-4  text-blue text-bold"
+                                            className="ms-4  text-blue text-bold"
                                             // href={artifact.blob_url}
                                             target="_blank"
                                             rel="noopener noreferrer">
@@ -141,7 +141,7 @@ const AddedDocumentsDisplay = (props) => {
 
 
                                         {!props.hideAdd &&    <span
-                                            className="ml-2 text-danger d-none"
+                                            className="ms-2 text-danger d-none"
                                             style={{ cursor: "pointer" }}
                                             onClick={() => handleDocumentKey(artifact._key)}>
                                             <IndeterminateCheckBoxIcon style={{opacity:"0.5"}} className={"text-blue"}  />
@@ -155,7 +155,7 @@ const AddedDocumentsDisplay = (props) => {
                             }
                         })
                     ) : (
-                        <div>No documents added.</div>
+                        <div className="mt-2">No documents added.</div>
                     )}
                 </div>
             </div>
@@ -169,7 +169,7 @@ const AddedDocumentsDisplay = (props) => {
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to remove document</Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-green mr-1" onClick={() => handleDeleteDocument()}>Yes</button>
+                    <button className="btn btn-green me-1" onClick={() => handleDeleteDocument()}>Yes</button>
                     <button className="btn btn-close" onClick={handleClose}>Cancel</button>
                 </Modal.Footer>
             </Modal>

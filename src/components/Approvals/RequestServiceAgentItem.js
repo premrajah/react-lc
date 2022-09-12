@@ -4,7 +4,6 @@ import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
-import {Modal, ModalBody} from "react-bootstrap";
 import moment from "moment/moment";
 import {withStyles} from "@mui/styles/index";
 import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
@@ -13,6 +12,7 @@ import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import OrgComponent from "../Org/OrgComponent";
 
 class RequestServiceAgentItem extends Component {
     constructor(props) {
@@ -370,30 +370,33 @@ class RequestServiceAgentItem extends Component {
                                     <img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />
                                 )}
                             </div>
-                            <div className={"col-md-5 col-xs-12 col-sm-12 pl-3-desktop  content-box-listing"}>
+                            <div className={"col-md-5 col-xs-12 position-relative col-sm-12 pl-3-desktop  content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className=" mb-1">
                                     {this.state.product &&  <Link to={`/p/${this.state.product._key}`}>{this.state.product.name}</Link>}
                                 </p>
-                                <div style={{ margin: "0" }}>
-                                    {/*<Org orgId={this.state.item.originator._id} />*/}
-                                    {/*<span>→</span>*/}
-                                    {/*<Org orgId={this.state.item.responder._id} />*/}
-                                </div>
+                                {/*<div style={{ margin: "0" }}>*/}
+                                {/*    <OrgComponent orgId={this.state.item.originator._id} />*/}
+                                {/*    <span>→</span>*/}
+                                {/*    <OrgComponent orgId={this.state.item.responder._id} />*/}
+                                {/*</div>*/}
 
-                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1  text-capitalize">
                                     Stage: <span className={"text-blue"}>{this.state.item.Release.stage}</span>
                                 </p>
-
-                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-2  text-capitalize">
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">
+                                    Requested By: <OrgComponent orgId={this.state.item.originator_id.replace("Org/","")}/>
+                                </p>
+                                <p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1  text-capitalize">
                                     Purpose: <span className={"text-blue"}> {this.state.product&&this.state.product.purpose}</span>
                                 </p>
 
 
-                                {this.state.product&&  <div className={"text-gray-light mt-2 width-75 "}>
+                                {this.state.product&&  <div className={"text-gray-light mt-1 width-90 "}>
                                     Category:
                                     <span
 
-                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                        className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.state.product.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
@@ -461,14 +464,6 @@ class RequestServiceAgentItem extends Component {
                             </div>
                         </div>
 
-                        {/*<Modal*/}
-                        {/*    className={"loop-popup"}*/}
-                        {/*    aria-labelledby="contained-modal-title-vcenter"*/}
-                        {/*    centered*/}
-                        {/*    show={this.state.showPopUpInitiateAction}*/}
-                        {/*    onHide={this.showPopUpInitiateAction}*/}
-                        {/*    animation={false}>*/}
-                        {/*    <ModalBody>*/}
 
                         <GlobalDialog
                             size={"xs"}

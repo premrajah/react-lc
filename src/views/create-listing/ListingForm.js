@@ -234,11 +234,11 @@ class ListingForm extends Component {
                                 </div>
                             </div>
                             <div className="row no-gutters justify-content-center mt-4">
-                                <div className="col-6 pr-2">
+                                <div className="col-6 pe-2">
                                     {/*<TextField id="outlined-basic" label="Units" variant="outlined" fullWidth={true} />*/}
                                     <UnitSelect />
                                 </div>
-                                <div className="col-6 pl-2">
+                                <div className="col-6 ps-2">
                                     <TextField
                                         id="outlined-basic"
                                         label="Volume"
@@ -271,7 +271,7 @@ class ListingForm extends Component {
 
                         <div className="container   pb-3 pt-3">
                             <div
-                                className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  "
+                                className="row mr-2 ms-2 selection-row selected-row p-3 mb-3  "
                                 onClick={this.selectType}>
                                 <div className="col-2">
                                     <img className={"icon-left-select"} src={SendIcon} alt="" />
@@ -290,7 +290,7 @@ class ListingForm extends Component {
                             </div>
 
                             <div
-                                className="row mr-2 ml-2 selection-row unselected-row p-3  mb-3 "
+                                className="row mr-2 ms-2 selection-row unselected-row p-3  mb-3 "
                                 onClick={this.selectType}>
                                 <div className="col-2">
                                     <img className={"icon-left-select"} src={SendIcon} alt="" />
@@ -331,7 +331,7 @@ class ListingForm extends Component {
 
                         <div className="container   pb-3 pt-3">
                             <div
-                                className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  "
+                                className="row mr-2 ms-2 selection-row selected-row p-3 mb-3  "
                                 onClick={this.selectCreateSearch}>
                                 <div className="col-10">
                                     <p style={{ fontSize: "16px" }}>
@@ -344,7 +344,7 @@ class ListingForm extends Component {
                             </div>
 
                             <div
-                                className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  "
+                                className="row mr-2 ms-2 selection-row unselected-row p-3 mb-3  "
                                 onClick={this.selectCreateSearch}>
                                 <div className="col-10">
                                     <p style={{ fontSize: "16px" }}>
@@ -379,7 +379,7 @@ class ListingForm extends Component {
 
                         <div className="container   pb-3 pt-3">
                             <div
-                                className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  "
+                                className="row mr-2 ms-2 selection-row unselected-row p-3 mb-3  "
                                 onClick={this.selectState}>
                                 <div className="col-10">
                                     <p style={{ fontSize: "16px" }}>
@@ -392,7 +392,7 @@ class ListingForm extends Component {
                             </div>
 
                             <div
-                                className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  "
+                                className="row mr-2 ms-2 selection-row selected-row p-3 mb-3  "
                                 onClick={this.selectState}>
                                 <div className="col-10">
                                     <p style={{ fontSize: "16px" }}>
@@ -430,7 +430,7 @@ class ListingForm extends Component {
                         </div>
 
                         <div className="container  pb-3 ">
-                            <div className="row container-gray border-rounded  no-gutters justify-content-center ml-2 mr-2 mt-5">
+                            <div className="row container-gray border-rounded  no-gutters justify-content-center ms-2 mr-2 mt-5">
                                 <div className="col-12 text-center">
                                     <img src={CameraGray} className={"camera-icon"} alt="" />
                                 </div>
@@ -668,7 +668,7 @@ class ListingForm extends Component {
 
                         <div className="container   pb-3 pt-3">
                             <div
-                                className="row mr-2 ml-2 selection-row selected-row p-3 mb-3  "
+                                className="row mr-2 ms-2 selection-row selected-row p-3 mb-3  "
                                 onClick={this.selectType}>
                                 <div className="col-2">
                                     <img className={"icon-left-select"} src={SendIcon} alt="" />
@@ -687,7 +687,7 @@ class ListingForm extends Component {
                             </div>
 
                             <div
-                                className="row mr-2 ml-2 selection-row unselected-row p-3  mb-3 "
+                                className="row mr-2 ms-2 selection-row unselected-row p-3  mb-3 "
                                 onClick={this.selectType}>
                                 <div className="col-2">
                                     <img className={"icon-left-select"} src={SendIcon} alt="" />
@@ -865,7 +865,7 @@ class ListingForm extends Component {
                                 <div className={"col-4"}>
                                     <img className={"img-fluid"} src={PaperImg} alt="" />
                                 </div>
-                                <div className={"col-6 pl-3 content-box-listing"}>
+                                <div className={"col-6 ps-3 content-box-listing"}>
                                     <p style={{ fontSize: "18px" }} className=" mb-1">
                                         Metal
                                     </p>

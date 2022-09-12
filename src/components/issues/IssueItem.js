@@ -61,7 +61,7 @@ const IssueItem = ({ item, onSubmitted }) => {
                                             )}
                                         </div>
 
-                                        <div className="col-md-8  pl-3  col-sm-12">
+                                        <div className="col-md-8  ps-3  col-sm-12">
                                             {issue && (
                                                 <>
                                                     <p className={"mb-1"}>
@@ -70,7 +70,7 @@ const IssueItem = ({ item, onSubmitted }) => {
                                                                 {issue.title}
                                                             </span>
                                                         )}
-                                                        <span className="ml-3 ">
+                                                        <span className="ms-3 ">
                                                         <Badge
                                                             variant={checkPriority(
                                                                 issue.priority
@@ -102,7 +102,7 @@ const IssueItem = ({ item, onSubmitted }) => {
                                                 Category:
                                                 <span
 
-                                                    className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                                    className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(product.product.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>

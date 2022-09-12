@@ -645,7 +645,7 @@ class MessengerMessages extends Component {
                                     )}
                                 </>
 
-                                <div className="message-window pr-3 pl-5 pt-5 mb-5 pb-20 ">
+                                <div className="message-window pe-3 ps-5 pt-5 mb-5 pb-20 ">
                                     {this.state.selectedMsgGroup.map((m, i) => (
                                         <React.Fragment key={i}>
                                             <div
@@ -655,11 +655,11 @@ class MessengerMessages extends Component {
                                                         ? "justify-content-end "
                                                         : "justify-content-start msg-light"
                                                 }`}>
-                                                <div className="w-75 pr-2 pl-2 pb-2 mb-3 chat-msg-box border-rounded text-blue gray-border">
+                                                <div className="w-75 pe-2 ps-2 pb-2 mb-3 chat-msg-box border-rounded text-blue gray-border">
                                                     <div className="d-flex justify-content-between">
                                                         <div>
                                                             <span>
-                                                                <small className="mr-2">
+                                                                <small className="me-2">
                                                                     {m.orgName}
                                                                 </small>
                                                                 <small
@@ -671,7 +671,7 @@ class MessengerMessages extends Component {
                                                         <div>
                                                             {m.entityAsJson && (
                                                                 <small
-                                                                    className="mr-2 d-none"
+                                                                    className="me-2 d-none"
                                                                     style={{
                                                                         cursor: "pointer",
                                                                     }}>
@@ -815,7 +815,7 @@ class MessengerMessages extends Component {
                         <div className="col-12 d-none ">
                             <div className="row mt-4 no-gutters">
                                 <div
-                                    className={"col-6 pr-1"}
+                                    className={"col-6 pe-1"}
                                     style={{
                                         textAlign: "center",
                                     }}>
@@ -824,7 +824,7 @@ class MessengerMessages extends Component {
                                         type={"submit"}></GreenButton>
                                 </div>
                                 <div
-                                    className={"col-6 pl-1"}
+                                    className={"col-6 ps-1"}
                                     style={{
                                         textAlign: "center",
                                     }}>

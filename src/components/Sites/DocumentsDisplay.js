@@ -113,7 +113,7 @@ const DocumentsDisplay = (props) => {
                                         <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.5rem"}} className={" p-1 rad-4"} />
                                         <span
 
-                                            className="ml-4  text-blue text-bold"
+                                            className="ms-4  text-blue text-bold"
                                             // href={artifact.blob_url}
                                             target="_blank"
                                             rel="noopener noreferrer">
@@ -141,7 +141,7 @@ const DocumentsDisplay = (props) => {
 
 
                                         {!props.hideAdd &&    <span
-                                            className="ml-2 text-danger d-none"
+                                            className="ms-2 text-danger d-none"
                                             style={{ cursor: "pointer" }}
                                             onClick={() => handleDocumentKey(artifact._key)}>
                                             <IndeterminateCheckBoxIcon style={{opacity:"0.5"}} className={"text-blue"}  />

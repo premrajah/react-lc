@@ -107,7 +107,7 @@ const SitePageItem = (  props) => {
         <>
 
                <div id={props.item._key+"-site-item"} key={props.item._key+"-site-item"} className="row no-gutters site-item-list justify-content-start  mb-4 bg-white rad-8  p-3 ">
-                <div  className={`${props.smallItem?"col-md-2":"col-md-2"} col-xs-12 `}>
+                <div  className={`${props.smallItem?"col-md-2 p-0":"col-md-2 p-0"} col-xs-12 `}>
                     {/*<div className={"content-site   content-box-image"}>*/}
                     <Link to={props.isLoggedIn?"/ps/" + props.item._key:"#"}>
                         <>
@@ -123,7 +123,7 @@ const SitePageItem = (  props) => {
                     {/*</div>*/}
 
                 </div>
-                   <div  className={`${props.smallItem?"col-md-10":"col-md-10"} col-xs-12 pl-3-desktop `}>
+                   <div  className={`${props.smallItem?"col-md-10":"col-md-10"} position-relative col-xs-12 pl-3-desktop `}>
 
                        <div className={"   content-site content-box-listing"}>
 

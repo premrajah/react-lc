@@ -1385,7 +1385,7 @@ class CreateListing extends Component {
                         {this.state.categories.map((item) => (
                             <div
                                 data-name={item.name}
-                                className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3"
+                                className="row mr-2 ms-2 selection-row unselected-row p-3 mb-3"
                                 onClick={this.selectType.bind(this)}>
                                 <div className="col-2">
                                     <img className={"icon-left-select"} src={SendIcon} alt="" />
@@ -1431,7 +1431,7 @@ class CreateListing extends Component {
                             this.state.subCategories.map((item) => (
                                 <div
                                     data-name={item.name}
-                                    className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3"
+                                    className="row mr-2 ms-2 selection-row unselected-row p-3 mb-3"
                                     onClick={this.selectSubCatType.bind(this)}>
                                     <div className="col-10">
                                         <p style={{ fontSize: "16px" }}>
@@ -1468,7 +1468,7 @@ class CreateListing extends Component {
                         {this.state.states.map((item) => (
                             <div
                                 data-name={item}
-                                className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  "
+                                className="row mr-2 ms-2 selection-row unselected-row p-3 mb-3  "
                                 onClick={this.selectState.bind(this)}>
                                 <div className="col-10">
                                     <p style={{ fontSize: "16px" }}>
@@ -1734,7 +1734,7 @@ class CreateListing extends Component {
                         {this.state.products.map((item) => (
                             <div
                                 data-name={item.title}
-                                className="row mr-2 ml-2 selection-row unselected-row p-3 mb-3  "
+                                className="row mr-2 ms-2 selection-row unselected-row p-3 mb-3  "
                                 onClick={this.selectProduct}>
                                 <div className="col-2">
                                     <img className={"icon-left-select"} src={SendIcon} alt="" />
@@ -2548,7 +2548,7 @@ function ComponentItem({ title, subTitle, serialNo, imageName }) {
                     style={{ maxHeight: "140px", objectFit: "contain" }}
                 />
             </div>
-            <div className={"col-8 pl-3 content-box-listing"}>
+            <div className={"col-8 ps-3 content-box-listing"}>
                 <p style={{ fontSize: "18px" }} className=" mb-1">
                     {title}
                 </p>

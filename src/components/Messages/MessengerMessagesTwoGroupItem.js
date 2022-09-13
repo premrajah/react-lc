@@ -13,18 +13,20 @@ const MessengerMessagesTwoGroupItem = ({
 
     const handleListItemClick = () => {
         handleSelectedItemCallback(index);
-        handleGroupClickCallback(group.message_group._key);
+        handleGroupClickCallback(group.message_group._key,true);
     };
 
     return (
         <>
-            <ListItem id={`group-${group._key}`} key={`group-${group._key}`} onClick={() => handleListItemClick()} component="div">
+            <ListItem id={`group-${group._key}`} key={`group-${group._key}`}
+                      onClick={() => handleListItemClick(true)} component="div">
                 <ListItemText
 
                     className={"my-msg-class"}
                     primary={
                         group.orgs.length > 0 &&
-                        group.orgs.filter(item=> item._id!=userOrg).map((org, index) => <HandleOrgDisplay org={org} index={index} />)
+                        group.orgs.filter(item=> item._id!=userOrg).map((org, index) =>
+                            <HandleOrgDisplay org={org} index={index} />)
                     }
                 />
 

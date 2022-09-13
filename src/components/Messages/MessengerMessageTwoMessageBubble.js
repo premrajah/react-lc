@@ -159,14 +159,6 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
                                 </div>
                             )}
 
-                            {/*{m.message.entity_type === "Product" && <div className="mr-2 text-mute">{m.message.entity_type}</div>}*/}
-                            {/*{m.message.entity_type === "Match" && <div className="mr-2 text-mute">{m.message.entity_type}</div>}*/}
-
-                            {/*{m.message.entity_as_json && <div className="text-pink" style={{cursor: "pointer"}}>*/}
-                            {/*    <div onClick={() => toggleEntity(m.message.entity_as_json, m.message.entity_type)}>*/}
-                            {/*        {m.message.entity_as_json.name}*/}
-                            {/*    </div>*/}
-                            {/*</div>}*/}
                         </div>
                     )}
                 </div>

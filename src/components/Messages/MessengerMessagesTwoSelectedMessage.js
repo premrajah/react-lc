@@ -68,7 +68,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
             {messages.length > 0 ? (
                 <Box sx={{ width: "100%" }}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                        <Tabs value={value} onChange={handleTabsChange} aria-label="message-tabs">
+                        <Tabs style={{height: "50px"}} value={value} onChange={handleTabsChange} aria-label="message-tabs">
                             <Tab label="Chats" {...a11yProps(0)} />
                             <Tab label="Group Files" {...a11yProps(1)} onClick={() => getArtifacts()} />
                         </Tabs>

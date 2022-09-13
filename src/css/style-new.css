@@ -4701,3 +4701,19 @@ select option {
     top: 40%;
     margin: auto;
 }
+.rbc-time-header-gutter{
+    padding: 0;
+}
+
+.rdw-editor-main {
+
+    min-height: 72px;
+}
+.loader-absolute{
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 111;
+    margin: auto;
+
+}

@@ -57,6 +57,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [sentMessageGroupKey, setSentMessageGroupKey] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [updateMsgLoading, setUpdateMsgLoading] = useState(false);
 
     useEffect(() => {
         handleSelectedItemCallback(0);
@@ -91,11 +92,19 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
             });
     };
 
-    const getSelectedGroupMessage = (key) => {
+    const getSelectedGroupMessage = (key, clear) => {
         if (!key) return;
 
         setClickedMessageKey(key);
         setSendButtonDisable(false);
+
+        if (clear){
+            setLoading(true)
+            setClickedMessage([])
+        }else{
+            setUpdateMsgLoading(true)
+        }
+
 
         axios
             .get(`${baseUrl}message-group/${key}/message`)
@@ -104,13 +113,18 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
                 setClickedMessage(res.data.data);
                 handleResetWysiwygEditor();
+
+                setLoading(false)
             })
             .catch((error) => {
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
+                setLoading(true)
             });
     };
 
-    const handleGroupClickCallback = (key) => {
+    const handleGroupClickCallback = (key,clear) => {
+
+
         if (!key) {
             setClickedMessage([]); // clear selected message for new chat
         }
@@ -121,8 +135,8 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
             setOrgSearchVisibility(false);
         }
 
+        getSelectedGroupMessage(key,clear);
 
-        getSelectedGroupMessage(key);
     };
 
     const handleSelectedItemCallback = (selectedIndex) => {
@@ -346,7 +360,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                 </div>
             </div>
 
-            <div className="row no-gutters">
+            <div className="row g-0 g-0 no-gutters ">
                 <div className="col-md-4 msg-group-box">
                     {filteredGroups.length > 0 ? (
                         <List
@@ -391,9 +405,9 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                 </div>
                 <div className="col-md-8 msg-conversation-box">
                     <div className="row">
-                        <div className="col" style={{ height: "500px", minHeight: "500px" }}>
+                        <div className="col position-relative" style={{ height: "500px", minHeight: "500px" }}>
 
-                            {loading && <div>{LoaderAnimated()}</div>}
+                            {loading && <div className="loader-absolute">{LoaderAnimated()}</div>}
                             {clickedMessage.length > 0 && (
                                 <div
                                     style={{
@@ -433,7 +447,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                             )}
                         </div>
                     </div>
-                    <div className="row no-gutters editor-box ">
+                    <div style={{minHeight: "125px"}} className="row g-0 no-gutters  editor-box ">
                         <div className="col-sm-11">
                             <WysiwygEditor
                                 // allOrgs={allGroups}

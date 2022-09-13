@@ -785,11 +785,12 @@ export default function BigCalenderEvents({
                             </div>
                         )}
 
-                        {events.length > 0 && (
+                        {events.length > 0 && <>
                             <GrayBorderBtn title={"View Calender"} onClick={showEvent} />
-                        )}
 
-                        <EventItem loading={loading}
+                        </>}
+
+                        <EventItem smallView={smallView} loading={loading} showEvent={showEvent}
 
                                            events={events.filter((item)=>
                                                {if (showAll){

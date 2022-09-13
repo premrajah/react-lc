@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import axios from "axios/index";
-import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import {baseUrl, MIME_TYPES_ACCEPT, RECUR_UNITS} from "../../Util/Constants";
 import _ from "lodash";
 import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
@@ -130,6 +130,7 @@ class EventForm extends Component {
                 // {key:2629743000 ,value:"Every Month(30 Days)"},
                 // {key:31556926000 ,value:"Every Year(365 Days)"},
             ],
+
             processes:[
 
                 {key:"service",value:"Service"},
@@ -385,68 +386,80 @@ class EventForm extends Component {
     handleSubmit = (event) => {
 
 
-        event.preventDefault();
-        event.stopPropagation()
-        if (!this.handleValidationProduct()){
-            return
-        }
+        try {
+            event.preventDefault();
+            event.stopPropagation()
+            if (!this.handleValidationProduct()) {
+                return
+            }
             const form = event.currentTarget;
 
             this.setState({
                 btnLoading: true,
-                loading:true
+                loading: true
             });
 
             const data = new FormData(event.target);
 
 
+            let eventData = {
+                title: data.get("title"),
+                description: data.get("description"),
+                resolution_epoch_ms: new Date(this.state.startDate).getTime() + 100,
+                process: data.get("process"),
 
-        let eventData=  {
-                title : data.get("title"),
-                description : data.get("description"),
-                resolution_epoch_ms : new Date(this.state.startDate).getTime()+100,
-                process : data.get("process"),
+            }
 
+
+            if (data.get("recurValue") && data.get("recurUnit")) {
+                eventData.recur = {value: data.get("recurValue"), unit: data.get("recurUnit")}
+            }
+
+            if (data.get("interval")) {
+
+                eventData.recur_in_epoch_ms = data.get("interval")
+            }
+
+            console.log(eventData)
+
+
+
+            this.setState({isSubmitButtonPressed: true})
+
+            axios
+                .post(
+                    baseUrl + "event",
+                    {
+                        event: eventData,
+                        product_id: this.state.productId,
+                        artifact_ids: this.state.images
+
+                    },
+                )
+                .then((res) => {
+
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "success",
+                        message: "Event created successfully. Thanks"
+                    })
+
+                    this.props.hide()
+                })
+                .catch((error) => {
+                    this.setState({
+                        btnLoading: false,
+                        loading: false,
+                        isSubmitButtonPressed: false
+                    });
+                    this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+
+                });
+            // }
+
+        }catch (e){
+            console.log(e)
         }
-
-
-        if (data.get("interval")){
-
-            eventData.recur_in_epoch_ms = data.get("interval")
-        }
-
-                this.setState({isSubmitButtonPressed: true})
-
-                    axios
-                        .post(
-                            baseUrl+"event",
-                            {
-                                event:eventData,
-                                product_id : this.state.productId,
-                                artifact_ids: this.state.images
-
-                            },
-                        )
-                        .then((res) => {
-
-                            this.props.showSnackbar({
-                                show: true,
-                                severity: "success",
-                                message:   "Event created successfully. Thanks"
-                            })
-
-                            this.props.hide()
-                        })
-                        .catch((error) => {
-                            this.setState({
-                                btnLoading: false,
-                                loading: false,
-                                isSubmitButtonPressed: false
-                            });
-                            this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
-
-                        });
-                // }
 
     };
 
@@ -483,6 +496,10 @@ class EventForm extends Component {
             eventData.recur_in_epoch_ms = data.get("interval")
         }
 
+
+        if (data.get("recurValue") && data.get("recurUnit")) {
+            eventData.recur = {value: data.get("recurValue"), unit: data.get("recurUnit")}
+        }
 
         this.setState({isSubmitButtonPressed: true})
 
@@ -728,7 +745,7 @@ class EventForm extends Component {
                             </div>
 
                               <div className="row  mt-2">
-                              <div className="col-md-4 col-12">
+                              <div className="col-md-4 col-6">
                                   <div
                                       className={
                                           "custom-label text-bold text-blue "
@@ -767,7 +784,7 @@ class EventForm extends Component {
 
                               </div>
 
-                                  <div className="col-md-4  col-sm-12 col-xs-12  ">
+                                  <div className="col-md-4 d-none  col-sm-12 col-xs-12  ">
 
                                       <SelectArrayWrapper
 
@@ -785,7 +802,7 @@ class EventForm extends Component {
                                           title="Recurring interval"/>
 
                                   </div>
-                                  <div className="col-md-4  col-sm-12 col-xs-12  ">
+                                  <div className="col-md-3  col-sm-6 col-xs-6  ">
 
                                       <SelectArrayWrapper
 
@@ -799,6 +816,40 @@ class EventForm extends Component {
                                           options={this.state.processes} name={"process"}
                                           title="Process"/>
 
+                                  </div>
+                                  <div className="col-md-5  col-sm-12 col-xs-12  ">
+                                  <div className="row  ">
+                                      <div className="col-5">
+
+                                          <TextFieldWrapper
+
+
+                                              initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
+                                              onChange={(value)=>this.handleChangeProduct(value,"recurValue")}
+                                              error={this.state.errors["recurValue"]}
+                                              name="recurValue" title="Recur"
+
+                                          />
+
+                                      </div>
+                                      <div className="col-7">
+
+                                          <SelectArrayWrapper
+
+
+                                              initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
+                                              select={"Select"}
+                                              option={"value"}
+                                              valueKey={"key"}
+                                              onChange={(value)=> {
+                                                  this.handleChangeProduct(value,"recurUnit")
+
+                                              }}
+
+                                              options={RECUR_UNITS} name={"recurUnit"}
+                                              title="Recur Unit"/>
+                                      </div>
+                                  </div>
                                   </div>
                               </div>
 

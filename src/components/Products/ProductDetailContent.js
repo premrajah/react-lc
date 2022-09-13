@@ -1218,14 +1218,7 @@ class ProductDetailContent extends Component {
 
                                                                 </div>
 
-                                                                {/*<p className={"text-g"} style={{ marginTop: "10px" }}>*/}
 
-                                                                {/*    or <span*/}
-                                                                {/*    onClick={this.toggleSite}*/}
-                                                                {/*    className={*/}
-                                                                {/*        " forgot-password-link "*/}
-                                                                {/*    }>Add new</span>*/}
-                                                                {/*</p>*/}
 
                                                                 {this.state.errorRelease && (
                                                                     <div

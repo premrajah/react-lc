@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import {fetchErrorMessage, getInitials, getTimeFormat} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import {baseUrl, checkImage} from "../../Util/Constants";
+import {baseUrl, checkImage, RECUR_UNITS} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {Close, Delete, Done, Edit, FactCheck} from "@mui/icons-material";
@@ -24,6 +24,9 @@ import SubproductItem from "../Products/Item/SubproductItem";
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
+import {CSVLink} from "react-csv";
+import DownloadIcon from "@mui/icons-material/GetApp";
 
 class EventItem extends Component {
         constructor(props) {
@@ -157,6 +160,28 @@ class EventItem extends Component {
 
     }
 
+    handleSaveCSV = () => {
+
+
+        const csvData = [];
+        this.props.events.forEach(item => {
+            const {product, event, service_agent} = item;
+            return csvData.push([
+                event.title,
+                event.stage,
+                event.process,
+                getTimeFormat(event.resolution_epoch_ms),
+                event.recur_in_epoch_ms?this.state.intervals.find((item)=> item.key=== event.recur_in_epoch_ms).value:"",
+                event.recur,
+                event.description,
+                product.product.name,
+            ])
+        })
+
+        return csvData;
+    }
+
+
     deleteEvent=(eventId,type)=>{
 
 
@@ -205,6 +230,7 @@ class EventItem extends Component {
 
     render() {
 
+        const headers = ["Title","Stage","Process","Resolution Date","Recur (MS)","Recur", "Description", "Product"];
 
             return (
 
@@ -212,12 +238,24 @@ class EventItem extends Component {
 
                     <div className="d-flex mt-4 justify-content-between">
                         {this.props.events.length > 0 ?
+                            <>
                             <span className="">
                                     {this.props.events.length} {this.props.events.length > 1 ? "Events" : "Event"}
-                                </span>:
+                                </span>
+
+
+
+                            </>
+                            :
                             <>{!this.props.loading && <div className={``}>No Events exist</div>}</>
                         }
+
                         <span  className={`${this.props.events.length==0?"d-none":""}`}>
+
+
+                            {this.props.smallView && <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`event_list_${new Date().getDate()}.csv`} className=" btn-sm btn-gray-border  me-2"><>
+                                            <DownloadIcon  style={{fontSize:"20px"}} />
+                                            Download CSV</></CSVLink>}
 
                                          <FormControlLabel
                                              value="all"
@@ -468,7 +506,7 @@ class EventItem extends Component {
                                                 }
                                             </p>
                                         </div>
-                                        {this.state.selectedEvent.event.recur_in_epoch_ms &&
+                                        {this.state.selectedEvent.event.recur &&this.state.selectedEvent.event.recur.value&&this.state.selectedEvent.event.recur.unit &&
                                         <div className={"col-6"}>
                                             <p
                                                 style={{ fontSize: "18px" }}
@@ -478,11 +516,8 @@ class EventItem extends Component {
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
-                                                {/*{*/}
-                                                {/*   getTimeFormat( this.state.selectedEvent.event.recur_in_epoch_ms)*/}
-                                                {/*}*/}
 
-                                                {this.state.intervals.find(item=> item.key==this.state.selectedEvent.event.recur_in_epoch_ms).value}
+                                                {this.state.selectedEvent.event.recur.value} {RECUR_UNITS.find(item=> item.key==this.state.selectedEvent.event.recur.unit).value}
                                             </p>
                                         </div>}
 

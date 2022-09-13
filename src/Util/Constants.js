@@ -65,6 +65,13 @@ export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
 
+export const RECUR_UNITS=[
+    {key:"DAY",value:"Day"},
+    {key:"WEEK" ,value:"Week"},
+    {key:"MONTH",value:"Month"},
+    {key:"YEAR",value:"Year"},
+
+]
 
 export const PRODUCTS_FILTER_VALUES = [
     {key:"name",label:"Name" },

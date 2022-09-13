@@ -1,9 +1,9 @@
 import React from 'react'
 import {Spinner} from "react-bootstrap";
 
-const GrayBorderBtn = ({onClick,title,fullWidth,disabled,loading, ...otherProps}) => {
+const GrayBorderBtn = ({onClick,title,fullWidth,disabled,loading,classes, ...otherProps}) => {
 
-    return <button className={`${disabled?" btn-gray":" btn btn-sm btn-gray-border"}  ${fullWidth?" btn-block":""}`}
+    return <button className={`${disabled?" btn-gray":" btn btn-sm btn-gray-border"}    ${fullWidth?" btn-block":""}  ${classes}`}
                    onClick={onClick} {...otherProps}>
 
         {loading && (

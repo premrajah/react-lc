@@ -27,6 +27,15 @@ import Switch from "@mui/material/Switch";
 import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
 import {CSVLink} from "react-csv";
 import DownloadIcon from "@mui/icons-material/GetApp";
+import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
+import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
+import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+import moment from "moment";
+import {Spinner} from "react-bootstrap";
 
 class EventItem extends Component {
         constructor(props) {
@@ -34,8 +43,16 @@ class EventItem extends Component {
 
             this.state = {
                 date:null,
+                fields:{},
+                loadingEventsDownload:false,
+                minEndDate:null,
+                maxEndDate:null,
+                maxStartDate:null,
+                minStartDate:null,
                 highlightedDays:[1,2,15],
                 events:[],
+                endDate:null,
+                startDate:null,
                 calendarEvents:[],
                 showEvent:false,
                 showEditEvent:false,
@@ -44,6 +61,8 @@ class EventItem extends Component {
                 stageEventId:null,
                 showStagePopup:false,
                 deleteEvent:false,
+                csvData:[],
+                showDownload:false,
                 intervals:[
                     {key:86400000 ,value:"Every Day"},
                     {key:604800000 ,value:"Every Week"},
@@ -72,6 +91,14 @@ class EventItem extends Component {
             // selectedEvent:item,
             deleteEvent:!this.state.deleteEvent
         })
+    }
+
+    showDownloadPopup=(item)=>{
+        this.setState({
+            // selectedEvent:item,
+            showDownload:!this.state.showDownload
+        })
+
     }
 
     showEventPopup=(item)=>{
@@ -123,6 +150,37 @@ class EventItem extends Component {
     }
 
 
+
+    handleChangeDate(value,field ) {
+
+
+        if (field==="startDate"){
+            this.setState({
+                startDate:value,
+                minEndDate: moment(value).add(1, "day").toDate()
+            })
+
+
+        }
+        if (field==="endDate"){
+            this.setState({
+                endDate:value,
+                maxStartDate: moment(value).add(-1, "day").toDate()
+            })
+        }
+
+
+
+        // let fields = this.state.fields;
+        // fields[field] = value;
+        // this.setState({ fields });
+
+
+
+
+    }
+
+
     getEvent=(eventId,type)=>{
 
 
@@ -166,7 +224,8 @@ class EventItem extends Component {
         const csvData = [];
         this.props.events.forEach(item => {
             const {product, event, service_agent} = item;
-            return csvData.push([
+
+             csvData.push([
                 event.title,
                 event.stage,
                 event.process,
@@ -178,9 +237,117 @@ class EventItem extends Component {
             ])
         })
 
-        return csvData;
+        this.setState({
+            csvData
+        })
     }
 
+
+     fetchEventsPageWise =  ( url, offset,size) => {
+        axios
+            .get(url)
+            .then(
+                (response) => {
+
+
+                    this.setState({
+                        events:this.state.events.concat(response.data.data)
+                    })
+
+                    if (response.data.data.length == size) {
+                        this.getEvents( offset + size);
+                    }else{
+
+
+                         this.downloadCustomEvent()
+
+                    }
+                },
+                (error) => {
+
+                }
+            );
+    };
+
+
+
+     getEvents = async ( offset) => {
+
+         this.setState({
+             loadingEventsDownload:true,
+             events:[]
+         })
+
+        let url = `${baseUrl}event?`
+         let size=10
+
+
+        if (this.state.startDate) {
+            url = `${url}resolv_start=${(moment(this.state.startDate).startOf("day").format("x") - 10)}`;
+        }
+        if (this.state.endDate) {
+            url = `${url}&resolv_end=${(moment(this.state.endDate).endOf("day").format("x"))}`;
+        }
+
+        url = `${url}&offset=${offset}&size=${size}`;
+
+          this.fetchEventsPageWise(url, offset,size);
+    };
+
+
+    downloadCustomEvent= async () => {
+
+    console.log(this.state.events)
+
+        let csvData = [];
+        this.state.events.forEach(item => {
+            const {product_id, event, service_agent} = item;
+
+            csvData.push([
+                event.title,
+                event.stage,
+                event.process,
+                getTimeFormat(event.resolution_epoch_ms),
+                event.recur_in_epoch_ms?this.state.intervals.find((item)=> item.key=== event.recur_in_epoch_ms).value:"",
+                event.recur?event.recur.value:"",
+                event.recur?event.recur.unit:"",
+                event.description,
+                product_id,
+            ])
+        })
+
+       this.exportToCSV(csvData)
+    }
+
+
+    exportToCSV=(csvData) =>{
+
+        let data = "";
+        const tableData = [];
+
+        const rows=csvData
+         rows.unshift(["Title","Stage","Process","Resolution Date","Recur (MS)","Recur Value","Recur Unit", "Description", "Product"])
+
+        for (const row of rows) {
+            const rowData = [];
+            for (const column of row) {
+                rowData.push(column);
+            }
+            tableData.push(rowData.join(","));
+        }
+
+        data += tableData.join("\n");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+        a.setAttribute("download", `event_list_${new Date().getDate()}.csv`);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        this.setState({
+            loadingEventsDownload:false
+        })
+    }
 
     deleteEvent=(eventId,type)=>{
 
@@ -251,11 +418,22 @@ class EventItem extends Component {
                         }
 
                         <span  className={`${this.props.events.length==0?"d-none":""}`}>
-
-
-                            {this.props.smallView && <CSVLink data={this.handleSaveCSV()} headers={headers} filename={`event_list_${new Date().getDate()}.csv`} className=" btn-sm btn-gray-border  me-2"><>
+                            {this.props.smallView ?
+                                <CSVLink
+                                asyncOnClick={true}
+                                onClick={(event, done) => {
+                                    this.handleSaveCSV()
+                                }}
+                                data={this.state.csvData}
+                                headers={headers} filename={`event_list_${new Date().getDate()}.csv`}
+                                className=" btn-sm btn-gray-border  me-2"><>
                                             <DownloadIcon  style={{fontSize:"20px"}} />
-                                            Download CSV</></CSVLink>}
+                                            Download CSV</>
+                            </CSVLink>:
+                                <BlueSmallBtn onClick={this.showDownloadPopup} title={"Download CSV"}>
+                                <DownloadIcon  style={{fontSize:"20px"}} />
+                                </BlueSmallBtn>
+                            }
 
                                          <FormControlLabel
                                              value="all"
@@ -666,6 +844,97 @@ class EventItem extends Component {
                         <EventStatus hide={this.showStageEventPopup} eventId={this.state.stageEventId}/>
 
                     </div>
+                    </GlobalDialog>
+
+
+
+
+                    <GlobalDialog
+
+                        heading={"Download CSV"}
+                        show={this.state.showDownload}
+                        hide={this.showDownloadPopup}
+                        size={"sm"}
+                    >
+                        <div className={"col-12 "}>
+
+                            <div className="row  mt-2">
+                                <div className="col-6 ">
+                                    <div
+                                        className={
+                                            "custom-label text-bold text-blue "
+                                        }>
+                                         From
+                                    </div>
+
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                        <MobileDatePicker
+
+                                            className={"full-width-field"}
+                                            disableHighlightToday={true}
+                                            maxDate={this.state.maxStartDate}
+                                            // label="Required By"
+                                            inputVariant="outlined"
+                                            variant={"outlined"}
+                                            margin="normal"
+                                            id="date-picker-dialog-1"
+                                            inputFormat="dd/MM/yyyy"
+                                            value={this.state.startDate}
+                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                            onChange={(value)=>this.handleChangeDate(value,"startDate")}
+
+                                        />
+                                    </LocalizationProvider>
+
+                                    {this.state.showFieldErrors&&this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
+                                </div>
+
+                                <div className="col-6  ">
+
+                                    <div
+                                        className={
+                                            "custom-label text-bold text-blue "
+                                        }>
+                                       To
+                                    </div>
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                        <MobileDatePicker
+                                            disableHighlightToday={true}
+
+
+                                            minDate={this.state.minEndDate}
+                                            // label="Required By"
+                                            inputVariant="outlined"
+                                            variant={"outlined"}
+                                            margin="normal"
+                                            id="date-picker-dialog"
+                                            inputFormat="dd/MM/yyyy"
+                                            value={this.state.endDate}
+                                            // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
+
+                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                            onChange={(value)=>this.handleChangeDate(value,"endDate")}
+
+                                        />
+                                    </LocalizationProvider>
+                                    {this.state.showFieldErrors&&this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
+                                </div>
+                            </div>
+                            <div className="row justify-content-center mt-4">
+                                <div className=" col-auto">
+
+
+                                    <BlueSmallBtn loading={this.state.loadingEventsDownload} disabled={this.state.loadingEventsDownload} title={"Download CSV"} onClick={()=>this.getEvents(0)} >
+                                        <DownloadIcon  style={{fontSize:"20px"}} /></BlueSmallBtn>
+
+                                </div>
+                            </div>
+
+                        </div>
                     </GlobalDialog>
 
                     </>

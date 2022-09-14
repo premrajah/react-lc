@@ -231,7 +231,8 @@ class EventItem extends Component {
                 event.process,
                 getTimeFormat(event.resolution_epoch_ms),
                 event.recur_in_epoch_ms?this.state.intervals.find((item)=> item.key=== event.recur_in_epoch_ms).value:"",
-                event.recur,
+                 event.recur?event.recur.value:"",
+                 event.recur?event.recur.unit:"",
                 event.description,
                 product.product.name,
             ])
@@ -397,7 +398,7 @@ class EventItem extends Component {
 
     render() {
 
-        const headers = ["Title","Stage","Process","Resolution Date","Recur (MS)","Recur", "Description", "Product"];
+        const headers = ["Title","Stage","Process","Resolution Date","Recur (MS)","Recur Value","Recur Unit", "Description", "Product"];
 
             return (
 

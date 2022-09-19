@@ -27,6 +27,8 @@ import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenSmallBtn from "../FormsUI/Buttons/GreenSmallBtn";
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
+import DownloadIcon from "@mui/icons-material/GetApp";
 
 
 
@@ -101,6 +103,7 @@ export default function BigCalenderEvents({
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [view, setView] = useState("month");
     const [showAll, setShowAll] = useState(false);
+    const [showDownload, setShowDownload] = useState(false);
     const [tmpView, setTmpView] = useState("month");
     // const [navigate, setNavigate] = useState(new Date());
 
@@ -626,9 +629,7 @@ export default function BigCalenderEvents({
             {!smallView ? (
                 <div className={"row justify-content-center create-product-row "}>
                     <div
-                        className={`bg-white-1 ${
-                            smallView ? "col-12 mt-4 fc-small-calender" : "col-md-8"
-                        }`}>
+                        className={`bg-white-1 mb-2  col-lg-8 col-md-12`}>
                         <div className="sticky-top">
                             <CustomToolbar />
                             <Calendar
@@ -672,21 +673,26 @@ export default function BigCalenderEvents({
                         </div>
                     </div>
                     <div
-                        className={`bg-white-1 ${
-                            smallView ? "small-log-view mt-4 col-12" : "col-md-4"
-                        }`}>
+                        className={`bg-white-1 col-lg-4 col-md-12`}>
                         {!smallView && (
-                            <div className="title-bold  d-flex align-items-center justify-content-between ">
-                                <span className="   ">
+                            <div className=" g-0 row d-flex align-items-center justify-content-between ">
+                                <span className="title-bold text-blue col-xl-5 col-lg-12 col-md-12    ">
                                     {weekday[selectedDate.getDay()] +
                                         ", " +
-                                        selectedDate.toLocaleString("default", { month: "long" }) +
+                                        selectedDate.toLocaleString("default", { month: "short" }) +
                                         " " +
                                         selectedDate.getDate() +
                                         " ," +
                                         selectedDate.getFullYear()}
                                 </span>
-                                <span className="">
+                                <span className="col-lg-8 col-xl-6 col-md-6    " >
+                                     <BlueSmallBtn
+                                         onClick={()=>setShowDownload(!showDownload)}
+                                         title={"Download CSV"}>
+                            <DownloadIcon  style={{fontSize:"20px"}} />
+                        </BlueSmallBtn>
+                                </span>
+                                <span className="col-lg-4 justify-content-end d-flex col-xl-1 col-md-6    ">
                                     <CustomPopover text={"Add event"}>
                                         <ActionIconBtn
                                             onClick={() => {
@@ -699,9 +705,17 @@ export default function BigCalenderEvents({
                             </div>
                         )}
 
+
+
+
+
+
                         {loading && <LoaderAnimated />}
 
                                 <EventItem
+
+                                    showDownload={showDownload}
+                                    hide={()=>setShowDownload(!showDownload)}
                                     loading={loading}
                                     showAll={showAll}
                                     refresh={(date) => handleNavigation(date, true)}
@@ -775,7 +789,7 @@ export default function BigCalenderEvents({
                         {loading && <LoaderAnimated />}
 
                         {!smallView && (
-                            <div className="title-bold">
+                            <div className="text-blue text-14 text-bold">
                                 {weekday[selectedDate.getDay()] +
                                     ", " +
                                     selectedDate.toLocaleString("default", { month: "long" }) +

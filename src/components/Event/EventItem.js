@@ -276,7 +276,7 @@ class EventItem extends Component {
 
          this.setState({
              loadingEventsDownload:true,
-             events:[]
+
          })
 
         let url = `${baseUrl}event?`
@@ -293,6 +293,7 @@ class EventItem extends Component {
         url = `${url}&offset=${offset}&size=${size}`;
 
           this.fetchEventsPageWise(url, offset,size);
+
     };
 
 
@@ -325,6 +326,8 @@ class EventItem extends Component {
 
         let data = "";
         const tableData = [];
+
+        console.log(csvData)
 
         const rows=csvData
          rows.unshift(["Title","Stage","Process","Resolution Date","Recur (MS)","Recur Value","Recur Unit", "Description", "Product"])
@@ -404,6 +407,7 @@ class EventItem extends Component {
 
                 <>
 
+
                     <div className="d-flex mt-4 justify-content-between">
                         {this.props.events.length > 0 ?
                             <>
@@ -418,8 +422,10 @@ class EventItem extends Component {
                             <>{!this.props.loading && <div className={``}>No Events exist</div>}</>
                         }
 
+
+
                         <span  className={`${this.props.events.length==0?"d-none":""}`}>
-                            {this.props.smallView ?
+                            {this.props.smallView &&
                                 <CSVLink
                                 asyncOnClick={true}
                                 onClick={(event, done) => {
@@ -430,11 +436,7 @@ class EventItem extends Component {
                                 className=" btn-sm btn-gray-border  me-2"><>
                                             <DownloadIcon  style={{fontSize:"20px"}} />
                                             Download CSV</>
-                            </CSVLink>:
-                                <BlueSmallBtn onClick={this.showDownloadPopup} title={"Download CSV"}>
-                                <DownloadIcon  style={{fontSize:"20px"}} />
-                                </BlueSmallBtn>
-                            }
+                            </CSVLink>}
 
                                          <FormControlLabel
                                              value="all"
@@ -853,8 +855,8 @@ class EventItem extends Component {
                     <GlobalDialog
 
                         heading={"Download CSV"}
-                        show={this.state.showDownload}
-                        hide={this.showDownloadPopup}
+                        show={this.props.showDownload}
+                        hide={this.props.hide}
                         size={"sm"}
                     >
                         <div className={"col-12 "}>
@@ -929,7 +931,17 @@ class EventItem extends Component {
                                 <div className=" col-auto">
 
 
-                                    <BlueSmallBtn loading={this.state.loadingEventsDownload} disabled={this.state.loadingEventsDownload} title={"Download CSV"} onClick={()=>this.getEvents(0)} >
+                                    <BlueSmallBtn loading={this.state.loadingEventsDownload} disabled={this.state.loadingEventsDownload} title={"Download CSV"} onClick={()=>{
+
+                                        this.setState({
+                                            events:[]
+                                        })
+                                        this.getEvents(0);
+
+
+                                    }
+
+                                    } >
                                         <DownloadIcon  style={{fontSize:"20px"}} /></BlueSmallBtn>
 
                                 </div>

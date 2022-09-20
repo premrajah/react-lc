@@ -279,7 +279,7 @@ class EventItem extends Component {
 
          })
 
-        let url = `${baseUrl}event?`
+        let url = `${baseUrl}event/expand?`
          let size=10
 
 
@@ -303,7 +303,7 @@ class EventItem extends Component {
 
         let csvData = [];
         this.state.events.forEach(item => {
-            const {product_id, event, service_agent} = item;
+            const {product, event, service_agent} = item;
 
             csvData.push([
                 event.title,
@@ -314,7 +314,7 @@ class EventItem extends Component {
                 event.recur?event.recur.value:"",
                 event.recur?event.recur.unit:"",
                 event.description,
-                product_id,
+                product.product?product.product.name:"",
             ])
         })
 
@@ -931,12 +931,20 @@ class EventItem extends Component {
                                 <div className=" col-auto">
 
 
-                                    <BlueSmallBtn loading={this.state.loadingEventsDownload} disabled={this.state.loadingEventsDownload} title={"Download CSV"} onClick={()=>{
+                                    <BlueSmallBtn loading={this.state.loadingEventsDownload}
+                                                  disabled={this.state.loadingEventsDownload} title={"Download CSV"} onClick={()=>{
 
                                         this.setState({
                                             events:[]
                                         })
-                                        this.getEvents(0);
+
+                                        if (this.state.startDate&&this.state.endDate){
+                                            this.getEvents(0);
+                                        }else{
+
+
+                                        }
+
 
 
                                     }

@@ -447,20 +447,20 @@ class EventItem extends Component {
         <List sx={{ width: '100%' }}>
 
 
-            {this.props.events.filter(item=> item.event.stage!=="responded").map(item=>
+            {this.props.events.filter(item=> item.event.stage!=="resolved").map(item=>
 
                 <>
                     <ListItem className={`mb-2 bg-white 
-                     ${item.event.stage !=="responded"?"new-event":"past-event"}`}
+                     ${item.event.stage !=="resolved"?"new-event":"past-event"}`}
                               onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
                         <ListItemAvatar>
-                            <Avatar className={`${item.event.stage==='responded'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
+                            <Avatar className={`${item.event.stage==='resolved'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
                         </ListItemAvatar>}
                         <ListItemText
                             className="title-bold"
                             primary={
-                                item.event.stage==="responded"?<del>{item.event.title}</del>:
+                                item.event.stage==="resolved"?<del>{item.event.title}</del>:
                                         item.event.title
                                 }
 
@@ -481,7 +481,7 @@ class EventItem extends Component {
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
 
 
-                                    {item.event.stage!=='responded'   &&
+                                    {item.event.stage!=='resolved'   &&
                                     <div className="d-flex flex-column right-btn-auto">
                                             {/*{item.event.resolution_epoch_ms > Date.now() &&*/}
                                             <CustomPopover text={"Edit"}>
@@ -525,21 +525,21 @@ class EventItem extends Component {
 
                 </>
             )}
-            {this.props.events.filter(item=> item.event.stage==="responded").map(item=>
+            {this.props.events.filter(item=> item.event.stage==="resolved").map(item=>
 
                 <>
 
                     <ListItem className={`mb-2 bg-white 
-                     ${item.event.stage !=="responded"?"new-event":"past-event"}`}
+                     ${item.event.stage !=="resolved"?"new-event":"past-event"}`}
                               onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
                         <ListItemAvatar>
-                            <Avatar className={`${item.event.stage==='responded'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
+                            <Avatar className={`${item.event.stage==='resolved'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
                         </ListItemAvatar>}
                         <ListItemText
                             className="title-bold"
                             primary={
-                                item.event.stage==="responded"?<del>{item.event.title}</del>:
+                                item.event.stage==="resolved"?<del>{item.event.title}</del>:
                                     item.event.title
                             }
 
@@ -560,7 +560,7 @@ class EventItem extends Component {
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
 
 
-                                    {item.event.stage!=='responded'   &&
+                                    {item.event.stage!=='resolved'   &&
                                     <div className="d-flex flex-column right-btn-auto">
                                         {/*{item.event.resolution_epoch_ms > Date.now() &&*/}
                                         <CustomPopover text={"Edit"}>
@@ -835,8 +835,11 @@ class EventItem extends Component {
                         heading={"Update Stage"}
                         show={this.state.showStagePopup}
                         hide={this.showStageEventPopup}
-                    ><div className={"col-12"}>
-                        <EventStatus hide={this.showStageEventPopup} eventId={this.state.stageEventId}/>
+                    >
+                        <div className={"col-12"}>
+                            {this.state.showStagePopup&&
+                            <EventStatus hide={this.showStageEventPopup} eventId={this.state.stageEventId}/>
+                            }
 
                     </div>
                     </GlobalDialog>

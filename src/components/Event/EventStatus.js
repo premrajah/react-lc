@@ -11,6 +11,7 @@ import GreenButton from "../FormsUI/Buttons/GreenButton";
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import EventDetail from "./EventDetail";
+import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 
 var slugify = require('slugify')
 
@@ -138,7 +139,8 @@ class EventForm extends Component {
                             baseUrl+"event/stage",
                             {
                                 id:this.props.eventId,
-                              new_stage:  data.get("stage")
+                                new_stage:  data.get("stage"),
+                                note:  data.get("note")
 
                             },
                         )
@@ -249,6 +251,15 @@ class EventForm extends Component {
                                   </div>
                               </div>
 
+                              <TextFieldWrapper  details="Describe the product your adding"
+
+                                                 onChange={(value)=> {
+                                                     this.handleChangeProduct(value,"note")
+                                                 }}
+                                                 error={this.state.errors["note"]}
+                                                 multiline
+                                                 rows={2}
+                                                 name="note" title="Note" />
 
                                  <div className={"row"}>
                             <div className="col-12 text-center  mb-2">

@@ -137,8 +137,8 @@ export default function BigCalenderEvents({
                     }
                 }}
                 className=" event-bx text-12 txt-gray-dark">
-                <div   className={`${event.stage==='responded'?"fc-event-box-disabled":"fc-event-box-" + event.process}`}>
-                    {event.stage==="responded"?<del>event.title</del>:event.title}
+                <div   className={`${event.stage==='resolved'?"fc-event-box-disabled":"fc-event-box-" + event.process}`}>
+                    {event.stage==="resolved"?<del>event.title</del>:event.title}
                 </div>
 
                 {/*{event.desc && ":  " + event.desc}*/}
@@ -638,7 +638,7 @@ export default function BigCalenderEvents({
                                 components={components}
                                 defaultDate={defaultDate}
 
-                                events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="responded")}
+                                events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="resolved")}
 
                                 localizer={localizer}
                                 max={1}
@@ -717,7 +717,7 @@ export default function BigCalenderEvents({
                                         {if (showAll){
                                             return item
                                         }
-                                        else if(!showAll&&item.event.stage!=="responded"){
+                                        else if(!showAll&&item.event.stage!=="resolved"){
 
                                             return item
                                         }}
@@ -753,7 +753,7 @@ export default function BigCalenderEvents({
                                 }}
                                 components={components}
                                 defaultDate={defaultDate}
-                                events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="responded")}
+                                events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="resolved")}
                                 localizer={localizer}
                                 max={1}
                                 showMultiDayTimes
@@ -804,7 +804,7 @@ export default function BigCalenderEvents({
                                                {if (showAll){
                                                    return item
                                                }
-                                               else if(!showAll&&item.event.stage!=="responded"){
+                                               else if(!showAll&&item.event.stage!=="resolved"){
 
                                                    return item
                                                }}

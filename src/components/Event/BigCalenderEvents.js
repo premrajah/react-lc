@@ -1,35 +1,29 @@
-import React, { Fragment, useEffect, useMemo, useState, useCallback } from "react";
+import React, {Fragment, useCallback, useEffect, useMemo, useState} from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Calendar, DateLocalizer, momentLocalizer, Views } from "react-big-calendar";
+import {Calendar, DateLocalizer, momentLocalizer, Views} from "react-big-calendar";
 import * as dates from "./dates";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventItem from "./EventItem";
-import { addDays, LoaderAnimated, weekday } from "../../Util/GlobalFunctions";
-import { baseUrl } from "../../Util/Constants";
+import {LoaderAnimated, weekday} from "../../Util/GlobalFunctions";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios";
 import Badge from "@mui/material/Badge";
-import { Add, ArrowBack, ArrowForward } from "@mui/icons-material";
+import {Add, ArrowBack, ArrowForward} from "@mui/icons-material";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import EventForm from "./EventForm";
 import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import CustomPopover from "../FormsUI/CustomPopover";
-import { styled } from "@mui/material/styles";
+import {styled} from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Year from "./Year";
-import IconBtn from "../FormsUI/Buttons/IconBtn";
-import { IconButton } from "@mui/material";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
-import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import {IconButton} from "@mui/material";
 import GreenSmallBtn from "../FormsUI/Buttons/GreenSmallBtn";
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import DownloadIcon from "@mui/icons-material/GetApp";
-
 
 
 const mLocalizer = momentLocalizer(moment);
@@ -98,8 +92,7 @@ export default function BigCalenderEvents({
 }) {
     const [events, setEvents] = useState([]);
     const [monthEvents, setMonthEvents] = useState([]);
-    const [eventsTemp, setEventsTemp] = useState([]);
-    const [calanderEvents, setCalanderEvents] = useState([]);
+
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [view, setView] = useState("month");
     const [showAll, setShowAll] = useState(false);
@@ -423,7 +416,7 @@ export default function BigCalenderEvents({
                 }
 
                 setEvents(responseAll);
-                setCalanderEvents(convertEvents(responseAll));
+
 
                 setLoading(false);
             },

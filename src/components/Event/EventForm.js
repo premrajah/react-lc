@@ -24,6 +24,9 @@ import docs from "../../img/icons/docs.png";
 import ProductAutocomplete from "../AutocompleteSearch/ProductAutocomplete";
 import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import moment from "moment";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 var slugify = require('slugify')
 
@@ -52,19 +55,9 @@ class EventForm extends Component {
 
         this.state = {
 
-            timerEnd: false,
-            isEditProduct:false,
-            count: 0,
-            nextIntervalFlag: false,
-            activePage: 0, //0 logn. 1- sign up , 3 -search,
-            categories: [],
-            subCategories: [],
-            catSelected: {},
-            subCatSelected: {},
+
             stateSelected: null,
             states: [],
-            sites: [],
-            page: 1,
             fields: {},
             errors: {},
             fieldsSite: {},
@@ -72,40 +65,19 @@ class EventForm extends Component {
             fieldsProduct: {},
             errorsProduct: {},
             units: [],
-            progressBar: 33,
-            products: [],
+
             productSelected: null,
-            nextBlue: false,
-            nextBlueAddDetail: false,
-            nextBlueViewSearch: false,
-            matches: [],
-            unitSelected: null,
-            volumeSelected: null,
             title: null,
             description: null,
             volume: null,
-            listResourceData: null,
-            resourcesMatched: [],
-            showCreateSite: false,
-            showProductList: false,
-            showAddComponent: false,
-            siteSelected: null,
+            productError:false,
             files: [],
             filesStatus: [],
             images: [],
-            free: false,
-            price: null,
-            brand: null,
-            manufacturedDate: null,
-            model: null,
-            serial: null,
             startDate: null,
             endDate: null,
             currentUploadingImages: [],
             yearsList: [],
-            purpose: ["Defined", "Prototype", "Aggregate"],
-            condition: ["new", "used", "salvage"],
-            powerSupply: ["gas", "electric", "hybrid", "solid_fuel"],
             product: null,
             parentProduct: null,
             parentProductId: null,
@@ -116,10 +88,8 @@ class EventForm extends Component {
             isSubmitButtonPressed: false,
             disableVolume:false,
             loading:false,
-            energyRating:0,
-
             showForm:true,
-            templates:[],
+
             selectedTemplated:null,
             artifacts:[],
             is_manufacturer:false,
@@ -342,6 +312,9 @@ class EventForm extends Component {
     handleValidationProduct() {
 
 
+
+
+
         let fields = this.state.fields;
 
 
@@ -354,9 +327,25 @@ class EventForm extends Component {
 
 
 
+
+
         let {formIsValid,errors}= validateInputs(validations)
 
         this.setState({ errors: errors });
+
+
+        if (!this.state.productId) {
+
+            this.setState({
+                productError:true
+            })
+
+            formIsValid=false
+        }else{
+            this.setState({
+                productError:false
+            })
+        }
 
         return formIsValid;
     }
@@ -390,8 +379,13 @@ class EventForm extends Component {
             event.preventDefault();
             event.stopPropagation()
             if (!this.handleValidationProduct()) {
+
                 return
             }
+
+
+
+
             const form = event.currentTarget;
 
             this.setState({
@@ -426,8 +420,9 @@ class EventForm extends Component {
 
             this.setState({isSubmitButtonPressed: true})
 
-            axios
-                .post(
+
+
+            axios.post(
                     baseUrl + "event",
                     {
                         event: eventData,
@@ -455,7 +450,7 @@ class EventForm extends Component {
                     this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
 
                 });
-            // }
+
 
         }catch (e){
             console.log(e)
@@ -559,9 +554,6 @@ class EventForm extends Component {
                     name: artifacts[k].name,
                 },
             };
-            // fileItem.status = 1  //success
-            // fileItem.id = this.state.item.artifacts[k]._key
-            // fileItem.url = this.state.item.artifacts[k].blob_url
 
             images.push(artifacts[k]._key);
 
@@ -578,39 +570,10 @@ class EventForm extends Component {
     selectedProduct = (data) => {
 
         this.setState({
-            productId:data.key
+            productId:data.key?data.key:null
         })
-
-
     };
 
-
-
-    updateImages() {
-        axios
-            .post(
-                baseUrl + "product/artifact/replace",
-
-                {
-                    product_id: this.props.event.product._key,
-                    artifact_ids: this.state.images,
-                },
-            )
-            .then((res) => {
-                if (!this.props.parentProduct) {
-                    // this.setState({
-                    //     product: res.data.data,
-                    //     parentProduct: res.data.data,
-                    // });
-                }
-
-                this.triggerCallback();
-
-            })
-            .catch((error) => {
-
-            });
-    }
 
 
 
@@ -703,16 +666,12 @@ class EventForm extends Component {
 
                               {!this.props.hideProduct &&
                               <ProductAutocomplete
-
-
                                   suggestions={this.state.orgNames}
                                   selectedProduct={(data) =>
                                       this.selectedProduct(data)
                                   }
-
-
                               />}
-
+                              {this.state.productError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
                             <div className="row ">
 
                                 <div className="col-12 mt-2">
@@ -745,7 +704,7 @@ class EventForm extends Component {
                             </div>
 
                               <div className="row  mt-2">
-                              <div className="col-md-4 col-6">
+                              <div className="col-md-6 col-6">
                                   <div
                                       className={
                                           "custom-label text-bold text-blue "
@@ -784,7 +743,7 @@ class EventForm extends Component {
 
                               </div>
 
-                                  <div className="col-md-4 d-none  col-sm-12 col-xs-12  ">
+                                  <div className="col-md-6 d-none  col-sm-12 col-xs-12  ">
 
                                       <SelectArrayWrapper
 
@@ -802,7 +761,7 @@ class EventForm extends Component {
                                           title="Recurring interval"/>
 
                                   </div>
-                                  <div className="col-md-3  col-sm-6 col-xs-6  ">
+                                  <div className="col-6  ">
 
                                       <SelectArrayWrapper
 
@@ -817,26 +776,26 @@ class EventForm extends Component {
                                           title="Process"/>
 
                                   </div>
-                                  <div className="col-md-5  col-sm-12 col-xs-12  ">
+                                  <div className="col-md-12  col-sm-12 col-xs-12  ">
                                   <div className="row  ">
-                                      <div className="col-5">
+                                      <div className="col-12 ">
+                                          <div className="custom-label text-bold text-blue ">Recur interval</div>
+                                      </div>
+                                      <div className="col-12 connected-fields">
 
                                           <TextFieldWrapper
 
-
+                                              noMargin
                                               initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
                                               onChange={(value)=>this.handleChangeProduct(value,"recurValue")}
                                               error={this.state.errors["recurValue"]}
-                                              name="recurValue" title="Recur"
+                                              name="recurValue"
+                                              // title="Recur"
 
                                           />
-
-                                      </div>
-                                      <div className="col-7">
-
                                           <SelectArrayWrapper
 
-
+                                              noMargin
                                               initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
                                               select={"Select"}
                                               option={"value"}
@@ -847,10 +806,22 @@ class EventForm extends Component {
                                               }}
 
                                               options={RECUR_UNITS} name={"recurUnit"}
-                                              title="Recur Unit"/>
+                                              // title="Recur Unit"
+                                          />
+
+                                      </div>
+                                      <div className="col-7">
+
+
                                       </div>
                                   </div>
+
+
                                   </div>
+
+
+
+
                               </div>
 
                            <div className={"row"}>

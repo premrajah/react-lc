@@ -342,3 +342,36 @@ export  const  addDays=(date, days) =>{
     result.setDate(result.getDate() + days);
     return result;
 }
+
+
+
+export  const exportToCSV=(csvData) =>{
+
+    let data = "";
+    const tableData = [];
+
+    console.log(csvData)
+
+    const rows=csvData
+    rows.unshift(["Title","Stage","Process","Resolution Date","Recur (MS)","Recur Value","Recur Unit", "Description", "Product"])
+
+    for (const row of rows) {
+        const rowData = [];
+        for (const column of row) {
+            rowData.push(column);
+        }
+        tableData.push(rowData.join(","));
+    }
+
+    data += tableData.join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+    a.setAttribute("download", `event_list_${new Date().getDate()}.csv`);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    this.setState({
+        loadingEventsDownload:false
+    })
+}

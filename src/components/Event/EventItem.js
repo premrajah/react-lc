@@ -301,11 +301,11 @@ class EventItem extends Component {
 
     console.log(this.state.events)
 
-        let csvData = [];
+        let csvDataNew = [];
         this.state.events.forEach(item => {
             const {product, event, service_agent} = item;
 
-            csvData.push([
+            csvDataNew.push([
                 event.title,
                 event.stage,
                 event.process,
@@ -318,16 +318,15 @@ class EventItem extends Component {
             ])
         })
 
-       this.exportToCSV(csvData)
+       this.exportToCSV(csvDataNew)
     }
 
 
     exportToCSV=(csvData) =>{
 
         let data = "";
-        const tableData = [];
+        let tableDataNew = [];
 
-        console.log(csvData)
 
         const rows=csvData
          rows.unshift(["Title","Stage","Process","Resolution Date","Recur (MS)","Recur Value","Recur Unit", "Description", "Product"])
@@ -337,10 +336,10 @@ class EventItem extends Component {
             for (const column of row) {
                 rowData.push(column);
             }
-            tableData.push(rowData.join(","));
+            tableDataNew.push(rowData.join(","));
         }
 
-        data += tableData.join("\n");
+        data += tableDataNew.join("\n");
         const a = document.createElement("a");
         a.href = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
         a.setAttribute("download", `event_list_${new Date().getDate()}.csv`);
@@ -353,13 +352,12 @@ class EventItem extends Component {
         })
     }
 
-    deleteEvent=(eventId,type)=>{
+    deleteEvents=(eventId,type)=>{
 
 
 
         let url=`${baseUrl}event/${eventId}`
         axios
-            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
             .delete(url)
             .then(
                 (response) => {
@@ -376,9 +374,6 @@ class EventItem extends Component {
 
                 },
                 (error) => {
-                    // this.setState({
-                    //     notFound: true,
-                    // });
 
                     this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
 
@@ -455,8 +450,7 @@ class EventItem extends Component {
             {this.props.events.filter(item=> item.event.stage!=="responded").map(item=>
 
                 <>
-
-                        <ListItem className={`mb-2 bg-white 
+                    <ListItem className={`mb-2 bg-white 
                      ${item.event.stage !=="responded"?"new-event":"past-event"}`}
                               onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
@@ -704,7 +698,7 @@ class EventItem extends Component {
 
                                     </div>
                                     <div className="row  justify-content-start search-container  pb-2">
-                                        {/*<div className={"col-12"}>*/}
+
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">
@@ -733,9 +727,7 @@ class EventItem extends Component {
                                                             <>
                                                                 <div className="d-flex justify-content-center "
                                                                      style={{width: "32px", height: "32px"}}>
-                                                                    <div className="d-flex justify-content-center "
-                                                                        // style={{width: "50%", height: "50%"}}
-                                                                    >
+                                                                    <div className="d-flex justify-content-center ">
 
 
                                                                         {checkImage(artifact.blob_url)? <img
@@ -749,7 +741,7 @@ class EventItem extends Component {
                                                                                 <DescriptionIcon
                                                                                     onClick={()=>this.downloadDoc(artifact.blob_url)}
                                                                                     style={{ opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
-                                                                                {/*<Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />*/}
+
                                                                             </>
                                                                         }
 
@@ -796,7 +788,7 @@ class EventItem extends Component {
                                                     textAlign: "center",
                                                 }}>
                                                 <GreenButton
-                                                    onClick={() => this.deleteEvent(this.state.selectedEvent.event._key)}
+                                                    onClick={() => this.deleteEvents(this.state.selectedEvent.event._key)}
                                                     title={"Delete"}
                                                     type={"submit"}></GreenButton>
                                             </div>
@@ -944,8 +936,6 @@ class EventItem extends Component {
 
 
                                         }
-
-
 
                                     }
 

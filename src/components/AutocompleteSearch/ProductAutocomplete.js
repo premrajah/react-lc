@@ -318,7 +318,8 @@ class ProductAutocomplete extends Component {
             image: null,
         });
 
-        this.props.selectedCompany({
+
+        this.props.selectedProduct({
             name: null,
             key: null,
 

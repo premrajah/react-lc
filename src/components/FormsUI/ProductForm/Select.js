@@ -12,7 +12,7 @@ const SelectArrayWrapper = (props) => {
 
     const {label,title,option,notNative,initialValue,detailsHeading,details,noBorder,textAlignRight,subOption,subValueKey,
         placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect,
-        defaultValue,options,multiple,error, ...rest} = props;
+        defaultValue,options,multiple,error,noMargin, ...rest} = props;
 
     const [value, setValue] = React.useState();
 
@@ -39,7 +39,7 @@ const SelectArrayWrapper = (props) => {
                 {title} {details&&<CustomPopover heading={detailsHeading} text={details}><InfoIcon/></CustomPopover>}
 
             </div>}
-            <div className={"field-box mb-2"}>
+            <div className={`${noMargin?"":"mb-2 "} field-box `}>
                 <FormControl variant="outlined" >
                 {label && <InputLabel >{label}</InputLabel>}
 

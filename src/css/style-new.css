@@ -4717,3 +4717,15 @@ select option {
     margin: auto;
 
 }
+.connected-fields{display: flex}
+.connected-fields>.field-box>div>input{
+    border-right:  none!important;
+    border-right-width: 0;
+    border-radius:4px 0 0 4px;
+}
+
+.connected-fields>.field-box select{
+
+    border-radius:0px 4px  4px 0;
+
+}

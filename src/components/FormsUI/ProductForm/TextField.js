@@ -29,7 +29,7 @@ const TextFieldWrapper = ({
     initialValue,
     disabled,
     readonly,
-    customReadOnly,reset,
+    customReadOnly,reset,noMargin,
     ...otherProps
 }) => {
     // const [field, mata] = useField(name)
@@ -90,7 +90,7 @@ const TextFieldWrapper = ({
                 <div className={"text-gray-light  mb-0 ellipsis-end"}>{explanation}</div>
             )}
 
-            <div className={type != "hidden" ? "field-box mb-2" : "d-none"}>
+            <div className={`${type != "hidden" ? "field-box " : "d-none"} ${noMargin?"":"mb-2"}`}>
                 <CustomizedInput
                     disabled={disabled}
                     type={type}
@@ -102,6 +102,9 @@ const TextFieldWrapper = ({
                     onChange={handleChange}
                     name={name}
                     {...configTextField}
+
+
+
                 />
             </div>
             {error && (

@@ -779,13 +779,14 @@ class EventForm extends Component {
                                   <div className="col-md-12  col-sm-12 col-xs-12  ">
                                   <div className="row  ">
                                       <div className="col-12 ">
-                                          <div className="custom-label text-bold text-blue ">Recur interval</div>
+                                          <div className="custom-label text-bold text-blue ">Repeating interval</div>
                                       </div>
                                       <div className="col-12 connected-fields">
 
                                           <TextFieldWrapper
 
                                               noMargin
+                                              placeholder="Enter value here e.g. 1,2,3 .."
                                               initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
                                               onChange={(value)=>this.handleChangeProduct(value,"recurValue")}
                                               error={this.state.errors["recurValue"]}
@@ -796,8 +797,9 @@ class EventForm extends Component {
                                           <SelectArrayWrapper
 
                                               noMargin
+
                                               initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
-                                              select={"Select"}
+                                              select={"Select unit"}
                                               option={"value"}
                                               valueKey={"key"}
                                               onChange={(value)=> {

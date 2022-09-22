@@ -431,14 +431,8 @@ export default function BigCalenderEvents({
 
     const handleChangeSwitch = (event) => {
 
-        console.log(event.target.checked)
-
         setShowAll(event.target.checked)
 
-        // setState({
-        //     ...state,
-        //     [event.target.name]: event.target.checked,
-        // });
     };
     const fetchMonthEventsPageWise = (start, end, url, offset) => {
         axios

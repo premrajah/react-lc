@@ -22,11 +22,16 @@ import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import docs from "../../img/icons/docs.png";
 import ProductAutocomplete from "../AutocompleteSearch/ProductAutocomplete";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import moment from "moment";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import InputGroup from 'react-bootstrap/InputGroup';
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 var slugify = require('slugify')
 
@@ -89,7 +94,7 @@ class EventForm extends Component {
             disableVolume:false,
             loading:false,
             showForm:true,
-
+            showRepeatIntervalSelection:false,
             selectedTemplated:null,
             artifacts:[],
             is_manufacturer:false,
@@ -322,8 +327,18 @@ class EventForm extends Component {
             validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
 
+            validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields),
+
 
         ]
+
+
+        if (this.state.showRepeatIntervalSelection)
+            validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
+            validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
+
+
 
 
 
@@ -645,7 +660,13 @@ class EventForm extends Component {
 
     }
 
+     handleChangeSwitch = (event) => {
 
+       this.setState({
+           showRepeatIntervalSelection:!this.state.showRepeatIntervalSelection
+       })
+
+    };
 
 
 
@@ -714,7 +735,7 @@ class EventForm extends Component {
 
                                   <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                      <MobileDatePicker
+                                      <DesktopDatePicker
 
                                           className={"full-width-field"}
                                           disableHighlightToday={true}
@@ -778,44 +799,65 @@ class EventForm extends Component {
                                   </div>
                                   <div className="col-md-12  col-sm-12 col-xs-12  ">
                                   <div className="row  ">
-                                      <div className="col-12 ">
-                                          <div className="custom-label text-bold text-blue ">Repeating interval</div>
+                                      <div className="col-6">
+                                          <div className="row  ">
+                                              <div className="col-12 ">
+                                                  <div className="custom-label text-bold text-blue ">Repeat ?</div>
+                                              </div>
+                                              <div className="col-12 ">
+                                          <Stack direction="row" spacing={1} alignItems="center">
+                                              <Typography>No</Typography>
+
+                                                  <Switch
+                                                      onChange={this.handleChangeSwitch}
+                                                  color="primary"   />
+
+                                              <Typography>Yes</Typography>
+                                          </Stack>
+                                              </div>
+                                          </div>
                                       </div>
-                                      <div className="col-12 connected-fields">
 
-                                          <TextFieldWrapper
+                                      {this.state.showRepeatIntervalSelection &&
+                                      <div className="col-6 ">
+                                          <div className="row  ">
+                                              <div className="col-12 ">
+                                              <div className="custom-label text-bold text-blue ">Repeating interval</div>
+                                              </div>
+                                              <div className="col-12 connected-fields ">
 
-                                              noMargin
-                                              placeholder="Enter value here e.g. 1,2,3 .."
-                                              initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
-                                              onChange={(value)=>this.handleChangeProduct(value,"recurValue")}
-                                              error={this.state.errors["recurValue"]}
-                                              name="recurValue"
-                                              // title="Recur"
+                                                  <div>
+                                                  <TextFieldWrapper
+                                                      noMargin
+                                                      placeholder="Enter value here e.g. 1,2,3 .."
+                                                      initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
+                                                      onChange={(value)=>this.handleChangeProduct(value,"recurValue")}
+                                                      error={this.state.errors["recurValue"]}
+                                                      name="recurValue"
+                                                  />
+                                                  </div>
+                                             <div style={{width:"120px"}}>
+                                                  <SelectArrayWrapper
+                                                      noMargin
+                                                      initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
+                                                      select={"Select unit"}
+                                                      option={"value"}
+                                                      valueKey={"key"}
+                                                      error={this.state.errors["recurUnit"]}
+                                                      onChange={(value)=> {
+                                                          this.handleChangeProduct(value,"recurUnit")
+                                                      }}
+                                                      options={RECUR_UNITS} name={"recurUnit"}
+                                                  />
+                                             </div>
 
-                                          />
-                                          <SelectArrayWrapper
-
-                                              noMargin
-
-                                              initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
-                                              select={"Select unit"}
-                                              option={"value"}
-                                              valueKey={"key"}
-                                              onChange={(value)=> {
-                                                  this.handleChangeProduct(value,"recurUnit")
-
-                                              }}
-
-                                              options={RECUR_UNITS} name={"recurUnit"}
-                                              // title="Recur Unit"
-                                          />
-
-                                      </div>
-                                      <div className="col-7">
+                                              </div>
 
 
-                                      </div>
+                                          </div>
+                                      </div>}
+
+
                                   </div>
 
 
@@ -980,8 +1022,8 @@ class EventForm extends Component {
                                     </div>
                                 </div>
                             </div>
-</div>
-                                 <div className={"row"}>
+                      </div>
+                           <div className={"row"}>
                             <div className="col-12 text-center  mb-2">
                                 {this.state.files.length > 0 ? (
                                     this.state.files.filter((item) => item.status === 0).length >

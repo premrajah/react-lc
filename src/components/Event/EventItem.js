@@ -229,6 +229,7 @@ class EventItem extends Component {
 
              csvData.push([
                 event.title,
+                 product.product.name,
                 event.stage,
                 event.process,
                 getTimeFormat(event.resolution_epoch_ms),
@@ -236,7 +237,7 @@ class EventItem extends Component {
                  event.recur?event.recur.value:"",
                  event.recur?event.recur.unit:"",
                 event.description,
-                product.product.name,
+
             ])
         })
 

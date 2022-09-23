@@ -141,7 +141,7 @@ export default function BigCalenderEvents({
                     {event.stage==="resolved"?<del>event.title</del>:event.title}
                 </div>
 
-                {/*{event.desc && ":  " + event.desc}*/}
+
             </div>
         );
     };
@@ -675,7 +675,7 @@ export default function BigCalenderEvents({
                                 <span className="col-lg-8 col-xl-6 col-md-6    " >
                                      <BlueSmallBtn
                                          onClick={()=>setShowDownload(!showDownload)}
-                                         title={"Download CSV"}>
+                                         title={"Download"}>
                             <DownloadIcon  style={{fontSize:"20px"}} />
                         </BlueSmallBtn>
                                 </span>

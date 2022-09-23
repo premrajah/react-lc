@@ -36,6 +36,7 @@ import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import moment from "moment";
 import {Spinner} from "react-bootstrap";
+import {createEvents} from "ics";
 
 class EventItem extends Component {
         constructor(props) {
@@ -62,6 +63,7 @@ class EventItem extends Component {
                 showStagePopup:false,
                 deleteEvent:false,
                 csvData:[],
+                downloadType:null,
                 showDownload:false,
                 intervals:[
                     {key:86400000 ,value:"Every Day"},
@@ -244,7 +246,7 @@ class EventItem extends Component {
     }
 
 
-     fetchEventsPageWise =  ( url, offset,size) => {
+     fetchEventsPageWise =  ( url, offset,size,type) => {
         axios
             .get(url)
             .then(
@@ -256,11 +258,11 @@ class EventItem extends Component {
                     })
 
                     if (response.data.data.length == size) {
-                        this.getEvents( offset + size);
+                        this.getEvents( offset + size,type);
                     }else{
 
 
-                         this.downloadCustomEvent()
+                         this.downloadCustomEvent(type)
 
                     }
                 },
@@ -272,8 +274,11 @@ class EventItem extends Component {
 
 
 
-     getEvents = async ( offset) => {
+     getEvents = async ( offset,type) => {
 
+         this.setState({
+             downloadType:type
+         })
          this.setState({
              loadingEventsDownload:true,
 
@@ -292,33 +297,73 @@ class EventItem extends Component {
 
         url = `${url}&offset=${offset}&size=${size}`;
 
-          this.fetchEventsPageWise(url, offset,size);
+          this.fetchEventsPageWise(url, offset,size,type);
 
     };
 
 
-    downloadCustomEvent= async () => {
+    downloadCustomEvent= async (type) => {
 
-    console.log(this.state.events)
 
-        let csvDataNew = [];
-        this.state.events.forEach(item => {
-            const {product, event, service_agent} = item;
 
-            csvDataNew.push([
-                event.title,
-                event.stage,
-                event.process,
-                getTimeFormat(event.resolution_epoch_ms),
-                event.recur_in_epoch_ms?this.state.intervals.find((item)=> item.key=== event.recur_in_epoch_ms).value:"",
-                event.recur?event.recur.value:"",
-                event.recur?event.recur.unit:"",
-                event.description,
-                product.product?product.product.name:"",
-            ])
-        })
+        if (type=="csv"){
+            let csvDataNew = [];
+            this.state.events.forEach(item => {
+                const {product, event, service_agent} = item;
 
-       this.exportToCSV(csvDataNew)
+                csvDataNew.push([
+                    event.title,
+                    event.stage,
+                    event.process,
+                    getTimeFormat(event.resolution_epoch_ms),
+                    event.recur_in_epoch_ms?this.state.intervals.find((item)=> item.key=== event.recur_in_epoch_ms).value:"",
+                    event.recur?event.recur.value:"",
+                    event.recur?event.recur.unit:"",
+                    event.description,
+                    product.product?product.product.name:"",
+                ])
+            })
+            this.exportToCSV(csvDataNew)
+        }else if (type="ics"){
+
+            let icsDataNew = [];
+            this.state.events.forEach(item => {
+                const {product, event, service_agent} = item;
+                icsDataNew.push({
+                    // start: [
+                    //     getTimeFormat(event.resolution_epoch_ms)] ,
+                    start:[moment(event.resolution_epoch_ms).toDate().getFullYear(), moment(event.resolution_epoch_ms).toDate().getMonth(), moment(event.resolution_epoch_ms).toDate().getDate(), 9, 0],
+                    title:  event.title,
+                    description:  event.description,
+
+                    // url: i.url
+                })
+            })
+
+            createEvents(icsDataNew, (err, value) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                console.log(value);
+                // window.open("data:text/calendar;charset=utf8," + escape(value));
+
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(new Blob([value], { type: "data:text/calendar;charset=utf8" }));
+                a.setAttribute("download", `event_list_${new Date().getDate()}.ics`);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+
+            });
+
+            this.setState({
+                loadingEventsDownload:false
+            })
+
+        }
+
     }
 
 
@@ -430,7 +475,7 @@ class EventItem extends Component {
                                 headers={headers} filename={`event_list_${new Date().getDate()}.csv`}
                                 className=" btn-sm btn-gray-border  me-2"><>
                                             <DownloadIcon  style={{fontSize:"20px"}} />
-                                            Download CSV</>
+                                            Download</>
                             </CSVLink>}
 
                                          <FormControlLabel
@@ -712,11 +757,11 @@ class EventItem extends Component {
 
                                         {/*</div>*/}
                                         <div className={"col-6"}>
-                                            <p
+                                            {this.state.selectedEvent.artifacts.length>0&&     <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">
                                                 Attachments
-                                            </p>
+                                            </p>}
                                             <div
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
@@ -849,7 +894,7 @@ class EventItem extends Component {
 
                     <GlobalDialog
 
-                        heading={"Download CSV"}
+                        heading={"Download"}
                         show={this.props.showDownload}
                         hide={this.props.hide}
                         size={"sm"}
@@ -923,18 +968,41 @@ class EventItem extends Component {
                                 </div>
                             </div>
                             <div className="row justify-content-center mt-4">
-                                <div className=" col-auto">
+                                <div className="d-flex justify-content-center col-6">
 
 
-                                    <BlueSmallBtn loading={this.state.loadingEventsDownload}
-                                                  disabled={this.state.loadingEventsDownload} title={"Download CSV"} onClick={()=>{
+                                    <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType=="csv")}
+                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType=="csv")} title={"Download CSV"} onClick={()=>{
 
                                         this.setState({
                                             events:[]
                                         })
 
                                         if (this.state.startDate&&this.state.endDate){
-                                            this.getEvents(0);
+                                            this.getEvents(0,"csv");
+                                        }else{
+
+
+                                        }
+
+                                    }
+
+                                    } >
+                                        <DownloadIcon  style={{fontSize:"20px"}} /></BlueSmallBtn>
+
+                                </div>
+                                <div className="d-flex justify-content-center col-6">
+
+
+                                    <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType=="ics")}
+                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType=="ics")} title={"Download Calendar"} onClick={()=>{
+
+                                        this.setState({
+                                            events:[]
+                                        })
+
+                                        if (this.state.startDate&&this.state.endDate){
+                                            this.getEvents(0,"ics");
                                         }else{
 
 

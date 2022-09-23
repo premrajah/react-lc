@@ -8,6 +8,7 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import SubproductItem from "../Products/Item/SubproductItem";
+import TransitionTimeline from "./TransitionTimeline";
 
 class EventDetail extends Component {
         constructor(props) {
@@ -186,23 +187,7 @@ class EventDetail extends Component {
                                                 }
                                             </p>
                                         </div>
-                                        {/*{this.state.event.event.recur_in_epoch_ms &&*/}
-                                        {/*<div className={"col-6"}>*/}
-                                        {/*    <p*/}
-                                        {/*        style={{ fontSize: "18px" }}*/}
-                                        {/*        className=" text-bold text-blue mb-1">*/}
-                                        {/*        Recurring Interval*/}
-                                        {/*    </p>*/}
-                                        {/*    <p*/}
-                                        {/*        style={{ fontSize: "18px" }}*/}
-                                        {/*        className="text-gray-light  mb-1">*/}
-                                        {/*        /!*{*!/*/}
-                                        {/*        /!*   getTimeFormat( this.state.event.event.recur_in_epoch_ms)*!/*/}
-                                        {/*        /!*}*!/*/}
 
-                                        {/*        {this.state.intervals.find(item=> item.key==this.state.event.event.recur_in_epoch_ms).value}*/}
-                                        {/*    </p>*/}
-                                        {/*</div>}*/}
 
                                         {this.state.event.event.recur &&this.state.event.event.recur.value&&this.state.event.event.recur.unit &&
                                         <div className={"col-6"}>
@@ -230,11 +215,11 @@ class EventDetail extends Component {
                                         <SubproductItem hideMoreMenu hideDate smallImage={true} productId={this.state.event.product.product._key} />
 
                                         <div className={"col-6"}>
-                                            <p
+                                            {this.state.event.artifacts.length>0&&   <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">
                                                 Attachments
-                                            </p>
+                                            </p>}
                                             <div
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
@@ -280,6 +265,8 @@ class EventDetail extends Component {
                                     </>
                             </div>
                         </div>}
+
+                        {/*<TransitionTimeline />*/}
                     </>
             );
         }

@@ -620,7 +620,7 @@ export default function BigCalenderEvents({
                         <div className="sticky-top">
                             <CustomToolbar />
                             <Calendar
-
+                                popup
                                 formats={formats}
                                 toolbar={false}
                                 className={` ${

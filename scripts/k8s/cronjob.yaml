@@ -24,7 +24,7 @@ data:
             echo "Curl operation/command failed due to server return code - ${httpCode}"
             curl -X POST -H "Content-Type: application/json" \
                 -d '{"text":"${ENVIRONMENT} Frontend FAILED: Liveness Check of http://loop-react-ui-${ENVIRONMENT}.default.svc.cluster.local/"}' \
-                https://netorgft4168503.webhook.office.com/webhookb2/8c2429fc-b4dc-41da-87c0-c2fe090f57a8@c3483efd-38e0-49b4-9693-881fd828e542/IncomingWebhook/f8c59f7194bb4a0ca7a6f1b70404b731/479f5c58-c4c4-421e-a4cd-6ff34f0091aa
+                ${TEAMS_URL}
         fi
     fi
 ---

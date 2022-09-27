@@ -350,7 +350,7 @@ class EventItem extends Component {
                 icsDataNew.push({
                     // start: [
                     //     getTimeFormat(event.resolution_epoch_ms)] ,
-                    start:[moment(event.resolution_epoch_ms).toDate().getFullYear(), moment(event.resolution_epoch_ms).toDate().getMonth(), moment(event.resolution_epoch_ms).toDate().getDate(), 9, 0],
+                    start:[moment(event.resolution_epoch_ms).toDate().getFullYear(), moment(event.resolution_epoch_ms).toDate().getMonth()+1, moment(event.resolution_epoch_ms).toDate().getDate(), 9, 0],
                     title:  event.title,
                     description:  event.description,
                     categories:[event.process],

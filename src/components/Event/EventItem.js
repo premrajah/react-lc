@@ -21,14 +21,12 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CustomPopover from "../FormsUI/CustomPopover";
 import SubproductItem from "../Products/Item/SubproductItem";
-import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
 import {CSVLink} from "react-csv";
 import DownloadIcon from "@mui/icons-material/GetApp";
-import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
+
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -227,6 +225,8 @@ class EventItem extends Component {
         this.props.events.forEach(item => {
             const {product, event, service_agent} = item;
 
+
+
              csvData.push([
                 event.title,
                  product.product.name,
@@ -303,6 +303,23 @@ class EventItem extends Component {
     };
 
 
+
+      getRule=(event)=>{
+
+
+          if (event.recur&&event.recur.value&&event.recur.unit){
+
+
+              let unit=event.recur.unit=="DAY"?"DAILY":event.recur.unit=="WEEK"?"WEEKLY":event.recur.unit=="MONTH"?"MONTHLY": event.recur.unit=="YEAR"?"YEARLY":""
+
+              return `FREQ=${unit};INTERVAL=${event.recur.value}`
+
+          }else{
+              return ""
+          }
+
+    }
+
     downloadCustomEvent= async (type) => {
 
 
@@ -336,11 +353,13 @@ class EventItem extends Component {
                     start:[moment(event.resolution_epoch_ms).toDate().getFullYear(), moment(event.resolution_epoch_ms).toDate().getMonth(), moment(event.resolution_epoch_ms).toDate().getDate(), 9, 0],
                     title:  event.title,
                     description:  event.description,
-
+                    categories:[event.process],
+                    recurrenceRule:this.getRule(event)
                     // url: i.url
                 })
             })
 
+            console.log(icsDataNew)
             createEvents(icsDataNew, (err, value) => {
                 if (err) {
                     console.log(err);

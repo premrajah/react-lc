@@ -15,6 +15,7 @@ import PaginationLayout from "../../components/IntersectionOserver/PaginationLay
 import {seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import SiteFormNew from "../../components/Sites/SiteFormNew";
+import {showSiteModal} from "../../store/actions/actions";
 
 class Sites extends Component {
 
@@ -78,6 +79,12 @@ class Sites extends Component {
         this.setState({
             items:[]
         })
+        if (this.props.location.search.includes("add-site=true")) {
+
+            this.toggleSite(false)
+
+        }
+
 
     }
 

@@ -216,6 +216,15 @@ class ComponentsNavbar extends React.Component {
                     <Nav className={" justify-content-end menu-align-right"}>
                         {this.props.isLoggedIn && (
                             <>
+                                <NavItem className={"web-only mr-3"}>
+                                    <Link
+
+                                        to={"/sites?add-site=true"}
+                                        className="nav-link d-none d-lg-block wl-link-white"
+                                        color="default">
+                                        Add Site
+                                    </Link>
+                                </NavItem>
                             <NavItem className={"web-only mr-3"}>
                                 <Link
                                     onClick={this.showProductSelection}
@@ -225,6 +234,7 @@ class ComponentsNavbar extends React.Component {
                                     Add Products
                                 </Link>
                             </NavItem>
+
                             </>
                             )}
                         <NavItem className={"web-only mr-3"}>
@@ -236,28 +246,28 @@ class ComponentsNavbar extends React.Component {
                             </Link>
                         </NavItem>
 
-                        {this.props.isLoggedIn && (
-                            <>
+                        {/*{this.props.isLoggedIn && (*/}
+                        {/*    <>*/}
 
-                                <NavItem className={"web-only mr-3"}>
-                                    <Link
-                                        to={"/search-form"}
-                                        className="nav-link d-none d-lg-block wl-link-white"
-                                        color="default">
-                                        New Search
-                                    </Link>
-                                </NavItem>
+                        {/*        <NavItem className={"web-only mr-3"}>*/}
+                        {/*            <Link*/}
+                        {/*                to={"/search-form"}*/}
+                        {/*                className="nav-link d-none d-lg-block wl-link-white"*/}
+                        {/*                color="default">*/}
+                        {/*                New Search*/}
+                        {/*            </Link>*/}
+                        {/*        </NavItem>*/}
 
-                                <NavItem className={"web-only mr-3"}>
-                                    <Link
-                                        to={"/list-form"}
-                                        className="nav-link d-none d-lg-block wl-link-white  "
-                                        color="default">
-                                        New Listing
-                                    </Link>
-                                </NavItem>
-                            </>
-                        )}
+                        {/*        <NavItem className={"web-only mr-3"}>*/}
+                        {/*            <Link*/}
+                        {/*                to={"/list-form"}*/}
+                        {/*                className="nav-link d-none d-lg-block wl-link-white  "*/}
+                        {/*                color="default">*/}
+                        {/*                New Listing*/}
+                        {/*            </Link>*/}
+                        {/*        </NavItem>*/}
+                        {/*    </>*/}
+                        {/*)}*/}
 
 
                         {!this.props.isLoggedIn && (
@@ -369,45 +379,45 @@ class ComponentsNavbar extends React.Component {
                                     {/*<DropdownMenu className="dropdown-with-icons">*/}
                                         <Link className={"dropdown-item"} to="/account">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                           My Account
+                                           Account
                                         </Link>
 
                                         <Link className={"dropdown-item"} to="/sites">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Sites
+                                            Sites
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-products">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Products
+                                            Products
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-diary">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Diary
+                                            Diary
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-campaigns">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Campaigns
+                                            Campaigns
                                         </Link>
 
 
 
                                         <Link className={"dropdown-item"} to="/my-search">
                                             <i className="tim-icons icon-paper" />
-                                            My Searches
+                                            Searches
                                         </Link>
 
                                         <Link className={"dropdown-item"} to="/my-listings">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Listings
+                                            Listings
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-cycles">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Cycles
+                                            Cycles
                                         </Link>
 
                                         <Link className={"dropdown-item"} to="/approve">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                            My Approvals
+                                            Approvals
                                         </Link>
 
 

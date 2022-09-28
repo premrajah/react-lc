@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import React, {useEffect} from "react";
+import {connect} from "react-redux";
 import SettingsWhite from "../../img/icons/settings-blue.png";
 import PageHeader from "../../components/PageHeader";
 import Layout from "../../components/Layout/Layout";
@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import EditAccount from "./EditAccount";
 import CompanyInfo from "./CompanyInfo";
-import TransferScaling from "./TransferScaling";
 import Statistics from "../../views/loop-cycle/Statistics";
 import ChangePassword from "../../components/Account/ChangePassword";
 import ManageRole from "../../components/Account/ManageRole";
@@ -180,8 +179,6 @@ function MyAccount(props) {
 
 const mapStateToProps = (state) => {
     return {
-        // age: state.age,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,

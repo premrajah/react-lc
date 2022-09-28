@@ -46,15 +46,9 @@ class Approvals extends Component {
     };
 
     setActiveKey=(event,key)=>{
-
-
         this.setState({
             activeKey:key
         })
-
-
-
-
     }
 
 

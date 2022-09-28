@@ -222,7 +222,7 @@ class ComponentsNavbar extends React.Component {
                                         to={"/sites?add-site=true"}
                                         className="nav-link d-none d-lg-block wl-link-white"
                                         color="default">
-                                        Add Site
+                                        Add Sites
                                     </Link>
                                 </NavItem>
                             <NavItem className={"web-only mr-3"}>

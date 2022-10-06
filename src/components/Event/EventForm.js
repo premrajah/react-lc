@@ -337,11 +337,6 @@ class EventForm extends Component {
         let validations=[
             validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
-
-            validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields),
-
-
         ]
 
 
@@ -427,13 +422,6 @@ class EventForm extends Component {
                 description: data.get("description"),
                 resolution_epoch_ms: new Date(this.state.startDate).getTime() + 100,
                 process: data.get("process"),
-
-        let eventData=  {
-                title : data.get("title"),
-                description : data.get("description"),
-                resolution_epoch_ms : new Date(this.state.startDate).getTime()+100,
-                process : data.get("process"),
-
             }
 
 
@@ -446,7 +434,6 @@ class EventForm extends Component {
                 eventData.recur_in_epoch_ms = data.get("interval")
             }
 
-            console.log(eventData)
 
 
 

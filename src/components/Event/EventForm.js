@@ -321,17 +321,17 @@ class EventForm extends Component {
             validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
 
-            validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields),
-            validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields),
 
 
         ]
 
 
-        if (this.state.showRepeatIntervalSelection)
+        if (this.state.showRepeatIntervalSelection){
             validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
 
+
+        }
 
 
 

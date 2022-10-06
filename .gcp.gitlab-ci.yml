@@ -39,9 +39,9 @@
     - kubectl apply -f ./scripts/k8s/cronjob.yaml
 
 gcp_build_dev:
-  stage: dev_build
+  stage: build
   image: docker:git
-  needs: []
+  needs: ['start_to_teams']
   services:
     - docker:dind
   before_script:
@@ -66,7 +66,7 @@ gcp_build_dev:
     - develop_refactor
 
 gcp_deploy_dev:
-  stage: dev_deploy
+  stage: deploy
   needs: ['gcp_build_dev']
   dependencies: ['gcp_build_dev']
   image: kiwigrid/gcloud-kubectl-helm
@@ -81,9 +81,9 @@ gcp_deploy_dev:
     - develop-api2
 
 gcp_build_prod:
-  stage: prod_build
+  stage: build
   image: docker:git
-  needs: []
+  needs: ['start_to_teams']
   services:
     - docker:dind
   before_script:
@@ -107,7 +107,7 @@ gcp_build_prod:
     - master
 
 gcp_deploy_prod:
-  stage: prod_deploy
+  stage: deploy
   needs: ['gcp_build_prod']
   dependencies: ['gcp_build_prod']
   image: kiwigrid/gcloud-kubectl-helm
@@ -121,9 +121,9 @@ gcp_deploy_prod:
   when: manual
 
 gcp_build_stage:
-  stage: stage_build
+  stage: build
   image: docker:git
-  needs: []
+  needs: ['start_to_teams']
   services:
     - docker:dind
   before_script:
@@ -147,7 +147,7 @@ gcp_build_stage:
     - master
 
 gcp_deploy_stage:
-  stage: stage_deploy
+  stage: deploy
   needs: ['gcp_build_stage']
   dependencies: ['gcp_build_stage']
   image: kiwigrid/gcloud-kubectl-helm

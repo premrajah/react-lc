@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import axios from "axios/index";
-import {baseUrl, MIME_TYPES_ACCEPT, RECUR_UNITS} from "../../Util/Constants";
+import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import _ from "lodash";
 import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
@@ -57,6 +57,8 @@ class EventForm extends Component {
 
             stateSelected: null,
             states: [],
+            sites: [],
+            page: 1,
             fields: {},
             errors: {},
             fieldsSite: {},
@@ -66,6 +68,12 @@ class EventForm extends Component {
             units: [],
 
             productSelected: null,
+            nextBlue: false,
+            nextBlueAddDetail: false,
+            nextBlueViewSearch: false,
+            matches: [],
+            unitSelected: null,
+            volumeSelected: null,
             title: null,
             description: null,
             volume: null,
@@ -73,10 +81,19 @@ class EventForm extends Component {
             files: [],
             filesStatus: [],
             images: [],
+            free: false,
+            price: null,
+            brand: null,
+            manufacturedDate: null,
+            model: null,
+            serial: null,
             startDate: null,
             endDate: null,
             currentUploadingImages: [],
             yearsList: [],
+            purpose: ["Defined", "Prototype", "Aggregate"],
+            condition: ["new", "used", "salvage"],
+            powerSupply: ["gas", "electric", "hybrid", "solid_fuel"],
             product: null,
             parentProduct: null,
             parentProductId: null,
@@ -320,18 +337,13 @@ class EventForm extends Component {
         let validations=[
             validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
-
-
-
         ]
 
 
-        if (this.state.showRepeatIntervalSelection){
+        if (this.state.showRepeatIntervalSelection)
             validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
 
-
-        }
 
 
 
@@ -410,7 +422,6 @@ class EventForm extends Component {
                 description: data.get("description"),
                 resolution_epoch_ms: new Date(this.state.startDate).getTime() + 100,
                 process: data.get("process"),
-
             }
 
 
@@ -423,7 +434,6 @@ class EventForm extends Component {
                 eventData.recur_in_epoch_ms = data.get("interval")
             }
 
-            console.log(eventData)
 
 
 

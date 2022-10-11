@@ -1,23 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import { baseUrl } from "../../Util/Constants";
-import { IconButton, List, Skeleton, Tooltip } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import {baseUrl} from "../../Util/Constants";
+import {IconButton, List, Skeleton, Tooltip} from "@mui/material";
+import {makeStyles} from "@mui/styles";
 import MessengerMessagesTwoGroupItem from "./MessengerMessagesTwoGroupItem";
 import MessengerMessagesTwoSelectedMessage from "./MessengerMessagesTwoSelectedMessage";
 import MenuItem from "@mui/material/MenuItem";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import MessengerMessagesTwoFilterChats from "./MessengerMessagesTwoFilterChats";
-import FilterListIcon from "@mui/icons-material/Search";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import MessengerMessagesTwoOrgSearch from "./MessengerMessagesTwoOrgSearch";
 import WysiwygEditor from "./WysiwygEditor";
 import SendIcon from "@mui/icons-material/Send";
 import ClearIcon from "@mui/icons-material/Clear";
-import { LoaderAnimated } from "../../Util/GlobalFunctions";
+import {getInitials, LoaderAnimated} from "../../Util/GlobalFunctions";
 import draftToHtml from "draftjs-to-html";
-import { convertToRaw } from "draft-js";
+import {convertToRaw} from "draft-js";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import {Spinner} from "react-bootstrap";
 
 const newMessagePlaceHOlder = {
     message_group: { _id: 0 },
@@ -57,7 +59,15 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [sentMessageGroupKey, setSentMessageGroupKey] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [groupLoading, setGroupLoading] = useState(false);
+    const [chatEndReached, setChatEndReached] = useState(false);
+    const [groupListEndReached, setGroupListEndReached] = useState(false);
     const [updateMsgLoading, setUpdateMsgLoading] = useState(false);
+    const [scrollEnd, setScrollEnd] = useState(false);
+    const [offset, setOffset] = useState(0);
+    const [groupOffset, setGroupOffset] = useState(0);
+    const [groupPageSize, setGroupPageSize] = useState(40);
+    const [pageSize, setPageSize] = useState(10);
 
     useEffect(() => {
         handleSelectedItemCallback(0);
@@ -67,10 +77,72 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
         setUploadedFiles([]); // reset uploaded image files
     }, []);
 
-    const getAllMessageGroups = () => {
+    const listInnerRef = useRef();
+    const groupListInnerRef = useRef();
+
+    const onUpScroll = () => {
+        if (listInnerRef.current&&!chatEndReached) {
+            const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+
+            // console.log(scrollTop, scrollHeight, clientHeight)
+            // console.log(scrollTop-clientHeight , -(scrollHeight-50))
+
+            if (scrollTop-clientHeight < -(scrollHeight-50)) {
+                // console.log("reached top");
+
+
+                if (!chatEndReached){
+                    setOffset(offset+pageSize)
+
+                    setScrollEnd(true)
+                    getSelectedGroupMessage(selectedMessageGroupKey,false,offset )
+
+                }
+
+
+
+            }else{
+
+            }
+
+
+        }
+    };
+    const onDownScroll = () => {
+        if (groupListInnerRef.current&&!groupListEndReached) {
+            const { scrollTop, scrollHeight, clientHeight } = groupListInnerRef.current;
+
+            console.log(scrollTop, scrollHeight, clientHeight)
+            // console.log(scrollDown-clientHeight , -(scrollHeight-50))
+
+            if (scrollTop+clientHeight > (scrollHeight-50)) {
+                console.log("reached bottom");
+
+
+                if (!groupListEndReached){
+
+                    setGroupOffset(groupOffset+groupPageSize)
+                    setGroupLoading(true)
+                    getAllMessageGroups()
+
+
+
+                }
+
+
+
+            }else{
+
+            }
+
+
+        }
+    };
+
+    const getAllMessageGroups = (clear=false) => {
         setTrackedMessageGroups([]);
         axios
-            .get(`${baseUrl}message-group/non-empty/expand`)
+            .get(`${baseUrl}message-group/non-empty/expand?offset=${groupOffset}&size=${groupPageSize}`)
             .then((res) => {
                 const data = res.data.data;
                 let tempTrackedMessageGroups = [];
@@ -79,9 +151,13 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     tempTrackedMessageGroups.push({ groupKey: d.message_group._key, index: index });
                 });
 
-                setAllGroups(data);
-                setFilteredGroups(data);
-                setTrackedMessageGroups(tempTrackedMessageGroups);
+                setAllGroups((group) => group.concat(data));
+                setFilteredGroups((group) => group.concat(data));
+                setTrackedMessageGroups((group) => group.concat(data));
+
+                // setAllGroups(data);
+                // setFilteredGroups(data);
+                // setTrackedMessageGroups(tempTrackedMessageGroups);
 
                 // on first load handle click
                 handleSelectedItemCallback(0);
@@ -92,26 +168,51 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
             });
     };
 
-    const getSelectedGroupMessage = (key, clear) => {
+    const getSelectedGroupMessage = (key, clear=true,offsetCurrent=0) => {
+
+        console.log(key,clear)
+
         if (!key) return;
 
         setClickedMessageKey(key);
         setSendButtonDisable(false);
 
         if (clear){
+            setOffset(0)
             setLoading(true)
             setClickedMessage([])
+            setChatEndReached(false)
         }else{
             setUpdateMsgLoading(true)
         }
 
 
         axios
-            .get(`${baseUrl}message-group/${key}/message`)
+            .get(`${baseUrl}message-group/${key}/message?offset=${offset}&size=${pageSize}`)
             .then((res) => {
-                setClickedMessage([]); // clear previous chat
 
-                setClickedMessage(res.data.data);
+                if (clear){
+                    setClickedMessage([]); // clear previous chat
+
+                    if (res.data.data.length<pageSize){
+                        setChatEndReached(true)
+                    }else{
+                        setChatEndReached(false)
+                    }
+                    setClickedMessage(res.data.data);
+
+                }else{
+
+                    setClickedMessage((chat) => chat.concat(res.data.data));
+                    setScrollEnd(false)
+
+                    if (res.data.data.length==0){
+                        setChatEndReached(true)
+                    }else{
+                        setChatEndReached(false)
+                    }
+                }
+
                 handleResetWysiwygEditor();
 
                 setLoading(false)
@@ -125,6 +226,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     const handleGroupClickCallback = (key,clear) => {
 
 
+        setScrollEnd(false)
         if (!key) {
             setClickedMessage([]); // clear selected message for new chat
         }
@@ -183,7 +285,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
             setFilteredGroups([newMessagePlaceHOlder, ...allGroups]);
             handleSelectedItemCallback(0);
             handleGroupClickCallback("");
-            setNewMessageDisplay("Select organisations to send new message");
+            // setNewMessageDisplay("Select organisations to send new message");
         }
 
         if (filteredGroups[0].message_group._id === 0) {
@@ -310,36 +412,18 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
     return (
         <React.Fragment>
-            <div className="row " style={{ height: "45px" }}>
+            <div className="row g-0 " style={{ height: "45px" }}>
                 <div className="col-md-4">
-                    <div className="row">
-                        <div className="col-md-10 d-flex justify-content-around">
-                            {filterVisibility && (
-                                <>
-                                    <MessengerMessagesTwoFilterChats
+                    <div className="row g-0">
+                        <div className="col-md-12 d-flex justify-content-between">
+                            <>
+                                <MessengerMessagesTwoFilterChats
                                         handleFilerCallback={(v) => handleFilterCallback(v)}
                                         handleClearInputCallback={(v) =>
                                             handleClearInputCallback(v)
                                         }
                                     />
-                                    <div className="d-flex justify-content-start align-items-center">
-                                        {filteredGroups.length}
-                                    </div>
                                 </>
-                            )}
-                        </div>
-
-                        <div className="col-md-1">
-                            <Tooltip title="Filter chats">
-                                <div
-                                    className="d-flex justify-content-center align-items-center"
-                                    style={{ height: "45px" }}>
-                                    <FilterListIcon onClick={() => handleFilterVisibility()} />
-                                </div>
-                            </Tooltip>
-                        </div>
-
-                        <div className="col-md-1">
                             <Tooltip title="New Chat">
                                 <div
                                     className="d-flex justify-content-center align-items-center"
@@ -348,6 +432,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                 </div>
                             </Tooltip>
                         </div>
+
                     </div>
                 </div>
                 <div className="col-md-8">
@@ -361,9 +446,13 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
             </div>
 
             <div className="row g-0 g-0 no-gutters ">
-                <div className="col-md-4 msg-group-box">
+                <div
+
+                     className="col-md-4 msg-group-box">
                     {filteredGroups.length > 0 ? (
                         <List
+                            onScroll={onDownScroll}
+                            ref={groupListInnerRef}
                             sx={{
                                 height: "625px",
                                 minHeight: "625px",
@@ -383,23 +472,43 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                     />
                                 </>
                             ))}
+
+
+                            {groupLoading&&<>
+                                {/*<Skeleton className="mb-1" variant="rectangular" height="52px" >*/}
+
+
+                                    <div className="spinner-chat"><Spinner
+                                        className="mr-2"
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    /></div>
+                                {/*</Skeleton>*/}
+
+                            </>}
                         </List>
                     ) : (
-                        <div>
-                            {filteredGroups.length === 0 && <div>No groups yet.</div>}
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton className="mb-1" variant="rectangular" height="40px" />
-                            <Skeleton variant="rectangular" height="40px" />
+                        <div style={{height:"625px", overflowY:"scroll"}}>
+
+                            {/*<Skeleton className="mb-1" animation="wave" variant="rectangular" height="100%" />*/}
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            <Skeleton className="mb-1" variant="rectangular" height="52px" />
+                            {/*<Skeleton variant="rectangular" height="40px" />*/}
                         </div>
                     )}
                 </div>
@@ -407,15 +516,23 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     <div className="row">
                         <div className="col position-relative" style={{ height: "500px", minHeight: "500px" }}>
 
+
+
                             {loading && <div className="loader-absolute">{LoaderAnimated()}</div>}
                             {clickedMessage.length > 0 && (
                                 <div
+
                                     style={{
                                         height: "500px",
                                         minHeight: "500px",
                                         maxHeight: "500px",
                                     }}>
+
                                     <MessengerMessagesTwoSelectedMessage
+                                        chatEndReached={chatEndReached}
+                                        scrollEnd={scrollEnd}
+                                        listInnerRef={listInnerRef}
+                                        onScroll={onUpScroll}
                                         groupMessageKey={selectedMessageGroupKey}
                                         messages={clickedMessage}
                                     />
@@ -495,6 +612,10 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
         </React.Fragment>
     );
 };
+
+
+
+
 
 const HandleGroupDataDisplay = ({
     group,

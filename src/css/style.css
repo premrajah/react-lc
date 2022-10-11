@@ -4729,3 +4729,32 @@ select option {
     border-radius:0px 4px  4px 0;
 
 }
+.spinner-chat{
+    text-align: center;background:transparent;
+    position:absolute;
+
+    margin:10px 0;
+    width:100%;
+}
+
+
+/*chat tabs*/
+
+
+.w3-padding {
+    padding: 8px 16px!important;
+}
+.w3-bottombar {
+    border-bottom: 6px solid #ccc!important;
+}
+.w3-col, .w3-half, .w3-third, .w3-twothird, .w3-threequarter, .w3-quarter {
+    float: left;
+    width: 100%;
+
+}
+.w3-container, .w3-panel {
+    padding: 0.01em 16px;
+}
+.w3-border-red {
+    border-color: var(--lc-purple)!important;
+}

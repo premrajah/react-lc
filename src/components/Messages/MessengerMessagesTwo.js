@@ -14,11 +14,9 @@ import MessengerMessagesTwoOrgSearch from "./MessengerMessagesTwoOrgSearch";
 import WysiwygEditor from "./WysiwygEditor";
 import SendIcon from "@mui/icons-material/Send";
 import ClearIcon from "@mui/icons-material/Clear";
-import {getInitials, LoaderAnimated} from "../../Util/GlobalFunctions";
+import {LoaderAnimated} from "../../Util/GlobalFunctions";
 import draftToHtml from "draftjs-to-html";
 import {convertToRaw} from "draft-js";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import {Spinner} from "react-bootstrap";
 
 const newMessagePlaceHOlder = {
@@ -59,6 +57,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
     const [uploadedImages, setUploadedImages] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [uploadedArtifacts, setUploadedArtifacts] = useState([]);
     const [sentMessageGroupKey, setSentMessageGroupKey] = useState(null);
     const [loading, setLoading] = useState(false);
     const [groupLoading, setGroupLoading] = useState(false);
@@ -157,16 +156,10 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
 
                 if (!groupListEndReached){
-
                     setGroupOffset(groupOffset+groupPageSize)
                     setGroupLoading(true)
-                    getAllMessageGroups(false)
-
-
-
+                    getAllMessageGroups(false,false,(groupOffset+groupPageSize))
                 }
-
-
 
             }else{
 
@@ -176,10 +169,10 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
         }
     };
 
-    const getAllMessageGroups = (handleClick=false, resetIndex=false) => {
+    const getAllMessageGroups = (handleClick=false, resetIndex=false,currentGroupOffset=0) => {
         setTrackedMessageGroups([]);
         axios
-            .get(`${baseUrl}message-group/non-empty/expand?offset=${groupOffset}&size=${groupPageSize}`)
+            .get(`${baseUrl}message-group/non-empty/expand?offset=${currentGroupOffset}&size=${groupPageSize}`)
             .then((res) => {
                 const data = res.data.data;
                 let tempTrackedMessageGroups = [];
@@ -191,6 +184,11 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
                 setGroupLoading(false)
 
+
+                if (data.length==0){
+                    setGroupListEndReached(true)
+                }
+
                 if (resetIndex){
                     handleSelectedItemCallback(0);
                     setAllGroups(data)
@@ -201,8 +199,6 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     setFilteredGroups((group) => group.concat(data));
                     setTrackedMessageGroups((group) => group.concat(data));
                 }
-
-
 
 
                 // on first load handle click
@@ -343,6 +339,8 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
             setFilteredGroups([newMessagePlaceHOlder, ...allGroups]);
             handleSelectedItemCallback(0);
             handleGroupClickCallback("");
+            setClickedMessage([])
+            setActiveTab(0)
             // setNewMessageDisplay("Select organisations to send new message");
         }
 
@@ -355,9 +353,10 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
         }
     };
 
-    const handleImageUploadCallback = (values, files) => {
+    const handleImageUploadCallback = (values, files,artifacts) => {
         setUploadedImages(values);
         setUploadedFiles(files);
+        setUploadedArtifacts(artifacts)
     };
 
     const handleClearInputCallback = (v) => {
@@ -412,7 +411,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
             payload = {
                 message: {
                     type: "message",
-                    text: messageText,
+                    text: messageText?messageText:"",
                 },
                 to_org_ids: orgIds,
                 ...(uploadedImages.length > 0 && { linked_artifact_ids: uploadedImages }),
@@ -423,7 +422,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
             payload = {
                 message: {
                     type: "message",
-                    text: messageText,
+                    text: messageText?messageText:"",
                 },
                 to_org_ids: [],
                 message_group_id: clickedMessageKey,
@@ -435,6 +434,11 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     };
 
     const postMessage = (payload, messageType) => {
+        setUploadedImages([]); //reset uploaded images
+        setUploadedFiles([]); // reset uploaded image files
+        setUploadedArtifacts([])
+
+
         setSentMessageGroupKey(null); // reset
         axios
             .post(`${baseUrl}message/chat`, payload)
@@ -455,13 +459,13 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     if (filterVisibility) {
                         handleFilterVisibility();
                     }
-                  setOffset(0)
+                    setOffset(0)
+                    setGroupOffset(0)
                     getSelectedGroupMessage(selectedMessageGroupKey,true,false)
-                    getAllMessageGroups(false,true);
+                    getAllMessageGroups(false,true,0);
                 }
 
-                setUploadedImages([]); //reset uploaded images
-                setUploadedFiles([]); // reset uploaded image files
+
 
             })
             .catch((error) => {
@@ -531,6 +535,8 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                         index={index}
                                         handleGroupClickCallback={handleGroupClickCallback}
                                         handleSelectedItemCallback={handleSelectedItemCallback}
+
+
                                     />
                                 </>
                             ))}
@@ -588,6 +594,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                         height: "500px",
                                         minHeight: "500px",
                                         maxHeight: "500px",
+
                                     }}>
 
                                     <MessengerMessagesTwoSelectedMessage
@@ -605,18 +612,18 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                     />
                                 </div>
                             )}
-                            {newMessageDisplay && (
-                                <div className="row mt-2">
-                                    <div className="col">
-                                        {selectedOrgs.length === 0 && (
-                                            <div>{newMessageDisplay}</div>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
+                            {/*{newMessageDisplay && (*/}
+                            {/*    <div className="row mt-2">*/}
+                            {/*        <div className="col">*/}
+                            {/*            {selectedOrgs.length === 0 && (*/}
+                            {/*                <div>{newMessageDisplay}</div>*/}
+                            {/*            )}*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row d-none">
                         <div className="col">
                             {selectedOrgs.length > 0 && (
                                 <small>
@@ -632,7 +639,10 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                         </div>
                     </div>
                     {activeTab ===0&&
-                    <div style={{minHeight: "125px"}} className="row g-0 no-gutters  editor-box ">
+                    <div
+                        style={{minHeight: "125px"}}
+
+                        className="row g-0 no-gutters  editor-box ">
                         <div className="col-sm-11">
                             <WysiwygEditor
                                 // allOrgs={allGroups}
@@ -641,14 +651,29 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                 handleEnterCallback={(value, content) =>
                                     handleEnterCallback(value, content)
                                 }
-                                handleImageUploadCallback={(values, files) =>
-                                    handleImageUploadCallback(values, files)
+                                uploadedFiles={uploadedFiles}
+                                uploadedImages={uploadedImages}
+                                uploadedArtifacts={uploadedArtifacts}
+
+                                handleImageUploadCallback={(values, files,artifacts) =>
+                                    handleImageUploadCallback(values, files,artifacts)
                                 }
                             />
                         </div>
-                        <div className="col-sm-1 d-flex justify-content-center align-items-center">
+                        <div className="col-sm-1 d-flex justify-content-center align-items-start">
                             <div>
-                                <div style={{ minHeight: "51px" }}>
+
+                                <div>
+                                    <Tooltip title="Send" placement="right-end" arrow>
+                                        <IconButton
+                                            className={classes.customHoverFocus}
+                                            disabled={!(messageText || uploadedImages.length > 0)}
+                                            onClick={() => handleSendMessage()}>
+                                            <SendIcon fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                                <div style={{  }}>
                                     {(messageText || uploadedImages.length > 0) && (
                                         <Tooltip title="Clear" placement="right-start" arrow>
                                             <IconButton
@@ -657,20 +682,10 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                                     !(messageText || uploadedImages.length > 0)
                                                 }
                                                 onClick={() => handleResetWysiwygEditor()}>
-                                                <ClearIcon fontSize="large" />
+                                                <ClearIcon fontSize="small" />
                                             </IconButton>
                                         </Tooltip>
                                     )}
-                                </div>
-                                <div>
-                                    <Tooltip title="Send" placement="right-end" arrow>
-                                        <IconButton
-                                            className={classes.customHoverFocus}
-                                            disabled={!(messageText || uploadedImages.length > 0)}
-                                            onClick={() => handleSendMessage()}>
-                                            <SendIcon fontSize="large" />
-                                        </IconButton>
-                                    </Tooltip>
                                 </div>
                             </div>
                         </div>

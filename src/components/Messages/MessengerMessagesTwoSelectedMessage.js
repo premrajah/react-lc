@@ -65,9 +65,9 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
     return (
         <>
 
-<>
+<div style={{width:"100%"}}>
 
-    <div className="row">
+    <div className="row g-0">
         <div className="col-12 d-flex">
         <a href="javascript:void(0)" onClick={()=>setActiveTab(0)}>
             <div className={`w3-third tablink w3-bottombar w3-hover-light-grey w3-padding ${activeTab===0?"w3-border-red":""}`}>Chat</div>
@@ -77,7 +77,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
         </a>
         </div>
     </div>
-    <div className={`row`}>
+    <div className={`row g-0`}>
         <div className="col-12 p-2">
                         {scrollEnd &&
                         <div className="spinner-chat"><Spinner
@@ -95,7 +95,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
                                 className="mb-5" style={{
                                 flexFlow:`${activeTab===0?"column-reverse":""}`,
                                 display: "flex",
-                                height: "400px", minHeight: "400px", maxHeight: "400px", overflow: "auto", overflowX: "hidden" }}>
+                                height: "400px", minHeight: "400px",  maxHeight: "400px", overflow: "auto", overflowX: "hidden" }}>
 
                                 <>
                                     {activeTab===0? messages.map((m, i) => (
@@ -190,7 +190,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
 
         </div>
 
-</>
+</div>
 
         </>
     );

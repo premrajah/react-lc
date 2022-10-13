@@ -4758,3 +4758,28 @@ select option {
 .w3-border-red {
     border-color: var(--lc-purple)!important;
 }
+.wysiwyg-wrapper{
+    position: relative;
+    background: white;
+}
+.wysiwyg-toolbar{
+    position: absolute;
+    top:100%;
+    left: 0;
+    width:100%;
+}
+.wysiwyg-toolbar{
+    text-align: center;
+    display: flex;
+    background: transparent!important;
+}
+.message-upload-images-container{
+    position: absolute;
+    z-index: 11;
+    top: -52px;
+
+}
+.message-upload-images-container .file-uploader-thumbnail {
+    height: 48px!important;
+    width: 48px!important;
+}

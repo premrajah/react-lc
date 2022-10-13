@@ -16,7 +16,7 @@ import * as actionCreator from "../../store/actions/actions";
 const LC_PURPLE = "#27245C";
 const LC_PINK = "#D31169";
 
-const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
+const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
     const [showEntity, setShowEntity] = useState(false);
     const [entityObj, setEntityObj] = useState({});
     const [matchData, setMatchData] = useState(null);
@@ -109,7 +109,7 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
                             {m.message.entity_type === "Product" && (
                                 <div>
                                     <div className="d-flex">
-                                        <div className="mr-2 text-mute">
+                                        <div className="me-2 text-mute">
                                             {m.message.entity_type}
                                         </div>
                                         <div className="text-pink" style={{ cursor: "pointer" }}>
@@ -130,7 +130,7 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
                             {m.message.entity_type === "Match" && (
                                 <div>
                                     <div className="d-flex">
-                                        <div className="mr-2 text-mute">
+                                        <div className="me-2 text-mute">
                                             {m.message.entity_type}
                                         </div>
                                         <div
@@ -262,4 +262,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessengerMessageTwoMessageBubble);
+export default connect(mapStateToProps, mapDispatchToProps)(MessengerChatBox);

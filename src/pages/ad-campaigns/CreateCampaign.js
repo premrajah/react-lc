@@ -1882,15 +1882,9 @@ let item=null
 
                                                     variant="contained"
                                                     color="primary"
-                                                    onClick={(e)=> {
-
-                                                        this.handleNext(e)}}
-
-
-
+                                                    onClick={(e)=> {this.handleNext(e)}}
                                                     loading={this.state.loading}
                                                     disabled={this.state.loading}
-
                                                     className={" btn-gray-border "}
                                                     title={this.state.files.length > 0 ? (
                                                             this.state.files.filter((item) => item.status === 0).length >
@@ -1901,7 +1895,6 @@ let item=null
                                                 </GreenSmallBtn>
                                             </div>
                                             <div className="col-6 text-right pe-5 mt-0">
-                                        {/*{this.state.activeStep===2&&*/}
                                         <GreenSmallBtn
 
                                             variant="contained"

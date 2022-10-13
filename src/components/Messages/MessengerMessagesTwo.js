@@ -55,6 +55,8 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     const [newMessageDisplay, setNewMessageDisplay] = useState(null);
     const [sendButtonDisable, setSendButtonDisable] = useState(false);
     const [selectedMessageGroupKey, setSelectedMessageGroupKey] = useState(null);
+    const [selectedMessageGroupOrgs, setSelectedMessageGroupOrgs] = useState([]);
+
     const [uploadedImages, setUploadedImages] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [sentMessageGroupKey, setSentMessageGroupKey] = useState(null);
@@ -68,20 +70,24 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     const [groupOffset, setGroupOffset] = useState(0);
     const [groupPageSize, setGroupPageSize] = useState(40);
     const [pageSize, setPageSize] = useState(10);
+    const [activeTab, setActiveTab] = useState(0);
 
     useEffect(() => {
-        handleSelectedItemCallback(0);
-        getAllMessageGroups();
+        // handleSelectedItemCallback(0);
+        getAllMessageGroups(true,true);
         setSendButtonDisable(false);
         setUploadedImages([]); // reset uploaded images
         setUploadedFiles([]); // reset uploaded image files
     }, []);
 
     const listInnerRef = useRef();
+    const listInnerRefTable = useRef();
     const groupListInnerRef = useRef();
 
+
+
     const onUpScroll = () => {
-        if (listInnerRef.current&&!chatEndReached) {
+        if (listInnerRef.current&&!chatEndReached&&(!updateMsgLoading)) {
             const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
 
             // console.log(scrollTop, scrollHeight, clientHeight)
@@ -95,7 +101,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     setOffset(offset+pageSize)
 
                     setScrollEnd(true)
-                    getSelectedGroupMessage(selectedMessageGroupKey,false,offset )
+                    getSelectedGroupMessage(selectedMessageGroupKey,false,false,offset+pageSize )
 
                 }
 
@@ -108,22 +114,53 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
         }
     };
+
+    const onDownScrollTable = () => {
+
+        // console.log("detect scroll")
+        // if (listInnerRefTable.current&&!chatEndReached&&(!updateMsgLoading)) {
+        //     const { scrollTop, scrollHeight, clientHeight } = listInnerRefTable.current;
+        //
+        //     console.log(scrollTop, scrollHeight, clientHeight)
+        //     console.log(scrollTop-clientHeight , -(scrollHeight-100))
+        //
+        //     if (scrollTop+clientHeight > (scrollHeight-50)) {
+        //         // console.log("reached top");
+
+
+                if (!chatEndReached){
+                    setOffset(offset+pageSize)
+
+                    setScrollEnd(true)
+                    getSelectedGroupMessage(selectedMessageGroupKey,false,false,offset+pageSize )
+
+                }
+
+
+        //     }else{
+        //
+        //     }
+        //
+        //
+        // }
+    };
+
     const onDownScroll = () => {
-        if (groupListInnerRef.current&&!groupListEndReached) {
+        if (groupListInnerRef.current&&!groupListEndReached&&(!groupLoading)) {
             const { scrollTop, scrollHeight, clientHeight } = groupListInnerRef.current;
 
-            console.log(scrollTop, scrollHeight, clientHeight)
+            // console.log(scrollTop, scrollHeight, clientHeight)
             // console.log(scrollDown-clientHeight , -(scrollHeight-50))
 
             if (scrollTop+clientHeight > (scrollHeight-50)) {
-                console.log("reached bottom");
+                // console.log("reached bottom");
 
 
                 if (!groupListEndReached){
 
                     setGroupOffset(groupOffset+groupPageSize)
                     setGroupLoading(true)
-                    getAllMessageGroups()
+                    getAllMessageGroups(false)
 
 
 
@@ -139,7 +176,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
         }
     };
 
-    const getAllMessageGroups = (clear=false) => {
+    const getAllMessageGroups = (handleClick=false, resetIndex=false) => {
         setTrackedMessageGroups([]);
         axios
             .get(`${baseUrl}message-group/non-empty/expand?offset=${groupOffset}&size=${groupPageSize}`)
@@ -151,24 +188,39 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     tempTrackedMessageGroups.push({ groupKey: d.message_group._key, index: index });
                 });
 
-                setAllGroups((group) => group.concat(data));
-                setFilteredGroups((group) => group.concat(data));
-                setTrackedMessageGroups((group) => group.concat(data));
 
-                // setAllGroups(data);
-                // setFilteredGroups(data);
-                // setTrackedMessageGroups(tempTrackedMessageGroups);
+                setGroupLoading(false)
+
+                if (resetIndex){
+                    handleSelectedItemCallback(0);
+                    setAllGroups(data)
+                    setFilteredGroups(data)
+                    setTrackedMessageGroups(data)
+                }else{
+                    setAllGroups((group) => group.concat(data));
+                    setFilteredGroups((group) => group.concat(data));
+                    setTrackedMessageGroups((group) => group.concat(data));
+                }
+
+
+
 
                 // on first load handle click
-                handleSelectedItemCallback(0);
-                data.length > 0 && handleGroupClickCallback(data[0].message_group._key);
+
+                if (handleClick){
+
+                    setSelectedMessageGroupOrgs(data[0].orgs.filter(org=>org._id!=userDetail.orgId))
+                    data.length > 0 && handleGroupClickCallback(data[0].message_group._key);
+                }
+
+
             })
             .catch((error) => {
                 showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
             });
     };
 
-    const getSelectedGroupMessage = (key, clear=true,offsetCurrent=0) => {
+    const getSelectedGroupMessage = (key, clear=true,loading=true, currentOffset=0) => {
 
         console.log(key,clear)
 
@@ -178,18 +230,22 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
         setSendButtonDisable(false);
 
         if (clear){
+
             setOffset(0)
-            setLoading(true)
-            setClickedMessage([])
+            setLoading(loading)
             setChatEndReached(false)
+
+
         }else{
             setUpdateMsgLoading(true)
         }
 
+        console.log(offset)
 
         axios
-            .get(`${baseUrl}message-group/${key}/message?offset=${offset}&size=${pageSize}`)
+            .get(`${baseUrl}message-group/${key}/message?offset=${currentOffset}&size=${pageSize}`)
             .then((res) => {
+                setUpdateMsgLoading(false)
 
                 if (clear){
                     setClickedMessage([]); // clear previous chat
@@ -203,7 +259,9 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
                 }else{
 
+                    // console.log(res.data.data)
                     setClickedMessage((chat) => chat.concat(res.data.data));
+                    // console.log(clickedMessage)
                     setScrollEnd(false)
 
                     if (res.data.data.length==0){
@@ -223,13 +281,13 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
             });
     };
 
-    const handleGroupClickCallback = (key,clear) => {
+    const handleGroupClickCallback = (key,clear=true) => {
 
 
         setScrollEnd(false)
-        if (!key) {
-            setClickedMessage([]); // clear selected message for new chat
-        }
+        // if (!key) {
+        //     setClickedMessage([]); // clear selected message for new chat
+        // }
         setNewMessageDisplay(null); // clear org visibility message
         setSelectedMessageGroupKey(key);
 
@@ -389,7 +447,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
                 if (messageType === "N") {
                     handleClearOrgSearch(); // clear selected orgs
-                    getAllMessageGroups();
+                    getAllMessageGroups(true,true);
                 }
 
                 if (messageType === "R") {
@@ -397,7 +455,9 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     if (filterVisibility) {
                         handleFilterVisibility();
                     }
-                    getAllMessageGroups();
+                  setOffset(0)
+                    getSelectedGroupMessage(selectedMessageGroupKey,true,false)
+                    getAllMessageGroups(false,true);
                 }
 
                 setUploadedImages([]); //reset uploaded images
@@ -452,6 +512,8 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     {filteredGroups.length > 0 ? (
                         <List
                             onScroll={onDownScroll}
+
+
                             ref={groupListInnerRef}
                             sx={{
                                 height: "625px",
@@ -529,10 +591,15 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                     }}>
 
                                     <MessengerMessagesTwoSelectedMessage
+                                        selectedMessageGroupOrgs={selectedMessageGroupOrgs}
                                         chatEndReached={chatEndReached}
                                         scrollEnd={scrollEnd}
                                         listInnerRef={listInnerRef}
+                                        listInnerRefTable={listInnerRefTable}
+                                        activeTab={activeTab}
                                         onScroll={onUpScroll}
+                                        setActiveTab={setActiveTab}
+                                        onDownScrollTable={onDownScrollTable}
                                         groupMessageKey={selectedMessageGroupKey}
                                         messages={clickedMessage}
                                     />
@@ -564,6 +631,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                             )}
                         </div>
                     </div>
+                    {activeTab ===0&&
                     <div style={{minHeight: "125px"}} className="row g-0 no-gutters  editor-box ">
                         <div className="col-sm-11">
                             <WysiwygEditor
@@ -606,7 +674,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>}
                 </div>
             </div>
         </React.Fragment>

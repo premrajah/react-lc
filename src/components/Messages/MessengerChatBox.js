@@ -14,6 +14,7 @@ import axios from "axios/index";
 import * as actionCreator from "../../store/actions/actions";
 import {Description} from "@mui/icons-material";
 import CustomPopover from "../FormsUI/CustomPopover";
+import {checkIfDocument, checkIfDocumentFromType} from "../../Util/GlobalFunctions";
 
 const LC_PURPLE = "#27245C";
 const LC_PINK = "#D31169";
@@ -175,14 +176,9 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
                                     key={`${item._ts_epoch_ms}_${item._key}`}
                                     style={{ cursor: "pointer" }}>
                                     <a href={item.blob_url} target="_blank" rel="noreferrer">
-                                        {/*<Avatar*/}
-                                        {/*    alt={item.name}*/}
-                                        {/*    src={item.blob_url}*/}
-                                        {/*    sx={{ width: 56, height: 56 }}*/}
-                                        {/*    variant="square"*/}
-                                        {/*/>*/}
-<CustomPopover text={item.name}>
-                                        <Description
+
+                                        {checkIfDocumentFromType(item.mime_type)?<CustomPopover text={item.name}>
+                                            <Description
                                             alt={item.name}
                                             style={{
                                                 fontSize: 56,
@@ -190,7 +186,19 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
                                                 margin: "auto",
                                             }}
                                         />
-</CustomPopover>
+                                        </CustomPopover>:
+                                            <CustomPopover text={item.name}>
+                                                <Avatar
+                                            alt={item.name}
+                                            src={item.blob_url}
+                                            sx={{ width: 56, height: 56 }}
+                                            variant="square"
+                                        />
+                                            </CustomPopover>
+                                        }
+
+
+
                                     </a>
                                 </div>
                             ))}

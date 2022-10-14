@@ -4783,3 +4783,14 @@ select option {
     height: 48px!important;
     width: 48px!important;
 }
+.editor-box{
+    position: absolute;
+    left: 0;
+    bottom: 44px;
+    width: 100%;
+    height: auto;
+}
+.messenger-message-bubble img{
+    height: 100px!important;
+    width: 100px!important;
+}

@@ -334,6 +334,27 @@ export const checkIfDocument=(file)=>{
     }
     else  return false
 }
+export const checkIfDocumentFromType=(mime_type)=>{
+
+
+    if (
+        mime_type === "application/pdf" ||
+        mime_type === "application/rtf" ||
+        mime_type === "application/msword" ||
+        mime_type === "text/rtf" ||
+        mime_type ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        mime_type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+        mime_type === "application/vnd.ms-excel"
+
+    ){
+
+
+        return true
+    }
+    else  return false
+}
 
 
 export  const  weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

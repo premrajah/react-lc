@@ -580,7 +580,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                         </div>
                     )}
                 </div>
-                <div className="col-md-8 msg-conversation-box">
+                <div className="col-md-8 msg-conversation-box position-relative">
                     <div className="row">
                         <div className="col position-relative" style={{ height: "500px", minHeight: "500px" }}>
 
@@ -640,7 +640,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     </div>
                     {activeTab ===0&&
                     <div
-                        style={{minHeight: "125px"}}
+                        // style={{minHeight: "125px"}}
 
                         className="row g-0 no-gutters  editor-box ">
                         <div className="col-sm-11">

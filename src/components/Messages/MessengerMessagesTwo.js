@@ -128,10 +128,10 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
 
                 if (!chatEndReached){
-                    setOffset(offset+pageSize)
-
-                    setScrollEnd(true)
-                    getSelectedGroupMessage(selectedMessageGroupKey,false,false,offset+pageSize )
+                    // setOffset(offset+pageSize)
+                    //
+                    // setScrollEnd(true)
+                    // getSelectedGroupMessage(selectedMessageGroupKey,false,false,offset+pageSize )
 
                 }
 

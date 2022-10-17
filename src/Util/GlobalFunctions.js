@@ -397,7 +397,28 @@ export  const exportToCSV=(csvData) =>{
         loadingEventsDownload:false
     })
 }
-export const DETECT_URL_REGEX=/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+export const DETECT_URL_REGEX= /(?<!href=")(\b[\w]+:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/
+
+export const linkifyText = (text) => {
+
+    let originalText=text
+
+    let newText=text
+    let matches=(DETECT_URL_REGEX).exec(originalText)
+
+
+    if (matches){
+        console.log(matches.length,matches)
+
+        for (let i=0;i<matches.length;i++){
+            newText=text.replace(matches[i],`<a target="_blank" href=${matches[i]}>${matches[i]} </a>`)
+        }
+    }
+
+
+    return newText
+}
+
 
 export const  urlify=(text)=> {
     const urlRegex = /(https?:\/\/[^\s]+)/g;

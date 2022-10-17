@@ -24,9 +24,11 @@ const MessengerMessagesTwoGroupItem = ({
 
                     className={"my-msg-class"}
                     primary={
-                        group.orgs.length > 0 &&
+                        group.orgs.length>0&&(   group.orgs.length > 1 ?
                         group.orgs.filter(item=> item._id!=userOrg).map((org, index) =>
-                            <HandleOrgDisplay org={org} index={index} />)
+                            <HandleOrgDisplay org={org} index={index} />):
+                            group.orgs.map((org, index) =>
+                                <HandleOrgDisplay org={org} index={index} />))
                     }
                 />
 

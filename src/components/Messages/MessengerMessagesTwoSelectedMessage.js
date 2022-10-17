@@ -112,10 +112,10 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
 <>
 
     <TableContainer
-        onScroll={()=>{
-            onDownScrollTable();
-        }}
-        ref={listInnerRefTable}
+        // onScroll={()=>{
+        //     onDownScrollTable();
+        // }}
+        // ref={listInnerRefTable}
         sx={{ width: "100%", maxHeight:"300" }} component={Paper}>
         <Table
             stickyHeader

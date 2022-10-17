@@ -505,7 +505,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     {orgSearchVisibility && (
                         <MessengerMessagesTwoOrgSearch
                             ref={orgSearchRef}
-                            handleOrgSelectedCallback={(v) => handleOrgSelectedCallback(v)}
+                            handleOrgSelectedCallback={(v) =>{ handleOrgSelectedCallback(v)}}
                         />
                     )}
                 </div>
@@ -535,7 +535,9 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                         selectedMenuItemIndex={selectedMenuItemIndex}
                                         group={g}
                                         index={index}
-                                        handleGroupClickCallback={handleGroupClickCallback}
+                                        handleGroupClickCallback={(key)=>{
+                                            setActiveTab(0);
+                                        handleGroupClickCallback(key)}}
                                         handleSelectedItemCallback={handleSelectedItemCallback}
 
 

@@ -368,6 +368,8 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     };
 
     const handleRichTextCallback = (value) => {
+
+
         const content = draftToHtml(convertToRaw(value));
 
         if (value.hasText()) {

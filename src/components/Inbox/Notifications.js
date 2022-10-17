@@ -29,6 +29,8 @@ const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 const ORG_REGEX = /(Org\/[\w\d-]+)/g;
 const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
 const CYCLE_REGEX = /Cycle\/([\w\d]+)/g;
+
+
 const MATCH_REGEX = /Match\/([\w\d]+)/g;
 const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
 const PRODUCT_REGISTRATION = /ProductRegistration\/([\w\d]+)/g;

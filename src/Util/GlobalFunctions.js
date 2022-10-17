@@ -2,6 +2,7 @@ import axios from "axios";
 import {baseUrl} from "./Constants";
 import React from "react";
 import moment from "moment/moment";
+import _ from "lodash";
 
 export const  capitalize=(sentence)=> {
 
@@ -395,4 +396,17 @@ export  const exportToCSV=(csvData) =>{
     this.setState({
         loadingEventsDownload:false
     })
+}
+export const DETECT_URL_REGEX=/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+
+export const  urlify=(text)=> {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    console.log(text.toString())
+    return text.toString().split(urlRegex)
+        .map(part => {
+            if(part.match(urlRegex)) {
+                return <a href={part}>{part}</a>;
+            }
+            return part;
+        });
 }

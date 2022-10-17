@@ -14,7 +14,10 @@ import axios from "axios/index";
 import * as actionCreator from "../../store/actions/actions";
 import {Description} from "@mui/icons-material";
 import CustomPopover from "../FormsUI/CustomPopover";
-import {checkIfDocument, checkIfDocumentFromType} from "../../Util/GlobalFunctions";
+import {checkIfDocument, checkIfDocumentFromType, DETECT_URL_REGEX, urlify} from "../../Util/GlobalFunctions";
+import Linkify from 'react-linkify';
+import * as ReactDOMServer from 'react-dom/server';
+import reactStringReplace from "react-string-replace";
 
 const LC_PURPLE = "#27245C";
 const LC_PINK = "#D31169";
@@ -90,10 +93,29 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
 
             <div className="row mt-2 mb-2">
                 <div className="col">
+                    {/*text = reactStringReplace(text, CYCLE_REGEX, (match, i) => (*/}
+                    {/*<Link*/}
+                    {/*    key={`${i}_${match}`}*/}
+                    {/*    to={`cycle/${match}`}*/}
+                    {/*    onClick={() => this.messageRead(messageId)}>*/}
+                    {/*    Cycle*/}
+                    {/*</Link>*/}
+                    {/*));*/}
                     <div
-                        dangerouslySetInnerHTML={createMarkup(m ? m.message.text : "")}
+                        dangerouslySetInnerHTML={(createMarkup(m ? (m.message.text) : ""))}
+                        // dangerouslySetInnerHTML= {{__html: <LinkifyText text={m.message.text} />}}
                         style={{ lineHeight: "0.8" }}
                     />
+                    {/*<div>{reactStringReplace(m.message.text,DETECT_URL_REGEX*/}
+                    {/*    ,(match,i)=>{*/}
+                    {/*        <Link*/}
+                    {/*          key={`${i}_${match}`}*/}
+                    {/*            to={`${match}`}*/}
+                    {/*        >*/}
+                    {/*            Some Url*/}
+                    {/*        </Link>*/}
+                    {/*    })}</div>*/}
+
                 </div>
             </div>
 
@@ -268,6 +290,16 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
         </div>
     );
 };
+
+
+
+
+    const LinkifyText = (text) => {
+
+        return ReactDOMServer.renderToStaticMarkup(<Linkify>{text}</Linkify>)
+    }
+
+
 
 const mapStateToProps = (state) => {
     return {

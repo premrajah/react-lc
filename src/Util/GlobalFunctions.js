@@ -411,7 +411,8 @@ export const linkifyText = (text) => {
         console.log(matches.length,matches)
 
         for (let i=0;i<matches.length;i++){
-            newText=text.replace(matches[i],`<a target="_blank" href=${matches[i]}>${matches[i]} </a>`)
+            newText=text.replace(matches[i],`<a target="_blank" rel="noopener noreferrer" href=${matches[i]}>${matches[i]} </a>`)
+
         }
     }
 

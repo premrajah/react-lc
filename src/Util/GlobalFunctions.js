@@ -397,7 +397,8 @@ export  const exportToCSV=(csvData) =>{
         loadingEventsDownload:false
     })
 }
-export const DETECT_URL_REGEX= /(?<!href=")(\b[\w]+:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/
+// export const DETECT_URL_REGEX= /^http:\/\/([^\/]*)\/(.*)$/
+export const DETECT_URL_REGEX="//g";
 
 export const linkifyText = (text) => {
 

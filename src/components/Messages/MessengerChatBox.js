@@ -1,26 +1,19 @@
-import React, { useState } from "react";
-import { baseUrl, createMarkup } from "../../Util/Constants";
+import React, {useState} from "react";
+import {baseUrl} from "../../Util/Constants";
 import moment from "moment/moment";
-import { Divider, ImageList, ImageListItem } from "@mui/material";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import SubproductItem from "../Products/Item/SubproductItem";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import axios from "axios/index";
 import * as actionCreator from "../../store/actions/actions";
 import {Description} from "@mui/icons-material";
 import CustomPopover from "../FormsUI/CustomPopover";
-import {
-    checkIfDocument,
-    checkIfDocumentFromType,
-    DETECT_URL_REGEX,
-    linkifyText,
-    urlify
-} from "../../Util/GlobalFunctions";
+import {checkIfDocumentFromType, linkifyText} from "../../Util/GlobalFunctions";
 
 
 const LC_PURPLE = "#27245C";

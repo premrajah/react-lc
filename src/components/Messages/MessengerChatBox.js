@@ -95,7 +95,7 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
                         <div
                             // dangerouslySetInnerHTML={(createMarkup(m ? linkifyText(m.message.text) : ""))}
                             dangerouslySetInnerHTML={{
-                                __html: (m.message.text) .replace(/href/g, "target='_blank' href")
+                                __html: linkifyText(m.message.text) .replace(/href/g, "target='_blank' href")
                             }}
                             style={{ lineHeight: "0.8" }}
                         />

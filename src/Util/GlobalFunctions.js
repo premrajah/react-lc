@@ -397,15 +397,17 @@ export  const exportToCSV=(csvData) =>{
         loadingEventsDownload:false
     })
 }
-// export const DETECT_URL_REGEX= /^http:\/\/([^\/]*)\/(.*)$/
-export const DETECT_URL_REGEX="//g";
+export const DETECT_URL_REGEX= /^http:\/\/([^\/]*)\/(.*)$/
+const DETECT_URL_REGEX_NEW=/(https?:\/\/[^\s]+)/g
+
+// export const DETECT_URL_REGEX="//g";
 
 export const linkifyText = (text) => {
 
     let originalText=text
 
     let newText=text
-    let matches=(DETECT_URL_REGEX).exec(originalText)
+    let matches=(DETECT_URL_REGEX_NEW).exec(originalText)
 
 
     if (matches){

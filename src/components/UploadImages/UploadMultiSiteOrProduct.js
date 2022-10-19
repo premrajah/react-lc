@@ -143,41 +143,52 @@ const UploadMultiSiteOrProduct = (props) => {
         let result = validateInputs(validations)
 
        setErrors(result.errors);
+        console.log(result)
+
         return result.formIsValid;
     }
 
     const  handleChange=(value, field) =>{
 
 
-        if (field==="artifact"){
+        console.log(field, value)
+        try {
 
-            setFileName(value.name)
-            let tmppath = URL.createObjectURL(value);
+            if (field === "artifact") {
+
+                setFileName(value.name)
+                let tmppath = URL.createObjectURL(value);
 
 
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                /* Parse data */
-                const bstr = evt.target.result;
-                const wb = XLSX.read(bstr, { type: 'binary' });
-                /* Get first worksheet */
-                const wsname = wb.SheetNames[0];
-                const ws = wb.Sheets[wsname];
-                /* Convert array of arrays */
-                const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
-                processData(data);
-            };
-            reader.readAsBinaryString(value);
+                const reader = new FileReader();
+                reader.onload =  (evt) => {
+                    /* Parse data */
+                    const bstr = evt.target.result;
+                    const wb = XLSX.read(bstr, {type: 'binary'});
+                    /* Get first worksheet */
+                    const wsname = wb.SheetNames[0];
+                    const ws = wb.Sheets[wsname];
+                    /* Convert array of arrays */
+                    const data =  XLSX.utils.sheet_to_csv(ws, {header: 1});
+                    console.log(1)
+                     processData(data);
+                    console.log(2)
+                };
+                reader.readAsBinaryString(value);
 
+            }
+
+            // let fieldsLocal = fields;
+            //
+            // fieldsLocal[field] = value;
+            //
+            // setFields(fieldsLocal)
+            // handleValidation()
+
+
+        }catch (e){
+            console.log(e)
         }
-
-            let fieldsLocal = fields;
-
-            fieldsLocal[field] = value;
-
-            setFields(fieldsLocal)
-            handleValidation()
-
     }
 
 
@@ -185,6 +196,8 @@ const UploadMultiSiteOrProduct = (props) => {
     // process CSV data
     const processData = dataString => {
 
+        console.log(3)
+// console.log(dataString)
         const dataStringLines = dataString.split(/\r\n|\n/);
         const headers = dataStringLines[0].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
 
@@ -213,6 +226,8 @@ const UploadMultiSiteOrProduct = (props) => {
                 }
             }
         }
+
+        console.log(listLocal)
 
         setList(listLocal)
 
@@ -247,6 +262,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
                     return
                 }
+
 
             }
 
@@ -285,24 +301,27 @@ const UploadMultiSiteOrProduct = (props) => {
 
             let artifactError=null
 
-            for (let i = 0; i < list.length; i++) {
+            console.log(isProduct, "inside body product",listLocal )
+            for (let i = 0; i < listLocal.length; i++) {
 
                 if(isProduct){
                     for (let k = 0; k < productProperties.length; k++) {
 
-                        if (!list[i][productProperties[k].field] && productProperties[k].required) {
+                        if (!listLocal[i][productProperties[k].field] && productProperties[k].required) {
 
                             artifactError=(artifactError?artifactError+", ":"")+ "Entry:"+(i+1)+" Missing "+productProperties[k].field
 
                          }
                   }
+
+                    console.log(isProduct, "bpody error product",artifactError )
                }
                 if(isSite){
 
 
                     for (let k = 0; k < siteProperties.length; k++) {
 
-                        if (!list[i][siteProperties[k].field] && siteProperties[k].required) {
+                        if (!listLocal[i][siteProperties[k].field] && siteProperties[k].required) {
 
                             artifactError=(artifactError?artifactError+", ":"")+ "Entry:"+(i+1)+" Missing "+siteProperties[k].field
 
@@ -318,6 +337,8 @@ const UploadMultiSiteOrProduct = (props) => {
                     error: true,
                     message: artifactError
                 }
+
+                console.log(isProduct, "is product",artifactError, errorsFound )
                 setErrors(errorsFound)
                 return
 
@@ -479,10 +500,10 @@ const UploadMultiSiteOrProduct = (props) => {
                     "condition": listItem.condition,
                     "purpose": listItem.purpose,
                     "year_of_making": listItem.year_of_making? listItem.year_of_making:0,
-                    "category": listItem.category,
-                    "type": listItem.type,
-                    "state": listItem.state,
-                    "units": listItem.units,
+                    "category": listItem.category.trim(),
+                    "type": listItem.type.trim(),
+                    "state": listItem.state.trim(),
+                    "units": listItem.units.trim(),
                     "volume": listItem.volume?listItem.volume:0,
                     "brand": listItem.brand,
                     "model": listItem.model,

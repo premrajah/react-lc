@@ -9,7 +9,6 @@ import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import EditSite from "../Sites/EditSite";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import SiteForm from "../Sites/SiteForm";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import * as XLSX from 'xlsx';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -87,11 +86,11 @@ const UploadMultiSiteOrProduct = (props) => {
 
     useEffect(() => {
 
-        if(props.popUpType=="isProduct") {
+        if(props.popUpType==="isProduct") {
             props.loadSites();
             setIsProduct(true)
             setIsSite(false)
-        }else if(props.popUpType=="isSite") {
+        }else if(props.popUpType==="isSite") {
             props.loadSites();
             setIsProduct(false)
             setIsSite(true)
@@ -150,8 +149,6 @@ const UploadMultiSiteOrProduct = (props) => {
 
     const  handleChange=(value, field) =>{
 
-
-        console.log(field, value)
         try {
 
             if (field === "artifact") {
@@ -170,9 +167,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     const ws = wb.Sheets[wsname];
                     /* Convert array of arrays */
                     const data =  XLSX.utils.sheet_to_csv(ws, {header: 1});
-                    console.log(1)
                      processData(data);
-                    console.log(2)
                 };
                 reader.readAsBinaryString(value);
 
@@ -196,8 +191,7 @@ const UploadMultiSiteOrProduct = (props) => {
     // process CSV data
     const processData = dataString => {
 
-        console.log(3)
-// console.log(dataString)
+
         const dataStringLines = dataString.split(/\r\n|\n/);
         const headers = dataStringLines[0].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
 
@@ -205,14 +199,14 @@ const UploadMultiSiteOrProduct = (props) => {
         for (let i = 1; i < dataStringLines.length; i++) {
 
             const row = dataStringLines[i].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
-            if (headers && row.length == headers.length) {
+            if (headers && row.length === headers.length) {
                 const obj = {};
                 for (let j = 0; j < headers.length; j++) {
                     let d = row[j];
                     if (d.length > 0) {
-                        if (d[0] == '"')
+                        if (d[0] === '"')
                             d = d.substring(1, d.length - 1);
-                        if (d[d.length - 1] == '"')
+                        if (d[d.length - 1] === '"')
                             d = d.substring(d.length - 2, 1);
                     }
                     if (headers[j]) {
@@ -227,7 +221,7 @@ const UploadMultiSiteOrProduct = (props) => {
             }
         }
 
-        console.log(listLocal)
+
 
         setList(listLocal)
 
@@ -301,7 +295,6 @@ const UploadMultiSiteOrProduct = (props) => {
 
             let artifactError=null
 
-            console.log(isProduct, "inside body product",listLocal )
             for (let i = 0; i < listLocal.length; i++) {
 
                 if(isProduct){
@@ -314,7 +307,7 @@ const UploadMultiSiteOrProduct = (props) => {
                          }
                   }
 
-                    console.log(isProduct, "bpody error product",artifactError )
+                    console.log(isProduct, "body error product",artifactError )
                }
                 if(isSite){
 

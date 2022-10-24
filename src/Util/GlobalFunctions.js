@@ -372,8 +372,6 @@ export  const exportToCSV=(csvData) =>{
     let data = "";
     const tableData = [];
 
-    console.log(csvData)
-
     const rows=csvData
     rows.unshift(["Title","Stage","Process","Resolution Date","Recur (MS)","Recur Value","Recur Unit", "Description", "Product"])
 
@@ -411,8 +409,6 @@ export const linkifyText = (text) => {
 
 
     if (matches){
-        console.log(matches.length,matches)
-
         for (let i=0;i<matches.length;i++){
             newText=text.replace(matches[i],`<a target="_blank" rel="noopener noreferrer" href=${matches[i]}>${matches[i]} </a>`)
 
@@ -426,7 +422,6 @@ export const linkifyText = (text) => {
 
 export const  urlify=(text)=> {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    console.log(text.toString())
     return text.toString().split(urlRegex)
         .map(part => {
             if(part.match(urlRegex)) {

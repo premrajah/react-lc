@@ -99,6 +99,10 @@ const UploadMultiSiteOrProduct = (props) => {
     }, [])
 
 
+    useEffect(()=>{
+        console.log("helo error change dtected")
+    },[errors])
+
     const INITIAL_VALUES = {
         artifact: '',
         match_strategy: MATCH_STRATEGY_OPTIONS[0],
@@ -158,7 +162,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
 
                 const reader = new FileReader();
-                reader.onload =  (evt) => {
+                reader.onload =  async (evt) => {
                     /* Parse data */
                     const bstr = evt.target.result;
                     const wb = XLSX.read(bstr, {type: 'binary'});
@@ -169,7 +173,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     const data =  XLSX.utils.sheet_to_csv(ws, {header: 1});
                      processData(data);
                 };
-                reader.readAsBinaryString(value);
+                const a =  reader.readAsBinaryString(value);
 
             }
 

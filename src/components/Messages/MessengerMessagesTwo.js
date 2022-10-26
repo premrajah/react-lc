@@ -42,6 +42,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     const [allGroups, setAllGroups] = useState([]);
     const [trackedMessageGroups, setTrackedMessageGroups] = useState([]);
     const [clickedMessage, setClickedMessage] = useState([]);
+    const [clickedMessageArtifact, setClickedMessageArtifact] = useState([]);
     const [clickedMessageKey, setClickedMessageKey] = useState(null);
     const [selectedMenuItemIndex, setSelectedMenuItemIndex] = useState(null);
     const [filteredGroups, setFilteredGroups] = useState([]);
@@ -216,7 +217,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
             });
     };
 
-    const getSelectedGroupMessage = (key, clear=true,loading=true, currentOffset=0) => {
+    const getSelectedGroupMessage = (key, clear=true,loading=true, currentOffset=0,tab=0) => {
 
         console.log(key,clear)
 
@@ -238,8 +239,15 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
         console.log(offset)
 
+
+
+        let url=`${baseUrl}message-group/${key}/message?offset=${currentOffset}&size=${pageSize}`
+
+        if (tab==1){
+            url `${url}&with-artifacts=true`
+        }
         axios
-            .get(`${baseUrl}message-group/${key}/message?offset=${currentOffset}&size=${pageSize}`)
+            .get(url)
             .then((res) => {
                 setUpdateMsgLoading(false)
 
@@ -251,13 +259,27 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     }else{
                         setChatEndReached(false)
                     }
-                    setClickedMessage(res.data.data);
+
+                    if (tab==0){
+                        setClickedMessage(res.data.data);
+                    }else{
+                        setClickedMessageArtifact(res.data.data);
+
+                    }
+
 
                 }else{
 
                     // console.log(res.data.data)
+                    if (tab==0){
+                        setClickedMessage((chat) => chat.concat(res.data.data));
+                    }else{
+                        setClickedMessageArtifact((chat) => chat.concat(res.data.data));
+
+                    }
+
                     setClickedMessage((chat) => chat.concat(res.data.data));
-                    // console.log(clickedMessage)
+
                     setScrollEnd(false)
 
                     if (res.data.data.length==0){
@@ -609,10 +631,17 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                                         listInnerRefTable={listInnerRefTable}
                                         activeTab={activeTab}
                                         onScroll={onUpScroll}
-                                        setActiveTab={setActiveTab}
+                                        setActiveTab={(data)=> {
+                                            setActiveTab(data);
+                                            if (data==1){
+                                                getSelectedGroupMessage(selectedMessageGroupKey,true,true,0,1)
+                                            }
+
+                                        }}
                                         onDownScrollTable={onDownScrollTable}
                                         groupMessageKey={selectedMessageGroupKey}
                                         messages={clickedMessage}
+                                        artifacts={clickedMessageArtifact}
                                     />
                                 </div>
                             )}

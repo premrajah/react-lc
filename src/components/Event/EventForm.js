@@ -673,9 +673,6 @@ class EventForm extends Component {
     };
 
 
-
-
-
     render() {
 
 
@@ -696,7 +693,7 @@ class EventForm extends Component {
                                       this.selectedProduct(data)
                                   }
                               />}
-                              {this.state.productError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+                              {this.state.productError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Product from your inventory not selected."}</span>}
                             <div className="row ">
 
                                 <div className="col-12 mt-2">
@@ -833,14 +830,14 @@ class EventForm extends Component {
                                                   <div>
                                                   <TextFieldWrapper
                                                       noMargin
-                                                      placeholder="Enter value here e.g. 1,2,3 .."
+                                                      placeholder="Enter value e.g. 1,2,3 .."
                                                       initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
                                                       onChange={(value)=>this.handleChangeProduct(value,"recurValue")}
                                                       error={this.state.errors["recurValue"]}
                                                       name="recurValue"
                                                   />
                                                   </div>
-                                             <div style={{width:"120px"}}>
+                                             <div style={{width:"200px"}}>
                                                   <SelectArrayWrapper
                                                       noMargin
                                                       initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
@@ -914,6 +911,7 @@ class EventForm extends Component {
                                                                     onChange={this.handleChangeFile.bind(
                                                                         this
                                                                     )}
+
                                                                 />
                                                             </div>
 

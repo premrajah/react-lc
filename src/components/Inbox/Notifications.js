@@ -1,12 +1,11 @@
 import React, {Component} from "react";
 import axios from "axios";
 import {connect} from "react-redux";
-import {baseUrl, createMarkup} from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import reactStringReplace from "react-string-replace";
 import {Card, CardContent, Snackbar} from "@mui/material";
 import NotIcon from "@mui/icons-material/HdrWeak";
 import moment from "moment/moment";
-import Org from "../Org/Org";
 import {Link} from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import _ from "lodash";
@@ -21,7 +20,6 @@ import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {CheckCircle} from "@mui/icons-material";
 import EventStatus from "../Event/EventStatus";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import OrgFull from "../Org/OrgFull";
 import OrgComponent from "../Org/OrgComponent";
 
 

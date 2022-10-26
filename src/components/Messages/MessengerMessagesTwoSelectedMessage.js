@@ -17,7 +17,7 @@ import TableBody from "@mui/material/TableBody";
 import {styled} from "@mui/material/styles";
 import TableCell, {tableCellClasses} from "@mui/material/TableCell";
 
-const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,activeTab,listInnerRefTable,selectedMessageGroupOrgs,chatEndReached,messages, userDetail,onDownScrollTable,onScroll,listInnerRef,scrollEnd,...otherprops }) => {
+const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,activeTab,listInnerRefTable,selectedMessageGroupOrgs,chatEndReached,messages,artifacts, userDetail,onDownScrollTable,onScroll,listInnerRef,scrollEnd,...otherprops }) => {
     TabPanel.propTypes = {
         children: PropTypes.node,
         index: PropTypes.number.isRequired,

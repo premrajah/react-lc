@@ -2,7 +2,6 @@ import axios from "axios";
 import {baseUrl} from "./Constants";
 import React from "react";
 import moment from "moment/moment";
-import _ from "lodash";
 
 export const  capitalize=(sentence)=> {
 

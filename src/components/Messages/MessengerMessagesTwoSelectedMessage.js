@@ -16,8 +16,15 @@ import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import {styled} from "@mui/material/styles";
 import TableCell, {tableCellClasses} from "@mui/material/TableCell";
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import Badge from '@mui/material/Badge';
+import CustomPopover from "../FormsUI/CustomPopover";
 
-const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,activeTab,listInnerRefTable,selectedMessageGroupOrgs,chatEndReached,messages,artifacts, userDetail,onDownScrollTable,onScroll,listInnerRef,scrollEnd,...otherprops }) => {
+const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,
+                                                 scrollEndArtifact,setActiveTab,activeTab,
+                                                 listInnerRefTable,selectedMessageGroupOrgs,
+                                                 chatEndReached,messages,artifacts, userDetail,
+                                                 onDownScrollTable,onScroll,listInnerRef,scrollEnd,...otherprops }) => {
     TabPanel.propTypes = {
         children: PropTypes.node,
         index: PropTypes.number.isRequired,
@@ -76,10 +83,18 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
             <div className={`w3-third tablink w3-bottombar w3-hover-light-grey w3-padding ${activeTab===1?"w3-border-red":""}`}>Files</div>
         </a>
         </div>
+
+
+
     </div>
+
     <div className={`row g-0`}>
         <div className="col-12 p-2">
-                        {scrollEnd &&
+
+            {showNewMessage &&
+            <div className="new-message-alert"><Badge badgeContent={4} color="primary">New Message</Badge> </div> }
+
+                        {(scrollEnd) &&
                         <div className="spinner-chat"><Spinner
                             className="me-2"
                             as="span"
@@ -95,7 +110,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
                                 className="mb-5" style={{
                                 flexFlow:`${activeTab===0?"column-reverse":""}`,
                                 display: "flex",
-                                height: "400px", minHeight: "400px",  maxHeight: "400px", overflow: "auto", overflowX: "hidden" }}>
+                                height: `${activeTab===0?"400px":"575px"}`, minHeight: `${activeTab===0?"400px":"575px"}`,  maxHeight: `${activeTab===0?"400px":"575px"}`, overflow: "auto", overflowX: "hidden" }}>
 
                                 <>
                                     {activeTab===0? messages.map((m, i) => (
@@ -111,12 +126,13 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
 
 <>
 
+
     <TableContainer
-        // onScroll={()=>{
-        //     onDownScrollTable();
-        // }}
-        // ref={listInnerRefTable}
-        sx={{ width: "100%", maxHeight:"300" }} component={Paper}>
+        onScroll={()=>{
+            onDownScrollTable();
+        }}
+        ref={listInnerRefTable}
+        sx={{ width: "100%", maxHeight:`625px` }} component={Paper}>
         <Table
             stickyHeader
             sx={{ width: "100%" }}
@@ -131,7 +147,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
                 </TableRow>
             </TableHead>
             <TableBody>
-         {messages.map((m, i) => (
+         {artifacts.map((m, i) => (
         <React.Fragment key={i}>
             {m.artifacts.length > 0 &&
                 <>
@@ -149,14 +165,30 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{item.name}</StyledTableCell>
                                 <StyledTableCell align="right">{getTimeFormat(item._ts_epoch_ms)}</StyledTableCell>
-                                <StyledTableCell align="right">{item.name}</StyledTableCell>
+                                <StyledTableCell align="right">{ m.orgs.find((org) => org.actor === "message_from").org.org.name }</StyledTableCell>
                                 <StyledTableCell align="right">Download</StyledTableCell>
                             </StyledTableRow>
                         ))}
+
+
                         </>
                   }
         </React.Fragment>
               ))}
+
+                {(scrollEndArtifact) &&
+                <StyledTableRow key="spinner-table">
+                    <StyledTableCell component="th" scope="row">
+                        <div className="spinner-chat"><Spinner
+                            className="me-2"
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        /></div></StyledTableCell>
+                </StyledTableRow>
+                }
             </TableBody>
         </Table>
     </TableContainer>
@@ -173,9 +205,10 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,setActiveTab,acti
                                                 id={`${index}_${orgItem._ts_epoch_ms}-chip`}
                                                 key={`${index}_${orgItem._ts_epoch_ms}-chip`}>
 
-                                                <Avatar className="me-2"  aria-label="recipe">
+                                              <CustomPopover text={orgItem.name}>
+                                                  <Avatar className="me-2"  aria-label="recipe">
                                                     {getInitials(orgItem.name)}
-                                                </Avatar>
+                                                </Avatar></CustomPopover>
 
                                             </div>
 

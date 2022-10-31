@@ -4794,3 +4794,21 @@ select option {
     height: 100px!important;
     width: 100px!important;
 }
+.new-message-alert{
+    position: absolute;
+    top: 90%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 100px;
+    height: auto;
+    font-size: 12px;
+    background: var(--lc-green);
+    z-index: 1000;
+    color: white;
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+    border-radius: 4px;
+
+}

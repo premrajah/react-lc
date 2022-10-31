@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { Chip, Divider, ListItem, ListItemText } from "@mui/material";
 import OrgComponent from "../Org/OrgComponent";
 import TooltipDisplay from "../Org/TooltipDisplay";
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 const MessengerMessagesTwoGroupItem = ({
     group,
@@ -31,6 +32,8 @@ const MessengerMessagesTwoGroupItem = ({
                                 <HandleOrgDisplay org={org} index={index} />))
                     }
                 />
+
+                {group.hasNewMessage&&<FiberManualRecordIcon />}
 
             </ListItem>
         </>

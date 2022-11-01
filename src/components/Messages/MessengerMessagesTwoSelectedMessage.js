@@ -76,10 +76,10 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,
 
     <div className="row g-0">
         <div className="col-12 d-flex">
-        <a href="javascript:void(0)" onClick={()=>setActiveTab(0)}>
+        <a href onClick={()=>setActiveTab(0)}>
             <div className={`w3-third tablink w3-bottombar w3-hover-light-grey w3-padding ${activeTab===0?"w3-border-red":""}`}>Chat</div>
         </a>
-        <a href="javascript:void(0)" onClick={()=>setActiveTab(1)}>
+        <a href onClick={()=>setActiveTab(1)}>
             <div className={`w3-third tablink w3-bottombar w3-hover-light-grey w3-padding ${activeTab===1?"w3-border-red":""}`}>Files</div>
         </a>
         </div>

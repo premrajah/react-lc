@@ -277,9 +277,8 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                     // on first load handle click
 
                     if (handleClick&&(data.length >0)){
-
-
-                        handleGroupClickCallback(data[0].message_group._key,data[0].orgs);
+                        console.log("handle click")
+                        handleGroupClickCallback(data[0].message_group._key,true, data[0].orgs);
                     }
 
                 }else{
@@ -429,12 +428,16 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
     const handleGroupClickCallback = (key,clear=true,groups=[]) => {
 
+try{
+    if (groups.length>0){
+        setSelectedMessageGroupOrgs(groups)
+    }else{
+        setSelectedMessageGroupOrgs(allGroups.find(item=>item.message_group._key==key).orgs)
+    }
 
-        if (groups.length>0){
-            setSelectedMessageGroupOrgs(groups)
-        }else{
-            setSelectedMessageGroupOrgs(allGroups.find(item=>item.message_group._key==key).orgs)
-        }
+}catch (e){
+    // console.log(e)
+}
 
 
         setScrollEnd(false)

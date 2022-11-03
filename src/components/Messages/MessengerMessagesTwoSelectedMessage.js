@@ -20,10 +20,10 @@ import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 import Badge from '@mui/material/Badge';
 import CustomPopover from "../FormsUI/CustomPopover";
 
-const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,
+const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,showTabs,
                                                  scrollEndArtifact,setActiveTab,activeTab,
                                                  listInnerRefTable,selectedMessageGroupOrgs,
-                                                 chatEndReached,messages,artifacts, userDetail,
+                                                 chatEndReached,messages,artifacts, userDetail,selectedOrgs,
                                                  onDownScrollTable,onScroll,listInnerRef,scrollEnd,...otherprops }) => {
     TabPanel.propTypes = {
         children: PropTypes.node,
@@ -74,7 +74,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,
 
 <div style={{width:"100%"}}>
 
-    <div className="row g-0">
+    {showTabs && <div className="row g-0">
         <div className="col-12 d-flex">
         <a href onClick={()=>setActiveTab(0)}>
             <div className={`w3-third tablink w3-bottombar w3-hover-light-grey w3-padding ${activeTab===0?"w3-border-red":""}`}>Chat</div>
@@ -86,7 +86,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,
 
 
 
-    </div>
+    </div>}
 
     <div className={`row g-0`}>
         <div className="col-12 p-2">

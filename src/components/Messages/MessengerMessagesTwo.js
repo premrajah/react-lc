@@ -77,6 +77,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     const [groupPageSize, setGroupPageSize] = useState(40);
     const [pageSize, setPageSize] = useState(10);
     const [activeTab, setActiveTab] = useState(0);
+    const [showTabs, setShowTabs] = useState(false);
     useEffect(() => {
         // handleSelectedItemCallback(0);
         getAllMessageGroups(true,true);
@@ -171,6 +172,31 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
 
     };
+
+
+    const getExistingChat=(groupsTemp)=>{
+
+let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
+
+        orgArray.push(userDetail.orgId.replace("Org/",""))
+            axios
+                .post(`${baseUrl}message-group/org/get`,
+                    {org_ids:orgArray})
+                .then((res) => {
+
+
+                    if (res.data.data.length>0){
+                        setSelectedMessageGroupKey(res.data.data[0]._key)
+                        getSelectedGroupMessage(res.data.data[0]._key,true,true,0,0)
+                    }
+
+
+                })
+                .catch((error) => {
+                    // showSnackbar({ show: true, severity: "warning", message: `${error.message}` });
+                });
+        };
+
 
 
     const onUpScroll = () => {
@@ -339,6 +365,8 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
         if (clear){
 
+            setShowTabs(false)
+
             if (tab==0){
                 setOffset(0)
                 setLoading(loading)
@@ -372,7 +400,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
                 if (clear){
 
 
-
+                    setShowTabs(true)
 
 
                     if (tab==0){
@@ -548,6 +576,8 @@ try{
 
     const handleOrgSelectedCallback = (value) => {
         setSelectedOrgs(value);
+
+        getExistingChat(value)
     };
 
     const handleResetWysiwygEditor = () => {
@@ -759,6 +789,7 @@ try{
                                     }}>
 
                                     <MessengerMessagesTwoSelectedMessage
+                                        showTabs={showTabs}
                                         selectedMessageGroupOrgs={selectedMessageGroupOrgs}
                                         chatEndReached={chatEndReached}
                                         scrollEnd={scrollEnd}
@@ -779,6 +810,7 @@ try{
                                         messages={clickedMessage}
                                         artifacts={clickedMessageArtifact}
                                         showNewMessage={showNewMessage}
+                                        selectedOrgs={selectedOrgs}
                                     />
                                 </div>
 

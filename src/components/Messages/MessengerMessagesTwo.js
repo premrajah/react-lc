@@ -176,6 +176,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
     const getExistingChat=(groupsTemp)=>{
 
+
 let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
 
         orgArray.push(userDetail.orgId.replace("Org/",""))
@@ -527,6 +528,7 @@ try{
             handleGroupClickCallback("");
             setClickedMessage([])
             setActiveTab(0)
+            setShowTabs(false)
             // setNewMessageDisplay("Select organisations to send new message");
         }
 

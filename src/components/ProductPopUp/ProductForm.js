@@ -1586,8 +1586,8 @@ var slugify = require('slugify')
                                         <TextFieldWrapper
                                             onChange={(value)=>this.handleChangeProduct(value,"embodied_carbon_tons")}
                                             // details="A unique number used by external systems"
-                                            initialValue={this.props.item?this.props.item.product.external_reference:""
-                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.embodied_carbon_tons:"")
+                                            initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_tons:""
+                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_tons:"")
                                             } name="embodied_carbon_tons" title="Embodied Carbon(Tons)" />
 
                                     </div>
@@ -1595,8 +1595,8 @@ var slugify = require('slugify')
                                         <TextFieldWrapper
                                             onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
                                             // details="A unique number used by external systems"
-                                            initialValue={this.props.item?this.props.item.product.gross_weight_kgs:""
-                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.gross_weight_kgs:"")
+                                            initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""
+                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")
                                             } name="gross_weight_kgs" title="Gross Weight (Kgs)" />
 
                                     </div>

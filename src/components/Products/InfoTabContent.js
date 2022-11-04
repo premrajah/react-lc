@@ -250,6 +250,48 @@ class InfoTabContent extends Component {
                     </div>
                 )}
 
+                {this.props.item &&
+                this.props.item.product.sku.gross_weight_kgs && (
+                    <div className="row  justify-content-start search-container  pb-2 ">
+                        <div className={"col-auto"}>
+                            <p
+
+                                className=" text-label text-blue mb-1 text-label">
+                                Gross Weight (Kgs)
+                            </p>
+                            <p
+
+                                className=" text-gray-light mb-1 text-capitalize">
+                                {this.props.item &&
+                                this.props.item.product.sku
+                                    .gross_weight_kgs}
+                            </p>
+                        </div>
+                    </div>
+                )}
+                {this.props.item &&
+                this.props.item.product.sku.embodied_carbon_tons && (
+                    <div className="row  justify-content-start search-container  pb-2 ">
+                        <div className={"col-auto"}>
+                            <p
+
+                                className=" text-label text-blue mb-1 text-label">
+                                Embodied Carbon (Tons)
+                            </p>
+                            <p
+
+                                className=" text-gray-light mb-1 text-capitalize">
+                                {this.props.item &&
+                                this.props.item.product.sku
+                                    .embodied_carbon_tons}
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+
+
+
                 {this.props.item.site &&
                 <div className="row  justify-content-start search-container  pb-2 ">
                     <div className={"col-auto"}>

@@ -72,7 +72,8 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,sh
     return (
         <>
 
-<div style={{width:"100%"}}>
+            {showTabs &&
+            <div style={{width:"100%"}}>
 
     {showTabs && <div className="row g-0">
         <div className="col-12 d-flex">
@@ -223,7 +224,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,sh
 
         </div>
 
-</div>
+</div>}
 
         </>
     );

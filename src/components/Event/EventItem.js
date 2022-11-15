@@ -372,13 +372,13 @@ class EventItem extends Component {
                 })
             })
 
-            console.log(icsDataNew)
+
             createEvents(icsDataNew, (err, value) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
-                console.log(value);
+
                 // window.open("data:text/calendar;charset=utf8," + escape(value));
 
                 const a = document.createElement("a");

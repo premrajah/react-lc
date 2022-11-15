@@ -128,29 +128,19 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
                     let lastMessages=res.data.data
 
-                    console.log(lastMessages,clickedMessage)
                     if (lastMessages[0].message._key!==clickedMessage[0].message._key){
 
-                        console.log("new message received")
                         // showSnackbar({ show: true, severity: "success", message: `new message ${lastMessages[0].message.text}` });
 
                         // setShowNewMessage(true)
-                        console.log("new message",parseFloat(lastMessages[0].message._ts_epoch_ms),parseFloat(clickedMessage[0].message._ts_epoch_ms))
-
 
                         for (let i=0;i<lastMessages.length;i++){
-
-                            console.log("new message loop ",parseFloat(lastMessages[i].message._ts_epoch_ms),parseFloat(clickedMessage[0].message._ts_epoch_ms))
 
                             let chatMsg=lastMessages[i]
 
                             if (parseFloat(lastMessages[i].message._ts_epoch_ms)>parseFloat(clickedMessage[0].message._ts_epoch_ms)
                                 &&(!(clickedMessage.filter(item=>lastMessages[i].message._key===item.message._key).length>0))
                             ){
-
-                                console.log("new message insert")
-
-
                                 setClickedMessage((chat) => [chatMsg].concat(chat));
                             }
 
@@ -225,7 +215,6 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
 
         if (listInnerRefTable.current&&!chatEndReached&&(!updateMsgLoading)) {
 
-            console.log("artifact scroll")
             const { scrollTop, scrollHeight, clientHeight } = listInnerRefTable.current;
 
             if (scrollTop+clientHeight > (scrollHeight-50)) {
@@ -304,7 +293,6 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
                     // on first load handle click
 
                     if (handleClick&&(data.length >0)){
-                        console.log("handle click")
                         handleGroupClickCallback(data[0].message_group._key,true, data[0].orgs);
                     }
 
@@ -314,8 +302,6 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
 
 
                     if (allGroups[0].message_group._key!==data[0].message_group._key){
-
-                        console.log("group update required")
 
                         for (let i=0;i<data.length;i++){
 
@@ -357,7 +343,6 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
 
     const getSelectedGroupMessage = (key, clear=true,loading=true, currentOffset=0,tab=0) => {
 
-        console.log(key,clear,tab)
 
         if (!key) return;
 
@@ -381,9 +366,6 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
             setUpdateMsgLoading(true)
         }
 
-        console.log(offset)
-
-
 
         let url=`${baseUrl}message-group/${key}/message?offset=${currentOffset}&size=${pageSize}`
 
@@ -391,7 +373,6 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
             url =`${url}&with-artifacts=true`
         }
 
-        console.log('url',url)
         axios
             .get(url)
             .then((res) => {

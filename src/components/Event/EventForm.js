@@ -598,12 +598,8 @@ class EventForm extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        console.log("1")
-
 
         if (prevProps!=this.props){
-
-            console.log("2")
 
          this.updateProps()
 

@@ -69,7 +69,6 @@ class CustomMoreMenu extends Component {
     };
 
     handleClose = (event,action) => {
-        console.log(event,action)
 
         // event.stopPropagation()
         // event.preventDefault()

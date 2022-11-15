@@ -99,9 +99,6 @@ const UploadMultiSiteOrProduct = (props) => {
     }, [])
 
 
-    useEffect(()=>{
-        console.log("helo error change dtected")
-    },[errors])
 
     const INITIAL_VALUES = {
         artifact: '',
@@ -146,7 +143,6 @@ const UploadMultiSiteOrProduct = (props) => {
         let result = validateInputs(validations)
 
        setErrors(result.errors);
-        console.log(result)
 
         return result.formIsValid;
     }
@@ -311,7 +307,6 @@ const UploadMultiSiteOrProduct = (props) => {
                          }
                   }
 
-                    console.log(isProduct, "body error product",artifactError )
                }
                 if(isSite){
 
@@ -335,7 +330,6 @@ const UploadMultiSiteOrProduct = (props) => {
                     message: artifactError
                 }
 
-                console.log(isProduct, "is product",artifactError, errorsFound )
                 setErrors(errorsFound)
                 return
 

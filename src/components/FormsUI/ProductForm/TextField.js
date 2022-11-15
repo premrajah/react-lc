@@ -120,7 +120,7 @@ const TextFieldWrapper = ({
             <div className={`${type != "hidden" ? "field-box " : "d-none"} ${noMargin?"":"mb-2"}`}>
                 <CustomizedInput
 
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+
                     disabled={disabled}
                     type={type}
                     variant="outlined"

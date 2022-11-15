@@ -215,6 +215,7 @@ render() {
                                             <Tab label="Site Release " value="4" />
                                             {/*<Tab label="Rental Release " value="5" />*/}
                                             {/*<Tab label="Rental Requests " value="6" />*/}
+                                            <Tab label="Event Release " value="7" />
                                         </TabList>
                                     </Box>
 
@@ -510,6 +511,53 @@ render() {
                                         </div>
                                     </TabPanel>
 
+                                    <TabPanel value="7">
+                                        <div className={"row"} >
+                                            <div className="col-12 mt-3 mb-3">
+                                                <div className="col d-flex justify-content-end">
+                                                    <Link to="/rental-request-records" className="btn btn-sm blue-btn"
+                                                          style={{color: "#fff"}}>
+                                                        Event Release Records
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                            <div className={"listing-row-border "}></div>
+
+
+                                            {this.state.rentalRequests.filter(r =>
+                                                r.registration.stage !== "complete" &&
+                                                r.registration.stage !== "cancelled" &&
+                                                r.registration.stage !== "invalidated").map((item, index) =>
+                                                <>
+                                                    <div className="col-12"
+                                                         key={item.registration._key}
+                                                         id={item.registration._key}
+                                                    >
+
+                                                        <RentalRequestItem
+                                                            refresh={()=>{
+                                                                this.fetchRentalRequests();
+                                                            }}
+                                                            history={this.props.history}
+                                                            item={item}
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+
+
+                                            {this.state.siteReleases.length === 0 && (
+                                                <div className={" column--message"}>
+                                                    <p>
+                                                        {this.state.loading
+                                                            ? "Loading..."
+                                                            : "This search currently has no results"}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                        </div>
+                                    </TabPanel>
                                 </TabContext>
                             </Box>
 

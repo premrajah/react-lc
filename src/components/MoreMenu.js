@@ -176,6 +176,11 @@ class MoreMenu extends Component {
                                     Delete
                                 </MenuItem>
                             )}
+                            {this.props.update && (
+                                <MenuItem data-action={"update"} onClick={this.handleClose}>
+                                    {this.props.label}
+                                </MenuItem>
+                            )}
 
                             {this.props.duplicate && (
                                 <MenuItem data-action={"duplicate"} onClick={this.handleClose}>

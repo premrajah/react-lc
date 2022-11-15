@@ -4812,3 +4812,8 @@ select option {
     border-radius: 4px;
 
 }
+
+
+.btn-block{
+    width: 100%;
+}

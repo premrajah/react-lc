@@ -255,7 +255,6 @@ class InfoTabContent extends Component {
                     <div className="row  justify-content-start search-container  pb-2 ">
                         <div className={"col-auto"}>
                             <p
-
                                 className=" text-label text-blue mb-1 text-label">
                                 Gross Weight (Kgs)
                             </p>

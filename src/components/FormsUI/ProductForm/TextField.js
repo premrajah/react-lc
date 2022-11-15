@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import CustomizedInput from "./CustomizedInput";
 import CustomPopover from "../CustomPopover";
 import InfoIcon from "./InfoIcon";
+import {replace} from "formik";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -30,6 +31,7 @@ const TextFieldWrapper = ({
     disabled,
     readonly,
     customReadOnly,reset,noMargin,
+                              numberInput,
     ...otherProps
 }) => {
     // const [field, mata] = useField(name)
@@ -41,7 +43,11 @@ const TextFieldWrapper = ({
             if (onChange) {
                 setField(initialValue)
                 // alert(initialValue)
-                onChange(initialValue);
+
+
+                    onChange(initialValue);
+
+
             }
         // }
     }, [initialValue]);
@@ -71,7 +77,28 @@ const TextFieldWrapper = ({
         const { value } = event.target;
         setField(value);
 
-        if (onChange) onChange(value);
+        if (onChange){
+            if (numberInput){
+                putMask(value,event)
+            }else{
+                onChange(value);
+            }
+
+        }
+    };
+
+
+    const putMask = (value,event) => {
+
+        var x = value.replace(/\D/g, '')
+        value=x
+
+            setField(value)
+
+            if (onChange)
+                onChange(value)
+
+
     };
 
     return (
@@ -92,6 +119,8 @@ const TextFieldWrapper = ({
 
             <div className={`${type != "hidden" ? "field-box " : "d-none"} ${noMargin?"":"mb-2"}`}>
                 <CustomizedInput
+
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                     disabled={disabled}
                     type={type}
                     variant="outlined"

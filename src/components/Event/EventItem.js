@@ -35,6 +35,10 @@ import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import moment from "moment";
 import {Spinner} from "react-bootstrap";
 import {createEvents} from "ics";
+import MoreMenu from "../MoreMenu";
+import CustomMoreMenu from "../FormsUI/CustomMoreMenu";
+import SiteReleaseDialog from "../Sites/SiteReleaseDialog";
+import EventReleaseDialog from "./EventReleaseDialog";
 
 class EventItem extends Component {
         constructor(props) {
@@ -63,6 +67,8 @@ class EventItem extends Component {
                 csvData:[],
                 downloadType:null,
                 showDownload:false,
+                showReleaseDialog:false,
+                releaseEvent:null,
                 intervals:[
                     {key:86400000 ,value:"Every Day"},
                     {key:604800000 ,value:"Every Week"},
@@ -75,6 +81,13 @@ class EventItem extends Component {
 
 
 
+    toggleReleaseDialog=()=>{
+
+        this.setState({
+
+            showReleaseDialog:!this.state.showReleaseDialog
+        })
+    }
     toggleDelete=(eventId)=>{
 
         if (eventId)
@@ -263,7 +276,7 @@ class EventItem extends Component {
                     }else{
 
 
-                         this.downloadCustomEvent(type)
+                         this.downloadCustomEvent(type,this.state.events)
 
                     }
                 },
@@ -320,13 +333,13 @@ class EventItem extends Component {
 
     }
 
-    downloadCustomEvent= async (type) => {
+    downloadCustomEvent= async (type,events) => {
 
 
 
         if (type=="csv"){
             let csvDataNew = [];
-            this.state.events.forEach(item => {
+            events.forEach(item => {
                 const {product, event, service_agent} = item;
 
                 csvDataNew.push([
@@ -417,6 +430,29 @@ class EventItem extends Component {
         })
     }
 
+
+     menuAction = (action) => {
+
+        if(action.value === 'delete') {
+           // this.deleteEvents()
+            this.toggleDelete(action.data)
+        }
+        else if(action.value === 'edit') {
+
+            this.showEditEventPopup(action.data)
+        }
+        else if(action.value === 'update') {
+            this.showStageEventPopup(action.data)
+        }
+        else if(action.value === 'release') {
+
+            this.setState({
+                releaseEvent:action.data
+            })
+            this.toggleReleaseDialog()
+        }
+    }
+
     deleteEvents=(eventId,type)=>{
 
 
@@ -486,17 +522,28 @@ class EventItem extends Component {
 
                         <span  className={`${this.props.events.length==0?"d-none":""}`}>
                             {this.props.smallView &&
-                                <CSVLink
-                                asyncOnClick={true}
-                                onClick={(event, done) => {
-                                    this.handleSaveCSV()
-                                }}
-                                data={this.state.csvData}
-                                headers={headers} filename={`event_list_${new Date().getDate()}.csv`}
-                                className=" btn-sm btn-gray-border  me-2"><>
-                                            <DownloadIcon  style={{fontSize:"20px"}} />
+
+
+                            // <CSVLink
+                            //     asyncOnClick={true}
+                            //     onClick={(event, done) => {
+                            //         this.handleSaveCSV()
+                            //     }}
+                            //     data={this.state.csvData}
+                            //     headers={headers} filename={`event_list_${new Date().getDate()}.csv`}
+                            //     className=" btn-sm btn-gray-border  me-2">
+                                <>
+                                            <DownloadIcon
+
+                                                onClick={()=>{
+                                                    this.downloadCustomEvent("csv",this.props.events)
+                                                }}
+                                                className="click-item"
+
+                                                style={{fontSize:"20px"}} />
                                             Download</>
-                            </CSVLink>}
+                            // </CSVLink>
+                                }
 
                                          <FormControlLabel
                                              value="all"
@@ -515,7 +562,7 @@ class EventItem extends Component {
             {this.props.events.filter(item=> item.event.stage!=="resolved").map(item=>
 
                 <>
-                    <ListItem className={`mb-2 bg-white 
+                    <ListItem className={`mb-2 bg-white
                      ${item.event.stage !=="resolved"?"new-event":"past-event"}`}
                               onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
@@ -544,10 +591,21 @@ class EventItem extends Component {
 
                                     </div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
+                                    <div className="d-flex  flex-column right-btn-auto">
+                                    <CustomMoreMenu
 
+                                        actions={[
+                                            {label:"Edit",value:"edit",data: item},
+                                            {label:"Update Stage",value:"update",data:item.event._key},
+                                            {label:"Release",value:"release",data:item},
+                                            {label:"Delete",value:"delete",data:item.event._key},
 
+                                        ] }
+                                        triggerCallback={(action) => this.menuAction(action)}
+                                    />
+                                    </div>
                                     {item.event.stage!=='resolved'   &&
-                                    <div className="d-flex flex-column right-btn-auto">
+                                    <div className="d-flex d-none flex-column right-btn-auto">
                                             {/*{item.event.resolution_epoch_ms > Date.now() &&*/}
                                             <CustomPopover text={"Edit"}>
                                                 <ActionIconBtn
@@ -594,7 +652,7 @@ class EventItem extends Component {
 
                 <>
 
-                    <ListItem className={`mb-2 bg-white 
+                    <ListItem className={`mb-2 bg-white
                      ${item.event.stage !=="resolved"?"new-event":"past-event"}`}
                               onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
@@ -624,9 +682,10 @@ class EventItem extends Component {
                                     </div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
 
-
                                     {item.event.stage!=='resolved'   &&
-                                    <div className="d-flex flex-column right-btn-auto">
+                                    <div className="d-flex flex-column  right-btn-auto">
+
+
                                         {/*{item.event.resolution_epoch_ms > Date.now() &&*/}
                                         <CustomPopover text={"Edit"}>
                                             <ActionIconBtn
@@ -672,6 +731,10 @@ class EventItem extends Component {
 
         </List>
 
+                    {this.state.showReleaseDialog &&
+                    <EventReleaseDialog hide={this.toggleReleaseDialog} item={this.state.releaseEvent}
+                                        showReleaseProduct={this.state.showReleaseDialog} />
+                    }
 
                     <GlobalDialog
 
@@ -884,7 +947,7 @@ class EventItem extends Component {
                         show={this.state.showEditEvent}
                         hide={this.showEditEventPopup}
                     ><div className={"col-12"}>
-                        {this.state.editEvent && <EventForm hideProduct  hide={()=>{
+                        {this.state.editEvent && <EventForm edit hideProduct  hide={()=>{
 
                             this.props.refresh(this.state.editEvent.event.resolution_epoch_ms)
                             this.showEditEventPopup();
@@ -966,21 +1029,15 @@ class EventItem extends Component {
 
                                         <MobileDatePicker
                                             disableHighlightToday={true}
-
-
                                             minDate={this.state.minEndDate}
-                                            // label="Required By"
                                             inputVariant="outlined"
                                             variant={"outlined"}
                                             margin="normal"
                                             id="date-picker-dialog"
                                             inputFormat="dd/MM/yyyy"
                                             value={this.state.endDate}
-                                            // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
-
                                             renderInput={(params) => <CustomizedInput {...params} />}
                                             onChange={(value)=>this.handleChangeDate(value,"endDate")}
-
                                         />
                                     </LocalizationProvider>
                                     {this.state.showFieldErrors&&this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
@@ -992,20 +1049,17 @@ class EventItem extends Component {
 
 
                                     <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType=="csv")}
-                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType=="csv")} title={"Download CSV"} onClick={()=>{
+                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType=="csv")} title={"Download CSV"}
+
+                                                  onClick={()=>{
 
                                         this.setState({
                                             events:[]
                                         })
-
                                         if (this.state.startDate&&this.state.endDate){
                                             this.getEvents(0,"csv");
                                         }else{
-
-
-                                        }
-
-                                    }
+                                        }}
 
                                     } >
                                         <DownloadIcon  style={{fontSize:"20px"}} /></BlueSmallBtn>

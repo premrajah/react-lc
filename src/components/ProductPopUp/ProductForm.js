@@ -532,8 +532,8 @@ var slugify = require('slugify')
                             sku: sku,
                             upc: upc,
                             part_no: part_no,
-                            embodied_carbon_tons: embodied_carbon_tons,
-                            gross_weight_kgs:gross_weight_kgs
+                            embodied_carbon_tons: embodied_carbon_tons?embodied_carbon_tons:0,
+                            gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:0
 
                         },
                         year_of_making: year_of_making,
@@ -857,8 +857,8 @@ var slugify = require('slugify')
                             upc: upc,
                             part_no: part_no,
                             // power_supply: power_supply,
-                            embodied_carbon_tons: embodied_carbon_tons,
-                            gross_weight_kgs:gross_weight_kgs
+                            embodied_carbon_tons: embodied_carbon_tons?embodied_carbon_tons:0,
+                            gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:0
                         },
                         year_of_making: Number(data.get("manufacturedDate")),
 
@@ -1459,6 +1459,7 @@ var slugify = require('slugify')
                                                 <div className="col-md-4 col-xs-12 ">
 
                                                     {!this.state.disableVolume&&   <TextFieldWrapper
+                                                        numberInput
                                                         details="The number of units"
                                                         // readonly ={this.state.disableVolume}
                                                         initialValue={this.props.item&&this.props.item.product.volume+""}
@@ -1588,7 +1589,7 @@ var slugify = require('slugify')
                                             // details="A unique number used by external systems"
                                             initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_tons:""
                                                 ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_tons:"")
-                                            } name="embodied_carbon_tons" title="Embodied Carbon(Tons)" />
+                                            } name="embodied_carbon_tons" title="Embodied Carbon (Tons)" />
 
                                     </div>
                                     <div className="col-md-4 col-sm-6 col-xs-6">

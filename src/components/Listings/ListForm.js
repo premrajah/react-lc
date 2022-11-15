@@ -1352,7 +1352,7 @@ class ListFormNew extends Component {
                                                                         name={"price"}
                                                                         error={this.state.showFieldErrors&&this.state.errors["price"]}
                                                                         id="outlined-basic"
-
+                                                                        numberInput
                                                                         rows={4}
                                                                         variant="outlined"
                                                                         fullWidth={true}

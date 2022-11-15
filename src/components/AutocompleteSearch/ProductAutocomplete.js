@@ -45,7 +45,6 @@ class ProductAutocomplete extends Component {
             loading:false,
             showCompanyCreateForm:false,
             newCompany:false,
-
             fields: {},
             errors: {},
         };
@@ -92,6 +91,20 @@ class ProductAutocomplete extends Component {
                 org: this.props.initialOrgId,
             })
 
+        }
+
+
+        if (this.props.initial){
+
+            this.props.selectedProduct({
+                name: this.props.initial.name,
+                key: this.props.initial._key,
+            });
+
+            this.setState({
+                userInput:this.props.initial.name,
+                selected:true
+            })
         }
     }
 
@@ -419,9 +432,9 @@ class ProductAutocomplete extends Component {
                     </div>
 
                     </div>
-                    <div className={"col-2 text-center"}>
+                    {!this.props.disableEdit&&  <div className={"col-2 text-center"}>
                         <span onClick={this.resetSelection} className={"edit-item custom-click"}><PencilIcon style={{color:"#AAAAAA",fontSize: "40px"}} className={"fa fa-pencil"}/></span>
-                    </div>
+                    </div>}
                 </div>}
 
 

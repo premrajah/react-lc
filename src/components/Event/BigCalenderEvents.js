@@ -178,10 +178,6 @@ export default function BigCalenderEvents({
             props.onNavigate(action);
         };
 
-        // let viewSelect = (view) => {
-        //     props.onView(view);
-        // };
-
         const getLabel = (date) => {
             if (view == "year") {
                 return date.getFullYear();
@@ -192,6 +188,7 @@ export default function BigCalenderEvents({
             } else if (view == "week") {
                 const startDate = moment(date).startOf("week").toDate();
                 const endDate = moment(date).endOf("week").toDate();
+
 
                 return (
                     startDate.getDate() +
@@ -268,12 +265,16 @@ export default function BigCalenderEvents({
                                             moment(selectedDate).subtract(1, "M").toDate()
                                         );
                                         handleNavigation(
-                                            moment(selectedDate).subtract(1, "M").toDate(),
+                                            moment(selectedDate).subtract(1, "M").startOf("month").toDate(),
                                             true
                                         );
                                     } else if (view === "week") {
+
+                                        // const startDate = moment(date).startOf("week").toDate();
+
                                         setSelectedDate(
-                                            moment(selectedDate).subtract(7, "days").toDate()
+
+                                            moment(selectedDate).subtract(7, "days").startOf("week").toDate()
                                         );
                                         handleNavigation(
                                             moment(selectedDate).subtract(7, "days").toDate(),
@@ -831,44 +832,6 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     },
 }));
 
-const CustomizedDividers = (props) => {
-    const [view, setView] = React.useState("month");
-
-    const handleAlignment = (event, newAlignment) => {
-        // setCurrentView(newAlignment);
-        // onView(newAlignment);
-        setView(newAlignment);
-    };
-
-    return (
-        <>
-            <Paper
-                elevation={0}
-                sx={{
-                    display: "flex",
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    flexWrap: "wrap",
-                }}>
-                <StyledToggleButtonGroup
-                    size="small"
-                    value={view}
-                    exclusive
-                    onChange={handleAlignment}
-                    aria-label="text alignment">
-                    <ToggleButton value="year" aria-label="Year">
-                        <span>Year</span>
-                    </ToggleButton>
-                    <ToggleButton value="month" aria-label="Month">
-                        <span>Month</span>
-                    </ToggleButton>
-                    <ToggleButton value="week" aria-label="Week">
-                        <span>Week</span>
-                    </ToggleButton>
-                </StyledToggleButtonGroup>
-            </Paper>
-        </>
-    );
-};
 
 BigCalenderEvents.propTypes = {
     localizer: PropTypes.instanceOf(DateLocalizer),

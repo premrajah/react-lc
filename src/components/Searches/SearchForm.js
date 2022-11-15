@@ -1234,7 +1234,7 @@ if ((this.state.activeStep-1)==0){
                                                     <div className="col-4 ">
 
                                                         <TextFieldWrapper
-
+                                                            numberInput
                                                             initialValue={this.props.item&&this.props.item.product.volume+""}
                                                             // value={this.state.disableVolume?"0":""}
                                                             onChange={(value)=>this.handleChange(value,"volume")}

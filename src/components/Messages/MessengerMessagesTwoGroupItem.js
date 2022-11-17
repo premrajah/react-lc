@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
-import { Chip, Divider, ListItem, ListItemText } from "@mui/material";
-import OrgComponent from "../Org/OrgComponent";
-import TooltipDisplay from "../Org/TooltipDisplay";
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import {Chip, ListItem, ListItemText} from "@mui/material";
+import {baseUrl} from "../../Util/Constants";
+import axios from "axios";
 
 const MessengerMessagesTwoGroupItem = ({
     group,
@@ -12,17 +11,47 @@ const MessengerMessagesTwoGroupItem = ({
 }) => {
 
 
+    const [clicked,setClicked]=useState(false);
+
+    useEffect(()=>{
+
+        // alert(group.unread_count_for_org)
+    },[group.unread_count_for_org])
     const handleListItemClick = () => {
+
+        setClicked(true)
+        markAllRead()
         handleSelectedItemCallback(index);
         handleGroupClickCallback(group.message_group._key,true);
     };
+
+    const markAllRead = () => {
+
+        let url=`${baseUrl}message-group/read`
+
+        axios
+            .post(url,{
+                msg_group_id: group.message_group._key
+            })
+            .then((res) => {
+
+
+
+            })
+            .catch((error) => {
+
+            });
+
+
+
+    };
+
 
     return (
         <>
             <ListItem id={`group-${group._key}`} key={`group-${group._key}`}
                       onClick={() => handleListItemClick(true)} component="div">
                 <ListItemText
-
                     className={"my-msg-class"}
                     primary={
                         group.orgs.length>0&&(   group.orgs.length > 1 ?
@@ -33,7 +62,7 @@ const MessengerMessagesTwoGroupItem = ({
                     }
                 />
 
-                {group.hasNewMessage&&<FiberManualRecordIcon />}
+                {group.unread_count_for_org>0&&<span className="new-message-bubble text-14"  >{group.unread_count_for_org}</span>}
 
             </ListItem>
         </>

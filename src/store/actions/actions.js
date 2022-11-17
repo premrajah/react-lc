@@ -55,7 +55,7 @@ import {
     TOGGLE_GLOBAL_DIALOG,
     USER_CONTEXT,
     ORG_CACHE,
-    REFRESH_PAGE, EMPTY_CURRENT, CURRENT_PRODUCT_LOADING
+    REFRESH_PAGE, EMPTY_CURRENT, CURRENT_PRODUCT_LOADING, USER_CACHE
 } from "../types";
 
 // Added by Chandan For Google Analytics
@@ -570,7 +570,7 @@ export const logInSync = (data) => (dispatch) => {
                     }
                 });
                 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
-                dispatch(orgCache())
+                dispatch(userCache())
                 dispatch(userContext())
 
                 getMessages();
@@ -618,6 +618,35 @@ export const userContextSync = (data) => (dispatch) => {
             }
         })
         .catch((error) => {
+
+        });
+};
+
+
+export const userCache = (data) => {
+
+    return (dispatch) => {
+
+        dispatch(userCacheSync(data));
+    };
+};
+
+export const userCacheSync = (data) => (dispatch) => {
+
+    axios
+        .get(baseUrl + "user/cache")
+        .then((res) => {
+
+            if (res.status === 200) {
+                console.log("user cache action", res)
+                dispatch({ type: USER_CACHE, value: res.data.data });
+            } else {
+                //
+                // dispatch({ type: "LOGIN_ERROR", value: res.errors[0].message })
+            }
+        })
+        .catch((error) => {
+
 
         });
 };

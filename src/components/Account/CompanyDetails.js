@@ -291,7 +291,7 @@ class CompanyDetails extends Component {
 
     submitFirstLogin = () => {
         axios
-            .post(`${baseUrl}org/cache`, {
+            .post(`${baseUrl}user/cache`, {
                 key: "not_first_login",
                 value: "true",
             })

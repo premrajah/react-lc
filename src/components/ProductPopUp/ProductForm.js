@@ -948,7 +948,7 @@ var slugify = require('slugify')
                         keys.forEach((item)=> {
 
                                 if (item.includes("product_line"))
-                                    templates.push({key: item, value: JSON.parse(responseObj[item])})
+                                    templates.push({key: item, value: JSON.parse(responseObj[item].value)})
                             }
                         )
 

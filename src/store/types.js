@@ -43,6 +43,8 @@ export const LOGIN = "LOGIN";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const USER_CONTEXT = "USER_CONTEXT";
 export const ORG_CACHE = "ORG_CACHE";
+export const USER_CACHE = "USER_CACHE";
+
 export const SIGN_UP = "SIGN_UP";
 export const USER_DETAIL = "USER_DETAIL";
 export const LOAD_USER_DETAIL = "LOAD_USER_DETAIL";

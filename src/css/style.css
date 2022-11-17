@@ -4817,3 +4817,18 @@ select option {
 .btn-block{
     width: 100%;
 }
+
+.new-message-bubble{
+    display: flex;
+    justify-content: center;
+    border-radius: 16px;
+    background:  var(--lc-pink);
+    color: white;
+    padding: 2px 12px;
+    min-height: 32px;
+    max-height: 32px;
+    align-items: center;
+    opacity: 0.7;
+    z-index: 1;
+    position: absolute; right: 10px;
+}

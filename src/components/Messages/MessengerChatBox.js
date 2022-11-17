@@ -14,7 +14,8 @@ import * as actionCreator from "../../store/actions/actions";
 import {Description} from "@mui/icons-material";
 import CustomPopover from "../FormsUI/CustomPopover";
 import {checkIfDocumentFromType, linkifyText} from "../../Util/GlobalFunctions";
-
+import Done from '@mui/icons-material/Done';
+import DoneAll from '@mui/icons-material/DoneAll';
 
 const LC_PURPLE = "#27245C";
 const LC_PINK = "#D31169";
@@ -59,6 +60,9 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
 
     return (
         <div className="w-75 p-2 mb-2 chat-msg-box border-rounded text-blue gray-border messenger-message-bubble">
+
+            {/*<Done/>*/}
+            {/*<DoneAll />*/}
             <div className="row">
                 <div className="col">
                     {m &&

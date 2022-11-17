@@ -175,7 +175,7 @@ class EventReleaseDialog extends Component {
 
                         <GlobalDialog
                             allowOverflow
-                            heading={"Release Site: "+ this.props.item.event.title}
+                            heading={"Release Event: "+ this.props.item.event.title}
                             show={this.props.showReleaseProduct}
                             hide={this.props.hide}
                         >

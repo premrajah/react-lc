@@ -29,7 +29,7 @@ const TextFieldWrapper = ({
     error,
     initialValue,
     disabled,
-    readonly,
+    readonly,ignoreTrim,
     customReadOnly,reset,noMargin,
                               numberInput,
     ...otherProps
@@ -42,10 +42,7 @@ const TextFieldWrapper = ({
 
             if (onChange) {
                 setField(initialValue)
-                // alert(initialValue)
-
-
-                    onChange(initialValue);
+                onChange(initialValue);
 
 
             }
@@ -77,6 +74,9 @@ const TextFieldWrapper = ({
         const { value } = event.target;
         setField(value);
 
+        if (!ignoreTrim)
+          value.trim()
+
         if (onChange){
             if (numberInput){
                 putMask(value,event)
@@ -90,7 +90,7 @@ const TextFieldWrapper = ({
 
     const putMask = (value,event) => {
 
-        var x = value.replace(/\D/g, '')
+        let x = value.replace(/\D/g, '')
         value=x
 
             setField(value)

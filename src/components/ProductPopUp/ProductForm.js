@@ -1461,6 +1461,7 @@ var slugify = require('slugify')
                                                     {!this.state.disableVolume&&   <TextFieldWrapper
                                                         numberInput
                                                         details="The number of units"
+                                                        placeholder={"Numbers e.g 1,2.. "}
                                                         // readonly ={this.state.disableVolume}
                                                         initialValue={this.props.item&&this.props.item.product.volume+""}
                                                         // value={this.state.disableVolume?"0":""}
@@ -1539,6 +1540,7 @@ var slugify = require('slugify')
                                                     <TextFieldWrapper
                                                         initialValue={this.props.item?this.props.item.product.sku.serial:null}
                                                         name="serial"
+
                                                         onChange={(value)=>this.handleChangeProduct(value,"serial")}
                                                         title="Serial Number" />
 

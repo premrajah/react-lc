@@ -73,6 +73,17 @@ export const RECUR_UNITS=[
 
 ]
 
+export const TRANSPORT_MODES=[
+"CUSTOM",
+"ROAD",
+"RAIL",
+"AIR",
+"SEA",
+"ROAD_SEA_28",
+"ROAD_RAIL_28",
+"ROAD_AIR_28",
+]
+
 export const PRODUCTS_FILTER_VALUES = [
     {key:"name",label:"Name" },
     {key:"description",label:"Description" },

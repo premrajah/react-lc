@@ -119,7 +119,7 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
 
 
-            let url=`${baseUrl}message-group/${key}/message?offset=0&size=${pageSize}`
+            let url=`${baseUrl}message-group/${key}/message/expand?offset=0&size=${pageSize}`
 
             axios
                 .get(url)

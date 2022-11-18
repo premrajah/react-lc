@@ -356,3 +356,13 @@ export const urlify = (text) => {
             return part;
         });
 };
+
+export const getNumberFromString = (txt) => {
+
+    var numb = txt.match(/\d/g);
+    if (numb)
+    numb = numb.join("");
+
+    return numb
+};
+

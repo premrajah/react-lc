@@ -56,8 +56,9 @@ function OrgTrailsTimeline(props) {
                                         variant="p"
                                         component="p"
                                         // style={{ color: "#05AD88" }}
+                                        className={"mt-2 me-2"}
                                     >
-                                        <span>
+                                        <span className="">
                                             <span className={"text-caps sub-title-text-pink"}>  {item.org.name}</span>
                                             <br/>
                                             <span className={" text-capitlize text-gray-light"}>{item.org.description}</span>
@@ -85,7 +86,9 @@ function OrgTrailsTimeline(props) {
                             </TimelineSeparator>
 
                             <TimelineContent>
-                                <Typography>
+                                <Typography
+                                    className={"mt-1 me-2"}
+                                >
                                     <p className={"text-blue"}>
                                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
@@ -103,7 +106,8 @@ function OrgTrailsTimeline(props) {
                                     <Typography
                                         variant="p"
                                         component="p"
-                                       >
+                                        className={"mt-2 me-2"}
+                                    >
                                         <span className={"text-caps "}>
                                             {item.org.name}
                                             {item.org.description && ", " + item.org.description}
@@ -131,7 +135,9 @@ function OrgTrailsTimeline(props) {
                                 )}
                             </TimelineSeparator>
                             <TimelineContent>
-                                <Typography>
+                                <Typography
+                                    className={"mt-1 me-2"}
+                                >
                                     <p className={"text-blue"}>
                                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>

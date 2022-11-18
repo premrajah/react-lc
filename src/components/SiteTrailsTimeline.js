@@ -14,6 +14,15 @@ import MapIcon from '@mui/icons-material/Place';
 import Close from "@mui/icons-material/Close";
 import {GoogleMap} from "./Map/MapsContainer";
 import {Modal, ModalBody} from "react-bootstrap";
+import {ArrowCircleUp} from "@mui/icons-material";
+import {getNumberFromString} from "../Util/GlobalFunctions";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
 
 const useStyles = makeStyles((theme) => ({
     text: {
@@ -94,20 +103,23 @@ function SiteTrailsTimeline(props) {
                 {props.siteTrails
                     .filter((item) => item._relation === "located_at")
                     .map((item, index) => (
-                        <TimelineItem key={index}>
-                            <TimelineOppositeContent>
-                                <Paper elevation={0} className={classes.paper}>
-                                    <Typography
-                                        variant="h6"
-                                        component="h1"
-                                        style={{ color: "#05AD88" }}>
-                                        {item.site.org&&   <span className={"text-caps"}>
-                                            {item.site.org.name}
-                                            {item.site.org.description &&
-                                                ", " + item.site.org.description}
-                                        </span>}
-                                    </Typography>
-                                </Paper>
+                        <>
+                        <TimelineItem pos key={index}>
+                            <TimelineOppositeContent style={{marginTop:"50px"}}>
+                                {/*<Paper elevation={0} className={classes.paper}>*/}
+                                {/*    <Typography*/}
+                                {/*        variant="h6"*/}
+                                {/*        component="h1"*/}
+                                {/*        className={"mt-1 me-2"}*/}
+                                {/*        style={{ color: "#05AD88" }}>*/}
+                                {/*        {item.site.org&&   <span className={"text-caps"}>*/}
+                                {/*            {item.site.org.name}*/}
+                                {/*            {item.site.org.description &&*/}
+                                {/*                ", " + item.site.org.description}*/}
+                                {/*        </span>}*/}
+                                {/*    </Typography>*/}
+                                {/*</Paper>*/}
+                                <DistanceTrail index={index}  item={item} distanceTrails={props.distanceTrails} />
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>
@@ -117,8 +129,9 @@ function SiteTrailsTimeline(props) {
                                         width: "25px",
                                         height: "25px",
                                     }}>
-                                    {/*<BusinessIcon />*/}
+
                                 </TimelineDot>
+
 
                                 {props.siteTrails.filter((item) => item._relation === "located_at")
                                     .length > 0 && (
@@ -129,7 +142,9 @@ function SiteTrailsTimeline(props) {
                             </TimelineSeparator>
 
                             <TimelineContent>
-                                <Typography>
+                                <Typography
+                                    className={"mt-1 me-2"}
+                                >
                                     <p className={"text-blue"}>
                                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
@@ -138,46 +153,63 @@ function SiteTrailsTimeline(props) {
                                     Currently located at
                                 </Typography>
                                 <Typography
-                                    className="blue-text"
+
+                                    className="blue-text mt-1"
                                     variant="subtitle1"
                                     component="div">
+                                    <p>{item.site.site._key}</p>
                                     {item.site.site.address}   {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
                                    handleMapModal(item.site.site)} />}
                                 </Typography>
                             </TimelineContent>
                         </TimelineItem>
+
+
+
+
+
+                        </>
                     ))}
 
                 {props.siteTrails
                     .filter((item) => item._relation === "was_located_at")
-                    .map((item, index) => (
-                        <TimelineItem>
-                            <TimelineOppositeContent>
-                                <Paper elevation={0} className={classes.paper}>
-                                    <Typography
-                                        variant="h6"
-                                        component="h1"
-                                        style={{ color: "#05AD88" }}>
-                                        <span className={"text-caps"}>
-                                            {item.site.org&&item.site.org.name}
-                                            {item.site.org&&item.site.org.description &&
-                                                ", " + item.site.org.description}
-                                        </span>
+                    .map((item, index) => <>
+                        <TimelineItem >
+                            <TimelineOppositeContent style={{marginTop:"50px"}}>
+                                <DistanceTrail index={index}  item={item} distanceTrails={props.distanceTrails} />
+                                {/*<Paper elevation={0} className={classes.paper}>*/}
+                                {/*    <Typography*/}
+                                {/*        variant="h6"*/}
+                                {/*        component="h1"*/}
+
+                                {/*        style={{ color: "#05AD88" }}>*/}
+                                {/*        <span className={"text-caps"}>*/}
+                                {/*            {item.site.org&&item.site.org.name}*/}
+                                {/*            {item.site.org&&item.site.org.description &&*/}
+                                {/*                ", " + item.site.org.description}*/}
+                                {/*        </span>*/}
 
 
-                                    </Typography>
-                                </Paper>
+                                {/*    </Typography>*/}
+                                {/*</Paper>*/}
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>
-                                <TimelineDot
+                                <ArrowCircleUp
                                     style={{
-                                        backgroundColor: "#05AD88",
+                                        color: "#05AD88",
                                         width: "25px",
                                         height: "25px",
-                                    }}>
-                                    {/*<BusinessIcon />*/}
-                                </TimelineDot>
+                                    }}
+                                />
+                                {/*<TimelineDot*/}
+                                {/*    style={{*/}
+                                {/*        backgroundColor: "#05AD88",*/}
+                                {/*        width: "25px",*/}
+                                {/*        height: "25px",*/}
+                                {/*    }}>*/}
+                                {/*    /!*<BusinessIcon />*!/*/}
+                                {/*</TimelineDot>*/}
 
                                 {props.siteTrails.filter(
                                     (item) => item._relation === "was_located_at"
@@ -189,7 +221,9 @@ function SiteTrailsTimeline(props) {
                                 )}
                             </TimelineSeparator>
                             <TimelineContent>
-                                <Typography>
+                                <Typography
+                                    className="mt-1 me-2"
+                                >
                                     <p className={"text-blue"}>
                                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
@@ -205,7 +239,10 @@ function SiteTrailsTimeline(props) {
                                 </Typography>
                             </TimelineContent>
                         </TimelineItem>
-                    ))}
+
+
+                    </>
+                    )}
             </Timeline>
 
                 <>
@@ -254,6 +291,149 @@ function SiteTrailsTimeline(props) {
 
         </div>
     );
+}
+
+
+const DistanceTrail=(props)=>{
+
+
+    let item=props.item
+    let index=props.index
+    return(
+        <>
+        {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id)
+            &&props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons>0)
+        &&
+            <>
+
+                        <Paper elevation={0} >
+                            <Typography
+
+                                style={{ opacity: "0.8" }}>
+
+
+                                <TableContainer component={Paper}>
+                                <Table className="carbon-table" sx={{ minWidth: 150 }} aria-label="simple table">
+
+                                <TableBody>
+                                    {/*<TableRow>*/}
+                                    {/*    <span className="w-100 ">{props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id)._id}</span>*/}
+                                    {/*</TableRow>*/}
+                               <TableRow>
+
+                                        <TableCell component="td" scope="row">
+                                            Carbon(Tons):
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons}
+                                        </TableCell>
+
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="td" scope="row">
+                                            Gross Weight(Kgs):
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.gross_weight_kgs}
+                                        </TableCell>
+
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="td" scope="row">
+                                            Transport Mode:
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kg_km)}
+                                        </TableCell>
+
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="td" scope="row">
+                                            Distance (Km):
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toFixed(2)}
+                                        </TableCell>
+
+
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="td" scope="row">
+                                            Duration(Hr):
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toFixed(1)}
+                                        </TableCell>
+
+                                    </TableRow>
+                                </TableBody>
+                                </Table>
+                                </TableContainer>
+
+                                {/*<span className="w-100 d-none">{props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id)._id}</span>*/}
+
+                                 {/*<span className="w-100 text-14 d-block">Carbon(Tons): {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons}</span>*/}
+                               {/*<span className="w-100 d-block text-14">Gross Weight(Kgs): {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.gross_weight_kgs}</span>*/}
+
+                                {/*<span className="w-100 d-block text-14">Transport Mode: {getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kg_km)}</span>*/}
+                                {/*<span className="w-100 d-block text-14">Distance: {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value} {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.text}</span>*/}
+                                {/*<span className="w-100 d-block text-14">Duration: {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value} {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.text}</span>*/}
+
+                            </Typography>
+                        </Paper>
+
+
+                </>}
+   </>
+    )
+}
+
+const getMode=(text, carbon)=>{
+
+    console.log("mode",text)
+    let result=""
+    let percentage=getNumberFromString(text)
+    if (text.includes("CUSTOM")){
+        result=result+" Custom"
+
+        if (percentage){
+            result=` ${carbon}`
+        }
+
+    }
+    if (text.includes("ROAD")){
+        result=result+"Road"
+
+        if (percentage){
+            result=`${result}(${percentage[0]*10}%)`
+        }
+
+    }
+    if (text.includes("SEA")){
+        result=result+" Sea"
+
+        if (percentage&percentage[1]){
+            result=`${result}(${percentage[1]*10}%)`
+        }
+
+    }
+    if (text.includes("RAIL")){
+        result=result+" Rail"
+
+        if (percentage&percentage[1]){
+            result=`${result}(${percentage[1]*10}%)`
+        }
+
+    }
+    if (text.includes("AIR")){
+        result=result+" Air"
+
+        if (percentage&percentage[1]){
+            result=`${result}(${percentage[1]*10}%)`
+        }
+
+    }
+    return  result
 }
 
 export default SiteTrailsTimeline;

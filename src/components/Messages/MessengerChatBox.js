@@ -66,7 +66,7 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
             <div className="row">
                 <div className="col">
                     {m &&
-                        m.orgs.map(
+                    m.orgs&&m.orgs.map(
                             (o, index) =>
                                 o.actor === "message_from" && (
                                     <div key={index} className="d-flex justify-content-between">
@@ -74,7 +74,7 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
                                             className="text-mute"
                                             style={{
                                                 color: `${
-                                                    m.orgs
+                                                    m.orgs&&m.orgs
                                                         .map((o, i) => handleWhoseMessage(o, i))
                                                         .filter((s) => s === LC_PINK).length > 0
                                                         ? LC_PINK
@@ -96,13 +96,13 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
                 <div className="col">
                     <div>
 
-                        <div
+                        {m.message &&   <div
                             // dangerouslySetInnerHTML={(createMarkup(m ? linkifyText(m.message.text) : ""))}
                             dangerouslySetInnerHTML={{
                                 __html: linkifyText(m.message.text) .replace(/href/g, "target='_blank' href")
                             }}
                             style={{ lineHeight: "0.8" }}
-                        />
+                        />}
 
 
                     </div>
@@ -110,7 +110,7 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
                 </div>
             </div>
 
-            {m.message.entity_as_json && m.message.entity_type === "Product" && (
+            {m.message&&m.message.entity_as_json && m.message.entity_type === "Product" && (
                 <div className="row mt-3 mb-2">
                     <div className="col">
                         <div style={{ borderBottom: "1px solid rgba(0,0,0,0.1)" }} />
@@ -180,7 +180,7 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
                 </div>
             </div>
 
-            {m.artifacts.length > 0 && (
+            {m.artifacts&&m.artifacts.length > 0 && (
                 <div className="row">
                     <div className="col">
                         <Stack direction="row" spacing={2}>

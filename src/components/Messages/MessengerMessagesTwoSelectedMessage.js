@@ -16,7 +16,6 @@ import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import {styled} from "@mui/material/styles";
 import TableCell, {tableCellClasses} from "@mui/material/TableCell";
-import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 import Badge from '@mui/material/Badge';
 import CustomPopover from "../FormsUI/CustomPopover";
 
@@ -119,7 +118,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,sh
                                     <React.Fragment key={i}>
                                         <div
                                             className={`d-flex ${
-                                                (m.orgs.map((o, i) => handleWhoseMessage(o, i)).filter((s) => s === "justify-content-end").length > 0) ? "justify-content-end" : "justify-content-start"
+                                                (m.orgs&&m.orgs.map((o, i) => handleWhoseMessage(o, i)).filter((s) => s === "justify-content-end").length > 0) ? "justify-content-end" : "justify-content-start"
                                             }`}>
                                             <MessengerChatBox m={m} />
                                         </div>

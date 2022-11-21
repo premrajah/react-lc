@@ -157,7 +157,6 @@ function SiteTrailsTimeline(props) {
                                     className="blue-text mt-1"
                                     variant="subtitle1"
                                     component="div">
-                                    <p>{item.site.site._key}</p>
                                     {item.site.site.address}   {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
                                    handleMapModal(item.site.site)} />}
                                 </Typography>

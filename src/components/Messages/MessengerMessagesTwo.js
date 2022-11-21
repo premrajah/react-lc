@@ -18,7 +18,7 @@ import {LoaderAnimated} from "../../Util/GlobalFunctions";
 import draftToHtml from "draftjs-to-html";
 import {convertToRaw} from "draft-js";
 import {Spinner} from "react-bootstrap";
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+
 const newMessagePlaceHOlder = {
     message_group: { _id: 0 },
     orgs: [{ name: "New Message", email: "new@new.com" }],
@@ -315,11 +315,6 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
                             setFilteredGroups(groups);
                             setTrackedMessageGroups(groups);
 
-                            // setFilteredGroups((group) => [groupItem].concat(group));
-                            // setTrackedMessageGroups((group) => [groupItem].concat(group));
-
-
-
                         }
 
 
@@ -367,7 +362,7 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
         }
 
 
-        let url=`${baseUrl}message-group/${key}/message?offset=${currentOffset}&size=${pageSize}`
+        let url=`${baseUrl}message-group/${key}/message/no-links?offset=${currentOffset}&size=${pageSize}`
 
         if (tab==1){
             url =`${url}&with-artifacts=true`
@@ -720,8 +715,6 @@ try{
 
 
                             {groupLoading&&<>
-                                {/*<Skeleton className="mb-1" variant="rectangular" height="52px" >*/}
-
 
                                     <div className="spinner-chat"><Spinner
                                         className="mr-2"
@@ -731,8 +724,6 @@ try{
                                         role="status"
                                         aria-hidden="true"
                                     /></div>
-                                {/*</Skeleton>*/}
-
                             </>}
                         </List>
                     ) : (

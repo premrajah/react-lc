@@ -22,6 +22,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import InfoIcon from "./FormsUI/ProductForm/InfoIcon";
+import CustomPopover from "./FormsUI/CustomPopover";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -119,7 +121,7 @@ function SiteTrailsTimeline(props) {
                                 {/*        </span>}*/}
                                 {/*    </Typography>*/}
                                 {/*</Paper>*/}
-                                <DistanceTrail index={index}  item={item} distanceTrails={props.distanceTrails} />
+                                <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails} />
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>
@@ -175,7 +177,7 @@ function SiteTrailsTimeline(props) {
                     .map((item, index) => <>
                         <TimelineItem >
                             <TimelineOppositeContent style={{marginTop:"50px"}}>
-                                <DistanceTrail index={index}  item={item} distanceTrails={props.distanceTrails} />
+                                <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails} />
                                 {/*<Paper elevation={0} className={classes.paper}>*/}
                                 {/*    <Typography*/}
                                 {/*        variant="h6"*/}
@@ -387,6 +389,48 @@ const DistanceTrail=(props)=>{
     )
 }
 
+
+const DistanceTrailPopOver=(props)=>{
+
+
+    let item=props.item
+    let index=props.index
+    return(
+        <>
+            {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id)
+                &&props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons>0)
+            &&
+            <>
+
+                <Paper elevation={0} >
+                    <Typography
+
+                        style={{ opacity: "0.8" }}>
+
+                        <CustomPopover
+                            heading={`Carbon Emissions ${props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)}`}
+
+                            text={` 
+                            Gross Weight(Kgs):${props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.gross_weight_kgs} 
+                            , Transport Mode:${getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kg_km)} 
+                            , Distance (Km): ${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toFixed(0)}
+                            , Duration(Hr):${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toFixed(0)}
+                            `}
+
+                        >Carbon Emissions(Tons): {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)} </CustomPopover>
+
+
+
+
+                    </Typography>
+                </Paper>
+
+
+            </>}
+        </>
+    )
+}
+
 const getMode=(text, carbon)=>{
 
     console.log("mode",text)
@@ -395,41 +439,41 @@ const getMode=(text, carbon)=>{
     if (text.includes("CUSTOM")){
         result=result+" Custom"
 
-        if (percentage){
-            result=` ${carbon}`
-        }
+        // if (percentage){
+        //     result=` ${carbon}`
+        // }
 
     }
     if (text.includes("ROAD")){
-        result=result+"Road"
+        result=result+" Road"
 
-        if (percentage){
-            result=`${result}(${percentage[0]*10}%)`
-        }
+        // if (percentage){
+        //     result=`${result}(${percentage[0]*10}%)`
+        // }
 
     }
     if (text.includes("SEA")){
         result=result+" Sea"
 
-        if (percentage&percentage[1]){
-            result=`${result}(${percentage[1]*10}%)`
-        }
+        // if (percentage&percentage[1]){
+        //     result=`${result}(${percentage[1]*10}%)`
+        // }
 
     }
     if (text.includes("RAIL")){
         result=result+" Rail"
 
-        if (percentage&percentage[1]){
-            result=`${result}(${percentage[1]*10}%)`
-        }
+        // if (percentage&percentage[1]){
+        //     result=`${result}(${percentage[1]*10}%)`
+        // }
 
     }
     if (text.includes("AIR")){
         result=result+" Air"
 
-        if (percentage&percentage[1]){
-            result=`${result}(${percentage[1]*10}%)`
-        }
+        // if (percentage&percentage[1]){
+        //     result=`${result}(${percentage[1]*10}%)`
+        // }
 
     }
     return  result

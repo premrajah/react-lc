@@ -4,11 +4,18 @@ import {OverlayTrigger, Popover} from "react-bootstrap";
 class CustomPopover extends React.Component {
 
 
-    constructor(props) {
+    constructor({HtmlText,...props}) {
         super(props);
     }
+    HtmlText
 
-     orgPopover = (
+    componentDidMount() {
+        this.HtmlText=this.props.HtmlText
+
+    }
+
+    orgPopover = (
+
         <Popover >
             <div className={"p-2 text-sentence "}>
 
@@ -23,6 +30,7 @@ class CustomPopover extends React.Component {
 
                     </>
                 )}
+
             </div>
         </Popover>
     );

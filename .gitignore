@@ -131,3 +131,7 @@ typings/
 .devspace/
 /.idea/
 /.idea/
+
+# Added Ignore for package-lock.json
+package-lock.json
+

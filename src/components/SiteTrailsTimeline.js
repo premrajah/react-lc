@@ -417,7 +417,7 @@ const DistanceTrailPopOver=(props)=>{
                             , Duration (hr):${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toFixed(0)}
                             `}
 
-                        >CO2 Emissions (tons): {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)}
+                        >CO2 Emissions : {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)} tons
                             <br></br>
                             {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toFixed(0)} kms in
                             {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toFixed(0)} hrs via

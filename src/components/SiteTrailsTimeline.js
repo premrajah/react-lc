@@ -24,6 +24,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import InfoIcon from "./FormsUI/ProductForm/InfoIcon";
 import CustomPopover from "./FormsUI/CustomPopover";
+import {TRANSPORT_MODES} from "../Util/Constants";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -405,7 +406,7 @@ const DistanceTrailPopOver=(props)=>{
                 <Paper elevation={0} >
                     <Typography
 
-                        style={{ opacity: "0.8" }}>
+                        style={{ opacity: "1" }}>
 
                         <CustomPopover
                             heading={`Carbon Emissions ${props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)} tons`}
@@ -417,11 +418,11 @@ const DistanceTrailPopOver=(props)=>{
                             , Duration (hr):${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toFixed(0)}
                             `}
 
-                        >CO2 Emissions : {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)} tons
+                        > <span className="text-blue">Emissions : {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)} tons CO<span className="">2</span></span>
                             <br></br>
-                            {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toFixed(0)} kms in
+                            <span className="text-12"> {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toFixed(0)} kms in
                             {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toFixed(0)} hrs via
-                            {getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kg_km)}
+                            {getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kg_km)}</span>
 
                         </CustomPopover>
 
@@ -441,47 +442,41 @@ const getMode=(text, carbon)=>{
 
     console.log("mode",text)
     let result=""
-    let percentage=getNumberFromString(text)
-    if (text.includes("CUSTOM")){
+    // let percentage=getNumberFromString(text)
+    if (text.includes(TRANSPORT_MODES[0])){
         result=result+" Custom"
-
+        result=` ${carbon}`
         // if (percentage){
         //     result=` ${carbon}`
         // }
 
     }
-    if (text.includes("ROAD")){
+
+  else  if (text.includes(TRANSPORT_MODES[1])) {
         result=result+" Road"
-
-        // if (percentage){
-        //     result=`${result}(${percentage[0]*10}%)`
-        // }
-
     }
-    if (text.includes("SEA")){
-        result=result+" Sea"
 
-        // if (percentage&percentage[1]){
-        //     result=`${result}(${percentage[1]*10}%)`
-        // }
-
-    }
-    if (text.includes("RAIL")){
+    else  if (text.includes(TRANSPORT_MODES[2])) {
         result=result+" Rail"
-
-        // if (percentage&percentage[1]){
-        //     result=`${result}(${percentage[1]*10}%)`
-        // }
-
     }
-    if (text.includes("AIR")){
+    else  if (text.includes(TRANSPORT_MODES[3])) {
         result=result+" Air"
-
-        // if (percentage&percentage[1]){
-        //     result=`${result}(${percentage[1]*10}%)`
-        // }
-
     }
+    else  if (text.includes(TRANSPORT_MODES[4])) {
+        result=result+" Sea"
+    }
+    else  if (text.includes(TRANSPORT_MODES[5])) {
+        result=result+" Road & Sea"
+    }
+    else  if (text.includes(TRANSPORT_MODES[6])) {
+        result=result+" Road & Rail"
+    }
+    else  if (text.includes(TRANSPORT_MODES[7])) {
+        result=result+" Road & Air"
+    }
+
+
+
     return  result
 }
 

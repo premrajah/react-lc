@@ -22,10 +22,12 @@ import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import docs from "../../img/icons/docs.png";
 import ProductAutocomplete from "../AutocompleteSearch/ProductAutocomplete";
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Switch from "@mui/material/Switch";
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import TextField from '@mui/material/TextField';
+import {Box} from "@mui/material";
 
 var slugify = require('slugify')
 
@@ -743,7 +745,7 @@ class EventForm extends Component {
 
                                   <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                      <DesktopDatePicker
+                                      <DatePicker
 
                                           className={"full-width-field"}
                                           disableHighlightToday={true}
@@ -757,12 +759,22 @@ class EventForm extends Component {
                                           inputFormat="dd/MM/yyyy"
                                           hintText="Select Date"
                                           value={this.state.startDate||this.props.date}
+                                          style={{position:"relative"}}
 
                                           // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.event&&this.props.event.campaign.start_ts}
                                           // onChange={this.handleChangeDateStartDate.bind(
                                           //     this
                                           // )}
-                                          renderInput={(params) => <CustomizedInput {...params} />}
+                                          OpenPickerIcon={<InfoIcon/>}
+
+                                          // renderInput={(params) => <CustomizedInput {...params} />}
+
+                                          renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                              <div className="custom-calander-container">
+                                                  <CustomizedInput ref={inputRef} {...inputProps} />
+                                                  <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                              </div>
+                                          )}
                                           onChange={(value)=>this.handleChangeProduct(value,"startDate")}
 
                                       />

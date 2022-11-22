@@ -4835,3 +4835,15 @@ select option {
 .carbon-table td {
     padding: 2px 10px;
 }
+.custom-calander-container{
+    position: relative;
+}
+.custom-calander-container>.custom-calander-icon{
+    position: absolute;
+    right: 5%;
+
+    display: block;
+    height: 32px;
+    width: 32px;
+    bottom: 0px;
+}

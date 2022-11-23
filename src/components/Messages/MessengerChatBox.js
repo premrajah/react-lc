@@ -305,14 +305,20 @@ const SeenData=(props)=>{
         seenStatus=2
     }
 
-    console.log(totalOrgs,seenStatus, orgsSeen)
+
+    let seenText=""
+
+        orgsSeen.map((org,index)=> {
+
+        seenText=`${seenText}${index>0?", ":""}${org.org.org.name}`
+        })
 
     return (
         <>
         {totalOrgs.length>0
             ?<>
 
-          <CustomPopover text={orgsSeen.map(org=>org.org.name)}>  <>
+          <CustomPopover text={seenText}>  <>
             {seenStatus==2&&<DoneAll fontSize={"small"}  style={{color:"var(--lc-green)"}}/>}
             {seenStatus==1&&<DoneAll fontSize={"small"} style={{color:"var(--lc-light-gray)"}}/>}
           </>

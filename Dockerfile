@@ -32,7 +32,8 @@ RUN echo '{ "allow_root": true  }' > /root/.bowerrc
 #  && mv ./node_modules.tmp ./node_modules \
 #  && npm install -g npm
 
-RUN npm install && npm audit fix
+# RUN npm install && npm audit fix
+RUN npm install --legacy-peer-deps
 RUN npm run build 
 
 ## Stage 1, "deployer", use nginx to deploy the code

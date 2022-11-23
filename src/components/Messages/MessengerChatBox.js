@@ -59,10 +59,14 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
     };
 
     return (
-        <div className="w-75 p-2 mb-2 chat-msg-box border-rounded text-blue gray-border messenger-message-bubble">
+        <div className="w-75 p-2 mb-2 position-relative chat-msg-box border-rounded text-blue gray-border messenger-message-bubble">
 
-            {/*<Done/>*/}
-            {/*<DoneAll />*/}
+            {(m&&m.orgs&&m.orgs.filter(orgItem=> orgItem.actor=="message_from"&&orgItem.org.org._id===userDetail.orgId).length>0)&&<span className="float-bottom-right-seen">
+            <SeenData orgs={m&&m.orgs?m.orgs:[]}
+
+            />
+            </span>}
+
             <div className="row">
                 <div className="col">
                     {m &&
@@ -284,9 +288,42 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
 
 
 
+const SeenData=(props)=>{
+
+                let totalOrgs=props.orgs.filter(orgItem=> orgItem.actor=="message_to")
+                let orgsSeen=props.orgs.filter(orgItem=> orgItem.actor=="message_to"&&orgItem.read_flag)
+    let seenStatus=0  // 0- no seen,1 atleast one seen, 2 - all seen
 
 
+    if (totalOrgs.length>orgsSeen.length){
+        if (orgsSeen.length==0){
+            seenStatus=0
+        }else{
+            seenStatus=1
+        }
+    }else{
+        seenStatus=2
+    }
 
+    console.log(totalOrgs,seenStatus, orgsSeen)
+
+    return (
+        <>
+        {totalOrgs.length>0
+            ?<>
+
+          <CustomPopover text={orgsSeen.map(org=>org.org.name)}>  <>
+            {seenStatus==2&&<DoneAll fontSize={"small"}  style={{color:"var(--lc-green)"}}/>}
+            {seenStatus==1&&<DoneAll fontSize={"small"} style={{color:"var(--lc-light-gray)"}}/>}
+          </>
+          </CustomPopover>
+
+            {seenStatus==0&&<Done style={{color:"var(--lc-light-gray)"}}/>}
+            </>:""}
+</>
+    )
+
+                }
 
 
 const mapStateToProps = (state) => {

@@ -727,6 +727,13 @@ a i {
     margin-bottom: env(safe-area-inset-bottom);
 }
 
+.float-bottom-right-seen{
+    position: absolute;
+    right: 7px;
+    bottom: 5px;
+    z-index: 2;
+}
+
 .float-bottom-right.stylepicker {
     position: fixed;
     right: 15px;

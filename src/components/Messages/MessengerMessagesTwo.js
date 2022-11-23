@@ -294,6 +294,7 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
 
                     if (handleClick&&(data.length >0)){
                         handleGroupClickCallback(data[0].message_group._key,true, data[0].orgs);
+                        markAllRead(data[0].message_group._key)
                     }
 
                 }else{
@@ -705,6 +706,7 @@ try{
                                         handleGroupClickCallback={(key)=>{
                                             setActiveTab(0);
 
+                                            markAllRead(key)
                                         handleGroupClickCallback(key)}}
                                         handleSelectedItemCallback={handleSelectedItemCallback}
 
@@ -859,6 +861,28 @@ try{
     );
 };
 
+const markAllRead = (groupId) => {
+
+
+
+    let url=`${baseUrl}message-group/read`
+
+    axios
+        .post(url,{
+            msg_group_id: groupId
+        })
+        .then((res) => {
+
+
+
+        })
+        .catch((error) => {
+
+        });
+
+
+
+};
 
 
 

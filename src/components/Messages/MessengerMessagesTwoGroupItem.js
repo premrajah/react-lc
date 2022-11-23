@@ -20,31 +20,11 @@ const MessengerMessagesTwoGroupItem = ({
     const handleListItemClick = () => {
 
         setClicked(true)
-        markAllRead()
+
         handleSelectedItemCallback(index);
         handleGroupClickCallback(group.message_group._key,true);
     };
 
-    const markAllRead = () => {
-
-        let url=`${baseUrl}message-group/read`
-
-        axios
-            .post(url,{
-                msg_group_id: group.message_group._key
-            })
-            .then((res) => {
-
-
-
-            })
-            .catch((error) => {
-
-            });
-
-
-
-    };
 
 
     return (

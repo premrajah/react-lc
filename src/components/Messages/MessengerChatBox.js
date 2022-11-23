@@ -324,7 +324,7 @@ const SeenData=(props)=>{
           </>
           </CustomPopover>
 
-            {seenStatus==0&&<Done style={{color:"var(--lc-light-gray)"}}/>}
+            {seenStatus==0&&<Done fontSize={"small"} style={{color:"var(--lc-light-gray)"}}/>}
             </>:""}
 </>
     )

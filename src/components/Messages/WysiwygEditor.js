@@ -1,4 +1,4 @@
-import React, {Component, createRef} from 'react';
+import React, {Component} from 'react';
 import {ContentState, EditorState} from "draft-js";
 import {Editor} from "react-draft-wysiwyg"
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -9,8 +9,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import docs from "../../img/icons/docs.png";
-import createLinkifyPlugin from '@draft-js-plugins/linkify';
-const linkifyPlugin = createLinkifyPlugin();
+
 class WysiwygEditor extends Component{
     constructor(props){
         super(props);
@@ -254,7 +253,7 @@ class WysiwygEditor extends Component{
 
                 // placeholder="Enter message here..."
                 // toolbarOnFocus
-                plugins={[linkifyPlugin]}
+                // plugins={[]}
                 toolbarClassName="wysiwyg-toolbar"
                 wrapperClassName="wysiwyg-wrapper"
                 editorClassName="wysiwyg-editor"

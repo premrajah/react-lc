@@ -28,6 +28,7 @@ import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import TextField from '@mui/material/TextField';
 import {Box} from "@mui/material";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
 
 var slugify = require('slugify')
 
@@ -381,7 +382,11 @@ class EventForm extends Component {
                 startDate:value
             })
         }
-
+        if (field==="endDate"){
+            this.setState({
+                endDate:value
+            })
+        }
 
 
 
@@ -423,6 +428,8 @@ class EventForm extends Component {
                 title: data.get("title"),
                 description: data.get("description"),
                 resolution_epoch_ms: new Date(this.state.startDate).getTime() + 100,
+                recur_until_epoch_ms: new Date(this.state.endDate).getTime() + 100,
+
                 process: data.get("process"),
             }
 
@@ -501,7 +508,7 @@ class EventForm extends Component {
             title : data.get("title"),
             description : data.get("description"),
             resolution_epoch_ms : new Date(this.state.startDate).getTime()+100,
-
+            recur_until_epoch_ms: new Date(this.state.endDate).getTime() + 100,
             process : data.get("process"),
             // stage:"open"
         }
@@ -745,11 +752,12 @@ class EventForm extends Component {
 
                                   <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                      <DatePicker
+                                      <DesktopDatePicker
 
                                           className={"full-width-field"}
                                           disableHighlightToday={true}
                                           minDate={new Date()}
+                                          disablePast
                                           // label="Required By"
                                           inputVariant="outlined"
                                           variant={"outlined"}
@@ -819,7 +827,7 @@ class EventForm extends Component {
                                   </div>
                                   <div className="col-md-12  col-sm-12 col-xs-12  ">
                                   <div className="row  ">
-                                      <div className="col-6">
+                                      <div className="col-12">
                                           <div className="row  ">
                                               <div className="col-12 ">
                                                   <div className="custom-label text-bold text-blue ">Repeat ?</div>
@@ -839,49 +847,98 @@ class EventForm extends Component {
                                           </div>
                                       </div>
 
+
+
+
+                                  </div>
+
                                       {this.state.showRepeatIntervalSelection &&
+                                      <div className="row bg-light pb-4 pt-2 ">
+                                          <div className="col-md-6 col-6">
+                                              <div
+                                                  className={
+                                                      "custom-label text-bold text-blue "
+                                                  }>
+                                                  End Date
+                                              </div>
+
+                                              <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                                  <DatePicker
+
+                                                      className={"full-width-field"}
+                                                      disableHighlightToday={true}
+                                                      minDate={new Date()}
+                                                      // label="Required By"
+                                                      inputVariant="outlined"
+                                                      variant={"outlined"}
+                                                      margin="normal"
+                                                      id="date-picker-dialog-1"
+                                                      // label="Available From"
+                                                      inputFormat="dd/MM/yyyy"
+                                                      hintText="Select Date"
+                                                      value={this.state.endDate||this.props.date}
+                                                      style={{position:"relative"}}
+
+                                                      OpenPickerIcon={<InfoIcon/>}
+
+                                                      // renderInput={(params) => <CustomizedInput {...params} />}
+
+                                                      renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                          <div className="custom-calander-container">
+                                                              <CustomizedInput ref={inputRef} {...inputProps} />
+                                                              <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                          </div>
+                                                      )}
+                                                      onChange={(value)=>this.handleChangeProduct(value,"endDate")}
+
+                                                  />
+                                              </LocalizationProvider>
+
+
+                                          </div>
                                       <div className="col-6 ">
                                           <div className="row  ">
                                               <div className="col-12 ">
-                                              <div className="custom-label text-bold text-blue ">Repeating interval</div>
+                                                  <div className="custom-label text-bold text-blue ">Repeating interval</div>
                                               </div>
                                               <div className="col-12 connected-fields ">
 
                                                   <div>
-                                                  <TextFieldWrapper
-                                                      noMargin
-                                                      placeholder="Enter value e.g. 1,2,3 .."
-                                                      initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
-                                                      onChange={(value)=>this.handleChangeProduct(value,"recurValue")}
-                                                      error={this.state.errors["recurValue"]}
-                                                      name="recurValue"
-                                                      numberInput
+                                                      <TextFieldWrapper
+                                                          noMargin
+                                                          placeholder="Enter value e.g. 1,2,3 .."
+                                                          initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
+                                                          onChange={(value)=>this.handleChangeProduct(value,"recurValue")}
+                                                          error={this.state.errors["recurValue"]}
+                                                          name="recurValue"
+                                                          numberInput
 
-                                                  />
+                                                      />
                                                   </div>
-                                             <div style={{width:"200px"}}>
-                                                  <SelectArrayWrapper
-                                                      noMargin
-                                                      initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
-                                                      select={"Select unit"}
-                                                      option={"value"}
-                                                      valueKey={"key"}
-                                                      error={this.state.errors["recurUnit"]}
-                                                      onChange={(value)=> {
-                                                          this.handleChangeProduct(value,"recurUnit")
-                                                      }}
-                                                      options={RECUR_UNITS} name={"recurUnit"}
-                                                  />
-                                             </div>
+                                                  <div style={{width:"200px"}}>
+                                                      <SelectArrayWrapper
+                                                          noMargin
+                                                          initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
+                                                          select={"Select unit"}
+                                                          option={"value"}
+                                                          valueKey={"key"}
+                                                          error={this.state.errors["recurUnit"]}
+                                                          onChange={(value)=> {
+                                                              this.handleChangeProduct(value,"recurUnit")
+                                                          }}
+                                                          options={RECUR_UNITS} name={"recurUnit"}
+                                                      />
+                                                  </div>
 
                                               </div>
 
 
                                           </div>
-                                      </div>}
+                                      </div>
 
-
-                                  </div>
+                                      </div>
+                                      }
 
 
                                   </div>
@@ -891,7 +948,7 @@ class EventForm extends Component {
 
                               </div>
 
-                           <div className={"row"}>
+                           <div className={"row b"}>
                             <div className="col-12 mt-2">
                                 <div className={"custom-label text-bold text-blue mb-3"}>
                                    Add Attachments <CustomPopover text="Add images, videos, manuals and other documents or external links (png, jpeg, jpg, doc, csv)"><InfoIcon/></CustomPopover>

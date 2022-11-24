@@ -451,7 +451,15 @@ const getMode=(text, carbon)=>{
         // }
 
     }
-
+    else  if (text.includes(TRANSPORT_MODES[5])) {
+        result=result+" Road & Sea"
+    }
+    else  if (text.includes(TRANSPORT_MODES[6])) {
+        result=result+" Road & Rail"
+    }
+    else  if (text.includes(TRANSPORT_MODES[7])) {
+        result=result+" Road & Air"
+    }
   else  if (text.includes(TRANSPORT_MODES[1])) {
         result=result+" Road"
     }
@@ -465,15 +473,7 @@ const getMode=(text, carbon)=>{
     else  if (text.includes(TRANSPORT_MODES[4])) {
         result=result+" Sea"
     }
-    else  if (text.includes(TRANSPORT_MODES[5])) {
-        result=result+" Road & Sea"
-    }
-    else  if (text.includes(TRANSPORT_MODES[6])) {
-        result=result+" Road & Rail"
-    }
-    else  if (text.includes(TRANSPORT_MODES[7])) {
-        result=result+" Road & Air"
-    }
+
 
 
 

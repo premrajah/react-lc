@@ -621,7 +621,8 @@ class EventForm extends Component {
         if (this.props.event){
             this.setState({
                 isEditProduct:true,
-                startDate:this.props.event.event.resolution_epoch_ms
+                startDate:this.props.event.event.resolution_epoch_ms,
+                endDate:this.props.event.event.recur_until_epoch_ms,
             })
             this.loadImages(this.props.event.artifacts)
 
@@ -631,6 +632,19 @@ class EventForm extends Component {
                 isEditProduct:true,
 
             })
+
+            if (this.props.date) {
+                this.setState({
+                    startDate: this.props.date
+                })
+            }
+            else{
+
+                this.setState({
+                    startDate: new Date()
+                })
+            }
+
 
             if (this.props.date) {
                 this.setState({
@@ -877,7 +891,7 @@ class EventForm extends Component {
                                                       // label="Available From"
                                                       inputFormat="dd/MM/yyyy"
                                                       hintText="Select Date"
-                                                      value={this.state.endDate||this.props.date}
+                                                      value={this.state.endDate}
                                                       style={{position:"relative"}}
 
                                                       OpenPickerIcon={<InfoIcon/>}

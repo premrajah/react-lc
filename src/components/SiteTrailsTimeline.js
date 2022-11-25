@@ -409,7 +409,7 @@ const DistanceTrailPopOver=(props)=>{
                         style={{ opacity: "1" }}>
 
                         <CustomPopover
-                            heading={`Carbon Emissions ${props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)} tons`}
+                            heading={`Carbon Emissions ${props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)} kgCO<sub>2</sub>e`}
 
                             text={` 
                             Gross Weight (kgs):${props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.gross_weight_kgs} 
@@ -418,7 +418,7 @@ const DistanceTrailPopOver=(props)=>{
                             , Duration (hr):${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toFixed(0)}
                             `}
 
-                        > <span className="text-blue">Emissions : {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)} tons CO<sub>2</sub></span>
+                        > <span className="text-blue">Emissions : {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons.toFixed(6)} kgCO<sub>2</sub>e</span>
                             <br></br>
                             <span className="text-12"> {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toFixed(0)} kms in
                             {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toFixed(0)} hrs via

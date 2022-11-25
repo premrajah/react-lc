@@ -275,11 +275,11 @@ timeout=0
 
                                           </div>
                              </div>
-                            <div className="row">
-                                <div className="col">
+                            <div className="row justify-content-center">
+                                <div className="col text-center">
                                     <GreenButton
                                         title={"Submit"}
-                                        fullWidth
+
                                         type="Submit"
                                         onClick={this.showReleaseProductPopUp}
                                     >

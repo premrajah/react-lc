@@ -345,7 +345,7 @@ const DistanceTrail=(props)=>{
                                             Transport Mode:
                                         </TableCell>
                                         <TableCell align="right">
-                                            {getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_ton_per_kg_km)}
+                                            {getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons_per_kg_km)}
                                         </TableCell>
 
                                     </TableRow>
@@ -377,7 +377,7 @@ const DistanceTrail=(props)=>{
                                  {/*<span className="w-100 text-14 d-block">Carbon(Tons): {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kgs}</span>*/}
                                {/*<span className="w-100 d-block text-14">Gross Weight(Kgs): {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.gross_weight_kgs}</span>*/}
 
-                                {/*<span className="w-100 d-block text-14">Transport Mode: {getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_ton_per_kg_km)}</span>*/}
+                                {/*<span className="w-100 d-block text-14">Transport Mode: {getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons_per_kg_km)}</span>*/}
                                 {/*<span className="w-100 d-block text-14">Distance: {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value} {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.text}</span>*/}
                                 {/*<span className="w-100 d-block text-14">Duration: {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value} {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.text}</span>*/}
 
@@ -413,7 +413,7 @@ const DistanceTrailPopOver=(props)=>{
 
                             text={` 
                             Gross Weight (kgs):${props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.gross_weight_kgs} 
-                            , Transport Mode:${getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_ton_per_kg_km)} 
+                            , Transport Mode:${getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons_per_kg_km)} 
                             , Distance (kms): ${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toFixed(0)}
                             , Duration (hr):${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toFixed(0)}
                             `}
@@ -422,7 +422,7 @@ const DistanceTrailPopOver=(props)=>{
                             <br></br>
                             <span className="text-12"> {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toFixed(0)} kms in
                             {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toFixed(0)} hrs via
-                            {getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_ton_per_kg_km)}</span>
+                            {getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons_per_kg_km)}</span>
 
                         </CustomPopover>
 

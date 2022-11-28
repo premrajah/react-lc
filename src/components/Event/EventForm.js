@@ -772,25 +772,15 @@ class EventForm extends Component {
                                           disableHighlightToday={true}
                                           minDate={new Date()}
                                           disablePast
-                                          // label="Required By"
                                           inputVariant="outlined"
                                           variant={"outlined"}
                                           margin="normal"
                                           id="date-picker-dialog-1"
-                                          // label="Available From"
                                           inputFormat="dd/MM/yyyy"
                                           hintText="Select Date"
                                           value={this.state.startDate||this.props.date}
                                           style={{position:"relative"}}
-
-                                          // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.event&&this.props.event.campaign.start_ts}
-                                          // onChange={this.handleChangeDateStartDate.bind(
-                                          //     this
-                                          // )}
                                           OpenPickerIcon={<InfoIcon/>}
-
-                                          // renderInput={(params) => <CustomizedInput {...params} />}
-
                                           renderInput=   {({ inputRef, inputProps, InputProps }) => (
                                               <div className="custom-calander-container">
                                                   <CustomizedInput ref={inputRef} {...inputProps} />

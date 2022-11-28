@@ -39,6 +39,7 @@ import MoreMenu from "../MoreMenu";
 import CustomMoreMenu from "../FormsUI/CustomMoreMenu";
 import SiteReleaseDialog from "../Sites/SiteReleaseDialog";
 import EventReleaseDialog from "./EventReleaseDialog";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
 
 class EventItem extends Component {
         constructor(props) {
@@ -995,7 +996,7 @@ class EventItem extends Component {
 
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                        <MobileDatePicker
+                                        <DesktopDatePicker
 
                                             className={"full-width-field"}
                                             disableHighlightToday={true}
@@ -1007,7 +1008,13 @@ class EventItem extends Component {
                                             id="date-picker-dialog-1"
                                             inputFormat="dd/MM/yyyy"
                                             value={this.state.startDate}
-                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                <div className="custom-calander-container">
+                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                </div>
+                                            )}
+                                            // renderInput={(params) => <CustomizedInput {...params} />}
                                             onChange={(value)=>this.handleChangeDate(value,"startDate")}
 
                                         />
@@ -1027,7 +1034,7 @@ class EventItem extends Component {
                                     </div>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                        <MobileDatePicker
+                                        <DesktopDatePicker
                                             disableHighlightToday={true}
                                             minDate={this.state.minEndDate}
                                             inputVariant="outlined"
@@ -1036,7 +1043,13 @@ class EventItem extends Component {
                                             id="date-picker-dialog"
                                             inputFormat="dd/MM/yyyy"
                                             value={this.state.endDate}
-                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                <div className="custom-calander-container">
+                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                </div>
+                                            )}
+                                            // renderInput={(params) => <CustomizedInput {...params} />}
                                             onChange={(value)=>this.handleChangeDate(value,"endDate")}
                                         />
                                     </LocalizationProvider>

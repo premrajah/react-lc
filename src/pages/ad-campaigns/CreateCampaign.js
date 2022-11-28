@@ -27,6 +27,7 @@ import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompl
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
 let slugify = require('slugify')
 
 class CreateCampaign extends Component {
@@ -1334,7 +1335,7 @@ let item=null
 
                                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                        <MobileDatePicker
+                                                        <DesktopDatePicker
 
                                                             disableHighlightToday={true}
                                                             minDate={new Date()}
@@ -1351,7 +1352,13 @@ let item=null
                                                             // onChange={this.handleChangeDateStartDate.bind(
                                                             //     this
                                                             // )}
-                                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                                <div className="custom-calander-container">
+                                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                                </div>
+                                                            )}
+                                                            // renderInput={(params) => <CustomizedInput {...params} />}
                                                             onChange={(value)=>this.handleChange(value,"startDate")}
 
                                                         />
@@ -1371,7 +1378,7 @@ let item=null
                                                     </div>
                                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                        <MobileDatePicker
+                                                        <DesktopDatePicker
                                                             disableHighlightToday={true}
 
                                                             minDate={new Date()}
@@ -1383,8 +1390,13 @@ let item=null
                                                             inputFormat="dd/MM/yyyy"
                                                             value={this.state.endDate}
                                                             // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.state.item&&this.state.item.campaign.end_ts}
-
-                                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                                <div className="custom-calander-container">
+                                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                                </div>
+                                                            )}
+                                                            // renderInput={(params) => <CustomizedInput {...params} />}
                                                             onChange={(value)=>this.handleChange(value,"endDate")}
 
                                                         />

@@ -29,6 +29,7 @@ import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import SiteFormNew from "../../components/Sites/SiteFormNew";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
 
 
 class SearchForm extends Component {
@@ -1297,7 +1298,7 @@ if ((this.state.activeStep-1)==0){
 
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                        <MobileDatePicker
+                                        <DesktopDatePicker
 
                                             className={"full-width-field"}
                                             disableHighlightToday={true}
@@ -1315,7 +1316,13 @@ if ((this.state.activeStep-1)==0){
                                             // onChange={this.handleChangeDateStartDate.bind(
                                             //     this
                                             // )}
-                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                            // renderInput={(params) => <CustomizedInput {...params} />}
+                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                <div className="custom-calander-container">
+                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                </div>
+                                            )}
                                             onChange={(value)=>this.handleChange(value,"startDate")}
 
                                         />
@@ -1335,7 +1342,7 @@ if ((this.state.activeStep-1)==0){
                                     </div>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                        <MobileDatePicker
+                                        <DesktopDatePicker
                                             disableHighlightToday={true}
 
                                             minDate={new Date()}
@@ -1348,9 +1355,14 @@ if ((this.state.activeStep-1)==0){
                                             value={this.state.endDate}
                                             // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
 
-                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                            // renderInput={(params) => <CustomizedInput {...params} />}
                                             onChange={(value)=>this.handleChange(value,"endDate")}
-
+                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                <div className="custom-calander-container">
+                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                </div>
+                                            )}
                                         />
                                     </LocalizationProvider>
                                     {this.state.showFieldErrors&&this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}

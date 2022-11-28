@@ -32,6 +32,7 @@ import ProductItem from "../../components/Products/Item/ProductItem";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
 
 
 class ListForm extends Component {
@@ -1018,7 +1019,7 @@ class ListForm extends Component {
                                                         {/*    utils={MomentUtils}>*/}
                                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                            <MobileDatePicker
+                                                            <DesktopDatePicker
                                                                 minDate={new Date()}
                                                                 // label="Required By"
                                                                 inputVariant="outlined"
@@ -1031,8 +1032,13 @@ class ListForm extends Component {
                                                                 onChange={this.handleChangeDateStartDate.bind(
                                                                     this
                                                                 )}
-
-                                                                renderInput={(params) => <CustomizedInput {...params} />}
+                                                                renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                                    <div className="custom-calander-container">
+                                                                        <CustomizedInput ref={inputRef} {...inputProps} />
+                                                                        <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                                    </div>
+                                                                )}
+                                                                // renderInput={(params) => <CustomizedInput {...params} />}
                                                             />
                                                         </LocalizationProvider>
                                                         {/*</MuiPickersUtilsProvider>*/}
@@ -1059,7 +1065,7 @@ class ListForm extends Component {
 
                                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                            <MobileDatePicker
+                                                            <DesktopDatePicker
                                                                 minDate={
                                                                     this.state.startDate
                                                                         ? this.state.startDate
@@ -1076,7 +1082,13 @@ class ListForm extends Component {
                                                                 onChange={this.handleChangeDateEndDate.bind(
                                                                     this
                                                                 )}
-                                                                renderInput={(params) => <CustomizedInput {...params} />}
+                                                                renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                                    <div className="custom-calander-container">
+                                                                        <CustomizedInput ref={inputRef} {...inputProps} />
+                                                                        <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                                    </div>
+                                                                )}
+                                                                // renderInput={(params) => <CustomizedInput {...params} />}
                                                             />
                                                         </LocalizationProvider>
                                                         {/*</MuiPickersUtilsProvider>*/}

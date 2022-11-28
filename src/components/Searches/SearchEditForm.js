@@ -20,6 +20,7 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import EditSite from "../Sites/EditSite";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -1159,14 +1160,20 @@ updateSite=(search,site)=>{
                                 </div>
 
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <MobileDatePicker
+                                    <DesktopDatePicker
                                         name={"dateRequiredFrom"}
                                         inputVariant="outlined"
                                         variant={"outlined"}
                                         margin="normal"
                                         id="date-picker-dialog"
                                         format="DD/MM/yyyy"
-                                        renderInput={(params) => <CustomizedInput {...params} />}
+                                        renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                            <div className="custom-calander-container">
+                                                <CustomizedInput ref={inputRef} {...inputProps} />
+                                                <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                            </div>
+                                        )}
+                                        // renderInput={(params) => <CustomizedInput {...params} />}
                                         value={
                                             this.state.dateRequiredFrom
                                                 ? this.state.dateRequiredFrom
@@ -1189,7 +1196,7 @@ updateSite=(search,site)=>{
                                 </div>
 
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <MobileDatePicker
+                                    <DesktopDatePicker
                                         name={"dateRequiredBy"}
                                         minDate={
                                             this.state.dateRequiredFrom
@@ -1208,7 +1215,13 @@ updateSite=(search,site)=>{
                                                 : this.props.item.search.expire_after_epoch_ms
                                         }
                                         onChange={this.handleChangeDate.bind(this)}
-                                        renderInput={(params) => <CustomizedInput {...params} />}
+                                        // renderInput={(params) => <CustomizedInput {...params} />}
+                                        renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                            <div className="custom-calander-container">
+                                                <CustomizedInput ref={inputRef} {...inputProps} />
+                                                <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                            </div>
+                                        )}
                                     />
 
                                 </LocalizationProvider>

@@ -1,32 +1,14 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import Select from "@mui/material/Select";
-import SearchIcon from "../../img/icons/search-icon.png";
-import {Link} from "react-router-dom";
 import {makeStyles} from "@mui/styles";
-import Toolbar from "@mui/material/Toolbar";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import LinearProgress from "@mui/material/LinearProgress";
-import ProductExpandItem from "../../components/Products/ProductExpandItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import _ from "lodash";
-// import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import PageHeader from "../../components/PageHeader";
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
-import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
-import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
-import {capitalize} from "../../Util/GlobalFunctions";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import Layout from "../../components/Layout/Layout";
-import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
-import GlobalDialog from "../../components/RightBar/GlobalDialog";
-import SiteFormNew from "../../components/Sites/SiteFormNew";
 import SearchForm from "../../components/Searches/SearchForm";
 
 

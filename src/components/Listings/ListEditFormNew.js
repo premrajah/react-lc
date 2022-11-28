@@ -1,41 +1,26 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import FormControl from "@mui/material/FormControl";
 import {makeStyles} from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
-import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import ProductExpandItem from "../Products/ProductExpandItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import _ from "lodash";
-import clsx from "clsx";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
-import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import SiteFormNew from "../Sites/SiteFormNew";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import PageHeader from "../PageHeader";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import ProductTreeView from "../ProductTreeView";
 import ProductItem from "../Products/Item/ProductItem";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
-import {capitalize} from "../../Util/GlobalFunctions";
-import ItemDetailPreview from "../ItemDetailPreview";
-import ProductBlue from "../../img/icons/product-blue.png";
-import {Link} from "react-router-dom";
-import LinearProgress from "@mui/material/LinearProgress";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -1488,7 +1473,7 @@ class ListEditFormNew extends Component {
 
                                             <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                <MobileDatePicker
+                                                <DesktopDatePicker
 
                                                     className={"full-width-field"}
                                                     disableHighlightToday={true}
@@ -1500,7 +1485,13 @@ class ListEditFormNew extends Component {
                                                     id="date-picker-dialog-1"
                                                     inputFormat="dd/MM/yyyy"
                                                     value={this.state.startDate}
-                                                    renderInput={(params) => <CustomizedInput {...params} />}
+                                                    renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                        <div className="custom-calander-container">
+                                                            <CustomizedInput ref={inputRef} {...inputProps} />
+                                                            <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                        </div>
+                                                    )}
+                                                    // renderInput={(params) => <CustomizedInput {...params} />}
                                                     onChange={(value)=>this.handleChange(value,"startDate")}
 
                                                 />
@@ -1520,7 +1511,7 @@ class ListEditFormNew extends Component {
                                             </div>
                                             <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                <MobileDatePicker
+                                                <DesktopDatePicker
                                                     disableHighlightToday={true}
 
                                                     minDate={new Date()}
@@ -1532,8 +1523,13 @@ class ListEditFormNew extends Component {
                                                     inputFormat="dd/MM/yyyy"
                                                     value={this.state.endDate}
                                                     // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
-
-                                                    renderInput={(params) => <CustomizedInput {...params} />}
+                                                    renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                        <div className="custom-calander-container">
+                                                            <CustomizedInput ref={inputRef} {...inputProps} />
+                                                            <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                        </div>
+                                                    )}
+                                                    // renderInput={(params) => <CustomizedInput {...params} />}
                                                     onChange={(value)=>this.handleChange(value,"endDate")}
 
                                                 />

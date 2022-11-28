@@ -125,7 +125,6 @@ class ViewSearch extends Component {
         // this.handleDateChange = this.handleDateChange.bind(this)
         this.createSearch = this.createSearch.bind(this);
         this.getSearch = this.getSearch.bind(this);
-        this.loadMatches = this.loadMatches.bind(this);
         this.getSite = this.getSite.bind(this);
         this.toggleSite = this.toggleSite.bind(this);
         this.makeActive = this.makeActive.bind(this);
@@ -272,61 +271,66 @@ class ViewSearch extends Component {
 
 
     requestMatch= (event) => {
-        event.preventDefault();
-        event.stopPropagation();
 
-        let parentId;
+try {
+    event.preventDefault();
+    event.stopPropagation();
 
-        if (!this.handleValidation()) {
-            return
-        }
+    let parentId;
 
-        this.setState({
-            btnLoading: true,
-        });
+    if (!this.handleValidation()) {
+        return
+    }
 
-        const data = new FormData(event.target);
+    this.setState({
+        btnLoading: true,
+    });
+
+    const data = new FormData(event.target);
 
 
-        let formData={
-            listing_id: this.state.item.listing._key,
-            search_id: this.state.createSearchData.search._key,
+    let formData = {
+        listing_id: this.state.listingSelected._key,
+        search_id: this.state.createSearchData.search._key,
 
-        }
+    }
 
-        if (data.get("message")){
+    if (data.get("message")) {
 
-            formData.note=data.get("message")
-        }
+        formData.note = data.get("message")
+    }
 
-        axios
-            .post(
-                baseUrl + "match",
-                formData,
-            )
-            .then((res) => {
+    axios
+        .post(
+            baseUrl + "match",
+            formData,
+        )
+        .then((res) => {
 
-                // this.setState({
-                //     showPopUp: false,
-                //     matchExist: true,
-                // });
-                //
-                // this.checkMatch();
+            // this.setState({
+            //     showPopUp: false,
+            //     matchExist: true,
+            // });
+            //
+            // this.checkMatch();
 
-                this.toggleRequestMatch()
+            this.toggleRequestMatch()
 
-                this.loadMatches()
+            this.loadMatches()
 
-                // this.getResources()
-            })
-            .catch((error) => {
-                //
+            // this.getResources()
+        })
+        .catch((error) => {
+            //
 
-                this.setState({
-                    showPopUp: true,
-                    // loopError: error.response.data.data.message
-                });
+            this.setState({
+                showPopUp: true,
+                // loopError: error.response.data.data.message
             });
+        });
+}catch (e){
+    console.log(e)
+}
     }
 
 
@@ -589,7 +593,7 @@ class ViewSearch extends Component {
             .catch((error) => {});
     }
 
-    loadMatches() {
+    loadMatches=()=> {
         axios
             .get(baseUrl + "match/search/" + this.slug)
             .then(
@@ -1037,7 +1041,9 @@ class ViewSearch extends Component {
                         )}
 
                         <RightSidebar heading={"Matches"}
-                                      subTitle={"Your search matches"} toggleOpen={this.toggleMatches} open={this.state.showMatches} width={"70%"}>
+                                      subTitle={"Your search matches"}
+                                      toggleOpen={this.toggleMatches}
+                                      open={this.state.showMatches} width={"70%"}>
 
                             <>
                             {this.state.matchesView &&
@@ -1045,7 +1051,8 @@ class ViewSearch extends Component {
                                 suggesstions={this.state.suggesstions}
                                 hideConfirmed
                                 slug={this.slug}
-                                           requestMatch={this.toggleRequestMatch}
+                                requestMatch={this.toggleRequestMatch}
+
                                            showDetails={(data)=> this.toggleListingView(data)}/>
                             }
 

@@ -20,8 +20,8 @@ import Sidebar from "../menu/Sidebar";
 import ItemDetailPreview from "../../components/ItemDetailPreview";
 import ProductTreeView from "../../components/ProductTreeView";
 
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 // import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 

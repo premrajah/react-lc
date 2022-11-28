@@ -16,8 +16,8 @@ import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import docs from "../../img/icons/docs.png";
@@ -30,7 +30,7 @@ import TextField from '@mui/material/TextField';
 import {Box} from "@mui/material";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 
-var slugify = require('slugify')
+let slugify = require('slugify')
 
 
 function ValueLabelComponent(props) {

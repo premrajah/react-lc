@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import EventDetail from "./EventDetail";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 
-var slugify = require('slugify')
+let slugify = require('slugify')
 
 
 function ValueLabelComponent(props) {

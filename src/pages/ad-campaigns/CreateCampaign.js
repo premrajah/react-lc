@@ -19,15 +19,15 @@ import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import {Spinner} from "react-bootstrap";
 import Select from "@mui/material/Select";
 import {campaignStrategyUrl, createCampaignUrl} from "../../Util/Api";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import DescriptionIcon from "@mui/icons-material/Description";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
-var slugify = require('slugify')
+let slugify = require('slugify')
 
 class CreateCampaign extends Component {
 

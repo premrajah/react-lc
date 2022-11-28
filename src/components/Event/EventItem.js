@@ -28,8 +28,8 @@ import {CSVLink} from "react-csv";
 import DownloadIcon from "@mui/icons-material/GetApp";
 
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import moment from "moment";

@@ -36,8 +36,8 @@ import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import PageHeader from "../../components/PageHeader";
 import AddSite from "../../components/AddSite";
 import EditSite from "../../components/Sites/EditSite";
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import CustomizedSelect from "../../components/FormsUI/ProductForm/CustomizedSelect";
 

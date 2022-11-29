@@ -26,7 +26,7 @@ import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 
-var slugify = require('slugify')
+let slugify = require('slugify')
 
 
     function ValueLabelComponent(props) {

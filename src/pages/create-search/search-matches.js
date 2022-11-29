@@ -50,24 +50,10 @@ class SearchMatches extends Component {
 
         // this.slug = props.match.params.slug;
 
-        this.loadMatches = this.loadMatches.bind(this);
         this.getListingForSearch = this.getListingForSearch.bind(this);
     }
 
-        loadMatches() {
-        // axios
-        //     .get(baseUrl + "match/search/" + this.slug, )
-        //     .then(
-        //         (response) => {
-        //             var responseAll = response.data.data;
-        //
-        //             this.setState({
-        //                 matches: this.props.suggesstions,
-        //             });
-            //     },
-            //     (error) => {}
-            // );
-    }
+
 
     getListingForSearch() {
         axios
@@ -116,13 +102,8 @@ class SearchMatches extends Component {
         if (this.props.slug){
             this.slug=this.props.slug
 
-            // this.setState({
-            //     matches: this.props.suggesstions,
-            // });
-
             this.setActiveKey(null,"1")
-            // this.loadMatches();
-            // this.getListingForSearch();
+
         }
 
     }
@@ -269,6 +250,7 @@ class SearchMatches extends Component {
                                                     searchId={this.slug}
                                                     item={item.listing}
                                                     hideMoreMenu
+                                                    onClick={()=> this.props.requestMatch(this.props.item.listing)}
                                                 />
 
 

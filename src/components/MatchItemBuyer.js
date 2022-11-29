@@ -439,7 +439,7 @@ class MatchItemBuyer extends Component {
                         this.props.item.match.stage === "offered") &&
                     this.props.item.listing.org._id !== this.props.userDetail.orgId && (
                         // <div className={"row justify-content-center"}>
-                            <span className="mr-2 ">
+                            <span className="me-2 ">
                                 <GreenButton
 
 
@@ -524,7 +524,7 @@ class MatchItemBuyer extends Component {
                                                 {item.next_action.possible_actions.map(
                                                     (actionName) => (
                                                         <>
-                                                           <span className={"mr-1"}>
+                                                           <span className={"me-1"}>
                                                                <GrayBorderBtn
                                                                 title={getActionName(actionName)}
                                                                 data-id={item.offer._key}
@@ -538,20 +538,20 @@ class MatchItemBuyer extends Component {
 
                                                                 // className={
                                                                 //     actionName === "accepted"
-                                                                //         ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                //         ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border"
                                                                 //         : actionName === "cancelled"
-                                                                //         ? "shadow-sm mr-2 btn btn-link  ms-1 mt-2 mb-2 orange-btn-border"
+                                                                //         ? "shadow-sm me-2 btn btn-link  ms-1 mt-2 mb-2 orange-btn-border"
                                                                 //         : actionName === "rejected"
-                                                                //         ? "shadow-sm mr-2 btn btn-link mt-2 mb-2 orange-btn-border"
+                                                                //         ? "shadow-sm me-2 btn btn-link mt-2 mb-2 orange-btn-border"
                                                                 //         : actionName === "declined"
-                                                                //         ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                //         ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                 //         : actionName === "progress"
-                                                                //         ? "shadow-sm mr-2 btn btn-link mt-2 mb-2 green-btn-border"
+                                                                //         ? "shadow-sm me-2 btn btn-link mt-2 mb-2 green-btn-border"
                                                                 //         : actionName === "completed"
-                                                                //         ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                //         ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border"
                                                                 //         : actionName === "counter"
-                                                                //         ? "shadow-sm mr-2 btn btn-link ms-1  mt-2 mb-2 blue-btn-border"
-                                                                //         : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                //         ? "shadow-sm me-2 btn btn-link ms-1  mt-2 mb-2 blue-btn-border"
+                                                                //         : "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border"
                                                                 // }
                                                             >
                                                                 {actionName === "accepted" &&
@@ -669,7 +669,7 @@ class MatchItemBuyer extends Component {
                                             <p
                                                 onClick={this.editPopUp}
                                                 className={
-                                                    "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
+                                                    "shadow-sm me-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
                                                 }>
                                                 Cancel
                                             </p>

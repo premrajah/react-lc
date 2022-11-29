@@ -136,12 +136,8 @@ const reducer = (state = initialState, action) => {
             newState.userDetail = action.value;
             break;
         case USER_CACHE:
-
-            console.log("User cache called reduver")
             newState.userCache = action.value;
-            console.log("user cache herer" )
 try{
-    console.log("user cache", action.value,action.value.not_first_login.value )
 
     if (action.value&&action.value.not_first_login&&action.value.not_first_login.value==="true"){
         newState.firstLogin=false

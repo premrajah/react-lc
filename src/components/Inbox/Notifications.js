@@ -24,7 +24,7 @@ import OrgComponent from "../Org/OrgComponent";
 
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
-const ORG_REGEX = /(Org\/[\w\d-]+)/g;
+const ORG_REGEX = /(Org\/[\w\d\-\.@]+)/g;
 const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
 const CYCLE_REGEX = /Cycle\/([\w\d]+)/g;
 

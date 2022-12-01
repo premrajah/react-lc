@@ -108,21 +108,32 @@ function SiteTrailsTimeline(props) {
                     .map((item, index) => (
                         <>
                         <TimelineItem pos key={index}>
-                            <TimelineOppositeContent style={{marginTop:"50px"}}>
-                                {/*<Paper elevation={0} className={classes.paper}>*/}
-                                {/*    <Typography*/}
-                                {/*        variant="h6"*/}
-                                {/*        component="h1"*/}
-                                {/*        className={"mt-1 me-2"}*/}
-                                {/*        style={{ color: "#05AD88" }}>*/}
-                                {/*        {item.site.org&&   <span className={"text-caps"}>*/}
-                                {/*            {item.site.org.name}*/}
-                                {/*            {item.site.org.description &&*/}
-                                {/*                ", " + item.site.org.description}*/}
-                                {/*        </span>}*/}
-                                {/*    </Typography>*/}
-                                {/*</Paper>*/}
-                                <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails} />
+                            <TimelineOppositeContent sx={{ mt: 1, mr: 2}}>
+                                {
+                                    props.distanceTotals && props.distanceTotals.carbon.carbon_kgs > 0 && <>
+                                        <Paper elevation={0} sx={{pb: 5}}>
+                                            <Typography
+
+                                                style={{ opacity: "1" }}>
+
+                                                <CustomPopover
+                                                    heading={`Carbon Emissions ${props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:4})} kgCO<sub>2</sub>e`}
+
+                                                    text= {<>
+                                                        <span>{`Distance : ${(props.distanceTotals.distance.value/1000).toLocaleString(undefined, {maximumFractionDigits:4})} kms`}</span><br></br>
+                                                        <span>{`Emissions : ${(props.distanceTotals.carbon.carbon_tons).toLocaleString(undefined, {maximumFractionDigits:6})} tonCO`}<sub>2</sub>e</span><br></br>
+                                                    </>}
+
+                                                > <span className={"sub-title-text-pink"}>
+                                        &Sigma; Carbon : {props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:4})} kgCO<sub>2</sub>e</span>
+                                                    <br></br>
+                                                    <span className="text-12"> {(props.distanceTotals.distance.value/1000).toLocaleString(undefined, {maximumFractionDigits:2})} kms&nbsp;</span>
+                                                </CustomPopover>
+                                            </Typography>
+                                        </Paper>
+                                    </>
+                                }
+                                <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails} symbol="=" />
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>
@@ -136,7 +147,7 @@ function SiteTrailsTimeline(props) {
                                 </TimelineDot>
 
 
-                                {props.siteTrails.filter((item) => item._relation === "located_at")
+                                {props.siteTrails.filter((item) => item._relation === "was_located_at")
                                     .length > 0 && (
                                     <TimelineConnector
                                         style={{ backgroundColor: "#05AD88", height: "100px" }}
@@ -177,23 +188,8 @@ function SiteTrailsTimeline(props) {
                     .filter((item) => item._relation === "was_located_at")
                     .map((item, index) => <>
                         <TimelineItem >
-                            <TimelineOppositeContent style={{marginTop:"50px"}}>
-                                <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails} />
-                                {/*<Paper elevation={0} className={classes.paper}>*/}
-                                {/*    <Typography*/}
-                                {/*        variant="h6"*/}
-                                {/*        component="h1"*/}
-
-                                {/*        style={{ color: "#05AD88" }}>*/}
-                                {/*        <span className={"text-caps"}>*/}
-                                {/*            {item.site.org&&item.site.org.name}*/}
-                                {/*            {item.site.org&&item.site.org.description &&*/}
-                                {/*                ", " + item.site.org.description}*/}
-                                {/*        </span>*/}
-
-
-                                {/*    </Typography>*/}
-                                {/*</Paper>*/}
+                            <TimelineOppositeContent sx={{ mt: 9, mr: 2 }}>
+                                <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails}  symbol="+"/>
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>
@@ -421,7 +417,9 @@ const DistanceTrailPopOver=(props)=>{
                                     </>}
                             </>}
 
-                        > <span className="text-blue">Carbon: {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:4})} kgCO<sub>2</sub>e</span>
+                        > <span className={"text-caps sub-title-text-pink"}>{props.symbol}&nbsp;</span>
+                            <span className="text-blue">
+                            {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:4})} kgCO<sub>2</sub>e</span>
                             <br></br>
                             <span className="text-12"> {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toLocaleString(undefined, {maximumFractionDigits:2})} kms&nbsp;
                                 {/*in {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toLocaleString(undefined, {maximumFractionDigits:2})} hrs */}

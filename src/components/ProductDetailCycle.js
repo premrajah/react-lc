@@ -83,6 +83,7 @@ class ProductDetailCycle extends Component {
             orgTrails: null,
             siteTrails: null,
             distanceTrails:null,
+            distanceTotals:null,
             timelineDisplay: "org",
             zoomQrCode:false
 
@@ -634,7 +635,7 @@ class ProductDetailCycle extends Component {
             .get(`${baseUrl}code/${productKey}/trail`)
             .then((response) => {
                 const data = response.data.data;
-                this.setState({ orgTrails: data.org_trails,distanceTrails:data.distance_trails, siteTrails: data.site_trails });
+                this.setState({ orgTrails: data.org_trails,distanceTrails:data.distance_trails, siteTrails: data.site_trails, distanceTotals:data.distance_trail_totals });
             })
             .catch((error) => {
                 console.log("trail error ", error);
@@ -1047,7 +1048,7 @@ class ProductDetailCycle extends Component {
                             <div className="row ">
                                 <div className="col">
                                     {this.state.siteTrails && (
-                                        <SiteTrailsTimeline distanceTrails={this.state.distanceTrails} siteTrails={this.state.siteTrails} />
+                                        <SiteTrailsTimeline distanceTrails={this.state.distanceTrails} siteTrails={this.state.siteTrails} distanceTotals={this.state.distanceTotals}/>
                                     )}
                                 </div>
                             </div>

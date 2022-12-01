@@ -77,7 +77,7 @@ function OrgTrailsTimeline(props) {
                                     {/*<BusinessIcon />*/}
                                 </TimelineDot>
 
-                                {props.orgTrails.filter((item) => item._relation === "belongs_to")
+                                {props.orgTrails.filter((item) => item._relation === "past_owner")
                                     .length > 0 && (
                                     <TimelineConnector
                                         style={{ backgroundColor: "#05AD88", height: "100px" }}

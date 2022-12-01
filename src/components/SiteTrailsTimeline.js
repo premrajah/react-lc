@@ -1,6 +1,5 @@
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
-import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
@@ -25,6 +24,10 @@ import TableRow from '@mui/material/TableRow';
 import InfoIcon from "./FormsUI/ProductForm/InfoIcon";
 import CustomPopover from "./FormsUI/CustomPopover";
 import {TRANSPORT_MODES} from "../Util/Constants";
+import OrgComponent from "./Org/OrgComponent";
+import TimelineOppositeContent, {
+    timelineOppositeContentClasses,
+} from '@mui/lab/TimelineOppositeContent';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -98,11 +101,15 @@ function SiteTrailsTimeline(props) {
     },props.siteTrails)
 
 
-
-
     return (
         <div>
-            <Timeline>
+            <Timeline
+                sx={{
+                [`& .${timelineOppositeContentClasses.root}`]: {
+                    flex: 1,
+                },
+            }}
+            >
                 {props.siteTrails
                     .filter((item) => item._relation === "located_at")
                     .map((item, index) => (
@@ -163,24 +170,24 @@ function SiteTrailsTimeline(props) {
                                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
                                 </Typography>
-                                <Typography variant="caption" component="div">
-                                    Currently located at
-                                </Typography>
+                                {/*<Typography variant="caption" component="div">*/}
+                                {/*    Currently at */}
+                                {/*</Typography>*/}
                                 <Typography
 
                                     className="blue-text mt-1"
                                     variant="subtitle1"
                                     component="div">
-                                    {item.site.site.address}   {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
-                                   handleMapModal(item.site.site)} />}
+                                    <Typography variant="caption" component="div">
+                                    {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
+                                        handleMapModal(item.site.site)} />}
+                                    </Typography>
+                                        <OrgComponent
+                                        org={item.site.org}
+                                    />
                                 </Typography>
                             </TimelineContent>
                         </TimelineItem>
-
-
-
-
-
                         </>
                     ))}
 
@@ -200,15 +207,6 @@ function SiteTrailsTimeline(props) {
                                         height: "25px",
                                     }}
                                 />
-                                {/*<TimelineDot*/}
-                                {/*    style={{*/}
-                                {/*        backgroundColor: "#05AD88",*/}
-                                {/*        width: "25px",*/}
-                                {/*        height: "25px",*/}
-                                {/*    }}>*/}
-                                {/*    /!*<BusinessIcon />*!/*/}
-                                {/*</TimelineDot>*/}
-
                                 {props.siteTrails.filter(
                                     (item) => item._relation === "was_located_at"
                                 ).length >
@@ -218,26 +216,31 @@ function SiteTrailsTimeline(props) {
                                     />
                                 )}
                             </TimelineSeparator>
-                            <TimelineContent>
+                            <TimelineContent  sx={{mt: -0.5}}>
                                 <Typography
-                                    className="mt-1 me-2"
+                                    className="mt-0 me-2"
                                 >
                                     <p className={"text-blue"}>
                                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
                                 </Typography>
-                                <Typography variant="caption" component="div">
-                                    Previously was located at
-                                </Typography>
+                                {/*<Typography variant="caption" component="div">*/}
+                                {/*    Previously at */}
+                                {/*</Typography>*/}
                                 <Typography
                                     className="blue-text"
                                     variant="subtitle1"
                                     component="div">
+                                    <Typography variant="caption" component="div">
                                     {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&  <MapIcon  onClick={() => handleMapModal(item.site.site)} style={{color:"#05AD88"}}/>}
+                                    </Typography>
+                                        <OrgComponent colorClass="text-blue"
+                                                      org={item.site.org}
+                                        />
+
                                 </Typography>
                             </TimelineContent>
                         </TimelineItem>
-
 
                     </>
                     )}

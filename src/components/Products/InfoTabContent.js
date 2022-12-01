@@ -250,8 +250,8 @@ class InfoTabContent extends Component {
                     </div>
                 )}
 
-                {this.props.item &&
-                this.props.item.product.sku.gross_weight_kgs && (
+                {(this.props.item && this.props.item.product.sku &&
+                this.props.item.product.sku.gross_weight_kgs && this.props.item.product.sku.gross_weight_kgs > 0) ? (
                     <div className="row  justify-content-start search-container  pb-2 ">
                         <div className={"col-auto"}>
                             <p
@@ -267,9 +267,9 @@ class InfoTabContent extends Component {
                             </p>
                         </div>
                     </div>
-                )}
-                {this.props.item &&
-                this.props.item.product.sku.embodied_carbon_tons && (
+                ) : <></>}
+                {(this.props.item && this.props.item.product.sku &&
+                this.props.item.product.sku.embodied_carbon_tons && this.props.item.product.sku.embodied_carbon_tons > 0) ? (
                     <div className="row  justify-content-start search-container  pb-2 ">
                         <div className={"col-auto"}>
                             <p
@@ -280,13 +280,12 @@ class InfoTabContent extends Component {
                             <p
 
                                 className=" text-gray-light mb-1 text-capitalize">
-                                {this.props.item &&
-                                this.props.item.product.sku
-                                    .embodied_carbon_tons}
+                                { this.props.item && this.props.item.product.sku && this.props.item.product.sku.embodied_carbon_tons > 0 &&
+                                this.props.item.product.sku.embodied_carbon_tons}
                             </p>
                         </div>
                     </div>
-                )}
+                ) : <></>}
 
 
 

@@ -271,6 +271,7 @@ function SiteTrailsTimeline(props) {
                             <div className={"row"}>
                                 <div className={"col-12"}>
                                     <GoogleMap
+
                                         width={"100%"}
                                         height={"300px"}
 
@@ -278,7 +279,8 @@ function SiteTrailsTimeline(props) {
                                          locations={[{
                                         name: site.name,
                                         location: site.geo_codes[0].address_info.geometry.location,
-                                        isCenter: true
+                                        isCenter: true,
+
                                     }]}
                                     />
                                 </div>

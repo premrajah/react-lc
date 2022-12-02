@@ -43,12 +43,13 @@ class MapsContainer extends Component {
 
  componentDidMount() {
 
-          if (!this.props.searchLocation)
-     for (let i=0;i<this.props.locations.length;i++){
+          if (!this.props.searchLocation){
+     for (let i=0;i<this.props.locations.length;i++) {
 
-         this.polyLine.push( {lat: this.props.locations[i].location.lat, lng: this.props.locations[i].location.lng},)
+         console.log("location map 2 "+i)
+         this.polyLine.push({lat: this.props.locations[i].location.lat, lng: this.props.locations[i].location.lng},)
 
-     }else{
+     } }else{
 
          this.setState({
              markerLatitude:this.props.latitude,
@@ -73,12 +74,20 @@ componentDidUpdate(prevProps, prevState, snapshot) {
          setTimeout(()=> {
 
 
-             if (!this.props.searchLocation)
-             for (let i=0;i<this.props.locations.length;i++){
+             if (!this.props.searchLocation){
 
-                 this.polyLine.push( {lat: this.props.locations[i].location.lat, lng: this.props.locations[i].location.lng},)
+                 console.log("shw polygons")
+                 for (let i = 0; i < this.props.locations.length; i++) {
+                     console.log("shw polygons sites "+i)
 
-             }else{
+                     this.polyLine.push({
+                         lat: this.props.locations[i].location.lat,
+                         lng: this.props.locations[i].location.lng
+                     },)
+
+                 }
+
+         }else{
 
              this.setState({
                  markerLatitude:this.props.latitude,
@@ -176,7 +185,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                     strokeColor="#07ad88"
                     strokeOpacity={1}
                     strokeWeight={2}
-
                     icons={ [{
                           icon: {path: this.props.google.maps.SymbolPath.FORWARD_CLOSED_ARROW},
                            offset: "100%" }]}

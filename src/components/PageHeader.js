@@ -2,7 +2,7 @@ import React from "react";
 
 const PageHeader = ({ pageIcon, pageTitle, subTitle, bottomLine ,paddingLeftZero}) => {
     return (
-        <>
+        <div className="d-none">
             <div className="row">
                 <div className={`${paddingLeftZero?"ps-0":""} col-12`}>
                     <h4 className="blue-text text-heading">{pageTitle ? pageTitle : ""}</h4>
@@ -16,7 +16,7 @@ const PageHeader = ({ pageIcon, pageTitle, subTitle, bottomLine ,paddingLeftZero
             </div>
 
             {bottomLine ? bottomLine : ""}
-        </>
+        </div>
     );
 };
 

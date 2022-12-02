@@ -1067,6 +1067,8 @@ class ProductDetailContent extends Component {
                                                 <TabPanel value="8">
                                                     <BigCalenderEvents productId={this.state.item.product._key} smallView  />
                                                 </TabPanel>
+
+
                                             </TabContext>
                                         </Box>
 

@@ -10,6 +10,7 @@ import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css'
+import ChangePassword from "../../components/Account/ChangePassword";
 
 
 class EditAccount extends Component {
@@ -314,7 +315,7 @@ class EditAccount extends Component {
 
                                             </div>
 
-                                            <div className="col-12 mt-2 ">
+                                            <div className="col-12 mt-2 d-none">
                                                 <div className="row">
                                                     <div className="col-12">
                                                         <AutoCompleteComboBox
@@ -339,7 +340,7 @@ class EditAccount extends Component {
                                                 {/*    Update*/}
                                                 {/*</button>*/}
                                                 <BlueButton
-                                                    title={this.state.loading ? "Wait.." : "Update"}
+                                                    title={this.state.loading ? "Wait.." : "Update Account"}
                                                     type={"submit"}
                                                     loading={this.state.loading}
 
@@ -353,6 +354,14 @@ class EditAccount extends Component {
                                 </div>
                             </div>
                         )}
+
+
+                <div className="row mt-5">
+                    <div className="col-12">
+                    <ChangePassword />
+                    </div>
+                </div>
+
                     </div>
 
         );

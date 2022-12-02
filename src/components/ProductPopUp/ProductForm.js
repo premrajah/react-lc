@@ -111,7 +111,7 @@ let slugify = require('slugify')
                 parentProductId: null,
                 imageLoading: false,
                 showSubmitSite: false,
-                is_listable: false,
+                is_listable: true,
                 moreDetail: false,
                 isSubmitButtonPressed: false,
                 disableVolume:false,
@@ -122,7 +122,7 @@ let slugify = require('slugify')
                 templates:[],
                 selectedTemplated:null,
                 artifacts:[],
-                is_manufacturer:false
+                is_manufacturer:true
 
             };
 
@@ -918,6 +918,8 @@ let slugify = require('slugify')
                     this.isManufacturer()
                     this.loadImages(this.props.item.artifacts)
 
+                    this.checkListable(this.props.item.product.is_listable)
+
 
                 }
 
@@ -1185,8 +1187,9 @@ let slugify = require('slugify')
                                     {!this.props.productLines &&    <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
                                         <CheckboxWrapper
+
                                             details="When listed, product will appear in the marketplace searches"
-                                            initialValue={this.props.item&&this.props.item.product.is_listable}
+                                            initialValue={this.props.item&&this.props.item.product.is_listable||true}
                                             onChange={(checked)=>this.checkListable(checked)} color="primary"
                                             name={"is_listable"} title="List for sale" />
 
@@ -1194,6 +1197,7 @@ let slugify = require('slugify')
                                     {!this.props.productLines &&    <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
 
                                         <CheckboxWrapper
+
                                             details="Is Manufacturer ?"
                                             initialValue={this.state.is_manufacturer}
                                             onChange={(checked)=>this.checkListableManufacturer(checked)} color="primary"

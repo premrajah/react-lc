@@ -1112,7 +1112,9 @@ class CompanyDetails extends Component {
 
                                        <Tab label="General" value="1" />
 
-                                       {this.props.userContext&&this.props.userContext.perms&&this.props.userContext.perms.includes("OrgAdminWrite") &&        <Tab label="Settings" value="2"/>}
+                                       {/*{this.props.userContext&&this.props.userContext.perms&&this.props.userContext.perms.includes("OrgAdminWrite") &&  */}
+                                       {/*<Tab label="Settings" value="2"/>*/}
+                                       {/*}*/}
 
                                    </TabList>
                                </Box>

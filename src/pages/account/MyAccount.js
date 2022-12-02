@@ -91,9 +91,9 @@ function MyAccount(props) {
                                         onChange={handleChange}
                                         aria-label="Vertical tabs example"
                                         sx={{ borderRight: 1, borderColor: "divider" }}>
-                                        <Tab key={0} label="Personal Info" value={0} />
-                                        <Tab key={1} label="Company Info" value={1} />
-                                        <Tab key={2} label="Change Password" value={2} />
+                                        <Tab key={0} label="Personal Information" value={0} />
+                                        <Tab key={1} label="Company Information" value={1} />
+                                        {/*<Tab key={2} label="Change Password" value={2} />*/}
                                         <Tab key={3} label="Product Lines" value={3} />
                                         <Tab key={4} label="Statistics" value={4} />
                                         {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
@@ -125,9 +125,7 @@ function MyAccount(props) {
                                     <TabPanel value={value} index={1}>
                                         <CompanyInfo />
                                     </TabPanel>
-                                    <TabPanel value={value} index={2}>
-                                        <ChangePassword />
-                                    </TabPanel>
+
                                     <TabPanel value={value} index={3}>
                                         <ProductLines />
                                     </TabPanel>

@@ -144,10 +144,12 @@ const UploadMultiSiteOrProduct = (props) => {
 
        setErrors(result.errors);
 
+        console.log(result)
         return result.formIsValid;
     }
 
     const  handleChange=(value, field) =>{
+
 
         try {
 
@@ -173,12 +175,12 @@ const UploadMultiSiteOrProduct = (props) => {
 
             }
 
-            // let fieldsLocal = fields;
-            //
-            // fieldsLocal[field] = value;
-            //
-            // setFields(fieldsLocal)
-            // handleValidation()
+            let fieldsLocal = fields;
+
+            fieldsLocal[field] = value;
+
+            setFields(fieldsLocal)
+            handleValidation()
 
 
         }catch (e){

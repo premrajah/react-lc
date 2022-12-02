@@ -32,7 +32,7 @@ const MessengerMessagesTwoGroupItem = ({
             <ListItem id={`group-${group._key}`} key={`group-${group._key}`}
                       onClick={() => handleListItemClick(true)} component="div">
                 <ListItemText
-                    className={"my-msg-class"}
+                    className={"my-msg-class me-1"}
                     primary={
                         group.orgs.length>0&&(   group.orgs.length > 1 ?
                         group.orgs.filter(item=> item._id!=userOrg).map((org, index) =>

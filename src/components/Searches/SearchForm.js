@@ -9,13 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import LinearProgress from "@mui/material/LinearProgress";
-import ProductExpandItem from "../../components/Products/ProductExpandItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import _ from "lodash";
-// import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import PageHeader from "../../components/PageHeader";
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
@@ -23,11 +17,9 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import {capitalize} from "../../Util/GlobalFunctions";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import Layout from "../../components/Layout/Layout";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import SiteFormNew from "../../components/Sites/SiteFormNew";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 
@@ -732,42 +724,25 @@ if ((this.state.activeStep-1)==0){
         })
 
 
+        this.timeout = setTimeout(() => {
 
-        if (this.handleValidationSearch(this.state.activeStep)){
 
 
-            if (this.state.activeStep==0){
 
-                if (this.validateDates()){
+        if (this.handleValidationSearch()&&this.validateDates()){
 
                     this.setState({
                         nextBlue:true,
 
                     })
                 }else{
-
-                    this.setState({
-                        nextBlue:false,
-
-                    })
-                }
-
-            }else{
-
-                this.setState({
-                    nextBlue:true,
-
-                })
-
-            }
-
-        }else{
             this.setState({
                 nextBlue:false,
 
             })
-
         }
+
+        }, 200);
     }
 
     addDetails() {
@@ -777,7 +752,7 @@ if ((this.state.activeStep-1)==0){
     }
 
 
-    handleValidationSearch=(activeStep)=> {
+    handleValidationSearch=()=> {
 
 
         let fields = this.state.fields;
@@ -786,7 +761,7 @@ if ((this.state.activeStep-1)==0){
 
 
 
-        if (activeStep===0) {
+        // if (activeStep===0) {
 
              validations = [
                 validateFormatCreate("title", [{check: Validators.required, message: 'Required'}], fields),
@@ -794,29 +769,30 @@ if ((this.state.activeStep-1)==0){
                 validateFormatCreate("category", [{check: Validators.required, message: 'Required'}], fields),
                 validateFormatCreate("type", [{check: Validators.required, message: 'Required'}], fields),
                 validateFormatCreate("state", [{check: Validators.required, message: 'Required'}], fields),
-                validateFormatCreate("volume", [{check: Validators.required, message: 'Required'}], fields),
+                validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'Required'}], fields),
                 validateFormatCreate("units", [{check: Validators.required, message: 'Required'}], fields),
                  validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields),
 
             ]
 
-        }
-        else if (activeStep===1) {
-            validations = [
-                // validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
-                validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields),
-
-
-            ]
-
-        }
-        else if (activeStep===2) {
-        }
+        // }
+        // else if (activeStep===1) {
+        //     validations = [
+        //         // validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
+        //         validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields),
+        //
+        //
+        //     ]
+        //
+        // }
+        // else if (activeStep===2) {
+        // }
 
         let {formIsValid, errors} = validateInputs(validations)
 
         this.setState({errors: errors});
 
+        console.log(formIsValid,errors)
         return formIsValid;
 
 
@@ -1031,32 +1007,27 @@ if ((this.state.activeStep-1)==0){
             showFieldErrors:true
         })
 
-        if (this.handleValidationSearch(this.state.activeStep)) {
+        if (this.handleValidationSearch()) {
 
+
+            alert("all well")
             this.props.loadProducts();
             this.props.loadSites();
 
             window.scrollTo(0, 0);
 
-            if(this.handleValidationSearch(this.state.activeStep+1)){
-
-                this.setState({
-                    nextBlue:true,
-                });
-
-            }else{
                 this.setState({
                     nextBlue:false
                 });
 
-            }
+            // }
 
-            this.setState({
-                activeStep: this.state.activeStep + 1,
-
-                progressBar: 100,
-                showFieldErrors:false
-            });
+            // this.setState({
+            //     activeStep: this.state.activeStep + 1,
+            //
+            //     progressBar: 100,
+            //     showFieldErrors:false
+            // });
 
 
         }

@@ -43,8 +43,6 @@ const TextFieldWrapper = ({
             if (onChange) {
                 setField(initialValue)
                 onChange(initialValue);
-
-
             }
         // }
     }, [initialValue]);
@@ -54,7 +52,6 @@ const TextFieldWrapper = ({
     useEffect(() => {
 
         if (reset) {
-
             setField("")
             // alert(initialValue)
             onChange(initialValue);
@@ -94,10 +91,9 @@ const TextFieldWrapper = ({
         value=x
 
             setField(value)
-
-            if (onChange)
+            if (onChange){
                 onChange(value)
-
+            }
 
     };
 

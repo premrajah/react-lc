@@ -78,6 +78,8 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
     const [pageSize, setPageSize] = useState(10);
     const [activeTab, setActiveTab] = useState(0);
     const [showTabs, setShowTabs] = useState(false);
+    const [orgList, setOrgList] = useState([]);
+
     useEffect(() => {
         // handleSelectedItemCallback(0);
         getAllMessageGroups(true,true);
@@ -87,6 +89,8 @@ const MessengerMessagesTwo = ({ userDetail, showSnackbar }) => {
 
 
     }, []);
+
+
 
 
 
@@ -262,7 +266,7 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
         }
 
         axios
-            .get(`${baseUrl}message-group/non-empty/expand?offset=${currentGroupOffset}&size=${pageSizeTmp}`)
+            .get(`${baseUrl}message-group/non-empty/no-links?offset=${currentGroupOffset}&size=${pageSizeTmp}`)
             .then((res) => {
                 const data = res.data.data;
                 if (!onlyRefresh){
@@ -288,6 +292,8 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
                         setFilteredGroups((group) => group.concat(data));
                         setTrackedMessageGroups((group) => group.concat(data));
                     }
+
+
 
 
                     // on first load handle click
@@ -337,6 +343,8 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
             });
     };
 
+
+
     const getSelectedGroupMessage = (key, clear=true,loading=true, currentOffset=0,tab=0) => {
 
 
@@ -374,13 +382,8 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
             .then((res) => {
                 setUpdateMsgLoading(false)
 
-
                 if (clear){
-
-
                     setShowTabs(true)
-
-
                     if (tab==0){
                         setClickedMessage([]); // clear previous chat
 
@@ -422,6 +425,8 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
                 if (tab===0){
                     handleResetWysiwygEditor();
                 }
+
+
 
 
             })
@@ -709,7 +714,7 @@ try{
                                             markAllRead(key)
                                         handleGroupClickCallback(key)}}
                                         handleSelectedItemCallback={handleSelectedItemCallback}
-
+                                        orgList={orgList}
 
                                     />
                                 </>
@@ -895,6 +900,7 @@ const HandleGroupDataDisplay = ({
     handleGroupClickCallback,
     handleSelectedItemCallback,
                                     selectedMessageGroupKey,
+    orgList,
     ...props
 }) => {
     const [groupListItem, setGroupListItem] = useState(group);
@@ -902,6 +908,7 @@ const HandleGroupDataDisplay = ({
     useEffect(() => {
         setGroupListItem(group);
     }, [group]);
+
 
     return (
         <>

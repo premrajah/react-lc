@@ -139,6 +139,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 }}
 
                 zoom={14}
+                minZoom={3}
             >
 
                 {this.props.locations.reverse().map((item)=>

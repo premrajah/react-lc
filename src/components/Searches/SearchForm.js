@@ -94,7 +94,7 @@ class SearchForm extends Component {
         // this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
         this.getFiltersCategories = this.getFiltersCategories.bind(this);
         this.selectSubCatType = this.selectSubCatType.bind(this);
-        this.handleNext = this.handleNext.bind(this);
+        // this.handleNext = this.handleNext.bind(this);
         this.handleBack = this.handleBack.bind(this);
         this.getProducts = this.getProducts.bind(this);
         this.selectProduct = this.selectProduct.bind(this);
@@ -1000,41 +1000,7 @@ if ((this.state.activeStep-1)==0){
     }
 
 
-    handleNext = () => {
 
-
-        this.setState({
-            showFieldErrors:true
-        })
-
-        if (this.handleValidationSearch()) {
-
-
-            alert("all well")
-            this.props.loadProducts();
-            this.props.loadSites();
-
-            window.scrollTo(0, 0);
-
-                this.setState({
-                    nextBlue:false
-                });
-
-            // }
-
-            // this.setState({
-            //     activeStep: this.state.activeStep + 1,
-            //
-            //     progressBar: 100,
-            //     showFieldErrors:false
-            // });
-
-
-        }
-
-
-
-    };
 
     handleChangeDateStartDate = (date) => {
         this.setState({

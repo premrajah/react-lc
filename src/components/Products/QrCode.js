@@ -187,7 +187,7 @@ class QrCode extends Component {
                                 <div className="col-12 position-relative ">
                                     {!this.props.hideRefresh&&this.props.userDetail.is_org_admin &&
                                     <span
-                                        className={"me-1 btn btn-sm btn-gray-border-small top-right"}
+                                        className={"me-1 d-none btn btn-sm btn-gray-border-small top-right"}
                                     onClick={
                                         (e)=> {e.stopPropagation(); this.refreshQrcode()}}
                                     >

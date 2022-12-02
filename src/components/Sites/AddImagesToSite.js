@@ -102,7 +102,7 @@ class AddImagesToSite extends Component {
             artifact_ids: images,
         };
 
-        alert("hello")
+
 
         axios
             .post(`${baseUrl}site/artifact`, payload)

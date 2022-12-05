@@ -154,11 +154,6 @@ class ViewCycle extends Component {
         let errors = {};
         let formIsValid = true;
 
-        // //Name
-        // if(!fields["password"]){
-        //     formIsValid = false;
-        //     errors["password"] = "Required";
-        // }
 
         if (!fields["email"]) {
             formIsValid = false;
@@ -244,11 +239,6 @@ class ViewCycle extends Component {
         event.preventDefault();
 
         const form = event.currentTarget;
-        //
-        // if (this.handleValidation()){
-        //     this.setState({
-        //         btnLoading: true
-        //     })
 
         const data = new FormData(event.target);
 
@@ -335,18 +325,6 @@ class ViewCycle extends Component {
     handleSubmitOrg() {
         const email = this.state.email;
 
-        // var dataStep= {
-        //     "step": {
-        //         "email": name,
-        //         "description": description,
-        //         "type":  type,
-        //         // "predecessor": null,
-        //         "notes": notes
-        //     },
-        //     "cycle_id": this.slug,
-        //     "org_id": data.get("org")
-        //
-        // }
 
         axios
             .post(
@@ -1132,6 +1110,73 @@ class ViewCycle extends Component {
 
                                     )}
 
+                                <GlobalDialog
+                                    className={"loop-popup"}
+                                    aria-labelledby="contained-modal-title-vcenter"
+                                    centered
+                                    show={this.state.showPopUpLogistics}
+                                    onHide={this.showPopUpLogistics}
+                                    animation={false}>
+                                    <ModalBody>
+                                        <div className={"row justify-content-center"}>
+                                            <div className={"col-4"}>
+                                                <img
+                                                    className={"ring-pop-pup"}
+                                                    src={GrayLoop}
+                                                    alt=""
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <>
+                                            <div className={"row"}>
+                                                <div className={"col-12 text-center"}>
+                                                    <h5 className={"text-bold text-center"}>
+                                                        Please provide a email address of logistics
+                                                        provider :
+                                                    </h5>
+                                                    {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
+                                                </div>
+                                            </div>
+                                            <form onSubmit={this.handleSubmit}>
+                                                <div className={"row justify-content-center"}>
+                                                    <div className={"col-12"}>
+                                                        <TextField
+                                                            id="outlined-basic"
+                                                            label="Email"
+                                                            variant="outlined"
+                                                            fullWidth={true}
+                                                            name={"email"}
+                                                            type={"email"}
+                                                            onChange={this.handleChange.bind(
+                                                                this,
+                                                                "email"
+                                                            )}
+                                                        />
+                                                        {this.state.logisticsError && (
+                                                            <span className={"text-mute small"}>
+                                                                <span style={{ color: "red" }}>
+                                                                    *
+                                                                </span>
+                                                                {this.state.logisticsErrorMsg}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <div className={"col-12 mt-2"}>
+                                                        <button
+                                                            type={"submit"}
+                                                            className={
+                                                                "btn-green btn btn-default btn-lg btn-rounded shadow btn-block login-btn"
+                                                            }>
+                                                            Submit
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </>
+                                    </ModalBody>
+                                </GlobalDialog>
+
                                 <Modal
                                     className={"loop-popup"}
                                     aria-labelledby="contained-modal-title-vcenter"
@@ -1310,19 +1355,6 @@ class ViewCycle extends Component {
                                     </div>
                                 )}
 
-                                {/*<Modal*/}
-                                {/*    className={"loop-popup"}*/}
-                                {/*    aria-labelledby="contained-modal-title-vcenter"*/}
-                                {/*    centered*/}
-                                {/*    show={this.state.showPopUpStep}*/}
-                                {/*    onHide={this.showPopUpStep}*/}
-                                {/*    animation={false}>*/}
-                                {/*    <ModalBody>*/}
-                                {/*        <div className={"row justify-content-center"}>*/}
-                                {/*            <div className={"col-10 text-center"}>*/}
-                                {/*                <p className={"text-bold"}>Create Step</p>*/}
-                                {/*            </div>*/}
-                                {/*        </div>*/}
 
                                 <GlobalDialog show={this.state.showPopUpStep}
                                     hide={this.showStep}
@@ -1720,15 +1752,12 @@ function StatusTimeline(props) {
 const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
+
         loginPopUpStatus: state.loginPopUpStatus,
     };
 };

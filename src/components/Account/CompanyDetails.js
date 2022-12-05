@@ -886,7 +886,7 @@ class CompanyDetails extends Component {
                                 <MenuDropdown
                                     setSelection={this.switchOrg}
                                     initialValue={this.props.userContext.orgId}
-                                    options={this.state.orgs}
+                                    options={this.state.orgs.filter((org)=>org.name!=this.props.userDetail.email)}
                                     option={"name"}
                                     valueKey={"_key"}
                                 />

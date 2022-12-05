@@ -256,9 +256,6 @@ class MyCycles extends Component {
                                 <div id={item.Cycle._key} key={item.Cycle._key}>
                                     <CycleItem
                                         item={{cycle:item.Cycle}}
-                                        // search={item.Search}
-                                        // product={item.Product}
-                                        // offer={item.Offer}
                                         product={item.CycleToProduct[0]?item.CycleToProduct[0].entries[0]
                                             ?item.CycleToProduct[0].entries[0].Product:null:null}
                                         listing={item.CycleToListing[0]?item.CycleToListing[0].entries[0]
@@ -340,9 +337,6 @@ const mapDispatchToProps = (dispatch) => {
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         dispatchLoadProductsWithoutParentPage: (data) =>
             dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
-        // resetProductPageOffset: (data) =>
-        //     dispatch(actionCreator.resetProductPageOffset(data)),
-
         setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         dispatchLoadProductsWithoutParent: (data) =>
             dispatch(actionCreator.loadProductsWithoutParent(data)),

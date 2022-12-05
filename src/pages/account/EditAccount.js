@@ -334,11 +334,7 @@ class EditAccount extends Component {
 
 
                                             <div className="col-3 mt-2 justify-content-center">
-                                                {/*<button*/}
-                                                {/*    type="submit"*/}
-                                                {/*    className="mt-1 mb-4 btn topBtn btn-outline-primary sign-up-btn">*/}
-                                                {/*    Update*/}
-                                                {/*</button>*/}
+
                                                 <BlueButton
                                                     title={this.state.loading ? "Wait.." : "Update Account"}
                                                     type={"submit"}

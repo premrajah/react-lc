@@ -498,9 +498,10 @@ let slugify = require('slugify')
                     const upc = data.get("upc");
                     const part_no = data.get("part_no");
                     const state = data.get("state");
-                    const is_listable = this.state.is_listable?true:false;
-                    const is_manufacturer = this.state.is_manufacturer?true:false;
-
+                    // const is_listable = this.state.is_listable?true:false;
+                    // const is_manufacturer = this.state.is_manufacturer?true:false;
+                    const is_listable = true;
+                    const is_manufacturer = false;
                     const site = data.get("deliver")
                     const year_of_making = data.get("manufacturedDate") ? data.get("manufacturedDate") : 0
                     const external_reference = data.get("external_reference")
@@ -847,8 +848,6 @@ let slugify = require('slugify')
                         energy_rating : this.state.energyRating,
                         external_reference : external_reference,
                         is_listable: this.state.is_listable,
-
-
                         sku: {
                             serial: serial,
                             model: model,
@@ -1184,7 +1183,7 @@ let slugify = require('slugify')
                                 </div>
 
                                 <div className="row  mt-2">
-                                    {!this.props.productLines &&    <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
+                                    {!this.props.productLines &&    <div className="col-md-4 col-sm-12 d-none justify-content-start align-items-center">
 
                                         <CheckboxWrapper
 
@@ -1194,7 +1193,7 @@ let slugify = require('slugify')
                                             name={"is_listable"} title="List for sale" />
 
                                     </div>}
-                                    {!this.props.productLines &&    <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
+                                    {!this.props.productLines &&    <div className="col-md-4 d-none col-sm-12  justify-content-start align-items-center">
 
                                         <CheckboxWrapper
 

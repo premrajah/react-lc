@@ -24,6 +24,8 @@ import {seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import ProductForm from "../../components/ProductPopUp/ProductForm";
 import { Redirect } from 'react-router';
+import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
+import ProductLines from "../../components/Account/ProductLines";
 
 
 class Products extends Component {
@@ -49,7 +51,8 @@ class Products extends Component {
             loadingResults:false,
             count:0,
             showProductPopUp:false,
-            productId:null
+            productId:null,
+            showProductLine:false
 
 
         }
@@ -120,6 +123,13 @@ class Products extends Component {
 
         this.filters= subFilter
 
+    }
+
+    addProductLine=()=>{
+
+        this.setState({
+            showProductLine:!this.state.showProductLine
+        })
     }
 
     seekCount=async () => {
@@ -530,7 +540,7 @@ class Products extends Component {
                         />
 
                         <div className="row">
-                            <div className="col-md-12 btn-rows">
+                            <div className="col-md-10 btn-rows">
                                 <Link to="/products-service" className=" btn-sm btn-gray-border me-2">
                                     <CustomPopover text={" All of the products that you are responsible for as the Service Agent. The service agent is responsible for solving any issues that are reported by the owner of the product. "}>Service</CustomPopover>
                                 </Link>
@@ -547,6 +557,13 @@ class Products extends Component {
                                 <Link to="/issues" className=" btn-sm btn-gray-border me-2  ">Issues</Link>
                                 <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products."><button className="btn btn-sm mt-mobile btn-gray-border" onClick={() => this.toggleDownloadQrCodes()} type="button">Download Open Cyclecodes</button></CustomPopover>
                                 <button className="d-none btn btn-sm btn-gray-border ms-1" onClick={() => this.toggleMultiSite()} type="button">Upload Multiple Products</button>
+
+
+                            </div>
+                            <div className="col-md-2 d-flex justify-content-end">
+                                <CustomPopover
+                                    text={"Add Product Lines"}><BlueSmallBtn onClick={this.addProductLine} >Product Lines</BlueSmallBtn></CustomPopover>
+
                             </div>
 
 
@@ -589,6 +606,23 @@ class Products extends Component {
 
                 </>
 
+
+                <GlobalDialog  allowScroll
+                               size={"lg"}
+                               hide={this.addProductLine}
+                               show={this.state.showProductLine}
+                               heading={"Product Lines"}>
+                    <>
+                        {this.state.showProductLine &&
+                        <>
+                        <div className="col-12 ">
+                            <ProductLines />
+                        </div>
+                            </>
+                        }
+                        </>
+
+                </GlobalDialog>
                 <Modal
                     aria-labelledby="contained-modal-title-vcenter"
                     show={this.state.showMap}

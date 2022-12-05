@@ -210,11 +210,6 @@ class ProductLines extends Component {
             .then(
                 (response) => {
 
-                    // this.setState({
-                    //     btnLoading: false,
-                    //
-                    // });
-
                     let responseObj=response.data.data
 
                     let keys=Object.keys(responseObj)
@@ -223,7 +218,7 @@ class ProductLines extends Component {
                     keys.forEach((item)=> {
 
                         if (item.includes("product_line"))
-                            templates.push({key: item, value: JSON.parse(responseObj[item])})
+                            templates.push({key: item, value: JSON.parse(responseObj[item].value)})
                         }
                     )
 
@@ -242,9 +237,14 @@ class ProductLines extends Component {
     }
 
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        // this.fetchUsers();
+        // this.fetchCache()
+    }
+
     componentDidMount() {
         window.scrollTo(0, 0);
-        // this.fetchUsers();
         this.fetchCache()
     }
 

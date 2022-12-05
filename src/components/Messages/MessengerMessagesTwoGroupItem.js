@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Chip, ListItem, ListItemText} from "@mui/material";
-import {baseUrl} from "../../Util/Constants";
-import axios from "axios";
 
 const MessengerMessagesTwoGroupItem = ({
     group,

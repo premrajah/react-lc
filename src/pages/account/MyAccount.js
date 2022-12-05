@@ -11,7 +11,6 @@ import Box from "@mui/material/Box";
 import EditAccount from "./EditAccount";
 import CompanyInfo from "./CompanyInfo";
 import Statistics from "../../views/loop-cycle/Statistics";
-import ChangePassword from "../../components/Account/ChangePassword";
 import ManageRole from "../../components/Account/ManageRole";
 import SystemManageUser from "../../components/Account/SystemManageUser";
 import ManageOrgUsers from "../../components/Account/ManageOrgUsers";
@@ -94,7 +93,7 @@ function MyAccount(props) {
                                         <Tab key={0} label="Personal Information" value={0} />
                                         <Tab key={1} label="Company Information" value={1} />
                                         {/*<Tab key={2} label="Change Password" value={2} />*/}
-                                        <Tab key={3} label="Product Lines" value={3} />
+                                        {/*<Tab key={3} label="Product Lines" value={3} />*/}
                                         <Tab key={4} label="Statistics" value={4} />
                                         {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
                                             <Tab key={5} label="Manage Users" value={5} />
@@ -126,9 +125,9 @@ function MyAccount(props) {
                                         <CompanyInfo />
                                     </TabPanel>
 
-                                    <TabPanel value={value} index={3}>
-                                        <ProductLines />
-                                    </TabPanel>
+                                    {/*<TabPanel value={value} index={3}>*/}
+                                    {/*   */}
+                                    {/*</TabPanel>*/}
                                     <TabPanel value={value} index={4}>
                                         <Statistics />
                                     </TabPanel>

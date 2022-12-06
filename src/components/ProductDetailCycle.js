@@ -7,7 +7,7 @@ import {baseUrl, frontEndUrl, RECUR_UNITS} from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider/ImagesSlider";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody} from "react-bootstrap";
+import {Alert, Modal, ModalBody, Spinner} from "react-bootstrap";
 import {withStyles} from "@mui/styles/index";
 import jspdf from "jspdf";
 import QrCodeBg from "../img/qr-code-bg.png";
@@ -85,7 +85,8 @@ class ProductDetailCycle extends Component {
             distanceTrails:null,
             distanceTotals:null,
             timelineDisplay: "org",
-            zoomQrCode:false
+            zoomQrCode:false,
+            trailLoading:false
 
         };
 
@@ -174,11 +175,6 @@ class ProductDetailCycle extends Component {
             formIsValid = false;
             errors["name"] = "Required";
         }
-
-        // if (!fields["others"]) {
-        //     formIsValid = false;
-        //     errors["others"] = "Required";
-        // }
 
         if (!fields["address"]) {
             formIsValid = false;
@@ -631,14 +627,23 @@ class ProductDetailCycle extends Component {
     }
 
     getProductTrails(productKey) {
+        this.setState({
+            trailLoading:true
+        })
         axios
             .get(`${baseUrl}code/${productKey}/trail`)
             .then((response) => {
                 const data = response.data.data;
+                this.setState({
+                    trailLoading:false
+                })
                 this.setState({ orgTrails: data.org_trails,distanceTrails:data.distance_trails, siteTrails: data.site_trails, distanceTotals:data.distance_trail_totals });
             })
             .catch((error) => {
                 console.log("trail error ", error);
+                this.setState({
+                    trailLoading:false
+                })
             });
     }
 
@@ -1011,6 +1016,8 @@ class ProductDetailCycle extends Component {
                         <div className="row bg-white rad-8 p-3 no-gutters">
                             <div className="col-12 ">
 
+
+                                {!this.state.trailLoading ?   <>
                         <div className="row ">
                             <div className="col-12 ">
                                 <FormControl component="fieldset">
@@ -1053,6 +1060,16 @@ class ProductDetailCycle extends Component {
                                 </div>
                             </div>
                         ) : null}
+
+                        </>:
+                                    <Spinner
+                                        className="mr-2"
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />}
 
                     </div>
                         </div>

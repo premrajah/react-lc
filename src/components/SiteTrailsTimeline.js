@@ -124,14 +124,14 @@ function SiteTrailsTimeline(props) {
                                                 style={{ opacity: "1" }}>
 
                                                 <CustomPopover
-                                                    heading={`Transport Emissions ${props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} (kgCO<sub>2</sub>e)`}
+                                                    heading={`Transport Emissions: ${props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} kgCO<sub>2</sub>e`}
 
                                                     text= {<>
                                                         <span>{`Distance : ${(props.distanceTotals.distance.value/1000).toLocaleString(undefined, {maximumFractionDigits:2})} kms`}</span>
                                                         <span className="d-none">{`Emissions : ${(props.distanceTotals.carbon.carbon_tons).toLocaleString(undefined, {maximumFractionDigits:6})} tonCO`}<sub>2</sub>e</span><br></br>
                                                     </>}
 
-                                                > <span className={"sub-title-text-pink"}>Transport Emissions : {props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} (kgCO<sub>2</sub>e</span>)
+                                                > <span className={"sub-title-text-pink"}>Transport Emissions : {props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} kgCO<sub>2</sub>e</span>
                                                     <br></br>
                                                     <span className="text-12"> {(props.distanceTotals.distance.value/1000).toLocaleString(undefined, {maximumFractionDigits:2})} kms&nbsp;</span>
                                                 </CustomPopover>
@@ -407,7 +407,7 @@ const DistanceTrailPopOver=(props)=>{
                         style={{ opacity: "1" }}>
 
                         <CustomPopover
-                            heading={`Transport Emissions: ${props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} (kgCO<sub>2</sub>e)`}
+                            heading={`Transport Emissions: ${props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} kgCO<sub>2</sub>e`}
 
                             text= {<>
                                 <span>{`Gross Weight : ${props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.gross_weight_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} kgs`}</span><br></br>
@@ -421,7 +421,7 @@ const DistanceTrailPopOver=(props)=>{
 
                         > <span className={"text-caps  sub-title-text-pink"}>{props.symbol}&nbsp;</span>
                             <span className="text-blue">
-                            {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} (kgCO<sub>2</sub>e)</span>
+                            {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} kgCO<sub>2</sub>e</span>
                             <br></br>
                             <span className="text-12"> {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toLocaleString(undefined, {maximumFractionDigits:2})} kms&nbsp;
                                 {/*in {(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.duration.value/3600).toLocaleString(undefined, {maximumFractionDigits:2})} hrs */}

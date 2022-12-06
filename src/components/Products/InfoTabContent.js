@@ -256,7 +256,7 @@ class InfoTabContent extends Component {
                         <div className={"col-auto"}>
                             <p
                                 className=" text-label text-blue mb-1 text-label">
-                                Gross Weight (Kgs)
+                                Gross Weight (Kg)
                             </p>
                             <p
 
@@ -275,7 +275,7 @@ class InfoTabContent extends Component {
                             <p
 
                                 className=" text-label text-blue mb-1 text-label">
-                                Embodied Carbon (Tons)
+                                Embodied Carbon (kgCO<sub>2</sub>e)
                             </p>
                             <p
 
@@ -293,14 +293,14 @@ class InfoTabContent extends Component {
                             <p
 
                                 className=" text-label text-blue mb-1 text-label">
-                                Transport Emissions
+                                Transport Emissions (kgCO<sub>2</sub>e)
                             </p>
                             <p
 
                                 className=" text-gray-light mb-1 text-capitalize">
                                 { this.props.item && this.props.item.total_logistic_carbon
                                 && this.props.item.total_logistic_carbon.carbon&&
-                                this.props.item.total_logistic_carbon.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} (kgCO<sub>2</sub>e)
+                                this.props.item.total_logistic_carbon.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})}
                             </p>
                         </div>
                     </div>

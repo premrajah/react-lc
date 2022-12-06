@@ -949,10 +949,7 @@ class ViewCycle extends Component {
                                                                                 className={
                                                                                     " text-left "
                                                                                 }>
-                                                                                Creator:
-                                                                                {
-                                                                                    item.creator_org_id
-                                                                                }
+                                                                                Creator: <OrgComponent orgId={item.creator_org_id.replace("Org/","")}  />
                                                                             </span>
                                                                             <br />
                                                                             <span
@@ -960,8 +957,7 @@ class ViewCycle extends Component {
                                                                                     " text-left "
                                                                                 }>
 
-                                                                                Owner:
-                                                                                {item.owner_org_id}
+                                                                                Owner: <OrgComponent orgId={item.owner_org_id.replace("Org/","")}  />
                                                                             </span>
                                                                         </div>
 
@@ -1735,8 +1731,8 @@ function StatusTimeline(props) {
                                         {item.step.name}
                                     </Typography>
                                     <Typography>{item.step.description}</Typography>
-                                    <Typography>Creator: {item.creator_org_id}</Typography>
-                                    <Typography>Owner: {item.owner_org_id}</Typography>
+                                    <Typography>Creator: <OrgComponent orgId={item.creator_org_id.replace("Org/","")}  /></Typography>
+                                    <Typography>Owner: <OrgComponent orgId={item.owner_org_id.replace("Org/","")}  /></Typography>
                                 </TimelineContent>
                             </TimelineItem>
 

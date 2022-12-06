@@ -199,7 +199,7 @@ class ItemCycleDetail extends Component {
                 (error) => {
 
 
-                    if (error&&error.response&&error.response.status==404){
+                    if (error&&error.response&&error.response.status===404){
 
                    this.setState({
                        notFoundError:true

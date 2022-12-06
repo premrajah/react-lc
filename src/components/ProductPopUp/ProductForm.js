@@ -847,7 +847,7 @@ let slugify = require('slugify')
                         stage: "certified",
                         energy_rating : this.state.energyRating,
                         external_reference : external_reference,
-                        is_listable: this.state.is_listable,
+                        // is_listable: false,
                         sku: {
                             serial: serial,
                             model: model,

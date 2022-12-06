@@ -131,8 +131,7 @@ function SiteTrailsTimeline(props) {
                                                         <span className="d-none">{`Emissions : ${(props.distanceTotals.carbon.carbon_tons).toLocaleString(undefined, {maximumFractionDigits:6})} tonCO`}<sub>2</sub>e</span><br></br>
                                                     </>}
 
-                                                > <span className={"sub-title-text-pink"}>
-                                        &Sigma; Transport Emissions : {props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} (kgCO<sub>2</sub>e</span>)
+                                                > <span className={"sub-title-text-pink"}>Transport Emissions : {props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} (kgCO<sub>2</sub>e</span>)
                                                     <br></br>
                                                     <span className="text-12"> {(props.distanceTotals.distance.value/1000).toLocaleString(undefined, {maximumFractionDigits:2})} kms&nbsp;</span>
                                                 </CustomPopover>
@@ -170,9 +169,7 @@ function SiteTrailsTimeline(props) {
                                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
                                 </Typography>
-                                {/*<Typography variant="caption" component="div">*/}
-                                {/*    Currently at */}
-                                {/*</Typography>*/}
+
                                 <Typography
 
                                     className="blue-text mt-1"
@@ -418,11 +415,11 @@ const DistanceTrailPopOver=(props)=>{
                                 <span>{`Distance : ${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.distance.value/1000).toLocaleString(undefined, {maximumFractionDigits:2})} kms`}</span><br></br>
                             <span>{`Transport Mode: ${getMode(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons_per_kg_km)}`}</span>
                             <span className="d-none">{`Emissions : ${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons).toLocaleString(undefined, {maximumFractionDigits:6})} tonCO`}<sub>2</sub>e</span><br></br>
-                            <span >{`Multiplier : ${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons_per_kg_km).toExponential(4)} tons/kg/km,`}</span><br></br>
+                            <span >{`Multiplier : ${(props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_tons_per_kg_km).toExponential(4)} tons/kg/km`}</span><br></br>
                                     </>}
                             </>}
 
-                        > <span className={"text-caps sub-title-text-pink"}>{props.symbol}&nbsp;</span>
+                        > <span className={"text-caps  sub-title-text-pink"}>{props.symbol}&nbsp;</span>
                             <span className="text-blue">
                             {props.distanceTrails.find((itemD)=> itemD._to==item.site.site._id).trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} (kgCO<sub>2</sub>e)</span>
                             <br></br>

@@ -2969,7 +2969,7 @@ button.blue-btn-border {
     right: 0;
     bottom: 0;
     top: 0;
-    width: 400px;
+    width: auto;
     height: 400px;
     margin: auto;
     background: white;

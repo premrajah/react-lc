@@ -252,14 +252,14 @@ function SiteTrailsTimeline(props) {
 
                                         width={"100%"}
                                         height={"300px"}
-
                                         siteId={site._key}
-                                         locations={[{
-                                        name: site.name,
-                                        location: site.geo_codes[0].address_info.geometry.location,
-                                        isCenter: true,
+                                    //      locations={[{
+                                    //     name: site.name,
+                                    //     location: site.geo_codes[0].address_info.geometry.location,
+                                    //     isCenter: true,
+                                    // }]}
 
-                                    }]}
+                                        locations={locations}
                                     />
                                 </div>
                             </div>}

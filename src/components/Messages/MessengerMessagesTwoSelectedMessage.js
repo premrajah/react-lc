@@ -167,7 +167,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,sh
                                 <StyledTableCell align="right">{item.name}</StyledTableCell>
                                 <StyledTableCell align="right">{getTimeFormat(item._ts_epoch_ms)}</StyledTableCell>
                                 <StyledTableCell align="right">{ m.orgs.find((org) => org.actor === "message_from").org.org.name }</StyledTableCell>
-                                <StyledTableCell align="right">Download</StyledTableCell>
+                                <StyledTableCell align="right"><a href={item.blob_url} target="_blank" rel="noreferrer">Download</a></StyledTableCell>
                             </StyledTableRow>
                         ))}
 

@@ -911,7 +911,7 @@ class EventForm extends Component {
                                                   <div>
                                                       <TextFieldWrapper
                                                           noMargin
-                                                          placeholder="Enter value e.g. 1,2,3 .."
+                                                          placeholder="e.g 1,2,3 .."
                                                           initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
                                                           onChange={(value)=>this.handleChangeProduct(value,"recurValue")}
                                                           error={this.state.errors["recurValue"]}
@@ -920,7 +920,7 @@ class EventForm extends Component {
 
                                                       />
                                                   </div>
-                                                  <div style={{width:"200px"}}>
+                                                  <div style={{width:"220px"}}>
                                                       <SelectArrayWrapper
                                                           noMargin
                                                           initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}

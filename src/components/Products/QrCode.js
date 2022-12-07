@@ -214,7 +214,7 @@ class QrCode extends Component {
                                                     e.stopPropagation();
                                                 }}
 
-                                                className={"me-1 d-none btn btn-sm btn-gray-border-small"}
+                                                className={"me-1  btn btn-sm btn-gray-border-small"}
                                                 to={
                                                     getProductProvenanceSlug(this.props.item.product._key)
 

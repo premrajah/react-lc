@@ -895,6 +895,8 @@ class ProductDetailContent extends Component {
                                                                 : false
                                                         }
 
+
+
                                                         duplicate={
                                                             this.state.item.org._id ===
                                                             this.props.userDetail.orgId

@@ -270,7 +270,7 @@ class ViewCycle extends Component {
     };
 
     getOrgIdOfOtherCompany() {
-        if (this.state.item.sender._id != this.props.userDetail.orgid) {
+        if (this.state.item.sender._id !== this.props.userDetail.orgid) {
             return this.state.item.sender._id;
         } else {
             return this.state.item.receiver._id;

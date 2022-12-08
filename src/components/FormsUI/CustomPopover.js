@@ -4,15 +4,24 @@ import {OverlayTrigger, Popover} from "react-bootstrap";
 class CustomPopover extends React.Component {
 
 
-    constructor(props) {
+    constructor({HtmlText,...props}) {
         super(props);
     }
+    HtmlText
 
-     orgPopover = (
+    componentDidMount() {
+        this.HtmlText=this.props.HtmlText
+
+    }
+
+    orgPopover = (
+
         <Popover >
             <div className={"p-2 text-sentence "}>
 
-                {this.props.heading &&  <div className={"title-bold"} style={{ textTransform: "capitalize" }}>{this.props.heading}</div>}
+                {this.props.heading &&  <div
+                    dangerouslySetInnerHTML={{__html:this.props.heading}}
+                    className={"title-bold"} style={{ textTransform: "capitalize" }} />}
                 {this.props.text && (
                     <>
 
@@ -23,6 +32,7 @@ class CustomPopover extends React.Component {
 
                     </>
                 )}
+
             </div>
         </Popover>
     );

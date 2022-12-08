@@ -235,6 +235,7 @@ class Login extends Component {
                                                     error={this.state.errors["password"]}
                                                     name="password"
                                                     title="Password"
+                                                    ignoreTrim
                                                 />
                                             </div>
 

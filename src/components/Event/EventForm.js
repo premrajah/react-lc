@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import axios from "axios/index";
-import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import {baseUrl, MIME_TYPES_ACCEPT, RECUR_UNITS} from "../../Util/Constants";
 import _ from "lodash";
 import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
@@ -16,16 +16,21 @@ import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import docs from "../../img/icons/docs.png";
 import ProductAutocomplete from "../AutocompleteSearch/ProductAutocomplete";
-import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
-import moment from "moment";
+import Switch from "@mui/material/Switch";
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import TextField from '@mui/material/TextField';
+import {Box} from "@mui/material";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
 
-var slugify = require('slugify')
+let slugify = require('slugify')
 
 
 function ValueLabelComponent(props) {
@@ -52,15 +57,7 @@ class EventForm extends Component {
 
         this.state = {
 
-            timerEnd: false,
-            isEditProduct:false,
-            count: 0,
-            nextIntervalFlag: false,
-            activePage: 0, //0 logn. 1- sign up , 3 -search,
-            categories: [],
-            subCategories: [],
-            catSelected: {},
-            subCatSelected: {},
+
             stateSelected: null,
             states: [],
             sites: [],
@@ -72,8 +69,7 @@ class EventForm extends Component {
             fieldsProduct: {},
             errorsProduct: {},
             units: [],
-            progressBar: 33,
-            products: [],
+
             productSelected: null,
             nextBlue: false,
             nextBlueAddDetail: false,
@@ -84,12 +80,7 @@ class EventForm extends Component {
             title: null,
             description: null,
             volume: null,
-            listResourceData: null,
-            resourcesMatched: [],
-            showCreateSite: false,
-            showProductList: false,
-            showAddComponent: false,
-            siteSelected: null,
+            productError:false,
             files: [],
             filesStatus: [],
             images: [],
@@ -116,10 +107,8 @@ class EventForm extends Component {
             isSubmitButtonPressed: false,
             disableVolume:false,
             loading:false,
-            energyRating:0,
-
             showForm:true,
-            templates:[],
+            showRepeatIntervalSelection:false,
             selectedTemplated:null,
             artifacts:[],
             is_manufacturer:false,
@@ -130,6 +119,7 @@ class EventForm extends Component {
                 // {key:2629743000 ,value:"Every Month(30 Days)"},
                 // {key:31556926000 ,value:"Every Year(365 Days)"},
             ],
+
             processes:[
 
                 {key:"service",value:"Service"},
@@ -341,21 +331,45 @@ class EventForm extends Component {
     handleValidationProduct() {
 
 
+
+
+
         let fields = this.state.fields;
 
 
         let validations=[
             validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
             validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
-
-
         ]
+
+
+        if (this.state.showRepeatIntervalSelection)
+            validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
+            validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
+
+
+
+
 
 
 
         let {formIsValid,errors}= validateInputs(validations)
 
         this.setState({ errors: errors });
+
+
+        if (!this.state.productId) {
+
+            this.setState({
+                productError:true
+            })
+
+            formIsValid=false
+        }else{
+            this.setState({
+                productError:false
+            })
+        }
 
         return formIsValid;
     }
@@ -368,7 +382,11 @@ class EventForm extends Component {
                 startDate:value
             })
         }
-
+        if (field==="endDate"){
+            this.setState({
+                endDate:value
+            })
+        }
 
 
 
@@ -385,68 +403,86 @@ class EventForm extends Component {
     handleSubmit = (event) => {
 
 
-        event.preventDefault();
-        event.stopPropagation()
-        if (!this.handleValidationProduct()){
-            return
-        }
+        try {
+            event.preventDefault();
+            event.stopPropagation()
+            if (!this.handleValidationProduct()) {
+
+                return
+            }
+
+
+
+
             const form = event.currentTarget;
 
             this.setState({
                 btnLoading: true,
-                loading:true
+                loading: true
             });
 
             const data = new FormData(event.target);
 
 
+            let eventData = {
+                title: data.get("title"),
+                description: data.get("description"),
+                resolution_epoch_ms: new Date(this.state.startDate).getTime() + 100,
+                recur_until_epoch_ms: new Date(this.state.endDate).getTime() + 100,
 
-        let eventData=  {
-                title : data.get("title"),
-                description : data.get("description"),
-                resolution_epoch_ms : new Date(this.state.startDate).getTime()+100,
-                process : data.get("process"),
+                process: data.get("process"),
+            }
 
+
+            if (data.get("recurValue") && data.get("recurUnit")) {
+                eventData.recur = {value: data.get("recurValue"), unit: data.get("recurUnit")}
+            }
+
+            if (data.get("interval")) {
+
+                eventData.recur_in_epoch_ms = data.get("interval")
+            }
+
+
+
+
+            this.setState({isSubmitButtonPressed: true})
+
+
+
+            axios.post(
+                    baseUrl + "event",
+                    {
+                        event: eventData,
+                        product_id: this.state.productId,
+                        artifact_ids: this.state.images
+
+                    },
+                )
+                .then((res) => {
+
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "success",
+                        message: "Event created successfully. Thanks"
+                    })
+
+                    this.props.hide()
+                })
+                .catch((error) => {
+                    this.setState({
+                        btnLoading: false,
+                        loading: false,
+                        isSubmitButtonPressed: false
+                    });
+                    this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+
+                });
+
+
+        }catch (e){
+            console.log(e)
         }
-
-
-        if (data.get("interval")){
-
-            eventData.recur_in_epoch_ms = data.get("interval")
-        }
-
-                this.setState({isSubmitButtonPressed: true})
-
-                    axios
-                        .post(
-                            baseUrl+"event",
-                            {
-                                event:eventData,
-                                product_id : this.state.productId,
-                                artifact_ids: this.state.images
-
-                            },
-                        )
-                        .then((res) => {
-
-                            this.props.showSnackbar({
-                                show: true,
-                                severity: "success",
-                                message:   "Event created successfully. Thanks"
-                            })
-
-                            this.props.hide()
-                        })
-                        .catch((error) => {
-                            this.setState({
-                                btnLoading: false,
-                                loading: false,
-                                isSubmitButtonPressed: false
-                            });
-                            this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
-
-                        });
-                // }
 
     };
 
@@ -472,7 +508,7 @@ class EventForm extends Component {
             title : data.get("title"),
             description : data.get("description"),
             resolution_epoch_ms : new Date(this.state.startDate).getTime()+100,
-
+            recur_until_epoch_ms: new Date(this.state.endDate).getTime() + 100,
             process : data.get("process"),
             // stage:"open"
         }
@@ -483,6 +519,10 @@ class EventForm extends Component {
             eventData.recur_in_epoch_ms = data.get("interval")
         }
 
+
+        if (data.get("recurValue") && data.get("recurUnit")) {
+            eventData.recur = {value: data.get("recurValue"), unit: data.get("recurUnit")}
+        }
 
         this.setState({isSubmitButtonPressed: true})
 
@@ -542,9 +582,6 @@ class EventForm extends Component {
                     name: artifacts[k].name,
                 },
             };
-            // fileItem.status = 1  //success
-            // fileItem.id = this.state.item.artifacts[k]._key
-            // fileItem.url = this.state.item.artifacts[k].blob_url
 
             images.push(artifacts[k]._key);
 
@@ -561,50 +598,17 @@ class EventForm extends Component {
     selectedProduct = (data) => {
 
         this.setState({
-            productId:data.key
+            productId:data.key?data.key:null
         })
-
-
     };
 
-
-
-    updateImages() {
-        axios
-            .post(
-                baseUrl + "product/artifact/replace",
-
-                {
-                    product_id: this.props.event.product._key,
-                    artifact_ids: this.state.images,
-                },
-            )
-            .then((res) => {
-                if (!this.props.parentProduct) {
-                    // this.setState({
-                    //     product: res.data.data,
-                    //     parentProduct: res.data.data,
-                    // });
-                }
-
-                this.triggerCallback();
-
-            })
-            .catch((error) => {
-
-            });
-    }
 
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        console.log("1")
-
 
         if (prevProps!=this.props){
-
-            console.log("2")
 
          this.updateProps()
 
@@ -617,7 +621,8 @@ class EventForm extends Component {
         if (this.props.event){
             this.setState({
                 isEditProduct:true,
-                startDate:this.props.event.event.resolution_epoch_ms
+                startDate:this.props.event.event.resolution_epoch_ms,
+                endDate:this.props.event.event.recur_until_epoch_ms,
             })
             this.loadImages(this.props.event.artifacts)
 
@@ -627,6 +632,19 @@ class EventForm extends Component {
                 isEditProduct:true,
 
             })
+
+            if (this.props.date) {
+                this.setState({
+                    startDate: this.props.date
+                })
+            }
+            else{
+
+                this.setState({
+                    startDate: new Date()
+                })
+            }
+
 
             if (this.props.date) {
                 this.setState({
@@ -656,6 +674,13 @@ class EventForm extends Component {
 
         this.updateProps()
 
+        if (this.props.event&&this.props.event.event.recur&&this.props.event.event.recur.value){
+
+            this.setState({
+                showRepeatIntervalSelection:true
+            })
+        }
+
     }
 
     showMultipleUpload=()=>{
@@ -665,10 +690,13 @@ class EventForm extends Component {
 
     }
 
+     handleChangeSwitch = (event) => {
 
+       this.setState({
+           showRepeatIntervalSelection:!this.state.showRepeatIntervalSelection
+       })
 
-
-
+    };
 
 
     render() {
@@ -684,18 +712,18 @@ class EventForm extends Component {
 
                           <form onSubmit={this.props.event?this.updateEvent:this.handleSubmit}>
 
-                              {!this.props.hideProduct &&
+                              {/*{!this.props.hideProduct &&*/}
                               <ProductAutocomplete
-
-
+                                  disableEdit={this.props.event?true:false}
+                                  initial={this.props.event?this.props.event.product.product:null}
                                   suggestions={this.state.orgNames}
                                   selectedProduct={(data) =>
                                       this.selectedProduct(data)
                                   }
+                              />
+                              {/*}*/}
 
-
-                              />}
-
+                              {this.state.productError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Product from your inventory not selected."}</span>}
                             <div className="row ">
 
                                 <div className="col-12 mt-2">
@@ -728,7 +756,7 @@ class EventForm extends Component {
                             </div>
 
                               <div className="row  mt-2">
-                              <div className="col-md-4 col-12">
+                              <div className="col-md-6 col-6">
                                   <div
                                       className={
                                           "custom-label text-bold text-blue "
@@ -738,26 +766,27 @@ class EventForm extends Component {
 
                                   <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                      <MobileDatePicker
+                                      <DesktopDatePicker
 
                                           className={"full-width-field"}
                                           disableHighlightToday={true}
                                           minDate={new Date()}
-                                          // label="Required By"
+                                          disablePast
                                           inputVariant="outlined"
                                           variant={"outlined"}
                                           margin="normal"
                                           id="date-picker-dialog-1"
-                                          // label="Available From"
                                           inputFormat="dd/MM/yyyy"
                                           hintText="Select Date"
                                           value={this.state.startDate||this.props.date}
-
-                                          // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.props.event&&this.props.event.campaign.start_ts}
-                                          // onChange={this.handleChangeDateStartDate.bind(
-                                          //     this
-                                          // )}
-                                          renderInput={(params) => <CustomizedInput {...params} />}
+                                          style={{position:"relative"}}
+                                          OpenPickerIcon={<InfoIcon/>}
+                                          renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                              <div className="custom-calander-container">
+                                                  <CustomizedInput ref={inputRef} {...inputProps} />
+                                                  <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                              </div>
+                                          )}
                                           onChange={(value)=>this.handleChangeProduct(value,"startDate")}
 
                                       />
@@ -767,7 +796,7 @@ class EventForm extends Component {
 
                               </div>
 
-                                  <div className="col-md-4  col-sm-12 col-xs-12  ">
+                                  <div className="col-md-6 d-none  col-sm-12 col-xs-12  ">
 
                                       <SelectArrayWrapper
 
@@ -785,7 +814,7 @@ class EventForm extends Component {
                                           title="Recurring interval"/>
 
                                   </div>
-                                  <div className="col-md-4  col-sm-12 col-xs-12  ">
+                                  <div className="col-6  ">
 
                                       <SelectArrayWrapper
 
@@ -800,9 +829,130 @@ class EventForm extends Component {
                                           title="Process"/>
 
                                   </div>
+                                  <div className="col-md-12  col-sm-12 col-xs-12  ">
+                                  <div className="row  ">
+                                      <div className="col-12">
+                                          <div className="row  ">
+                                              <div className="col-12 ">
+                                                  <div className="custom-label text-bold text-blue ">Repeat ?</div>
+                                              </div>
+                                              <div className="col-12 ">
+                                          <Stack direction="row" spacing={1} alignItems="center">
+                                              <Typography>No</Typography>
+
+                                                  <Switch
+                                                      checked={this.state.showRepeatIntervalSelection}
+                                                      onChange={this.handleChangeSwitch}
+                                                  color="primary"   />
+
+                                              <Typography>Yes</Typography>
+                                          </Stack>
+                                              </div>
+                                          </div>
+                                      </div>
+
+
+
+
+                                  </div>
+
+                                      {this.state.showRepeatIntervalSelection &&
+                                      <div className="row bg-light pb-4 pt-2 ">
+                                          <div className="col-md-6 col-6">
+                                              <div
+                                                  className={
+                                                      "custom-label text-bold text-blue "
+                                                  }>
+                                                  End Date
+                                              </div>
+
+                                              <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                                  <DatePicker
+
+                                                      className={"full-width-field"}
+                                                      disableHighlightToday={true}
+                                                      minDate={new Date()}
+                                                      // label="Required By"
+                                                      inputVariant="outlined"
+                                                      variant={"outlined"}
+                                                      margin="normal"
+                                                      id="date-picker-dialog-1"
+                                                      // label="Available From"
+                                                      inputFormat="dd/MM/yyyy"
+                                                      hintText="Select Date"
+                                                      value={this.state.endDate}
+                                                      style={{position:"relative"}}
+
+                                                      OpenPickerIcon={<InfoIcon/>}
+
+                                                      // renderInput={(params) => <CustomizedInput {...params} />}
+
+                                                      renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                          <div className="custom-calander-container">
+                                                              <CustomizedInput ref={inputRef} {...inputProps} />
+                                                              <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                          </div>
+                                                      )}
+                                                      onChange={(value)=>this.handleChangeProduct(value,"endDate")}
+
+                                                  />
+                                              </LocalizationProvider>
+
+
+                                          </div>
+                                      <div className="col-6 ">
+                                          <div className="row  ">
+                                              <div className="col-12 ">
+                                                  <div className="custom-label text-bold text-blue ">Repeating interval</div>
+                                              </div>
+                                              <div className="col-12 connected-fields ">
+
+                                                  <div>
+                                                      <TextFieldWrapper
+                                                          noMargin
+                                                          placeholder="e.g 1,2,3 .."
+                                                          initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
+                                                          onChange={(value)=>this.handleChangeProduct(value,"recurValue")}
+                                                          error={this.state.errors["recurValue"]}
+                                                          name="recurValue"
+                                                          numberInput
+
+                                                      />
+                                                  </div>
+                                                  <div style={{width:"220px"}}>
+                                                      <SelectArrayWrapper
+                                                          noMargin
+                                                          initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
+                                                          select={"Select unit"}
+                                                          option={"value"}
+                                                          valueKey={"key"}
+                                                          error={this.state.errors["recurUnit"]}
+                                                          onChange={(value)=> {
+                                                              this.handleChangeProduct(value,"recurUnit")
+                                                          }}
+                                                          options={RECUR_UNITS} name={"recurUnit"}
+                                                      />
+                                                  </div>
+
+                                              </div>
+
+
+                                          </div>
+                                      </div>
+
+                                      </div>
+                                      }
+
+
+                                  </div>
+
+
+
+
                               </div>
 
-                           <div className={"row"}>
+                           <div className={"row b"}>
                             <div className="col-12 mt-2">
                                 <div className={"custom-label text-bold text-blue mb-3"}>
                                    Add Attachments <CustomPopover text="Add images, videos, manuals and other documents or external links (png, jpeg, jpg, doc, csv)"><InfoIcon/></CustomPopover>
@@ -844,6 +994,7 @@ class EventForm extends Component {
                                                                     onChange={this.handleChangeFile.bind(
                                                                         this
                                                                     )}
+
                                                                 />
                                                             </div>
 
@@ -956,8 +1107,8 @@ class EventForm extends Component {
                                     </div>
                                 </div>
                             </div>
-</div>
-                                 <div className={"row"}>
+                      </div>
+                           <div className={"row"}>
                             <div className="col-12 text-center  mb-2">
                                 {this.state.files.length > 0 ? (
                                     this.state.files.filter((item) => item.status === 0).length >

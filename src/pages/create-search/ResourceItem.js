@@ -168,7 +168,7 @@ class ResourceItem extends Component {
                                     Category:
                                     <span
 
-                                        className="ml-1 text-capitlize mb-1 cat-box text-left p-1">
+                                        className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
                                                             <span className="text-capitlize">
                                                                 {capitalize(this.props.item.listing.category)}
                                                             </span><span className={"m-1 arrow-cat"}>&#10095;</span>
@@ -198,10 +198,12 @@ class ResourceItem extends Component {
 
                                     <GrayBorderBtn title={"View Details"} onClick={()=> this.props.showDetails(this.props.item.listing._key)} />
 
-                                    {!this.props.matchedItem && <GreenSmallBtn classAdd="ml-2" onClick={()=> this.props.requestMatch(this.props.item.listing)} title={"Request a match"}/>}
+                                    {!this.props.matchedItem && <GreenSmallBtn classAdd="ms-2"
+                                                                               onClick={()=> this.props.requestMatch(this.props.item.listing)}
+                                                                               title={"Request a match"}/>}
 
                                     {this.props.matchedItem&&
-                                    <span className={"text-capitalize ml-2 text-gray-light"}>Stage: <span className={"title-bold"}>{this.props.stage}</span></span>
+                                    <span className={"text-capitalize ms-2 text-gray-light"}>Stage: <span className={"title-bold"}>{this.props.stage}</span></span>
                                     }
                                </div>
                                 }

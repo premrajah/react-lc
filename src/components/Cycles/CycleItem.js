@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 import Paper from "../../img/place-holder-lc.png";
-import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import {Link} from "react-router-dom";
@@ -23,11 +21,6 @@ class CycleItem extends Component {
 
     }
 
-
-
-
-    componentDidMount() {
-    }
 
     render() {
         return (
@@ -80,8 +73,6 @@ class CycleItem extends Component {
                                                                 {capitalize(this.props.product.state)}
                                                             </span>
 
-
-
                                     </span>
                             </div>
 
@@ -123,15 +114,11 @@ class CycleItem extends Component {
 const mapStateToProps = (state) => {
     return {
         loginError: state.loginError,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
     };
 };

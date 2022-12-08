@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import CustomizedInput from "./CustomizedInput";
 import CustomPopover from "../CustomPopover";
 import InfoIcon from "./InfoIcon";
+import {replace} from "formik";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -28,8 +29,9 @@ const TextFieldWrapper = ({
     error,
     initialValue,
     disabled,
-    readonly,
-    customReadOnly,reset,
+    readonly,ignoreTrim,
+    customReadOnly,reset,noMargin,
+                              numberInput,
     ...otherProps
 }) => {
     // const [field, mata] = useField(name)
@@ -40,7 +42,6 @@ const TextFieldWrapper = ({
 
             if (onChange) {
                 setField(initialValue)
-                // alert(initialValue)
                 onChange(initialValue);
             }
         // }
@@ -51,7 +52,6 @@ const TextFieldWrapper = ({
     useEffect(() => {
 
         if (reset) {
-
             setField("")
             // alert(initialValue)
             onChange(initialValue);
@@ -71,14 +71,40 @@ const TextFieldWrapper = ({
         const { value } = event.target;
         setField(value);
 
-        if (onChange) onChange(value);
+        if (!ignoreTrim)
+          value.trim()
+
+        if (onChange){
+            if (numberInput){
+                putMask(value,event)
+            }else{
+                onChange(value);
+            }
+
+        }
+    };
+
+
+    const putMask = (value,event) => {
+
+        let x = value.replace(/\D/g, '')
+        value=x
+
+            setField(value)
+            if (onChange){
+                onChange(value)
+            }
+
     };
 
     return (
         <>
             {title &&!hidden&& (
                 <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
-                    <span className="mr-1">{title}</span>
+                    {/*<span className="mr-1">{title}</span>*/}
+                    <span
+                        dangerouslySetInnerHTML={{__html:title}}
+                        className={"title-bold"} style={{ textTransform: "capitalize" }} />
                     {details && (
                         <CustomPopover heading={detailsHeading} text={details}>
                             <InfoIcon />
@@ -90,8 +116,10 @@ const TextFieldWrapper = ({
                 <div className={"text-gray-light  mb-0 ellipsis-end"}>{explanation}</div>
             )}
 
-            <div className={type != "hidden" ? "field-box mb-2" : "d-none"}>
+            <div className={`${type !== "hidden" ? "field-box " : "d-none"} ${noMargin?"":"mb-2"}`}>
                 <CustomizedInput
+
+
                     disabled={disabled}
                     type={type}
                     variant="outlined"
@@ -102,6 +130,9 @@ const TextFieldWrapper = ({
                     onChange={handleChange}
                     name={name}
                     {...configTextField}
+
+
+
                 />
             </div>
             {error && (

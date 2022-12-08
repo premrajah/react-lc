@@ -3,11 +3,11 @@ import * as actionCreator from "../store/actions/actions";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
-import {baseUrl, frontEndUrl} from "../Util/Constants";
+import {baseUrl, frontEndUrl, RECUR_UNITS} from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider/ImagesSlider";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody} from "react-bootstrap";
+import {Alert, Modal, ModalBody, Spinner} from "react-bootstrap";
 import {withStyles} from "@mui/styles/index";
 import jspdf from "jspdf";
 import QrCodeBg from "../img/qr-code-bg.png";
@@ -39,6 +39,9 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import QrCode from "./Products/QrCode";
 import GlobalDialog from "./RightBar/GlobalDialog";
+import SelectArrayWrapper from "./FormsUI/ProductForm/Select";
+import GreenButton from "./FormsUI/Buttons/GreenButton";
+import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -79,8 +82,11 @@ class ProductDetailCycle extends Component {
             approveReleaseId: null,
             orgTrails: null,
             siteTrails: null,
-            timelineDisplay: "org",
-            zoomQrCode:false
+            distanceTrails:null,
+            distanceTotals:null,
+            timelineDisplay: "site",
+            zoomQrCode:false,
+            trailLoading:false
 
         };
 
@@ -169,11 +175,6 @@ class ProductDetailCycle extends Component {
             formIsValid = false;
             errors["name"] = "Required";
         }
-
-        // if (!fields["others"]) {
-        //     formIsValid = false;
-        //     errors["others"] = "Required";
-        // }
 
         if (!fields["address"]) {
             formIsValid = false;
@@ -626,14 +627,23 @@ class ProductDetailCycle extends Component {
     }
 
     getProductTrails(productKey) {
+        this.setState({
+            trailLoading:true
+        })
         axios
             .get(`${baseUrl}code/${productKey}/trail`)
             .then((response) => {
                 const data = response.data.data;
-                this.setState({ orgTrails: data.org_trails, siteTrails: data.site_trails });
+                this.setState({
+                    trailLoading:false
+                })
+                this.setState({ orgTrails: data.org_trails,distanceTrails:data.distance_trails, siteTrails: data.site_trails, distanceTotals:data.distance_trail_totals });
             })
             .catch((error) => {
                 console.log("trail error ", error);
+                this.setState({
+                    trailLoading:false
+                })
             });
     }
 
@@ -1006,7 +1016,9 @@ class ProductDetailCycle extends Component {
                         <div className="row bg-white rad-8 p-3 no-gutters">
                             <div className="col-12 ">
 
-                        <div className="row ">
+
+                                {!this.state.trailLoading ?   <>
+                        <div className="row d-none ">
                             <div className="col-12 ">
                                 <FormControl component="fieldset">
                                     <RadioGroup
@@ -1043,11 +1055,24 @@ class ProductDetailCycle extends Component {
                             <div className="row ">
                                 <div className="col">
                                     {this.state.siteTrails && (
-                                        <SiteTrailsTimeline siteTrails={this.state.siteTrails} />
+                                        <SiteTrailsTimeline distanceTrails={this.state.distanceTrails} siteTrails={this.state.siteTrails} distanceTotals={this.state.distanceTotals}/>
                                     )}
                                 </div>
                             </div>
                         ) : null}
+
+                        </>:
+                                    <div className="row ">
+                                        <div className="col-12 ">    <Spinner
+                                        className="mr-2"
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />
+                                        </div>
+                                    </div>}
 
                     </div>
                         </div>
@@ -1362,296 +1387,281 @@ class ProductDetailCycle extends Component {
 </div>
                 </GlobalDialog>
 
-                <Modal
-                    className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                    show={this.state.showRegister}
-                    onHide={this.showRegister}
-                    animation={false}>
-                    <ModalBody>
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-10 text-center"}>
-                                <p
-                                    style={{ textTransform: "Capitalize" }}
-                                    className={"text-bold text-blue"}>
-                                    Register Product: {this.props.item.product.name}
-                                </p>
-                            </div>
-                        </div>
 
-                        {!this.state.showRegisterSuccess ? (
-                            <form onSubmit={this.submitRegisterProduct}>
-                                <div className={"row justify-content-center p-2"}>
-                                    <div className={"col-12 text-center mt-2"}>
-                                        <div className={"row justify-content-center"}>
-                                            <div className="col-md-12 col-sm-12 col-xs-12 ">
-                                                <div
-                                                    className={
-                                                        "custom-label text-bold  mb-1 text-left"
-                                                    }>
-                                                    Select Site To Register Product
-                                                </div>
 
-                                                <FormControl
-                                                    variant="outlined"
-                                                    className={classes.formControl}>
-                                                    <Select
-                                                        name={"deliver"}
-                                                        native
-                                                        // onChange={this.handleChangeProduct.bind(this, "deliver")}
-                                                        inputProps={{
-                                                            name: "site",
-                                                            id: "outlined-age-native-simple",
-                                                        }}>
-                                                        <option value={null}>Select</option>
+                        <GlobalDialog
+                            size="sm"
 
-                                                        {this.state.sites.map((item, index) => (
-                                                            <option
-                                                                key={index}
-                                                                value={item._key}>
-                                                                {item.name +
-                                                                    "(" +
-                                                                    item.address +
-                                                                    ")"}
-                                                            </option>
-                                                        ))}
-                                                    </Select>
-                                                </FormControl>
+                            heading={`Register Product: ${this.props.item.product.name}`}
+                            show={this.state.showRegister}
+                            hide={this.showRegister}>
+                            <>
 
-                                                <p
-                                                    className={"text-left"}
-                                                    style={{ margin: "10px 0" }}>
-                                                    Don’t see it on here?
-                                                    <span
-                                                        onClick={this.showSubmitSite}
-                                                        className={
-                                                            "green-text forgot-password-link text-mute small"
-                                                        }>
+
+                                {!this.state.showRegisterSuccess ? (
+                                    <form onSubmit={this.submitRegisterProduct}>
+                                        <div className={"row justify-content-start p-2"}>
+                                            <div className={"col-12  mt-2"}>
+                                                <div className={"row justify-content-start"}>
+                                                    <div className="col-md-12 col-sm-12 col-xs-12 ">
+
+                                                        <SelectArrayWrapper
+                                                            noMargin
+                                                            // initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
+                                                            select={"Select site"}
+                                                            option={"name"}
+                                                            valueKey={"_key"}
+                                                            // error={this.state.errors["recurUnit"]}
+                                                            // onChange={(value)=> {
+                                                            //     this.handleChangeProduct(value,"recurUnit")
+                                                            // }}
+
+                                                            options={this.state.sites} name={"site"}
+                                                        />
+
+                                                        <p
+                                                            className={"text-left"}
+                                                            style={{ margin: "10px 0" }}>
+                                                            Don’t see it on here?
+                                                            <span
+                                                                onClick={this.showSubmitSite}
+                                                                className={
+                                                                    "green-text forgot-password-link text-mute small"
+                                                                }>
                                                         Add a site
                                                     </span>
-                                                </p>
+                                                        </p>
+                                                    </div>
+
+                                                    {this.state.errorRegister && (
+                                                        <div className={"row justify-content-"}>
+                                                            <div
+                                                                className={"col-12"}
+                                                                style={{ textAlign: "center" }}>
+                                                                <Alert key={"alert"} variant={"danger"}>
+                                                                    {this.state.errorRegister}
+                                                                </Alert>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {!this.state.showSubmitSite && (
+                                                        <div className={"col-12 justify-content-center "}>
+                                                            <div className={"row justify-content-center"}>
+                                                                <div
+                                                                    className={"col-6"}
+                                                                    style={{ textAlign: "center" }}>
+
+                                                                    <GreenButton
+                                                                        title={"Yes"}
+                                                                        type={"submit"}
+                                                                        loading={this.state.loading}
+
+                                                                        disabled={this.state.loading||this.state.isSubmitButtonPressed}
+
+                                                                    >
+                                                                    </GreenButton>
+                                                                </div>
+                                                                <div
+                                                                    className={"col-6"}
+                                                                    style={{ textAlign: "center" }}>
+
+                                                                    <BlueBorderButton
+                                                                        type="button"
+
+                                                                        title={"Cancel"}
+                                                                        onClick={
+                                                                            this
+                                                                                .showRegister
+                                                                        }
+                                                                    >
+                                                                    </BlueBorderButton>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
-
-                                            {this.state.errorRegister && (
-                                                <div className={"row justify-content-center"}>
-                                                    <div
-                                                        className={"col-12"}
-                                                        style={{ textAlign: "center" }}>
-                                                        <Alert key={"alert"} variant={"danger"}>
-                                                            {this.state.errorRegister}
-                                                        </Alert>
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            {!this.state.showSubmitSite && (
-                                                <div className={"col-12 justify-content-center "}>
-                                                    <div className={"row justify-content-center"}>
-                                                        <div
-                                                            className={"col-6"}
-                                                            style={{ textAlign: "center" }}>
-                                                            <button
-                                                                style={{ minWidth: "120px" }}
-                                                                className={
-                                                                    "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                                }
-                                                                type={"submit"}>
-                                                                Yes
-                                                            </button>
-                                                        </div>
-                                                        <div
-                                                            className={"col-6"}
-                                                            style={{ textAlign: "center" }}>
-                                                            <p
-                                                                onClick={this.showRegister}
-                                                                className={
-                                                                    "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                                }>
-                                                                Cancel
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
+                                        </div>
+                                    </form>
+                                ) : (
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-10 text-center"}>
+                                            <Alert key={"alert"} variant={"success"}>
+                                                Your register request has been submitted successfully.
+                                                Thanks
+                                            </Alert>
                                         </div>
                                     </div>
-                                </div>
-                            </form>
-                        ) : (
-                            <div className={"row justify-content-center"}>
-                                <div className={"col-10 text-center"}>
-                                    <Alert key={"alert"} variant={"success"}>
-                                        Your register request has been submitted successfully.
-                                        Thanks
-                                    </Alert>
-                                </div>
-                            </div>
-                        )}
+                                )}
 
-                        {this.state.showSubmitSite && (
-                            <div className={"row justify-content-center p-2"}>
-                                <div className="col-md-12 col-sm-12 col-xs-12 ">
-                                    <div className={"custom-label text-bold text-blue mb-1"}>
-                                        Add New Site
-                                    </div>
-                                </div>
-                                <div className="col-md-12 col-sm-12 col-xs-12 ">
-                                    <div className={"row"}>
-                                        <div className={"col-12"}>
-                                            <form onSubmit={this.handleSubmitSite}>
-                                                <div className="row no-gutters justify-content-center ">
-                                                    <div className="col-12 mt-4">
-                                                        <TextField
-                                                            id="outlined-basic"
-                                                            label=" Name"
-                                                            variant="outlined"
-                                                            fullWidth={true}
-                                                            name={"name"}
-                                                            onChange={this.handleChangeSite.bind(
-                                                                this,
-                                                                "name"
-                                                            )}
-                                                        />
+                                {this.state.showSubmitSite && (
+                                    <div className={"row justify-content-center p-2"}>
+                                        <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                            <div className={"custom-label text-bold text-blue mb-1"}>
+                                                Add New Site
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12 col-sm-12 col-xs-12 ">
+                                            <div className={"row"}>
+                                                <div className={"col-12"}>
+                                                    <form onSubmit={this.handleSubmitSite}>
+                                                        <div className="row no-gutters justify-content-center ">
+                                                            <div className="col-12 mt-4">
+                                                                <TextField
+                                                                    id="outlined-basic"
+                                                                    label=" Name"
+                                                                    variant="outlined"
+                                                                    fullWidth={true}
+                                                                    name={"name"}
+                                                                    onChange={this.handleChangeSite.bind(
+                                                                        this,
+                                                                        "name"
+                                                                    )}
+                                                                />
 
-                                                        {this.state.errorsSite["name"] && (
-                                                            <span className={"text-mute small"}>
+                                                                {this.state.errorsSite["name"] && (
+                                                                    <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
                                                                     *
                                                                 </span>
-                                                                {this.state.errorsSite["name"]}
+                                                                        {this.state.errorsSite["name"]}
                                                             </span>
-                                                        )}
-                                                    </div>
+                                                                )}
+                                                            </div>
 
-                                                    <div className="col-12 mt-4">
-                                                        <TextField
-                                                            id="outlined-basic"
-                                                            label="Contact"
-                                                            variant="outlined"
-                                                            fullWidth={true}
-                                                            name={"contact"}
-                                                            onChange={this.handleChangeSite.bind(
-                                                                this,
-                                                                "contact"
-                                                            )}
-                                                        />
+                                                            <div className="col-12 mt-4">
+                                                                <TextField
+                                                                    id="outlined-basic"
+                                                                    label="Contact"
+                                                                    variant="outlined"
+                                                                    fullWidth={true}
+                                                                    name={"contact"}
+                                                                    onChange={this.handleChangeSite.bind(
+                                                                        this,
+                                                                        "contact"
+                                                                    )}
+                                                                />
 
-                                                        {this.state.errorsSite["contact"] && (
-                                                            <span className={"text-mute small"}>
+                                                                {this.state.errorsSite["contact"] && (
+                                                                    <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
                                                                     *
                                                                 </span>
-                                                                {this.state.errorsSite["contact"]}
+                                                                        {this.state.errorsSite["contact"]}
                                                             </span>
-                                                        )}
-                                                    </div>
+                                                                )}
+                                                            </div>
 
-                                                    <div className="col-12 mt-4">
-                                                        <TextField
-                                                            id="outlined-basic"
-                                                            label="Address"
-                                                            variant="outlined"
-                                                            fullWidth={true}
-                                                            name={"address"}
-                                                            type={"text"}
-                                                            onChange={this.handleChangeSite.bind(
-                                                                this,
-                                                                "address"
-                                                            )}
-                                                        />
+                                                            <div className="col-12 mt-4">
+                                                                <TextField
+                                                                    id="outlined-basic"
+                                                                    label="Address"
+                                                                    variant="outlined"
+                                                                    fullWidth={true}
+                                                                    name={"address"}
+                                                                    type={"text"}
+                                                                    onChange={this.handleChangeSite.bind(
+                                                                        this,
+                                                                        "address"
+                                                                    )}
+                                                                />
 
-                                                        {this.state.errorsSite["address"] && (
-                                                            <span className={"text-mute small"}>
+                                                                {this.state.errorsSite["address"] && (
+                                                                    <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
                                                                     *
                                                                 </span>
-                                                                {this.state.errorsSite["address"]}
+                                                                        {this.state.errorsSite["address"]}
                                                             </span>
-                                                        )}
-                                                    </div>
-                                                    <div className="col-12 mt-4">
-                                                        <TextField
-                                                            id="outlined-basic"
-                                                            type={"number"}
-                                                            name={"phone"}
-                                                            onChange={this.handleChangeSite.bind(
-                                                                this,
-                                                                "phone"
-                                                            )}
-                                                            label="Phone"
-                                                            variant="outlined"
-                                                            fullWidth={true}
-                                                        />
+                                                                )}
+                                                            </div>
+                                                            <div className="col-12 mt-4">
+                                                                <TextField
+                                                                    id="outlined-basic"
+                                                                    type={"number"}
+                                                                    name={"phone"}
+                                                                    onChange={this.handleChangeSite.bind(
+                                                                        this,
+                                                                        "phone"
+                                                                    )}
+                                                                    label="Phone"
+                                                                    variant="outlined"
+                                                                    fullWidth={true}
+                                                                />
 
-                                                        {this.state.errorsSite["phone"] && (
-                                                            <span className={"text-mute small"}>
+                                                                {this.state.errorsSite["phone"] && (
+                                                                    <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
                                                                     *
                                                                 </span>
-                                                                {this.state.errorsSite["phone"]}
+                                                                        {this.state.errorsSite["phone"]}
                                                             </span>
-                                                        )}
-                                                    </div>
+                                                                )}
+                                                            </div>
 
-                                                    <div className="col-12 mt-4">
-                                                        <TextField
-                                                            id="outlined-basic"
-                                                            label="Email"
-                                                            variant="outlined"
-                                                            fullWidth={true}
-                                                            name={"email"}
-                                                            type={"email"}
-                                                            onChange={this.handleChangeSite.bind(
-                                                                this,
-                                                                "email"
-                                                            )}
-                                                        />
+                                                            <div className="col-12 mt-4">
+                                                                <TextField
+                                                                    id="outlined-basic"
+                                                                    label="Email"
+                                                                    variant="outlined"
+                                                                    fullWidth={true}
+                                                                    name={"email"}
+                                                                    type={"email"}
+                                                                    onChange={this.handleChangeSite.bind(
+                                                                        this,
+                                                                        "email"
+                                                                    )}
+                                                                />
 
-                                                        {this.state.errorsSite["email"] && (
-                                                            <span className={"text-mute small"}>
+                                                                {this.state.errorsSite["email"] && (
+                                                                    <span className={"text-mute small"}>
                                                                 <span style={{ color: "red" }}>
                                                                     *
                                                                 </span>
-                                                                {this.state.errorsSite["email"]}
+                                                                        {this.state.errorsSite["email"]}
                                                             </span>
-                                                        )}
-                                                    </div>
-                                                    <div className="col-12 mt-4">
-                                                        <TextField
-                                                            onChange={this.handleChangeSite.bind(
-                                                                this,
-                                                                "others"
-                                                            )}
-                                                            name={"others"}
-                                                            id="outlined-basic"
-                                                            label="Others"
-                                                            variant="outlined"
-                                                            fullWidth={true}
-                                                            type={"others"}
-                                                        />
+                                                                )}
+                                                            </div>
+                                                            <div className="col-12 mt-4">
+                                                                <TextField
+                                                                    onChange={this.handleChangeSite.bind(
+                                                                        this,
+                                                                        "others"
+                                                                    )}
+                                                                    name={"others"}
+                                                                    id="outlined-basic"
+                                                                    label="Others"
+                                                                    variant="outlined"
+                                                                    fullWidth={true}
+                                                                    type={"others"}
+                                                                />
 
-                                                        {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
-                                                    </div>
+                                                                {/*{this.state.errorsSite["others"] && <span className={"text-mute small"}><span style={{ color: "red" }}>* </span>{this.state.errorsSite["others"]}</span>}*/}
+                                                            </div>
 
-                                                    <div className="col-12 mt-4">
-                                                        <button
-                                                            type={"submit"}
-                                                            className={
-                                                                "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                            }>
-                                                            Add Site
-                                                        </button>
-                                                    </div>
+                                                            <div className="col-12 mt-4">
+                                                                <button
+                                                                    type={"submit"}
+                                                                    className={
+                                                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                                                    }>
+                                                                    Add Site
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        )}
-                    </ModalBody>
-                </Modal>
+                                )}
+                                </>
+
+                        </GlobalDialog>
+
+
 
                 <Modal
                     className={"loop-popup"}
@@ -1672,6 +1682,8 @@ class ProductDetailCycle extends Component {
                             <div className={"col-12 text-center mt-2"}>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
+
+
                                         <button
                                             onClick={this.deleteItem}
                                             className={

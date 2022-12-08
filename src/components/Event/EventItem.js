@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import {fetchErrorMessage, getInitials, getTimeFormat} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import {baseUrl, checkImage} from "../../Util/Constants";
+import {baseUrl, checkImage, RECUR_UNITS} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {Close, Delete, Done, Edit, FactCheck} from "@mui/icons-material";
@@ -21,9 +21,25 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CustomPopover from "../FormsUI/CustomPopover";
 import SubproductItem from "../Products/Item/SubproductItem";
-import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
+import {CSVLink} from "react-csv";
+import DownloadIcon from "@mui/icons-material/GetApp";
+
+import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
+import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
+import moment from "moment";
+import {Spinner} from "react-bootstrap";
+import {createEvents} from "ics";
+import MoreMenu from "../MoreMenu";
+import CustomMoreMenu from "../FormsUI/CustomMoreMenu";
+import SiteReleaseDialog from "../Sites/SiteReleaseDialog";
+import EventReleaseDialog from "./EventReleaseDialog";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
 
 class EventItem extends Component {
         constructor(props) {
@@ -31,8 +47,16 @@ class EventItem extends Component {
 
             this.state = {
                 date:null,
+                fields:{},
+                loadingEventsDownload:false,
+                minEndDate:null,
+                maxEndDate:null,
+                maxStartDate:null,
+                minStartDate:null,
                 highlightedDays:[1,2,15],
                 events:[],
+                endDate:null,
+                startDate:null,
                 calendarEvents:[],
                 showEvent:false,
                 showEditEvent:false,
@@ -41,6 +65,11 @@ class EventItem extends Component {
                 stageEventId:null,
                 showStagePopup:false,
                 deleteEvent:false,
+                csvData:[],
+                downloadType:null,
+                showDownload:false,
+                showReleaseDialog:false,
+                releaseEvent:null,
                 intervals:[
                     {key:86400000 ,value:"Every Day"},
                     {key:604800000 ,value:"Every Week"},
@@ -53,6 +82,13 @@ class EventItem extends Component {
 
 
 
+    toggleReleaseDialog=()=>{
+
+        this.setState({
+
+            showReleaseDialog:!this.state.showReleaseDialog
+        })
+    }
     toggleDelete=(eventId)=>{
 
         if (eventId)
@@ -69,6 +105,14 @@ class EventItem extends Component {
             // selectedEvent:item,
             deleteEvent:!this.state.deleteEvent
         })
+    }
+
+    showDownloadPopup=(item)=>{
+        this.setState({
+            // selectedEvent:item,
+            showDownload:!this.state.showDownload
+        })
+
     }
 
     showEventPopup=(item)=>{
@@ -120,6 +164,37 @@ class EventItem extends Component {
     }
 
 
+
+    handleChangeDate(value,field ) {
+
+
+        if (field==="startDate"){
+            this.setState({
+                startDate:value,
+                minEndDate: moment(value).add(1, "day").toDate()
+            })
+
+
+        }
+        if (field==="endDate"){
+            this.setState({
+                endDate:value,
+                maxStartDate: moment(value).add(-1, "day").toDate()
+            })
+        }
+
+
+
+        // let fields = this.state.fields;
+        // fields[field] = value;
+        // this.setState({ fields });
+
+
+
+
+    }
+
+
     getEvent=(eventId,type)=>{
 
 
@@ -133,7 +208,7 @@ class EventItem extends Component {
                     var responseAll = response.data.data;
 
 
-                    if (type=="edit")
+                    if (type==="edit")
                     this.setState({
                         editEvent:responseAll,
                     })
@@ -157,13 +232,234 @@ class EventItem extends Component {
 
     }
 
-    deleteEvent=(eventId,type)=>{
+    handleSaveCSV = () => {
+
+
+        const csvData = [];
+        this.props.events.forEach(item => {
+            const {product, event, service_agent} = item;
+
+
+
+             csvData.push([
+                event.title,
+                 product.product.name,
+                event.stage,
+                event.process,
+                getTimeFormat(event.resolution_epoch_ms),
+                event.recur_in_epoch_ms?this.state.intervals.find((item)=> item.key=== event.recur_in_epoch_ms).value:"",
+                 event.recur?event.recur.value:"",
+                 event.recur?event.recur.unit:"",
+                event.description,
+
+            ])
+        })
+
+        this.setState({
+            csvData
+        })
+    }
+
+
+     fetchEventsPageWise =  ( url, offset,size,type) => {
+        axios
+            .get(url)
+            .then(
+                (response) => {
+
+
+                    this.setState({
+                        events:this.state.events.concat(response.data.data)
+                    })
+
+                    if (response.data.data.length === size) {
+                        this.getEvents( offset + size,type);
+                    }else{
+
+
+                         this.downloadCustomEvent(type,this.state.events)
+
+                    }
+                },
+                (error) => {
+
+                }
+            );
+    };
+
+
+
+     getEvents = async ( offset,type) => {
+
+         this.setState({
+             downloadType:type
+         })
+         this.setState({
+             loadingEventsDownload:true,
+
+         })
+
+        let url = `${baseUrl}event/expand?`
+         let size=10
+
+
+        if (this.state.startDate) {
+            url = `${url}resolv_start=${(moment(this.state.startDate).startOf("day").format("x") - 10)}`;
+        }
+        if (this.state.endDate) {
+            url = `${url}&resolv_end=${(moment(this.state.endDate).endOf("day").format("x"))}`;
+        }
+
+        url = `${url}&offset=${offset}&size=${size}`;
+
+          this.fetchEventsPageWise(url, offset,size,type);
+
+    };
+
+
+
+      getRule=(event)=>{
+
+
+          if (event.recur&&event.recur.value&&event.recur.unit){
+
+
+              let unit=event.recur.unit==="DAY"?"DAILY":event.recur.unit==="WEEK"?"WEEKLY":event.recur.unit==="MONTH"?"MONTHLY": event.recur.unit==="YEAR"?"YEARLY":""
+
+              return `FREQ=${unit};INTERVAL=${event.recur.value}`
+
+          }else{
+              return ""
+          }
+
+    }
+
+    downloadCustomEvent= async (type,events) => {
+
+
+
+        if (type==="csv"){
+            let csvDataNew = [];
+            events.forEach(item => {
+                const {product, event, service_agent} = item;
+
+                csvDataNew.push([
+                    event.title,
+                    event.stage,
+                    event.process,
+                    getTimeFormat(event.resolution_epoch_ms),
+                    event.recur_in_epoch_ms?this.state.intervals.find((item)=> item.key=== event.recur_in_epoch_ms).value:"",
+                    event.recur?event.recur.value:"",
+                    event.recur?event.recur.unit:"",
+                    event.description,
+                    product.product?product.product.name:"",
+                ])
+            })
+            this.exportToCSV(csvDataNew)
+        }else if (type="ics"){
+
+            let icsDataNew = [];
+            this.state.events.forEach(item => {
+                const {product, event, service_agent} = item;
+                icsDataNew.push({
+                    // start: [
+                    //     getTimeFormat(event.resolution_epoch_ms)] ,
+                    start:[moment(event.resolution_epoch_ms).toDate().getFullYear(), moment(event.resolution_epoch_ms).toDate().getMonth()+1, moment(event.resolution_epoch_ms).toDate().getDate(), 9, 0],
+                    title:  event.title,
+                    description:  event.description,
+                    categories:[event.process],
+                    recurrenceRule:this.getRule(event)
+                    // url: i.url
+                })
+            })
+
+
+            createEvents(icsDataNew, (err, value) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+
+                // window.open("data:text/calendar;charset=utf8," + escape(value));
+
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(new Blob([value], { type: "data:text/calendar;charset=utf8" }));
+                a.setAttribute("download", `event_list_${new Date().getDate()}.ics`);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+
+            });
+
+            this.setState({
+                loadingEventsDownload:false
+            })
+
+        }
+
+    }
+
+
+    exportToCSV=(csvData) =>{
+
+        let data = "";
+        let tableDataNew = [];
+
+
+        const rows=csvData
+         rows.unshift(["Title","Stage","Process","Resolution Date","Recur (MS)","Recur Value","Recur Unit", "Description", "Product"])
+
+        for (const row of rows) {
+            const rowData = [];
+            for (const column of row) {
+                rowData.push(column);
+            }
+            tableDataNew.push(rowData.join(","));
+        }
+
+        data += tableDataNew.join("\n");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+        a.setAttribute("download", `event_list_${new Date().getDate()}.csv`);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        this.setState({
+            loadingEventsDownload:false
+        })
+    }
+
+
+     menuAction = (action) => {
+
+        if(action.value === 'delete') {
+           // this.deleteEvents()
+            this.toggleDelete(action.data)
+        }
+        else if(action.value === 'edit') {
+
+            this.showEditEventPopup(action.data)
+        }
+        else if(action.value === 'update') {
+            this.showStageEventPopup(action.data)
+        }
+        else if(action.value === 'release') {
+
+            this.setState({
+                releaseEvent:action.data
+            })
+            this.toggleReleaseDialog()
+        }
+    }
+
+    deleteEvents=(eventId,type)=>{
 
 
 
         let url=`${baseUrl}event/${eventId}`
         axios
-            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
             .delete(url)
             .then(
                 (response) => {
@@ -180,9 +476,6 @@ class EventItem extends Component {
 
                 },
                 (error) => {
-                    // this.setState({
-                    //     notFound: true,
-                    // });
 
                     this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
 
@@ -205,19 +498,53 @@ class EventItem extends Component {
 
     render() {
 
+        const headers = ["Title","Stage","Process","Resolution Date","Recur (MS)","Recur Value","Recur Unit", "Description", "Product"];
 
             return (
 
                 <>
 
+
                     <div className="d-flex mt-4 justify-content-between">
                         {this.props.events.length > 0 ?
+                            <>
                             <span className="">
                                     {this.props.events.length} {this.props.events.length > 1 ? "Events" : "Event"}
-                                </span>:
+                                </span>
+
+
+
+                            </>
+                            :
                             <>{!this.props.loading && <div className={``}>No Events exist</div>}</>
                         }
-                        <span  className={`${this.props.events.length==0?"d-none":""}`}>
+
+
+
+                        <span  className={`${this.props.events.length===0?"d-none":""}`}>
+                            {this.props.smallView &&
+
+
+                            // <CSVLink
+                            //     asyncOnClick={true}
+                            //     onClick={(event, done) => {
+                            //         this.handleSaveCSV()
+                            //     }}
+                            //     data={this.state.csvData}
+                            //     headers={headers} filename={`event_list_${new Date().getDate()}.csv`}
+                            //     className=" btn-sm btn-gray-border  me-2">
+                                <>
+                                            <DownloadIcon
+
+                                                onClick={()=>{
+                                                    this.downloadCustomEvent("csv",this.props.events)
+                                                }}
+                                                className="click-item"
+
+                                                style={{fontSize:"20px"}} />
+                                            Download</>
+                            // </CSVLink>
+                                }
 
                                          <FormControlLabel
                                              value="all"
@@ -233,21 +560,20 @@ class EventItem extends Component {
         <List sx={{ width: '100%' }}>
 
 
-            {this.props.events.filter(item=> item.event.stage!=="responded").map(item=>
+            {this.props.events.filter(item=> item.event.stage!=="resolved").map(item=>
 
                 <>
-
-                        <ListItem className={`mb-2 bg-white 
-                     ${item.event.stage !=="responded"?"new-event":"past-event"}`}
+                    <ListItem className={`mb-2 bg-white
+                     ${item.event.stage !=="resolved"?"new-event":"past-event"}`}
                               onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
                         <ListItemAvatar>
-                            <Avatar className={`${item.event.stage==='responded'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
+                            <Avatar className={`${item.event.stage==='resolved'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
                         </ListItemAvatar>}
                         <ListItemText
                             className="title-bold"
                             primary={
-                                item.event.stage==="responded"?<del>{item.event.title}</del>:
+                                item.event.stage==="resolved"?<del>{item.event.title}</del>:
                                         item.event.title
                                 }
 
@@ -266,10 +592,21 @@ class EventItem extends Component {
 
                                     </div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
+                                    <div className="d-flex  flex-column right-btn-auto">
+                                    <CustomMoreMenu
 
+                                        actions={[
+                                            {label:"Edit",value:"edit",data: item},
+                                            {label:"Update Stage",value:"update",data:item.event._key},
+                                            {label:"Release",value:"release",data:item},
+                                            {label:"Delete",value:"delete",data:item.event._key},
 
-                                    {item.event.stage!=='responded'   &&
-                                    <div className="d-flex flex-column right-btn-auto">
+                                        ] }
+                                        triggerCallback={(action) => this.menuAction(action)}
+                                    />
+                                    </div>
+                                    {item.event.stage!=='resolved'   &&
+                                    <div className="d-flex d-none flex-column right-btn-auto">
                                             {/*{item.event.resolution_epoch_ms > Date.now() &&*/}
                                             <CustomPopover text={"Edit"}>
                                                 <ActionIconBtn
@@ -312,21 +649,21 @@ class EventItem extends Component {
 
                 </>
             )}
-            {this.props.events.filter(item=> item.event.stage==="responded").map(item=>
+            {this.props.events.filter(item=> item.event.stage==="resolved").map(item=>
 
                 <>
 
-                    <ListItem className={`mb-2 bg-white 
-                     ${item.event.stage !=="responded"?"new-event":"past-event"}`}
+                    <ListItem className={`mb-2 bg-white
+                     ${item.event.stage !=="resolved"?"new-event":"past-event"}`}
                               onClick={()=>this.showEventPopup(item)} alignItems="flex-start">
                         {!this.props.smallView &&
                         <ListItemAvatar>
-                            <Avatar className={`${item.event.stage==='responded'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
+                            <Avatar className={`${item.event.stage==='resolved'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
                         </ListItemAvatar>}
                         <ListItemText
                             className="title-bold"
                             primary={
-                                item.event.stage==="responded"?<del>{item.event.title}</del>:
+                                item.event.stage==="resolved"?<del>{item.event.title}</del>:
                                     item.event.title
                             }
 
@@ -346,9 +683,10 @@ class EventItem extends Component {
                                     </div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
 
+                                    {item.event.stage!=='resolved'   &&
+                                    <div className="d-flex flex-column  right-btn-auto">
 
-                                    {item.event.stage!=='responded'   &&
-                                    <div className="d-flex flex-column right-btn-auto">
+
                                         {/*{item.event.resolution_epoch_ms > Date.now() &&*/}
                                         <CustomPopover text={"Edit"}>
                                             <ActionIconBtn
@@ -394,6 +732,10 @@ class EventItem extends Component {
 
         </List>
 
+                    {this.state.showReleaseDialog &&
+                    <EventReleaseDialog hide={this.toggleReleaseDialog} item={this.state.releaseEvent}
+                                        showReleaseProduct={this.state.showReleaseDialog} />
+                    }
 
                     <GlobalDialog
 
@@ -468,7 +810,7 @@ class EventItem extends Component {
                                                 }
                                             </p>
                                         </div>
-                                        {this.state.selectedEvent.event.recur_in_epoch_ms &&
+                                        {this.state.selectedEvent.event.recur &&this.state.selectedEvent.event.recur.value&&this.state.selectedEvent.event.recur.unit &&
                                         <div className={"col-6"}>
                                             <p
                                                 style={{ fontSize: "18px" }}
@@ -478,17 +820,14 @@ class EventItem extends Component {
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
-                                                {/*{*/}
-                                                {/*   getTimeFormat( this.state.selectedEvent.event.recur_in_epoch_ms)*/}
-                                                {/*}*/}
 
-                                                {this.state.intervals.find(item=> item.key==this.state.selectedEvent.event.recur_in_epoch_ms).value}
+                                                {this.state.selectedEvent.event.recur.value} {RECUR_UNITS.find(item=> item.key==this.state.selectedEvent.event.recur.unit).value}
                                             </p>
                                         </div>}
 
                                     </div>
                                     <div className="row  justify-content-start search-container  pb-2">
-                                        {/*<div className={"col-12"}>*/}
+
                                             <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">
@@ -502,11 +841,11 @@ class EventItem extends Component {
 
                                         {/*</div>*/}
                                         <div className={"col-6"}>
-                                            <p
+                                            {this.state.selectedEvent.artifacts.length>0&&     <p
                                                 style={{ fontSize: "18px" }}
                                                 className=" text-bold text-blue mb-1">
                                                 Attachments
-                                            </p>
+                                            </p>}
                                             <div
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
@@ -517,9 +856,7 @@ class EventItem extends Component {
                                                             <>
                                                                 <div className="d-flex justify-content-center "
                                                                      style={{width: "32px", height: "32px"}}>
-                                                                    <div className="d-flex justify-content-center "
-                                                                        // style={{width: "50%", height: "50%"}}
-                                                                    >
+                                                                    <div className="d-flex justify-content-center ">
 
 
                                                                         {checkImage(artifact.blob_url)? <img
@@ -533,7 +870,7 @@ class EventItem extends Component {
                                                                                 <DescriptionIcon
                                                                                     onClick={()=>this.downloadDoc(artifact.blob_url)}
                                                                                     style={{ opacity:"0.5", fontSize:" 2.2rem"}} className={" p-1 rad-4"} />
-                                                                                {/*<Attachment style={{color:"27245c", background:"#eee", borderRadius:"50%", padding:"2px"}}  />*/}
+
                                                                             </>
                                                                         }
 
@@ -580,7 +917,7 @@ class EventItem extends Component {
                                                     textAlign: "center",
                                                 }}>
                                                 <GreenButton
-                                                    onClick={() => this.deleteEvent(this.state.selectedEvent.event._key)}
+                                                    onClick={() => this.deleteEvents(this.state.selectedEvent.event._key)}
                                                     title={"Delete"}
                                                     type={"submit"}></GreenButton>
                                             </div>
@@ -611,7 +948,7 @@ class EventItem extends Component {
                         show={this.state.showEditEvent}
                         hide={this.showEditEventPopup}
                     ><div className={"col-12"}>
-                        {this.state.editEvent && <EventForm hideProduct  hide={()=>{
+                        {this.state.editEvent && <EventForm edit hideProduct  hide={()=>{
 
                             this.props.refresh(this.state.editEvent.event.resolution_epoch_ms)
                             this.showEditEventPopup();
@@ -627,10 +964,146 @@ class EventItem extends Component {
                         heading={"Update Stage"}
                         show={this.state.showStagePopup}
                         hide={this.showStageEventPopup}
-                    ><div className={"col-12"}>
-                        <EventStatus hide={this.showStageEventPopup} eventId={this.state.stageEventId}/>
+                    >
+                        <div className={"col-12"}>
+                            {this.state.showStagePopup&&
+                            <EventStatus hide={this.showStageEventPopup} eventId={this.state.stageEventId}/>
+                            }
 
                     </div>
+                    </GlobalDialog>
+
+
+
+
+                    <GlobalDialog
+
+                        heading={"Download"}
+                        show={this.props.showDownload}
+                        hide={this.props.hide}
+                        size={"sm"}
+                    >
+                        <div className={"col-12 "}>
+
+                            <div className="row  mt-2">
+                                <div className="col-6 ">
+                                    <div
+                                        className={
+                                            "custom-label text-bold text-blue "
+                                        }>
+                                         From
+                                    </div>
+
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                        <DesktopDatePicker
+
+                                            className={"full-width-field"}
+                                            disableHighlightToday={true}
+                                            maxDate={this.state.maxStartDate}
+                                            // label="Required By"
+                                            inputVariant="outlined"
+                                            variant={"outlined"}
+                                            margin="normal"
+                                            id="date-picker-dialog-1"
+                                            inputFormat="dd/MM/yyyy"
+                                            value={this.state.startDate}
+                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                <div className="custom-calander-container">
+                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                </div>
+                                            )}
+                                            // renderInput={(params) => <CustomizedInput {...params} />}
+                                            onChange={(value)=>this.handleChangeDate(value,"startDate")}
+
+                                        />
+                                    </LocalizationProvider>
+
+                                    {this.state.showFieldErrors&&this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
+                                </div>
+
+                                <div className="col-6  ">
+
+                                    <div
+                                        className={
+                                            "custom-label text-bold text-blue "
+                                        }>
+                                       To
+                                    </div>
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                        <DesktopDatePicker
+                                            disableHighlightToday={true}
+                                            minDate={this.state.minEndDate}
+                                            inputVariant="outlined"
+                                            variant={"outlined"}
+                                            margin="normal"
+                                            id="date-picker-dialog"
+                                            inputFormat="dd/MM/yyyy"
+                                            value={this.state.endDate}
+                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                <div className="custom-calander-container">
+                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                </div>
+                                            )}
+                                            // renderInput={(params) => <CustomizedInput {...params} />}
+                                            onChange={(value)=>this.handleChangeDate(value,"endDate")}
+                                        />
+                                    </LocalizationProvider>
+                                    {this.state.showFieldErrors&&this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
+                                </div>
+                            </div>
+                            <div className="row justify-content-center mt-4">
+                                <div className="d-flex justify-content-center col-6">
+
+
+                                    <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType==="csv")}
+                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType==="csv")} title={"Download CSV"}
+
+                                                  onClick={()=>{
+
+                                        this.setState({
+                                            events:[]
+                                        })
+                                        if (this.state.startDate&&this.state.endDate){
+                                            this.getEvents(0,"csv");
+                                        }else{
+                                        }}
+
+                                    } >
+                                        <DownloadIcon  style={{fontSize:"20px"}} /></BlueSmallBtn>
+
+                                </div>
+                                <div className="d-flex justify-content-center col-6">
+
+
+                                    <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")}
+                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")} title={"Download Calendar"} onClick={()=>{
+
+                                        this.setState({
+                                            events:[]
+                                        })
+
+                                        if (this.state.startDate&&this.state.endDate){
+                                            this.getEvents(0,"ics");
+                                        }else{
+
+
+                                        }
+
+                                    }
+
+                                    } >
+                                        <DownloadIcon  style={{fontSize:"20px"}} /></BlueSmallBtn>
+
+                                </div>
+                            </div>
+
+                        </div>
                     </GlobalDialog>
 
                     </>

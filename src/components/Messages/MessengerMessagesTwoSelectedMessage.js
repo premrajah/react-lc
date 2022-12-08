@@ -1,33 +1,39 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Box, Button, Skeleton, Tab, Tabs} from "@mui/material";
+import React, {useState} from "react";
+import {Box} from "@mui/material";
 import PropTypes from "prop-types";
-import MessengerMessagesFilesDisplay from "./MessengerMessagesFilesDisplay";
-import MessengerMessageTwoMessageBubble from "./MessengerMessageTwoMessageBubble";
+import MessengerChatBox from "./MessengerChatBox";
 import {connect} from "react-redux";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
-import WysiwygGroupImageUpload from "./WysiwygGroupImageUpload";
-import PublishIcon from '@mui/icons-material/Publish';
+import {Spinner} from "react-bootstrap";
+import Avatar from "@mui/material/Avatar";
+import {getInitials, getTimeFormat} from "../../Util/GlobalFunctions";
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableBody from "@mui/material/TableBody";
+import {styled} from "@mui/material/styles";
+import TableCell, {tableCellClasses} from "@mui/material/TableCell";
+import Badge from '@mui/material/Badge';
+import CustomPopover from "../FormsUI/CustomPopover";
 
-const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDetail }) => {
+
+const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,showTabs,
+                                                 scrollEndArtifact,setActiveTab,activeTab,
+                                                 listInnerRefTable,selectedMessageGroupOrgs,
+                                                 chatEndReached,messages,artifacts, userDetail,selectedOrgs,
+                                                 onDownScrollTable,onScroll,listInnerRef,scrollEnd,...otherprops }) => {
     TabPanel.propTypes = {
         children: PropTypes.node,
         index: PropTypes.number.isRequired,
         value: PropTypes.number.isRequired,
     };
 
-    useEffect(() => {
-        // scrollToBottom();
-    }, [messages]);
-
-    const messagesEndRef = useRef(null);
-
     const [value, setValue] = React.useState(0);
     const [groupMessageArtifacts, setGroupMessageArtifacts] = useState([]);
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: 'nearest', inline: 'start' });
-    };
 
     const handleTabsChange = (event, newValue) => {
         setValue(newValue);
@@ -65,56 +71,161 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
 
     return (
         <>
-            {messages.length > 0 ? (
-                <Box sx={{ width: "100%" }}>
-                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                        <Tabs value={value} onChange={handleTabsChange} aria-label="message-tabs">
-                            <Tab label="Chats" {...a11yProps(0)} />
-                            <Tab label="Group Files" {...a11yProps(1)} onClick={() => getArtifacts()} />
-                        </Tabs>
-                    </Box>
-                    <TabPanel value={value} index={0}>
-                        {messages.length > 0 && (
-                            <div  className="mb-5" style={{
-                                flexFlow:"column-reverse",
+
+
+            <div style={{width:"100%"}}>
+
+    {showTabs && <div className="row g-0">
+        <div className="col-12 d-flex">
+        <a href onClick={()=>setActiveTab(0)}>
+            <div className={`w3-third tablink w3-bottombar w3-hover-light-grey w3-padding ${activeTab===0?"w3-border-red":""}`}>Chat</div>
+        </a>
+        <a href onClick={()=>setActiveTab(1)}>
+            <div className={`w3-third tablink w3-bottombar w3-hover-light-grey w3-padding ${activeTab===1?"w3-border-red":""}`}>Files</div>
+        </a>
+        </div>
+
+
+
+    </div>}
+
+    <div className={`row g-0`}>
+        <div className="col-12 p-2">
+
+            {showNewMessage &&
+            <div className="new-message-alert"><Badge badgeContent={4} color="primary">New Message</Badge> </div> }
+
+                        {(scrollEnd) &&
+                        <div className="spinner-chat"><Spinner
+                            className="me-2"
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        /></div>}
+
+                            <div
+                                onScroll={onScroll}
+                                ref={listInnerRef}
+                                className="mb-5" style={{
+                                flexFlow:`${activeTab===0?"column-reverse":""}`,
                                 display: "flex",
-                                height: "400px", minHeight: "400px", maxHeight: "400px", overflow: "auto", overflowX: "hidden" }}>
-                                {messages.map((m, i) => (
+                                height: `${activeTab===0?"400px":"575px"}`, minHeight: `${activeTab===0?"400px":"575px"}`,  maxHeight: `${activeTab===0?"400px":"575px"}`, overflow: "auto", overflowX: "hidden" }}>
+
+                                <>
+                                    {activeTab===0? messages.map((m, i) => (
                                     <React.Fragment key={i}>
                                         <div
                                             className={`d-flex ${
-                                                (m.orgs.map((o, i) => handleWhoseMessage(o, i)).filter((s) => s === "justify-content-end").length > 0) ? "justify-content-end" : "justify-content-start"
+                                                (m.orgs&&m.orgs.map((o, i) => handleWhoseMessage(o, i)).filter((s) => s === "justify-content-end").length > 0) ? "justify-content-end" : "justify-content-start"
                                             }`}>
-                                            <MessengerMessageTwoMessageBubble m={m} />
+                                            <MessengerChatBox m={m} />
                                         </div>
                                     </React.Fragment>
-                                ))}
-                                <div ref={messagesEndRef} />
+                                )):
+
+<>
+
+
+    <TableContainer
+        onScroll={()=>{
+            onDownScrollTable();
+        }}
+        ref={listInnerRefTable}
+        sx={{ width: "100%", maxHeight:`625px` }} component={Paper}>
+        <Table
+            stickyHeader
+            sx={{ width: "100%" }}
+            aria-label="customized table">
+            <TableHead >
+                <TableRow>
+                    <StyledTableCell>Type</StyledTableCell>
+                    <StyledTableCell align="right">Name</StyledTableCell>
+                    <StyledTableCell align="right">Shared On</StyledTableCell>
+                    <StyledTableCell align="right">Sent By</StyledTableCell>
+                    <StyledTableCell align="right"></StyledTableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+         {artifacts.map((m, i) => (
+        <React.Fragment key={i}>
+            {m.artifacts.length > 0 &&
+                <>
+                        {m.artifacts.map((item) =>  (
+                            <StyledTableRow key={item._key}>
+                                <StyledTableCell component="th" scope="row">
+                                    <a href={item.blob_url} target="_blank" rel="noreferrer">
+                                        <Avatar
+                                            alt={item.name}
+                                            src={item.blob_url}
+                                            sx={{ width: 56, height: 56 }}
+                                            variant="square"
+                                        />
+                                    </a>
+                                </StyledTableCell>
+                                <StyledTableCell align="right">{item.name}</StyledTableCell>
+                                <StyledTableCell align="right">{getTimeFormat(item._ts_epoch_ms)}</StyledTableCell>
+                                <StyledTableCell align="right">{ m.orgs.find((org) => org.actor === "message_from").org.org.name }</StyledTableCell>
+                                <StyledTableCell align="right"><a href={item.blob_url} target="_blank" rel="noreferrer">Download</a></StyledTableCell>
+                            </StyledTableRow>
+                        ))}
+
+
+                        </>
+                  }
+        </React.Fragment>
+              ))}
+
+                {(scrollEndArtifact) &&
+                <StyledTableRow key="spinner-table">
+                    <StyledTableCell component="th" scope="row">
+                        <div className="spinner-chat"><Spinner
+                            className="me-2"
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        /></div></StyledTableCell>
+                </StyledTableRow>
+                }
+            </TableBody>
+        </Table>
+    </TableContainer>
+
+
+</>}
+                                    {chatEndReached &&(activeTab===0)&&
+                                    <div className="justify-content-center  d-flex mt-5 mb-5">
+                                        {selectedMessageGroupOrgs.map((orgItem,index)=>
+
+                                            <div
+                                                className="d-flex flex-row align-items-center"
+
+                                                id={`${index}_${orgItem._ts_epoch_ms}-chip`}
+                                                key={`${index}_${orgItem._ts_epoch_ms}-chip`}>
+
+                                              <CustomPopover text={orgItem.name}>
+                                                  <Avatar className="me-2"  aria-label="recipe">
+                                                    {getInitials(orgItem.name)}
+                                                </Avatar></CustomPopover>
+
+                                            </div>
+
+                                        )}
+
+                                    </div>}
+                                </>
+
                             </div>
+            {/*)}*/}
+    </div>
 
-                        )}
-                    </TabPanel>
+        </div>
 
-                    <TabPanel value={value} index={1}>
-                        <div className="row">
-                            <div className="col-1">
-                                <WysiwygGroupImageUpload groupKey={groupMessageKey} afterUploadCallback={() => afterUploadedImagesCallback()} />
-                            </div>
-                        </div>
+</div>
 
-                        <div style={{ height: "350px", minHeight: "350px", maxHeight: "350px", overflow: "auto", overflowX: "hidden" }}>
-
-                            {groupMessageArtifacts.length > 0 ? groupMessageArtifacts.map((a, index) => {
-                                return <MessengerMessagesFilesDisplay key={index} artifacts={a} />
-                            }) : <div>No group files yet.</div>}
-                        </div>
-                    </TabPanel>
-                </Box>
-            ) : (
-                <div>
-                    <Skeleton variant="rectangular" height="40px" />
-                </div>
-            )}
         </>
     );
 
@@ -146,6 +257,26 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey, messages, userDe
         };
     }
 };
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.common.white,
+        color: theme.palette.grey,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));
 
 const mapStateToProps = (state) => {
     return {

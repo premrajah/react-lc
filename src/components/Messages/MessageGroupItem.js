@@ -1,6 +1,4 @@
-import React, { Component } from "react";
-import axios from "axios";
-import { baseUrl } from "../../Util/Constants";
+import React, {Component} from "react";
 import MessageNameThumbnail from "./MessageNameThumbnail";
 
 class MessageGroupItem extends Component {

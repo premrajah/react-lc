@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import Card from '@mui/material/Card';
@@ -9,10 +10,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import {useEffect} from "react";
 import Box from '@mui/material/Box';
-import CustomPopover from "../CustomPopover";
-import {Info} from "@mui/icons-material";
+
 function not(a, b) {
     return a.filter((value) => b.indexOf(value) === -1);
 }

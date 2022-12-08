@@ -1,234 +1,174 @@
 import axios from "axios";
-import {baseUrl} from "./Constants";
+import { baseUrl } from "./Constants";
 import React from "react";
 import moment from "moment/moment";
 
-export const  capitalize=(sentence)=> {
+export const capitalize = (sentence) => {
+    if (!sentence) return "";
+    return sentence
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+};
 
-    if (!sentence)
+const addAndFilters = (filters) => {
+    let url = "";
 
-        return ""
-    return sentence.toLowerCase()
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+    filters.forEach((row, index) => {
+        url = url + "";
 
-}
-
-
-const addAndFilters=(filters)=>{
-
-
-    let url=""
-
-    filters.forEach((row,index)=> {
-            url = url + ""
-
-            row.filters && row.filters.forEach((item, index) => {
-
-
+        row.filters &&
+            row.filters.forEach((item, index) => {
                 if (index > 0) {
-                    url = url + row.operator
+                    url = url + row.operator;
                 }
-                url = url + item.key + item.operator + item.value
+                url = url + item.key + item.operator + item.value;
+            });
 
-            })
-
-
-            // url = url + ")"
-        }
-    )
-
-    return url
-
-
-}
-
-
-export const fetchErrorMessage=(e)=>{
-
-
-    let errorString=""
-
-    try {
-        if (e.response.data.errors&&e.response.data.errors.length>0) {
-            e.response.data.errors.forEach(item => {
-                errorString =errorString+" "+ item.message
-
-            })
-        }else{
-
-            errorString=e.response.status +" error received from server"
-
-        }
-    }catch (e){
-        errorString="Unknown error occurred."
-    }
-
-    return errorString
-}
-
-
-export const arrangeAlphabatically=(items)=>{
-  return   items.sort(function(a, b){
-        if(a < b) { return -1; }
-        if(a > b) { return 1; }
-        return 0;
-    })
-
-
-
-}
-
-export const arrangeObjectKeysAlphabatically=(obj)=>{
-
-
-    return   Object.keys(obj).sort(function(a, b){
-
-        if(a < b) { return -1; }
-        if(a > b) { return 1; }
-
-
-        return 0;
-    })
-
-}
-
-
-export const sortArraysByKey=(array,key)=>{
-
-    return   array.sort(function(a, b){
-        if(a[key] < b[key]) { return -1; }
-        if(a[key]> b[key]) { return 1; }
-        return 0;
-    })
-
-
-}
-
-export const createSeekURL=(entity,no_parent,count,offset, pageSize,filters, filterType, extra)=>{
-
-
-    let url = `${baseUrl}seek?name=${entity}${extra?"&"+extra:""}`;
-
-    url=url+`&count=${count}`
-
-    if (offset===0||offset>0){
-
-        url=url+`&offset=${offset}&size=${pageSize}`
-    }
-    if (no_parent){
-        url=url+"&no_parent="+no_parent
-    }
-
-    if (filters&&filters.length>0&&filterType==="AND"){
-        url=url+"&or="+addAndFilters(filters)
-    }
-
-
-    return url
-}
-
-
-
-export const  ifOwner=  (userDetail,orgId)=> {
-
-
-    return   userDetail.orgId===orgId
-
-}
-
-
-export const  ownerCheck=  (userDetail,orgId)=> {
-
-
-    return   userDetail.orgId===orgId
-
-}
-
-export const  seekAxiosGet=  (url,doNotEncode)=> {
-
-
-    let urlEncode=url
-
-    if (!doNotEncode){
-        urlEncode=encodeURI(urlEncode)
-    }
-
-
-    return   axios.get(urlEncode).catch((error)=>{
-        console.error(error);
-        return  "Unknown error occurred."
-
+        // url = url + ")"
     });
 
-}
+    return url;
+};
 
-export const  getTimeFormat=  (time)=> {
+export const fetchErrorMessage = (e) => {
+    let errorString = "";
 
+    try {
+        if (e.response.data.errors && e.response.data.errors.length > 0) {
+            e.response.data.errors.forEach((item) => {
+                errorString = errorString + " " + item.message;
+            });
+        } else {
+            errorString = e.response.status + " error received from server";
+        }
+    } catch (e) {
+        errorString = "Unknown error occurred.";
+    }
 
-    return   moment(time).format("DD MMM YYYY")
+    return errorString;
+};
 
-}
+export const arrangeAlphabatically = (items) => {
+    return items.sort(function (a, b) {
+        if (a < b) {
+            return -1;
+        }
+        if (a > b) {
+            return 1;
+        }
+        return 0;
+    });
+};
 
+export const arrangeObjectKeysAlphabatically = (obj) => {
+    return Object.keys(obj).sort(function (a, b) {
+        if (a < b) {
+            return -1;
+        }
+        if (a > b) {
+            return 1;
+        }
 
-export const   isEmptyHtml=( el )=>{
+        return 0;
+    });
+};
+
+export const sortArraysByKey = (array, key) => {
+    return array.sort(function (a, b) {
+        if (a[key] < b[key]) {
+            return -1;
+        }
+        if (a[key] > b[key]) {
+            return 1;
+        }
+        return 0;
+    });
+};
+
+export const createSeekURL = (
+    entity,
+    no_parent,
+    count,
+    offset,
+    pageSize,
+    filters,
+    filterType,
+    extra
+) => {
+    let url = `${baseUrl}seek?name=${entity}${extra ? "&" + extra : ""}`;
+
+    url = url + `&count=${count}`;
+
+    if (offset === 0 || offset > 0) {
+        url = url + `&offset=${offset}&size=${pageSize}`;
+    }
+    if (no_parent) {
+        url = url + "&no_parent=" + no_parent;
+    }
+
+    if (filters && filters.length > 0 && filterType === "AND") {
+        url = url + "&or=" + addAndFilters(filters);
+    }
+
+    return url;
+};
+
+export const ifOwner = (userDetail, orgId) => {
+    return userDetail.orgId === orgId;
+};
+
+export const ownerCheck = (userDetail, orgId) => {
+    return userDetail.orgId === orgId;
+};
+
+export const seekAxiosGet = (url, doNotEncode) => {
+    let urlEncode = url;
+
+    if (!doNotEncode) {
+        urlEncode = encodeURI(urlEncode);
+    }
+
+    return axios.get(urlEncode).catch((error) => {
+        console.error(error);
+        return "Unknown error occurred.";
+    });
+};
+
+export const getTimeFormat = (time) => {
+    return moment(time).format("DD MMM YYYY");
+};
+
+export const isEmptyHtml = (el) => {
     // return trim(el.html())
-}
+};
 
-
-export const getActionName=(actionName)=>{
-
-
-
-    if (actionName==="withdrawn"){
-
-        return "Withdraw"
+export const getActionName = (actionName) => {
+    if (actionName === "withdrawn") {
+        return "Withdraw";
+    } else if (actionName === "cancelled") {
+        return "Cancel";
+    } else if (actionName === "rejected") {
+        return "Rejected";
+    } else if (actionName === "accepted") {
+        return "Accept";
+    } else if (actionName === "declined") {
+        return "Decline";
+    } else if (actionName === "counter") {
+        return "Counter Offer";
+    } else if (actionName === "confirmed") {
+        return "Confirm";
+    } else if (actionName === "completed") {
+        return "complete";
+    } else if (actionName === "progress") {
+        return "Progress";
+    } else {
+        return actionName;
     }
-  else  if (actionName==="cancelled"){
+};
 
-        return "Cancel"
-    }
-    else  if (actionName==="rejected"){
-
-        return "Rejected"
-    }
-    else  if (actionName==="accepted"){
-
-        return "Accept"
-    }
-    else  if (actionName==="declined"){
-
-        return "Decline"
-    }
-    else  if (actionName==="counter"){
-
-        return "Counter Offer"
-    }
-    else  if (actionName==="confirmed"){
-
-        return "Confirm"
-    }
-    else  if (actionName==="completed"){
-
-        return "complete"
-    }
-    else  if (actionName==="progress"){
-
-        return "Progress"
-    }
-
-
-    else{
-
-        return  actionName
-    }
-
-}
-
-
-    export const LoaderAnimated=()=>{
-
+export const LoaderAnimated = () => {
     return (
         <div className="wrapper-loader justify-content-center text-center">
             <svg
@@ -249,63 +189,57 @@ export const getActionName=(actionName)=>{
             <span className={"m-4"}>Loading ...</span>
         </div>
     );
-}
+};
 
-
-export const  removeTimeToStart=(date = new Date())=> {
-
-    let timestampConvertedDate=new Date(date)
-    let dateConverted=new Date(
+export const removeTimeToStart = (date = new Date()) => {
+    let timestampConvertedDate = new Date(date);
+    let dateConverted = new Date(
         timestampConvertedDate.getFullYear(),
         timestampConvertedDate.getMonth(),
         timestampConvertedDate.getDate()
     );
 
-    return dateConverted
-}
+    return dateConverted;
+};
 
+export const removeTime = (date = new Date()) => {
+    let timestampConvertedDate = new Date(date);
 
-export const removeTime=(date = new Date())=> {
+    let dateString =
+        timestampConvertedDate.getFullYear() +
+        "-" +
+        ("0" + (timestampConvertedDate.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + timestampConvertedDate.getDate()).slice(-2);
 
-    let timestampConvertedDate=new Date(date)
+    return dateString;
+};
 
-    let dateString=
-        timestampConvertedDate.getFullYear()+ "-"
-        +("0" +(timestampConvertedDate.getMonth() + 1)).slice(-2)  +"-"
-        +("0" +timestampConvertedDate.getDate()).slice(-2) ;
+export const getInitials = (name = "") =>
+    name
+        .replace(/\s+/, " ")
+        .split(" ")
+        .slice(0, 2)
+        .map((v) => v && v[0].toUpperCase())
+        .join("");
 
-
-    return  dateString
-}
-
-
-export  const getInitials=(name = '') => name
-    .replace(/\s+/, ' ')
-    .split(' ')
-    .slice(0, 2)
-    .map((v) => v && v[0].toUpperCase())
-    .join('');
-
-
-export  const  hasNumber=(myString) =>{
+export const hasNumber = (myString) => {
     return /\d/.test(myString);
-}
+};
 
+export const hasUpperCase = (myString) => {
+    return /[A-Z]/.test(myString);
+};
 
-export  const  hasUpperCase=(myString) =>{
-    return  /[A-Z]/.test(myString);
-}
+export const hasLowerCase = (myString) => {
+    return /[a-z]/.test(myString);
+};
+export const hasSplChar = (myString) => {
+    return /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(myString);
+};
 
-export  const  hasLowerCase=(myString) =>{
-    return  /[a-z]/.test(myString);
-}
-export  const  hasSplChar=(myString) =>{
-    return  /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(myString);
-}
-
-
-export const checkIfDocument=(file)=>{
-    let artifact=file.file
+export const checkIfDocument = (file) => {
+    let artifact = file.file;
 
     if (
         artifact.mime_type === "application/pdf" ||
@@ -313,32 +247,122 @@ export const checkIfDocument=(file)=>{
         artifact.mime_type === "application/msword" ||
         artifact.mime_type === "text/rtf" ||
         artifact.mime_type ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
         artifact.mime_type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-        artifact.mime_type === "application/vnd.ms-excel"||
-
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+        artifact.mime_type === "application/vnd.ms-excel" ||
         artifact.type === "application/pdf" ||
         artifact.type === "application/rtf" ||
         artifact.type === "application/msword" ||
         artifact.type === "text/rtf" ||
         artifact.type ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        artifact.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        artifact.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
         artifact.type === "application/vnd.ms-excel"
-    ){
+    ) {
+        return true;
+    } else return false;
+};
+export const checkIfDocumentFromType = (mime_type) => {
+    if (
+        mime_type === "application/pdf" ||
+        mime_type === "application/rtf" ||
+        mime_type === "application/msword" ||
+        mime_type === "text/rtf" ||
+        mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        mime_type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+        mime_type === "application/vnd.ms-excel"
+    ) {
+        return true;
+    } else return false;
+};
 
-
-        return true
-    }
-    else  return false
-}
-
-
-export  const  weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-export  const  addDays=(date, days) =>{
+export const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+export const addDays = (date, days) => {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
-}
+};
+
+export const exportToCSV = (csvData) => {
+    let data = "";
+    const tableData = [];
+
+    const rows = csvData;
+    rows.unshift([
+        "Title",
+        "Stage",
+        "Process",
+        "Resolution Date",
+        "Recur (MS)",
+        "Recur Value",
+        "Recur Unit",
+        "Description",
+        "Product",
+    ]);
+
+    for (const row of rows) {
+        const rowData = [];
+        for (const column of row) {
+            rowData.push(column);
+        }
+        tableData.push(rowData.join(","));
+    }
+
+    data += tableData.join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+    a.setAttribute("download", `event_list_${new Date().getDate()}.csv`);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    this.setState({
+        loadingEventsDownload: false,
+    });
+};
+export const DETECT_URL_REGEX = /^http:\/\/([^\/]*)\/(.*)$/;
+const DETECT_URL_REGEX_NEW = /(https?:\/\/[^\s]+)/g;
+
+// export const DETECT_URL_REGEX="//g";
+
+export const linkifyText = (text) => {
+    let originalText = text;
+
+    let newText = text;
+    let matches = DETECT_URL_REGEX_NEW.exec(originalText);
+
+    if (matches) {
+        for (let i = 0; i < matches.length; i++) {
+            newText = text.replace(
+                matches[i],
+                `<a target="_blank" rel="noopener noreferrer" href=${matches[i]}>${matches[i]} </a>`
+            );
+        }
+    }
+
+    return newText;
+};
+
+export const urlify = (text) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text
+        .toString()
+        .split(urlRegex)
+        .map((part) => {
+            if (part.match(urlRegex)) {
+                return <a href={part}>{part}</a>;
+            }
+            return part;
+        });
+};
+
+export const getNumberFromString = (txt) => {
+
+    var numb = txt.match(/\d/g);
+    if (numb)
+    numb = numb.join("");
+
+    return numb
+};
+

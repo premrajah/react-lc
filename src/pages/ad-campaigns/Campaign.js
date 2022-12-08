@@ -264,8 +264,6 @@ class Campaign extends Component {
                 if (error.response)
                     console.log(error)
 
-
-
             });
 
     }

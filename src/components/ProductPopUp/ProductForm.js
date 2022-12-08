@@ -26,7 +26,7 @@ import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 
-var slugify = require('slugify')
+let slugify = require('slugify')
 
 
     function ValueLabelComponent(props) {
@@ -111,7 +111,7 @@ var slugify = require('slugify')
                 parentProductId: null,
                 imageLoading: false,
                 showSubmitSite: false,
-                is_listable: false,
+                is_listable: true,
                 moreDetail: false,
                 isSubmitButtonPressed: false,
                 disableVolume:false,
@@ -122,7 +122,7 @@ var slugify = require('slugify')
                 templates:[],
                 selectedTemplated:null,
                 artifacts:[],
-                is_manufacturer:false
+                is_manufacturer:true
 
             };
 
@@ -498,14 +498,17 @@ var slugify = require('slugify')
                     const upc = data.get("upc");
                     const part_no = data.get("part_no");
                     const state = data.get("state");
-                    const is_listable = this.state.is_listable?true:false;
-                    const is_manufacturer = this.state.is_manufacturer?true:false;
-
+                    // const is_listable = this.state.is_listable?true:false;
+                    // const is_manufacturer = this.state.is_manufacturer?true:false;
+                    const is_listable = true;
+                    const is_manufacturer = false;
                     const site = data.get("deliver")
                     const year_of_making = data.get("manufacturedDate") ? data.get("manufacturedDate") : 0
                     const external_reference = data.get("external_reference")
                     const power_supply = data.get("power_supply");
                     const energy_rating = this.state.energyRating;
+                    const embodied_carbon_tons = data.get("embodied_carbon_tons");
+                    const gross_weight_kgs = data.get("gross_weight_kgs");
 
 
                     let productData = {
@@ -530,7 +533,9 @@ var slugify = require('slugify')
                             sku: sku,
                             upc: upc,
                             part_no: part_no,
-                            // power_supply: power_supply?power_supply.toLowerCase():,
+                            embodied_carbon_tons: embodied_carbon_tons?embodied_carbon_tons:0,
+                            gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:0
+
                         },
                         year_of_making: year_of_making,
                     };
@@ -822,6 +827,8 @@ var slugify = require('slugify')
                const external_reference = data.get("external_reference")
                 const site = data.get("deliver");
                const power_supply = data.get("power_supply");
+                const embodied_carbon_tons = data.get("embodied_carbon_tons");
+                const gross_weight_kgs = data.get("gross_weight_kgs");
 
                 let productData = {
                     id: this.props.item.product._key,
@@ -840,9 +847,7 @@ var slugify = require('slugify')
                         stage: "certified",
                         energy_rating : this.state.energyRating,
                         external_reference : external_reference,
-                        is_listable: this.state.is_listable,
-
-
+                        // is_listable: false,
                         sku: {
                             serial: serial,
                             model: model,
@@ -851,6 +856,8 @@ var slugify = require('slugify')
                             upc: upc,
                             part_no: part_no,
                             // power_supply: power_supply,
+                            embodied_carbon_tons: embodied_carbon_tons?embodied_carbon_tons:0,
+                            gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:0
                         },
                         year_of_making: Number(data.get("manufacturedDate")),
 
@@ -910,6 +917,8 @@ var slugify = require('slugify')
                     this.isManufacturer()
                     this.loadImages(this.props.item.artifacts)
 
+                    this.checkListable(this.props.item.product.is_listable)
+
 
                 }
 
@@ -940,7 +949,7 @@ var slugify = require('slugify')
                         keys.forEach((item)=> {
 
                                 if (item.includes("product_line"))
-                                    templates.push({key: item, value: JSON.parse(responseObj[item])})
+                                    templates.push({key: item, value: JSON.parse(responseObj[item].value)})
                             }
                         )
 
@@ -1174,18 +1183,20 @@ var slugify = require('slugify')
                                 </div>
 
                                 <div className="row  mt-2">
-                                    {!this.props.productLines &&    <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
+                                    {!this.props.productLines &&    <div className="col-md-4 col-sm-12 d-none justify-content-start align-items-center">
 
                                         <CheckboxWrapper
+
                                             details="When listed, product will appear in the marketplace searches"
-                                            initialValue={this.props.item&&this.props.item.product.is_listable}
+                                            initialValue={this.props.item&&this.props.item.product.is_listable||true}
                                             onChange={(checked)=>this.checkListable(checked)} color="primary"
                                             name={"is_listable"} title="List for sale" />
 
                                     </div>}
-                                    {!this.props.productLines &&    <div className="col-md-4 col-sm-12  justify-content-start align-items-center">
+                                    {!this.props.productLines &&    <div className="col-md-4 d-none col-sm-12  justify-content-start align-items-center">
 
                                         <CheckboxWrapper
+
                                             details="Is Manufacturer ?"
                                             initialValue={this.state.is_manufacturer}
                                             onChange={(checked)=>this.checkListableManufacturer(checked)} color="primary"
@@ -1451,7 +1462,9 @@ var slugify = require('slugify')
                                                 <div className="col-md-4 col-xs-12 ">
 
                                                     {!this.state.disableVolume&&   <TextFieldWrapper
+                                                        numberInput
                                                         details="The number of units"
+                                                        placeholder={"Numbers e.g 1,2.. "}
                                                         // readonly ={this.state.disableVolume}
                                                         initialValue={this.props.item&&this.props.item.product.volume+""}
                                                         // value={this.state.disableVolume?"0":""}
@@ -1528,8 +1541,10 @@ var slugify = require('slugify')
                                     {!this.props.productLines &&
                                     <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <TextFieldWrapper
-                                                        initialValue={this.props.item&&this.props.item.product.sku.serial}
+                                                        initialValue={this.props.item?this.props.item.product.sku.serial:null}
                                                         name="serial"
+
+                                                        onChange={(value)=>this.handleChangeProduct(value,"serial")}
                                                         title="Serial Number" />
 
                                                 </div>}
@@ -1574,6 +1589,24 @@ var slugify = require('slugify')
 
                                                 </div>
 
+                                    <div className="col-md-4 col-sm-6 col-xs-6">
+                                        <TextFieldWrapper
+                                            onChange={(value)=>this.handleChangeProduct(value,"embodied_carbon_tons")}
+                                            // details="A unique number used by external systems"
+                                            initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_tons:""
+                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_tons:"")
+                                            } name="embodied_carbon_tons" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
+
+                                    </div>
+                                    <div className="col-md-4 col-sm-6 col-xs-6">
+                                        <TextFieldWrapper
+                                            onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
+                                            // details="A unique number used by external systems"
+                                            initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""
+                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")
+                                            } name="gross_weight_kgs" title="Gross Weight (Kg)" />
+
+                                    </div>
 
                                             </div>
 

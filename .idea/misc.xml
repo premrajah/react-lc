@@ -13,8 +13,12 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/.gitlab-ci.yml" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="4008" />
+          <option name="caretOffset" value="3809" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/.gcp.gitlab-ci.yml" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/.gitignore" />
         </OpenedFileInfo>
       </list>
     </option>

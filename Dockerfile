@@ -1,6 +1,7 @@
 ## Stage 0, "builder", based on Node.js, to build and compile the frontend
 # base image
-FROM node:12.18.4-alpine as builder
+# From node:12.18.4-alpine -> 16.18.1-alpine on 2022 11 22
+FROM node:16.18.1-alpine as builder
 
 RUN echo "NODE_VERSION" $NODE_VERSION
 RUN echo "NPM_VERSION" $NPM_VERSION
@@ -31,7 +32,8 @@ RUN echo '{ "allow_root": true  }' > /root/.bowerrc
 #  && mv ./node_modules.tmp ./node_modules \
 #  && npm install -g npm
 
-RUN npm install && npm audit fix
+# RUN npm install && npm audit fix
+RUN npm install --legacy-peer-deps
 RUN npm run build 
 
 ## Stage 1, "deployer", use nginx to deploy the code

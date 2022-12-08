@@ -1,12 +1,11 @@
 import React, {Component} from "react";
 import axios from "axios";
 import {connect} from "react-redux";
-import {baseUrl, createMarkup} from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import reactStringReplace from "react-string-replace";
 import {Card, CardContent, Snackbar} from "@mui/material";
 import NotIcon from "@mui/icons-material/HdrWeak";
 import moment from "moment/moment";
-import Org from "../Org/Org";
 import {Link} from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import _ from "lodash";
@@ -21,14 +20,15 @@ import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {CheckCircle} from "@mui/icons-material";
 import EventStatus from "../Event/EventStatus";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import OrgFull from "../Org/OrgFull";
 import OrgComponent from "../Org/OrgComponent";
 
 
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
-const ORG_REGEX = /(Org\/[\w\d-]+)/g;
+const ORG_REGEX = /(Org\/[\w\d\-\.@]+)/g;
 const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
 const CYCLE_REGEX = /Cycle\/([\w\d]+)/g;
+
+
 const MATCH_REGEX = /Match\/([\w\d]+)/g;
 const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
 const PRODUCT_REGISTRATION = /ProductRegistration\/([\w\d]+)/g;

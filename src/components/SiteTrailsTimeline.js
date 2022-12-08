@@ -149,7 +149,7 @@ function SiteTrailsTimeline(props) {
                                 <Typography
                                     className={"mt-1 me-2"}
                                 >
-                                    <p className={"text-blue"}>
+                                    <p className={"text-blue text-14"}>
                                         {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
                                         handleMapModal(item.site.site)} />}
 
@@ -202,7 +202,7 @@ function SiteTrailsTimeline(props) {
                                 <Typography
                                     className="mt-1 me-2"
                                 >
-                                    <p className={"text-blue"}>
+                                    <p className={"text-blue text-14"}>
                                         {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&  <MapIcon  onClick={() => handleMapModal(item.site.site)} style={{color:"#05AD88"}}/>}
 
                                     </p>

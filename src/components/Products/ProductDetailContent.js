@@ -895,6 +895,8 @@ class ProductDetailContent extends Component {
                                                                 : false
                                                         }
 
+
+
                                                         duplicate={
                                                             this.state.item.org._id ===
                                                             this.props.userDetail.orgId
@@ -1067,6 +1069,8 @@ class ProductDetailContent extends Component {
                                                 <TabPanel value="8">
                                                     <BigCalenderEvents productId={this.state.item.product._key} smallView  />
                                                 </TabPanel>
+
+
                                             </TabContext>
                                         </Box>
 
@@ -1143,6 +1147,7 @@ class ProductDetailContent extends Component {
                             hide={this.showReleaseProductPopUp}
                         >
                             <>
+                                {this.state.showReleaseProduct&&<>
                                 <div className={"col-6 d-none text-center"}>
                                     <BlueButton
                                         title={"Release Internally"}
@@ -1218,14 +1223,7 @@ class ProductDetailContent extends Component {
 
                                                                 </div>
 
-                                                                {/*<p className={"text-g"} style={{ marginTop: "10px" }}>*/}
 
-                                                                {/*    or <span*/}
-                                                                {/*    onClick={this.toggleSite}*/}
-                                                                {/*    className={*/}
-                                                                {/*        " forgot-password-link "*/}
-                                                                {/*    }>Add new</span>*/}
-                                                                {/*</p>*/}
 
                                                                 {this.state.errorRelease && (
                                                                     <div
@@ -1815,7 +1813,7 @@ class ProductDetailContent extends Component {
                                         </TabContext>
                                     </Box>
                                 </div>
-
+</>}
 
                             </>
 

@@ -6,15 +6,9 @@ import * as Yup from 'yup';
 import TextFieldWrapper from "./FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "./FormsUI/ProductForm/Select";
 import {validateFormatCreate, validateInputs, Validators} from "../Util/Validator";
-import {createProductUrl} from "../Util/Api";
 import * as actionCreator from "../store/actions/actions";
 import KeywordChip from "./issues/KeywordChip";
-import BlueButton from "./FormsUI/Buttons/BlueButton";
 import GreenButton from "./FormsUI/Buttons/GreenButton";
-
-
-
-// import {Select} from "formik-material-ui";
 
 class IssueSubmitForm extends Component {
 
@@ -30,7 +24,6 @@ class IssueSubmitForm extends Component {
         }
     }
 
-    formikRef = React.createRef();
 
     INITIAL_VALUES = {
         title: this.props.edit ? this.props.issue.title : "",
@@ -282,11 +275,11 @@ timeout=0
 
                                           </div>
                              </div>
-                            <div className="row">
-                                <div className="col">
+                            <div className="row justify-content-center">
+                                <div className="col text-center">
                                     <GreenButton
                                         title={"Submit"}
-                                        fullWidth
+
                                         type="Submit"
                                         onClick={this.showReleaseProductPopUp}
                                     >

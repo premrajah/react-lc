@@ -84,13 +84,13 @@ class MySearch extends Component {
             if (activeFilter){
 
 
-                if (activeFilter=="name")
+                if (activeFilter==="name")
                     this.setState({
 
                         searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%`)
                     })
 
-                if (activeFilter=="product_name")
+                if (activeFilter==="product_name")
                     this.setState({
 
                         searchUrl:this.state.url+(`&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)

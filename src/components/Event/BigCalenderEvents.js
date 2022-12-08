@@ -1,33 +1,29 @@
-import React, { Fragment, useEffect, useMemo, useState, useCallback } from "react";
+import React, {Fragment, useCallback, useEffect, useMemo, useState} from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Calendar, DateLocalizer, momentLocalizer, Views } from "react-big-calendar";
+import {Calendar, DateLocalizer, momentLocalizer, Views} from "react-big-calendar";
 import * as dates from "./dates";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventItem from "./EventItem";
-import { addDays, LoaderAnimated, weekday } from "../../Util/GlobalFunctions";
-import { baseUrl } from "../../Util/Constants";
+import {LoaderAnimated, weekday} from "../../Util/GlobalFunctions";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios";
 import Badge from "@mui/material/Badge";
-import { Add, ArrowBack, ArrowForward } from "@mui/icons-material";
+import {Add, ArrowBack, ArrowForward} from "@mui/icons-material";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import EventForm from "./EventForm";
 import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import CustomPopover from "../FormsUI/CustomPopover";
-import { styled } from "@mui/material/styles";
+import {styled} from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Year from "./Year";
-import IconBtn from "../FormsUI/Buttons/IconBtn";
-import { IconButton } from "@mui/material";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
-import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import {IconButton} from "@mui/material";
 import GreenSmallBtn from "../FormsUI/Buttons/GreenSmallBtn";
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-
+import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
+import DownloadIcon from "@mui/icons-material/GetApp";
 
 
 const mLocalizer = momentLocalizer(moment);
@@ -96,11 +92,11 @@ export default function BigCalenderEvents({
 }) {
     const [events, setEvents] = useState([]);
     const [monthEvents, setMonthEvents] = useState([]);
-    const [eventsTemp, setEventsTemp] = useState([]);
-    const [calanderEvents, setCalanderEvents] = useState([]);
+
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [view, setView] = useState("month");
     const [showAll, setShowAll] = useState(false);
+    const [showDownload, setShowDownload] = useState(false);
     const [tmpView, setTmpView] = useState("month");
     // const [navigate, setNavigate] = useState(new Date());
 
@@ -141,11 +137,11 @@ export default function BigCalenderEvents({
                     }
                 }}
                 className=" event-bx text-12 txt-gray-dark">
-                <div   className={`${event.stage==='responded'?"fc-event-box-disabled":"fc-event-box-" + event.process}`}>
-                    {event.stage==="responded"?<del>event.title</del>:event.title}
+                <div   className={`${event.stage==='resolved'?"fc-event-box-disabled":"fc-event-box-" + event.process}`}>
+                    {event.stage==="resolved"?<del>event.title</del>:event.title}
                 </div>
 
-                {/*{event.desc && ":  " + event.desc}*/}
+
             </div>
         );
     };
@@ -182,10 +178,6 @@ export default function BigCalenderEvents({
             props.onNavigate(action);
         };
 
-        // let viewSelect = (view) => {
-        //     props.onView(view);
-        // };
-
         const getLabel = (date) => {
             if (view == "year") {
                 return date.getFullYear();
@@ -196,6 +188,7 @@ export default function BigCalenderEvents({
             } else if (view == "week") {
                 const startDate = moment(date).startOf("week").toDate();
                 const endDate = moment(date).endOf("week").toDate();
+
 
                 return (
                     startDate.getDate() +
@@ -272,12 +265,16 @@ export default function BigCalenderEvents({
                                             moment(selectedDate).subtract(1, "M").toDate()
                                         );
                                         handleNavigation(
-                                            moment(selectedDate).subtract(1, "M").toDate(),
+                                            moment(selectedDate).subtract(1, "M").startOf("month").toDate(),
                                             true
                                         );
                                     } else if (view === "week") {
+
+                                        // const startDate = moment(date).startOf("week").toDate();
+
                                         setSelectedDate(
-                                            moment(selectedDate).subtract(7, "days").toDate()
+
+                                            moment(selectedDate).subtract(7, "days").startOf("week").toDate()
                                         );
                                         handleNavigation(
                                             moment(selectedDate).subtract(7, "days").toDate(),
@@ -420,7 +417,7 @@ export default function BigCalenderEvents({
                 }
 
                 setEvents(responseAll);
-                setCalanderEvents(convertEvents(responseAll));
+
 
                 setLoading(false);
             },
@@ -433,6 +430,11 @@ export default function BigCalenderEvents({
         );
     };
 
+    const handleChangeSwitch = (event) => {
+
+        setShowAll(event.target.checked)
+
+    };
     const fetchMonthEventsPageWise = (start, end, url, offset) => {
         axios
             // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
@@ -455,17 +457,7 @@ export default function BigCalenderEvents({
             );
     };
 
-    const handleChangeSwitch = (event) => {
 
-        console.log(event.target.checked)
-
-        setShowAll(event.target.checked)
-
-        // setState({
-        //     ...state,
-        //     [event.target.name]: event.target.checked,
-        // });
-    };
 
     const getEventsByMonth = (start, end, offset) => {
         let url = `${baseUrl}${
@@ -625,13 +617,11 @@ export default function BigCalenderEvents({
             {!smallView ? (
                 <div className={"row justify-content-center create-product-row "}>
                     <div
-                        className={`bg-white-1 ${
-                            smallView ? "col-12 mt-4 fc-small-calender" : "col-md-8"
-                        }`}>
+                        className={`bg-white-1 mb-2  col-lg-8 col-md-12`}>
                         <div className="sticky-top">
                             <CustomToolbar />
                             <Calendar
-
+                                popup
                                 formats={formats}
                                 toolbar={false}
                                 className={` ${
@@ -643,7 +633,7 @@ export default function BigCalenderEvents({
                                 components={components}
                                 defaultDate={defaultDate}
 
-                                events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="responded")}
+                                events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="resolved")}
 
                                 localizer={localizer}
                                 max={1}
@@ -671,21 +661,26 @@ export default function BigCalenderEvents({
                         </div>
                     </div>
                     <div
-                        className={`bg-white-1 ${
-                            smallView ? "small-log-view mt-4 col-12" : "col-md-4"
-                        }`}>
+                        className={`bg-white-1 col-lg-4 col-md-12`}>
                         {!smallView && (
-                            <div className="title-bold  d-flex align-items-center justify-content-between ">
-                                <span className="   ">
+                            <div className=" g-0 row d-flex align-items-center justify-content-between ">
+                                <span className="title-bold text-blue col-xl-5 col-lg-12 col-md-12    ">
                                     {weekday[selectedDate.getDay()] +
                                         ", " +
-                                        selectedDate.toLocaleString("default", { month: "long" }) +
+                                        selectedDate.toLocaleString("default", { month: "short" }) +
                                         " " +
                                         selectedDate.getDate() +
                                         " ," +
                                         selectedDate.getFullYear()}
                                 </span>
-                                <span className="">
+                                <span className="col-lg-8 col-xl-6 col-md-6    " >
+                                     <BlueSmallBtn
+                                         onClick={()=>setShowDownload(!showDownload)}
+                                         title={"Download"}>
+                            <DownloadIcon  style={{fontSize:"20px"}} />
+                        </BlueSmallBtn>
+                                </span>
+                                <span className="col-lg-4 justify-content-end d-flex col-xl-1 col-md-6    ">
                                     <CustomPopover text={"Add event"}>
                                         <ActionIconBtn
                                             onClick={() => {
@@ -698,9 +693,17 @@ export default function BigCalenderEvents({
                             </div>
                         )}
 
+
+
+
+
+
                         {loading && <LoaderAnimated />}
 
                                 <EventItem
+
+                                    showDownload={showDownload}
+                                    hide={()=>setShowDownload(!showDownload)}
                                     loading={loading}
                                     showAll={showAll}
                                     refresh={(date) => handleNavigation(date, true)}
@@ -709,7 +712,7 @@ export default function BigCalenderEvents({
                                         {if (showAll){
                                             return item
                                         }
-                                        else if(!showAll&&item.event.stage!=="responded"){
+                                        else if(!showAll&&item.event.stage!=="resolved"){
 
                                             return item
                                         }}
@@ -745,7 +748,7 @@ export default function BigCalenderEvents({
                                 }}
                                 components={components}
                                 defaultDate={defaultDate}
-                                events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="responded")}
+                                events={showAll?monthEvents:monthEvents.filter((item)=>item.stage!=="resolved")}
                                 localizer={localizer}
                                 max={1}
                                 showMultiDayTimes
@@ -774,7 +777,7 @@ export default function BigCalenderEvents({
                         {loading && <LoaderAnimated />}
 
                         {!smallView && (
-                            <div className="title-bold">
+                            <div className="text-blue text-14 text-bold">
                                 {weekday[selectedDate.getDay()] +
                                     ", " +
                                     selectedDate.toLocaleString("default", { month: "long" }) +
@@ -785,17 +788,18 @@ export default function BigCalenderEvents({
                             </div>
                         )}
 
-                        {events.length > 0 && (
+                        {events.length > 0 && <>
                             <GrayBorderBtn title={"View Calender"} onClick={showEvent} />
-                        )}
 
-                        <EventItem loading={loading}
+                        </>}
+
+                        <EventItem smallView={smallView} loading={loading} showEvent={showEvent}
 
                                            events={events.filter((item)=>
                                                {if (showAll){
                                                    return item
                                                }
-                                               else if(!showAll&&item.event.stage!=="responded"){
+                                               else if(!showAll&&item.event.stage!=="resolved"){
 
                                                    return item
                                                }}
@@ -828,44 +832,6 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     },
 }));
 
-const CustomizedDividers = (props) => {
-    const [view, setView] = React.useState("month");
-
-    const handleAlignment = (event, newAlignment) => {
-        // setCurrentView(newAlignment);
-        // onView(newAlignment);
-        setView(newAlignment);
-    };
-
-    return (
-        <>
-            <Paper
-                elevation={0}
-                sx={{
-                    display: "flex",
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    flexWrap: "wrap",
-                }}>
-                <StyledToggleButtonGroup
-                    size="small"
-                    value={view}
-                    exclusive
-                    onChange={handleAlignment}
-                    aria-label="text alignment">
-                    <ToggleButton value="year" aria-label="Year">
-                        <span>Year</span>
-                    </ToggleButton>
-                    <ToggleButton value="month" aria-label="Month">
-                        <span>Month</span>
-                    </ToggleButton>
-                    <ToggleButton value="week" aria-label="Week">
-                        <span>Week</span>
-                    </ToggleButton>
-                </StyledToggleButtonGroup>
-            </Paper>
-        </>
-    );
-};
 
 BigCalenderEvents.propTypes = {
     localizer: PropTypes.instanceOf(DateLocalizer),

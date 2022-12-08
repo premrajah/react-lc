@@ -488,7 +488,7 @@ class SignUp extends Component {
                                 <div className="row ">
                                 <div className="col-6 ">
                                     <TextFieldWrapper
-
+                                        ignoreTrim
                                         onChange={(value)=>{
 
                                             this.handleChange(value,"password")
@@ -517,7 +517,7 @@ class SignUp extends Component {
                                 </div>
                                     <div className="col-6 ">
                                         <TextFieldWrapper
-
+                                            ignoreTrim
                                             type="password"
                                             onChange={(value)=>this.handleChange(value,"confirmPassword")}
                                             error={this.state.errors["confirmPassword"]}

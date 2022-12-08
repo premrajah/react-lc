@@ -1,22 +1,26 @@
-import React, { useState } from "react";
-import { baseUrl, createMarkup } from "../../Util/Constants";
+import React, {useState} from "react";
+import {baseUrl} from "../../Util/Constants";
 import moment from "moment/moment";
-import { Divider, ImageList, ImageListItem } from "@mui/material";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import SubproductItem from "../Products/Item/SubproductItem";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import axios from "axios/index";
 import * as actionCreator from "../../store/actions/actions";
+import {Description} from "@mui/icons-material";
+import CustomPopover from "../FormsUI/CustomPopover";
+import {checkIfDocumentFromType, linkifyText} from "../../Util/GlobalFunctions";
+import Done from '@mui/icons-material/Done';
+import DoneAll from '@mui/icons-material/DoneAll';
 
 const LC_PURPLE = "#27245C";
 const LC_PINK = "#D31169";
 
-const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
+const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
     const [showEntity, setShowEntity] = useState(false);
     const [entityObj, setEntityObj] = useState({});
     const [matchData, setMatchData] = useState(null);
@@ -55,11 +59,18 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
     };
 
     return (
-        <div className="w-75 p-2 mb-2 chat-msg-box border-rounded text-blue gray-border messenger-message-bubble">
+        <div className="w-75 p-2 mb-2 position-relative chat-msg-box border-rounded text-blue gray-border messenger-message-bubble">
+
+            {(m&&m.orgs&&m.orgs.filter(orgItem=> orgItem.actor=="message_from"&&orgItem.org.org._id===userDetail.orgId).length>0)&&<span className="float-bottom-right-seen">
+            <SeenData orgs={m&&m.orgs?m.orgs:[]}
+
+            />
+            </span>}
+
             <div className="row">
                 <div className="col">
                     {m &&
-                        m.orgs.map(
+                    m.orgs&&m.orgs.map(
                             (o, index) =>
                                 o.actor === "message_from" && (
                                     <div key={index} className="d-flex justify-content-between">
@@ -67,7 +78,7 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
                                             className="text-mute"
                                             style={{
                                                 color: `${
-                                                    m.orgs
+                                                    m.orgs&&m.orgs
                                                         .map((o, i) => handleWhoseMessage(o, i))
                                                         .filter((s) => s === LC_PINK).length > 0
                                                         ? LC_PINK
@@ -87,14 +98,23 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
 
             <div className="row mt-2 mb-2">
                 <div className="col">
-                    <div
-                        dangerouslySetInnerHTML={createMarkup(m ? m.message.text : "")}
-                        style={{ lineHeight: "0.8" }}
-                    />
+                    <div>
+
+                        {m.message &&   <div
+                            // dangerouslySetInnerHTML={(createMarkup(m ? linkifyText(m.message.text) : ""))}
+                            dangerouslySetInnerHTML={{
+                                __html: linkifyText(m.message.text) .replace(/href/g, "target='_blank' href")
+                            }}
+                            style={{ lineHeight: "0.8" }}
+                        />}
+
+
+                    </div>
+
                 </div>
             </div>
 
-            {m.message.entity_as_json && m.message.entity_type === "Product" && (
+            {m.message&&m.message.entity_as_json && m.message.entity_type === "Product" && (
                 <div className="row mt-3 mb-2">
                     <div className="col">
                         <div style={{ borderBottom: "1px solid rgba(0,0,0,0.1)" }} />
@@ -109,7 +129,7 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
                             {m.message.entity_type === "Product" && (
                                 <div>
                                     <div className="d-flex">
-                                        <div className="mr-2 text-mute">
+                                        <div className="me-2 text-mute">
                                             {m.message.entity_type}
                                         </div>
                                         <div className="text-pink" style={{ cursor: "pointer" }}>
@@ -130,7 +150,7 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
                             {m.message.entity_type === "Match" && (
                                 <div>
                                     <div className="d-flex">
-                                        <div className="mr-2 text-mute">
+                                        <div className="me-2 text-mute">
                                             {m.message.entity_type}
                                         </div>
                                         <div
@@ -159,20 +179,12 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
                                 </div>
                             )}
 
-                            {/*{m.message.entity_type === "Product" && <div className="mr-2 text-mute">{m.message.entity_type}</div>}*/}
-                            {/*{m.message.entity_type === "Match" && <div className="mr-2 text-mute">{m.message.entity_type}</div>}*/}
-
-                            {/*{m.message.entity_as_json && <div className="text-pink" style={{cursor: "pointer"}}>*/}
-                            {/*    <div onClick={() => toggleEntity(m.message.entity_as_json, m.message.entity_type)}>*/}
-                            {/*        {m.message.entity_as_json.name}*/}
-                            {/*    </div>*/}
-                            {/*</div>}*/}
                         </div>
                     )}
                 </div>
             </div>
 
-            {m.artifacts.length > 0 && (
+            {m.artifacts&&m.artifacts.length > 0 && (
                 <div className="row">
                     <div className="col">
                         <Stack direction="row" spacing={2}>
@@ -181,12 +193,29 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
                                     key={`${item._ts_epoch_ms}_${item._key}`}
                                     style={{ cursor: "pointer" }}>
                                     <a href={item.blob_url} target="_blank" rel="noreferrer">
-                                        <Avatar
+
+                                        {checkIfDocumentFromType(item.mime_type)?<CustomPopover text={item.name}>
+                                            <Description
+                                            alt={item.name}
+                                            style={{
+                                                fontSize: 56,
+                                                color: "#ccc",
+                                                margin: "auto",
+                                            }}
+                                        />
+                                        </CustomPopover>:
+                                            <CustomPopover text={item.name}>
+                                                <Avatar
                                             alt={item.name}
                                             src={item.blob_url}
                                             sx={{ width: 56, height: 56 }}
                                             variant="square"
                                         />
+                                            </CustomPopover>
+                                        }
+
+
+
                                     </a>
                                 </div>
                             ))}
@@ -257,6 +286,52 @@ const MessengerMessageTwoMessageBubble = ({ m, userDetail, showSnackbar }) => {
     );
 };
 
+
+
+const SeenData=(props)=>{
+
+                let totalOrgs=props.orgs.filter(orgItem=> orgItem.actor=="message_to")
+                let orgsSeen=props.orgs.filter(orgItem=> orgItem.actor=="message_to"&&orgItem.read_flag)
+    let seenStatus=0  // 0- no seen,1 atleast one seen, 2 - all seen
+
+
+    if (totalOrgs.length>orgsSeen.length){
+        if (orgsSeen.length==0){
+            seenStatus=0
+        }else{
+            seenStatus=1
+        }
+    }else{
+        seenStatus=2
+    }
+
+
+    let seenText=""
+
+        orgsSeen.map((org,index)=> {
+
+        seenText=`${seenText}${index>0?", ":""}${org.org.org.name}`
+        })
+
+    return (
+        <>
+        {totalOrgs.length>0
+            ?<>
+
+          <CustomPopover text={seenText}>  <>
+            {seenStatus==2&&<DoneAll fontSize={"small"}  style={{color:"var(--lc-green)"}}/>}
+            {seenStatus==1&&<DoneAll fontSize={"small"} style={{color:"var(--lc-light-gray)"}}/>}
+          </>
+          </CustomPopover>
+
+            {seenStatus==0&&<Done fontSize={"small"} style={{color:"var(--lc-light-gray)"}}/>}
+            </>:""}
+</>
+    )
+
+                }
+
+
 const mapStateToProps = (state) => {
     return {
         loading: state.loading,
@@ -270,4 +345,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessengerMessageTwoMessageBubble);
+export default connect(mapStateToProps, mapDispatchToProps)(MessengerChatBox);

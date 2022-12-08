@@ -138,27 +138,27 @@ class Sidebar extends Component {
                                             onClick={this.toggleMenu}
                                             to={"/account"}
                                             className="white-text list-group-item list-group-item-action">
-                                            My Account
+                                            Account
                                         </Link>
 
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/sites"}
                                             className="white-text list-group-item list-group-item-action">
-                                            My Sites
+                                            Sites
                                         </Link>
 
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/my-products"}
                                             className="white-text list-group-item list-group-item-action">
-                                            My Products
+                                            Products
                                         </Link>
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/my-diary"}
                                             className="white-text list-group-item list-group-item-action">
-                                            My Diary
+                                            Diary
                                         </Link>
 
 
@@ -166,37 +166,33 @@ class Sidebar extends Component {
                                             onClick={this.toggleMenu}
                                             to={"/my-campaigns"}
                                             className="white-text list-group-item list-group-item-action">
-                                            My Campaigns
+                                            Campaigns
                                         </Link>
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/my-search"}
                                             className="white-text list-group-item list-group-item-action">
-                                            My Searches
+                                            Searches
                                         </Link>
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/my-listings"}
                                             className="white-text list-group-item list-group-item-action">
-                                            My Listings
+                                            Listings
                                         </Link>
 
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/my-cycles"}
                                             className="white-text list-group-item list-group-item-action">
-                                            My Cycles
+                                            Cycles
                                         </Link>
-
-
-
-
 
                                         <Link
                                             onClick={this.toggleMenu}
                                             to={"/approve"}
                                             className="white-text list-group-item list-group-item-action">
-                                            My Approvals
+                                            Approvals
                                         </Link>
                                         <Link
                                             onClick={this.toggleMenu}

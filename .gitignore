@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 yarn.lock
 .idea
+.idea/*
 
 # dependencies
 /node_modules
@@ -130,3 +131,7 @@ typings/
 .devspace/
 /.idea/
 /.idea/
+
+# Added Ignore for package-lock.json
+package-lock.json
+

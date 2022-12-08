@@ -11,6 +11,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import PasswordStrength from "../FormsUI/PasswordStrength";
+import BlueButton from "../FormsUI/Buttons/BlueButton";
 
 class ChangePassword extends Component {
     constructor(props) {
@@ -201,16 +202,16 @@ class ChangePassword extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="col-md-4 pt-2">
-                                            <BlueBorderButton
+                                        <div className="col-md-3 ">
+                                            <BlueButton
                                                 title={this.state.loading ? "Wait.." : "Update Password"}
                                                 loading={this.state.loading}
-                                                fullWidth
+fullWidth
                                                 disabled={this.state.loading}
                                                 onClick={() => this.submitChangePassword()}
                                                 type="button"
                                             >
-                                            </BlueBorderButton>
+                                            </BlueButton>
                                         </div>
                                         <div className="col-md-12 mt-2">
                                         <small className="text-gray-light ">Password should be at least 8 characters including at least 3 of the following 4 types of characters: a lower-case letter, an upper-case letter, a number, a special character (such as !@#$%^&*).</small>

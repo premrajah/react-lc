@@ -14,8 +14,7 @@ import {getTimeFormat} from "../../Util/GlobalFunctions";
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 
 
-
-class SiteReleaseDialog extends Component {
+class EventReleaseDialog extends Component {
     slug;
     search;
 
@@ -65,10 +64,10 @@ class SiteReleaseDialog extends Component {
         const site = data.get("org");
 
         axios.post(
-                baseUrl + "site-release",
+                baseUrl + "event-release",
                 {
                     org_id: site,
-                    site_id: this.props.item.site._key,
+                    event_id: this.props.item.event._key,
                 }
             )
             .then((res) => {
@@ -88,7 +87,7 @@ class SiteReleaseDialog extends Component {
 
     fetchReleases=()=> {
         axios
-            .get(baseUrl + "site-release/site/"+this.props.item.site._key)
+            .get(baseUrl + "event-release/event/"+this.props.item.event._key)
             .then(
                 (response) => {
 
@@ -104,7 +103,9 @@ class SiteReleaseDialog extends Component {
     }
 
     componentDidMount() {
-this.fetchReleases()
+
+        if (this.props.item)
+      this.fetchReleases()
 
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -174,7 +175,7 @@ this.fetchReleases()
 
                         <GlobalDialog
                             allowOverflow
-                            heading={"Release Site: "+ this.props.item.site.name}
+                            heading={"Release Event: "+ this.props.item.event.title}
                             show={this.props.showReleaseProduct}
                             hide={this.props.hide}
                         >
@@ -189,7 +190,7 @@ this.fetchReleases()
 
                                             <div className="row mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
                                                 <div className={"col-11 text-blue "}>
-                                                    Site Release request to  <b>{release.responder.name}</b> <br/>
+                                                    Event Release request to  <b>{release.responder.name}</b> <br/>
                                                     Status: <span className="text-pink text-capitlize">{release.Release.stage}</span>
                                                     <br/><small className="text-gray-light mr-2">{getTimeFormat(release.Release._ts_epoch_ms)}</small>
                                                 </div>
@@ -436,4 +437,4 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParent(data)),
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(SiteReleaseDialog);
+export default connect(mapStateToProps, mapDispachToProps)(EventReleaseDialog);

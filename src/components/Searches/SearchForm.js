@@ -9,26 +9,19 @@ import Toolbar from "@mui/material/Toolbar";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import LinearProgress from "@mui/material/LinearProgress";
-import ProductExpandItem from "../../components/Products/ProductExpandItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import _ from "lodash";
-// import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import PageHeader from "../../components/PageHeader";
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import {capitalize} from "../../Util/GlobalFunctions";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import Layout from "../../components/Layout/Layout";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import SiteFormNew from "../../components/Sites/SiteFormNew";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
 
 
 class SearchForm extends Component {
@@ -101,7 +94,7 @@ class SearchForm extends Component {
         // this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
         this.getFiltersCategories = this.getFiltersCategories.bind(this);
         this.selectSubCatType = this.selectSubCatType.bind(this);
-        this.handleNext = this.handleNext.bind(this);
+        // this.handleNext = this.handleNext.bind(this);
         this.handleBack = this.handleBack.bind(this);
         this.getProducts = this.getProducts.bind(this);
         this.selectProduct = this.selectProduct.bind(this);
@@ -731,42 +724,25 @@ if ((this.state.activeStep-1)==0){
         })
 
 
+        this.timeout = setTimeout(() => {
 
-        if (this.handleValidationSearch(this.state.activeStep)){
 
 
-            if (this.state.activeStep==0){
 
-                if (this.validateDates()){
+        if (this.handleValidationSearch()&&this.validateDates()){
 
                     this.setState({
                         nextBlue:true,
 
                     })
                 }else{
-
-                    this.setState({
-                        nextBlue:false,
-
-                    })
-                }
-
-            }else{
-
-                this.setState({
-                    nextBlue:true,
-
-                })
-
-            }
-
-        }else{
             this.setState({
                 nextBlue:false,
 
             })
-
         }
+
+        }, 200);
     }
 
     addDetails() {
@@ -776,7 +752,7 @@ if ((this.state.activeStep-1)==0){
     }
 
 
-    handleValidationSearch=(activeStep)=> {
+    handleValidationSearch=()=> {
 
 
         let fields = this.state.fields;
@@ -785,7 +761,7 @@ if ((this.state.activeStep-1)==0){
 
 
 
-        if (activeStep===0) {
+        // if (activeStep===0) {
 
              validations = [
                 validateFormatCreate("title", [{check: Validators.required, message: 'Required'}], fields),
@@ -793,29 +769,30 @@ if ((this.state.activeStep-1)==0){
                 validateFormatCreate("category", [{check: Validators.required, message: 'Required'}], fields),
                 validateFormatCreate("type", [{check: Validators.required, message: 'Required'}], fields),
                 validateFormatCreate("state", [{check: Validators.required, message: 'Required'}], fields),
-                validateFormatCreate("volume", [{check: Validators.required, message: 'Required'}], fields),
+                validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'Required'}], fields),
                 validateFormatCreate("units", [{check: Validators.required, message: 'Required'}], fields),
                  validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields),
 
             ]
 
-        }
-        else if (activeStep===1) {
-            validations = [
-                // validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
-                validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields),
-
-
-            ]
-
-        }
-        else if (activeStep===2) {
-        }
+        // }
+        // else if (activeStep===1) {
+        //     validations = [
+        //         // validateFormatCreate("product", [{check: Validators.required, message: 'Required'}], fields),
+        //         validateFormatCreate("deliver", [{check: Validators.required, message: 'Required'}], fields),
+        //
+        //
+        //     ]
+        //
+        // }
+        // else if (activeStep===2) {
+        // }
 
         let {formIsValid, errors} = validateInputs(validations)
 
         this.setState({errors: errors});
 
+        console.log(formIsValid,errors)
         return formIsValid;
 
 
@@ -1023,46 +1000,7 @@ if ((this.state.activeStep-1)==0){
     }
 
 
-    handleNext = () => {
 
-
-        this.setState({
-            showFieldErrors:true
-        })
-
-        if (this.handleValidationSearch(this.state.activeStep)) {
-
-            this.props.loadProducts();
-            this.props.loadSites();
-
-            window.scrollTo(0, 0);
-
-            if(this.handleValidationSearch(this.state.activeStep+1)){
-
-                this.setState({
-                    nextBlue:true,
-                });
-
-            }else{
-                this.setState({
-                    nextBlue:false
-                });
-
-            }
-
-            this.setState({
-                activeStep: this.state.activeStep + 1,
-
-                progressBar: 100,
-                showFieldErrors:false
-            });
-
-
-        }
-
-
-
-    };
 
     handleChangeDateStartDate = (date) => {
         this.setState({
@@ -1234,7 +1172,7 @@ if ((this.state.activeStep-1)==0){
                                                     <div className="col-4 ">
 
                                                         <TextFieldWrapper
-
+                                                            numberInput
                                                             initialValue={this.props.item&&this.props.item.product.volume+""}
                                                             // value={this.state.disableVolume?"0":""}
                                                             onChange={(value)=>this.handleChange(value,"volume")}
@@ -1297,7 +1235,7 @@ if ((this.state.activeStep-1)==0){
 
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                        <MobileDatePicker
+                                        <DesktopDatePicker
 
                                             className={"full-width-field"}
                                             disableHighlightToday={true}
@@ -1315,7 +1253,13 @@ if ((this.state.activeStep-1)==0){
                                             // onChange={this.handleChangeDateStartDate.bind(
                                             //     this
                                             // )}
-                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                            // renderInput={(params) => <CustomizedInput {...params} />}
+                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                <div className="custom-calander-container">
+                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                </div>
+                                            )}
                                             onChange={(value)=>this.handleChange(value,"startDate")}
 
                                         />
@@ -1335,7 +1279,7 @@ if ((this.state.activeStep-1)==0){
                                     </div>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                        <MobileDatePicker
+                                        <DesktopDatePicker
                                             disableHighlightToday={true}
 
                                             minDate={new Date()}
@@ -1348,9 +1292,14 @@ if ((this.state.activeStep-1)==0){
                                             value={this.state.endDate}
                                             // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
 
-                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                            // renderInput={(params) => <CustomizedInput {...params} />}
                                             onChange={(value)=>this.handleChange(value,"endDate")}
-
+                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                <div className="custom-calander-container">
+                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                </div>
+                                            )}
                                         />
                                     </LocalizationProvider>
                                     {this.state.showFieldErrors&&this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}

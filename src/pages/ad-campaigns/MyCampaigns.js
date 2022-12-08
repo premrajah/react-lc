@@ -134,8 +134,17 @@ class MyCampaigns extends Component {
                     let templates=[]
                     keys.forEach((item)=> {
 
-                            if (item.includes("campaign_"))
-                                templates.push({key: item, value: JSON.parse(responseObj[item])})
+
+                            if (item.includes("campaign_")){
+                                console.log(JSON.parse(responseObj[item].value))
+                                try{
+                                    templates.push({key: item, value: JSON.parse(responseObj[item].value)})
+
+                                }catch (e){
+                                    console.log(e)
+                                }
+                            }
+
                         }
                     )
 

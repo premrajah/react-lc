@@ -1,12 +1,8 @@
 import React from 'react';
-import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
-import Alert  from '@mui/material/Alert';
-import { makeStyles } from '@mui/styles';
+import Alert from '@mui/material/Alert';
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-
-
 
 
 function CustomSnackbar(props) {

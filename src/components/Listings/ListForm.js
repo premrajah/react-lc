@@ -14,8 +14,8 @@ import ProductBlue from "../../img/icons/product-blue.png";
 import ItemDetailPreview from "../../components/ItemDetailPreview";
 import ProductTreeView from "../../components/ProductTreeView";
 
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
 
@@ -33,6 +33,8 @@ import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton"
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
 import SiteFormNew from "../../components/Sites/SiteFormNew";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
+import {Spinner} from "react-bootstrap";
 
 
 class ListFormNew extends Component {
@@ -101,6 +103,7 @@ class ListFormNew extends Component {
             showFieldErrors:false,
             items:[],
             loading:false,
+            loadingProducts:false,
             types: ["sale", "rental"],
             addressMismatch:false
         };
@@ -870,6 +873,9 @@ class ListFormNew extends Component {
 
     getProductsNoParentNoListingNoRelease=async () => {
 
+        this.setState({
+            loadingProducts:true
+        })
         const url = baseUrl + "seek?name=Product&no_parent=true&relation=belongs_to&count=false&no-from-relation=Listing:listing_of&no-from-relation=ProductRelease:release_for";
 
 
@@ -877,7 +883,14 @@ class ListFormNew extends Component {
 
 
              // fetchErrorMessage(error)
+            this.setState({
+                loadingProducts:false
+            })
 
+        }).finally(()=>{
+            this.setState({
+                loadingProducts:false
+            })
         });
 
 
@@ -1122,6 +1135,17 @@ class ListFormNew extends Component {
 
                                                 <div className="row">
                                                     <div className="col-4">
+                                                        {this.state.loadingProducts&&
+
+                                                        <Spinner
+                                                            className="mr-2"
+                                                            as="span"
+                                                            animation="border"
+                                                            size="sm"
+                                                            role="status"
+                                                            aria-hidden="true"
+                                                        />
+                                                        }
                                                 {this.state.items&&this.state.items.length>0&&
                                                 <ProductTreeView
                                                     items={this.state.items}
@@ -1242,7 +1266,7 @@ class ListFormNew extends Component {
 
                                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                    <MobileDatePicker
+                                                    <DesktopDatePicker
 
                                                         className={"full-width-field"}
                                                         disableHighlightToday={true}
@@ -1254,9 +1278,14 @@ class ListFormNew extends Component {
                                                         id="date-picker-dialog-1"
                                                         inputFormat="dd/MM/yyyy"
                                                         value={this.state.startDate}
-                                                        renderInput={(params) => <CustomizedInput {...params} />}
+                                                        // renderInput={(params) => <CustomizedInput {...params} />}
                                                         onChange={(value)=>this.handleChange(value,"startDate")}
-
+                                                        renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                            <div className="custom-calander-container">
+                                                                <CustomizedInput ref={inputRef} {...inputProps} />
+                                                                <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                            </div>
+                                                        )}
                                                     />
                                                 </LocalizationProvider>
 
@@ -1274,7 +1303,7 @@ class ListFormNew extends Component {
                                                 </div>
                                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                    <MobileDatePicker
+                                                    <DesktopDatePicker
                                                         disableHighlightToday={true}
 
                                                         minDate={new Date()}
@@ -1286,8 +1315,13 @@ class ListFormNew extends Component {
                                                         inputFormat="dd/MM/yyyy"
                                                         value={this.state.endDate}
                                                         // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.props.item&&this.props.item.campaign.end_ts}
-
-                                                        renderInput={(params) => <CustomizedInput {...params} />}
+                                                        renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                            <div className="custom-calander-container">
+                                                                <CustomizedInput ref={inputRef} {...inputProps} />
+                                                                <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                            </div>
+                                                        )}
+                                                        // renderInput={(params) => <CustomizedInput {...params} />}
                                                         onChange={(value)=>this.handleChange(value,"endDate")}
 
                                                     />
@@ -1352,7 +1386,7 @@ class ListFormNew extends Component {
                                                                         name={"price"}
                                                                         error={this.state.showFieldErrors&&this.state.errors["price"]}
                                                                         id="outlined-basic"
-
+                                                                        numberInput
                                                                         rows={4}
                                                                         variant="outlined"
                                                                         fullWidth={true}

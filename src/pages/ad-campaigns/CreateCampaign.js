@@ -19,15 +19,16 @@ import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import {Spinner} from "react-bootstrap";
 import Select from "@mui/material/Select";
 import {campaignStrategyUrl, createCampaignUrl} from "../../Util/Api";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import DescriptionIcon from "@mui/icons-material/Description";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
-var slugify = require('slugify')
+import {DesktopDatePicker} from "@mui/x-date-pickers";
+let slugify = require('slugify')
 
 class CreateCampaign extends Component {
 
@@ -1334,7 +1335,7 @@ let item=null
 
                                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                        <MobileDatePicker
+                                                        <DesktopDatePicker
 
                                                             disableHighlightToday={true}
                                                             minDate={new Date()}
@@ -1351,7 +1352,13 @@ let item=null
                                                             // onChange={this.handleChangeDateStartDate.bind(
                                                             //     this
                                                             // )}
-                                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                                <div className="custom-calander-container">
+                                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                                </div>
+                                                            )}
+                                                            // renderInput={(params) => <CustomizedInput {...params} />}
                                                             onChange={(value)=>this.handleChange(value,"startDate")}
 
                                                         />
@@ -1371,7 +1378,7 @@ let item=null
                                                     </div>
                                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                        <MobileDatePicker
+                                                        <DesktopDatePicker
                                                             disableHighlightToday={true}
 
                                                             minDate={new Date()}
@@ -1383,8 +1390,13 @@ let item=null
                                                             inputFormat="dd/MM/yyyy"
                                                             value={this.state.endDate}
                                                             // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.state.item&&this.state.item.campaign.end_ts}
-
-                                                            renderInput={(params) => <CustomizedInput {...params} />}
+                                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                                <div className="custom-calander-container">
+                                                                    <CustomizedInput ref={inputRef} {...inputProps} />
+                                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                                </div>
+                                                            )}
+                                                            // renderInput={(params) => <CustomizedInput {...params} />}
                                                             onChange={(value)=>this.handleChange(value,"endDate")}
 
                                                         />
@@ -1882,15 +1894,9 @@ let item=null
 
                                                     variant="contained"
                                                     color="primary"
-                                                    onClick={(e)=> {
-
-                                                        this.handleNext(e)}}
-
-
-
+                                                    onClick={(e)=> {this.handleNext(e)}}
                                                     loading={this.state.loading}
                                                     disabled={this.state.loading}
-
                                                     className={" btn-gray-border "}
                                                     title={this.state.files.length > 0 ? (
                                                             this.state.files.filter((item) => item.status === 0).length >
@@ -1901,7 +1907,6 @@ let item=null
                                                 </GreenSmallBtn>
                                             </div>
                                             <div className="col-6 text-right pe-5 mt-0">
-                                        {/*{this.state.activeStep===2&&*/}
                                         <GreenSmallBtn
 
                                             variant="contained"

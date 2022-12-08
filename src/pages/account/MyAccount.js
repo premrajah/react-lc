@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import React, {useEffect} from "react";
+import {connect} from "react-redux";
 import SettingsWhite from "../../img/icons/settings-blue.png";
 import PageHeader from "../../components/PageHeader";
 import Layout from "../../components/Layout/Layout";
@@ -10,9 +10,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import EditAccount from "./EditAccount";
 import CompanyInfo from "./CompanyInfo";
-import TransferScaling from "./TransferScaling";
 import Statistics from "../../views/loop-cycle/Statistics";
-import ChangePassword from "../../components/Account/ChangePassword";
 import ManageRole from "../../components/Account/ManageRole";
 import SystemManageUser from "../../components/Account/SystemManageUser";
 import ManageOrgUsers from "../../components/Account/ManageOrgUsers";
@@ -92,10 +90,10 @@ function MyAccount(props) {
                                         onChange={handleChange}
                                         aria-label="Vertical tabs example"
                                         sx={{ borderRight: 1, borderColor: "divider" }}>
-                                        <Tab key={0} label="Personal Info" value={0} />
-                                        <Tab key={1} label="Company Info" value={1} />
-                                        <Tab key={2} label="Change Password" value={2} />
-                                        <Tab key={3} label="Product Lines" value={3} />
+                                        <Tab key={0} label="Personal Information" value={0} />
+                                        <Tab key={1} label="Company Information" value={1} />
+                                        {/*<Tab key={2} label="Change Password" value={2} />*/}
+                                        {/*<Tab key={3} label="Product Lines" value={3} />*/}
                                         <Tab key={4} label="Statistics" value={4} />
                                         {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
                                             <Tab key={5} label="Manage Users" value={5} />
@@ -126,12 +124,10 @@ function MyAccount(props) {
                                     <TabPanel value={value} index={1}>
                                         <CompanyInfo />
                                     </TabPanel>
-                                    <TabPanel value={value} index={2}>
-                                        <ChangePassword />
-                                    </TabPanel>
-                                    <TabPanel value={value} index={3}>
-                                        <ProductLines />
-                                    </TabPanel>
+
+                                    {/*<TabPanel value={value} index={3}>*/}
+                                    {/*   */}
+                                    {/*</TabPanel>*/}
                                     <TabPanel value={value} index={4}>
                                         <Statistics />
                                     </TabPanel>
@@ -180,8 +176,6 @@ function MyAccount(props) {
 
 const mapStateToProps = (state) => {
     return {
-        // age: state.age,
-        // cartItems: state.cartItems,
         loading: state.loading,
         isLoggedIn: state.isLoggedIn,
         userDetail: state.userDetail,

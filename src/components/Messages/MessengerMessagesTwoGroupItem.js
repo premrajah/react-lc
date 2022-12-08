@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { Chip, Divider, ListItem, ListItemText } from "@mui/material";
-import OrgComponent from "../Org/OrgComponent";
-import TooltipDisplay from "../Org/TooltipDisplay";
+import {Chip, ListItem, ListItemText} from "@mui/material";
 
 const MessengerMessagesTwoGroupItem = ({
     group,
@@ -11,22 +9,38 @@ const MessengerMessagesTwoGroupItem = ({
 }) => {
 
 
+    const [clicked,setClicked]=useState(false);
+
+    useEffect(()=>{
+
+        // alert(group.unread_count_for_org)
+    },[group.unread_count_for_org])
     const handleListItemClick = () => {
+
+        setClicked(true)
+
         handleSelectedItemCallback(index);
-        handleGroupClickCallback(group.message_group._key);
+        handleGroupClickCallback(group.message_group._key,true);
     };
+
+
 
     return (
         <>
-            <ListItem id={`group-${group._key}`} key={`group-${group._key}`} onClick={() => handleListItemClick()} component="div">
+            <ListItem id={`group-${group._key}`} key={`group-${group._key}`}
+                      onClick={() => handleListItemClick(true)} component="div">
                 <ListItemText
-
-                    className={"my-msg-class"}
+                    className={"my-msg-class me-1"}
                     primary={
-                        group.orgs.length > 0 &&
-                        group.orgs.filter(item=> item._id!=userOrg).map((org, index) => <HandleOrgDisplay org={org} index={index} />)
+                        group.orgs.length>0&&(   group.orgs.length > 1 ?
+                        group.orgs.filter(item=> item._id!=userOrg).map((org, index) =>
+                            <HandleOrgDisplay org={org} index={index} />):
+                            group.orgs.map((org, index) =>
+                                <HandleOrgDisplay org={org} index={index} />))
                     }
                 />
+
+                {group.unread_count_for_org>0&&<span className="new-message-bubble text-14"  >{group.unread_count_for_org}</span>}
 
             </ListItem>
         </>

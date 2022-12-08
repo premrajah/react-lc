@@ -45,7 +45,6 @@ class ProductAutocomplete extends Component {
             loading:false,
             showCompanyCreateForm:false,
             newCompany:false,
-
             fields: {},
             errors: {},
         };
@@ -93,6 +92,20 @@ class ProductAutocomplete extends Component {
             })
 
         }
+
+
+        if (this.props.initial){
+
+            this.props.selectedProduct({
+                name: this.props.initial.name,
+                key: this.props.initial._key,
+            });
+
+            this.setState({
+                userInput:this.props.initial.name,
+                selected:true
+            })
+        }
     }
 
     timeout = 0;
@@ -113,7 +126,7 @@ class ProductAutocomplete extends Component {
         this.setState({
             loading:true
         })
-            axios.get(encodeURI(`${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&or=name~%${key}%&sort_by=name:ASC`))
+            axios.get(encodeURI(`${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&or=name~${key}%&sort_by=name:ASC`))
                 .then((response) => {
 
                 this.setState({
@@ -318,7 +331,8 @@ class ProductAutocomplete extends Component {
             image: null,
         });
 
-        this.props.selectedCompany({
+
+        this.props.selectedProduct({
             name: null,
             key: null,
 
@@ -418,9 +432,9 @@ class ProductAutocomplete extends Component {
                     </div>
 
                     </div>
-                    <div className={"col-2 text-center"}>
+                    {!this.props.disableEdit&&  <div className={"col-2 text-center"}>
                         <span onClick={this.resetSelection} className={"edit-item custom-click"}><PencilIcon style={{color:"#AAAAAA",fontSize: "40px"}} className={"fa fa-pencil"}/></span>
-                    </div>
+                    </div>}
                 </div>}
 
 

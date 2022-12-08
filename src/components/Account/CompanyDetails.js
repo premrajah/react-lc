@@ -291,7 +291,7 @@ class CompanyDetails extends Component {
 
     submitFirstLogin = () => {
         axios
-            .post(`${baseUrl}org/cache`, {
+            .post(`${baseUrl}user/cache`, {
                 key: "not_first_login",
                 value: "true",
             })
@@ -883,13 +883,13 @@ class CompanyDetails extends Component {
                             {this.state.orgs.length > 1 && <>
                             <div className="col-lg-4 col-md-6 mt-2">Switch Company:</div>
                             <div className="col-lg-4 col-md-6 mt-2 ">
-                                <MenuDropdown
+                                {this.props.userContext&&   <MenuDropdown
                                     setSelection={this.switchOrg}
                                     initialValue={this.props.userContext.orgId}
-                                    options={this.state.orgs}
+                                    options={this.state.orgs.filter((org)=>org.name!=this.props.userDetail.email)}
                                     option={"name"}
                                     valueKey={"_key"}
-                                />
+                                />}
                             </div>
                                 </>}
                             <div className="col-lg-4 col-md-6 mt-2 ">
@@ -1112,7 +1112,9 @@ class CompanyDetails extends Component {
 
                                        <Tab label="General" value="1" />
 
-                                       {this.props.userContext&&this.props.userContext.perms&&this.props.userContext.perms.includes("OrgAdminWrite") &&        <Tab label="Settings" value="2"/>}
+                                       {/*{this.props.userContext&&this.props.userContext.perms&&this.props.userContext.perms.includes("OrgAdminWrite") &&  */}
+                                       {/*<Tab label="Settings" value="2"/>*/}
+                                       {/*}*/}
 
                                    </TabList>
                                </Box>

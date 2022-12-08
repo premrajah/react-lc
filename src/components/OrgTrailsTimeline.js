@@ -1,6 +1,6 @@
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
-import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import TimelineOppositeContent, {timelineOppositeContentClasses} from "@mui/lab/TimelineOppositeContent";
 import Typography from "@mui/material/Typography";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineDot from "@mui/lab/TimelineDot";
@@ -9,6 +9,8 @@ import TimelineContent from "@mui/lab/TimelineContent";
 import moment from "moment";
 import React from "react";
 import { makeStyles } from "@mui/styles";
+import OrgComponent from "./Org/OrgComponent";
+import {ArrowCircleUp} from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
     text: {
@@ -45,7 +47,13 @@ function OrgTrailsTimeline(props) {
 
     return (
         <>
-            <Timeline>
+            <Timeline
+                sx={{
+                    [`& .${timelineOppositeContentClasses.root}`]: {
+                        flex: 1,
+                    },
+                }}
+            >
                 {props.orgTrails
                     .filter((item) => item._relation === "belongs_to")
                     .map((item, index) => (
@@ -56,12 +64,17 @@ function OrgTrailsTimeline(props) {
                                         variant="p"
                                         component="p"
                                         // style={{ color: "#05AD88" }}
+                                        className={"mt-2 me-2"}
                                     >
-                                        <span>
-                                            <span className={"text-caps sub-title-text-pink"}>  {item.org.name}</span>
-                                            <br/>
-                                            <span className={" text-capitlize text-gray-light"}>{item.org.description}</span>
-                                        </span>
+                                        <OrgComponent
+                                            org={item.org}
+                                        />
+
+                                        {/*<span className="">*/}
+                                        {/*    <span className={"text-caps sub-title-text-pink"}>  {item.org.name}</span>*/}
+                                        {/*    <br/>*/}
+                                        {/*    <span className={" text-capitlize text-gray-light"}>{item.org.description}</span>*/}
+                                        {/*</span>*/}
                                     </Typography>
                                 {/*</Paper>*/}
                             </TimelineOppositeContent>
@@ -76,7 +89,7 @@ function OrgTrailsTimeline(props) {
                                     {/*<BusinessIcon />*/}
                                 </TimelineDot>
 
-                                {props.orgTrails.filter((item) => item._relation === "belongs_to")
+                                {props.orgTrails.filter((item) => item._relation === "past_owner")
                                     .length > 0 && (
                                     <TimelineConnector
                                         style={{ backgroundColor: "#05AD88", height: "100px" }}
@@ -85,7 +98,9 @@ function OrgTrailsTimeline(props) {
                             </TimelineSeparator>
 
                             <TimelineContent>
-                                <Typography>
+                                <Typography
+                                    className={"mt-1 me-2"}
+                                >
                                     <p className={"text-blue"}>
                                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>
@@ -103,24 +118,36 @@ function OrgTrailsTimeline(props) {
                                     <Typography
                                         variant="p"
                                         component="p"
-                                       >
-                                        <span className={"text-caps "}>
-                                            {item.org.name}
-                                            {item.org.description && ", " + item.org.description}
-                                        </span>
+                                        className={"mt-0 me-2"}
+                                    >
+                                        <OrgComponent colorClass="text-blue"
+                                            org={item.org}
+                                        />
+                                        {/*<span className={"text-caps "}>*/}
+                                        {/*    {item.org.name}*/}
+                                        {/*    {item.org.description && ", " + item.org.description}*/}
+                                        {/*</span>*/}
                                     </Typography>
                                 {/*</Paper>*/}
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>
-                                <TimelineDot
+                                <ArrowCircleUp
                                     style={{
-                                        backgroundColor: "#05AD88",
+                                        color: "#05AD88",
                                         width: "25px",
                                         height: "25px",
-                                    }}>
-                                    {/*<BusinessIcon />*/}
-                                </TimelineDot>
+                                    }}
+                                />
+                                {/*<TimelineDot*/}
+                                {/*    style={{*/}
+                                {/*        backgroundColor: "#05AD88",*/}
+                                {/*        width: "25px",*/}
+                                {/*        height: "25px",*/}
+                                {/*    }}>*/}
+                                {/*    <ArrowCircleUp style={{alignSelf: "center", align: "center"}}/>*/}
+                                {/*    /!*<BusinessIcon />*!/*/}
+                                {/*</TimelineDot>*/}
 
                                 {props.orgTrails.filter((item) => item._relation === "past_owner")
                                     .length >
@@ -130,8 +157,10 @@ function OrgTrailsTimeline(props) {
                                     />
                                 )}
                             </TimelineSeparator>
-                            <TimelineContent>
-                                <Typography>
+                            <TimelineContent sx={{mt: -0.5}}>
+                                <Typography
+                                    className={"mt-0 me-2"}
+                                >
                                     <p className={"text-blue"}>
                                         {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </p>

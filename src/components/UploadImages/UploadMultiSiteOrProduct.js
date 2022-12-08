@@ -9,7 +9,6 @@ import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import EditSite from "../Sites/EditSite";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import SiteForm from "../Sites/SiteForm";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import * as XLSX from 'xlsx';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -26,6 +25,7 @@ let productProperties=[
     {field:"name",required:true},
     {field:"description",required:true},
     {field:"external_reference",required:false},
+    {field:"parent_reference",required:false},
     {field:"condition",required:true},
     {field:"purpose",required:true},
     {field:"year_of_making",required:false},
@@ -40,10 +40,13 @@ let productProperties=[
     {field:"sku",required:false},
     {field:"upc",required:false},
     {field:"part_no",required:false},
-    {field:"line",required:false},
-    {field:"is_listable",required:false},
+
+
+
     // {field:"is_manufacturer",required:false},
+    {field:"line",required:false},
     {field:"power_supply",required:false},
+    {field:"is_listable",required:false},
     {field:"energy_rating",required:false},
 ]
 
@@ -87,17 +90,18 @@ const UploadMultiSiteOrProduct = (props) => {
 
     useEffect(() => {
 
-        if(props.popUpType=="isProduct") {
+        if(props.popUpType==="isProduct") {
             props.loadSites();
             setIsProduct(true)
             setIsSite(false)
-        }else if(props.popUpType=="isSite") {
+        }else if(props.popUpType==="isSite") {
             props.loadSites();
             setIsProduct(false)
             setIsSite(true)
         }
 
     }, [])
+
 
 
     const INITIAL_VALUES = {
@@ -143,33 +147,37 @@ const UploadMultiSiteOrProduct = (props) => {
         let result = validateInputs(validations)
 
        setErrors(result.errors);
+
+        // console.log(result)
         return result.formIsValid;
     }
 
     const  handleChange=(value, field) =>{
 
 
-        if (field==="artifact"){
+        try {
 
-            setFileName(value.name)
-            let tmppath = URL.createObjectURL(value);
+            if (field === "artifact") {
+
+                setFileName(value.name)
+                let tmppath = URL.createObjectURL(value);
 
 
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                /* Parse data */
-                const bstr = evt.target.result;
-                const wb = XLSX.read(bstr, { type: 'binary' });
-                /* Get first worksheet */
-                const wsname = wb.SheetNames[0];
-                const ws = wb.Sheets[wsname];
-                /* Convert array of arrays */
-                const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
-                processData(data);
-            };
-            reader.readAsBinaryString(value);
+                const reader = new FileReader();
+                reader.onload =  async (evt) => {
+                    /* Parse data */
+                    const bstr = evt.target.result;
+                    const wb = XLSX.read(bstr, {type: 'binary'});
+                    /* Get first worksheet */
+                    const wsname = wb.SheetNames[0];
+                    const ws = wb.Sheets[wsname];
+                    /* Convert array of arrays */
+                    const data =  XLSX.utils.sheet_to_csv(ws, {header: 1});
+                     processData(data);
+                };
+                const a =  reader.readAsBinaryString(value);
 
-        }
+            }
 
             let fieldsLocal = fields;
 
@@ -178,12 +186,17 @@ const UploadMultiSiteOrProduct = (props) => {
             setFields(fieldsLocal)
             handleValidation()
 
+
+        }catch (e){
+            console.log(e)
+        }
     }
 
 
 
     // process CSV data
     const processData = dataString => {
+
 
         const dataStringLines = dataString.split(/\r\n|\n/);
         const headers = dataStringLines[0].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
@@ -192,14 +205,14 @@ const UploadMultiSiteOrProduct = (props) => {
         for (let i = 1; i < dataStringLines.length; i++) {
 
             const row = dataStringLines[i].split(/,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/);
-            if (headers && row.length == headers.length) {
+            if (headers && row.length === headers.length) {
                 const obj = {};
                 for (let j = 0; j < headers.length; j++) {
                     let d = row[j];
                     if (d.length > 0) {
-                        if (d[0] == '"')
+                        if (d[0] === '"')
                             d = d.substring(1, d.length - 1);
-                        if (d[d.length - 1] == '"')
+                        if (d[d.length - 1] === '"')
                             d = d.substring(d.length - 2, 1);
                     }
                     if (headers[j]) {
@@ -213,6 +226,8 @@ const UploadMultiSiteOrProduct = (props) => {
                 }
             }
         }
+
+
 
         setList(listLocal)
 
@@ -232,6 +247,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
+                    console.log("Product errors length",headers.length, productProperties[i].length)
                     return
                 }
                 if (!(productProperties[i].field.toLowerCase() === headers[i].toLowerCase())) {
@@ -244,9 +260,11 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
+                    console.log("Product errors field",productProperties[i].field.toLowerCase(),headers[i].toLowerCase())
 
                     return
                 }
+
 
             }
 
@@ -274,6 +292,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     setErrors(errorsFound)
                     errorFound = true
 
+
                     return
                 }
 
@@ -285,24 +304,25 @@ const UploadMultiSiteOrProduct = (props) => {
 
             let artifactError=null
 
-            for (let i = 0; i < list.length; i++) {
+            for (let i = 0; i < listLocal.length; i++) {
 
                 if(isProduct){
                     for (let k = 0; k < productProperties.length; k++) {
 
-                        if (!list[i][productProperties[k].field] && productProperties[k].required) {
+                        if (!listLocal[i][productProperties[k].field] && productProperties[k].required) {
 
                             artifactError=(artifactError?artifactError+", ":"")+ "Entry:"+(i+1)+" Missing "+productProperties[k].field
 
                          }
                   }
+
                }
                 if(isSite){
 
 
                     for (let k = 0; k < siteProperties.length; k++) {
 
-                        if (!list[i][siteProperties[k].field] && siteProperties[k].required) {
+                        if (!listLocal[i][siteProperties[k].field] && siteProperties[k].required) {
 
                             artifactError=(artifactError?artifactError+", ":"")+ "Entry:"+(i+1)+" Missing "+siteProperties[k].field
 
@@ -318,6 +338,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     error: true,
                     message: artifactError
                 }
+
                 setErrors(errorsFound)
                 return
 
@@ -334,7 +355,6 @@ const UploadMultiSiteOrProduct = (props) => {
         let parentId;
         event.preventDefault();
         if (!handleValidation()) {
-
 
             setShowErrors(true)
             return
@@ -478,11 +498,12 @@ const UploadMultiSiteOrProduct = (props) => {
                     "external_reference": listItem.external_reference,
                     "condition": listItem.condition,
                     "purpose": listItem.purpose,
+                    "parent_reference": listItem.parent_reference,
                     "year_of_making": listItem.year_of_making? listItem.year_of_making:0,
-                    "category": listItem.category,
-                    "type": listItem.type,
-                    "state": listItem.state,
-                    "units": listItem.units,
+                    "category": listItem.category.trim(),
+                    "type": listItem.type.trim(),
+                    "state": listItem.state.trim(),
+                    "units": listItem.units.trim(),
                     "volume": listItem.volume?listItem.volume:0,
                     "brand": listItem.brand,
                     "model": listItem.model,

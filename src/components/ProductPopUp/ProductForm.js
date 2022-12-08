@@ -1595,7 +1595,7 @@ let slugify = require('slugify')
                                             // details="A unique number used by external systems"
                                             initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_tons:""
                                                 ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_tons:"")
-                                            } name="embodied_carbon_tons" title="Embodied Carbon (Tons)" />
+                                            } name="embodied_carbon_tons" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
 
                                     </div>
                                     <div className="col-md-4 col-sm-6 col-xs-6">
@@ -1604,7 +1604,7 @@ let slugify = require('slugify')
                                             // details="A unique number used by external systems"
                                             initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""
                                                 ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")
-                                            } name="gross_weight_kgs" title="Gross Weight (Kgs)" />
+                                            } name="gross_weight_kgs" title="Gross Weight (Kg)" />
 
                                     </div>
 

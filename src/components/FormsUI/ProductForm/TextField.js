@@ -113,7 +113,7 @@ const TextFieldWrapper = ({
                 <div className={"text-gray-light  mb-0 ellipsis-end"}>{explanation}</div>
             )}
 
-            <div className={`${type != "hidden" ? "field-box " : "d-none"} ${noMargin?"":"mb-2"}`}>
+            <div className={`${type !== "hidden" ? "field-box " : "d-none"} ${noMargin?"":"mb-2"}`}>
                 <CustomizedInput
 
 

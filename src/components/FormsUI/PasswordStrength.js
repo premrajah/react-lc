@@ -88,7 +88,7 @@ class PasswordStrength extends React.Component {
             this.setState({
 
                 passwordStrength:strength,
-                passwordStrengthHeading:strength==100?"Strong Password":"Weak Password"
+                passwordStrengthHeading:strength===100?"Strong Password":"Weak Password"
             })
 
 

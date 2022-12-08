@@ -208,7 +208,7 @@ class EventItem extends Component {
                     var responseAll = response.data.data;
 
 
-                    if (type=="edit")
+                    if (type==="edit")
                     this.setState({
                         editEvent:responseAll,
                     })
@@ -272,7 +272,7 @@ class EventItem extends Component {
                         events:this.state.events.concat(response.data.data)
                     })
 
-                    if (response.data.data.length == size) {
+                    if (response.data.data.length === size) {
                         this.getEvents( offset + size,type);
                     }else{
 
@@ -324,7 +324,7 @@ class EventItem extends Component {
           if (event.recur&&event.recur.value&&event.recur.unit){
 
 
-              let unit=event.recur.unit=="DAY"?"DAILY":event.recur.unit=="WEEK"?"WEEKLY":event.recur.unit=="MONTH"?"MONTHLY": event.recur.unit=="YEAR"?"YEARLY":""
+              let unit=event.recur.unit==="DAY"?"DAILY":event.recur.unit==="WEEK"?"WEEKLY":event.recur.unit==="MONTH"?"MONTHLY": event.recur.unit==="YEAR"?"YEARLY":""
 
               return `FREQ=${unit};INTERVAL=${event.recur.value}`
 
@@ -338,7 +338,7 @@ class EventItem extends Component {
 
 
 
-        if (type=="csv"){
+        if (type==="csv"){
             let csvDataNew = [];
             events.forEach(item => {
                 const {product, event, service_agent} = item;
@@ -521,7 +521,7 @@ class EventItem extends Component {
 
 
 
-                        <span  className={`${this.props.events.length==0?"d-none":""}`}>
+                        <span  className={`${this.props.events.length===0?"d-none":""}`}>
                             {this.props.smallView &&
 
 
@@ -1061,8 +1061,8 @@ class EventItem extends Component {
                                 <div className="d-flex justify-content-center col-6">
 
 
-                                    <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType=="csv")}
-                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType=="csv")} title={"Download CSV"}
+                                    <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType==="csv")}
+                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType==="csv")} title={"Download CSV"}
 
                                                   onClick={()=>{
 
@@ -1081,8 +1081,8 @@ class EventItem extends Component {
                                 <div className="d-flex justify-content-center col-6">
 
 
-                                    <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType=="ics")}
-                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType=="ics")} title={"Download Calendar"} onClick={()=>{
+                                    <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")}
+                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")} title={"Download Calendar"} onClick={()=>{
 
                                         this.setState({
                                             events:[]

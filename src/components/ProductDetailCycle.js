@@ -1062,14 +1062,17 @@ class ProductDetailCycle extends Component {
                         ) : null}
 
                         </>:
-                                    <Spinner
+                                    <div className="row ">
+                                        <div className="col-12 ">    <Spinner
                                         className="mr-2"
                                         as="span"
                                         animation="border"
                                         size="sm"
                                         role="status"
                                         aria-hidden="true"
-                                    />}
+                                    />
+                                        </div>
+                                    </div>}
 
                     </div>
                         </div>

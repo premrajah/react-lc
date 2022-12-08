@@ -25,6 +25,7 @@ let productProperties=[
     {field:"name",required:true},
     {field:"description",required:true},
     {field:"external_reference",required:false},
+    {field:"parent_reference",required:false},
     {field:"condition",required:true},
     {field:"purpose",required:true},
     {field:"year_of_making",required:false},
@@ -39,10 +40,13 @@ let productProperties=[
     {field:"sku",required:false},
     {field:"upc",required:false},
     {field:"part_no",required:false},
-    {field:"line",required:false},
-    {field:"is_listable",required:false},
+
+
+
     // {field:"is_manufacturer",required:false},
+    {field:"line",required:false},
     {field:"power_supply",required:false},
+    {field:"is_listable",required:false},
     {field:"energy_rating",required:false},
 ]
 
@@ -144,7 +148,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
        setErrors(result.errors);
 
-        console.log(result)
+        // console.log(result)
         return result.formIsValid;
     }
 
@@ -243,6 +247,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
+                    console.log("Product errors length",headers.length, productProperties[i].length)
                     return
                 }
                 if (!(productProperties[i].field.toLowerCase() === headers[i].toLowerCase())) {
@@ -255,6 +260,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
+                    console.log("Product errors field",productProperties[i].field.toLowerCase(),headers[i].toLowerCase())
 
                     return
                 }
@@ -285,6 +291,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
+
 
                     return
                 }
@@ -348,7 +355,6 @@ const UploadMultiSiteOrProduct = (props) => {
         let parentId;
         event.preventDefault();
         if (!handleValidation()) {
-
 
             setShowErrors(true)
             return
@@ -492,6 +498,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     "external_reference": listItem.external_reference,
                     "condition": listItem.condition,
                     "purpose": listItem.purpose,
+                    "parent_reference": listItem.parent_reference,
                     "year_of_making": listItem.year_of_making? listItem.year_of_making:0,
                     "category": listItem.category.trim(),
                     "type": listItem.type.trim(),

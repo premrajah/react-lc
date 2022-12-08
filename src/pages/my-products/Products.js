@@ -663,11 +663,11 @@ class Products extends Component {
                             />
                         </div>
                         <div className={"row justify-content-center"}>
-                            <div className={"col-10 text-center"}>
+                            <div className={"col-12 text-left"}>
                                 <h5
                                     style={{ textTransform: "Capitalize" }}
                                     className={"text-bold text-blue"}>
-                                    Download Multiple QR Codes
+                                    Download Multiple Cycle Codes
                                 </h5>
                             </div>
                         </div>
@@ -681,12 +681,14 @@ class Products extends Component {
                                     <div className="col-12 ">
 
                                         <TextFieldWrapper
+                                            numberInput
                                             // readonly ={this.state.disableVolume}
                                             initialValue={this.state.selectedItem&&this.state.selectedItem.factor+""}
                                             // value={this.state.disableVolume?"0":""}
                                             onChange={(value)=>this.handleChange(value,"count")}
                                             error={this.state.errors["count"]}
-                                            name="count" title="Enter required number of Qr codes to be downloaded" />
+                                            placeholder={"Enter required number of Cycle codes"}
+                                            name="count"  />
 
                                     </div>
 
@@ -696,7 +698,7 @@ class Products extends Component {
 
 
                                 <div className={"row"}>
-                                    <div className="col-12 mt-4">
+                                    <div className="col-12 d-flex justify-content-center mt-2">
                                         <button
                                             type={"submit"}
                                             className={

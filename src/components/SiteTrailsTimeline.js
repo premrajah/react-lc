@@ -18,6 +18,7 @@ import CustomPopover from "./FormsUI/CustomPopover";
 import {TRANSPORT_MODES} from "../Util/Constants";
 import OrgComponent from "./Org/OrgComponent";
 import TimelineOppositeContent, {timelineOppositeContentClasses,} from '@mui/lab/TimelineOppositeContent';
+import GlobalDialog from "./RightBar/GlobalDialog";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -94,11 +95,11 @@ function SiteTrailsTimeline(props) {
     return (
         <div>
 
-          <div className="d-flex flex-row justify-content-center mt-2">  {
+          <div className="d-flex flex-column text-center justify-content-center mt-2">  {
                 props.distanceTotals && props.distanceTotals.carbon.carbon_kgs > 0 && <>
 
                                 <span className={" text-label text-blue mb-1 text-label"}>Transport Emissions : {props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} kgCO<sub>2</sub>e</span>
-                                <br/>
+
                                 <span className="text-14"> {(props.distanceTotals.distance.value/1000).toLocaleString(undefined, {maximumFractionDigits:2})} kms&nbsp;</span>
 
                 </>
@@ -225,47 +226,48 @@ function SiteTrailsTimeline(props) {
             </Timeline>
 
                 <>
+                    <GlobalDialog
 
-                    <Modal
-                        className={"loop-popup"}
-                        aria-labelledby="contained-modal-title-vcenter"
+                        size={"lg"}
+                        hide={handleMapModal}
                         show={showMap}
-                        centered
-                        onHide={handleMapModal}
-                        animation={false}>
-                        <ModalBody>
-                            <div style={{position: "absolute",
-                                right: "5px",top:"5px",zIndex:1}} className=" text-right web-only">
-                                <Close
-                                    onClick={()=>{handleMapModal()}}
-                                    className="blue-text click-item"
-                                    style={{ fontSize: 32 }}
-                                />
-                            </div>
+                        // heading={"Add new site"}
+                    >
+
+
+                    {/*<Modal*/}
+                    {/*    className={"loop-popup"}*/}
+                    {/*    aria-labelledby="contained-modal-title-vcenter"*/}
+                    {/*    show={showMap}*/}
+                    {/*    centered*/}
+                    {/*    onHide={handleMapModal}*/}
+                    {/*    animation={false}>*/}
+                    {/*    <ModalBody>*/}
+                    {/*        <div style={{position: "absolute",*/}
+                    {/*            right: "5px",top:"5px",zIndex:1}} className=" text-right web-only">*/}
+                    {/*            <Close*/}
+                    {/*                onClick={()=>{handleMapModal()}}*/}
+                    {/*                className="blue-text click-item"*/}
+                    {/*                style={{ fontSize: 32 }}*/}
+                    {/*            />*/}
+                    {/*        </div>*/}
 
 
 
-                            {site &&
-                            <div className={"row"}>
-                                <div className={"col-12"}>
+
+                    {/*        <div className={"row"}>*/}
+                        {site && <div className={"col-12"}>
                                     <GoogleMap
-
                                         width={"100%"}
-                                        height={"300px"}
+                                        height={"460px"}
                                         siteId={site._key}
-                                    //      locations={[{
-                                    //     name: site.name,
-                                    //     location: site.geo_codes[0].address_info.geometry.location,
-                                    //     isCenter: true,
-                                    // }]}
-
                                         locations={locations}
                                     />
-                                </div>
-                            </div>}
-                        </ModalBody>
-                    </Modal>
-
+                                </div>}
+                    {/*        </div>}*/}
+                    {/*    </ModalBody>*/}
+                    {/*</Modal>*/}
+                    </GlobalDialog>
                 </>
 
 

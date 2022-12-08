@@ -150,7 +150,9 @@ function SiteTrailsTimeline(props) {
                                     className={"mt-1 me-2"}
                                 >
                                     <p className={"text-blue"}>
-                                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
+                                        {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
+                                        handleMapModal(item.site.site)} />}
+
                                     </p>
                                 </Typography>
 
@@ -160,8 +162,7 @@ function SiteTrailsTimeline(props) {
                                     variant="subtitle1"
                                     component="div">
                                     <Typography variant="caption" component="div">
-                                    {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
-                                        handleMapModal(item.site.site)} />}
+                                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
                                     </Typography>
                                         <OrgComponent
                                         org={item.site.org}
@@ -202,7 +203,8 @@ function SiteTrailsTimeline(props) {
                                     className="mt-1 me-2"
                                 >
                                     <p className={"text-blue"}>
-                                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
+                                        {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&  <MapIcon  onClick={() => handleMapModal(item.site.site)} style={{color:"#05AD88"}}/>}
+
                                     </p>
                                 </Typography>
 
@@ -211,8 +213,8 @@ function SiteTrailsTimeline(props) {
                                     variant="subtitle1"
                                     component="div">
                                     <Typography variant="caption" component="div">
-                                    {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&  <MapIcon  onClick={() => handleMapModal(item.site.site)} style={{color:"#05AD88"}}/>}
-                                    </Typography>
+                                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
+                                       </Typography>
                                         <OrgComponent colorClass="text-blue"
                                                       org={item.site.org}
                                         />

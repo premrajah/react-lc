@@ -150,7 +150,7 @@ function SiteTrailsTimeline(props) {
                                     className={"mt-1 me-2"}
                                 >
                                     <p className={"text-blue"}>
-                                        {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
+                                        {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
                                         handleMapModal(item.site.site)} />}
 
                                     </p>
@@ -203,7 +203,7 @@ function SiteTrailsTimeline(props) {
                                     className="mt-1 me-2"
                                 >
                                     <p className={"text-blue"}>
-                                        {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&  <MapIcon  onClick={() => handleMapModal(item.site.site)} style={{color:"#05AD88"}}/>}
+                                        {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&  <MapIcon  onClick={() => handleMapModal(item.site.site)} style={{color:"#05AD88"}}/>}
 
                                     </p>
                                 </Typography>

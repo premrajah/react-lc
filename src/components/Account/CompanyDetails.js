@@ -883,13 +883,13 @@ class CompanyDetails extends Component {
                             {this.state.orgs.length > 1 && <>
                             <div className="col-lg-4 col-md-6 mt-2">Switch Company:</div>
                             <div className="col-lg-4 col-md-6 mt-2 ">
-                                <MenuDropdown
+                                {this.props.userContext&&   <MenuDropdown
                                     setSelection={this.switchOrg}
                                     initialValue={this.props.userContext.orgId}
                                     options={this.state.orgs.filter((org)=>org.name!=this.props.userDetail.email)}
                                     option={"name"}
                                     valueKey={"_key"}
-                                />
+                                />}
                             </div>
                                 </>}
                             <div className="col-lg-4 col-md-6 mt-2 ">

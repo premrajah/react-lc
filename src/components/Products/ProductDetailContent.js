@@ -1147,6 +1147,7 @@ class ProductDetailContent extends Component {
                             hide={this.showReleaseProductPopUp}
                         >
                             <>
+                                {this.state.showReleaseProduct&&<>
                                 <div className={"col-6 d-none text-center"}>
                                     <BlueButton
                                         title={"Release Internally"}
@@ -1812,7 +1813,7 @@ class ProductDetailContent extends Component {
                                         </TabContext>
                                     </Box>
                                 </div>
-
+</>}
 
                             </>
 

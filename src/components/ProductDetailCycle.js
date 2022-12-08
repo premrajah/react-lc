@@ -84,7 +84,7 @@ class ProductDetailCycle extends Component {
             siteTrails: null,
             distanceTrails:null,
             distanceTotals:null,
-            timelineDisplay: "org",
+            timelineDisplay: "site",
             zoomQrCode:false,
             trailLoading:false
 
@@ -1018,7 +1018,7 @@ class ProductDetailCycle extends Component {
 
 
                                 {!this.state.trailLoading ?   <>
-                        <div className="row ">
+                        <div className="row d-none ">
                             <div className="col-12 ">
                                 <FormControl component="fieldset">
                                     <RadioGroup
@@ -1062,14 +1062,17 @@ class ProductDetailCycle extends Component {
                         ) : null}
 
                         </>:
-                                    <Spinner
+                                    <div className="row ">
+                                        <div className="col-12 ">    <Spinner
                                         className="mr-2"
                                         as="span"
                                         animation="border"
                                         size="sm"
                                         role="status"
                                         aria-hidden="true"
-                                    />}
+                                    />
+                                        </div>
+                                    </div>}
 
                     </div>
                         </div>

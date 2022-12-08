@@ -101,7 +101,10 @@ const TextFieldWrapper = ({
         <>
             {title &&!hidden&& (
                 <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
-                    <span className="mr-1">{title}</span>
+                    {/*<span className="mr-1">{title}</span>*/}
+                    <span
+                        dangerouslySetInnerHTML={{__html:title}}
+                        className={"title-bold"} style={{ textTransform: "capitalize" }} />
                     {details && (
                         <CustomPopover heading={detailsHeading} text={details}>
                             <InfoIcon />

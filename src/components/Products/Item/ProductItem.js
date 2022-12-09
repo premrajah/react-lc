@@ -351,8 +351,8 @@ class ProductItemNew extends Component {
                         {/*  Purpose: <span className={"text-blue"}> {this.props.item.purpose}</span>*/}
                         {/*</p>*/}
                         <div className={"text-gray-light mt-1 mb-1"}>
-                            Category:
-                            <span className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
+                            <span className="me-1">Category:</span>
+                            <span className="text-capitlize mb-1 cat-box text-left p-1">
                                 <span className="text-capitlize">
                                     {capitalize(this.props.item.category)}
                                 </span>
@@ -374,7 +374,7 @@ class ProductItemNew extends Component {
 
                         {this.props.item.sku && this.props.item.sku.brand && (
                             <p className={"text-capitalize text-gray-light mb-1"}>
-                                Brand:
+                                <span className="me-1">Brand:</span>
                                 <span className={"sub-title-text-pink"}>
                                     {this.props.item.sku.brand}
                                 </span>
@@ -383,14 +383,14 @@ class ProductItemNew extends Component {
 
                         {this.props.item.sku && this.props.item.sku.serial && (
                             <p className={"text-capitalize text-gray-light mb-1"}>
-                                Serial No.:
+                                <span className="me-1">Serial No.:</span>
                                 <span className={"text-blue"}>{this.props.item.sku.serial}</span>
                             </p>
                         )}
 
                         {this.state.productSite && (
                             <p className={"text-capitalize text-gray-light mb-1"}>
-                                Site:
+                                <span className="me-1">Site:</span>
                                 <span className={"text-blue"}>{this.state.productSite.name}</span>
                             </p>
                         )}

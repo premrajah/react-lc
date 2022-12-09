@@ -202,7 +202,7 @@ class Products extends Component {
         if (this.props.match.params.id) {
             let id = this.props.match.params.id;
 
-            if (id && id == "new") {
+            if (id && id === "new") {
                 this.setState({
                     productId: null,
                 });
@@ -320,7 +320,7 @@ class Products extends Component {
 
                     for (let i = 0; i < mapData.length; i++) {
                         let site = sites.find(
-                            (site) => site.product_id.replace("Product/", "") == mapData[i]._key
+                            (site) => site.product_id.replace("Product/", "") === mapData[i]._key
                         );
                         mapData[i].site = site.site;
                     }

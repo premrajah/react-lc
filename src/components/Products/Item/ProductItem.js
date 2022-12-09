@@ -515,8 +515,8 @@ class ProductItemNew extends Component {
                     <ModalBody>
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
-                                <p className={"text-bold"}>Untrack Product</p>
-                                <p>Are you sure you want to untrack ?</p>
+                                <p className={"text-bold"}>Un-track Product</p>
+                                <p>Are you sure you want to un-track ?</p>
                             </div>
                         </div>
 

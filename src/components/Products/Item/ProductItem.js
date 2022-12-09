@@ -175,7 +175,7 @@ class ProductItemNew extends Component {
             })
             .then(
                 (response) => {
-                    var res = response.data.data;
+                    let res = response.data.data;
 
                     this.setState({
                         images: res,

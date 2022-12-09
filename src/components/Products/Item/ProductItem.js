@@ -334,9 +334,9 @@ class ProductItemNew extends Component {
                                         .filter((item) => item.Release.stage !== "cancelled")
                                         .map((item) => (
                                             <small className="ms-2">
-                                                {item.responder._id !=
+                                                {item.responder._id !==
                                                     this.props.userDetail.orgId &&
-                                                item.Release.stage == "requested"
+                                                item.Release.stage === "requested"
                                                     ? "(Awaiting release approval)"
                                                     : ""}
                                             </small>

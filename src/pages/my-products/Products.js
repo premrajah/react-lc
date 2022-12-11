@@ -359,7 +359,7 @@ class Products extends Component {
     downloadMultipleQrCodes = (event) => {
         event.preventDefault();
 
-        if (this.state.type != "delete" && !this.handleValidationScaling()) {
+        if (this.state.type !== "delete" && !this.handleValidationScaling()) {
             return;
         }
 
@@ -425,6 +425,7 @@ class Products extends Component {
                                     style={{ borderBottom: "1px solid #70707062" }}>
                                     <div className="col-12  ">
                                         <a
+                                            href
                                             onClick={this.getSitesForProducts}
                                             className=" btn-sm btn-gray-border  me-2">
                                             {/*<MapIcon style={{fontSize:"20px"}} /> */}

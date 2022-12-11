@@ -12,6 +12,7 @@ import ProductDetail from "../ProductDetail";
 import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
 import {Add, Info} from "@mui/icons-material";
 import {capitalize} from "../../../Util/GlobalFunctions";
+import OCVCDisplay from "../../UIComponents/OCVCDisplay";
 
 class ProductItemNew extends Component {
     constructor(props) {
@@ -33,6 +34,7 @@ class ProductItemNew extends Component {
             showPreview: false,
             releases: [],
             productSite: null,
+            showHideOCVCDisplay: false,
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -143,6 +145,12 @@ class ProductItemNew extends Component {
             showTrackPopUp: !this.state.showTrackPopUp,
         });
     };
+
+    toggleOCVCDisplay = () => {
+        this.setState({
+            showHideOCVCDisplay: !this.state.showHideOCVCDisplay,
+        });
+    }
 
     handleUnTrackProduct = () => {
         axios
@@ -432,8 +440,10 @@ class ProductItemNew extends Component {
                         )}
 
                         <p className={"text-gray-light date-bottom"}>
-                            {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
+                            {(baseUrl && this.props.isLoggedIn && baseUrl  === "https://graph-dev.makealoop.io/api/2/") && <span className="me-1 click-item" onClick={() => this.toggleOCVCDisplay()}>{this.state.showHideOCVCDisplay ? 'Close' : 'View'} OC-VC |</span>}
+                            <span>{moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}</span>
                         </p>
+
 
                         {!this.props.hideMore && (
                             <div className="top-right">
@@ -448,6 +458,10 @@ class ProductItemNew extends Component {
                             </div>
                         )}
                     </div>
+                    {this.state.showHideOCVCDisplay && <div>
+                        <div className="text-pink click-item" onClick={this.toggleOCVCDisplay}>Close OC-VC</div>
+                        <OCVCDisplay productId={this.props.item ? this.props.item._key : ""} />
+                    </div>}
                 </div>
 
                 <Modal

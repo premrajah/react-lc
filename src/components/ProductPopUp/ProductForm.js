@@ -507,7 +507,7 @@ let slugify = require('slugify')
                     const external_reference = data.get("external_reference")
                     const power_supply = data.get("power_supply");
                     const energy_rating = this.state.energyRating;
-                    const embodied_carbon_tons = data.get("embodied_carbon_tons");
+                    const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
                     const gross_weight_kgs = data.get("gross_weight_kgs");
 
 
@@ -533,7 +533,7 @@ let slugify = require('slugify')
                             sku: sku,
                             upc: upc,
                             part_no: part_no,
-                            embodied_carbon_tons: embodied_carbon_tons?embodied_carbon_tons:0,
+                            embodied_carbon_kgs: embodied_carbon_kgs?embodied_carbon_kgs:0,
                             gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:0
 
                         },
@@ -827,7 +827,7 @@ let slugify = require('slugify')
                const external_reference = data.get("external_reference")
                 const site = data.get("deliver");
                const power_supply = data.get("power_supply");
-                const embodied_carbon_tons = data.get("embodied_carbon_tons");
+                const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
                 const gross_weight_kgs = data.get("gross_weight_kgs");
 
                 let productData = {
@@ -856,7 +856,7 @@ let slugify = require('slugify')
                             upc: upc,
                             part_no: part_no,
                             // power_supply: power_supply,
-                            embodied_carbon_tons: embodied_carbon_tons?embodied_carbon_tons:0,
+                            embodied_carbon_kgs: embodied_carbon_kgs?embodied_carbon_kgs:0,
                             gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:0
                         },
                         year_of_making: Number(data.get("manufacturedDate")),
@@ -1591,11 +1591,11 @@ let slugify = require('slugify')
 
                                     <div className="col-md-4 col-sm-6 col-xs-6">
                                         <TextFieldWrapper
-                                            onChange={(value)=>this.handleChangeProduct(value,"embodied_carbon_tons")}
+                                            onChange={(value)=>this.handleChangeProduct(value,"embodied_carbon_kgs")}
                                             // details="A unique number used by external systems"
-                                            initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_tons:""
-                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_tons:"")
-                                            } name="embodied_carbon_tons" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
+                                            initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_kgs:""
+                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_kgs:"")
+                                            } name="embodied_carbon_kgs" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
 
                                     </div>
                                     <div className="col-md-4 col-sm-6 col-xs-6">

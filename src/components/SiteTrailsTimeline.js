@@ -102,15 +102,9 @@ function SiteTrailsTimeline(props) {
                 </>
             }
           </div>
-            <Timeline
-            //     sx={{
-            //     [`& .${timelineOppositeContentClasses.root}`]: {
-            //         flex: 1,
-            //     },
-            // }}
-            >
+            <Timeline>
                 {props.siteTrails
-                    .filter((item) => item._relation === "located_at")
+                    // .filter((item) => item._relation === "located_at")
                     .map((item, index) => (
 
                         <TimelineItem  key={index}>
@@ -118,26 +112,35 @@ function SiteTrailsTimeline(props) {
                                 sx={{ mt: 7, mr: 2 }}
                             >
 
-                                <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails} symbol="+" />
+                                <DistanceTrailPopOver index={index}  isFirst={true} item={item} distanceTrails={props.distanceTrails} symbol="+" />
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>
-                                <TimelineDot
+                                {item._relation === "located_at"?
+                                    <TimelineDot
                                     style={{
-                                        backgroundColor: "#27245C",
+                                        backgroundColor: `${item._relation === "located_at"?"#27245C":"#05AD88"}`,
                                         width: "25px",
                                         height: "25px",
                                     }}>
+                                </TimelineDot>:
 
-                                </TimelineDot>
-
-
-                                {props.siteTrails.filter((item) => item._relation === "was_located_at")
-                                    .length > 0 && (
-                                    <TimelineConnector
+                                <ArrowCircleUp
+                                              style={{
+                                                                color: "#05AD88",
+                                                                width: "25px",
+                                                                height: "25px",
+                                                            }}
+                                                        />}
+                                {(props.siteTrails.length>0 &&(props.siteTrails.length-1>index)   )&& <TimelineConnector
                                         style={{ backgroundColor: "#05AD88", height: "100px" }}
-                                    />
-                                )}
+                                    />}
+                                {/*{props.siteTrails.filter((item) => item._relation === "was_located_at")*/}
+                                {/*    .length > 0 && (*/}
+                                {/*    <TimelineConnector*/}
+                                {/*        style={{ backgroundColor: "#05AD88", height: "100px" }}*/}
+                                {/*    />*/}
+                                {/*)}*/}
                             </TimelineSeparator>
 
                             <TimelineContent
@@ -170,58 +173,58 @@ function SiteTrailsTimeline(props) {
 
                     ))}
 
-                {props.siteTrails
-                    .filter((item) => item._relation === "was_located_at")
-                    .map((item, index) => <>
-                        <TimelineItem >
-                            <TimelineOppositeContent sx={{ mt: 7, mr: 2 }}>
-                                <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails}  symbol="+"/>
-                            </TimelineOppositeContent>
+                {/*{props.siteTrails*/}
+                {/*    .filter((item) => item._relation === "was_located_at")*/}
+                {/*    .map((item, index) => <>*/}
+                {/*        <TimelineItem >*/}
+                {/*            <TimelineOppositeContent sx={{ mt: 7, mr: 2 }}>*/}
+                {/*                /!*<DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails}  symbol="+"/>*!/*/}
+                {/*            </TimelineOppositeContent>*/}
 
-                            <TimelineSeparator>
-                                <ArrowCircleUp
-                                    style={{
-                                        color: "#05AD88",
-                                        width: "25px",
-                                        height: "25px",
-                                    }}
-                                />
-                                {props.siteTrails.filter(
-                                    (item) => item._relation === "was_located_at"
-                                ).length >
-                                    index + 1 && (
-                                    <TimelineConnector
-                                        style={{ backgroundColor: "#05AD88", height: "100px" }}
-                                    />
-                                )}
-                            </TimelineSeparator>
-                            <TimelineContent  sx={{mt: -0.5}}>
-                                <Typography
-                                    className="mt-1 me-2"
-                                >
-                                    <p className={"text-blue text-14"}>
-                                        {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&  <MapIcon  onClick={() => handleMapModal(item.site.site)} style={{color:"#05AD88"}}/>}
+                {/*            <TimelineSeparator>*/}
+                {/*                <ArrowCircleUp*/}
+                {/*                    style={{*/}
+                {/*                        color: "#05AD88",*/}
+                {/*                        width: "25px",*/}
+                {/*                        height: "25px",*/}
+                {/*                    }}*/}
+                {/*                />*/}
+                {/*                {props.siteTrails.filter(*/}
+                {/*                    (item) => item._relation === "was_located_at"*/}
+                {/*                ).length >*/}
+                {/*                    index + 1 && (*/}
+                {/*                    <TimelineConnector*/}
+                {/*                        style={{ backgroundColor: "#05AD88", height: "100px" }}*/}
+                {/*                    />*/}
+                {/*                )}*/}
+                {/*            </TimelineSeparator>*/}
+                {/*            <TimelineContent  sx={{mt: -0.5}}>*/}
+                {/*                <Typography*/}
+                {/*                    className="mt-1 me-2"*/}
+                {/*                >*/}
+                {/*                    <p className={"text-blue text-14"}>*/}
+                {/*                        {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&  <MapIcon  onClick={() => handleMapModal(item.site.site)} style={{color:"#05AD88"}}/>}*/}
 
-                                    </p>
-                                </Typography>
+                {/*                    </p>*/}
+                {/*                </Typography>*/}
 
-                                <Typography
-                                    className="blue-text"
-                                    variant="subtitle1"
-                                    component="div">
-                                    <Typography variant="caption" component="div">
-                                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}
-                                       </Typography>
-                                        <OrgComponent colorClass="text-blue"
-                                                      org={item.site.org}
-                                        />
+                {/*                <Typography*/}
+                {/*                    className="blue-text"*/}
+                {/*                    variant="subtitle1"*/}
+                {/*                    component="div">*/}
+                {/*                    <Typography variant="caption" component="div">*/}
+                {/*                        {moment(item._ts_epoch_ms).format("DD MMM YYYY")}*/}
+                {/*                       </Typography>*/}
+                {/*                        <OrgComponent colorClass="text-blue"*/}
+                {/*                                      org={item.site.org}*/}
+                {/*                        />*/}
 
-                                </Typography>
-                            </TimelineContent>
-                        </TimelineItem>
+                {/*                </Typography>*/}
+                {/*            </TimelineContent>*/}
+                {/*        </TimelineItem>*/}
 
-                    </>
-                    )}
+                {/*    </>*/}
+                {/*    )}*/}
             </Timeline>
 
                 <>
@@ -277,6 +280,186 @@ function SiteTrailsTimeline(props) {
 
 
 
+const OldTimeline=(props)=>{
+   return(
+       <div>
+
+        {/*<div className="d-flex flex-column text-center justify-content-center mt-2">  {*/}
+        {/*    props.distanceTotals && props.distanceTotals.carbon.carbon_kgs > 0 && <>*/}
+
+        {/*        <span className={" text-label text-blue mb-1 text-label"}>Transport Emissions : {props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} kgCO<sub>2</sub>e</span>*/}
+
+        {/*        <span className="text-14"> {(props.distanceTotals.distance.value/1000).toLocaleString(undefined, {maximumFractionDigits:2})} kms&nbsp;</span>*/}
+
+        {/*    </>*/}
+        {/*}*/}
+        {/*</div>*/}
+        {/*<Timeline>*/}
+        {/*    {props.siteTrails*/}
+        {/*        .filter((item) => item._relation === "located_at")*/}
+        {/*        .map((item, index) => (*/}
+
+        {/*            <TimelineItem  key={index}>*/}
+        {/*                <TimelineOppositeContent*/}
+        {/*                    sx={{ mt: 7, mr: 2 }}*/}
+        {/*                >*/}
+
+        {/*                    <DistanceTrailPopOver index={index}  isFirst={true} item={item} distanceTrails={props.distanceTrails} symbol="+" />*/}
+        {/*                </TimelineOppositeContent>*/}
+
+        {/*                <TimelineSeparator>*/}
+        {/*                    <TimelineDot*/}
+        {/*                        style={{*/}
+        {/*                            backgroundColor: "#27245C",*/}
+        {/*                            width: "25px",*/}
+        {/*                            height: "25px",*/}
+        {/*                        }}>*/}
+
+        {/*                    </TimelineDot>*/}
+
+
+        {/*                    {props.siteTrails.filter((item) => item._relation === "was_located_at")*/}
+        {/*                        .length > 0 && (*/}
+        {/*                        <TimelineConnector*/}
+        {/*                            style={{ backgroundColor: "#05AD88", height: "100px" }}*/}
+        {/*                        />*/}
+        {/*                    )}*/}
+        {/*                </TimelineSeparator>*/}
+
+        {/*                <TimelineContent*/}
+
+        {/*                >*/}
+        {/*                    <Typography*/}
+        {/*                        className={"mt-1 me-2"}*/}
+        {/*                    >*/}
+        {/*                        <p className={"text-blue text-14"}>*/}
+        {/*                            {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>*/}
+        {/*                            handleMapModal(item.site.site)} />}*/}
+
+        {/*                        </p>*/}
+        {/*                    </Typography>*/}
+
+        {/*                    <Typography*/}
+
+        {/*                        className="blue-text mt-1"*/}
+        {/*                        variant="subtitle1"*/}
+        {/*                        component="div">*/}
+        {/*                        <Typography variant="caption" component="div">*/}
+        {/*                            {moment(item._ts_epoch_ms).format("DD MMM YYYY")}*/}
+        {/*                        </Typography>*/}
+        {/*                        <OrgComponent*/}
+        {/*                            org={item.site.org}*/}
+        {/*                        />*/}
+        {/*                    </Typography>*/}
+        {/*                </TimelineContent>*/}
+        {/*            </TimelineItem>*/}
+
+        {/*        ))}*/}
+
+        {/*    {props.siteTrails*/}
+        {/*        .filter((item) => item._relation === "was_located_at")*/}
+        {/*        .map((item, index) => <>*/}
+        {/*                <TimelineItem >*/}
+        {/*                    <TimelineOppositeContent sx={{ mt: 7, mr: 2 }}>*/}
+        {/*                        <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails}  symbol="+"/>*/}
+        {/*                    </TimelineOppositeContent>*/}
+
+        {/*                    <TimelineSeparator>*/}
+        {/*                        <ArrowCircleUp*/}
+        {/*                            style={{*/}
+        {/*                                color: "#05AD88",*/}
+        {/*                                width: "25px",*/}
+        {/*                                height: "25px",*/}
+        {/*                            }}*/}
+        {/*                        />*/}
+        {/*                        {props.siteTrails.filter(*/}
+        {/*                            (item) => item._relation === "was_located_at"*/}
+        {/*                        ).length >*/}
+        {/*                        index + 1 && (*/}
+        {/*                            <TimelineConnector*/}
+        {/*                                style={{ backgroundColor: "#05AD88", height: "100px" }}*/}
+        {/*                            />*/}
+        {/*                        )}*/}
+        {/*                    </TimelineSeparator>*/}
+        {/*                    <TimelineContent  sx={{mt: -0.5}}>*/}
+        {/*                        <Typography*/}
+        {/*                            className="mt-1 me-2"*/}
+        {/*                        >*/}
+        {/*                            <p className={"text-blue text-14"}>*/}
+        {/*                                {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&  <MapIcon  onClick={() => handleMapModal(item.site.site)} style={{color:"#05AD88"}}/>}*/}
+
+        {/*                            </p>*/}
+        {/*                        </Typography>*/}
+
+        {/*                        <Typography*/}
+        {/*                            className="blue-text"*/}
+        {/*                            variant="subtitle1"*/}
+        {/*                            component="div">*/}
+        {/*                            <Typography variant="caption" component="div">*/}
+        {/*                                {moment(item._ts_epoch_ms).format("DD MMM YYYY")}*/}
+        {/*                            </Typography>*/}
+        {/*                            <OrgComponent colorClass="text-blue"*/}
+        {/*                                          org={item.site.org}*/}
+        {/*                            />*/}
+
+        {/*                        </Typography>*/}
+        {/*                    </TimelineContent>*/}
+        {/*                </TimelineItem>*/}
+
+        {/*            </>*/}
+        {/*        )}*/}
+        {/*</Timeline>*/}
+
+        {/*<>*/}
+        {/*    <GlobalDialog*/}
+
+        {/*        size={"lg"}*/}
+        {/*        hide={handleMapModal}*/}
+        {/*        show={showMap}*/}
+        {/*        // heading={"Add new site"}*/}
+        {/*    >*/}
+
+
+        {/*        /!*<Modal*!/*/}
+        {/*        /!*    className={"loop-popup"}*!/*/}
+        {/*        /!*    aria-labelledby="contained-modal-title-vcenter"*!/*/}
+        {/*        /!*    show={showMap}*!/*/}
+        {/*        /!*    centered*!/*/}
+        {/*        /!*    onHide={handleMapModal}*!/*/}
+        {/*        /!*    animation={false}>*!/*/}
+        {/*        /!*    <ModalBody>*!/*/}
+        {/*        /!*        <div style={{position: "absolute",*!/*/}
+        {/*        /!*            right: "5px",top:"5px",zIndex:1}} className=" text-right web-only">*!/*/}
+        {/*        /!*            <Close*!/*/}
+        {/*        /!*                onClick={()=>{handleMapModal()}}*!/*/}
+        {/*        /!*                className="blue-text click-item"*!/*/}
+        {/*        /!*                style={{ fontSize: 32 }}*!/*/}
+        {/*        /!*            />*!/*/}
+        {/*        /!*        </div>*!/*/}
+
+
+
+
+        {/*        /!*        <div className={"row"}>*!/*/}
+        {/*        {site && <div className={"col-12"}>*/}
+        {/*            <GoogleMap*/}
+        {/*                width={"100%"}*/}
+        {/*                height={"460px"}*/}
+        {/*                siteId={site._key}*/}
+        {/*                locations={locations}*/}
+        {/*            />*/}
+        {/*        </div>}*/}
+        {/*        /!*        </div>}*!/*/}
+        {/*        /!*    </ModalBody>*!/*/}
+        {/*        /!*</Modal>*!/*/}
+        {/*    </GlobalDialog>*/}
+        {/*</>*/}
+
+
+
+    </div>)
+}
+
 
 const DistanceTrailPopOver=(props)=>{
 
@@ -285,16 +468,15 @@ const DistanceTrailPopOver=(props)=>{
     let index=props.index
     return(
         <>
-            {(props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id)
-                &&props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.carbon.carbon_kgs >= 0)
+            {/*{props.index<props.distanceTrails.length&&props.index}*/}
+            {
+                (props.index<props.distanceTrails.length)&&
+                (props.distanceTrails[(props.index)].trail.carbon.carbon_kgs >= 0)
             &&
             <>
 
 
                     <Typography
-                        // sx={{ mt: 7, me: 2 }}
-                        // className={"mt-2 me-2"}
-                        // className={"mt-1 me-2"}
 
                         style={{ opacity: "1" }}>
 

@@ -343,12 +343,11 @@ class EventForm extends Component {
         ]
 
 
-        if (this.state.showRepeatIntervalSelection)
+        if (this.state.showRepeatIntervalSelection){
             validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
 
-
-
+        }
 
 
 

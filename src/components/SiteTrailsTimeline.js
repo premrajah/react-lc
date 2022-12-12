@@ -121,7 +121,7 @@ function SiteTrailsTimeline(props) {
                                 sx={{ mt: 7, mr: 2 }}
                             >
 
-                                <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails} symbol="=" />
+                                <DistanceTrailPopOver index={index}  item={item} distanceTrails={props.distanceTrails} symbol="+" />
                             </TimelineOppositeContent>
 
                             <TimelineSeparator>

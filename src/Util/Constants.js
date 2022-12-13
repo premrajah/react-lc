@@ -105,8 +105,8 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
     {key:"type",label:"Type" },
     {key:"state",label:"State"},
     {key:"year_of_making",label:"Year Of Manufacture"},
-    {key:"model",label:"Model"},
-    {key:"serial",label:"Serial No."},
+    {key:"sku.model",label:"Model"},
+    {key:"sku.serial",label:"Serial No."},
 ];
 
 

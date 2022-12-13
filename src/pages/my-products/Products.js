@@ -157,10 +157,6 @@ class Products extends Component {
 
         let newOffset = this.state.offset;
 
-        // let url = createSeekURL("product", true,
-        //     false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND")
-
-        //&with-edge=true
         let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
 
         this.filters.forEach((item) => {

@@ -56,7 +56,7 @@ let slugify = require('slugify')
                 isEditProduct:false,
                 count: 0,
                 nextIntervalFlag: false,
-                activePage: 0, //0 logn. 1- sign up , 3 -search,
+                activePage: 0, //0 logon. 1- sign up , 3 -search,
                 categories: [],
                 subCategories: [],
                 catSelected: {},
@@ -192,7 +192,7 @@ let slugify = require('slugify')
 
             let newFiles = [];
 
-            for (var i = 0; i < event.target.files.length; i++) {
+            for (let i = 0; i < event.target.files.length; i++) {
                 files.push({ file: event.target.files[i], status: 0, id: null });
                 newFiles.push({ file: event.target.files[i], status: 0, id: null });
             }
@@ -208,11 +208,11 @@ let slugify = require('slugify')
         handleCancel(e) {
             e.preventDefault();
 
-            var index = e.currentTarget.dataset.index;
-            var name = e.currentTarget.dataset.name;
-            var url = e.currentTarget.dataset.url;
+            let index = e.currentTarget.dataset.index;
+            let name = e.currentTarget.dataset.name;
+            let url = e.currentTarget.dataset.url;
 
-            var files = this.state.files.filter((item) => item.file.name !== name);
+            let files = this.state.files.filter((item) => item.file.name !== name);
             this.setState({
                 artifacts: this.state.artifacts.filter(item=> item.name!==name)
             })
@@ -224,7 +224,7 @@ let slugify = require('slugify')
 
             // images.splice(index,1)
 
-            var images = [];
+            let images = [];
             for (let k = 0; k < files.length; k++) {
                 if (files[k].id) {
                     images.push(files[k].id);
@@ -551,7 +551,7 @@ let slugify = require('slugify')
                         productData._id = "Product/" + this.props.createProductId
                     }
 
-                    var completeData;
+                    let completeData;
 
                     // if (this.props.parentProduct) {
                     completeData = {
@@ -729,7 +729,7 @@ let slugify = require('slugify')
             })
             for (let k = 0; k < artifacts.length; k++) {
 
-                var fileItem = {
+                let fileItem = {
                     status: 1,
                     id: artifacts[k]._key,
                     imgUrl: artifacts[k].blob_url,
@@ -911,7 +911,7 @@ let slugify = require('slugify')
 
 
         componentDidUpdate(prevProps, prevState, snapshot) {
-            if (prevProps!=this.props){
+            if (prevProps!==this.props){
 
                 if (this.props.item){
                     this.isManufacturer()
@@ -1044,13 +1044,13 @@ let slugify = require('slugify')
             })
             this.getFiltersCategories();
 
-            if (type=='new') {
+            if (type==='new') {
                 this.setState({
                     parentProductId: productId?productId:null,
                     showForm: true
                 })
             }
-            else if (type=='parent') {
+            else if (type==='parent') {
                 this.setState({
                     parentProductId: productId,
                     showForm: false
@@ -1125,10 +1125,10 @@ let slugify = require('slugify')
 
 
                                         this.setState({
-                                            selectedTemplate:this.state.templates.find(item=>item.key==value.currentTarget.value )
+                                            selectedTemplate:this.state.templates.find(item=>item.key===value.currentTarget.value )
                                         })
 
-                                        this.loadImages(this.state.templates.find(item=>item.key==value.currentTarget.value).value.artifacts)
+                                        this.loadImages(this.state.templates.find(item=>item.key===value.currentTarget.value).value.artifacts)
 
 
                                     }}
@@ -1870,7 +1870,7 @@ let slugify = require('slugify')
         };
     };
 
-    const mapDispachToProps = (dispatch) => {
+    const mapDispatchToProps = (dispatch) => {
         return {
             logIn: (data) => dispatch(actionCreator.logIn(data)),
             signUp: (data) => dispatch(actionCreator.signUp(data)),
@@ -1899,4 +1899,4 @@ let slugify = require('slugify')
 
         };
     };
-    export default  connect(mapStateToProps, mapDispachToProps)(ProductForm);
+    export default  connect(mapStateToProps, mapDispatchToProps)(ProductForm);

@@ -1908,6 +1908,11 @@ button.blue-btn-border {
     line-height: 1.4em;
 }
 
+.btn-green:hover,
+.btn-green:active {
+    background-color: #046852;
+}
+
 .btn-pink {
     background: #d31169;
     color: white;

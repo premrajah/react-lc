@@ -333,7 +333,7 @@ class Sites extends Component {
                                 <Link onClick={()=> {
                                     this.toggleSite(false)
                                 }}  className="btn-gray-border  me-2  click-item">
-                                    Add Sites / Address
+                                    Add Site / Address
                                 </Link>
 
                                 <Link onClick={this.toggleMultiSite} className="btn-gray-border    me-2 click-item">
@@ -389,7 +389,7 @@ class Sites extends Component {
                     size={"sm"}
                     hide={this.toggleSite}
                     show={this.state.showCreateSite}
-                    heading={"Add new site"}>
+                    heading={"Add site"}>
                     <>
                         {this.state.showCreateSite && <div className="col-12 ">
 

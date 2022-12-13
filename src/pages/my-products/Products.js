@@ -39,6 +39,7 @@ class Products extends Component {
             fields: {},
             errors: {},
             loading: false,
+            downloadAllLoading:false,
             items: [],
             lastPageReached: false,
             offset: 0,
@@ -48,6 +49,8 @@ class Products extends Component {
             showProductPopUp: false,
             productId: null,
             showProductLine: false,
+            activeQueryUrl:null,
+            allDownloadItems:[]
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -106,6 +109,84 @@ class Products extends Component {
         });
     };
 
+    downloadAll = (page=0,size=100) => {
+
+        this.setState({
+            downloadAllLoading: true,
+        });
+
+     let   url = `${this.state.activeQueryUrl}&offset=${page}&size=${size}`;
+
+
+        axios.get(url).then(
+            (response) => {
+                let responseAll = response.data.data;
+
+                if (responseAll.length===0){
+                    this.setState({
+                        downloadAllLoading: false,
+                    });
+
+
+
+                    this.handleSaveCSV(true)
+
+                }else{
+
+
+
+                    this.setState({
+                        allDownloadItems: this.state.allDownloadItems.length>0?
+                            this.state.allDownloadItems.concat(responseAll):responseAll,
+                    })
+
+                    this.downloadAll(page+size,100)
+
+
+                }
+
+
+            },
+            (error) => {
+
+                this.setState({
+                    allDownloadItems: false,
+                });
+            }
+        );
+
+
+    };
+
+
+    exportToCSV=() =>{
+
+        let data = "";
+        let tableDataNew = [];
+
+
+        const rows=this.state.allDownloadItems
+        rows.unshift(["Title","Stage","Process","Resolution Date","Recur (MS)","Recur Value","Recur Unit", "Description", "Product"])
+
+        for (const row of rows) {
+            const rowData = [];
+            for (const column of row) {
+                rowData.push(column);
+            }
+            tableDataNew.push(rowData.join(","));
+        }
+
+        data += tableDataNew.join("\n");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+        a.setAttribute("download", `product_list_${new Date().getDate()}.csv`);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+
+    }
+
     seekCount = async () => {
         let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=true`;
 
@@ -157,11 +238,20 @@ class Products extends Component {
 
         let newOffset = this.state.offset;
 
-        let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
+        // let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
+
+        let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false`;
 
         this.filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
         });
+
+        this.setState({
+            activeQueryUrl:url
+        })
+
+         url = `${url}&offset=${this.state.offset}&size=${this.state.pageSize}`;
+
 
         let result = await seekAxiosGet(url);
 
@@ -249,25 +339,49 @@ class Products extends Component {
         });
     };
 
-    handleSaveCSV = () => {
+    handleSaveCSV = (allData) => {
         const csvData = [];
-        this.state.selectedProducts.forEach((item) => {
-            const { product, site, service_agent, qr_artifact } = item;
-            return csvData.push([
-                product.name,
-                product.description,
-                product.category,
-                product.condition,
-                product.purpose,
-                product.units,
-                product.volume,
-                site.name,
-                site.address,
-                service_agent.name,
-                qr_artifact.name,
-                qr_artifact.blob_url,
-            ]);
-        });
+
+        if (allData){
+
+            console.log("all csv data",this.state.allDownloadItems)
+            this.state.allDownloadItems.forEach((item) => {
+                const { Product } = item;
+                return csvData.push([
+                    Product.name,
+                    Product.description,
+                    Product.category,
+                    Product.condition,
+                    Product.purpose,
+                    Product.units,
+                    Product.volume,
+                    // site.name,
+                    // site.address,
+                    // service_agent.name,
+                    // qr_artifact.name,
+                    // qr_artifact.blob_url,
+                ]);
+            });
+        }else{
+            this.state.selectedProducts.forEach((item) => {
+                const { product, site, service_agent, qr_artifact } = item;
+                return csvData.push([
+                    product.name,
+                    product.description,
+                    product.category,
+                    product.condition,
+                    product.purpose,
+                    product.units,
+                    product.volume,
+                    site.name,
+                    site.address,
+                    service_agent.name,
+                    qr_artifact.name,
+                    qr_artifact.blob_url,
+                ]);
+            });
+        }
+
 
         return csvData;
     };
@@ -486,7 +600,7 @@ class Products extends Component {
                         />
 
                         <div className="row">
-                            <div className="col-md-10 btn-rows">
+                            <div className="col-md-7 btn-rows">
                                 <Link
                                     to="/products-service"
                                     className=" btn-sm btn-gray-border me-2">
@@ -538,7 +652,17 @@ class Products extends Component {
                                     Upload Multiple Products
                                 </button>
                             </div>
-                            <div className="col-md-2 d-flex justify-content-end">
+                            <div className="col-md-5 d-flex justify-content-end">
+                                <div className="me-2">
+                                <CustomPopover text={"Download all products in csv."}>
+                                    <BlueSmallBtn
+                                        disabled={this.state.downloadAllLoading}
+                                        loading={this.state.downloadAllLoading}
+                                        onClick={()=>this.downloadAll(0,100)}>
+                                        Download All
+                                    </BlueSmallBtn>
+                                </CustomPopover>
+                                </div>
                                 <CustomPopover text={"Add Product Lines"}>
                                     <BlueSmallBtn onClick={this.addProductLine}>
                                         Product Lines

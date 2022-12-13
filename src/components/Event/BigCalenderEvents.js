@@ -84,7 +84,8 @@ const CustomTimeGutterHeader = ({ children }) => {
  * We are defaulting the localizer here because we are using this same
  * example on the main 'About' page in Storybook
  */
-export default function BigCalenderEvents({
+export default function
+    BigCalenderEvents({
     localizer = mLocalizer,
     showDemoLink = true,
     smallView,

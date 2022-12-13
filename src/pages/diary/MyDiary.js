@@ -28,7 +28,7 @@ class MyDiary extends Component {
                 <div className="container  pb-4 pt-4">
                     <PageHeader
                         // pageIcon={SettingsWhite}
-                        pageTitle="My Diary"
+                        pageTitle="Diary"
                         // subTitle={`Hi, ${this.props.userDetail.firstName ? this.props.userDetail.firstName : this.props.userDetail.orgId }. What can we help you with?`}
                         bottomLine={""}
                     />

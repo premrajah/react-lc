@@ -581,7 +581,7 @@ class MyCampaigns extends Component {
                     <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
-                            pageTitle="Ad Campaigns"
+                            pageTitle="Campaigns"
                             subTitle="All your ad campaigns can be found here"
                         />
 

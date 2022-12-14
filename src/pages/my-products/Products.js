@@ -119,10 +119,10 @@ class Products extends Component {
             downloadAllLoading: true,
         });
 
-     let   url = `${this.state.activeQueryUrl}&offset=${page}&size=${size}`;
+     let   url = `${this.state.activeQueryUrl}&offset=${page}&size=${size}&to=Site:located_at`;
 
 
-        axios.get(url).then(
+        axios.get(encodeURI(url)).then(
             (response) => {
                 let responseAll = response.data.data;
 

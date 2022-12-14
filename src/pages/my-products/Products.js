@@ -20,7 +20,7 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
-import {seekAxiosGet} from "../../Util/GlobalFunctions";
+import {getTimeFormat, seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
@@ -111,6 +111,10 @@ class Products extends Component {
 
     downloadAll = (page=0,size=100) => {
 
+        if (page==0)
+        this.setState({
+            allDownloadItems:[]
+        })
         this.setState({
             downloadAllLoading: true,
         });
@@ -128,19 +132,41 @@ class Products extends Component {
                     });
 
 
+                    // this.handleSaveCSV(true)
 
-                    this.handleSaveCSV(true)
+                    let csvDataNew = [];
+                    this.state.allDownloadItems.forEach(item => {
+                        const {Product, event, service_agent} = item;
+                        csvDataNew.push([
+                            Product.name,
+                            Product.description,
+                            Product.category,
+                            Product.condition,
+                            Product.purpose,
+                            Product.units,
+                            Product.volume,
+                        ])
+                    })
+                    this.exportToCSV(csvDataNew)
+
+                    // this.exportToCSV()
 
                 }else{
 
 
 
+                    let list=this.state.allDownloadItems.length>0?
+                        this.state.allDownloadItems.concat(responseAll):responseAll
+
+
+                    // console.log(list)
+
                     this.setState({
-                        allDownloadItems: this.state.allDownloadItems.length>0?
-                            this.state.allDownloadItems.concat(responseAll):responseAll,
+                        allDownloadItems: list
                     })
 
                     this.downloadAll(page+size,100)
+
 
 
                 }
@@ -150,7 +176,7 @@ class Products extends Component {
             (error) => {
 
                 this.setState({
-                    allDownloadItems: false,
+                    downloadAllLoading: false,
                 });
             }
         );
@@ -159,14 +185,16 @@ class Products extends Component {
     };
 
 
-    exportToCSV=() =>{
+    exportToCSV=(csvData) =>{
 
         let data = "";
         let tableDataNew = [];
 
 
-        const rows=this.state.allDownloadItems
-        rows.unshift(["Title","Stage","Process","Resolution Date","Recur (MS)","Recur Value","Recur Unit", "Description", "Product"])
+        const rows=csvData
+
+        rows.unshift(["Title","Description","Category","Condition","Purpose","Units",
+            "Volume"])
 
         for (const row of rows) {
             const rowData = [];
@@ -656,10 +684,12 @@ class Products extends Component {
                                 <div className="me-2">
                                 <CustomPopover text={"Download all products in csv."}>
                                     <BlueSmallBtn
+                                        title={this.state.downloadAllLoading?"":" Download All"}
                                         disabled={this.state.downloadAllLoading}
-                                        loading={this.state.downloadAllLoading}
+                                        progressLoading={this.state.downloadAllLoading}
+                                        progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
                                         onClick={()=>this.downloadAll(0,100)}>
-                                        Download All
+
                                     </BlueSmallBtn>
                                 </CustomPopover>
                                 </div>

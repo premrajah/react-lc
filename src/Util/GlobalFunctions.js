@@ -366,3 +366,10 @@ export const getNumberFromString = (txt) => {
     return numb
 };
 
+export const cleanFilename = (string) => {
+    if(!string) return;
+    let fileExtension = string.substring(string.lastIndexOf('.')+1, string.length) || string;
+    let filenameWithOutExtension = string.replace(/\.[^/.]+$/, "");
+    let cleanedFileName = filenameWithOutExtension.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    return `${cleanedFileName}.${fileExtension}`;
+}

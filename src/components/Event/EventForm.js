@@ -10,7 +10,7 @@ import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
@@ -251,7 +251,7 @@ class EventForm extends Component {
 
 
                         try {
-                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`, payload)
+                            axios.post(`${baseUrl}artifact/load?name=${cleanFilename(imgFile.file.name.toLowerCase())}`, payload)
                                 .then(res => {
 
                                     let images = [...this.state.images];

@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import docs from "../../img/icons/docs.png";
+import {cleanFilename} from "../../Util/GlobalFunctions";
 
 class WysiwygEditor extends Component{
     constructor(props){
@@ -135,7 +136,7 @@ class WysiwygEditor extends Component{
                         try {
                             axios
                                 .post(
-                                    `${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`,
+                                    `${baseUrl}artifact/load?name=${cleanFilename(imgFile.file.name.toLowerCase())}`,
                                     payload
                                 )
                                 .then((res) => {

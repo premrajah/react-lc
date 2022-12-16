@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import {withStyles} from "@mui/styles/index";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
-import {baseUrl, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FIELD_SELECTION, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
 import {CSVLink} from "react-csv";
 import {Modal, ModalBody} from "react-bootstrap";
@@ -20,10 +20,12 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
-import {getTimeFormat, seekAxiosGet} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, getTimeFormat, seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
+import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
+import {createProductUrl} from "../../Util/Api";
 
 class Products extends Component {
     constructor(props) {
@@ -50,7 +52,8 @@ class Products extends Component {
             productId: null,
             showProductLine: false,
             activeQueryUrl:null,
-            allDownloadItems:[]
+            allDownloadItems:[],
+            showFieldSelection:false
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -109,7 +112,13 @@ class Products extends Component {
         });
     };
 
-    downloadAll = (page=0,size=100) => {
+
+    fieldSelection= () => {
+        this.setState({
+            showFieldSelection: !this.state.showFieldSelection,
+        });
+    };
+    downloadAll = (page=0,size=100,data) => {
 
         if (page==0)
         this.setState({
@@ -131,25 +140,7 @@ class Products extends Component {
                         downloadAllLoading: false,
                     });
 
-
-                    // this.handleSaveCSV(true)
-
-                    let csvDataNew = [];
-                    this.state.allDownloadItems.forEach(item => {
-                        const {Product, event, service_agent} = item;
-                        csvDataNew.push([
-                            Product.name,
-                            Product.description,
-                            Product.category,
-                            Product.condition,
-                            Product.purpose,
-                            Product.units,
-                            Product.volume,
-                        ])
-                    })
-                    this.exportToCSV(csvDataNew)
-
-                    // this.exportToCSV()
+                    this.formatData(data)
 
                 }else{
 
@@ -165,9 +156,14 @@ class Products extends Component {
                         allDownloadItems: list
                     })
 
-                    this.downloadAll(page+size,100)
+                    this.downloadAll(page+size,100,data)
 
-
+                    // setTimeout(()=> {
+                    //
+                    //     console.log("start formating")
+                    //     this.formatData(data)
+                    //
+                    // },1000)
 
                 }
 
@@ -185,7 +181,46 @@ class Products extends Component {
     };
 
 
-    exportToCSV=(csvData) =>{
+    formatData=(selectedKeys)=>{
+
+        try {
+
+
+        let csvDataNew = [];
+        this.state.allDownloadItems.forEach(item => {
+            const {Product, event, service_agent} = item;
+            console.log(Product,"format start")
+            let itemTmp=[]
+            for (const key of selectedKeys.keys()) {
+                // console.log(key,selectedKeys.get(key));
+                itemTmp.push(Product[key])
+            }
+
+            // console.log(itemTmp)
+
+            csvDataNew.push(itemTmp)
+
+
+            // csvDataNew.push([
+            //     Product.name,
+            //     Product.description,
+            //     Product.category,
+            //     Product.condition,
+            //     Product.purpose,
+            //     Product.units,
+            //     Product.volume,
+            // ])
+        })
+            // console.log(csvDataNew)
+        this.exportToCSV(csvDataNew,selectedKeys)
+
+        }catch (e){
+            console.log(e)
+        }
+
+    }
+
+    exportToCSV=(csvData,selectedKeys) =>{
 
         let data = "";
         let tableDataNew = [];
@@ -193,8 +228,17 @@ class Products extends Component {
 
         const rows=csvData
 
-        rows.unshift(["Title","Description","Category","Condition","Purpose","Units",
-            "Volume"])
+        // rows.unshift(["Title","Description","Category","Condition","Purpose","Units",
+        //     "Volume"])
+
+        let itemTmp=[]
+        for (const key of selectedKeys.keys()) {
+            // console.log(key,selectedKeys.get(key));
+            itemTmp.push(PRODUCTS_FIELD_SELECTION.
+            find((itemTmp)=> itemTmp.key==key).value)
+        }
+
+        rows.unshift(itemTmp)
 
         for (const row of rows) {
             const rowData = [];
@@ -525,6 +569,34 @@ class Products extends Component {
         });
     };
 
+    handleSubmit = (event) => {
+
+
+        event.preventDefault();
+        event.stopPropagation()
+        // if (!this.handleValidationProduct()){
+        //     return
+        // }
+
+        alert("submit")
+
+        const data = new FormData(event.target);
+
+
+        console.log(data.entries())
+
+        // this.downloadAll(0,100,data)
+
+        // for (const key of data.keys()) {
+        //     console.log(key,data.get(key));
+        // }
+
+        this.downloadAll(0,100,data)
+
+
+    };
+
+
     render() {
         const classesBottom = withStyles();
         const headers = [
@@ -684,11 +756,13 @@ class Products extends Component {
                                 <div className="me-2">
                                 <CustomPopover text={"Download all products in csv."}>
                                     <BlueSmallBtn
-                                        title={this.state.downloadAllLoading?"":" Download All"}
-                                        disabled={this.state.downloadAllLoading}
-                                        progressLoading={this.state.downloadAllLoading}
-                                        progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
-                                        onClick={()=>this.downloadAll(0,100)}>
+                                        title={"Download All"}
+                                        // disabled={this.state.downloadAllLoading}
+                                        // progressLoading={this.state.downloadAllLoading}
+                                        // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
+                                        // onClick={()=>this.downloadAll(0,100)}
+                                    onClick={this.fieldSelection}
+                                    >
 
                                     </BlueSmallBtn>
                                 </CustomPopover>
@@ -741,6 +815,58 @@ class Products extends Component {
                             <>
                                 <div className="col-12 ">
                                     <ProductLines />
+                                </div>
+                            </>
+                        )}
+                    </>
+                </GlobalDialog>
+
+                <GlobalDialog
+                    allowScroll
+                    size={"md"}
+                    hide={this.fieldSelection}
+                    show={this.state.showFieldSelection}
+                    heading={"Download Product"}>
+                    <>
+                        {this.state.showFieldSelection && (
+                            <>
+                                <div className="col-12 ">
+                                    <form id={"product-field-form"} onSubmit={this.handleSubmit}>
+                                    <div className="row  mt-2">
+                                        {PRODUCTS_FIELD_SELECTION.map((item)=>
+
+                                            <div className="col-md-3 col-sm-6  justify-content-start align-items-center">
+
+                                                <CheckboxWrapper
+
+                                                    id={`${item.key}`}
+                                                    // details="When listed, product will appear in the marketplace searches"
+                                                    // initialValue={this.props.item&&this.props.item.product.is_listable||true}
+                                                    // onChange={(checked)=>this.checkListable(checked)}
+                                                    color="primary"
+                                                    name={`${item.key}`}
+                                                    title={`${item.value}`} />
+
+                                            </div>
+                                        )}
+                                    </div>
+                                        <div className="row  mt-2">
+                                            <div className="col-12 d-flex justify-content-center">
+
+                                            <BlueSmallBtn
+                                                type={"submit"}
+                                            title={this.state.downloadAllLoading?"":" Download"}
+                                            disabled={this.state.downloadAllLoading}
+                                            progressLoading={this.state.downloadAllLoading}
+                                            progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
+                                            // onClick={()=>this.downloadAll(0,100)}
+
+                                        >
+
+                                        </BlueSmallBtn>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </>
                         )}

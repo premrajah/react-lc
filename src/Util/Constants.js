@@ -110,6 +110,20 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
 ];
 
 
+export const PRODUCTS_FIELD_SELECTION = [
+    {key:"name",value:"Name" },
+    {key:"description",value:"Description" },
+    {key:"condition",value:"Condition" },
+    {key:"sku.brand",value:"Brand" },
+    {key:"category",value:"Category" },
+    {key:"type",value:"Type" },
+    {key:"state",value:"State"},
+    {key:"year_of_making",value:"Year Of Manufacture"},
+    {key:"sku.model",value:"Model"},
+    {key:"sku.serial",value:"Serial No."},
+];
+
+
 export const SITES_FILTER_VALUES = [
     {key:"name",label:"Name" },
     {key:"site id",label:"Site ID" },

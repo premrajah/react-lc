@@ -3,12 +3,14 @@ import {Checkbox} from '@mui/material'
 import {Info} from "@mui/icons-material";
 import CustomPopover from "../CustomPopover";
 
-const CheckboxWrapper = ({name,showErrorMessage, title,details,detailsHeading,onChange, legend,initialValue,error, ...otherProps}) => {
+const CheckboxWrapper = ({name,showErrorMessage,
+                             title,details,detailsHeading,onChange, legend,initialValue,error, ...otherProps}) => {
 
     const [field,setField] = useState(initialValue)
 
     useEffect(()=>{
 
+        if (onChange)
             onChange(initialValue)
 
        setField(initialValue)
@@ -44,6 +46,7 @@ const CheckboxWrapper = ({name,showErrorMessage, title,details,detailsHeading,on
             <span style={{width:"100%"}} className={""}>
 
             <Checkbox
+                name={name}
                 className={error?"border-red-error":""} checked={field} onChange={handleChange} {...configCheckbox} />
             </span>
 

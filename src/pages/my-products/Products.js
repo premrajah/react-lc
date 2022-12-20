@@ -120,98 +120,127 @@ class Products extends Component {
     };
     downloadAll = (page=0,size=100,data) => {
 
-        if (page==0)
-        this.setState({
-            allDownloadItems:[]
-        })
-        this.setState({
-            downloadAllLoading: true,
-        });
-
-     let   url = `${this.state.activeQueryUrl}&offset=${page}&size=${size}&to=Site:located_at`;
 
 
-        axios.get(encodeURI(url)).then(
-            (response) => {
-                let responseAll = response.data.data;
+        if (this.state.selectedProducts.length>0){
 
-                if (responseAll.length===0){
+            this.formatData(data,true)
+
+        }
+        else {
+            if (page == 0)
+                this.setState({
+                    allDownloadItems: []
+                })
+            this.setState({
+                downloadAllLoading: true,
+            });
+
+
+            let url = `${this.state.activeQueryUrl}&offset=${page}&size=${size}&to=Site:located_at`;
+
+
+            axios.get(encodeURI(url)).then(
+                (response) => {
+                    let responseAll = response.data.data;
+
+                    if (responseAll.length === 0) {
+                        this.setState({
+                            downloadAllLoading: false,
+                        });
+
+                        this.formatData(data)
+
+                    } else {
+
+
+                        let list = this.state.allDownloadItems.length > 0 ?
+                            this.state.allDownloadItems.concat(responseAll) : responseAll
+
+
+                        // console.log(list)
+
+                        this.setState({
+                            allDownloadItems: list
+                        })
+
+                        this.downloadAll(page + size, 100, data)
+
+                        // setTimeout(()=> {
+                        //
+                        //     console.log("start formating")
+                        //     this.formatData(data)
+                        //
+                        // },1000)
+
+                    }
+
+
+                },
+                (error) => {
+
                     this.setState({
                         downloadAllLoading: false,
                     });
-
-                    this.formatData(data)
-
-                }else{
-
-
-
-                    let list=this.state.allDownloadItems.length>0?
-                        this.state.allDownloadItems.concat(responseAll):responseAll
-
-
-                    // console.log(list)
-
-                    this.setState({
-                        allDownloadItems: list
-                    })
-
-                    this.downloadAll(page+size,100,data)
-
-                    // setTimeout(()=> {
-                    //
-                    //     console.log("start formating")
-                    //     this.formatData(data)
-                    //
-                    // },1000)
-
                 }
-
-
-            },
-            (error) => {
-
-                this.setState({
-                    downloadAllLoading: false,
-                });
-            }
-        );
-
+            );
+        }
 
     };
 
 
-    formatData=(selectedKeys)=>{
+    formatData=(selectedKeys,selected=false)=>{
+
 
         try {
 
+            let productList=[]
+            if (selected){
 
+                productList=this.state.selectedProducts
+            }else{
+                productList=this.state.allDownloadItems
+            }
         let csvDataNew = [];
-        this.state.allDownloadItems.forEach(item => {
-            const {Product, event, service_agent} = item;
-            console.log(Product,"format start")
-            let itemTmp=[]
-            for (const key of selectedKeys.keys()) {
-                // console.log(key,selectedKeys.get(key));
-                itemTmp.push(Product[key])
+        productList.forEach(item => {
+
+            if (selected){
+                const {product, event, service_agent} = item;
+                let itemTmp=[]
+                for (const key of selectedKeys.keys()) {
+                    let keys=key.toString().split(".")
+                    console.log("keys",keys, key,product[key],product[key])
+                    if (keys&&keys.length>1){
+
+                        itemTmp.push(product[keys[0]][keys[1]])
+                    }else{
+                        itemTmp.push(product[key])
+                    }
+
+                }
+                csvDataNew.push(itemTmp)
+
+            }else{
+                const {Product, event, service_agent} = item;
+                let itemTmp=[]
+                for (const key of selectedKeys.keys()) {
+                    let keys=key.toString().split(".")
+                    console.log("keys",keys, key,Product[key],Product[key])
+                    if (keys&&keys.length>1){
+
+                        itemTmp.push(Product[keys[0]][keys[1]])
+                    }else{
+                        itemTmp.push(Product[key])
+                    }
+
+                }
+                csvDataNew.push(itemTmp)
+
             }
 
-            // console.log(itemTmp)
-
-            csvDataNew.push(itemTmp)
 
 
-            // csvDataNew.push([
-            //     Product.name,
-            //     Product.description,
-            //     Product.category,
-            //     Product.condition,
-            //     Product.purpose,
-            //     Product.units,
-            //     Product.volume,
-            // ])
         })
-            // console.log(csvDataNew)
         this.exportToCSV(csvDataNew,selectedKeys)
 
         }catch (e){
@@ -574,22 +603,8 @@ class Products extends Component {
 
         event.preventDefault();
         event.stopPropagation()
-        // if (!this.handleValidationProduct()){
-        //     return
-        // }
-
-        alert("submit")
 
         const data = new FormData(event.target);
-
-
-        console.log(data.entries())
-
-        // this.downloadAll(0,100,data)
-
-        // for (const key of data.keys()) {
-        //     console.log(key,data.get(key));
-        // }
 
         this.downloadAll(0,100,data)
 
@@ -642,16 +657,26 @@ class Products extends Component {
                                             Locations
                                         </a>
 
-                                        <CSVLink
-                                            data={this.handleSaveCSV()}
-                                            headers={headers}
-                                            filename={`product_list_${new Date().getDate()}.csv`}
-                                            className=" btn-sm btn-gray-border  me-2">
-                                            <>
-                                                <DownloadIcon style={{ fontSize: "20px" }} />
-                                                CSV
-                                            </>
-                                        </CSVLink>
+
+                                        <BlueSmallBtn
+                                        title={"CSV"}
+
+                                        onClick={()=>this.fieldSelection()}
+
+                                        >
+                                            <DownloadIcon style={{ fontSize: "20px" }} />
+                                        </BlueSmallBtn>
+
+                                        {/*<CSVLink*/}
+                                        {/*    data={this.handleSaveCSV()}*/}
+                                        {/*    headers={headers}*/}
+                                        {/*    filename={`product_list_${new Date().getDate()}.csv`}*/}
+                                        {/*    className=" btn-sm btn-gray-border  me-2">*/}
+                                        {/*    <>*/}
+                                        {/*        <DownloadIcon style={{ fontSize: "20px" }} />*/}
+                                        {/*        CSV*/}
+                                        {/*    </>*/}
+                                        {/*</CSVLink>*/}
                                     </div>
                                 </div>
                                 <div className="row  no-gutters mb-1">
@@ -841,7 +866,7 @@ class Products extends Component {
 
                                                     id={`${item.key}`}
                                                     // details="When listed, product will appear in the marketplace searches"
-                                                    // initialValue={this.props.item&&this.props.item.product.is_listable||true}
+                                                    initialValue={item.checked}
                                                     // onChange={(checked)=>this.checkListable(checked)}
                                                     color="primary"
                                                     name={`${item.key}`}

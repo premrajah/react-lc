@@ -111,16 +111,26 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
 
 
 export const PRODUCTS_FIELD_SELECTION = [
-    {key:"name",value:"Name" },
-    {key:"description",value:"Description" },
-    {key:"condition",value:"Condition" },
+    {key:"name",value:"Name" ,checked:true},
+    {key:"description",value:"Description" ,checked:true},
+    {key:"category",value:"Category" ,checked:true},
+    {key:"type",value:"Type" ,checked:true},
+    {key:"state",value:"State",checked:true},
+    {key:"condition",value:"Condition"},
     {key:"sku.brand",value:"Brand" },
-    {key:"category",value:"Category" },
-    {key:"type",value:"Type" },
-    {key:"state",value:"State"},
+    {key:"sku.power_supply",value:"Power Supply"},
+    {key:"volume",value:"Volume"},
+    {key:"units",value:"Units"},
     {key:"year_of_making",value:"Year Of Manufacture"},
-    {key:"sku.model",value:"Model"},
-    {key:"sku.serial",value:"Serial No."},
+    {key:"sku.model",value:"Model",checked:true},
+    {key:"sku.serial",value:"Serial No.",checked:true},
+    {key:"sku.upc",value:"UPC"},
+    {key:"sku.sku",value:"SKU"},
+    {key:"external_reference",value:"External Reference"},
+    {key:"sku.part_no",value:"Part No"},
+    {key:"sku.gross_weight_kgs",value:"Gross Weight Kgs",checked:true},
+    {key:"sku.embodied_carbon_kgs",value:"Embodied Carbon Kgs",checked:true},
+
 ];
 
 

@@ -1918,6 +1918,7 @@ button.blue-btn-border {
     color: white;
     border: 2px solid #d31169;
     border-radius: 7px;
+    width: auto;
 }
 
 .or-text-divider {

@@ -130,6 +130,7 @@ export const PRODUCTS_FIELD_SELECTION = [
     {key:"sku.part_no",value:"Part No"},
     {key:"sku.gross_weight_kgs",value:"Gross Weight Kgs",checked:true},
     {key:"sku.embodied_carbon_kgs",value:"Embodied Carbon Kgs",checked:true},
+    {key:"site",value:"Site",checked:true},
 
 ];
 

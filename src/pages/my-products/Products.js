@@ -20,12 +20,13 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
-import {fetchErrorMessage, getTimeFormat, seekAxiosGet} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, getSite, getTimeFormat, seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
+import CircularProgressWithLabel from "../../components/FormsUI/Buttons/CircularProgressWithLabel";
 
 class Products extends Component {
     constructor(props) {
@@ -137,7 +138,7 @@ class Products extends Component {
             });
 
 
-            let url = `${this.state.activeQueryUrl}&offset=${page}&size=${size}&to=Site:located_at`;
+            let url = `${this.state.activeQueryUrl}&offset=${page}&size=${size}`;
 
 
             axios.get(encodeURI(url)).then(
@@ -157,21 +158,11 @@ class Products extends Component {
                         let list = this.state.allDownloadItems.length > 0 ?
                             this.state.allDownloadItems.concat(responseAll) : responseAll
 
-
-                        // console.log(list)
-
                         this.setState({
                             allDownloadItems: list
                         })
 
                         this.downloadAll(page + size, 100, data)
-
-                        // setTimeout(()=> {
-                        //
-                        //     console.log("start formating")
-                        //     this.formatData(data)
-                        //
-                        // },1000)
 
                     }
 
@@ -204,52 +195,39 @@ class Products extends Component {
         let csvDataNew = [];
         productList.forEach(item => {
 
-            if (selected){
-                const {product, event, service_agent} = item;
-                let itemTmp=[]
-                for (const key of selectedKeys.keys()) {
-                    let keys=key.toString().split(".")
-                    console.log("keys",keys, key,product[key],product[key])
-                    if (keys&&keys.length>1){
 
-                        itemTmp.push(product[keys[0]][keys[1]])
-                    }else{
-                        itemTmp.push(product[key])
-                    }
-
-                }
-                csvDataNew.push(itemTmp)
-
-            }else{
                 const {Product, event, service_agent} = item;
                 let itemTmp=[]
                 for (const key of selectedKeys.keys()) {
                     let keys=key.toString().split(".")
-                    console.log("keys",keys, key,Product[key],Product[key])
+                    // console.log("keys",keys, key,Product[key],Product[key])
                     if (keys&&keys.length>1){
 
                         itemTmp.push(Product[keys[0]][keys[1]])
                     }else{
-                        itemTmp.push(Product[key])
+
+                        if (key=="site"){
+                            itemTmp.push(getSite(item).name)
+                        }else{
+                            itemTmp.push(Product[key])
+                        }
+
                     }
 
                 }
                 csvDataNew.push(itemTmp)
 
-            }
-
-
 
         })
-        this.exportToCSV(csvDataNew,selectedKeys)
+        this.exportToCSV(csvDataNew,selectedKeys,selected)
 
         }catch (e){
-            console.log(e)
+            // console.log(e)
         }
 
     }
 
-    exportToCSV=(csvData,selectedKeys) =>{
+    exportToCSV=(csvData,selectedKeys,selected) =>{
 
         let data = "";
         let tableDataNew = [];
@@ -284,6 +262,14 @@ class Products extends Component {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+
+        if (selected){
+            this.setState({
+                selectedProducts:[]
+            })
+
+        }
+        this.fieldSelection()
 
 
     }
@@ -341,7 +327,7 @@ class Products extends Component {
 
         // let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
 
-        let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false`;
+        let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&include-to=Site:located_at`;
 
         this.filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
@@ -413,22 +399,31 @@ class Products extends Component {
     }
 
     handleAddToProductsExportList = (returnedItem) => {
-        axios.get(baseUrl + "product/" + returnedItem._key + "/expand").then(
-            (response) => {
-                let productSelected = response.data.data;
 
-                // check if already exists
-                let filteredProduct = this.state.selectedProducts.filter(
-                    (product) => product.product._key !== productSelected.product._key
+        // console.log(returnedItem)
+
+        let filteredProduct = this.state.selectedProducts.filter(
+                    (product) => product.Product._key !== returnedItem.Product._key
                 );
-                this.setState({ selectedProducts: [...filteredProduct, productSelected] });
-            },
-            (error) => {
-                // this.setState({
-                //     notFound: true,
-                // });
-            }
-        );
+                this.setState({ selectedProducts: [...filteredProduct, returnedItem] });
+
+
+        // axios.get(baseUrl + "product/" + returnedItem._key + "/expand").then(
+        //     (response) => {
+        //         let productSelected = response.data.data;
+        //
+        //         // check if already exists
+        //         let filteredProduct = this.state.selectedProducts.filter(
+        //             (product) => product.product._key !== productSelected.product._key
+        //         );
+        //         this.setState({ selectedProducts: [...filteredProduct, productSelected] });
+        //     },
+        //     (error) => {
+        //         // this.setState({
+        //         //     notFound: true,
+        //         // });
+        //     }
+        // );
     };
 
     removeFromSelectedProducts = (i) => {
@@ -445,7 +440,7 @@ class Products extends Component {
 
         if (allData){
 
-            console.log("all csv data",this.state.allDownloadItems)
+            // console.log("all csv data",this.state.allDownloadItems)
             this.state.allDownloadItems.forEach((item) => {
                 const { Product } = item;
                 return csvData.push([
@@ -708,7 +703,7 @@ class Products extends Component {
                                                     style={{ opacity: "0.5" }}
                                                     className={"text-blue"}
                                                 />
-                                                {product.product.name}
+                                                {product.Product.name}
                                             </div>
                                         ))}
                                     </div>
@@ -818,9 +813,10 @@ class Products extends Component {
                                         remove={false}
                                         duplicate={false}
                                         item={item.Product}
+                                        site={getSite(item)}
                                         hideMore
                                         listOfProducts={(returnedItem) =>
-                                            this.handleAddToProductsExportList(returnedItem)
+                                            this.handleAddToProductsExportList(item)
                                         }
                                         showAddToListButton
                                     />
@@ -878,17 +874,18 @@ class Products extends Component {
                                         <div className="row  mt-2">
                                             <div className="col-12 d-flex justify-content-center">
 
-                                            <BlueSmallBtn
+                                                {!this.state.downloadAllLoading?
+                                                <BlueSmallBtn
                                                 type={"submit"}
                                             title={this.state.downloadAllLoading?"":" Download"}
                                             disabled={this.state.downloadAllLoading}
-                                            progressLoading={this.state.downloadAllLoading}
-                                            progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
+                                            // progressLoading={this.state.downloadAllLoading}
+                                            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
                                             // onClick={()=>this.downloadAll(0,100)}
 
                                         >
 
-                                        </BlueSmallBtn>
+                                        </BlueSmallBtn>:<CircularProgressWithLabel value={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0} />}
                                             </div>
                                         </div>
                                     </form>

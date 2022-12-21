@@ -56,7 +56,7 @@ class ProductItemNew extends Component {
         this.getArtifacts();
 
         if (this.props.item) {
-            this.fetchSite();
+            // this.fetchSite();
             this.fetchReleases();
         }
     }
@@ -396,10 +396,10 @@ class ProductItemNew extends Component {
                             </p>
                         )}
 
-                        {this.state.productSite && (
+                        {this.props.site && (
                             <p className={"text-capitalize text-gray-light mb-1"}>
                                 <span className="me-1">Site:</span>
-                                <span className={"text-blue"}>{this.state.productSite.name}</span>
+                                <span className={"text-blue"}>{this.props.site.name}</span>
                             </p>
                         )}
 

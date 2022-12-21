@@ -373,3 +373,16 @@ export const cleanFilename = (string) => {
     let cleanedFileName = filenameWithOutExtension.replace(/[^a-z0-9]/gi, '_').toLowerCase();
     return `${cleanedFileName}.${fileExtension}`;
 }
+
+export const getSite = (site) => {
+
+
+    let ProductToSite=site.ProductToSite
+
+    if (ProductToSite&&ProductToSite.length>0&&ProductToSite[0].entries.length>0){
+        return ProductToSite[0].entries[0].Site
+    }
+    else return null
+
+
+}

@@ -638,7 +638,6 @@ export const userCacheSync = (data) => (dispatch) => {
         .then((res) => {
 
             if (res.status === 200) {
-                console.log("user cache action", res)
                 dispatch({ type: USER_CACHE, value: res.data.data });
             } else {
                 //
@@ -646,8 +645,7 @@ export const userCacheSync = (data) => (dispatch) => {
             }
         })
         .catch((error) => {
-
-
+            console.log(`userCacheSync ${error}`);
         });
 };
 

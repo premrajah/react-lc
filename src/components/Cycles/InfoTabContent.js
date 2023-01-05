@@ -10,7 +10,6 @@ class InfoTabContent extends Component {
 
     constructor(props) {
         super(props);
-
     }
 
 
@@ -80,10 +79,6 @@ class InfoTabContent extends Component {
                         ).format("DD MMM YYYY")}</p>
                     </div>
                 </div>
-
-
-
-
             </div>
         );
     }

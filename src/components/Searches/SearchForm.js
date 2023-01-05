@@ -1108,6 +1108,7 @@ if ((this.state.activeStep-1)==0){
 
                                             <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                                 <SelectArrayWrapper
+                                                    disableAutoLoadingIcon
                                                     initialValue={this.props.item&&this.props.item.product.type}
                                                     option={"name"}
                                                     valueKey={"name"}
@@ -1138,6 +1139,7 @@ if ((this.state.activeStep-1)==0){
 
                                             <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                                 <SelectArrayWrapper
+                                                    disableAutoLoadingIcon
                                                     initialValue={this.props.item&&this.props.item.product.state}
 
                                                     onChange={(value)=>this.handleChange(value,"state")}
@@ -1161,6 +1163,7 @@ if ((this.state.activeStep-1)==0){
 
                                                     <div className="col-4 ">
                                                         <SelectArrayWrapper
+                                                            disableAutoLoadingIcon
                                                             select={"Select"}
                                                             initialValue={this.props.item&&this.props.item.product.units}
                                                             onChange={(value)=>this.handleChange(value,"units")}

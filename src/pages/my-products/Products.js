@@ -267,7 +267,6 @@ class Products extends Component {
             this.setState({
                 selectedProducts:[]
             })
-
         }
         this.fieldSelection()
 

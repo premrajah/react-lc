@@ -7,7 +7,6 @@ import {makeStyles} from "@mui/styles";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import NotFound from "../../views/NotFound";
-import ProductExpandItem from "../../components/Products/ProductExpandItem";
 import SearchEditForm from "../../components/Searches/SearchEditForm";
 import {Modal} from "react-bootstrap";
 import MoreMenu from "../../components/MoreMenu";
@@ -130,7 +129,6 @@ class ViewSearch extends Component {
         this.makeActive = this.makeActive.bind(this);
         this.selectCreateSearch = this.selectCreateSearch.bind(this);
         this.callBackResult = this.callBackResult.bind(this);
-        this.showEdit = this.showEdit.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
 
 
@@ -148,7 +146,7 @@ class ViewSearch extends Component {
     }
     callBackResult(action) {
         if (action === "edit") {
-            this.showEdit();
+            this.toggleEdit();
         } else if (action === "delete") {
             this.deleteItem();
         }
@@ -424,7 +422,9 @@ try {
             );
     }
 
-    showEdit() {
+    toggleEdit=()=> {
+
+        alert("clicke")
         this.setState({
             showEdit: !this.state.showEdit,
         });
@@ -977,27 +977,36 @@ try {
                                     </div>
                                 </div>
 
-                                <Modal
-                                    size="lg"
-                                    show={this.state.showEdit}
-                                    onHide={this.showEdit}
-                                    className={"custom-modal-popup popup-form mb-5"}>
-                                    <div className="">
-                                        <button
-                                            onClick={this.showEdit}
-                                            className="btn-close close"
-                                            data-dismiss="modal"
-                                            aria-label="Close">
-                                            <i className="fas fa-times"></i>
-                                        </button>
-                                    </div>
+                                {/*<Modal*/}
+                                {/*    size="lg"*/}
+                                {/*    show={this.state.showEdit}*/}
+                                {/*    onHide={this.showEdit}*/}
+                                {/*    className={"custom-modal-popup popup-form mb-5"}>*/}
+                                {/*    <div className="">*/}
+                                {/*        <button*/}
+                                {/*            onClick={this.showEdit}*/}
+                                {/*            className="btn-close close"*/}
+                                {/*            data-dismiss="modal"*/}
+                                {/*            aria-label="Close">*/}
+                                {/*            <i className="fas fa-times"></i>*/}
+                                {/*        </button>*/}
+                                {/*    </div>*/}
+                                <GlobalDialog
 
+                                    aria-labelledby="contained-modal-title-vcenter"
+                                    centered
+                                    show={this.state.showEdit}
+                                    heading={"Edit Search"}
+                                    onHide={this.toggleEdit}
+                                    size={"md"}
+                                    animation={false}>
                                     <SearchEditForm
-                                        triggerCallback={this.showEdit}
+                                        triggerCallback={this.toggleEdit}
                                         searchId={this.state.createSearchData.search._key}
                                         item={this.state.createSearchData}
                                     />
-                                </Modal>
+                                </GlobalDialog>
+                                {/*</Modal>*/}
                             </>
                         )}
 
@@ -1028,7 +1037,7 @@ try {
                                                         this.state.matchesCount
                                                     //+ this.state.matches.length
                                                     } color="primary">
-                                                         View All Matches
+                                                         View Found Matches
                                                     </Badge>
                                                 </BlueBorderButton>
 

@@ -1245,6 +1245,7 @@ let slugify = require('slugify')
                                             initialValue={this.props.item?this.props.item.product.type:""
                                             ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.type:"")
                                             }
+                                            disableAutoLoadingIcon
                                             option={"name"}
                                             valueKey={"name"}
                                             select={"Select"}
@@ -1296,6 +1297,7 @@ let slugify = require('slugify')
                                     <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
                                         <SelectArrayWrapper
+                                            disableAutoLoadingIcon
                                             initialValue={this.props.item?this.props.item.product.state:""
                                             ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
                                             onChange={(value)=>  {
@@ -1362,6 +1364,7 @@ let slugify = require('slugify')
                                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
                                                 <SelectArrayWrapper
+
                                                     details="Select product’s location from the existing sites or add new address below"
                                                     initialValue={this.props.item&&this.props.item.site._key}
                                                     option={"name"}
@@ -1394,7 +1397,7 @@ let slugify = require('slugify')
                                             </div>}
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper
-
+                                                    disableAutoLoadingIcon
                                                     initialValue={this.props.item&&this.props.item.product.sku.power_supply
                                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.power_supply:"")
                                                     }
@@ -1452,6 +1455,7 @@ let slugify = require('slugify')
                                                 <div className="col-md-4 col-xs-12 ">
                                                     <SelectArrayWrapper  details="A measurement chosen as a standard"
                                                         select={"Select"}
+                                                                         disableAutoLoadingIcon
                                                         initialValue={this.props.item&&this.props.item.product.units}
                                                         onChange={(value)=>this.handleChangeProduct(value,"units")}
                                                         error={this.state.errors["units"]}

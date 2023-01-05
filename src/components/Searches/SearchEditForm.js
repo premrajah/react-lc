@@ -21,6 +21,7 @@ import EditSite from "../Sites/EditSite";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -922,17 +923,13 @@ updateSite=(search,site)=>{
         return (
             <>
                 {this.props.item &&this.state.loading && (
-                    <div className="container  ">
-                        <div className="row no-gutters mt-3">
-                            <div className="col-auto">
-                                <h3 className={"blue-text text-heading"}>Edit Search</h3>
-                            </div>
-                        </div>
+                    <div className="col-12  ">
+
 
                         <form onSubmit={this.handleSubmit}>
 
                             <div className="row no-gutters">
-                                <div className="col-12 mt-4">
+                                <div className="col-12 ">
 
                                     <TextFieldWrapper
                                         initialValue={this.props.item&&this.props.item.search.name}
@@ -944,7 +941,7 @@ updateSite=(search,site)=>{
                             </div>
 
 
-                            <div className="row mt-4">
+                            <div className="row ">
                                 <div className={"col-md-4 col-sm-12 col-xs-12"}>
                                     <SelectArrayWrapper
                                         initialValue={this.props.item&&this.props.item.search.category}
@@ -1018,7 +1015,7 @@ updateSite=(search,site)=>{
                                 </div>
                             </div>
 
-                            <div className="row no-gutters mt-4">
+                            <div className="row no-gutters ">
                                 <div className="col-12">
                                     <div className="row no-gutters justify-content-center ">
                                         <div className="col-12 ">
@@ -1051,7 +1048,7 @@ updateSite=(search,site)=>{
                                 </div>
                             </div>
 
-                            <div className="row no-gutters mt-4">
+                            <div className="row no-gutters ">
                                 <div className="col-12">
                                     <div className="row camera-grids   no-gutters   ">
                                         <div className="col-md-6 col-sm-12 col-xs-12 pe-2 ">
@@ -1124,7 +1121,7 @@ updateSite=(search,site)=>{
                                 </div>
                             </div>
 
-                            <div className="row no-gutters mt-4">
+                            <div className="row no-gutters ">
                                 <div className="col-12">
 
                                     <TextFieldWrapper
@@ -1138,21 +1135,21 @@ updateSite=(search,site)=>{
                                 </div>
                             </div>
 
-                            <div className="row no-gutters mt-2">
-                                <div className="col-12 text-left">
-                                    <span style={{ margin: "10px 0", float: "left" }}>
-                                        <span
-                                            onClick={this.showMoreDetails}
-                                            className={
-                                                "green-text forgot-password-link text-mute small"
-                                            }>
-                                            {this.state.moreDetail
-                                                ? "Hide Details"
-                                                : "Add More details"}
-                                        </span>
-                                    </span>
-                                </div>
-                            </div>
+                            {/*<div className="row no-gutters mt-2">*/}
+                            {/*    <div className="col-12 text-left">*/}
+                            {/*        <span style={{ margin: "10px 0", float: "left" }}>*/}
+                            {/*            <span*/}
+                            {/*                onClick={this.showMoreDetails}*/}
+                            {/*                className={*/}
+                            {/*                    "green-text forgot-password-link text-mute small"*/}
+                            {/*                }>*/}
+                            {/*                {this.state.moreDetail*/}
+                            {/*                    ? "Hide Details"*/}
+                            {/*                    : "Add More details"}*/}
+                            {/*            </span>*/}
+                            {/*        </span>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
                             <div className="row no-gutters mt-2">
                             <div className="col-6 mb-2 pe-2">
                                 <div className={"custom-label text-bold text-blue "}>
@@ -1233,15 +1230,18 @@ updateSite=(search,site)=>{
                                 )}
                             </div>
                             </div>
-                            <div className="row  mb-5 pb-5 no-gutters mt-2">
-                            <div className="col-12 ">
-                                <button
+                            <div className="row  mb-2 pb-2 no-gutters mt-2">
+                            <div className="col-12 text-center ">
+                                <GreenButton
                                     type={"submit"}
-                                    className={
-                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                    }>
-                                    Submit
-                                </button>
+                                    title={"Update"}
+
+                                    // className={
+                                    //     "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
+                                    // }
+                                >
+
+                                </GreenButton>
                             </div>
                             </div>
 

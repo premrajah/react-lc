@@ -257,7 +257,6 @@ function SiteTrailsTimeline(props) {
 
 
 
-                    {/*        <div className={"row"}>*/}
                         {site && <div className={"col-12"}>
                                     <GoogleMap
                                         width={"100%"}
@@ -266,9 +265,7 @@ function SiteTrailsTimeline(props) {
                                         locations={locations}
                                     />
                                 </div>}
-                    {/*        </div>}*/}
-                    {/*    </ModalBody>*/}
-                    {/*</Modal>*/}
+
                     </GlobalDialog>
                 </>
 

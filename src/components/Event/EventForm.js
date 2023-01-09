@@ -711,7 +711,7 @@ class EventForm extends Component {
 
                           <form onSubmit={this.props.event?this.updateEvent:this.handleSubmit}>
 
-                              {/*{!this.props.hideProduct &&*/}
+                              {!this.props.hideProduct &&
                               <ProductAutocomplete
                                   disableEdit={this.props.event?true:false}
                                   initial={this.props.event?this.props.event.product.product:null}
@@ -720,7 +720,7 @@ class EventForm extends Component {
                                       this.selectedProduct(data)
                                   }
                               />
-                              {/*}*/}
+                              }
 
                               {this.state.productError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Product from your inventory not selected."}</span>}
                             <div className="row ">

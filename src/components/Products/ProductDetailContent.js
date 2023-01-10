@@ -82,7 +82,8 @@ class ProductDetailContent extends Component {
             activeKey:"1",
             activeReleaseTabKey:"1",
             zoomQrCode:false,
-            releases:[]
+            releases:[],
+            events:[]
 
         };
 
@@ -320,6 +321,8 @@ class ProductDetailContent extends Component {
 
 
         this.fetchReleases()
+
+        this.getEvents(this.state.item.product._key)
 
     }
 
@@ -777,6 +780,28 @@ class ProductDetailContent extends Component {
     }
 
 
+     getEvents = (productId) => {
+
+
+        let url = `${baseUrl}product/${productId}/event`
+
+
+
+
+        axios.get(url).then(
+            (response) => {
+                var responseAll = response.data.data;
+
+                this.setState({
+                    events:responseAll
+                })
+            },
+            (error) => {
+
+            }
+        );
+    };
+
 
     loadInfo() {
         if (this.state.item) {
@@ -992,7 +1017,7 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
-                                                        <Tab label="Events" value="8" />
+                                                        {this.state.events.length>0 &&  <Tab label="Events" value="8" />}
 
                                                     </TabList>
                                                 </Box>
@@ -1066,8 +1091,11 @@ class ProductDetailContent extends Component {
                                                     <ArtifactProductsTab item={this.props.item}/>
                                                 </TabPanel>
 
-                                                <TabPanel value="8">
-                                                    <BigCalenderEvents productId={this.state.item.product._key} smallView  />
+                                                  <TabPanel value="8">
+                                                    <BigCalenderEvents
+                                                       events={this.state.events}
+                                                        productId={this.state.item.product._key}
+                                                       smallView  />
                                                 </TabPanel>
 
 
@@ -1104,7 +1132,7 @@ class ProductDetailContent extends Component {
                                     }}
 
                                     productId={this.state.item.product._key}
-                                    triggerCallback={(action) => this.callBackSubmit(action)}   />
+                                    triggerCallback={(action) => this.getEvents(this.state.item.product._key)}   />
                             </div>}
 </>
                         </GlobalDialog>

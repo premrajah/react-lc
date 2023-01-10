@@ -905,7 +905,6 @@ class ProductDetailCycle extends Component {
                                                     }
                                                 }}
                                                 onChange={this.setActiveKey}
-
                                                 aria-label="lab API tabs example">
                                                 {/*<Tab label="Info" value="1" />*/}
 
@@ -919,27 +918,17 @@ class ProductDetailCycle extends Component {
                                                 {this.state.searches.length > 0 && (
                                                     <Tab label="Searches" value="5" />
                                                 )}
-
                                                 {this.state.listingLinked &&
                                                 <Tab label="Listing" value="6" />
                                                 }
-
                                                 <Tab label="Attachments" value="7" />
-
-
-
                                             </TabList>
                                         </Box>
-
-
                                         <TabPanel value="1">
-
                                             <InfoTabContent item={this.props.item}/>
-
                                         </TabPanel>
                                         {(this.props.item.product.purpose === "aggregate") &&
                                         <TabPanel value="2">
-
                                             <AggregatesTab item={this.props.item}/>
                                         </TabPanel>}
                                         <TabPanel value="3">
@@ -1055,7 +1044,10 @@ class ProductDetailCycle extends Component {
                             <div className="row ">
                                 <div className="col">
                                     {this.state.siteTrails && (
-                                        <SiteTrailsTimeline distanceTrails={this.state.distanceTrails} siteTrails={this.state.siteTrails} distanceTotals={this.state.distanceTotals}/>
+                                        <SiteTrailsTimeline
+                                            product={this.props.item.product}
+                                            distanceTrails={this.state.distanceTrails}
+                                            siteTrails={this.state.siteTrails} distanceTotals={this.state.distanceTotals}/>
                                     )}
                                 </div>
                             </div>

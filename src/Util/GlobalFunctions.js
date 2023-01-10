@@ -386,3 +386,26 @@ export const getSite = (site) => {
 
 
 }
+
+
+export const  PreProcessCSVData=( input)=>
+{
+    input = input.replace('ı', 'i')
+        .replace('ç', 'c')
+        .replace('ö', 'o')
+        .replace('ş', 's')
+        .replace('ü', 'u')
+        .replace('ğ', 'g')
+        .replace('İ', 'I')
+        .replace('Ç', 'C')
+        .replace('Ö', 'O')
+        .replace('Ş', 'S')
+        .replace('Ü', 'U')
+        .replace('Ğ', 'G')
+        .replace('"', '""').trim();
+    if (input.includes(","))
+    {
+        input = '"' + input + '"';
+    }
+    return input;
+}

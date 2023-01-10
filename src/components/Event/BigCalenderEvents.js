@@ -105,7 +105,7 @@ export default function
     const [showAddEventPopUp, setShowAddEventPopUp] = useState(false);
 
     const size = 50;
-    const [loading, setLoading] = useState([]);
+    const [loading, setLoading] = useState(false);
     // const [offset, setOffset] = useState(0);
 
     const showEvent = () => {
@@ -488,7 +488,11 @@ export default function
 
             getEvents(moment().startOf("day").format("x"), moment().endOf("day").format("x"));
         } else {
-            getEvents();
+            // getEvents();
+
+            setEvents(props.events);
+            setMonthEvents(convertEvents(props.events));
+
         }
     }, []);
 

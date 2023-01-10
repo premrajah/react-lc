@@ -59,8 +59,11 @@ function SiteTrailsTimeline(props) {
     const [site, setSite] = useState(null);
     const handleMapModal = (site) => {
 
-        setShowMap(!showMap);
-        setSite(site)
+        setTimeout(()=> {
+            setShowMap(!showMap);
+            setSite(site)
+        }, 500);
+
     }
 
 

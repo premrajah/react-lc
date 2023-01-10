@@ -104,12 +104,15 @@ function SiteTrailsTimeline(props) {
             {key:"name",label:"Name"},
             {key:"address",label:"Address"},
             {key:"company",label:"Company"},
+            {key:"distance",label:"Distance (Km)"},
+            {key:"emission",label:"Transport Emission (KgC02e)"},
             {key:"date",label:"Date"},
         ]
 
 
         let csvDataNew=[]
         try {
+            let index=0
             for (const itemSite of props.siteTrails.reverse()) {
 
            console.log(itemSite)
@@ -118,9 +121,18 @@ function SiteTrailsTimeline(props) {
                 itemTmp.push(site.site.name)
                 itemTmp.push(site.site.address)
                 itemTmp.push(site.org.name)
+                if (index>0){
+                    itemTmp.push(props.distanceTrails[index-1].trail.distance.value/1000)
+                    itemTmp.push(props.distanceTrails[index-1].trail.carbon.carbon_kgs)
+                }else{
+                    itemTmp.push("")
+                    itemTmp.push("")
+                }
+
                 itemTmp.push(getTimeFormat(_ts_epoch_ms))
 
                 csvDataNew.push(itemTmp)
+                index +=1
             }
         }catch (e){
             console.log(e)

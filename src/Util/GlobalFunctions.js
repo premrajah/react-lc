@@ -388,24 +388,32 @@ export const getSite = (site) => {
 }
 
 
-export const  PreProcessCSVData=( input)=>
+export const  PreProcessCSVData=( text)=>
 {
-    input = input.replace('ı', 'i')
-        .replace('ç', 'c')
-        .replace('ö', 'o')
-        .replace('ş', 's')
-        .replace('ü', 'u')
-        .replace('ğ', 'g')
-        .replace('İ', 'I')
-        .replace('Ç', 'C')
-        .replace('Ö', 'O')
-        .replace('Ş', 'S')
-        .replace('Ü', 'U')
-        .replace('Ğ', 'G')
-        .replace('"', '""').trim();
-    if (input.includes(","))
-    {
-        input = '"' + input + '"';
+try {
+    if (text)
+        text = text.toString().replace('ı', 'i')
+            .replace('ç', 'c')
+            .replace('ö', 'o')
+            .replace('ş', 's')
+            .replace('ü', 'u')
+            .replace('ğ', 'g')
+            .replace('İ', 'I')
+            .replace('Ç', 'C')
+            .replace('Ö', 'O')
+            .replace('Ş', 'S')
+            .replace('Ü', 'U')
+            .replace('Ğ', 'G')
+            .replace('"', '""').trim();
+
+    if (text && text.includes(",")) {
+        text = '"' + text + '"';
     }
-    return input;
+    return text;
+
+}catch (e){
+    // console.log("Error Column",text)
+    // console.log(e)
+    return text
+}
 }

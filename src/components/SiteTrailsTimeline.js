@@ -12,12 +12,11 @@ import MapIcon from '@mui/icons-material/Place';
 import {GoogleMap} from "./Map/MapsContainer";
 import {ArrowCircleUp} from "@mui/icons-material";
 import CustomPopover from "./FormsUI/CustomPopover";
-import {PRODUCTS_FIELD_SELECTION, TRANSPORT_MODES} from "../Util/Constants";
+import {TRANSPORT_MODES} from "../Util/Constants";
 import OrgComponent from "./Org/OrgComponent";
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import GlobalDialog from "./RightBar/GlobalDialog";
 import BlueSmallBtn from "./FormsUI/Buttons/BlueSmallBtn";
-import BlueButton from "./FormsUI/Buttons/BlueButton";
 import {getTimeFormat, PreProcessCSVData} from "../Util/GlobalFunctions";
 
 
@@ -184,7 +183,7 @@ function SiteTrailsTimeline(props) {
     }
 
     return (
-        <div>
+        <>
             <div className={"text-right"}>
                 <BlueSmallBtn
                     title={"Download (CSV)"}
@@ -204,6 +203,7 @@ function SiteTrailsTimeline(props) {
                 </>
             }
           </div>
+            <div>
             <Timeline>
                 {props.siteTrails
                     // .filter((item) => item._relation === "located_at")
@@ -277,7 +277,7 @@ function SiteTrailsTimeline(props) {
 
 
             </Timeline>
-
+            </div>
                 <>
                     <GlobalDialog
 
@@ -304,7 +304,7 @@ function SiteTrailsTimeline(props) {
 
 
 
-        </div>
+        </>
     );
 }
 
@@ -328,7 +328,7 @@ const DistanceTrailPopOver=(props)=>{
 
                         style={{ opacity: "1" }}>
 
-                        <CustomPopover
+                        {props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id) &&    <CustomPopover
                             heading={`Transport Emissions: ${props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} kgCO<sub>2</sub>e`}
 
                             text= {<>
@@ -349,7 +349,7 @@ const DistanceTrailPopOver=(props)=>{
                                 {/*in {(props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.duration.value/3600).toLocaleString(undefined, {maximumFractionDigits:2})} hrs */}
                                 {props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.carbon.carbon_kgs > 0 && <>via {getMode(props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.carbon.carbon_tons_per_kg_km)}</>}</span>
 
-                        </CustomPopover>
+                        </CustomPopover>}
 
 
 

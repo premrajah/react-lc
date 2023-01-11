@@ -840,7 +840,8 @@ class ProductDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
-                        {this.state.zoomQrCode&&  <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
+                        {this.state.zoomQrCode&&
+                        <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
                             {this.props.item&&this.props.item.qr_artifact && (
                                 <img
                                     className="img-fluid qr-code-zoom"
@@ -858,9 +859,9 @@ class ProductDetailContent extends Component {
                         <div className="row   justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
 
-                                <div className="row ">
-                                    <div className="col-12 ">
-                                        <div className=" stick-left-box  ">
+                                <div className="row stick-left-box">
+                                    {/*<div className="col-12 ">*/}
+                                    {/*    <div className="   ">*/}
 
 
                                             <ImageHeader images={this.state.item.artifacts} />
@@ -887,10 +888,10 @@ class ProductDetailContent extends Component {
                                             )}
 
                                             <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>
-                                        </div>
+                                    {/*    </div>*/}
 
 
-                                    </div>
+                                    {/*</div>*/}
                                 </div>
 
                             </div>

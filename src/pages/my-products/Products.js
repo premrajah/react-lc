@@ -8,7 +8,6 @@ import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
 import {baseUrl, PRODUCTS_FIELD_SELECTION, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
-import {CSVLink} from "react-csv";
 import {Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
@@ -20,12 +19,11 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
-import {fetchErrorMessage, getSite, getTimeFormat, seekAxiosGet} from "../../Util/GlobalFunctions";
+import {getSite, seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
-import {createProductUrl} from "../../Util/Api";
 import CircularProgressWithLabel from "../../components/FormsUI/Buttons/CircularProgressWithLabel";
 
 class Products extends Component {
@@ -129,7 +127,7 @@ class Products extends Component {
 
         }
         else {
-            if (page == 0)
+            if (page === 0)
                 this.setState({
                     allDownloadItems: []
                 })
@@ -206,7 +204,7 @@ class Products extends Component {
                         itemTmp.push(Product[keys[0]][keys[1]])
                     }else{
 
-                        if (key=="site"){
+                        if (key==="site"){
                             itemTmp.push(getSite(item).name)
                         }else{
                             itemTmp.push(Product[key])
@@ -242,7 +240,7 @@ class Products extends Component {
         for (const key of selectedKeys.keys()) {
             // console.log(key,selectedKeys.get(key));
             itemTmp.push(PRODUCTS_FIELD_SELECTION.
-            find((itemTmp)=> itemTmp.key==key).value)
+            find((itemTmp)=> itemTmp.key===key).value)
         }
 
         rows.unshift(itemTmp)

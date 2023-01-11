@@ -216,7 +216,7 @@ function SiteTrailsTimeline(props) {
                                             />
                                         </TimelineOppositeContent>
                                     ) : (
-                                        <TimelineOppositeContent />
+                                        <TimelineOppositeContent sx={{mr: 2}}/>
                                     )}
                                     <TimelineSeparator>
                                         {item._relation === "located_at" ? (
@@ -240,14 +240,14 @@ function SiteTrailsTimeline(props) {
                                                 }}
                                             />
                                         )}
-                                        {local_trail && (
+                                        {local_trail ? (
                                             <TimelineConnector
                                                 style={{
                                                     backgroundColor: "#05AD88",
                                                     height: "100px",
-                                                }}
+                                                } }
                                             />
-                                        )}
+                                        ): <></>}
                                     </TimelineSeparator>
 
                                     <TimelineContent>

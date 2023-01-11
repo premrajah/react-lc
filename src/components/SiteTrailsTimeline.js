@@ -119,7 +119,6 @@ function SiteTrailsTimeline(props) {
             let index=0
             for (const itemSite of props.siteTrails.reverse()) {
 
-           console.log(itemSite)
                 const {site, _ts_epoch_ms} = itemSite;
                 let itemTmp = []
                 itemTmp.push(site.site.name)

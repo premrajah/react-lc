@@ -368,7 +368,6 @@ const DistanceTrailPopOver=(props)=>{
 
 const getMode=(text, carbon)=>{
 
-    console.log("mode",text)
     let result=""
     // let percentage=getNumberFromString(text)
     if (text.includes(TRANSPORT_MODES[0])){

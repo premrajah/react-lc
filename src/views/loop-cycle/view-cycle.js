@@ -946,7 +946,7 @@ class ViewCycle extends Component {
                                                 <>
                                                     {this.state.item.cycle.stage ===
                                                     "progress"&& <div className="row  mt-3  pb-2 mb-2">
-                                                        <div className="col-6 ">
+                                                        <div className="col-4 ">
                                                             <h4
                                                                 className={
                                                                     " text-bold text-label text-blue mb-1"
@@ -963,7 +963,7 @@ class ViewCycle extends Component {
                                                                     this.state.item.sender._id ===
                                                                         this.props.userDetail
                                                                             .orgId) && (
-                                                                    <div className=" col-auto text-right">
+                                                                    <div className=" col-12 d-flex justify-content-end text-right">
                                                                         <BlueSmallBtn
                                                                             title={this.state.item.receiver._id===this.props.userDetail.orgId?"Request a Step":"Add Step"}
                                                                             onClick={this.showStep}
@@ -983,7 +983,7 @@ class ViewCycle extends Component {
                                                             {this.state.item.steps.map(
                                                                 (item, index) => (
                                                                     <div key={item.step._key} className="row rad-8 m-1 p-1 bg-white step-box mb-4">
-                                                                        <div className="col-4 pb-2 pt-2">
+                                                                        <div className="col-8 pb-2 pt-2">
 
 
                                                                             <span
@@ -1035,7 +1035,7 @@ class ViewCycle extends Component {
                                                                                 item.nextAction
                                                                                     .possible_actions
                                                                                     .length > 0 && (
-                                                                                    <div className="col-6 d-flex justify-content-end pb-2 pt-2">
+                                                                                    <div className="col-4 d-flex justify-content-end pb-2 pt-2">
                                                                                         {item.nextAction.possible_actions.map(
                                                                                             (
                                                                                                 actionName

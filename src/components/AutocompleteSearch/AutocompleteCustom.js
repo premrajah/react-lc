@@ -395,7 +395,7 @@ class AutocompleteCustom extends Component {
         if (showSuggestions && userInput) {
             if (filteredSuggestions.length) {
                 suggestionsListComponent =(
-                    <div className={"suggestions-box"}>
+                    <div className={"suggestions-box position-relative"}>
                     <ul className="suggestions">
                         {!this.props.hideAddNew && <li>
                             <div  className=" no-gutters row">

@@ -8,7 +8,6 @@ import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
 import NotFound from "../../views/NotFound";
 import SearchEditForm from "../../components/Searches/SearchEditForm";
-import {Modal} from "react-bootstrap";
 import MoreMenu from "../../components/MoreMenu";
 import Layout from "../../components/Layout/Layout";
 import OrgComponent from "../../components/Org/OrgComponent";
@@ -219,7 +218,7 @@ class ViewSearch extends Component {
         const price = formData.get("price");
         const offer = formData.get("offer");
 
-        var data;
+        let data;
 
         if (this.state.offerAction !== "counter") {
             data = {
@@ -441,7 +440,7 @@ try {
             })
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     if (responseAll.length > 0) {
                         this.setState({
@@ -462,7 +461,7 @@ try {
 
 
     makeActive(event) {
-        var active = event.currentTarget.dataset.active;
+        let active = event.currentTarget.dataset.active;
 
         this.setState({
             active: parseInt(active),
@@ -478,7 +477,7 @@ try {
             })
             .then(
                 (response) => {
-                    var responseData = response.data.data;
+                    let responseData = response.data.data;
 
                     this.setState({
                         createSearchData: responseData,
@@ -506,14 +505,14 @@ try {
                 })
                 .then(
                     (response) => {
-                        var responseAll = response.data.data;
+                        let responseAll = response.data.data;
 
                         this.setState({
                             site: responseAll,
                         });
                     },
                     (error) => {
-                        var status = error.response.status;
+                        let status = error.response.status;
                     }
                 );
     }
@@ -528,15 +527,15 @@ try {
             .then(
                 (response) => {
 
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     if (responseAll.length>0){
                         this.setState({
                             matchesCount: responseAll.filter((item)=>
-                                !matches.find((match)=>item.listing._key==match.listing.listing._key)).length,
+                                !matches.find((match)=>item.listing._key===match.listing.listing._key)).length,
 
                             suggesstions: responseAll.filter((item)=>
-                                !matches.find((match)=>item.listing._key==match.listing.listing._key)),
+                                !matches.find((match)=>item.listing._key===match.listing.listing._key)),
                         });
                     }else{
 
@@ -558,7 +557,7 @@ try {
     }
 
     createSearch() {
-        var data = {
+        let data = {
             name: this.state.title,
             description: this.state.description,
             category: this.state.catSelected.name,
@@ -598,7 +597,7 @@ try {
             .get(baseUrl + "match/search/" + this.slug)
             .then(
                 (response) => {
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     this.setState({
                         matches: responseAll,
@@ -840,7 +839,7 @@ try {
                                                         </div>
                                                     </div>
 
-                                                    <div className={"listing-row-border "}></div>
+                                                    <div className={"listing-row-border "}/>
                                                     {this.state.createSearchData &&
                                                     <div className="row justify-content-start pb-3  tabs-detail">
                                                         <div className="col-12 ">

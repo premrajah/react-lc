@@ -138,13 +138,13 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 google={this.props.google}
                 style={{margin:"0",width: "100%"}}
                 center={{
-                    lat: this.props.locations.find((item)=> item.isCenter===true).location.lat,
-                    lng: this.props.locations.find((item)=> item.isCenter===true).location.lng,
+                    lat: this.props.locations.find((item)=> item.id===this.props.siteId).location.lat,
+                    lng: this.props.locations.find((item)=> item.id===this.props.siteId).location.lng,
                 }}
 
                     initialCenter={{
-                        lat: this.props.locations.find((item)=> item.isCenter===true).location.lat,
-                        lng: this.props.locations.find((item)=> item.isCenter===true).location.lng,
+                        lat: this.props.locations.find((item)=> item.id===this.props.siteId).location.lat,
+                        lng: this.props.locations.find((item)=> item.id===this.props.siteId).location.lng,
                 }}
 
                 zoom={14}

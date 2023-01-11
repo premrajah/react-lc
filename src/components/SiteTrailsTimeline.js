@@ -84,7 +84,9 @@ function SiteTrailsTimeline(props) {
             try{
                 if (site&&site.geo_codes&&site.geo_codes[0])
                     locationsList.push(
-                        {isCenter:i===0?true:false,name:site.name,
+                        {
+                            isCenter:false,
+                            id:site._key,
                             location:site.geo_codes[0].address_info.geometry.location}
                     )
             }catch (error){
@@ -252,7 +254,8 @@ function SiteTrailsTimeline(props) {
                                     className={"mt-1 me-2"}
                                 >
                                     <p className={"text-blue text-14"}>
-                                        {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&<MapIcon onClick={() =>
+                                        {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes&&item.site.site.geo_codes.length>0&&
+                                    <MapIcon onClick={() =>
                                         handleMapModal(item.site.site)} />}
 
                                     </p>

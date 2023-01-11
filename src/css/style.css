@@ -1677,7 +1677,9 @@ pre {
     color: white;
     padding: 0.375rem 0.75rem;
     border-radius: 7px !important;
-    text-decoration: none;
+    text-decoration: none
+
+;
 }
 
 .blue-btn:hover {

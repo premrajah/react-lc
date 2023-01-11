@@ -328,7 +328,7 @@ const DistanceTrailPopOver=(props)=>{
 
                         style={{ opacity: "1" }}>
 
-                        {props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id) &&    <CustomPopover
+                           <CustomPopover
                             heading={`Transport Emissions: ${props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits:2})} kgCO<sub>2</sub>e`}
 
                             text= {<>
@@ -349,7 +349,7 @@ const DistanceTrailPopOver=(props)=>{
                                 {/*in {(props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.duration.value/3600).toLocaleString(undefined, {maximumFractionDigits:2})} hrs */}
                                 {props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.carbon.carbon_kgs > 0 && <>via {getMode(props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.transport_mode,props.distanceTrails.find((itemD)=> itemD._to===item.site.site._id).trail.carbon.carbon_tons_per_kg_km)}</>}</span>
 
-                        </CustomPopover>}
+                        </CustomPopover>
 
 
 

@@ -223,7 +223,7 @@ function SiteTrailsTimeline(props) {
                                         sx={{mt: 7, mr: 2}}
                                     >
                                         <DistanceTrailOnlyPopOver trail={local_trail} symbol="+"/>
-                                    </TimelineOppositeContent> : <TimelineOppositeContent></TimelineOppositeContent>
+                                    </TimelineOppositeContent> : <TimelineOppositeContent/>
                                 }
                                 <TimelineSeparator>
                                     {item._relation === "located_at" ?

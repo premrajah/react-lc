@@ -767,7 +767,7 @@ class ViewCycle extends Component {
                                                     </h5>
                                                     <span className={"  status ms-2 text-right"}>
 
-                                                    <span className={this.state.item.cycle.stage!="closed"?" active text-capitlize":"text-capitlize waiting "}>
+                                                    <span className={this.state.item.cycle.stage!=="closed"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.state.item.cycle.stage}
                                 </span>
                                                     </span>

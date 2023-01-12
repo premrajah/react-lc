@@ -1133,7 +1133,7 @@ class ProductDetailContent extends Component {
                                     }}
 
                                     productId={this.state.item.product._key}
-                                    triggerCallback={(action) => this.getEvents(this.state.item.product._key)}   />
+                                    triggerCallback={() => this.getEvents(this.state.item.product._key)}   />
                             </div>}
 </>
                         </GlobalDialog>

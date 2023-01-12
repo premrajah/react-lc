@@ -148,7 +148,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 }}
 
                 zoom={14}
-                minZoom={1}
+                minZoom={2}
+
             >
 
                 {this.props.locations.reverse().map((item)=>
@@ -207,6 +208,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                  lng: this.props.longitude,
              }}
              zoom={12}
+             minZoom={2}
 
          >
                  <Marker

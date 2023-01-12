@@ -330,12 +330,7 @@ class EventForm extends Component {
 
     handleValidationProduct() {
 
-
-
-
-
         let fields = this.state.fields;
-
 
         let validations=[
             validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
@@ -346,7 +341,6 @@ class EventForm extends Component {
         if (this.state.showRepeatIntervalSelection){
             validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
-
         }
 
 
@@ -356,18 +350,20 @@ class EventForm extends Component {
 
         this.setState({ errors: errors });
 
+        if (!this.props.hideProduct) {
 
-        if (!this.state.productId) {
+            if (!this.state.productId) {
 
-            this.setState({
-                productError:true
-            })
+                this.setState({
+                    productError: true
+                })
 
-            formIsValid=false
-        }else{
-            this.setState({
-                productError:false
-            })
+                formIsValid = false
+            } else {
+                this.setState({
+                    productError: false
+                })
+            }
         }
 
         return formIsValid;
@@ -465,8 +461,11 @@ class EventForm extends Component {
                         severity: "success",
                         message: "Event created successfully. Thanks"
                     })
-
+                    if (this.props.triggerCallback)
+                    this.props.triggerCallback()
+                    if (this.props.hide)
                     this.props.hide()
+
                 })
                 .catch((error) => {
                     this.setState({

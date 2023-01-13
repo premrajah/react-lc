@@ -65,7 +65,8 @@ const SiteTrailsTimeline=(props)=> {
                         {
                             isCenter: false,
                             id: site._key,
-                            location: site.geo_codes[0].address_info.geometry.location
+                            location: site.geo_codes[0].address_info.geometry.location,
+                            name:site.name
                         }
                     )
             } catch (error) {
@@ -78,7 +79,7 @@ const SiteTrailsTimeline=(props)=> {
 
         setLocations(locationsList)
 
-    }, [])
+    }, [props.siteTrails])
 
 
     const genCSV = () => {

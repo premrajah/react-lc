@@ -20,38 +20,8 @@ import BlueSmallBtn from "./FormsUI/Buttons/BlueSmallBtn";
 import {getTimeFormat, PreProcessCSVData} from "../Util/GlobalFunctions";
 
 
-const useStyles = makeStyles((theme) => ({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-    },
-    paper: {
-        paddingBottom: 50,
-    },
-    list: {
-        marginBottom: theme.spacing(2),
-    },
-    subheader: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-        top: "auto",
-        bottom: 0,
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    fabButton: {
-        position: "absolute",
-        zIndex: 1,
-        top: -30,
-        left: 0,
-        right: 0,
-        margin: "0 auto",
-    },
-}));
 
-function SiteTrailsTimeline(props) {
-    const classes = useStyles();
+const SiteTrailsTimeline=(props)=> {
 
     const [showMap, setShowMap] = useState(false);
     const [locations, setLocations] = useState([]);
@@ -59,17 +29,20 @@ function SiteTrailsTimeline(props) {
     const [distLookup, setDistLookup] = useState(new Map());
 
     const handleMapModal = (site) => {
-        // setTimeout(() => {
+        setTimeout(() => {
             setSite(site);
             setShowMap(!showMap);
-            updateDistLookup();
-        // }, 500);
+            // updateDistLookup();
+            console.log(props.siteTrails)
+        }, 500);
     }
 
     const updateDistLookup = () => {
         const local_dist_lookup = new Map();
-        props.distanceTrails.length > 0 && props.distanceTrails.map((item, index) => local_dist_lookup.set(`${item._from}|${item._to}`, item.trail));
+        props.distanceTrails.length > 0 && props.distanceTrails.map((item, index) =>
+            local_dist_lookup.set(`${item._from}|${item._to}`, item.trail));
         setDistLookup(local_dist_lookup);
+
     }
 
     useEffect(() => {
@@ -105,7 +78,7 @@ function SiteTrailsTimeline(props) {
 
         setLocations(locationsList)
 
-    }, props.siteTrails)
+    }, [])
 
 
     const genCSV = () => {
@@ -119,12 +92,14 @@ function SiteTrailsTimeline(props) {
             {key: "date", label: "Date"},
         ]
 
+        let siteTrailsReversed= props.siteTrails
 
         let csvDataNew = []
         try {
             let index = 0
-            for (const itemSite of props.siteTrails.reverse()) {
+            for (let  i=(siteTrailsReversed.length-1);i>=0;i-- ) {
 
+                let itemSite=siteTrailsReversed[i]
                 console.log(itemSite)
                 const {site, _ts_epoch_ms} = itemSite;
                 let itemTmp = []
@@ -230,8 +205,8 @@ function SiteTrailsTimeline(props) {
                                     local_trail ? <TimelineOppositeContent
                                         sx={{mt: 7, mr: 2}}
                                     >
-                                        <DistanceTrailOnlyPopOver trail={local_trail} symbol="+"/>
-                                    </TimelineOppositeContent> : <TimelineOppositeContent></TimelineOppositeContent>
+                                        <DistanceTrailOnlyPopOver index={index} trail={local_trail} symbol="+"/>
+                                    </TimelineOppositeContent> : <TimelineOppositeContent sx={{mt: 7, mr: 2}}><span></span></TimelineOppositeContent>
                                 }
                                 <TimelineSeparator>
                                     {item._relation === "located_at" ?

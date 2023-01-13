@@ -773,7 +773,7 @@ class Products extends Component {
                                 <div className="me-2">
                                 <CustomPopover text={"Download all products in csv."}>
                                     <BlueSmallBtn
-                                        title={"Download All"}
+                                        title={"Export To CSV"}
                                         // disabled={this.state.downloadAllLoading}
                                         // progressLoading={this.state.downloadAllLoading}
                                         // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
@@ -936,7 +936,7 @@ class Products extends Component {
                                 <h5
                                     style={{ textTransform: "Capitalize" }}
                                     className={"text-bold text-blue"}>
-                                    Download Multiple Cycle Codes
+                                    Download Multiple Cyclecodes
                                 </h5>
                             </div>
                         </div>
@@ -955,7 +955,7 @@ class Products extends Component {
                                             // value={this.state.disableVolume?"0":""}
                                             onChange={(value) => this.handleChange(value, "count")}
                                             error={this.state.errors["count"]}
-                                            placeholder={"Enter required number of Cycle codes"}
+                                            placeholder={"Enter required number of Cyclecodes"}
                                             name="count"
                                         />
                                     </div>

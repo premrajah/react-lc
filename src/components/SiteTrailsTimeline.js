@@ -52,29 +52,29 @@ const useStyles = makeStyles((theme) => ({
 
 function SiteTrailsTimeline(props) {
     const classes = useStyles();
+
     const [showMap, setShowMap] = useState(false);
     const [locations, setLocations] = useState([]);
-
     const [site, setSite] = useState(null);
-    const handleMapModal = (site) => {
+    const [distLookup, setDistLookup] = useState(new Map());
 
-        setTimeout(() => {
+    const handleMapModal = (site) => {
+        // setTimeout(() => {
+            setSite(site);
             setShowMap(!showMap);
             updateDistLookup();
-            setSite(site)
-        }, 500);
-
+        // }, 500);
     }
-
-    const [distLookup, setDistLookup] = useState(new Map());
 
     const updateDistLookup = () => {
         const local_dist_lookup = new Map();
-        props.distanceTrails.length > 0 && props.distanceTrails.map((item, index) => dist_lookup.set(`${item._from}|${item._to}`, item.trail));
+        props.distanceTrails.length > 0 && props.distanceTrails.map((item, index) => local_dist_lookup.set(`${item._from}|${item._to}`, item.trail));
         setDistLookup(local_dist_lookup);
     }
 
-    updateDistLookup();
+    useEffect(() => {
+        updateDistLookup();
+    }, []);
 
     useEffect(() => {
 
@@ -293,14 +293,11 @@ function SiteTrailsTimeline(props) {
             </div>
             <>
                 <GlobalDialog
-
                     size={"lg"}
                     hide={handleMapModal}
                     show={showMap}
                     // heading={"Add new site"}
                 >
-
-
                     {site && <div className={"col-12"}>
                         <GoogleMap
                             width={"100%"}

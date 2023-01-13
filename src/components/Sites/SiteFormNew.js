@@ -20,6 +20,7 @@ import BlueButton from "../FormsUI/Buttons/BlueButton";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 
 class SiteFormNew extends Component {
@@ -722,24 +723,81 @@ class SiteFormNew extends Component {
                                         <div className="row mt-2">
                                             <div className="col-10">
 
-                                                <CustomizedSelect
-                                                    variant={"standard"}
 
+
+                                                {/*<CustomizedSelect*/}
+                                                {/*    variant={"standard"}*/}
+
+                                                {/*    name={`site[${index}]`}*/}
+                                                {/*    // label={"Link a product"}*/}
+                                                {/*    required={true}*/}
+                                                {/*    native*/}
+                                                {/*    onChange={this.handleChange.bind(*/}
+                                                {/*        this,*/}
+                                                {/*        "site"*/}
+                                                {/*    )}*/}
+                                                {/*    inputProps={{*/}
+                                                {/*        // name: {`product[${index}]`},*/}
+                                                {/*        id: "outlined-age-native-simple",*/}
+                                                {/*    }}>*/}
+                                                {/*    <option value={null}>Select</option>*/}
+
+                                                {/*    {this.state.subSites*/}
+                                                {/*        .filter(*/}
+                                                {/*            (item) =>*/}
+                                                {/*                (item.Site._key !==*/}
+                                                {/*                    this.props.item.site._key)*/}
+                                                {/*                &&*/}
+                                                {/*                !(*/}
+                                                {/*                    this.props.item.children_sites*/}
+                                                {/*                    &&this.props.item.children_sites.filter(*/}
+                                                {/*                        (subItem) =>*/}
+                                                {/*                            subItem._key ===*/}
+                                                {/*                            item.Site._key*/}
+                                                {/*                    ).length > 0*/}
+                                                {/*                )*/}
+                                                {/*        )*/}
+
+                                                {/*        .map((item) => (*/}
+                                                {/*            <option  value={item.Site._key}>*/}
+                                                {/*                {item.Site.name}{GetParent(item)}*/}
+                                                {/*            </option>*/}
+                                                {/*        ))}*/}
+
+
+                                                {/*</CustomizedSelect>*/}
+                                                {/*{this.state.subSites.length===0&&*/}
+                                                {/*<Spinner*/}
+                                                {/*    as="span"*/}
+                                                {/*    animation="border"*/}
+                                                {/*    size="sm"*/}
+                                                {/*    role="status"*/}
+                                                {/*    aria-hidden="true"*/}
+                                                {/*    style={{color:"#07AD88"}}*/}
+                                                {/*    className={"spinner-select"}*/}
+                                                {/*/>}*/}
+                                                {/*{this.state.errorsLink["site"] && (*/}
+                                                {/*    <span className={" small"}>*/}
+                                                {/*            <span style={{ color: "red" }}>* </span>*/}
+                                                {/*        {this.state.errorsLink["site"]}*/}
+                                                {/*        </span>*/}
+                                                {/*)}*/}
+                                                <SelectArrayWrapper
                                                     name={`site[${index}]`}
-                                                    // label={"Link a product"}
-                                                    required={true}
-                                                    native
                                                     onChange={this.handleChange.bind(
                                                         this,
                                                         "site"
                                                     )}
-                                                    inputProps={{
-                                                        // name: {`product[${index}]`},
-                                                        id: "outlined-age-native-simple",
-                                                    }}>
-                                                    <option value={null}>Select</option>
+                                                    // label={"Link a product"}
+                                                    required={true}
 
-                                                    {this.state.subSites
+                                                    option={"Site"}
+                                                    subOption={"name"}
+                                                    valueKey={"Site"}
+                                                    subValueKey={"_key"}
+
+                                                    select={"Select"}
+                                                    options={this.state.subSites
                                                         .filter(
                                                             (item) =>
                                                                 (item.Site._key !==
@@ -761,24 +819,7 @@ class SiteFormNew extends Component {
                                                             </option>
                                                         ))}
 
-
-                                                </CustomizedSelect>
-                                                {this.state.subSites.length===0&&
-                                                <Spinner
-                                                    as="span"
-                                                    animation="border"
-                                                    size="sm"
-                                                    role="status"
-                                                    aria-hidden="true"
-                                                    style={{color:"#07AD88"}}
-                                                    className={"spinner-select"}
-                                                />}
-                                                {this.state.errorsLink["site"] && (
-                                                    <span className={" small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errorsLink["site"]}
-                                                        </span>
-                                                )}
+                                                    title="Select site"/>
 
 
 
@@ -825,14 +866,25 @@ class SiteFormNew extends Component {
                                 <div className="col-12 mt-4 mobile-menu">
                                     <div className="row text-center ">
                                         <div className="col-12 text-center">
-                                            <button
-                                                style={{ margin: "auto", width: "200px" }}
+                                            {/*<button*/}
+                                            {/*    style={{ margin: "auto", width: "200px" }}*/}
+                                            {/*    type={"submit"}*/}
+                                            {/*    className={*/}
+                                            {/*        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"*/}
+                                            {/*    }>*/}
+                                            {/*    Submit*/}
+                                            {/*</button>*/}
+
+                                            {this.state.count>0 &&     <GreenButton
+                                                title={"Submit"}
                                                 type={"submit"}
-                                                className={
-                                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                }>
-                                                Submit
-                                            </button>
+                                                loading={this.state.loading}
+                                                disabled={this.state.loading||this.state.isSubmitButtonPressed}
+
+                                            />}
+
+
+
                                         </div>
                                     </div>
                                 </div>

@@ -487,14 +487,17 @@ export default function
             );
 
             getEvents(moment().startOf("day").format("x"), moment().endOf("day").format("x"));
-        } else {
-            // getEvents();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (smallView) {
 
             setEvents(props.events);
             setMonthEvents(convertEvents(props.events));
 
         }
-    }, []);
+    }, [props.events]);
 
     const convertEvents = (events, offset) => {
         let calenderEvents = [];

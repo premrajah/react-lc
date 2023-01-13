@@ -9,9 +9,7 @@ import TextField from "@mui/material/TextField";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import {withStyles} from "@mui/styles/index";
-import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
 import AddIcon from "@mui/icons-material/Add";
 import NotFound from "../NotFound/index";
 import PlaceholderImg from "../../img/place-holder-lc.png";
@@ -112,9 +110,9 @@ class ViewCycle extends Component {
 
     showPopUpStepAction(event) {
         if (event) {
-            var action = event.currentTarget.dataset.action;
+            let action = event.currentTarget.dataset.action;
 
-            var stepId = event.currentTarget.dataset.id;
+            let stepId = event.currentTarget.dataset.id;
 
             this.setState({
                 stepAction: action,
@@ -284,7 +282,7 @@ class ViewCycle extends Component {
         const type = data.get("type");
         const notes = [data.get("note")];
 
-        var dataStep = {
+        let dataStep = {
             step: {
                 name: name,
                 description: description,
@@ -339,10 +337,10 @@ class ViewCycle extends Component {
     }
 
     updateStep() {
-        var action = this.state.stepAction;
-        var stepId = this.state.stepId;
+        let action = this.state.stepAction;
+        let stepId = this.state.stepId;
 
-        var data = {
+        let data = {
             step_id: stepId,
             new_stage: action,
         };
@@ -379,9 +377,9 @@ class ViewCycle extends Component {
     }
 
     deliverCycle(event) {
-        var action = this.state.action;
+        let action = this.state.action;
 
-        var data = {
+        let data = {
             cycle_id: this.slug,
             new_stage: action,
         };
@@ -598,7 +596,7 @@ class ViewCycle extends Component {
         } else {
             axios.get(baseUrl + "org/company/" + detail.company).then(
                 (response) => {
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     this.setState({
                         org_id: responseAll._key,
@@ -616,7 +614,7 @@ class ViewCycle extends Component {
             })
             .then(
                 (response) => {
-                    var responseData = response.data;
+                    let responseData = response.data;
 
                     this.setState({
                         item: responseData.data,
@@ -645,8 +643,6 @@ class ViewCycle extends Component {
             })
             .then(
                 (response) => {
-                    var response = response.data;
-
                     this.setState({
                         orgs: response.data,
                     });
@@ -771,7 +767,7 @@ class ViewCycle extends Component {
                                                     </h5>
                                                     <span className={"  status ms-2 text-right"}>
 
-                                                    <span className={this.state.item.cycle.stage!="closed"?" active text-capitlize":"text-capitlize waiting "}>
+                                                    <span className={this.state.item.cycle.stage!=="closed"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.state.item.cycle.stage}
                                 </span>
                                                     </span>
@@ -876,7 +872,7 @@ class ViewCycle extends Component {
 
                                                                 <>
 
-                                                                    <div className={"mt-4"}></div>
+                                                                    <div className={"mt-4"}/>
                                                                     {this.state.item && (
                                                                         <ProductExpandItem
                                                                             hideMoreMenu={true}
@@ -997,7 +993,7 @@ class ViewCycle extends Component {
 
                                                                                 <span className={"  status ms-2 text-right"}>
 
-                                                    <span className={item.step.stage!="cancelled"&&item.step.stage!="declined"?" active text-capitalize text-14":" text-14 text-capitalize waiting "}>
+                                                    <span className={item.step.stage!=="cancelled"&&item.step.stage!=="declined"?" active text-capitalize text-14":" text-14 text-capitalize waiting "}>
                                     {item.step.stage}
                                 </span>
                                                     </span>

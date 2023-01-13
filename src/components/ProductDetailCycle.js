@@ -945,12 +945,13 @@ class ProductDetailCycle extends Component {
 
                                                 <div className={"bg-white rad-8 p-2"}>
                                                     <GoogleMap
+                                                     searchLocation
                                                         siteId={this.props.item.site._key} width={"100%"}
-                                                               height={"300px"} locations={[{
+                                                               height={"300px"} location={{
                                                         name: this.props.item.site.name,
                                                         location: this.props.item.site.geo_codes[0].address_info.geometry.location,
                                                         isCenter: true
-                                                    }]}
+                                                    }}
                                                     />
                                                 </div>
 

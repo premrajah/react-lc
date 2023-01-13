@@ -638,7 +638,7 @@ class ProductDetailCycle extends Component {
                 this.setState({
                     trailLoading:false
                 })
-                this.setState({ orgTrails: data.org_trails,distanceTrails:data.distance_trails, siteTrails: data.site_trails, distanceTotals:data.distance_trail_totals });
+                this.setState({ orgTrails: data.org_trails,distanceTrails:data.distance_trails, Qr: data.site_trails, distanceTotals:data.distance_trail_totals });
             })
             .catch((error) => {
                 console.log("trail error ", error);

@@ -171,7 +171,7 @@ class QrCode extends Component {
         return (
 
             <>
-
+                <div className="col-12">
                 <div className="row bg-white mt-3 rad-8 border-box no-gutters justify-content-center ">
                     <div className="col-3 zoom-in-cursor  " onClick={this.callZoom}>
 
@@ -267,7 +267,7 @@ class QrCode extends Component {
 
 
                 </div>
-
+                </div>
                 </>
         );
     }

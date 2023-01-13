@@ -133,8 +133,8 @@ const SiteItem = ({site}) => {
                             <div className={"row"}>
                                 <div className={"col-12"}>
                                     {site.geo_codes&&site.geo_codes[0] &&
-                                    <GoogleMap width={"100%"}  height={"300px"}
-                                               locations={[{name:`${name} (${productCount} Products)`,location:site.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
+                                    <GoogleMap searchLocation width={"100%"}  height={"300px"}
+                                               location={{name:`${name} (${productCount} Products)`,location:site.geo_codes[0].address_info.geometry.location,isCenter:true}} />
                                     }
                                 </div>
                             </div>

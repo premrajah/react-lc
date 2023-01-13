@@ -52,9 +52,9 @@ class MapsContainer extends Component {
      } }else{
 
          this.setState({
-             markerLatitude:this.props.latitude,
-             markerLongitude:this.props.longitude,
-             markerName:this.props.name
+             markerLatitude:this.props.location.latitude,
+             markerLongitude:this.props.location.longitude,
+             markerName:this.props.location.name
 
          })
           }
@@ -92,7 +92,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
              this.setState({
                  markerLatitude:this.props.latitude,
                  markerLongitude:this.props.longitude,
-                 markerName:this.props.name
+                 markerName:this.props.location.name
 
              })
          }
@@ -194,19 +194,21 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
             </Map>}
 
-         {this.props.searchLocation &&this.state.markerLongitude&&this.state.markerLongitude&&
+         {this.props.searchLocation && this.props.location&&
          <Map
              onClick={this.onMapClicked}
              google={this.props.google}
              style={{margin:"0",width: "100%"}}
              center={{
-                 lat: this.props.latitude,
-                 lng: this.props.longitude,
+                 lat: this.props.location.location.lat,
+                 lng: this.props.location.location.lng,
              }}
+
              initialCenter={{
-                 lat: this.props.latitude,
-                 lng: this.props.longitude,
+                 lat: this.props.location.location.lat,
+                 lng: this.props.location.location.lng,
              }}
+
              zoom={12}
              minZoom={2}
 
@@ -214,7 +216,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                  <Marker
 
                      // label={"<span>som label</span>"}
-                     draggable={true}
+                     draggable={this.props.draggable?true:false}
                      // onDragend={this.moveMarker.bind(this)}
                      onDragend={(t, map, coord) => this.moveMarker(coord)}
                      icon={{
@@ -224,17 +226,31 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                      }}
                      // animation= {this.props.google.maps.Animation.DROP}
-                     position= {{"lat": this.state.markerLatitude,lng: this.state.markerLongitude }}
+                     position= {{
+                         lat: this.props.location.location.lat,
+                         lng: this.props.location.location.lng,
+                     }}
+
                      // name={this.props.name}
                  />
-             <InfoWindow
-             visible={true}
+
+
+             {!this.props.draggable?<InfoWindow
+
+                 marker={this.state.activeMarker}
+                 visible={true}>
+
+                 <div>
+                     <span><a href={"/ps/"+this.props.siteId}>{this.props.location.name}</a></span>
+                 </div>
+             </InfoWindow>: <InfoWindow
+                 visible={true}
              >
 
                  <div>
                      <span>Drag Me</span>
                  </div>
-             </InfoWindow>
+             </InfoWindow>}
 
 
          </Map>}

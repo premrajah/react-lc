@@ -60,13 +60,21 @@ function SiteTrailsTimeline(props) {
 
         setTimeout(() => {
             setShowMap(!showMap);
+            updateDistLookup();
             setSite(site)
         }, 500);
 
     }
 
-    const dist_lookup = new Map();
-    props.distanceTrails.length > 0 && props.distanceTrails.map((item, index) => dist_lookup.set(`${item._from}|${item._to}`, item.trail));
+    const [distLookup, setDistLookup] = useState(new Map());
+
+    const updateDistLookup = () => {
+        const local_dist_lookup = new Map();
+        props.distanceTrails.length > 0 && props.distanceTrails.map((item, index) => dist_lookup.set(`${item._from}|${item._to}`, item.trail));
+        setDistLookup(local_dist_lookup);
+    }
+
+    updateDistLookup();
 
     useEffect(() => {
 
@@ -212,7 +220,7 @@ function SiteTrailsTimeline(props) {
                         .map((item, index) => {
 
                             let local_trail = (index < props.siteTrails.length - 1)
-                                ? dist_lookup.get(`${props.siteTrails[index + 1].site.site._id}|${props.siteTrails[index].site.site._id}`)
+                                ? distLookup.get(`${props.siteTrails[index + 1].site.site._id}|${props.siteTrails[index].site.site._id}`)
                                 : null
                             ;
 

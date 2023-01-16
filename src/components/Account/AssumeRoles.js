@@ -379,18 +379,18 @@ class AssumeRoles extends Component {
                         {/*    name={"org"}*/}
                         {/*    title="Select Organisation"/>*/}
 
-                    <AutocompleteCustom
-                        hideAddNew
-                        orgs={true}
-                        suggestions={this.state.orgNames}
-                        selectedCompany={(action) => {
-                            let fields=this.state.fields
-                            fields.value=action.org
-                            this.setState({
-                                fields:fields
-                            })
-                        }}
-                    />
+                    {/*<AutocompleteCustom*/}
+                    {/*    hideAddNew*/}
+                    {/*    orgs={true}*/}
+                    {/*    suggestions={this.state.orgNames}*/}
+                    {/*    selectedCompany={(action) => {*/}
+                    {/*        let fields=this.state.fields*/}
+                    {/*        fields.value=action.org*/}
+                    {/*        this.setState({*/}
+                    {/*            fields:fields*/}
+                    {/*        })*/}
+                    {/*    }}*/}
+                    {/*/>*/}
 
                     </div>
                     }

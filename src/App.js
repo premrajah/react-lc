@@ -91,6 +91,7 @@ import CompanyDetailsPopUp from "./components/Account/CompanyDetailsPopUp";
 import MyDiary from "./pages/diary/MyDiary";
 import RentalReleaseRecords from "./pages/approvals/RentalReleaseRecords";
 import PromptLoginRoute from "./Util/PromptLoginRoute";
+import ProductsCondensedView from "./pages/my-products/ProductsCondensedView";
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -156,6 +157,7 @@ class App extends Component {
                         {/*<LoggedInRoute exact path="/my-products" component={Products} />*/}
                         <LoggedInRoute exact path="/my-products" component={ProductsNew} />
                         <LoggedInRoute exact path="/my-products/:id" component={ProductsNew} />
+                        <LoggedInRoute exact path="/my-products-condensed" component={ProductsCondensedView} />
                         <LoggedInRoute exact path="/sites" component={Sites} />
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />

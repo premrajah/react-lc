@@ -25,6 +25,9 @@ import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import CircularProgressWithLabel from "../../components/FormsUI/Buttons/CircularProgressWithLabel";
+import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
+import ProductsCondensedView from "./ProductsCondensedView";
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 
 class Products extends Component {
     constructor(props) {
@@ -52,7 +55,8 @@ class Products extends Component {
             showProductLine: false,
             activeQueryUrl:null,
             allDownloadItems:[],
-            showFieldSelection:false
+            showFieldSelection:false,
+            productDisplayView: "large",
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -505,6 +509,12 @@ class Products extends Component {
         });
     };
 
+    toggleProductView = (viewType) => {
+        this.setState({
+            productDisplayView: viewType
+        });
+    }
+
     getSitesForProducts = () => {
         let products = [];
 
@@ -784,11 +794,22 @@ class Products extends Component {
                                     </BlueSmallBtn>
                                 </CustomPopover>
                                 </div>
-                                <CustomPopover text={"Add Product Lines"}>
-                                    <BlueSmallBtn onClick={this.addProductLine}>
-                                        Product Lines
+                                <div className="me-2">
+                                    <CustomPopover text={"Add Product Lines"}>
+                                        <BlueSmallBtn onClick={this.addProductLine}>
+                                            Product Lines
+                                        </BlueSmallBtn>
+                                    </CustomPopover>
+                                </div>
+                                {(this.state.items.length > 0 && this.state.productDisplayView === "large") ? <CustomPopover text="Condensed Products View">
+                                    <BlueSmallBtn onClick={() => this.toggleProductView("compact")}>
+                                        <ViewHeadlineIcon/>
                                     </BlueSmallBtn>
-                                </CustomPopover>
+                                </CustomPopover> : <CustomPopover text="Large Products View">
+                                    <BlueSmallBtn onClick={() => this.toggleProductView("large")}>
+                                        <ViewAgendaIcon/>
+                                    </BlueSmallBtn>
+                                </CustomPopover>}
                             </div>
                         </div>
 
@@ -801,7 +822,7 @@ class Products extends Component {
                             loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}>
                             {this.state.items.map((item, index) => (
                                 <div id={`${item._key}-${index}`} key={item._key + "-" + index}>
-                                    <ProductItem
+                                    {this.state.productDisplayView === "large" ? <ProductItem
                                         showPreview
                                         index={index}
                                         goToLink={true}
@@ -816,7 +837,9 @@ class Products extends Component {
                                             this.handleAddToProductsExportList(item)
                                         }
                                         showAddToListButton
-                                    />
+                                    /> : <div id={`${item._key}-${index}`} key={item._key + "-" + index}>
+                                        <ProductsCondensedView product={item.Product} index={index}  />
+                                    </div>}
                                 </div>
                             ))}
                         </PaginationLayout>

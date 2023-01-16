@@ -4892,3 +4892,18 @@ select option {
 
     margin: auto;
 }
+.org-box-scroll{
+    max-height: 200px;
+    overflow:scroll;
+
+}
+.org-box-scroll div{
+
+    margin: 1px 0px!important;
+}
+.selected-green-item{
+    background: #05ad88;
+    color: #fff;
+    width: 100%;
+
+}

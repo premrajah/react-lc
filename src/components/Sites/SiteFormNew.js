@@ -784,10 +784,9 @@ class SiteFormNew extends Component {
                                                 {/*)}*/}
                                                 <SelectArrayWrapper
                                                     name={`site[${index}]`}
-                                                    onChange={this.handleChange.bind(
-                                                        this,
-                                                        "site"
-                                                    )}
+                                                    onChange={(value) => {
+                                                        this.handleChange(value, "site")
+                                                    }}
                                                     // label={"Link a product"}
                                                     required={true}
 
@@ -811,13 +810,7 @@ class SiteFormNew extends Component {
                                                                             item.Site._key
                                                                     ).length > 0
                                                                 )
-                                                        )
-
-                                                        .map((item) => (
-                                                            <option  value={item.Site._key}>
-                                                                {item.Site.name}{GetParent(item)}
-                                                            </option>
-                                                        ))}
+                                                        )}
 
                                                     title="Select site"/>
 

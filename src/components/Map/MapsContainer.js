@@ -25,12 +25,15 @@ class MapsContainer extends Component {
 
      ];
 
-     onMarkerClick = (props, marker, e) =>
+     onMarkerClick = (props, marker, e) => {
+
+
          this.setState({
              selectedPlace: props,
              activeMarker: marker,
              showingInfoWindow: true
          });
+     }
 
      onMapClicked = (props) => {
          if (this.state.showingInfoWindow) {
@@ -46,17 +49,16 @@ class MapsContainer extends Component {
           if (!this.props.searchLocation){
      for (let i=0;i<this.props.locations.length;i++) {
 
-         console.log("location map 2 "+i)
          this.polyLine.push({lat: this.props.locations[i].location.lat, lng: this.props.locations[i].location.lng},)
 
      } }else{
 
-         this.setState({
-             markerLatitude:this.props.location.latitude,
-             markerLongitude:this.props.location.longitude,
-             markerName:this.props.location.name
-
-         })
+         // this.setState({
+         //     markerLatitude:this.props.location.latitude,
+         //     markerLongitude:this.props.location.longitude,
+         //     markerName:this.props.location.name
+         //
+         // })
           }
 
 }
@@ -172,9 +174,9 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                 )}
                 <InfoWindow
-
                     marker={this.state.activeMarker}
-                    visible={true||this.state.showingInfoWindow}>
+                    visible={true||this.state.showingInfoWindow}
+                >
 
                     <div>
                         <span><a href={"/ps/"+this.props.siteId}>{this.state.selectedPlace.name}</a></span>
@@ -225,29 +227,29 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                          scaledSize: new this.props.google.maps.Size(50,50)
 
                      }}
-                     // animation= {this.props.google.maps.Animation.DROP}
+                     animation= {this.props.google.maps.Animation.DROP}
                      position= {{
                          lat: this.props.location.location.lat,
                          lng: this.props.location.location.lng,
                      }}
+                     onClick={this.onMarkerClick}
 
-                     // name={this.props.name}
                  />
 
 
              {!this.props.draggable?<InfoWindow
 
                  marker={this.state.activeMarker}
-                 visible={true}>
+                 visible={true||this.state.showingInfoWindow}
+             >
 
                  <div>
                      <span><a href={"/ps/"+this.props.siteId}>{this.props.location.name}</a></span>
                  </div>
-             </InfoWindow>: <InfoWindow
-                 visible={true}
-             >
-
-                 <div>
+             </InfoWindow>:
+                 <InfoWindow
+                 visible={true}>
+                     <div>
                      <span>Drag Me</span>
                  </div>
              </InfoWindow>}

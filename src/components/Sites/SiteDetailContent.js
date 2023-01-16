@@ -513,13 +513,13 @@ class SiteDetailContent extends Component {
 
                             </div>
                         </div>
-                        <div className="row   justify-content-center">
+                        <div className="row  no-gutters justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
-                                <div className=" stick-left-box  ">
+                                <div className=" row g-0 stick-left-box  ">
 
                                     {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
-
-                                    <div className={"p-2 gray-border rad-8 bg-white"}>
+                                    <div className="col-12 ">
+                                    <div className={" gray-border rad-8 bg-white"}>
                                     <GoogleMap width={"100%"} height={"300px"}
                                                siteId={this.props.item.site._key}
                                                searchLocation
@@ -528,6 +528,7 @@ class SiteDetailContent extends Component {
                                         location: this.props.item.site.geo_codes[0].address_info.geometry.location,
                                         isCenter: true
                                     }}/>
+                                    </div>
                                     </div>
                                     }
 

@@ -779,7 +779,7 @@ class Products extends Component {
                             </div>
                             <div className="col-md-5 d-flex justify-content-end">
                                 <div className="me-2">
-                                <CustomPopover text={"Download all products in csv."}>
+                                <CustomPopover text={"Export all products to csv."}>
                                     <BlueSmallBtn
                                         title={"Export To CSV"}
                                         // disabled={this.state.downloadAllLoading}

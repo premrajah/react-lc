@@ -1018,7 +1018,7 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
-                                                        {this.state.events.length>0 &&  <Tab label="Events" value="8" />}
+                                                        {this.state.events.length>0 &&  <Tab label="Calendar" value="8" />}
 
                                                     </TabList>
                                                 </Box>

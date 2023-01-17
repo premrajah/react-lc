@@ -18,6 +18,8 @@ import ProductItem from "../../components/Products/Item/ProductItem";
 import Layout from "../../components/Layout/Layout";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
+import CustomPopover from "../../components/FormsUI/CustomPopover";
+import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 
 class ProductsService extends Component {
 
@@ -227,7 +229,7 @@ class ProductsService extends Component {
                         />
 
                         <div className="row">
-                            <div className="col-12 d-flex justify-content-start">
+                            <div className="col-7 d-flex justify-content-start">
                                 <Link to="/my-products" className="btn btn-sm btn-gray-border me-2">
                                     Products
                                 </Link>
@@ -246,6 +248,23 @@ class ProductsService extends Component {
                                     Issues
                                     {/*</CustomPopover>*/}
                                 </Link>
+                            </div>
+                            <div className="col-md-5 d-flex justify-content-end">
+                                {/*<div className="">*/}
+                                {/*    <CustomPopover text={"Download all products in csv."}>*/}
+                                {/*        <BlueSmallBtn*/}
+                                {/*            title={"Export To CSV"}*/}
+                                {/*            // disabled={this.state.downloadAllLoading}*/}
+                                {/*            // progressLoading={this.state.downloadAllLoading}*/}
+                                {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
+                                {/*            // onClick={()=>this.downloadAll(0,100)}*/}
+                                {/*            onClick={this.fieldSelection}*/}
+                                {/*        >*/}
+
+                                {/*        </BlueSmallBtn>*/}
+                                {/*    </CustomPopover>*/}
+                                {/*</div>*/}
+
                             </div>
                         </div>
 

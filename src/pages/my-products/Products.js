@@ -506,7 +506,7 @@ class Products extends Component {
     };
 
     getSitesForProducts = () => {
-        alert("click")
+
 
 
         try {

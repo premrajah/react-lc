@@ -948,7 +948,7 @@ class EventItem extends Component {
                         show={this.state.showEditEvent}
                         hide={this.showEditEventPopup}
                     ><div className={"col-12"}>
-                        {this.state.editEvent && <EventForm edit hideProduct  hide={()=>{
+                        {this.state.editEvent && <EventForm edit   hide={()=>{
 
                             this.props.refresh(this.state.editEvent.event.resolution_epoch_ms)
                             this.showEditEventPopup();

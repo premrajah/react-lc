@@ -602,6 +602,18 @@ class EventForm extends Component {
 
 
 
+     getEVENT_OCVC = (Id) => {
+        axios
+            .get(`${baseUrl}event/${Id}/oc-vc`)
+            .then((res) => {
+                const data = res.data.data;
+                // setProductOCVC(data);
+            })
+            .catch((e) => {
+                console.log("event oc-vc error ", e);
+            });
+    };
+
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
@@ -617,6 +629,7 @@ class EventForm extends Component {
 
     updateProps=()=>{
         if (this.props.event){
+            this.getEVENT_OCVC(this.props.event.event._key)
             this.setState({
                 isEditProduct:true,
                 startDate:this.props.event.event.resolution_epoch_ms,

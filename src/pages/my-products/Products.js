@@ -520,44 +520,93 @@ class Products extends Component {
 
 
         try {
-            let products = [];
+            // let products = [];
+            //
+            // let mapData = [];
+            //
+            // this.state.selectedProducts.forEach((item) => {
+            //
+            //     mapData.push({_key: item.Product._key, name: item.Product.name,site:getSite(item)});
+            //     return products.push(item.Product._key);
+            // });
 
-            let mapData = [];
 
-            this.state.selectedProducts.forEach((item) => {
-                mapData.push({_key: item.Product._key, name: item.Product.name});
-                return products.push(item.Product._key);
+
+
+
+            // let sites = res.data.data;
+            //
+            // for (let i = 0; i < mapData.length; i++) {
+            //     let site = sites.find(
+            //         (site) => site.product_id.replace("Product/", "") === mapData[i]._key
+            //     );
+            //     mapData[i].site = site.site;
+            // }
+
+            let mapData=this.mapProductToSite()
+            this.mapProductToSite()
+            this.setState({
+                mapData: mapData,
+                showMap: !this.state.showMap,
+
             });
-
-            axios
-                .post(baseUrl + "product/site/get-many", {product_ids: products})
-                .then((res) => {
-                    if (res.status === 200) {
-                        let sites = res.data.data;
-
-                        for (let i = 0; i < mapData.length; i++) {
-                            let site = sites.find(
-                                (site) => site.product_id.replace("Product/", "") === mapData[i]._key
-                            );
-                            mapData[i].site = site.site;
-                        }
-
-                        this.setState({
-                            showMap: !this.state.showMap,
-                            mapData: mapData,
-                        });
-                    } else {
-                    }
-                })
-                .catch((error) => {
-                    if (error.response) console.log(error);
-                });
+            // axios
+            //     .post(baseUrl + "product/site/get-many", {product_ids: products})
+            //     .then((res) => {
+            //         if (res.status === 200) {
+            //             let sites = res.data.data;
+            //
+            //             for (let i = 0; i < mapData.length; i++) {
+            //                 let site = sites.find(
+            //                     (site) => site.product_id.replace("Product/", "") === mapData[i]._key
+            //                 );
+            //                 mapData[i].site = site.site;
+            //             }
+            //
+            //             this.setState({
+            //                 showMap: !this.state.showMap,
+            //                 mapData: mapData,
+            //             });
+            //         } else {
+            //         }
+            //     })
+            //     .catch((error) => {
+            //         if (error.response) console.log(error);
+            //     });
 
         }catch (e){
             console.log(e)
         }
     };
 
+
+
+    mapProductToSite=()=>{
+
+        let products=this.state.selectedProducts
+        let data=[]
+        products.forEach(product=>{
+
+            let site=getSite(product)
+            let productTmp=product.Product
+
+            if (data.length>0&&data.find(item=>item.site._key==site._key)){
+
+                data.find(item=>item.site._key==site._key).products.push(productTmp)
+            }
+            else{
+             data.push({
+                 site:site,
+                 products:[productTmp]
+             })
+            }
+    })
+
+
+        console.log(data)
+        return data
+
+    }
     handleValidationScaling() {
         let fields = this.state.fields;
 
@@ -939,11 +988,12 @@ class Products extends Component {
                         </div>
 
                         <div className={"row justify-content-center"}>
+                            {this.state.mapData.length>0 &&
                             <ProductsGoogleMap
                                 mapData={this.state.mapData}
                                 width="700px"
                                 height="400px"
-                            />
+                            />}
                         </div>
                     </ModalBody>
                 </Modal>

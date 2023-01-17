@@ -20,13 +20,18 @@ class ProductsMapContainer extends Component {
 
      ];
 
-     onMarkerClick = (props, marker, e) =>
-         this.setState({
-             selectedPlace: props,
-             activeMarker: marker,
-             showingInfoWindow: true
-         });
+     onMarkerClick = (props, marker, e) =>{
 
+         console.log("props")
+         console.log(props)
+         setTimeout(() => {
+             this.setState({
+                 selectedPlace: props,
+                 activeMarker: marker,
+                 showingInfoWindow: true
+             });
+         },250)
+     }
      onMapClicked = (props) => {
          if (this.state.showingInfoWindow) {
              this.setState({
@@ -40,13 +45,18 @@ class ProductsMapContainer extends Component {
 
      let locations=[]
 
+
      for (let j=0;j<this.props.mapData.length;j++) {
 
          let site=this.props.mapData[j].site
 
          if (site&&site.geo_codes&&site.geo_codes[0]) {
 
-locations.push({name:this.props.mapData[j].name, subTitle:site.name,location:site.geo_codes[0].address_info.geometry.location,isCenter:true,product:this.props.mapData[j]._key})
+locations.push({
+    name:this.props.mapData[j].site.name,
+    products:this.props.mapData[j].products,
+    site:site,
+    location:site.geo_codes[0].address_info.geometry.location,isCenter:true,product:this.props.mapData[j]._key})
 
          }
 
@@ -95,11 +105,14 @@ locations.push({name:this.props.mapData[j].name, subTitle:site.name,location:sit
                       scaledSize: new this.props.google.maps.Size(50,50)
 
                   }}
-                    animation= {this.props.google.maps.Animation.DROP}
+                    // animation= {this.props.google.maps.Animation.DROP}
                     position= {{"lat": item.location.lat,lng: item.location.lng }}
                         name={item.name}
-                    product={item.product}
-                    subTitle={item.subTitle}
+                    products={item.products}
+                    site={item.site}
+                    // siteId={item.site._key}
+                    // subTitle={item.subTitle}
+
                 />
 
 
@@ -107,22 +120,20 @@ locations.push({name:this.props.mapData[j].name, subTitle:site.name,location:sit
                 <InfoWindow
                     marker={this.state.activeMarker}
                     visible={this.state.showingInfoWindow}>
-                    <div>
-                        <span><a href={"/product/"+this.state.selectedPlace.product}>{this.state.selectedPlace.name}</a></span>
-                        <small>({this.state.selectedPlace.subTitle})</small>
+
+                    <div className="p-2">
+                        {this.state.selectedPlace.site &&<span><b>Site: </b><a href={"/ps/"+this.state.selectedPlace.site._key}>{this.state.selectedPlace.site.name}</a></span>}
+                        <br/>
+                        {this.state.selectedPlace.products&&this.state.selectedPlace.products.map((product,index)=>
+                            <span className="mt-2">
+                                <b>{index+1}. </b> <a href={"/product/"+product._key}> <span> {product.name}</span></a>
+                                <br/>
+                            </span>
+                        )}
+
                     </div>
                 </InfoWindow>
-              {/*  <Polyline*/}
-              {/*      path={this.polyLine}*/}
-              {/*      geodesic={true}*/}
-              {/*      strokeColor="#07ad88"*/}
-              {/*      strokeOpacity={1}*/}
-              {/*      strokeWeight={2}*/}
 
-              {/*      icons={ [{*/}
-              {/*            icon: {path: this.props.google.maps.SymbolPath.FORWARD_CLOSED_ARROW},*/}
-              {/*             offset: "100%" }]}*/}
-              {/*/>*/}
 
             </Map>}
 </div>

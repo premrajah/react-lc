@@ -251,6 +251,16 @@ class AssumeRoles extends Component {
             count: result.data ? result.data.data : 0,
         });
     };
+    showSubmitSite=()=> {
+
+
+        this.setState({
+            showSubmitSite: !this.state.showSubmitSite,
+        });
+
+
+    }
+
     componentDidMount() {
         window.scrollTo(0, 0);
 
@@ -326,9 +336,42 @@ class AssumeRoles extends Component {
                     }
                     {(this.state.roleBy==="Org") &&
                     <div className="col-9    mt-4">
-                        Showing {this.state.orgs.length} of {this.state.count}
-                        <div className="row mt-2 org-box-scroll gray-border ">
+                        <div className="row mt-2  ">
                             <div className="col-12  ">
+                        <AutocompleteCustom
+                            hideAddNew
+                            orgs={true}
+                            suggestions={this.state.orgNames}
+                            selectedCompany={(action) => {
+                                let fields=this.state.fields
+                                fields.value=action.org
+                                this.setState({
+                                    fields:fields
+                                })
+                            }}
+                        />
+                                <p style={{ marginTop: "10px" }}>
+                                    {/*<span className="mr-1 text-gray-light">or </span>*/}
+                                    <span
+                                        onClick={this.showSubmitSite}
+                                        className={
+                                            " forgot-password-link ellipsis-end"
+                                        }>
+                                                        {this.state.showSubmitSite
+                                                            ? "Hide all"
+                                                            : "View All"}
+                                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        {this.state.showSubmitSite &&
+                        <div className="row mt-2   ">
+                            <div className="col-12  ">
+                        Showing {this.state.orgs.length} of {this.state.count}
+                            </div>
+
+                            <div className="col-12 gray-border mt-2 org-box-scroll">
 
                         <PaginationLayout
                             // dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
@@ -357,40 +400,8 @@ class AssumeRoles extends Component {
                         </PaginationLayout>
 
                         </div>
-                        </div>
-                        {/*<SelectArrayWrapper*/}
+                        </div>}
 
-                        {/*    details="Select product’s location from the existing sites or add new address below"*/}
-                        {/*    // initialValue={this.props.item&&this.props.item.site._key}*/}
-                        {/*    option={"Org"}*/}
-                        {/*    subOption={"name"}*/}
-                        {/*    valueKey={"Org"}*/}
-                        {/*    subValueKey={"_key"}*/}
-                        {/*    error={this.state.errors["org"]}*/}
-                        {/*    onChange={(value) => {*/}
-                        {/*        let fields=this.state.fields*/}
-                        {/*        fields.value=value*/}
-                        {/*        this.setState({*/}
-                        {/*            fields:fields*/}
-                        {/*        })*/}
-                        {/*    }}*/}
-                        {/*    select={"Select"}*/}
-                        {/*    options={this.state.orgs}*/}
-                        {/*    name={"org"}*/}
-                        {/*    title="Select Organisation"/>*/}
-
-                    {/*<AutocompleteCustom*/}
-                    {/*    hideAddNew*/}
-                    {/*    orgs={true}*/}
-                    {/*    suggestions={this.state.orgNames}*/}
-                    {/*    selectedCompany={(action) => {*/}
-                    {/*        let fields=this.state.fields*/}
-                    {/*        fields.value=action.org*/}
-                    {/*        this.setState({*/}
-                    {/*            fields:fields*/}
-                    {/*        })*/}
-                    {/*    }}*/}
-                    {/*/>*/}
 
                     </div>
                     }

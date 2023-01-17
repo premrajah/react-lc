@@ -1162,7 +1162,9 @@ class ProductDetailContent extends Component {
                             size={"sm"}
                             hide={this.toggleSite}
                             show={this.state.showCreateSite}
-                            heading={"Add new site"}>
+                            heading={"Add new site"}
+
+                        >
                             <>
                                 <div className="col-12 ">
 

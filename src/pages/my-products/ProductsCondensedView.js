@@ -7,14 +7,6 @@ import moment from "moment/moment";
 
 const ProductsCondensedView = ({ product, index, site }) => {
 
-    const [previewDialog, setPreviewDialog] = useState(false);
-
-    const handleOpenPreviewDialog = () => {
-        setPreviewDialog(true);
-    }
-    const handleClosePreviewDialog = () => {
-        setPreviewDialog(false);
-    }
 
     console.log(">>>", product);
     return (

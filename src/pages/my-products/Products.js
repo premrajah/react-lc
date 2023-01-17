@@ -516,38 +516,46 @@ class Products extends Component {
     }
 
     getSitesForProducts = () => {
-        let products = [];
 
-        let mapData = [];
 
-        this.state.selectedProducts.forEach((item) => {
-            mapData.push({ _key: item.product._key, name: item.product.name });
-            return products.push(item.product._key);
-        });
 
-        axios
-            .post(baseUrl + "product/site/get-many", { product_ids: products })
-            .then((res) => {
-                if (res.status === 200) {
-                    let sites = res.data.data;
+        try {
+            let products = [];
 
-                    for (let i = 0; i < mapData.length; i++) {
-                        let site = sites.find(
-                            (site) => site.product_id.replace("Product/", "") === mapData[i]._key
-                        );
-                        mapData[i].site = site.site;
-                    }
+            let mapData = [];
 
-                    this.setState({
-                        showMap: !this.state.showMap,
-                        mapData: mapData,
-                    });
-                } else {
-                }
-            })
-            .catch((error) => {
-                if (error.response) console.log(error);
+            this.state.selectedProducts.forEach((item) => {
+                mapData.push({_key: item.Product._key, name: item.Product.name});
+                return products.push(item.Product._key);
             });
+
+            axios
+                .post(baseUrl + "product/site/get-many", {product_ids: products})
+                .then((res) => {
+                    if (res.status === 200) {
+                        let sites = res.data.data;
+
+                        for (let i = 0; i < mapData.length; i++) {
+                            let site = sites.find(
+                                (site) => site.product_id.replace("Product/", "") === mapData[i]._key
+                            );
+                            mapData[i].site = site.site;
+                        }
+
+                        this.setState({
+                            showMap: !this.state.showMap,
+                            mapData: mapData,
+                        });
+                    } else {
+                    }
+                })
+                .catch((error) => {
+                    if (error.response) console.log(error);
+                });
+
+        }catch (e){
+            console.log(e)
+        }
     };
 
     handleValidationScaling() {
@@ -781,7 +789,7 @@ class Products extends Component {
                             </div>
                             <div className="col-md-5 d-flex justify-content-end">
                                 <div className="me-2">
-                                <CustomPopover text={"Download all products in csv."}>
+                                <CustomPopover text={"Export all products to csv."}>
                                     <BlueSmallBtn
                                         title={"Export To CSV"}
                                         // disabled={this.state.downloadAllLoading}

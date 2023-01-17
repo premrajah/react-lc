@@ -190,7 +190,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                     strokeWeight={2}
                     icons={ [{
                           icon: {path: this.props.google.maps.SymbolPath.FORWARD_CLOSED_ARROW},
-                           offset: "100%" , repeat:"100px"}]}
+                           offset: "100%" , repeat:"400px"}]}
 
               />
 

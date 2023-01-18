@@ -590,9 +590,9 @@ class Products extends Component {
             let site=getSite(product)
             let productTmp=product.Product
 
-            if (data.length>0&&data.find(item=>item.site._key==site._key)){
+            if (data.length>0&&data.find(item=>item.site._key===site._key)){
 
-                data.find(item=>item.site._key==site._key).products.push(productTmp)
+                data.find(item=>item.site._key===site._key).products.push(productTmp)
             }
             else{
              data.push({
@@ -877,6 +877,16 @@ class Products extends Component {
                             loadingResults={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
                             loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}>
+
+                            {/* Headings for condensed view */}
+                            {this.state.productDisplayView !== "large" && <div className="row bg-white rad-4 p-1 mb-1">
+                                <div className="col-md-4">Product Name</div>
+                                <div className="col-md-3">Site Name</div>
+                                <div className="col-md-2 d-flex justify-content-center">Serial No</div>
+                                <div className="col-md-2" />
+                                <div className="col-md-1 d-flex justify-content-end">Date</div>
+                            </div>}
+
                             {this.state.items.map((item, index) => (
                                 <div id={`${item._key}-${index}`} key={item._key + "-" + index}>
                                     {this.state.productDisplayView === "large" ? <ProductItem

@@ -8,9 +8,15 @@ import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import axios from "axios/index";
 import placeholderImg from "../../img/place-holder-lc.png";
 import ProductItem from "../../components/Products/Item/ProductItem";
+import BusinessIcon from '@mui/icons-material/Business';
+import MapIcon from "@mui/icons-material/Place";
+import {GoogleMap} from "../../components/Map/MapsContainer";
+import {Link} from "react-router-dom";
 
 const ProductsCondensedView = ({ product, index, site }) => {
+    console.log(">> ", site)
     const [globalDialogView, setGlobalDialogView] = useState(false);
+    const [globalDialogLocationView, setGlobalDialogLocationView] = useState(false);
     const [artifacts, setArtifacts] = useState(null);
 
     useEffect(() => {
@@ -35,6 +41,10 @@ const ProductsCondensedView = ({ product, index, site }) => {
         setGlobalDialogView(!globalDialogView);
     };
 
+    const handleToggleGlobalDialogLocationView = () => {
+        setGlobalDialogLocationView(!globalDialogLocationView);
+    }
+
     return (
         <div className="row bg-white rad-4 p-1 mb-1">
             <div className="col-md-4 d-flex justify-content-start align-items-center">
@@ -55,27 +65,22 @@ const ProductsCondensedView = ({ product, index, site }) => {
                         />
                     </div>
                 )}
-                <div className="ms-2 text-truncate">{product.name}</div>
+                <div className="ms-2 text-truncate"><Link to={`/product/${product._key}`}>{product.name}</Link></div>
             </div>
 
-            <div className="col-md-5 d-flex justify-content-start align-items-center">
-                <div>
-                    <span className="text-capitlize">
-                        <small>{capitalize(product.category)}</small>
-                    </span>
-                    <span className={"m-1 arrow-cat"}>&#10095;</span>
-                    <span className=" text-capitlize">
-                        <small>{capitalize(product.type)}</small>
-                    </span>
-                    <span className={"m-1 arrow-cat"}>&#10095;</span>
-                    <span className="  text-capitlize">
-                        <small className="text-truncate">{capitalize(product.state)}</small>
-                    </span>
-                </div>
+            <div className="col-md-3 d-flex justify-content-start align-items-center">
+                <div className="click-item me-1"><MapIcon  fontSize="small" onClick={() => setGlobalDialogLocationView(true)} /></div>
+                <div className="text-truncate">{site.name}</div>
             </div>
+
+
+            <div className="col-md-2 d-flex justify-content-center align-items-center text-truncate">
+                <div>{product.sku.serial}</div>
+            </div>
+
 
             <div className="col-md-2 d-flex justify-content-end align-items-center">
-                <VisibilityIcon fontSize="small" onClick={() => setGlobalDialogView(true)} />
+                <div className="click-item"><VisibilityIcon fontSize="small" onClick={() => setGlobalDialogView(true)} /></div>
             </div>
 
             <div className="col-md-1 d-flex justify-content-end align-items-center">
@@ -92,7 +97,7 @@ const ProductsCondensedView = ({ product, index, site }) => {
                 size="md"
                 hide={() => handleToggleGlobalDialogView()}
                 show={globalDialogView}
-                heading={product.name}>
+                heading={product && product.name}>
                 <div className="col-12">
                     <ProductItem
                         item={product}
@@ -105,6 +110,22 @@ const ProductsCondensedView = ({ product, index, site }) => {
                         remove={false}
                         duplicate={false}
                     />
+                </div>
+            </GlobalDialog>
+
+            <GlobalDialog
+                size="md"
+                hide={() => handleToggleGlobalDialogLocationView()}
+                show={globalDialogLocationView}
+                heading={site && site.name}
+            >
+                <div className="col-12">
+                    {site && <GoogleMap searchLocation siteId={site._key} width={"100%"} height={"300px"}
+                                location={{
+                                    name: `${site.name}`,
+                                    location: site.geo_codes[0].address_info.geometry.location,
+                                    isCenter: true
+                                }}/>}
                 </div>
             </GlobalDialog>
         </div>

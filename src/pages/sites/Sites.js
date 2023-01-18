@@ -16,6 +16,7 @@ import {seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import SiteFormNew from "../../components/Sites/SiteFormNew";
 import {showSiteModal} from "../../store/actions/actions";
+import SiteCondensedView from "../../components/Sites/SiteCondensedView";
 
 class Sites extends Component {
 
@@ -352,11 +353,20 @@ class Sites extends Component {
                             loadMore={(data)=>this.loadSitesWithoutParentPageWise(data)}
 
                         >
+                        {/* Site Condensed view header */}
+                            <div className="row">
+                                <div className="col-md-3">Site name</div>
+                                <div className="col-md-4">Address</div>
+                                <div className="col-md-2">Email</div>
+                                <div className="col-md-1"></div>
+                                <div className="col-md-2 d-flex justify-content-end">Date added</div>
+                            </div>
 
                         {this.state.items&&this.state.items
                             .map((site, index) =>
                             <React.Fragment key={index}>
                                 <SitePageItem  showEdit={true} item={site.Site}/>
+                                <SiteCondensedView site={site.Site} index={index} />
                             </React.Fragment>
                         )}
                         </PaginationLayout>

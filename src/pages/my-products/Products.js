@@ -858,11 +858,11 @@ class Products extends Component {
                                         </BlueSmallBtn>
                                     </CustomPopover>
                                 </div>
-                                {(this.state.items.length > 0 && this.state.productDisplayView === "large") ? <CustomPopover text="Condensed Products View">
+                                {(this.state.items.length > 0 && this.state.productDisplayView === "large") ? <CustomPopover text="Product list view">
                                     <BlueSmallBtn onClick={() => this.toggleProductView("compact")}>
                                         <ViewHeadlineIcon/>
                                     </BlueSmallBtn>
-                                </CustomPopover> : <CustomPopover text="Large Products View">
+                                </CustomPopover> : <CustomPopover text="Product list view">
                                     <BlueSmallBtn onClick={() => this.toggleProductView("large")}>
                                         <ViewAgendaIcon/>
                                     </BlueSmallBtn>
@@ -884,7 +884,7 @@ class Products extends Component {
                                 <div className="col-md-3">Site Name</div>
                                 <div className="col-md-2 d-flex justify-content-center">Serial No</div>
                                 <div className="col-md-2" />
-                                <div className="col-md-1 d-flex justify-content-end">Date</div>
+                                <div className="col-md-1 d-flex justify-content-end">Date added</div>
                             </div>}
 
                             {this.state.items.map((item, index) => (

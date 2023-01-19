@@ -276,13 +276,14 @@ class Products extends Component {
     }
 
     seekCount = async () => {
+        this.controllerSeek.abort()
         let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=true`;
 
         this.filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
         });
 
-        let result = await seekAxiosGet(url);
+        let result = await seekAxiosGet(url,null,this.controllerSeek);
 
         this.setState({
             count: result.data ? result.data.data : 0,
@@ -310,11 +311,16 @@ class Products extends Component {
             }
         }
     }
-
+     controller = new AbortController();
+    controllerSeek = new AbortController();
     loadProductsWithoutParentPageWise = async (data) => {
         if (data && data.reset) {
             this.clearList();
         }
+
+
+
+        this.controller.abort()
 
         if (data) this.setFilters(data);
 
@@ -341,7 +347,7 @@ class Products extends Component {
          url = `${url}&offset=${this.state.offset}&size=${this.state.pageSize}`;
 
 
-        let result = await seekAxiosGet(url);
+        let result = await seekAxiosGet(url,null,this.controller);
 
         if (result && result.data && result.data.data) {
             this.state.offset = newOffset + this.state.pageSize;

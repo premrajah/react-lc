@@ -76,11 +76,15 @@ class PaginationLayout extends Component {
         });
     };
     timeoutSearch() {
-        if (this.timeout) clearTimeout(this.timeout);
+        if (this.timeout) {
+            console.debug("clear prev search ")
+            clearTimeout(this.timeout);
+        }
 
         this.timeout = setTimeout(() => {
             this.loadMore(true);
-        }, 1500);
+            console.debug("search this ",this.searchValue)
+        }, 3000);
     }
 
     handleSearch = (searchValue) => {

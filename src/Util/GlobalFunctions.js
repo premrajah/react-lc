@@ -123,14 +123,16 @@ export const ownerCheck = (userDetail, orgId) => {
     return userDetail.orgId === orgId;
 };
 
-export const seekAxiosGet = (url, doNotEncode) => {
+export const seekAxiosGet = (url, doNotEncode,controller) => {
     let urlEncode = url;
 
     if (!doNotEncode) {
         urlEncode = encodeURI(urlEncode);
     }
 
-    return axios.get(urlEncode).catch((error) => {
+    return axios.get(urlEncode, {
+        signal: controller?controller.signal:null
+    }).catch((error) => {
         console.error(error);
         return "Unknown error occurred.";
     });

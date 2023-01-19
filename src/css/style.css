@@ -4910,3 +4910,6 @@ select option {
 .rbc-big-calender{
     background: white;
 }
+.rbc-big-calender>div{
+    border-radius: 4px;
+}

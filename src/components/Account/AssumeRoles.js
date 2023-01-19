@@ -43,6 +43,8 @@ class AssumeRoles extends Component {
             offset: 0,
             pageSize: 20,
             loadingResults: false,
+            initialOrgId:null,
+            initialOrgName:null
 
 
         };
@@ -284,7 +286,6 @@ class AssumeRoles extends Component {
 
         // this.getOrgs()
 
-
     }
 
 
@@ -341,7 +342,15 @@ class AssumeRoles extends Component {
                         <AutocompleteCustom
                             hideAddNew
                             orgs={true}
+                            initialOrgName={this.state.initialOrgName}
+                            initialOrgId={this.state.initialOrgId}
                             suggestions={this.state.orgNames}
+                            resetSelection={()=>{
+                                this.setState({
+                                    initialOrgName:null,
+                                    initialOrgId:null
+                                })
+                            }}
                             selectedCompany={(action) => {
                                 let fields=this.state.fields
                                 fields.value=action.org
@@ -390,8 +399,14 @@ class AssumeRoles extends Component {
                                                 let fields=this.state.fields
                                                 fields.value=item.Org._key
                                                 this.setState({
-                                                    fields:fields
+                                                    fields:fields,
+                                                    initialOrgName:item.Org.name,
+                                                    initialOrgId:item.Org._key,
+
+
                                                 })
+                                                this.showSubmitSite()
+
                                             }}
                                             className="col-12  "><span className={`${this.state.fields.value==item.Org._key?  "selected-green-item":""} tree-item-name`}>{item.Org.name}</span></div>
                                     </div>

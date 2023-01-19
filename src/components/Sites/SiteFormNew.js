@@ -6,7 +6,6 @@ import "../../Util/upload-file.css";
 import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
 import {baseUrl} from "../../Util/Constants";
-import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
@@ -14,7 +13,6 @@ import {validateFormatCreate, validateInputs, Validators} from "../../Util/Valid
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import AddLinkIcon from "@mui/icons-material/AddLink";
-import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import PhoneInput from 'react-phone-input-2'

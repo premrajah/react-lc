@@ -602,17 +602,6 @@ class EventForm extends Component {
 
 
 
-     getEVENT_OCVC = (Id) => {
-        axios
-            .get(`${baseUrl}event/${Id}/oc-vc`)
-            .then((res) => {
-                const data = res.data.data;
-                // setProductOCVC(data);
-            })
-            .catch((e) => {
-                console.log("event oc-vc error ", e);
-            });
-    };
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -629,7 +618,7 @@ class EventForm extends Component {
 
     updateProps=()=>{
         if (this.props.event){
-            this.getEVENT_OCVC(this.props.event.event._key)
+
             this.setState({
                 isEditProduct:true,
                 startDate:this.props.event.event.resolution_epoch_ms,
@@ -767,7 +756,8 @@ class EventForm extends Component {
                             </div>
 
                               <div className="row  mt-2">
-                              <div className="col-md-6 col-6">
+                                  {this.props.allowDateChange&&
+                                  <div className="col-md-6 col-6">
                                   <div
                                       className={
                                           "custom-label text-bold text-blue "
@@ -806,6 +796,7 @@ class EventForm extends Component {
                                   {this.state.showFieldErrors&&this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
 
                               </div>
+                                  }
 
                                   <div className="col-md-6 d-none  col-sm-12 col-xs-12  ">
 
@@ -867,7 +858,7 @@ class EventForm extends Component {
 
                                   </div>
 
-                                      {this.state.showRepeatIntervalSelection &&
+                                      {this.props.allowDateChange&&this.state.showRepeatIntervalSelection &&
                                       <div className="row bg-light pb-4 pt-2 ">
                                           <div className="col-md-6 col-6">
                                               <div

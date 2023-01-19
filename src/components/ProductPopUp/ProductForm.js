@@ -25,6 +25,8 @@ import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
 import BlueButton from "../FormsUI/Buttons/BlueButton";
+import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
+import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 
 let slugify = require('slugify')
 
@@ -407,6 +409,8 @@ let slugify = require('slugify')
 
             let {formIsValid,errors}= validateInputs(validations)
 
+            console.log(fields)
+
             this.setState({ errors: errors });
                 // console.log(errors)
             return formIsValid;
@@ -583,6 +587,9 @@ let slugify = require('slugify')
                         this.saveProductLines(data.get("templateName") ,completeData)
 
                     } else {
+
+                        // console.log(completeData, this.state.fields["deliver"])
+                        // return
                         axios
                             .put(
                                 createProductUrl,
@@ -1363,6 +1370,20 @@ let slugify = require('slugify')
                                             {!this.props.productLines &&
                                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
+                                                {/*<DynamicSelectArrayWrapper*/}
+                                                {/*    onChange={(value)=>this.handleChangeProduct(value,`deliver`)}*/}
+
+                                                {/*    error={this.state.errors[`deliver`]}*/}
+                                                {/*    name={`deliver`}*/}
+                                                {/*    options={this.props.siteList}*/}
+                                                {/*    option={"name"}*/}
+                                                {/*    valueKey={"_key"}*/}
+                                                {/*    title="Dispatch / Collection Address"*/}
+                                                {/*    details="Select product’s location from the existing sites or add new address below"*/}
+                                                {/*    initialValue={this.props.item&&this.props.item.site._key}*/}
+                                                {/*    initialValueTextbox={this.props.item&&this.props.item.site.name}*/}
+
+                                                {/*/>*/}
                                                 <SelectArrayWrapper
 
                                                     details="Select product’s location from the existing sites or add new address below"
@@ -1370,13 +1391,12 @@ let slugify = require('slugify')
                                                     option={"name"}
                                                     valueKey={"_key"}
                                                     error={this.state.errors["deliver"]}
-                                                    onChange={(value)=> {
-
-                                                                        this.handleChangeProduct(value,"deliver")
-
-                                                                    }} select={"Select"}
-                                                    options={this.props.siteList} name={"deliver"}
-                                                    title="Dispatch / Collection Address"/>
+                                                    onChange={(value)=> {this.handleChangeProduct(value,"deliver")}}
+                                                    select={"Select"}
+                                                    options={this.props.siteList}
+                                                    name={"deliver"}
+                                                    title="Dispatch / Collection Address"
+                                                />
 
 
                                                 <p style={{ marginTop: "10px" }}>

@@ -110,6 +110,20 @@ class AutocompleteCustom extends Component {
 
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props!=prevProps){
+            if (this.props.initialOrgId) {
+
+                this.setState({
+                    selectedOrgId: this.props.initialOrgId,
+                    selectedOrgName: this.props.initialOrgName,
+                    selected: true,
+                    image: LoopcycleLogo,
+                    userInput: this.props.initialOrgName
+                })
+            }
+            }
+    }
 
     componentDidMount() {
 
@@ -373,6 +387,9 @@ class AutocompleteCustom extends Component {
             image: null,
         });
 
+        if (this.props.resetSelection){
+            this.props.resetSelection()
+        }
         this.props.selectedCompany({
             name: null,
             company: null,

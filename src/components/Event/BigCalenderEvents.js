@@ -4,7 +4,6 @@ import moment from "moment";
 import {Calendar, DateLocalizer, momentLocalizer, Views} from "react-big-calendar";
 import * as dates from "./dates";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import EventItem from "./EventItem";
 import {LoaderAnimated, weekday} from "../../Util/GlobalFunctions";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios";
@@ -24,6 +23,7 @@ import {IconButton} from "@mui/material";
 import GreenSmallBtn from "../FormsUI/Buttons/GreenSmallBtn";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import DownloadIcon from "@mui/icons-material/GetApp";
+import EventList from "./EventList";
 
 
 const mLocalizer = momentLocalizer(moment);
@@ -708,7 +708,7 @@ export default function
 
                         {loading && <LoaderAnimated />}
 
-                                <EventItem
+                                <EventList
 
                                     showDownload={showDownload}
                                     hide={()=>setShowDownload(!showDownload)}
@@ -801,7 +801,7 @@ export default function
 
                         </>}
 
-                        <EventItem smallView={smallView} loading={loading} showEvent={showEvent}
+                        <EventList smallView={smallView} loading={loading} showEvent={showEvent}
 
                                            events={events.filter((item)=>
                                                {if (showAll){

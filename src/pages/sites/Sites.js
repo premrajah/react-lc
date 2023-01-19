@@ -365,7 +365,7 @@ class Sites extends Component {
                         {this.state.items&&this.state.items
                             .map((site, index) =>
                             <React.Fragment key={index}>
-                                <SitePageItem  showEdit={true} item={site.Site}/>
+                                {/*<SitePageItem  showEdit={true} item={site.Site}/>*/}
                                 <SiteCondensedView site={site.Site} index={index} />
                             </React.Fragment>
                         )}

@@ -11,10 +11,9 @@ const SiteCondensedView = ({ site, index }) => {
     const handleToggleGlobalDialogLocationView = () => {
         setGlobalDialogLocationView(!globalDialogLocationView);
     }
-    console.log(">>> ", site);
     return (
         <div>
-            <div className="row">
+            <div className="row bg-white rad-4 p-1 mb-1">
                 <div className="col-md-3 text-truncate">{site.name}</div>
                 <div className="col-md-4 text-truncate">{site.address}</div>
                 <div className="col-md-2 text-truncate">{site.email}</div>

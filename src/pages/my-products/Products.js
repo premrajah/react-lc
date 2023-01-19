@@ -25,6 +25,9 @@ import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import CircularProgressWithLabel from "../../components/FormsUI/Buttons/CircularProgressWithLabel";
+import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
+import ProductsCondensedView from "./ProductsCondensedView";
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 
 class Products extends Component {
     constructor(props) {
@@ -52,7 +55,8 @@ class Products extends Component {
             showProductLine: false,
             activeQueryUrl:null,
             allDownloadItems:[],
-            showFieldSelection:false
+            showFieldSelection:false,
+            productDisplayView: "large",
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -505,6 +509,12 @@ class Products extends Component {
         });
     };
 
+    toggleProductView = (viewType) => {
+        this.setState({
+            productDisplayView: viewType
+        });
+    }
+
     getSitesForProducts = () => {
 
 
@@ -580,9 +590,9 @@ class Products extends Component {
             let site=getSite(product)
             let productTmp=product.Product
 
-            if (data.length>0&&data.find(item=>item.site._key==site._key)){
+            if (data.length>0&&data.find(item=>item.site._key===site._key)){
 
-                data.find(item=>item.site._key==site._key).products.push(productTmp)
+                data.find(item=>item.site._key===site._key).products.push(productTmp)
             }
             else{
              data.push({
@@ -841,11 +851,22 @@ class Products extends Component {
                                     </BlueSmallBtn>
                                 </CustomPopover>
                                 </div>
-                                <CustomPopover text={"Add Product Lines"}>
-                                    <BlueSmallBtn onClick={this.addProductLine}>
-                                        Product Lines
+                                <div className="me-2">
+                                    <CustomPopover text={"Add Product Lines"}>
+                                        <BlueSmallBtn onClick={this.addProductLine}>
+                                            Product Lines
+                                        </BlueSmallBtn>
+                                    </CustomPopover>
+                                </div>
+                                {(this.state.items.length > 0 && this.state.productDisplayView === "large") ? <CustomPopover text="Product list view">
+                                    <BlueSmallBtn onClick={() => this.toggleProductView("compact")}>
+                                        <ViewHeadlineIcon/>
                                     </BlueSmallBtn>
-                                </CustomPopover>
+                                </CustomPopover> : <CustomPopover text="Product list view">
+                                    <BlueSmallBtn onClick={() => this.toggleProductView("large")}>
+                                        <ViewAgendaIcon/>
+                                    </BlueSmallBtn>
+                                </CustomPopover>}
                             </div>
                         </div>
 
@@ -856,9 +877,19 @@ class Products extends Component {
                             loadingResults={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
                             loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}>
+
+                            {/* Headings for condensed view */}
+                            {this.state.productDisplayView !== "large" && <div className="row bg-white rad-4 p-1 mb-1">
+                                <div className="col-md-4">Product Name</div>
+                                <div className="col-md-3">Site Name</div>
+                                <div className="col-md-2 d-flex justify-content-center">Serial No</div>
+                                <div className="col-md-2" />
+                                <div className="col-md-1 d-flex justify-content-end">Date added</div>
+                            </div>}
+
                             {this.state.items.map((item, index) => (
                                 <div id={`${item._key}-${index}`} key={item._key + "-" + index}>
-                                    <ProductItem
+                                    {this.state.productDisplayView === "large" ? <ProductItem
                                         showPreview
                                         index={index}
                                         goToLink={true}
@@ -873,7 +904,9 @@ class Products extends Component {
                                             this.handleAddToProductsExportList(item)
                                         }
                                         showAddToListButton
-                                    />
+                                    /> : <div id={`${item._key}-${index}`} key={item._key + "-" + index}>
+                                        <ProductsCondensedView product={item.Product} index={index} site={getSite(item)}  />
+                                    </div>}
                                 </div>
                             ))}
                         </PaginationLayout>

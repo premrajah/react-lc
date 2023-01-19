@@ -14,7 +14,6 @@ import {GoogleMap} from "../../components/Map/MapsContainer";
 import {Link} from "react-router-dom";
 
 const ProductsCondensedView = ({ product, index, site }) => {
-    console.log(">> ", site)
     const [globalDialogView, setGlobalDialogView] = useState(false);
     const [globalDialogLocationView, setGlobalDialogLocationView] = useState(false);
     const [artifacts, setArtifacts] = useState(null);

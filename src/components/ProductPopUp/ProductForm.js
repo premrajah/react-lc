@@ -1372,12 +1372,16 @@ let slugify = require('slugify')
 
                                                 {/*<DynamicSelectArrayWrapper*/}
                                                 {/*    onChange={(value)=>this.handleChangeProduct(value,`deliver`)}*/}
-
+                                                {/*    api={""}*/}
                                                 {/*    error={this.state.errors[`deliver`]}*/}
                                                 {/*    name={`deliver`}*/}
-                                                {/*    options={this.props.siteList}*/}
-                                                {/*    option={"name"}*/}
-                                                {/*    valueKey={"_key"}*/}
+                                                {/*    // options={this.props.siteList}*/}
+                                                {/*    apiUrl={baseUrl+"seek?name=Site&no_parent=true&count=false"}*/}
+                                                {/*    option={"Site"}*/}
+                                                {/*    subOption={"name"}*/}
+                                                {/*    searchKey={"name"}*/}
+                                                {/*    valueKey={"Site"}*/}
+                                                {/*    subValueKey={"_key"}*/}
                                                 {/*    title="Dispatch / Collection Address"*/}
                                                 {/*    details="Select product’s location from the existing sites or add new address below"*/}
                                                 {/*    initialValue={this.props.item&&this.props.item.site._key}*/}

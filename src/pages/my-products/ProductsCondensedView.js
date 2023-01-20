@@ -117,7 +117,7 @@ const ProductsCondensedView = ({ product, index, site }) => {
                 heading={site && site.name}
             >
                 <div className="col-12">
-                    {site && <GoogleMap searchLocation siteId={site._key} width={"100%"} height={"300px"}
+                    {site &&site.geo_codes&&site.geo_codes.length>0&& <GoogleMap searchLocation siteId={site._key} width={"100%"} height={"300px"}
                                 location={{
                                     name: `${site.name}`,
                                     location: site.geo_codes[0].address_info.geometry.location,

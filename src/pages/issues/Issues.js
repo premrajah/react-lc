@@ -87,13 +87,14 @@ class Issues extends Component {
     }
 
     clearList=()=>{
-
+        setTimeout(() => {
         this.setState({
             offset:0,
             items:[],
             lastPageReached:false,
             loadingResults: false,
         })
+    },250)
     }
 
     setFilters=(data)=>{

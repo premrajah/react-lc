@@ -55,13 +55,14 @@ class FindResourcePage extends Component {
     pageSize=50
 
     clearList=()=>{
-
+        setTimeout(() => {
         this.setState({
             offset:0,
             items:[],
             lastPageReached:false,
             loadingResults: false,
         })
+    },250)
     }
 
     componentDidMount() {

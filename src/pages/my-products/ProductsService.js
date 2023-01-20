@@ -8,18 +8,14 @@ import {makeStyles} from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
-import {baseUrl, PRODUCTS_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import axios from "axios/index";
 import {withStyles} from "@mui/styles/index";
-// import ProductItem from "../../components/ProductItemNew";
 import PageHeader from "../../components/PageHeader";
-import SearchBar from "../../components/SearchBar";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import Layout from "../../components/Layout/Layout";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
-import CustomPopover from "../../components/FormsUI/CustomPopover";
-import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 
 class ProductsService extends Component {
 

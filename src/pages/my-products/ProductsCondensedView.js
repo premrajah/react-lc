@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Avatar } from "@mui/material";
-import { capitalize } from "../../Util/GlobalFunctions";
 import { baseUrl } from "../../Util/Constants";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import moment from "moment/moment";
@@ -8,7 +7,6 @@ import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import axios from "axios/index";
 import placeholderImg from "../../img/place-holder-lc.png";
 import ProductItem from "../../components/Products/Item/ProductItem";
-import BusinessIcon from '@mui/icons-material/Business';
 import MapIcon from "@mui/icons-material/Place";
 import {GoogleMap} from "../../components/Map/MapsContainer";
 import {Link} from "react-router-dom";

@@ -15,8 +15,6 @@ import PaginationLayout from "../../components/IntersectionOserver/PaginationLay
 import {seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import SiteFormNew from "../../components/Sites/SiteFormNew";
-import {showSiteModal} from "../../store/actions/actions";
-import SiteCondensedView from "../../components/Sites/SiteCondensedView";
 
 class Sites extends Component {
 

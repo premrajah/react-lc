@@ -677,7 +677,13 @@ class EventForm extends Component {
         if (this.props.event&&this.props.event.event.recur&&this.props.event.event.recur.value){
 
             this.setState({
-                showRepeatIntervalSelection:true
+                showRepeatIntervalSelection:true,
+                allowDateChange:  this.props.allowDateChange
+            })
+        }else{
+
+            this.setState({
+                allowDateChange:  true
             })
         }
 
@@ -756,7 +762,7 @@ class EventForm extends Component {
                             </div>
 
                               <div className="row  mt-2">
-                                  {this.props.allowDateChange&&
+                                  {this.state.allowDateChange&&
                                   <div className="col-md-6 col-6">
                                   <div
                                       className={
@@ -832,7 +838,7 @@ class EventForm extends Component {
 
                                   </div>
                                   <div className="col-md-12  col-sm-12 col-xs-12  ">
-                                  <div className="row  ">
+                                      {this.state.allowDateChange&&  <div className="row  ">
                                       <div className="col-12">
                                           <div className="row  ">
                                               <div className="col-12 ">
@@ -843,6 +849,7 @@ class EventForm extends Component {
                                               <Typography>No</Typography>
 
                                                   <Switch
+
                                                       checked={this.state.showRepeatIntervalSelection}
                                                       onChange={this.handleChangeSwitch}
                                                   color="primary"   />
@@ -856,9 +863,9 @@ class EventForm extends Component {
 
 
 
-                                  </div>
+                                  </div>}
 
-                                      {this.props.allowDateChange&&this.state.showRepeatIntervalSelection &&
+                                      {this.state.allowDateChange&&this.state.showRepeatIntervalSelection &&
                                       <div className="row bg-light pb-4 pt-2 ">
                                           <div className="col-md-6 col-6">
                                               <div
@@ -883,7 +890,7 @@ class EventForm extends Component {
                                                       // label="Available From"
                                                       inputFormat="dd/MM/yyyy"
                                                       hintText="Select Date"
-                                                      value={this.state.endDate}
+                                                      value={this.state.endDate?this.state.endDate:new Date()}
                                                       style={{position:"relative"}}
 
                                                       OpenPickerIcon={<InfoIcon/>}

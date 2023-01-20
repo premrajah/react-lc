@@ -75,13 +75,22 @@ class Products extends Component {
         this.props.showProductPopUp({ type: "create_product", show: true });
     }
 
+    timeoutTmp
+    componentWillUnmount() {
+        if (this.timeoutTmp) {
+            clearTimeout(this.timeoutTmp);
+        }
+    }
     clearList = () => {
-        this.setState({
-            offset: 0,
-            items: [],
-            lastPageReached: false,
-            loadingResults: false,
-        });
+
+        this.timeoutTmp = setTimeout(() => {
+            this.setState({
+                offset: 0,
+                items: [],
+                lastPageReached: false,
+                loadingResults: false,
+            });
+        },250)
     };
 
     handleChange(value, field) {
@@ -277,7 +286,7 @@ class Products extends Component {
 
     seekCount = async () => {
         this.controllerSeek.abort()
-        let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=true`;
+        let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
 
         this.filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
@@ -315,6 +324,7 @@ class Products extends Component {
     controllerSeek = new AbortController();
     loadProductsWithoutParentPageWise = async (data) => {
         if (data && data.reset) {
+
             this.clearList();
         }
 
@@ -334,7 +344,7 @@ class Products extends Component {
 
         // let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
 
-        let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&include-to=Site:located_at`;
+        let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at`;
 
         this.filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;

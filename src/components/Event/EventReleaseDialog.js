@@ -76,7 +76,12 @@ class EventReleaseDialog extends Component {
                     showReleaseSuccess: true,
                 })
 
+                this.props.showSnackbar({show:true,
+                    severity:"success",message:"Event release request submitted successfully. Thanks"})
+
                 this.fetchReleases()
+
+
             })
             .catch((error) => {
                 this.setState({

@@ -240,7 +240,15 @@ class Sites extends Component {
 
     }
 
-    clearList=()=>{
+    timeoutTmp
+    componentWillUnmount() {
+        if (this.timeoutTmp) {
+            clearTimeout(this.timeoutTmp);
+        }
+    }
+    clearList = () => {
+
+        this.timeoutTmp = setTimeout(() => {
 
         this.setState({
             offset:0,
@@ -248,7 +256,8 @@ class Sites extends Component {
             lastPageReached:false,
             loadingResults: false,
         })
-    }
+        },250)
+    };
 
     loadProductsWithoutParentPageWise=()=>{
 

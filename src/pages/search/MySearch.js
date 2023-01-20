@@ -60,6 +60,7 @@ class MySearch extends Component {
 
 
     clearList=()=>{
+        setTimeout(() => {
 
         this.setState({
             offset:0,
@@ -67,6 +68,7 @@ class MySearch extends Component {
             lastPageReached:false,
             loadingResults: false,
         })
+        },250)
     }
 
     setFilters=(data)=>{

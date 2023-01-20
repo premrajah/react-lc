@@ -13,22 +13,60 @@ import {baseUrl} from "../../Util/Constants";
 import IconButton from '@mui/material/IconButton';
 import moment from "moment/moment";
 import MoreMenu from "../MoreMenu";
+import {Spinner} from "react-bootstrap";
 
 const SitePageItem = (  props) => {
     const { key, name, address, email, contact, phone, others, itemKey, is_head_office } = props?props.item:null;
     const [showModal, setShowModal] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [showMap, setShowMap] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [productCount, setProductCount] = useState(0);
     const handleOpenModal = () => {
-        setErrorMsg('')
-        setShowModal(true);
+        // setErrorMsg('')
+        // setShowModal(true);
+
+
+        setLoading(true)
+        getProductsCount()
+    }
+    const getProductsCount=()=>{
+
+        axios.get(`${baseUrl}site/${props.item._key}/product/no-parent`).then(
+            (response) => {
+                let responseAll = response.data.data;
+
+                setProductCount(responseAll.length)
+
+                setLoading(false);
+                setShowMap(true);
+
+            },
+            (error) => {
+                // this.setState({
+                //     notFound: true,
+                // });
+                setLoading(false);
+                setShowMap(true);
+                // setShowMap(!showMap);
+            }
+        );
     }
 
 
 
-    const handleMapModal = () => {
+    const handleMapModal = (show) => {
 
-        setShowMap(!showMap);
+        // setShowMap(!showMap);
+
+        if (show){
+            setLoading(true)
+
+            getProductsCount()
+        }else{
+            setShowMap(!showMap);
+        }
+
     }
     const handleCloseModal = () => {
         setShowModal(false);
@@ -156,7 +194,18 @@ const SitePageItem = (  props) => {
                            {/*</p>*/}
 
                            <div className="d-flex align-items-center">
-                               <IconButton className={"mr-1"}><MapIcon  fontSize="24px" onClick={() => handleMapModal()} /></IconButton>
+                               {!loading?   <IconButton className={"mr-1"}><MapIcon  fontSize="24px" onClick={() => handleMapModal(true)} /></IconButton>:
+                                   <Spinner
+                                       className="me-2"
+                                       as="span"
+                                       animation="border"
+                                       size="sm"
+                                       role="status"
+                                       aria-hidden="true"
+                                   />}
+
+
+
                                {props.showEdit &&
                                <IconButton> <EditIcon  fontSize="24px" onClick={() => editSiteSelection()} /></IconButton>}
                                {props.moreMenu&& <MoreMenu
@@ -220,8 +269,8 @@ const SitePageItem = (  props) => {
                             <div className={"row"}>
                                 <div className={"col-12"}>
                                     {props.item.geo_codes&&props.item.geo_codes[0] &&
-                                    <GoogleMap siteId={props.item._key} width={"100%"}  height={"300px"}
-                                               locations={[{name:name,location:props.item.geo_codes[0].address_info.geometry.location,isCenter:true}]} />
+                                    <GoogleMap searchLocation siteId={props.item._key} width={"100%"}  height={"300px"}
+                                               location={{name:`${name} (${productCount} products)`,location:props.item.geo_codes[0].address_info.geometry.location,isCenter:true}} />
                                     }
                                 </div>
                             </div>

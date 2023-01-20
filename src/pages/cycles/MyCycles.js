@@ -57,6 +57,7 @@ class MyCycles extends Component {
 
 
     clearList=()=>{
+        setTimeout(() => {
 
         this.setState({
             offset:0,
@@ -64,6 +65,7 @@ class MyCycles extends Component {
             lastPageReached:false,
             loadingResults: false,
         })
+        },250)
     }
 
     setFilters=(data)=>{

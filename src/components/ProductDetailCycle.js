@@ -42,6 +42,7 @@ import GlobalDialog from "./RightBar/GlobalDialog";
 import SelectArrayWrapper from "./FormsUI/ProductForm/Select";
 import GreenButton from "./FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
+import ImageHeader from "./UIComponents/ImageHeader";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -701,7 +702,8 @@ class ProductDetailCycle extends Component {
                 <div className="row   justify-content-center">
                     <div className="col-md-4 col-sm-12 col-xs-12 ">
                         <div className="row stick-left-box  ">
-                            <div className="col-12  ">
+                            <ImageHeader images={this.props.item.artifacts} />
+                            <div className="col-12 d-none  ">
                                 {this.props.item.artifacts &&
                                 this.props.item.artifacts.length > 0 ? (
                                     <ImagesSlider images={this.props.item.artifacts} />
@@ -710,11 +712,12 @@ class ProductDetailCycle extends Component {
                                 )}
 
 
-                                <QrCode hideRefresh={true} callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.props.item}/>
 
                             </div>
+                            <QrCode hideRefresh={true} callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.props.item}/>
 
-                              {this.props.isLoggedIn &&
+
+                            {this.props.isLoggedIn &&
                                 !this.props.hideRegister &&
                                 this.props.userDetail.orgId !== this.props.item.org._id && (
                                     <>
@@ -887,7 +890,7 @@ class ProductDetailCycle extends Component {
                                 </p>
                             </div>
                         </div>
-                        <div className="listing-row-border "></div>
+
                         <div className="row justify-content-start   tabs-detail">
                             <div className="col-12 ">
                                 <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -905,7 +908,6 @@ class ProductDetailCycle extends Component {
                                                     }
                                                 }}
                                                 onChange={this.setActiveKey}
-
                                                 aria-label="lab API tabs example">
                                                 {/*<Tab label="Info" value="1" />*/}
 
@@ -919,27 +921,17 @@ class ProductDetailCycle extends Component {
                                                 {this.state.searches.length > 0 && (
                                                     <Tab label="Searches" value="5" />
                                                 )}
-
                                                 {this.state.listingLinked &&
                                                 <Tab label="Listing" value="6" />
                                                 }
-
                                                 <Tab label="Attachments" value="7" />
-
-
-
                                             </TabList>
                                         </Box>
-
-
                                         <TabPanel value="1">
-
                                             <InfoTabContent item={this.props.item}/>
-
                                         </TabPanel>
                                         {(this.props.item.product.purpose === "aggregate") &&
                                         <TabPanel value="2">
-
                                             <AggregatesTab item={this.props.item}/>
                                         </TabPanel>}
                                         <TabPanel value="3">
@@ -953,12 +945,13 @@ class ProductDetailCycle extends Component {
 
                                                 <div className={"bg-white rad-8 p-2"}>
                                                     <GoogleMap
+                                                     searchLocation
                                                         siteId={this.props.item.site._key} width={"100%"}
-                                                               height={"300px"} locations={[{
+                                                               height={"300px"} location={{
                                                         name: this.props.item.site.name,
                                                         location: this.props.item.site.geo_codes[0].address_info.geometry.location,
                                                         isCenter: true
-                                                    }]}
+                                                    }}
                                                     />
                                                 </div>
 
@@ -1001,7 +994,7 @@ class ProductDetailCycle extends Component {
                             </div>
                         </div>
 
-                        <div className="row justify-content-start  pt-3 no-gutters  mb-2 ">
+                        <div className="row justify-content-start  pt-3   mb-2 ">
                             <div className="col-12">
                                 <h5 className={"attribute-label col-12 p-0 text-blue "}>Product Provenance </h5>
                                 <p style={{ fontSize: "16px" }} className={"text-gray-light "}>
@@ -1013,8 +1006,8 @@ class ProductDetailCycle extends Component {
 
                         </div>
 
-                        <div className="row bg-white rad-8 p-3 no-gutters">
-                            <div className="col-12 ">
+                        <div className="row justify-content-start ">
+                            <div className="col-12  ">
 
 
                                 {!this.state.trailLoading ?   <>
@@ -1043,7 +1036,7 @@ class ProductDetailCycle extends Component {
 
                         {this.state.timelineDisplay === "org" ? (
                             <div className="row">
-                                <div className="col">
+                                <div className="col ">
                                     {this.state.orgTrails && (
                                         <OrgTrailsTimeline orgTrails={this.state.orgTrails} />
                                     )}
@@ -1052,10 +1045,13 @@ class ProductDetailCycle extends Component {
                         ) : null}
 
                         {this.state.timelineDisplay === "site" ? (
-                            <div className="row ">
-                                <div className="col">
+                            <div className="row g-0">
+                                <div className="col-12 rad-8  p-3 bg-white">
                                     {this.state.siteTrails && (
-                                        <SiteTrailsTimeline distanceTrails={this.state.distanceTrails} siteTrails={this.state.siteTrails} distanceTotals={this.state.distanceTotals}/>
+                                        <SiteTrailsTimeline
+                                            product={this.props.item.product}
+                                            distanceTrails={this.state.distanceTrails}
+                                            siteTrails={this.state.siteTrails} distanceTotals={this.state.distanceTotals}/>
                                     )}
                                 </div>
                             </div>

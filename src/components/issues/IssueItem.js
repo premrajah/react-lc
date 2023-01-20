@@ -138,7 +138,7 @@ const IssueItem = ({ item, onSubmitted }) => {
                                         </div>
 
                                         {issue && (
-                                            <div className="col-md-2 col-sm-12 d-flex flex-column align-items-end">
+                                            <div className="position-relative col-md-2 col-sm-12 d-flex flex-column align-items-end">
                                                 <p className={"text-gray-light date-bottom"}>
                                                     {moment(issue._ts_epoch_ms).format(
                                                         "DD MMM YYYY"

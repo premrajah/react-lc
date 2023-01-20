@@ -62,8 +62,8 @@ ImagesSlider extends React.Component {
         return (
             <>
 
-                <div className={"row bg-white "}>
-                    <div className={"col-12 p-2 gray-border"}>
+                <div className={"row g-0 bg-white   "}>
+                    <div className={"col-12 gray-border "}>
                 <ImageGallery
                     className={""}
                     ref={this.refImg}
@@ -78,15 +78,15 @@ ImagesSlider extends React.Component {
 
                 />
                     </div>
-                    <div className={"col-12"}>
-                <div className={"row p-2 "+styles.grayBox}>
+                    <div className={"col-12 "}>
+                <div className={"row g-0 p-2 "+styles.grayBox}>
                     <div className={"col-6 text-left"}>
 
 
                         <span className={""}>{this.state.currentIndex+1}/{this.imagesArray.length}</span>
 
                     </div>
-                    <div className={"col-6 text-right"}>
+                    <div className="col-6 d-flex justify-content-end">
 
                         <ArrowBackRoundedIcon className={`turnLeft ${this.state.currentIndex===0&&" white-icon"}`} onClick={()=> { if (this.state.currentIndex>0) this.handleIndex(this.state.currentIndex-1) }}    />
                           <ArrowBackRoundedIcon onClick={()=> { if (this.state.currentIndex<this.imagesArray.length-1) this.handleIndex(this.state.currentIndex+1)} } className={`turnRight ${(this.state.currentIndex===(this.imagesArray.length-1))&&" white-icon"}`} />

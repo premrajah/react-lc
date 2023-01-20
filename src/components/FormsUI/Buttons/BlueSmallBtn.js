@@ -1,11 +1,11 @@
 import React from 'react'
 import {Spinner} from "react-bootstrap";
+import CircularProgressWithLabel from "./CircularProgressWithLabel";
 
-const BlueSmallBtn = ({onClick,title,fullWidth,disabled,loading,classAdd, ...otherProps}) => {
+const BlueSmallBtn = ({onClick,title,fullWidth,disabled,loading,classAdd,progressLoading,progressValue, ...otherProps}) => {
     const { children } = otherProps
-    return <button disabled={disabled}   className={`${classAdd}  ${disabled?" btn-gray btn-sm":" btn-sm btn-gray-border "}  ${fullWidth?" btn-block":""}`}
+    return <button disabled={disabled}   className={`${classAdd}  ${disabled?" btn-gray-disabled btn-sm":" btn-sm btn-gray-border "}  ${fullWidth?" btn-block":""}`}
                    onClick={onClick} {...otherProps}>
-
         {loading && (
             <Spinner
                 className={`mr-2 `}
@@ -16,6 +16,7 @@ const BlueSmallBtn = ({onClick,title,fullWidth,disabled,loading,classAdd, ...oth
                 aria-hidden="true"
             />
         )}
+        {progressLoading &&  <CircularProgressWithLabel  value={progressValue?progressValue:0} />}
         {children} {title}
     </button>
 

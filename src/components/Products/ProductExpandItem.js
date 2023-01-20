@@ -409,7 +409,6 @@ class ProductExpandItem extends Component {
                                                 style={{ display: "flex" }}>
                                                 {item > 1 && (
                                                     <>
-                                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
                                                         <DeleteIcon
                                                             classname={"click-item"}

@@ -25,12 +25,15 @@ class MapsContainer extends Component {
 
      ];
 
-     onMarkerClick = (props, marker, e) =>
+     onMarkerClick = (props, marker, e) => {
+
+
          this.setState({
              selectedPlace: props,
              activeMarker: marker,
              showingInfoWindow: true
          });
+     }
 
      onMapClicked = (props) => {
          if (this.state.showingInfoWindow) {
@@ -46,17 +49,16 @@ class MapsContainer extends Component {
           if (!this.props.searchLocation){
      for (let i=0;i<this.props.locations.length;i++) {
 
-         console.log("location map 2 "+i)
          this.polyLine.push({lat: this.props.locations[i].location.lat, lng: this.props.locations[i].location.lng},)
 
      } }else{
 
-         this.setState({
-             markerLatitude:this.props.latitude,
-             markerLongitude:this.props.longitude,
-             markerName:this.props.name
-
-         })
+         // this.setState({
+         //     markerLatitude:this.props.location.latitude,
+         //     markerLongitude:this.props.location.longitude,
+         //     markerName:this.props.location.name
+         //
+         // })
           }
 
 }
@@ -92,7 +94,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
              this.setState({
                  markerLatitude:this.props.latitude,
                  markerLongitude:this.props.longitude,
-                 markerName:this.props.name
+                 markerName:this.props.location.name
 
              })
          }
@@ -138,17 +140,18 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                 google={this.props.google}
                 style={{margin:"0",width: "100%"}}
                 center={{
-                    lat: this.props.locations.find((item)=> item.isCenter===true).location.lat,
-                    lng: this.props.locations.find((item)=> item.isCenter===true).location.lng,
+                    lat: this.props.locations.find((item)=> item.id===this.props.siteId).location.lat,
+                    lng: this.props.locations.find((item)=> item.id===this.props.siteId).location.lng,
                 }}
 
                     initialCenter={{
-                        lat: this.props.locations.find((item)=> item.isCenter===true).location.lat,
-                        lng: this.props.locations.find((item)=> item.isCenter===true).location.lng,
+                        lat: this.props.locations.find((item)=> item.id===this.props.siteId).location.lat,
+                        lng: this.props.locations.find((item)=> item.id===this.props.siteId).location.lng,
                 }}
 
                 zoom={14}
-                minZoom={1}
+                minZoom={2}
+
             >
 
                 {this.props.locations.reverse().map((item)=>
@@ -171,9 +174,9 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
                 )}
                 <InfoWindow
-
                     marker={this.state.activeMarker}
-                    visible={true||this.state.showingInfoWindow}>
+                    visible={true||this.state.showingInfoWindow}
+                >
 
                     <div>
                         <span><a href={"/ps/"+this.props.siteId}>{this.state.selectedPlace.name}</a></span>
@@ -187,32 +190,35 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                     strokeWeight={2}
                     icons={ [{
                           icon: {path: this.props.google.maps.SymbolPath.FORWARD_CLOSED_ARROW},
-                           offset: "100%" }]}
+                           offset: "100%" , repeat:"400px"}]}
 
               />
 
             </Map>}
 
-         {this.props.searchLocation &&this.state.markerLongitude&&this.state.markerLongitude&&
+         {this.props.searchLocation && this.props.location&&
          <Map
              onClick={this.onMapClicked}
              google={this.props.google}
              style={{margin:"0",width: "100%"}}
              center={{
-                 lat: this.props.latitude,
-                 lng: this.props.longitude,
+                 lat: this.props.location.location.lat,
+                 lng: this.props.location.location.lng,
              }}
+
              initialCenter={{
-                 lat: this.props.latitude,
-                 lng: this.props.longitude,
+                 lat: this.props.location.location.lat,
+                 lng: this.props.location.location.lng,
              }}
+
              zoom={12}
+             minZoom={2}
 
          >
                  <Marker
 
                      // label={"<span>som label</span>"}
-                     draggable={true}
+                     draggable={this.props.draggable?true:false}
                      // onDragend={this.moveMarker.bind(this)}
                      onDragend={(t, map, coord) => this.moveMarker(coord)}
                      icon={{
@@ -221,18 +227,32 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                          scaledSize: new this.props.google.maps.Size(50,50)
 
                      }}
-                     // animation= {this.props.google.maps.Animation.DROP}
-                     position= {{"lat": this.state.markerLatitude,lng: this.state.markerLongitude }}
-                     // name={this.props.name}
+                     animation= {this.props.google.maps.Animation.DROP}
+                     position= {{
+                         lat: this.props.location.location.lat,
+                         lng: this.props.location.location.lng,
+                     }}
+                     onClick={this.onMarkerClick}
+
                  />
-             <InfoWindow
-             visible={true}
+
+
+             {!this.props.draggable?<InfoWindow
+
+                 marker={this.state.activeMarker}
+                 visible={true||this.state.showingInfoWindow}
              >
 
                  <div>
+                     <span><a href={"/ps/"+this.props.siteId}>{this.props.location.name}</a></span>
+                 </div>
+             </InfoWindow>:
+                 <InfoWindow
+                 visible={true}>
+                     <div>
                      <span>Drag Me</span>
                  </div>
-             </InfoWindow>
+             </InfoWindow>}
 
 
          </Map>}

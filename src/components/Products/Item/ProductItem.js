@@ -12,7 +12,7 @@ import ProductDetail from "../ProductDetail";
 import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
 import {Add, Info} from "@mui/icons-material";
 import {capitalize} from "../../../Util/GlobalFunctions";
-
+import OCVCDisplay from "../../UIComponents/OCVCDisplay";
 
 class ProductItemNew extends Component {
     constructor(props) {
@@ -30,10 +30,11 @@ class ProductItemNew extends Component {
             showProductEdit: false,
             productDuplicate: false,
             showProductHide: false,
-            showTrackPopUp:false,
-            showPreview:false,
-            releases:[],
-            productSite:null
+            showTrackPopUp: false,
+            showPreview: false,
+            releases: [],
+            productSite: null,
+            showHideOCVCDisplay: false,
         };
 
         this.showPopUp = this.showPopUp.bind(this);
@@ -52,16 +53,12 @@ class ProductItemNew extends Component {
     }
 
     componentDidMount() {
-        this.getArtifacts()
+        this.getArtifacts();
 
-        if (this.props.item){
-            this.fetchSite()
-            this.fetchReleases()
-
+        if (this.props.item) {
+            // this.fetchSite();
+            this.fetchReleases();
         }
-
-
-
     }
 
     callBackSubmit() {
@@ -111,77 +108,58 @@ class ProductItemNew extends Component {
         } else if (action === "duplicate") {
             // this.showProductDuplicate()
             this.submitDuplicateProduct();
-        }
-        else if (action === "remove") {
+        } else if (action === "remove") {
             this.removeItem();
-        }
-
-        else if (action === "untrack") {
-
-    this.toggleTrackPopUp()
-
-
-
+        } else if (action === "untrack") {
+            this.toggleTrackPopUp();
         }
     }
 
+    fetchReleases = () => {
+        axios.get(baseUrl + "release/product/" + this.props.item._key).then(
+            (response) => {
+                this.setState({
+                    releases: response.data.data,
+                });
+            },
+            (error) => {
+                // var status = error.response.status
+            }
+        );
+    };
+    fetchSite = () => {
+        axios.get(baseUrl + "product/" + this.props.item._key + "/site").then(
+            (response) => {
+                this.setState({
+                    productSite: response.data.data,
+                });
+            },
+            (error) => {
+                // var status = error.response.status
+            }
+        );
+    };
 
-    fetchReleases=()=> {
-        axios
-            .get(baseUrl + "release/product/"+this.props.item._key)
-            .then(
-                (response) => {
-
-                    this.setState({
-                        releases: response.data.data,
-
-                    });
-                },
-                (error) => {
-                    // var status = error.response.status
-                }
-            );
-    }
-    fetchSite=()=> {
-        axios
-            .get(baseUrl + "product/"+this.props.item._key+"/site")
-            .then(
-                (response) => {
-
-                    this.setState({
-                        productSite: response.data.data,
-
-                    });
-                },
-                (error) => {
-                    // var status = error.response.status
-                }
-            );
-    }
-
-
-    toggleTrackPopUp=()=>{
+    toggleTrackPopUp = () => {
         this.setState({
-            showTrackPopUp:!this.state.showTrackPopUp
+            showTrackPopUp: !this.state.showTrackPopUp,
+        });
+    };
 
-        })
-
+    toggleOCVCDisplay = () => {
+        this.setState({
+            showHideOCVCDisplay: !this.state.showHideOCVCDisplay,
+        });
     }
 
-     handleUnTrackProduct = () => {
-
-        axios.delete(`${baseUrl}product/track/${ this.props.item._key}`)
-            .then(res => {
-
-                this.props.reload()
-
+    handleUnTrackProduct = () => {
+        axios
+            .delete(`${baseUrl}product/track/${this.props.item._key}`)
+            .then((res) => {
+                this.props.reload();
             })
-            .catch(error => {
-
-            })
-    }
-
-
+            .catch((error) => {});
+    };
 
     submitDuplicateProduct = (event) => {
         axios
@@ -196,17 +174,16 @@ class ProductItemNew extends Component {
         this.props.triggerCallback();
     }
 
-
-    getArtifacts=() =>{
+    getArtifacts = () => {
         axios
-            .get(baseUrl + "product/" + this.props.item._key+"/artifact", {
+            .get(baseUrl + "product/" + this.props.item._key + "/artifact", {
                 headers: {
                     Authorization: "Bearer " + this.props.userDetail.token,
                 },
             })
             .then(
                 (response) => {
-                    var res = response.data.data;
+                    let res = response.data.data;
 
                     this.setState({
                         images: res,
@@ -216,7 +193,7 @@ class ProductItemNew extends Component {
                     // var status = error.response.status;
                 }
             );
-    }
+    };
     removeItem() {
         let data = {
             product_id: this.props.parentId,
@@ -276,22 +253,15 @@ class ProductItemNew extends Component {
     }
 
     handleAddToProductList = (item) => {
+        this.props.listOfProducts(item);
+    };
 
-
-        this.props.listOfProducts(item)
-    }
-
-     orgPopover = (
+    orgPopover = (
         <Popover id="add-popover">
             <div className={"p-3"}>
-
-                    <>
-                <span className={"text-gray-light"}>
-
-                                Click here for multiple selection
-                       </span>
-
-                    </>
+                <>
+                    <span className={"text-gray-light"}>Click here for multiple selection</span>
+                </>
             </div>
         </Popover>
     );
@@ -299,132 +269,200 @@ class ProductItemNew extends Component {
     render() {
         return (
             <>
-                <div id={this.props.item._key+"-product-item"} key={this.props.item._key+"-product-item"} className="row no-gutters product-item justify-content-center  mb-4 bg-white rad-8  p-3">
-                                <div key={this.props.item._key+"-product-item-bpx"} className={this.props.biggerImage?"col-md-4 p-0  col-xs-12":"col-md-2 p-0  col-xs-12"}>
-                                    <Link onMouseEnter={()=> this.setState({
-                                        showPreview:true
-                                    })}
-                                          onMouseLeave={()=> this.setState({
-                                              showPreview:false
-                                          })}
-                                           className="product-link " onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}>
-                                        <>
-                                    {this.state.images.length > 0 ? (
-                                        <ImageOnlyThumbnail images={this.state.images} />
-                                    ) : (
-                                        <img className={"img-fluid img-list rad-8"} src={PlaceholderImg} alt="" />
-                                    )}
-                                    </>
-                                    </Link>
+                <div
+                    id={this.props.item._key + "-product-item"}
+                    key={this.props.item._key + "-product-item"}
+                    className="row no-gutters product-item justify-content-center  mb-4 bg-white rad-8  p-3">
+                    <div
+                        key={this.props.item._key + "-product-item-bpx"}
+                        className={
+                            this.props.biggerImage
+                                ? "col-md-4 p-0  col-xs-12"
+                                : "col-md-2 p-0  col-xs-12"
+                        }>
+                        <Link
+                            onMouseEnter={() =>
+                                this.setState({
+                                    showPreview: true,
+                                })
+                            }
+                            onMouseLeave={() =>
+                                this.setState({
+                                    showPreview: false,
+                                })
+                            }
+                            className="product-link "
+                            onClick={this.goToProduct}
+                            to={
+                                this.props.toProvenance
+                                    ? "/p/" + this.props.item._key
+                                    : "/product/" + this.props.item._key
+                            }>
+                            <>
+                                {this.state.images.length > 0 ? (
+                                    <ImageOnlyThumbnail images={this.state.images} />
+                                ) : (
+                                    <img
+                                        className={"img-fluid img-list rad-8"}
+                                        src={PlaceholderImg}
+                                        alt=""
+                                    />
+                                )}
+                            </>
+                        </Link>
 
-                                    {/*{this.props.showPreview &&this.state.showPreview && <div className="product-preview-box">*/}
-                                    {/*    <iframe style={{border:"none", borderRadius:"8px", padding:"5px"}} src={`/product/preview/${this.props.item._key}`} width="500px" height="500px">*/}
-                                    {/*    </iframe>*/}
-                                    {/*</div>}*/}
-                                </div>
-                                <div className={this.props.biggerImage?"col-md-8 position-relative pl-3-desktop  content-box-listing":"col-md-10 position-relative pl-3-desktop  content-box-listing"}>
+                        {/*{this.props.showPreview &&this.state.showPreview && <div className="product-preview-box">*/}
+                        {/*    <iframe style={{border:"none", borderRadius:"8px", padding:"5px"}} src={`/product/preview/${this.props.item._key}`} width="500px" height="500px">*/}
+                        {/*    </iframe>*/}
+                        {/*</div>}*/}
+                    </div>
+                    <div
+                        className={
+                            this.props.biggerImage
+                                ? "col-md-8 position-relative pl-3-desktop  content-box-listing"
+                                : "col-md-10 position-relative pl-3-desktop  content-box-listing"
+                        }>
+                        <p
+                            style={{ fontSize: "18px" }}
+                            className="text-capitalize mb-1 width-70 ellipsis-end">
+                            <Link
+                                onClick={this.goToProduct}
+                                to={
+                                    this.props.toProvenance
+                                        ? "/p/" + this.props.item._key
+                                        : "/product/" + this.props.item._key
+                                }>
+                                <span className={"title-bold"}> {this.props.item.name}</span>
+                                {this.props.item.is_listable && (
+                                    <span className="badge badge-info ms-2">Listed</span>
+                                )}
+                                {this.state.releases &&
+                                    this.state.releases.length > 0 &&
+                                    this.state.releases
+                                        .filter((item) => item.Release.stage !== "cancelled")
+                                        .map((item) => (
+                                            <small className="ms-2">
+                                                {item.responder._id !==
+                                                    this.props.userDetail.orgId &&
+                                                item.Release.stage === "requested"
+                                                    ? "(Awaiting release approval)"
+                                                    : ""}
+                                            </small>
+                                        ))}
+                                <small className={""}>
+                                    <small> - {this.props.item._key}</small>
+                                </small>
+                            </Link>
+                        </p>
 
-                                        <p style={{ fontSize: "18px" }} className="text-capitalize mb-1 width-70 ellipsis-end">
-                                            <Link onClick={this.goToProduct} to={this.props.toProvenance?"/p/"+ this.props.item._key:"/product/" + this.props.item._key}><span className={"title-bold"}> {this.props.item.name}</span>{this.props.item.is_listable&&<span
-                                                className="badge badge-info ms-2">Listed</span>}                                             {this.state.releases&&this.state.releases.length>0
-                                            && this.state.releases.filter(item=>item.Release.stage!=="cancelled").map(item=> <small className="ms-2">{item.responder._id!=this.props.userDetail.orgId && item.Release.stage=="requested"?"(Awaiting release approval)":""}</small>)} <small className={""}><small> - {this.props.item._key}</small></small></Link>
+                        {/*<p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">*/}
+                        {/*  Purpose: <span className={"text-blue"}> {this.props.item.purpose}</span>*/}
+                        {/*</p>*/}
+                        <div className={"text-gray-light mt-1 mb-1"}>
+                            <span className="me-1">Category:</span>
+                            <span className="text-capitlize mb-1 cat-box text-left p-1">
+                                <span className="text-capitlize">
+                                    {capitalize(this.props.item.category)}
+                                </span>
+                                <span className={"m-1 arrow-cat"}>&#10095;</span>
+                                <span className=" text-capitlize">
+                                    {capitalize(this.props.item.type)}
+                                </span>
+                                <span className={"m-1 arrow-cat"}>&#10095;</span>
+                                <span className="  text-capitlize">
+                                    {capitalize(this.props.item.state)}
+                                </span>
+                            </span>
+                        </div>
+                        {/*<p  className=" text-capitalize  text-gray-light mb-1">*/}
 
+                        {/*    {this.props.item.purpose!=="aggregate"?"Qty:":""} {this.props.item.purpose!=="aggregate"&&  <span className={"text-blue"}>{this.props.item.volume} </span>}*/}
+                        {/*    {this.props.item.purpose!=="aggregate"&&     <span  className={"text-blue"}>{this.props.item.units}</span>}*/}
+                        {/*</p>*/}
 
+                        {this.props.item.sku && this.props.item.sku.brand && (
+                            <p className={"text-capitalize text-gray-light mb-1"}>
+                                <span className="me-1">Brand:</span>
+                                <span className={"sub-title-text-pink"}>
+                                    {this.props.item.sku.brand}
+                                </span>
+                            </p>
+                        )}
 
-                                      </p>
+                        {this.props.item.sku && this.props.item.sku.serial && (
+                            <p className={"text-capitalize text-gray-light mb-1"}>
+                                <span className="me-1">Serial No.:</span>
+                                <span className={"text-blue"}>{this.props.item.sku.serial}</span>
+                            </p>
+                        )}
 
-                                    {/*<p style={{ fontSize: "16px" }} className="text-gray-light mt-1 mb-1 text-capitalize">*/}
-                                    {/*  Purpose: <span className={"text-blue"}> {this.props.item.purpose}</span>*/}
-                                    {/*</p>*/}
-                                    <div className={"text-gray-light mt-1 mb-1"}>
-                                    Category:
+                        {this.props.site && (
+                            <p className={"text-capitalize text-gray-light mb-1"}>
+                                <span className="me-1">Site:</span>
+                                <span className={"text-blue"}>{this.props.site.name}</span>
+                            </p>
+                        )}
+
+                        {!this.props.hideAdd && this.props.showAddToListButton && (
+                            <>
+                                <p className="text-gray-light add-top-button pl-3-desktop position-absolute top-0 end-0">
+                                    <Add
+                                        style={{ cursor: "pointer", fontSize: "1.2rem" }}
+                                        onClick={() => {
+                                            this.handleAddToProductList(this.props.item);
+                                        }}
+                                        // style={{cursor: 'pointer'}}
+                                    />
                                     <span
-
-                                        className="ms-1 text-capitlize mb-1 cat-box text-left p-1">
-                                                            <span className="text-capitlize">
-                                                                {capitalize(this.props.item.category)}
-                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
-                                        <span className=" text-capitlize">
-                                                                {capitalize(this.props.item.type)}
-                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
-                                        <span className="  text-capitlize">
-                                                                {capitalize(this.props.item.state)}
-                                                            </span>
+                                        onClick={() => {
+                                            this.handleAddToProductList(this.props.item);
+                                        }}
+                                        style={{ verticalAlign: "middle" }}
+                                        className={"plus-icon text-bold mr-2 click-item"}>
+                                        Add
                                     </span>
-                                    </div>
-                                    {/*<p  className=" text-capitalize  text-gray-light mb-1">*/}
-
-                                    {/*    {this.props.item.purpose!=="aggregate"?"Qty:":""} {this.props.item.purpose!=="aggregate"&&  <span className={"text-blue"}>{this.props.item.volume} </span>}*/}
-                                    {/*    {this.props.item.purpose!=="aggregate"&&     <span  className={"text-blue"}>{this.props.item.units}</span>}*/}
-                                    {/*</p>*/}
-
-
-
-                                    {this.props.item.sku&&this.props.item.sku.brand&&
-                                    <p className={"text-capitalize text-gray-light mb-1"}>Brand: <span className={"sub-title-text-pink"}>{this.props.item.sku.brand}</span></p>}
-
-
-                                    {this.props.item.sku&&this.props.item.sku.serial&&
-                                    <p className={"text-capitalize text-gray-light mb-1"}>Serial No.: <span className={"text-blue"}>{this.props.item.sku.serial}</span></p>}
-
-                                    {this.state.productSite&&
-                                    <p className={"text-capitalize text-gray-light mb-1"}>Site: <span className={"text-blue"}>{this.state.productSite.name}</span></p>}
-
-
-
-                                    {!this.props.hideAdd&&this.props.showAddToListButton &&
-
-                                    <><p className="text-gray-light add-top-button pl-3-desktop position-absolute top-0 end-0">
-                                        <Add
-                                            style={{ cursor: "pointer", fontSize:"1.2rem"}}
-                                            onClick={() => {
-
-                                                this.handleAddToProductList(this.props.item)
-
+                                    <OverlayTrigger
+                                        trigger={["click", "focus"]}
+                                        placement={"bottom"}
+                                        overlay={this.orgPopover}>
+                                        <Info
+                                            className={"text-gray-light"}
+                                            style={{
+                                                cursor: "pointer",
+                                                color: "#d7d7d7",
+                                                fontSize: "1.2rem",
                                             }}
-                                            // style={{cursor: 'pointer'}}
+                                            fontSize={"small"}
                                         />
-                                        <span  onClick={() => {
+                                    </OverlayTrigger>
+                                </p>
+                            </>
+                        )}
 
-                                            this.handleAddToProductList(this.props.item)
-
-                                        }} style={{verticalAlign: "middle"}} className={"plus-icon text-bold mr-2 click-item"}>Add</span>
-                                        <OverlayTrigger
-                                            trigger={ ["click", "focus"]}
-                                            placement={"bottom"}
-                                            overlay={this.orgPopover}
-                                        >
-                                            <Info
-                                                className={"text-gray-light"}
-                                                style={{ cursor: "pointer", color: "#d7d7d7",fontSize:"1.2rem" }}
-                                                fontSize={"small"}
-                                            />
-                                        </OverlayTrigger>
-                                    </p>
-                                    </>
-                                    }
-
-                                    <p className={"text-gray-light date-bottom"}>
-                                        {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
-
-                                    </p>
+                        <p className={"text-gray-light date-bottom"}>
+                            {(baseUrl && this.props.isLoggedIn && baseUrl  === "https://graph-dev.makealoop.io/api/2/") && <span className="me-1 click-item" onClick={() => this.toggleOCVCDisplay()}>{this.state.showHideOCVCDisplay ? 'Close' : 'View'} OC-VC |</span>}
+                            <span>{moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}</span>
+                        </p>
 
 
-                                    {!this.props.hideMore && <div className="top-right">
-                                        <MoreMenu
-                                            triggerCallback={(action) => this.callBackResult(action)}
-                                            delete={this.props.delete}
-                                            edit={this.props.edit}
-                                            remove={this.props.remove}
-                                            untrack={this.props.untrack}
-                                            duplicate={this.props.duplicate}
-                                        />
-                                    </div>}
-                                </div>
-
+                        {!this.props.hideMore && (
+                            <div className="top-right">
+                                <MoreMenu
+                                    triggerCallback={(action) => this.callBackResult(action)}
+                                    delete={this.props.delete}
+                                    edit={this.props.edit}
+                                    remove={this.props.remove}
+                                    untrack={this.props.untrack}
+                                    duplicate={this.props.duplicate}
+                                />
                             </div>
-
-
+                        )}
+                    </div>
+                    {this.state.showHideOCVCDisplay && <div>
+                        <div className="text-pink click-item" onClick={this.toggleOCVCDisplay}>Close OC-VC</div>
+                        <OCVCDisplay productId={this.props.item ? this.props.item._key : ""} />
+                    </div>}
+                </div>
 
                 <Modal
                     size="lg"
@@ -450,8 +488,6 @@ class ProductItemNew extends Component {
                     {/*            : this.props.item._key*/}
                     {/*    }*/}
                     {/*/>*/}
-
-
                 </Modal>
 
                 {this.state.showProductHide && (
@@ -483,7 +519,6 @@ class ProductItemNew extends Component {
                     </div>
                 )}
 
-
                 <Modal
                     className={"loop-popup"}
                     aria-labelledby="contained-modal-title-vcenter"
@@ -494,8 +529,8 @@ class ProductItemNew extends Component {
                     <ModalBody>
                         <div className={"row justify-content-center"}>
                             <div className={"col-10 text-center"}>
-                                <p className={"text-bold"}>Untrack Product</p>
-                                <p>Are you sure you want to untrack ?</p>
+                                <p className={"text-bold"}>Un-track Product</p>
+                                <p>Are you sure you want to un-track ?</p>
                             </div>
                         </div>
 
@@ -504,10 +539,9 @@ class ProductItemNew extends Component {
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
                                         <button
-                                            onClick={()=>{
-                                                this.toggleTrackPopUp()
-                                                this.handleUnTrackProduct()
-
+                                            onClick={() => {
+                                                this.toggleTrackPopUp();
+                                                this.handleUnTrackProduct();
                                             }}
                                             className={
                                                 "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"

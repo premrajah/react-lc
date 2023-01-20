@@ -1,6 +1,7 @@
 .gcp_deploy_template: &gcp_deploy
   script:
     - echo $GKE_ACCOUNT > /tmp/$CI_PIPELINE_DEPLOY.json
+    - export USE_GKE_GCLOUD_AUTH_PLUGIN=True
     - gcloud auth activate-service-account --key-file=/tmp/$CI_PIPELINE_DEPLOY.json
     - gcloud config set project ${GCP_PROJECT_ID}
     - gcloud config set container/cluster ${GKE_CLUSTER}

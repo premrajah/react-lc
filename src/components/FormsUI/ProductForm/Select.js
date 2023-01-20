@@ -4,17 +4,17 @@ import FormControl from '@mui/material/FormControl';
 import CustomizedSelect from "./CustomizedSelect";
 import CustomPopover from "../CustomPopover";
 import InfoIcon from "./InfoIcon";
-
-
-
+import {Spinner} from "react-bootstrap";
 
 const SelectArrayWrapper = (props) => {
 
-    const {label,title,option,notNative,initialValue,detailsHeading,details,noBorder,textAlignRight,subOption,subValueKey,
+    const {label,title,option,notNative,initialValue,detailsHeading,details,noBorder,textAlignRight,
+        subOption,subValueKey,
         placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect,
-        defaultValue,options,multiple,error,noMargin, ...rest} = props;
+        defaultValue,options,multiple,error,noMargin,disableAutoLoadingIcon, ...rest} = props;
 
     const [value, setValue] = React.useState();
+    const [loading, setLoading] = React.useState(false);
 
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -24,13 +24,24 @@ const SelectArrayWrapper = (props) => {
 
     useEffect(()=>{
         if (onChange) {
-
-
               setValue(initialValue)
                 onChange(initialValue)
 
         }
     },[initialValue])
+
+    useEffect(()=>{
+
+        if (!disableAutoLoadingIcon) {
+            if (options&&options.length > 0) {
+                setLoading(false)
+            } else {
+                setLoading(true)
+            }
+        }
+
+    },[options])
+
 
 
     return (
@@ -42,7 +53,16 @@ const SelectArrayWrapper = (props) => {
             <div className={`${noMargin?"":"mb-2 "} field-box `}>
                 <FormControl variant="outlined" >
                 {label && <InputLabel >{label}</InputLabel>}
-
+                    {loading && (
+                        <Spinner
+                            className={`mr-2 select-loading`}
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                    )}
 
             <CustomizedSelect
 
@@ -80,10 +100,14 @@ const SelectArrayWrapper = (props) => {
                      {subOption?option?item[option][subOption]:item:option?item[option]:item}
                     </option>
                 ))}
+
+
             </CustomizedSelect>
                 </FormControl>
 
                 {error && <span style={{color:"#f44336",fontSize: "12px!important"}} className={"text-danger"}> {error.message}</span>}
+
+
             </div>
         </>
     );

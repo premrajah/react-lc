@@ -10,7 +10,7 @@ import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
@@ -251,7 +251,7 @@ class EventForm extends Component {
 
 
                         try {
-                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`, payload)
+                            axios.post(`${baseUrl}artifact/load?name=${cleanFilename(imgFile.file.name.toLowerCase())}`, payload)
                                 .then(res => {
 
                                     let images = [...this.state.images];
@@ -330,12 +330,7 @@ class EventForm extends Component {
 
     handleValidationProduct() {
 
-
-
-
-
         let fields = this.state.fields;
-
 
         let validations=[
             validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
@@ -343,12 +338,10 @@ class EventForm extends Component {
         ]
 
 
-        if (this.state.showRepeatIntervalSelection)
+        if (this.state.showRepeatIntervalSelection){
             validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
-
-
-
+        }
 
 
 
@@ -357,18 +350,20 @@ class EventForm extends Component {
 
         this.setState({ errors: errors });
 
+        if (!this.props.hideProduct) {
 
-        if (!this.state.productId) {
+            if (!this.state.productId) {
 
-            this.setState({
-                productError:true
-            })
+                this.setState({
+                    productError: true
+                })
 
-            formIsValid=false
-        }else{
-            this.setState({
-                productError:false
-            })
+                formIsValid = false
+            } else {
+                this.setState({
+                    productError: false
+                })
+            }
         }
 
         return formIsValid;
@@ -466,8 +461,11 @@ class EventForm extends Component {
                         severity: "success",
                         message: "Event created successfully. Thanks"
                     })
-
+                    if (this.props.triggerCallback)
+                    this.props.triggerCallback()
+                    if (this.props.hide)
                     this.props.hide()
+
                 })
                 .catch((error) => {
                     this.setState({
@@ -605,6 +603,7 @@ class EventForm extends Component {
 
 
 
+
     componentDidUpdate(prevProps, prevState, snapshot) {
 
 
@@ -619,6 +618,7 @@ class EventForm extends Component {
 
     updateProps=()=>{
         if (this.props.event){
+
             this.setState({
                 isEditProduct:true,
                 startDate:this.props.event.event.resolution_epoch_ms,
@@ -677,7 +677,13 @@ class EventForm extends Component {
         if (this.props.event&&this.props.event.event.recur&&this.props.event.event.recur.value){
 
             this.setState({
-                showRepeatIntervalSelection:true
+                showRepeatIntervalSelection:true,
+                allowDateChange:  this.props.allowDateChange
+            })
+        }else{
+
+            this.setState({
+                allowDateChange:  true
             })
         }
 
@@ -712,7 +718,7 @@ class EventForm extends Component {
 
                           <form onSubmit={this.props.event?this.updateEvent:this.handleSubmit}>
 
-                              {/*{!this.props.hideProduct &&*/}
+                              {!this.props.hideProduct &&
                               <ProductAutocomplete
                                   disableEdit={this.props.event?true:false}
                                   initial={this.props.event?this.props.event.product.product:null}
@@ -721,7 +727,7 @@ class EventForm extends Component {
                                       this.selectedProduct(data)
                                   }
                               />
-                              {/*}*/}
+                              }
 
                               {this.state.productError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Product from your inventory not selected."}</span>}
                             <div className="row ">
@@ -756,7 +762,8 @@ class EventForm extends Component {
                             </div>
 
                               <div className="row  mt-2">
-                              <div className="col-md-6 col-6">
+                                  {this.state.allowDateChange&&
+                                  <div className="col-md-6 col-6">
                                   <div
                                       className={
                                           "custom-label text-bold text-blue "
@@ -795,6 +802,7 @@ class EventForm extends Component {
                                   {this.state.showFieldErrors&&this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
 
                               </div>
+                                  }
 
                                   <div className="col-md-6 d-none  col-sm-12 col-xs-12  ">
 
@@ -830,7 +838,7 @@ class EventForm extends Component {
 
                                   </div>
                                   <div className="col-md-12  col-sm-12 col-xs-12  ">
-                                  <div className="row  ">
+                                      {this.state.allowDateChange&&  <div className="row  ">
                                       <div className="col-12">
                                           <div className="row  ">
                                               <div className="col-12 ">
@@ -841,6 +849,7 @@ class EventForm extends Component {
                                               <Typography>No</Typography>
 
                                                   <Switch
+
                                                       checked={this.state.showRepeatIntervalSelection}
                                                       onChange={this.handleChangeSwitch}
                                                   color="primary"   />
@@ -854,9 +863,9 @@ class EventForm extends Component {
 
 
 
-                                  </div>
+                                  </div>}
 
-                                      {this.state.showRepeatIntervalSelection &&
+                                      {this.state.allowDateChange&&this.state.showRepeatIntervalSelection &&
                                       <div className="row bg-light pb-4 pt-2 ">
                                           <div className="col-md-6 col-6">
                                               <div
@@ -881,7 +890,7 @@ class EventForm extends Component {
                                                       // label="Available From"
                                                       inputFormat="dd/MM/yyyy"
                                                       hintText="Select Date"
-                                                      value={this.state.endDate}
+                                                      value={this.state.endDate?this.state.endDate:new Date()}
                                                       style={{position:"relative"}}
 
                                                       OpenPickerIcon={<InfoIcon/>}

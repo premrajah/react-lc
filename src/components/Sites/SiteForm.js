@@ -18,10 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
-import { geocodeByPlaceId } from 'react-google-places-autocomplete';
-import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
-import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
@@ -727,7 +724,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
     <div className="row">
     <div className="col-12 ">
         <h4 className={"blue-text text-heading text-left"}>
-            {this.props.setSiteFormNew.heading}</h4>
+            {this.props.setSiteFormNew.heading} </h4>
     </div>
     </div>
 

@@ -1,9 +1,9 @@
 import React from 'react'
 import {Spinner} from "react-bootstrap";
 
-const GreenButton = ({onClick,title,fullWidth,disabled,loading, ...otherProps}) => {
+const GreenButton = ({onClick,title,fullWidth,disabled,loading,id, ...otherProps}) => {
 
-    return <button disabled={disabled} className={`${disabled?" btn-gray":" btn-green  "}  ${fullWidth?" btn-block":""}`}
+    return <button id={id} disabled={disabled} className={`${disabled?" btn-gray":" btn-green  "}  ${fullWidth?" btn-block":""}`}
         onClick={onClick} {...otherProps}>
 
         {loading && (

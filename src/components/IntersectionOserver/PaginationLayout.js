@@ -77,13 +77,13 @@ class PaginationLayout extends Component {
     };
     timeoutSearch() {
         if (this.timeout) {
-            console.debug("clear prev search ")
+            // console.debug("clear prev search ")
             clearTimeout(this.timeout);
         }
 
         this.timeout = setTimeout(() => {
             this.loadMore(true);
-            console.debug("search this ",this.searchValue)
+            // console.debug("search this ",this.searchValue)
         }, 3000);
     }
 
@@ -101,9 +101,8 @@ class PaginationLayout extends Component {
     handleSearchFilter = (filterValue) => {
         this.filterValue = filterValue;
 
-
-
         if (this.searchValue) {
+            // alert("filter changed")
             this.loadMore(true);
         }
     };

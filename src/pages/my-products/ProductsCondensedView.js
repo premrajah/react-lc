@@ -66,7 +66,7 @@ const ProductsCondensedView = ({ product, index, site }) => {
             </div>
 
             <div className="col-md-3 d-flex justify-content-start align-items-center">
-                <div className="click-item me-1"><MapIcon  fontSize="small" onClick={() => setGlobalDialogLocationView(true)} /></div>
+                {site &&site.geo_codes&&site.geo_codes.length>0 && <div className="click-item me-1"><MapIcon  fontSize="small" onClick={() => setGlobalDialogLocationView(true)} /></div>}
                 <div className="text-truncate">{site.name}</div>
             </div>
 

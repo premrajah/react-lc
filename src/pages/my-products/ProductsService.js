@@ -8,12 +8,10 @@ import {makeStyles} from "@mui/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchGray from "@mui/icons-material/Search";
-import {baseUrl, PRODUCTS_FILTER_VALUES, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
+import {baseUrl, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import axios from "axios/index";
 import {withStyles} from "@mui/styles/index";
-// import ProductItem from "../../components/ProductItemNew";
 import PageHeader from "../../components/PageHeader";
-import SearchBar from "../../components/SearchBar";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import Layout from "../../components/Layout/Layout";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
@@ -80,64 +78,84 @@ class ProductsService extends Component {
     }
 
     clearList=()=>{
-
+        setTimeout(() => {
         this.setState({
             offset:0,
             items:[],
             lastPageReached:false,
             loadingResults: false,
         })
+        },250)
     }
+    setFilters = (data) => {
+        let subFilter = [];
 
-    setFilters=(data)=>{
+        let searchValue = data.searchValue;
+        let activeFilter = data.searchFilter;
 
-        let filters= []
-        let subFilter=[]
-
-        let searchValue= data.searchValue
-        let activeFilter= data.filterValue
-
-        if (searchValue){
-
-            if (activeFilter){
-
-                subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
-
-            }else{
-
-                PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
-                    subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
-                )
-
-
+        if (searchValue) {
+            if (activeFilter) {
+                subFilter.push({ key: activeFilter, value: searchValue });
+            } else {
+                PRODUCTS_FILTER_VALUES_KEY.forEach((item) =>
+                    subFilter.push({ key: item.key, value: searchValue })
+                );
             }
         }
 
-
-        filters.push({filters:subFilter,operator:"||"})
-
-
-        this.filters= filters
-
-    }
+        this.filters = subFilter;
+    };
+    // setFilters=(data)=>{
+    //
+    //     let filters= []
+    //     let subFilter=[]
+    //
+    //     let searchValue= data.searchValue
+    //     let activeFilter= data.filterValue
+    //
+    //     if (searchValue){
+    //
+    //         if (activeFilter){
+    //
+    //             subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
+    //
+    //         }else{
+    //
+    //             PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
+    //                 subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
+    //             )
+    //
+    //
+    //         }
+    //     }
+    //
+    //
+    //     filters.push({filters:subFilter,operator:"||"})
+    //
+    //
+    //     this.filters= filters
+    //
+    // }
 
 
 
     seekCount=async () => {
 
-        let url = createSeekURL("product&relation=service_agent_for", true, true, null, null,
-            this.filters, "AND")
+        // let url = createSeekURL("Product&relation=service_agent_for", true, true, null, null,
+        //     this.filters, "AND")
+        let url = `${baseUrl}seek?name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
 
+        // let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
 
-        let result = await seekAxiosGet(url)
+        this.filters.forEach((item) => {
+            url = url + `&or=${item.key}~%${item.value}%`;
+        });
 
-
+        let result = await seekAxiosGet(url);
 
         this.setState({
-            count: result.data.data,
-
-        })
-
+            count: result.data ? result.data.data : 0,
+        });
 
 
     }
@@ -145,53 +163,65 @@ class ProductsService extends Component {
     loadProductsWithoutParentPageWise= async (data) => {
 
 
-        if (data.reset){
+        if (data && data.reset) {
 
-            this.clearList()
+            this.clearList();
         }
-        this.setFilters(data)
 
-        this.seekCount()
+        if (data) this.setFilters(data);
+
+        this.seekCount();
 
         this.setState({
+            loadingResults: true,
+        });
 
-            loadingResults: true
+        let newOffset = this.state.offset;
+        // let url = createSeekURL("Product&relation=service_agent_for", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
+
+        let url = `${baseUrl}seek?name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at`;
+
+
+        this.filters.forEach((item) => {
+            url = url + `&or=${item.key}~%${item.value}%`;
+        });
+
+        this.setState({
+            activeQueryUrl:url
         })
 
-        let newOffset = this.state.offset
+        url = `${url}&offset=${this.state.offset}&size=${this.state.pageSize}`;
 
 
-        let url = createSeekURL("product&relation=service_agent_for", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
-
-        let result = await seekAxiosGet(url)
-
+        let result = await seekAxiosGet(url);
 
         if (result && result.data && result.data.data) {
-
-            this.state.offset= newOffset + this.state.pageSize
+            this.state.offset = newOffset + this.state.pageSize;
 
             this.setState({
-                items: this.state.items.concat(result.data.data),
+                items: this.state.items.concat(result.data ? result.data.data : []),
                 loadingResults: false,
-                lastPageReached: (result.data.data.length === 0 ? true : false),
-                offset: newOffset + this.state.pageSize
-
-            })
-        }else{
-
+                lastPageReached: result.data
+                    ? result.data.data.length === 0
+                        ? true
+                        : false
+                    : true,
+                offset: newOffset + this.state.pageSize,
+            });
+        } else {
             if (result) {
-                this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "warning",
+                    message: "Error: " + result,
+                });
 
                 this.setState({
-
                     loadingResults: false,
-
-                })
-
+                    lastPageReached: true,
+                });
             }
         }
-
-
 
     }
 
@@ -227,7 +257,7 @@ class ProductsService extends Component {
                         />
 
                         <div className="row">
-                            <div className="col-12 d-flex justify-content-start">
+                            <div className="col-7 d-flex justify-content-start">
                                 <Link to="/my-products" className="btn btn-sm btn-gray-border me-2">
                                     Products
                                 </Link>
@@ -247,18 +277,42 @@ class ProductsService extends Component {
                                     {/*</CustomPopover>*/}
                                 </Link>
                             </div>
+                            <div className="col-md-5 d-flex justify-content-end">
+                                {/*<div className="">*/}
+                                {/*    <CustomPopover text={"Download all products in csv."}>*/}
+                                {/*        <BlueSmallBtn*/}
+                                {/*            title={"Export To CSV"}*/}
+                                {/*            // disabled={this.state.downloadAllLoading}*/}
+                                {/*            // progressLoading={this.state.downloadAllLoading}*/}
+                                {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
+                                {/*            // onClick={()=>this.downloadAll(0,100)}*/}
+                                {/*            onClick={this.fieldSelection}*/}
+                                {/*        >*/}
+
+                                {/*        </BlueSmallBtn>*/}
+                                {/*    </CustomPopover>*/}
+                                {/*</div>*/}
+
+                            </div>
                         </div>
 
 
                         <PaginationLayout
-                            onSearch={(sv) => this.handleSearch(sv)}
-                            onSearchFilter={(fv) => this.handleSearchFilter(fv)}
+                            // onSearch={(sv) => this.handleSearch(sv)}
+                            // onSearchFilter={(fv) => this.handleSearchFilter(fv)}
+                            // dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
+                            // count={this.state.count}
+                            // visibleCount={this.state.items.length}
+                            // loadingResults={this.state.loadingResults}
+                            // lastPageReached={this.state.lastPageReached}
+                            // loadMore={this.loadProductsWithoutParentPageWise}
                             dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
                             count={this.state.count}
                             visibleCount={this.state.items.length}
                             loadingResults={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
-                            loadMore={this.loadProductsWithoutParentPageWise} >
+                            loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}
+                        >
 
                         {this.state.items.map((item) => (
                             <>

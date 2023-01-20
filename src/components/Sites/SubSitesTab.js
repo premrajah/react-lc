@@ -41,17 +41,14 @@ class SubSitesTab extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        if (prevProps!=this.props) {
+        if (prevProps!==this.props) {
             this.getSubSites()
         }
     }
 
     getSubSites=()=>{
-        // this.setState({
-        //     subSites:[]
-        // })
+
         axios
-            // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
             .get(baseUrl + "site/" + this.props.item._key+"/child")
             .then(
                 (response) => {

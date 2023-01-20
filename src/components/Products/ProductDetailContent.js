@@ -82,7 +82,8 @@ class ProductDetailContent extends Component {
             activeKey:"1",
             activeReleaseTabKey:"1",
             zoomQrCode:false,
-            releases:[]
+            releases:[],
+            events:[]
 
         };
 
@@ -320,6 +321,8 @@ class ProductDetailContent extends Component {
 
 
         this.fetchReleases()
+
+        this.getEvents(this.state.item.product._key)
 
     }
 
@@ -777,6 +780,28 @@ class ProductDetailContent extends Component {
     }
 
 
+     getEvents = (productId) => {
+
+
+        let url = `${baseUrl}product/${productId}/event`
+
+
+
+
+        axios.get(url).then(
+            (response) => {
+                var responseAll = response.data.data;
+
+                this.setState({
+                    events:responseAll
+                })
+            },
+            (error) => {
+
+            }
+        );
+    };
+
 
     loadInfo() {
         if (this.state.item) {
@@ -815,7 +840,8 @@ class ProductDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
-                        {this.state.zoomQrCode&&  <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
+                        {this.state.zoomQrCode&&
+                        <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
                             {this.props.item&&this.props.item.qr_artifact && (
                                 <img
                                     className="img-fluid qr-code-zoom"
@@ -833,9 +859,9 @@ class ProductDetailContent extends Component {
                         <div className="row   justify-content-center">
                             <div className="col-md-4 col-sm-12 col-xs-12 ">
 
-                                <div className="row ">
-                                    <div className="col-12 ">
-                                        <div className=" stick-left-box  ">
+                                <div className="row stick-left-box">
+                                    {/*<div className="col-12 ">*/}
+                                    {/*    <div className="   ">*/}
 
 
                                             <ImageHeader images={this.state.item.artifacts} />
@@ -862,10 +888,10 @@ class ProductDetailContent extends Component {
                                             )}
 
                                             <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>
-                                        </div>
+                                    {/*    </div>*/}
 
 
-                                    </div>
+                                    {/*</div>*/}
                                 </div>
 
                             </div>
@@ -992,7 +1018,7 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
-                                                        <Tab label="Events" value="8" />
+                                                        {this.state.events.length>0 &&  <Tab label="Calendar" value="8" />}
 
                                                     </TabList>
                                                 </Box>
@@ -1018,12 +1044,14 @@ class ProductDetailContent extends Component {
                                                         {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
 
                                                         <div className={"bg-white rad-8 p-2"}>
-                                                            <GoogleMap siteId={this.props.item.site._key} width={"100%"}
-                                                                       height={"300px"} locations={[{
+                                                            <GoogleMap
+                                                                searchLocation
+                                                                siteId={this.props.item.site._key} width={"100%"}
+                                                                       height={"300px"} location={{
                                                                 name: this.props.item.site.name,
                                                                 location: this.props.item.site.geo_codes[0].address_info.geometry.location,
                                                                 isCenter: true
-                                                            }]}/>
+                                                            }}/>
                                                         </div>
 
                                                         }
@@ -1066,8 +1094,11 @@ class ProductDetailContent extends Component {
                                                     <ArtifactProductsTab item={this.props.item}/>
                                                 </TabPanel>
 
-                                                <TabPanel value="8">
-                                                    <BigCalenderEvents productId={this.state.item.product._key} smallView  />
+                                                  <TabPanel value="8">
+                                                    <BigCalenderEvents
+                                                       events={this.state.events}
+                                                        productId={this.state.item.product._key}
+                                                       smallView  />
                                                 </TabPanel>
 
 
@@ -1104,7 +1135,7 @@ class ProductDetailContent extends Component {
                                     }}
 
                                     productId={this.state.item.product._key}
-                                    triggerCallback={(action) => this.callBackSubmit(action)}   />
+                                    triggerCallback={() => this.getEvents(this.state.item.product._key)}   />
                             </div>}
 </>
                         </GlobalDialog>
@@ -1131,7 +1162,9 @@ class ProductDetailContent extends Component {
                             size={"sm"}
                             hide={this.toggleSite}
                             show={this.state.showCreateSite}
-                            heading={"Add new site"}>
+                            heading={"Add new site"}
+
+                        >
                             <>
                                 <div className="col-12 ">
 

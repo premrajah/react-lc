@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import "../../Util/upload-file.css";
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
-import EventItem from "./EventItem";
+import EventItem from "./EventList";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import FullCalendar from "@fullcalendar/react";

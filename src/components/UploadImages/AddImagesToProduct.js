@@ -6,6 +6,7 @@ import axios from "axios";
 import {connect} from "react-redux";
 import docs from '../../img/icons/docs.png';
 import * as actionCreator from "../../store/actions/actions";
+import {cleanFilename} from "../../Util/GlobalFunctions";
 
 class AddImagesToProduct extends Component {
 
@@ -131,7 +132,7 @@ class AddImagesToProduct extends Component {
                         const payload = data;
 
                         try {
-                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`, payload)
+                            axios.post(`${baseUrl}artifact/load?name=${cleanFilename(imgFile.file.name.toLowerCase())}`, payload)
                                 .then(res => {
 
                                     let images = [...this.state.images];

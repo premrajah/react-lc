@@ -13,7 +13,7 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
@@ -25,6 +25,8 @@ import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
 import BlueButton from "../FormsUI/Buttons/BlueButton";
+import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
+import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 
 let slugify = require('slugify')
 
@@ -56,7 +58,7 @@ let slugify = require('slugify')
                 isEditProduct:false,
                 count: 0,
                 nextIntervalFlag: false,
-                activePage: 0, //0 logn. 1- sign up , 3 -search,
+                activePage: 0, //0 logon. 1- sign up , 3 -search,
                 categories: [],
                 subCategories: [],
                 catSelected: {},
@@ -192,7 +194,7 @@ let slugify = require('slugify')
 
             let newFiles = [];
 
-            for (var i = 0; i < event.target.files.length; i++) {
+            for (let i = 0; i < event.target.files.length; i++) {
                 files.push({ file: event.target.files[i], status: 0, id: null });
                 newFiles.push({ file: event.target.files[i], status: 0, id: null });
             }
@@ -208,11 +210,11 @@ let slugify = require('slugify')
         handleCancel(e) {
             e.preventDefault();
 
-            var index = e.currentTarget.dataset.index;
-            var name = e.currentTarget.dataset.name;
-            var url = e.currentTarget.dataset.url;
+            let index = e.currentTarget.dataset.index;
+            let name = e.currentTarget.dataset.name;
+            let url = e.currentTarget.dataset.url;
 
-            var files = this.state.files.filter((item) => item.file.name !== name);
+            let files = this.state.files.filter((item) => item.file.name !== name);
             this.setState({
                 artifacts: this.state.artifacts.filter(item=> item.name!==name)
             })
@@ -224,7 +226,7 @@ let slugify = require('slugify')
 
             // images.splice(index,1)
 
-            var images = [];
+            let images = [];
             for (let k = 0; k < files.length; k++) {
                 if (files[k].id) {
                     images.push(files[k].id);
@@ -275,7 +277,7 @@ let slugify = require('slugify')
 
 
                             try {
-                                axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`, payload)
+                                axios.post(`${baseUrl}artifact/load?name=${cleanFilename(imgFile.file.name.toLowerCase())}`, payload)
                                     .then(res => {
 
                                         let images = [...this.state.images];
@@ -407,6 +409,8 @@ let slugify = require('slugify')
 
             let {formIsValid,errors}= validateInputs(validations)
 
+            console.log(fields)
+
             this.setState({ errors: errors });
                 // console.log(errors)
             return formIsValid;
@@ -507,7 +511,7 @@ let slugify = require('slugify')
                     const external_reference = data.get("external_reference")
                     const power_supply = data.get("power_supply");
                     const energy_rating = this.state.energyRating;
-                    const embodied_carbon_tons = data.get("embodied_carbon_tons");
+                    const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
                     const gross_weight_kgs = data.get("gross_weight_kgs");
 
 
@@ -533,7 +537,7 @@ let slugify = require('slugify')
                             sku: sku,
                             upc: upc,
                             part_no: part_no,
-                            embodied_carbon_tons: embodied_carbon_tons?embodied_carbon_tons:0,
+                            embodied_carbon_kgs: embodied_carbon_kgs?embodied_carbon_kgs:0,
                             gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:0
 
                         },
@@ -551,7 +555,7 @@ let slugify = require('slugify')
                         productData._id = "Product/" + this.props.createProductId
                     }
 
-                    var completeData;
+                    let completeData;
 
                     // if (this.props.parentProduct) {
                     completeData = {
@@ -583,6 +587,9 @@ let slugify = require('slugify')
                         this.saveProductLines(data.get("templateName") ,completeData)
 
                     } else {
+
+                        // console.log(completeData, this.state.fields["deliver"])
+                        // return
                         axios
                             .put(
                                 createProductUrl,
@@ -729,7 +736,7 @@ let slugify = require('slugify')
             })
             for (let k = 0; k < artifacts.length; k++) {
 
-                var fileItem = {
+                let fileItem = {
                     status: 1,
                     id: artifacts[k]._key,
                     imgUrl: artifacts[k].blob_url,
@@ -827,7 +834,7 @@ let slugify = require('slugify')
                const external_reference = data.get("external_reference")
                 const site = data.get("deliver");
                const power_supply = data.get("power_supply");
-                const embodied_carbon_tons = data.get("embodied_carbon_tons");
+                const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
                 const gross_weight_kgs = data.get("gross_weight_kgs");
 
                 let productData = {
@@ -856,7 +863,7 @@ let slugify = require('slugify')
                             upc: upc,
                             part_no: part_no,
                             // power_supply: power_supply,
-                            embodied_carbon_tons: embodied_carbon_tons?embodied_carbon_tons:0,
+                            embodied_carbon_kgs: embodied_carbon_kgs?embodied_carbon_kgs:0,
                             gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:0
                         },
                         year_of_making: Number(data.get("manufacturedDate")),
@@ -911,7 +918,7 @@ let slugify = require('slugify')
 
 
         componentDidUpdate(prevProps, prevState, snapshot) {
-            if (prevProps!=this.props){
+            if (prevProps!==this.props){
 
                 if (this.props.item){
                     this.isManufacturer()
@@ -1044,13 +1051,13 @@ let slugify = require('slugify')
             })
             this.getFiltersCategories();
 
-            if (type=='new') {
+            if (type==='new') {
                 this.setState({
                     parentProductId: productId?productId:null,
                     showForm: true
                 })
             }
-            else if (type=='parent') {
+            else if (type==='parent') {
                 this.setState({
                     parentProductId: productId,
                     showForm: false
@@ -1125,10 +1132,10 @@ let slugify = require('slugify')
 
 
                                         this.setState({
-                                            selectedTemplate:this.state.templates.find(item=>item.key==value.currentTarget.value )
+                                            selectedTemplate:this.state.templates.find(item=>item.key===value.currentTarget.value )
                                         })
 
-                                        this.loadImages(this.state.templates.find(item=>item.key==value.currentTarget.value).value.artifacts)
+                                        this.loadImages(this.state.templates.find(item=>item.key===value.currentTarget.value).value.artifacts)
 
 
                                     }}
@@ -1245,6 +1252,7 @@ let slugify = require('slugify')
                                             initialValue={this.props.item?this.props.item.product.type:""
                                             ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.type:"")
                                             }
+                                            disableAutoLoadingIcon
                                             option={"name"}
                                             valueKey={"name"}
                                             select={"Select"}
@@ -1296,6 +1304,7 @@ let slugify = require('slugify')
                                     <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
                                         <SelectArrayWrapper
+                                            disableAutoLoadingIcon
                                             initialValue={this.props.item?this.props.item.product.state:""
                                             ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
                                             onChange={(value)=>  {
@@ -1361,19 +1370,37 @@ let slugify = require('slugify')
                                             {!this.props.productLines &&
                                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
+                                                {/*<DynamicSelectArrayWrapper*/}
+                                                {/*    onChange={(value)=>this.handleChangeProduct(value,`deliver`)}*/}
+                                                {/*    api={""}*/}
+                                                {/*    error={this.state.errors[`deliver`]}*/}
+                                                {/*    name={`deliver`}*/}
+                                                {/*    // options={this.props.siteList}*/}
+                                                {/*    apiUrl={baseUrl+"seek?name=Site&no_parent=true&count=false"}*/}
+                                                {/*    option={"Site"}*/}
+                                                {/*    subOption={"name"}*/}
+                                                {/*    searchKey={"name"}*/}
+                                                {/*    valueKey={"Site"}*/}
+                                                {/*    subValueKey={"_key"}*/}
+                                                {/*    title="Dispatch / Collection Address"*/}
+                                                {/*    details="Select product’s location from the existing sites or add new address below"*/}
+                                                {/*    initialValue={this.props.item&&this.props.item.site._key}*/}
+                                                {/*    initialValueTextbox={this.props.item&&this.props.item.site.name}*/}
+
+                                                {/*/>*/}
                                                 <SelectArrayWrapper
+
                                                     details="Select product’s location from the existing sites or add new address below"
                                                     initialValue={this.props.item&&this.props.item.site._key}
                                                     option={"name"}
                                                     valueKey={"_key"}
                                                     error={this.state.errors["deliver"]}
-                                                    onChange={(value)=> {
-
-                                                                        this.handleChangeProduct(value,"deliver")
-
-                                                                    }} select={"Select"}
-                                                    options={this.props.siteList} name={"deliver"}
-                                                    title="Dispatch / Collection Address"/>
+                                                    onChange={(value)=> {this.handleChangeProduct(value,"deliver")}}
+                                                    select={"Select"}
+                                                    options={this.props.siteList}
+                                                    name={"deliver"}
+                                                    title="Dispatch / Collection Address"
+                                                />
 
 
                                                 <p style={{ marginTop: "10px" }}>
@@ -1394,7 +1421,7 @@ let slugify = require('slugify')
                                             </div>}
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper
-
+                                                    disableAutoLoadingIcon
                                                     initialValue={this.props.item&&this.props.item.product.sku.power_supply
                                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.power_supply:"")
                                                     }
@@ -1452,6 +1479,7 @@ let slugify = require('slugify')
                                                 <div className="col-md-4 col-xs-12 ">
                                                     <SelectArrayWrapper  details="A measurement chosen as a standard"
                                                         select={"Select"}
+                                                                         disableAutoLoadingIcon
                                                         initialValue={this.props.item&&this.props.item.product.units}
                                                         onChange={(value)=>this.handleChangeProduct(value,"units")}
                                                         error={this.state.errors["units"]}
@@ -1591,11 +1619,11 @@ let slugify = require('slugify')
 
                                     <div className="col-md-4 col-sm-6 col-xs-6">
                                         <TextFieldWrapper
-                                            onChange={(value)=>this.handleChangeProduct(value,"embodied_carbon_tons")}
+                                            onChange={(value)=>this.handleChangeProduct(value,"embodied_carbon_kgs")}
                                             // details="A unique number used by external systems"
-                                            initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_tons:""
-                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_tons:"")
-                                            } name="embodied_carbon_tons" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
+                                            initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_kgs:""
+                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_kgs:"")
+                                            } name="embodied_carbon_kgs" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
 
                                     </div>
                                     <div className="col-md-4 col-sm-6 col-xs-6">
@@ -1870,7 +1898,7 @@ let slugify = require('slugify')
         };
     };
 
-    const mapDispachToProps = (dispatch) => {
+    const mapDispatchToProps = (dispatch) => {
         return {
             logIn: (data) => dispatch(actionCreator.logIn(data)),
             signUp: (data) => dispatch(actionCreator.signUp(data)),
@@ -1899,4 +1927,4 @@ let slugify = require('slugify')
 
         };
     };
-    export default  connect(mapStateToProps, mapDispachToProps)(ProductForm);
+    export default  connect(mapStateToProps, mapDispatchToProps)(ProductForm);

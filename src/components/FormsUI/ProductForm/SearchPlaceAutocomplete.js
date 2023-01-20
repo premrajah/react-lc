@@ -95,10 +95,12 @@ const SearchPlaceAutocomplete = (props) => {
                 <GoogleMap
                     width={"100%"} height={"300px"}
 
+                    draggable
                                 name={address}
                                searchLocation={true}
                                latitude={latitude}
                                 longitude= {longitude}
+                    location={{location:{lat:latitude, lng:longitude}}}
 
                         setLocation={draggedLocation }/>
                 </div>

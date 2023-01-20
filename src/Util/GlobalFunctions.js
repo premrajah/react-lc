@@ -123,14 +123,16 @@ export const ownerCheck = (userDetail, orgId) => {
     return userDetail.orgId === orgId;
 };
 
-export const seekAxiosGet = (url, doNotEncode) => {
+export const seekAxiosGet = (url, doNotEncode,controller) => {
     let urlEncode = url;
 
     if (!doNotEncode) {
         urlEncode = encodeURI(urlEncode);
     }
 
-    return axios.get(urlEncode).catch((error) => {
+    return axios.get(urlEncode, {
+        signal: controller?controller.signal:null
+    }).catch((error) => {
         console.error(error);
         return "Unknown error occurred.";
     });
@@ -366,3 +368,54 @@ export const getNumberFromString = (txt) => {
     return numb
 };
 
+export const cleanFilename = (string) => {
+    if(!string) return;
+    let fileExtension = string.substring(string.lastIndexOf('.')+1, string.length) || string;
+    let filenameWithOutExtension = string.replace(/\.[^/.]+$/, "");
+    let cleanedFileName = filenameWithOutExtension.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    return `${cleanedFileName}.${fileExtension}`;
+}
+
+export const getSite = (site) => {
+
+
+    let ProductToSite=site.ProductToSite
+
+    if (ProductToSite&&ProductToSite.length>0&&ProductToSite[0].entries.length>0){
+        return ProductToSite[0].entries[0].Site
+    }
+    else return null
+
+
+}
+
+
+export const  PreProcessCSVData=( text)=>
+{
+try {
+    if (text)
+        text = text.toString().replace('ı', 'i')
+            .replace('ç', 'c')
+            .replace('ö', 'o')
+            .replace('ş', 's')
+            .replace('ü', 'u')
+            .replace('ğ', 'g')
+            .replace('İ', 'I')
+            .replace('Ç', 'C')
+            .replace('Ö', 'O')
+            .replace('Ş', 'S')
+            .replace('Ü', 'U')
+            .replace('Ğ', 'G')
+            .replace('"', '""').trim();
+
+    if (text && text.includes(",")) {
+        text = '"' + text + '"';
+    }
+    return text;
+
+}catch (e){
+    // console.log("Error Column",text)
+    // console.log(e)
+    return text
+}
+}

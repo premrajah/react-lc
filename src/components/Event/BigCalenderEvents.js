@@ -4,7 +4,6 @@ import moment from "moment";
 import {Calendar, DateLocalizer, momentLocalizer, Views} from "react-big-calendar";
 import * as dates from "./dates";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import EventItem from "./EventItem";
 import {LoaderAnimated, weekday} from "../../Util/GlobalFunctions";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios";
@@ -24,6 +23,7 @@ import {IconButton} from "@mui/material";
 import GreenSmallBtn from "../FormsUI/Buttons/GreenSmallBtn";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import DownloadIcon from "@mui/icons-material/GetApp";
+import EventList from "./EventList";
 
 
 const mLocalizer = momentLocalizer(moment);
@@ -84,7 +84,8 @@ const CustomTimeGutterHeader = ({ children }) => {
  * We are defaulting the localizer here because we are using this same
  * example on the main 'About' page in Storybook
  */
-export default function BigCalenderEvents({
+export default function
+    BigCalenderEvents({
     localizer = mLocalizer,
     showDemoLink = true,
     smallView,
@@ -104,7 +105,7 @@ export default function BigCalenderEvents({
     const [showAddEventPopUp, setShowAddEventPopUp] = useState(false);
 
     const size = 50;
-    const [loading, setLoading] = useState([]);
+    const [loading, setLoading] = useState(false);
     // const [offset, setOffset] = useState(0);
 
     const showEvent = () => {
@@ -486,10 +487,17 @@ export default function BigCalenderEvents({
             );
 
             getEvents(moment().startOf("day").format("x"), moment().endOf("day").format("x"));
-        } else {
-            getEvents();
         }
     }, []);
+
+    useEffect(() => {
+        if (smallView) {
+
+            setEvents(props.events);
+            setMonthEvents(convertEvents(props.events));
+
+        }
+    }, [props.events]);
 
     const convertEvents = (events, offset) => {
         let calenderEvents = [];
@@ -700,7 +708,7 @@ export default function BigCalenderEvents({
 
                         {loading && <LoaderAnimated />}
 
-                                <EventItem
+                                <EventList
 
                                     showDownload={showDownload}
                                     hide={()=>setShowDownload(!showDownload)}
@@ -793,7 +801,7 @@ export default function BigCalenderEvents({
 
                         </>}
 
-                        <EventItem smallView={smallView} loading={loading} showEvent={showEvent}
+                        <EventList smallView={smallView} loading={loading} showEvent={showEvent}
 
                                            events={events.filter((item)=>
                                                {if (showAll){

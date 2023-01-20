@@ -26,7 +26,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
-import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 let slugify = require('slugify')
 
@@ -1083,7 +1083,7 @@ let item=null
                         const payload = data;
 
                         try {
-                            axios.post(`${baseUrl}artifact/load?name=${imgFile.file.name.toLowerCase()}`, payload)
+                            axios.post(`${baseUrl}artifact/load?name=${cleanFilename(imgFile.file.name.toLowerCase())}`, payload)
                                 .then(res => {
 
                                     let images = [...this.state.images];

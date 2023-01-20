@@ -16,11 +16,15 @@ class ImageHeader extends Component{
             {images.length > 0 ? (
                     <ImagesSlider images={images} />
                 ) : (
+                // <div className={"row g-0 "}>
+                    <div className={"col-12 p-2 gray-border rad-8 bg-white "}>
                     <img
-                        className={"img-fluid bg-white rad-8 bg-white p-2"}
+                        className={"img-fluid placeholder-img  rad-8 bg-white "}
                         src={PlaceholderImg}
                         alt=""
                     />
+                    </div>
+                // </div>
                 )}
          </>
 

@@ -261,7 +261,7 @@ class Login extends Component {
 
                                             {this.props.loginFailed && (
                                                 <div className="col-12 mt-2">
-                                                    <Alert key={"alert"} variant={"danger"}>
+                                                    <Alert className={"error-message"} key={"alert"} variant={"danger"}>
                                                         {this.props.loginError}
                                                     </Alert>
                                                 </div>
@@ -269,6 +269,7 @@ class Login extends Component {
 
                                             <div className="col-12 text-center mt-2">
                                                 <GreenButton
+                                                    id={"login-btn"}
                                                     title={"Log In"}
                                                     type={"submit"}
                                                     disabled={!this.state.formValid}></GreenButton>

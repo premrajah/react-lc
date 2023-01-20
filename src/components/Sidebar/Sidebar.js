@@ -158,7 +158,7 @@ class Sidebar extends Component {
                                             onClick={this.toggleMenu}
                                             to={"/my-diary"}
                                             className="white-text list-group-item list-group-item-action">
-                                            Diary
+                                            Calendar
                                         </Link>
 
 

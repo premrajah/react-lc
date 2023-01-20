@@ -241,7 +241,10 @@ class Sites extends Component {
 
     }
 
-    clearList=()=>{
+
+    clearList = () => {
+
+        setTimeout(() => {
 
         this.setState({
             offset:0,
@@ -249,7 +252,8 @@ class Sites extends Component {
             lastPageReached:false,
             loadingResults: false,
         })
-    }
+        },250)
+    };
 
     loadProductsWithoutParentPageWise=()=>{
 
@@ -333,7 +337,7 @@ class Sites extends Component {
                                 <Link onClick={()=> {
                                     this.toggleSite(false)
                                 }}  className="btn-gray-border  me-2  click-item">
-                                    Add Sites / Address
+                                    Add Site / Address
                                 </Link>
 
                                 <Link onClick={this.toggleMultiSite} className="btn-gray-border    me-2 click-item">
@@ -352,11 +356,20 @@ class Sites extends Component {
                             loadMore={(data)=>this.loadSitesWithoutParentPageWise(data)}
 
                         >
+                        {/* Site Condensed view header */}
+                        {/*    <div className="row">*/}
+                        {/*        <div className="col-md-3">Site name</div>*/}
+                        {/*        <div className="col-md-4">Address</div>*/}
+                        {/*        <div className="col-md-2">Email</div>*/}
+                        {/*        <div className="col-md-1"></div>*/}
+                        {/*        <div className="col-md-2 d-flex justify-content-end">Date added</div>*/}
+                        {/*    </div>*/}
 
                         {this.state.items&&this.state.items
                             .map((site, index) =>
                             <React.Fragment key={index}>
                                 <SitePageItem  showEdit={true} item={site.Site}/>
+                                {/*<SiteCondensedView site={site.Site} index={index} />*/}
                             </React.Fragment>
                         )}
                         </PaginationLayout>
@@ -389,7 +402,7 @@ class Sites extends Component {
                     size={"sm"}
                     hide={this.toggleSite}
                     show={this.state.showCreateSite}
-                    heading={"Add new site"}>
+                    heading={"Add site"}>
                     <>
                         {this.state.showCreateSite && <div className="col-12 ">
 

@@ -9,18 +9,7 @@ import TextField from "@mui/material/TextField";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import {withStyles} from "@mui/styles/index";
-import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
-import Typography from "@mui/material/Typography";
-import Timeline from "@mui/lab/Timeline";
-import TimelineItem from "@mui/lab/TimelineItem";
-import TimelineSeparator from "@mui/lab/TimelineSeparator";
-import TimelineConnector from "@mui/lab/TimelineConnector";
-import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
-import TimelineContent from "@mui/lab/TimelineContent";
-import TimelineDot from "@mui/lab/TimelineDot";
-import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from "@mui/icons-material/Add";
 import NotFound from "../NotFound/index";
 import PlaceholderImg from "../../img/place-holder-lc.png";
@@ -39,13 +28,17 @@ import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton"
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
 import GreenBorderButton from "../../components/FormsUI/Buttons/GreenBorderButton";
+import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
+import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
+import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import AutocompleteCustom from "../../components/AutocompleteSearch/AutocompleteCustom";
 
 class ViewCycle extends Component {
     slug;
 
     constructor(props) {
         super(props);
-
         this.state = {
             timerEnd: false,
             count: 0,
@@ -71,6 +64,8 @@ class ViewCycle extends Component {
             showOrgForm: false,
             email: null,
             stepId: null,
+            org_id:null
+
         };
 
         this.slug = props.match.params.slug;
@@ -88,7 +83,6 @@ class ViewCycle extends Component {
         this.proceedCancel = this.proceedCancel.bind(this);
         this.updateStep = this.updateStep.bind(this);
         this.deliverCycle = this.deliverCycle.bind(this);
-        this.showPopUpAction = this.showPopUpAction.bind(this);
         this.showPopUpStepAction = this.showPopUpStepAction.bind(this);
         this.showOrgForm = this.showOrgForm.bind(this);
         this.handleSubmitOrg = this.handleSubmitOrg.bind(this);
@@ -100,9 +94,9 @@ class ViewCycle extends Component {
         });
     }
 
-    showPopUpAction(event) {
-        if (event) {
-            var action = event.currentTarget.dataset.action;
+    togglePopUpAction=(action)=> {
+
+        if (action) {
 
             this.setState({
                 action: action,
@@ -116,9 +110,9 @@ class ViewCycle extends Component {
 
     showPopUpStepAction(event) {
         if (event) {
-            var action = event.currentTarget.dataset.action;
+            let action = event.currentTarget.dataset.action;
 
-            var stepId = event.currentTarget.dataset.id;
+            let stepId = event.currentTarget.dataset.id;
 
             this.setState({
                 stepAction: action,
@@ -182,13 +176,7 @@ class ViewCycle extends Component {
         return formIsValid;
     }
 
-    handleChange(field, e) {
-        let fields = this.state.fields;
-        fields[field] = e.target.value;
-        this.setState({ fields });
 
-        // this.handleValidationSubmitGreen()
-    }
 
     handleChangeEmail(field, e) {
         this.setState({ email: e.target.value });
@@ -278,18 +266,23 @@ class ViewCycle extends Component {
     }
 
     handleSubmitStep = (event) => {
+
         event.preventDefault();
+        event.stopPropagation()
+        if (!this.handleStepFormValidation()){
+            return
+        }
+
 
         const form = event.currentTarget;
 
         const data = new FormData(event.target);
-
         const name = data.get("name");
         const description = data.get("description");
         const type = data.get("type");
         const notes = [data.get("note")];
 
-        var dataStep = {
+        let dataStep = {
             step: {
                 name: name,
                 description: description,
@@ -298,7 +291,7 @@ class ViewCycle extends Component {
                 notes: notes,
             },
             cycle_id: this.slug,
-            org_id: data.get("org"),
+            org_id: this.state.org_id,
         };
 
         axios
@@ -344,10 +337,10 @@ class ViewCycle extends Component {
     }
 
     updateStep() {
-        var action = this.state.stepAction;
-        var stepId = this.state.stepId;
+        let action = this.state.stepAction;
+        let stepId = this.state.stepId;
 
-        var data = {
+        let data = {
             step_id: stepId,
             new_stage: action,
         };
@@ -384,9 +377,9 @@ class ViewCycle extends Component {
     }
 
     deliverCycle(event) {
-        var action = this.state.action;
+        let action = this.state.action;
 
-        var data = {
+        let data = {
             cycle_id: this.slug,
             new_stage: action,
         };
@@ -398,7 +391,7 @@ class ViewCycle extends Component {
                 },
             })
             .then((res) => {
-                this.showPopUpAction();
+                this.togglePopUpAction();
 
                 this.getResources();
             })
@@ -490,6 +483,16 @@ class ViewCycle extends Component {
             });
     }
 
+
+    handleChange(value,field ) {
+
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+
+
+    }
+
     orderReceived() {
         axios
             .post(
@@ -569,6 +572,8 @@ class ViewCycle extends Component {
     }
 
     declineOffer() {
+
+        alert("decline offer")
         this.setState({
             showPrompt: !this.state.showPrompt,
         });
@@ -582,6 +587,24 @@ class ViewCycle extends Component {
         this.props.history.go(+1);
     };
 
+
+    companyDetails = (detail) => {
+        if (detail.org) {
+            this.setState({
+                org_id: detail.org,
+            });
+        } else {
+            axios.get(baseUrl + "org/company/" + detail.company).then(
+                (response) => {
+                    let responseAll = response.data.data;
+
+                    this.setState({
+                        org_id: responseAll._key,
+                    });
+                }
+            ).catch(error => {});
+        }
+    };
     getResources() {
         axios
             .get(baseUrl + "cycle/" + this.slug + "/expand", {
@@ -591,7 +614,7 @@ class ViewCycle extends Component {
             })
             .then(
                 (response) => {
-                    var responseData = response.data;
+                    let responseData = response.data;
 
                     this.setState({
                         item: responseData.data,
@@ -620,14 +643,45 @@ class ViewCycle extends Component {
             })
             .then(
                 (response) => {
-                    var response = response.data;
-
                     this.setState({
                         orgs: response.data,
                     });
                 },
                 (error) => {}
             );
+    }
+
+
+    handleStepFormValidation() {
+
+
+        let fields = this.state.fields;
+
+
+        let validations=[
+            validateFormatCreate("name", [{check: Validators.required, message: 'Required'}],fields),
+            // validateFormatCreate("brand", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
+            // validateFormatCreate("category", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("type", [{check: Validators.required, message: 'Required'}],fields),
+            // validateFormatCreate("org", [{check: Validators.required, message: 'Required'}],fields),
+
+        ]
+
+
+
+        if (!this.state.org_id){
+            validations.push(validateFormatCreate("org", [{check: Validators.required, message: 'Required'}],fields))
+
+        }
+
+
+
+        let {formIsValid,errors}= validateInputs(validations)
+
+        this.setState({ errors: errors });
+        // console.log(errors)
+        return formIsValid;
     }
 
 
@@ -684,31 +738,51 @@ class ViewCycle extends Component {
                                                     />
                                                 </div>
 
-                                                <div className="col-12 mt-2">
-                                                    <p>
-                                                        <span>
-                                                            Product:
-                                                            {this.state.item.product.product.name}
-                                                        </span>
-                                                    </p>
-                                                    <p className="text-caps">
-                                                        Stage:
-                                                        <span
-                                                            className={
-                                                                "green-text text-heading text-caps"
-                                                            }> {this.state.item.cycle.stage}
-                                                        </span>
-                                                    </p>
-                                                </div>
+                                                {/*<div className="col-12 mt-2">*/}
+                                                {/*    <p>*/}
+                                                {/*        <span>*/}
+                                                {/*            Product:*/}
+                                                {/*            {this.state.item.product.product.name}*/}
+                                                {/*        </span>*/}
+                                                {/*    </p>*/}
+                                                {/*    <p className="text-caps d-none">*/}
+                                                {/*        Stage:*/}
+                                                {/*        <span*/}
+                                                {/*            className={*/}
+                                                {/*                "green-text text-heading text-caps"*/}
+                                                {/*            }> {this.state.item.cycle.stage}*/}
+                                                {/*        </span>*/}
+                                                {/*    </p>*/}
+                                                {/*</div>*/}
                                             </div>
                                         </div>
 
                                         <div className={"col-md-8 col-sm-12 col-xs-12 ps-4"}>
                                             <div className="row justify-content-start ">
-                                                <div className="col-12 ">
+                                                <div className="col-10 d-flex flex-row align-items-center ">
                                                     <h5 className={"text-capitalize product-title "}>
                                                         {this.state.item.listing.name}
+
+
                                                     </h5>
+                                                    <span className={"  status ms-2 text-right"}>
+
+                                                    <span className={this.state.item.cycle.stage!=="closed"?" active text-capitlize":"text-capitlize waiting "}>
+                                    {this.state.item.cycle.stage}
+                                </span>
+                                                    </span>
+
+
+
+                                                </div>
+                                                <div className="col-2 d-flex title-bold  flex-row align-items-center ">
+                                                    {this.state.item.listing.price ? (
+                                                        <>
+                                                            GBP {this.state.item.listing.price.value}
+                                                        </>
+                                                    ) : (
+                                                        "Free"
+                                                    )}
                                                 </div>
 
                                                 <div className="col-12 ">
@@ -724,7 +798,7 @@ class ViewCycle extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="col-5 blue-text text-blue text-bold  text-right">
+                                                        <div className="d-none col-5 blue-text text-blue text-bold  text-right">
                                                             {this.state.item.listing.price ? (
                                                                 <>
                                                                     GBP
@@ -759,7 +833,7 @@ class ViewCycle extends Component {
                                             </div>
 
                                             {this.state.item &&
-                                            <div className="row justify-content-start pb-3  tabs-detail">
+                                            <div className="row justify-content-start pb-2  tabs-detail">
                                                 <div className="col-12 ">
                                                     <Box sx={{ width: '100%', typography: 'body1' }}>
                                                         <TabContext value={this.state.activeKey}>
@@ -798,7 +872,7 @@ class ViewCycle extends Component {
 
                                                                 <>
 
-                                                                    <div className={"mt-4"}></div>
+                                                                    <div className={"mt-4"}/>
                                                                     {this.state.item && (
                                                                         <ProductExpandItem
                                                                             hideMoreMenu={true}
@@ -865,15 +939,10 @@ class ViewCycle extends Component {
                                                 </div>
                                             </div>}
 
-
-
-
-
                                                 <>
-
-
-                                                    <div className="row  mt-3  pb-4 mb-4">
-                                                        <div className="col-6 ">
+                                                    {this.state.item.cycle.stage ===
+                                                    "progress"&& <div className="row  mt-3  pb-2 mb-2">
+                                                        <div className="col-4 ">
                                                             <h4
                                                                 className={
                                                                     " text-bold text-label text-blue mb-1"
@@ -882,7 +951,7 @@ class ViewCycle extends Component {
                                                             </h4>
                                                         </div>
 
-                                                        <div className="col-6 text-right">
+                                                        <div className="col-8 d-flex justify-content-end text-right">
                                                             {this.state.item.cycle.stage ===
                                                                 "progress" &&
                                                                 (this.state.item.receiver._id ===
@@ -890,8 +959,8 @@ class ViewCycle extends Component {
                                                                     this.state.item.sender._id ===
                                                                         this.props.userDetail
                                                                             .orgId) && (
-                                                                    <div className=" col-auto text-right">
-                                                                        <BlueBorderButton
+                                                                    <div className=" col-12 d-flex justify-content-end text-right">
+                                                                        <BlueSmallBtn
                                                                             title={this.state.item.receiver._id===this.props.userDetail.orgId?"Request a Step":"Add Step"}
                                                                             onClick={this.showStep}
                                                                             type="button"
@@ -899,29 +968,20 @@ class ViewCycle extends Component {
                                                                             <AddIcon/>
 
 
-                                                                        </BlueBorderButton>
+                                                                        </BlueSmallBtn>
                                                                     </div>
                                                                 )}
                                                         </div>
-                                                    </div>
+                                                    </div>}
 
                                                     {this.state.item.steps && (
                                                         <>
                                                             {this.state.item.steps.map(
                                                                 (item, index) => (
-                                                                    <div className="row rad-8 m-1 p-3 bg-white step-box pb-4 pb-4 mb-4">
-                                                                        {/*<div className="col-1">*/}
-                                                                        {/*<p className={"text-bold text-left text-blue"}>{index+1}.</p>*/}
+                                                                    <div key={item.step._key} className="row rad-8 m-1 p-1 bg-white step-box mb-4">
+                                                                        <div className="col-8 pb-2 pt-2">
 
-                                                                        {/*</div>*/}
-                                                                        <div className="col-6 pb-2 pt-2">
-                                                                            <span
-                                                                                className={
-                                                                                    "text-mute text-left "
-                                                                                }>
-                                                                                {item.step.stage}
-                                                                            </span>
-                                                                            <br />
+
                                                                             <span
                                                                                 style={{
                                                                                     fontSize:
@@ -929,36 +989,40 @@ class ViewCycle extends Component {
                                                                                 }}
                                                                                 className={
                                                                                     "text-bold text-left text-blue"
-                                                                                }>
-                                                                                {item.step.name},
-                                                                                {
-                                                                                    item.step
-                                                                                        .description
-                                                                                }
+                                                                                }>{item.step.name} <span className="text-capitalize text-14">({item.step.type})</span>
+
+                                                                                <span className={"  status ms-2 text-right"}>
+
+                                                    <span className={item.step.stage!=="cancelled"&&item.step.stage!=="declined"?" active text-capitalize text-14":" text-14 text-capitalize waiting "}>
+                                    {item.step.stage}
+                                </span>
+                                                    </span>
                                                                             </span>
                                                                             <br />
-                                                                            <span
-                                                                                className={
-                                                                                    " text-left "
-                                                                                }>
-                                                                                Type:
-                                                                                {item.step.type}
-                                                                            </span>
+                                                                           <span className="text-14"><span className="text-blue">Description: </span><span className="text-gray-light">{item.step.description}</span></span>
                                                                             <br />
+
+                                                                            {(item.step.notes&&item.step.notes[0])&&<>
+                                                                                <span className="text-14"><span className="text-blue">Note: </span><span className="text-gray-light">{item.step.notes[0]}</span></span>
+                                                                                <br/>
+                                                                                </>}
+
+                                                                            {/*<span className="text-14"><span className="text-blue">Type: </span><span className="text-gray-light">{item.step.type}</span></span>*/}
+
                                                                             <span
                                                                                 className={
                                                                                     " text-left "
                                                                                 }>
                                                                                 Creator: <OrgComponent orgId={item.creator_org_id.replace("Org/","")}  />
-                                                                            </span>
-                                                                            <br />
-                                                                            <span
-                                                                                className={
-                                                                                    " text-left "
-                                                                                }>
+                                                                            </span> <span
+                                                                            className={
+                                                                                "ms-2 text-left "
+                                                                            }>
 
                                                                                 Owner: <OrgComponent orgId={item.owner_org_id.replace("Org/","")}  />
                                                                             </span>
+
+
                                                                         </div>
 
                                                                         <>
@@ -967,7 +1031,7 @@ class ViewCycle extends Component {
                                                                                 item.nextAction
                                                                                     .possible_actions
                                                                                     .length > 0 && (
-                                                                                    <div className="col-6 text-right pb-2 pt-2">
+                                                                                    <div className="col-4 d-flex justify-content-end pb-2 pt-2">
                                                                                         {item.nextAction.possible_actions.map(
                                                                                             (
                                                                                                 actionName
@@ -998,23 +1062,23 @@ class ViewCycle extends Component {
                                                                                                             className={
                                                                                                                 actionName ===
                                                                                                                 "accepted"
-                                                                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                                                                    ? "shadow-sm mr-2 btn  ms-1 mt-2 mb-2 green-btn-action"
                                                                                                                     : actionName ===
                                                                                                                       "cancelled"
-                                                                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                                                                    ? "shadow-sm mr-2 btn   mt-2 ms-1 mb-2 btn-pink"
                                                                                                                     : actionName ===
                                                                                                                       "rejected"
-                                                                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                                                                    ? "shadow-sm mr-2 btn   ms-1 mt-2 mb-2 btn-pink"
                                                                                                                     : actionName ===
                                                                                                                       "declined"
-                                                                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                                                                    ? "shadow-sm mr-2 btn  ms-1 mt-2 mb-2 btn-pink"
                                                                                                                     : actionName ===
                                                                                                                       "progress"
-                                                                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                                                                    ? "shadow-sm mr-2 btn  ms-1 mt-2 mb-2 green-btn-action"
                                                                                                                     : actionName ===
                                                                                                                       "completed"
-                                                                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border"
+                                                                                                                    ? "shadow-sm mr-2 btn  ms-1 mt-2 mb-2 green-btn-action"
+                                                                                                                    : "shadow-sm mr-2 btn  ms-1 mt-2 mb-2 green-btn-action"
                                                                                                             }>
                                                                                                             {actionName ===
                                                                                                                 "accepted" &&
@@ -1058,7 +1122,8 @@ class ViewCycle extends Component {
 
                                 {this.state.item &&
                                     this.state.item.cycle &&
-                                    this.state.item.cycle.stage !== "closed" && (
+                                    this.state.item.cycle.stage !== "closed" && this.state.item.next_action
+                                        .is_mine &&(
 
                                             <div
                                                 className={ "custom-bottom-fixed-appbar  custom-bottom-appbar"}>
@@ -1068,8 +1133,7 @@ class ViewCycle extends Component {
                                                         <div
                                                             className="row  justify-content-center search-container "
                                                             style={{ margin: "auto" }}>
-                                                            {this.state.item.next_action
-                                                                .is_mine && (
+
                                                                 <div className="col-auto text-center">
                                                                     {this.state.item.next_action.possible_actions.map(
                                                                         (item) => (
@@ -1082,23 +1146,38 @@ class ViewCycle extends Component {
                                                                                         .stage ===
                                                                                         "progress"
                                                                                 ) && (
-                                                                                    <button
-                                                                                        data-action={
-                                                                                            item
-                                                                                        }
-                                                                                        onClick={this.showPopUpAction.bind(
-                                                                                            this
-                                                                                        )}
-                                                                                        type="button"
-                                                                                        className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green text-caps">
-                                                                                        {item}
-                                                                                    </button>
+                                                                                    <span className="me-1">
+
+                                                                                        <GreenButton
+
+                                                                                            onClick={()=>this.togglePopUpAction(item)}
+                                                                                            type="button"
+                                                                                            // className="shadow-sm mr-2 btn  btn-green mt-2 mb-2 btn-green text-caps"
+
+
+                                                                                            title= {item === "delivered"
+                                                                                                ? "Deliver"
+                                                                                                : item === "received"
+                                                                                                    ? "Receive"
+                                                                                                    : item === "closed"
+                                                                                                        ? "Close"
+                                                                                                        : item === "counter"
+                                                                                                            ? "Counter"
+                                                                                                            : item === "withdraw"
+                                                                                                                ? "Withdraw"
+                                                                                                                : item === "settled"
+                                                                                                                    ? "Settle"
+                                                                                                                    : item}
+                                                                                        >{item}
+                                                                                        </GreenButton>
+
+                                                                                        </span>
                                                                                 )}
                                                                             </>
                                                                         )
                                                                     )}
                                                                 </div>
-                                                            )}
+
                                                         </div>
                                                     </div>
                                                 </Toolbar>
@@ -1289,163 +1368,106 @@ class ViewCycle extends Component {
                                     </ModalBody>
                                 </Modal>
 
-                                <Modal
-                                    className={"loop-popup"}
-                                    aria-labelledby="contained-modal-title-vcenter"
-                                    centered
-                                    show={this.state.showPrompt}
-                                    onHide={this.declineOffer}
-                                    animation={true}>
-                                    <ModalBody>
-                                        <>
-                                            <div className={"row justify-content-center"}>
-                                                <div
-                                                    className={"col-12"}
-                                                    style={{ textAlign: "center" }}>
-                                                    <h5 className={"text-bold"}>
-                                                        Are you sure you want to proceed?
-                                                    </h5>
-                                                    {/*A cycle has been created. Send a message to the seller to arrange a delivery time.*/}
-                                                </div>
-                                            </div>
-                                            <form onSubmit={this.handleSubmit}>
-                                                <div className={"row justify-content-center"}>
-                                                    <div className={"row"}>
-                                                        <div className={"col-6 mt-2"}>
-                                                            <button
-                                                                onClick={this.declineOffer}
-                                                                type={"submit"}
-                                                                className={
-                                                                    "green-btn-border btn btn-default btn-lg btn-rounded shadow btn-block "
-                                                                }>
-                                                                Cancel
-                                                            </button>
-                                                        </div>
-                                                        <div className={"col-6 mt-2"}>
-                                                            <button
-                                                                onClick={this.proceedCancel}
-                                                                type={"submit"}
-                                                                className={
-                                                                    "btn-green btn btn-default btn-lg btn-rounded shadow btn-block "
-                                                                }>
-                                                                Yes
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </>
-                                    </ModalBody>
-                                </Modal>
-
-                                {this.state.showPopUpStep && (
-                                    <div className={"row"}>
-                                        <div className="col-auto">
-                                            <button
-                                                onClick={this.showStep}
-                                                type="button"
-                                                className=" mr-2 btn btn-link green-border-btn mt-2 mb-2 btn-blue">
-                                                Add Step
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
 
 
+
+                                {/* create step */}
                                 <GlobalDialog show={this.state.showPopUpStep}
                                     hide={this.showStep}
-                                heading={"Create Step"}>
+                                    heading={"Create Step"}>
                                         <form onSubmit={this.handleSubmitStep}>
                                             <div className={"row justify-content-center"}>
-                                                <div className={"col-12 text-center mb-4"}>
-                                                    <TextField
-                                                        id="outlined-basic"
-                                                        label="Name"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                        name={"name"}
-                                                        type={"text"}
+                                                <div className={"col-12  "}>
+
+                                                    <TextFieldWrapper
+
+                                                        onChange={(value)=>this.handleChange(value,"name")}
+                                                        error={this.state.errors["name"]}
+                                                        name="name" title="Name"
+
                                                     />
                                                 </div>
 
-                                                <div className={"col-12 text-center mb-4"}>
-                                                    <TextField
-                                                        id="outlined-basic"
-                                                        label="Description"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                        name={"description"}
-                                                        type={"text"}
+                                                <div className={"col-12  "}>
+
+
+                                                    <TextFieldWrapper
+
+                                                        onChange={(value)=>this.handleChange(value,"description")}
+                                                        error={this.state.errors["description"]}
+                                                        name="description" title="Description"
+
                                                     />
                                                 </div>
 
-                                                <div className={"col-12 text-center mb-4"}>
-                                                    <TextField
-                                                        id="outlined-basic"
-                                                        label="Note"
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                        name={"note"}
-                                                        type={"text"}
+                                                <div className={"col-12 "}>
+
+                                                    <TextFieldWrapper
+
+
+                                                        onChange={(value)=>this.handleChange(value,"note")}
+                                                        error={this.state.errors["note"]}
+                                                        name="note" title="Note"
+
                                                     />
+
                                                 </div>
 
-                                                <div className={"col-12 text-center mb-4"}>
-                                                    <FormControl
-                                                        variant="outlined"
-                                                        className={classes.formControl}>
-                                                        <InputLabel htmlFor="outlined-age-native-simple">
-                                                            Type
-                                                        </InputLabel>
-                                                        <Select
-                                                            native
-                                                            label={"Type"}
-                                                            inputProps={{
-                                                                name: "type",
-                                                                id: "outlined-age-native-simple",
-                                                            }}>
-                                                            <option value={null}>Select</option>
+                                                <div className={"col-12 "}>
 
-                                                            {this.state.steps.map((item) => (
-                                                                <option value={item}>{item}</option>
-                                                            ))}
-                                                        </Select>
-                                                    </FormControl>
+                                                    <SelectArrayWrapper
+
+                                                        onChange={(value)=>this.handleChange(value,"type")}
+                                                        error={this.state.errors["type"]}
+                                                        options={this.state.steps}
+                                                        name={"type"} title="Select Type"
+                                                        select={"Select"}
+                                                    />
+
                                                 </div>
 
-                                                <div className={"col-12 text-center mb-4"}>
-                                                    <FormControl
-                                                        variant="outlined"
-                                                        className={classes.formControl}>
-                                                        <InputLabel htmlFor="outlined-age-native-simple">
-                                                            Select Organisation
-                                                        </InputLabel>
-                                                        <Select
-                                                            native
-                                                            label={"Select Organisation"}
-                                                            inputProps={{
-                                                                name: "org",
-                                                                id: "outlined-age-native-simple",
-                                                            }}>
-                                                            <option value={null}>Select</option>
+                                                <div className={"col-12 "}>
 
-                                                            {this.state.orgs.map((item) => (
-                                                                <option value={item._key}>
-                                                                    {item.name}
-                                                                </option>
-                                                            ))}
-                                                        </Select>
-                                                    </FormControl>
+                                                    <div
+                                                        className="custom-label text-bold ellipsis-end text-blue mb-0">Search company
+                                                    </div>
+                                                    <AutocompleteCustom
 
-                                                    <p>
-                                                        If the company you are looking for doesn't
-                                                        exist?
-                                                        <span
-                                                            className={"green-link-url "}
-                                                            onClick={this.showOrgForm}>
-                                                            Add Company
-                                                        </span>
-                                                    </p>
+                                                        filterOrgs={[{_id:this.props.userDetail.orgId}]}
+                                                        orgs={true}
+                                                        companies={true}
+                                                        suggestions={this.state.orgNames}
+                                                        selectedCompany={(action) =>
+                                                            this.companyDetails(action)
+                                                        }
+                                                    />
+
+                                                    {this.state.errors["org"] && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{this.state.errors["org"].message}</span>}
+
+                                                    {/*<SelectArrayWrapper*/}
+
+                                                    {/*    select={"Select"}*/}
+                                                    {/*    onChange={(value)=>this.handleChange(value,"org")}*/}
+                                                    {/*    error={this.state.errors["org"]}*/}
+                                                    {/*    options={this.state.orgs}*/}
+                                                    {/*    option={"name"}*/}
+                                                    {/*    valueKey={"_key"}*/}
+                                                    {/*    name={"org"}*/}
+                                                    {/*    title="Select Organisation"*/}
+
+
+                                                    {/*/>*/}
+
+
+                                                    {/*<p>*/}
+                                                    {/*    If the company you are looking for doesn't*/}
+                                                    {/*    exist?*/}
+                                                    {/*    <span*/}
+                                                    {/*        className={"green-link-url "}*/}
+                                                    {/*        onClick={this.showOrgForm}>*/}
+                                                    {/*        Add Company*/}
+                                                    {/*    </span>*/}
+                                                    {/*</p>*/}
 
                                                     {this.state.showOrgForm && (
                                                         <>
@@ -1504,7 +1526,7 @@ class ViewCycle extends Component {
                                                                                             .handleSubmitOrg
                                                                                     }
                                                                                     className={
-                                                                                        "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
+                                                                                        "shadow-sm mr-2 btn  btn-green mt-2 mb-2 btn-blue"
                                                                                     }>
                                                                                     Submit
                                                                                 </button>
@@ -1517,8 +1539,8 @@ class ViewCycle extends Component {
                                                     )}
                                                 </div>
 
-                                                <div className={"col-12 text-center mb-4"}>
-                                                    <div className={"row justify-content-center"}>
+                                                <div className={"col-12 "}>
+                                                    <div className={"row justify-content-center mt-4"}>
                                                         <div
                                                             className={"col-6"}
                                                             style={{ textAlign: "center" }}>
@@ -1544,134 +1566,136 @@ class ViewCycle extends Component {
                                             </div>
                                         </form>
                                 </GlobalDialog>
-                                {/*    </ModalBody>*/}
-                                {/*</Modal>*/}
+
                             </>
                         )}
                     </>
                 )}
 
-                <Modal
-                    className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                    show={this.state.showPopUpAction}
-                    onHide={this.showPopUpAction}
-                    animation={false}>
+
+
+                {/*step actions*/}
+                <GlobalDialog
+                    size="sm"
+                    heading=  {this.state.stepAction === "accepted" ? "Accept ":
+                    this.state.stepAction === "cancelled" ? "Cancel ":
+                    this.state.stepAction === "rejected" ? "Reject ":
+                    this.state.stepAction === "declined" ? "Decline ":
+                    this.state.stepAction === "confirmed" ? "Confirm ":
+                    this.state.stepAction === "progress" ? "Progress ":
+                    this.state.stepAction === "completed" ? "Complete ":""}
+
+                    subHeading={`Are you sure you want to ${this.state.stepAction === "accepted" ? "Accept ":
+                        this.state.stepAction === "cancelled" ? "Cancel ":
+                            this.state.stepAction === "rejected" ? "Reject ":
+                                this.state.stepAction === "declined" ? "Decline ":
+                                    this.state.stepAction === "confirmed" ? "Confirm ":
+                                        this.state.stepAction === "progress" ? "Progress ":
+                                            this.state.stepAction === "completed" ? "Complete ":""} ?`}
+                    show={this.state.showPopUpStepAction}
+                    hide={()=>this.showPopUpStepAction()}
+                >
                     <ModalBody>
+
                         {/*<div className={"row justify-content-center"}>*/}
-                        {/*<div className={"col-4 text-center"}>*/}
-                        {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
+                        {/*    <div className={"col-10 text-center"}>*/}
+                        {/*        <p className={"text-bold text-caps"}>*/}
+                        {/*            {this.state.stepAction === "accepted" && "Accept "}*/}
+                        {/*            {this.state.stepAction === "cancelled" && "Cancel "}*/}
+                        {/*            {this.state.stepAction === "rejected" && "Reject "}*/}
+                        {/*            {this.state.stepAction === "declined" && "Decline "}*/}
+                        {/*            {this.state.stepAction === "confirmed" && "Confirm "}*/}
+                        {/*            {this.state.stepAction === "progress" && "Progress "}*/}
+                        {/*            {this.state.stepAction === "completed" && "Complete "}*/}
+                        {/*            :Step Action*/}
+                        {/*        </p>*/}
+                        {/*        <p>Are you sure you want to proceed ?</p>*/}
+                        {/*    </div>*/}
                         {/*</div>*/}
-                        {/*</div>*/}
-
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-10 text-center"}>
-                                <p className={"text-bold text-capitlize"}>
-                                    {this.state.action === "delivered"
-                                        ? "Deliver"
-                                        : this.state.action === "received"
-                                        ? "Receive"
-                                        : this.state.action === "closed"
-                                        ? "Close"
-                                        : this.state.action === "counter"
-                                        ? "Counter"
-                                        : this.state.action === "withdraw"
-                                        ? "Withdraw"
-                                          : this.state.action === "settled"
-                                                            ? "Settle"
-                                        : this.state.action}
-
-                                </p>
-                                <p>Are you sure you want to proceed ?</p>
-                            </div>
-                        </div>
 
                         <div className={"row justify-content-center"}>
                             <div className={"col-12 text-center mt-2"}>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
                                         <GreenButton
-                                            title={"Submit"}
-                                            onClick={this.deliverCycle.bind(this)}
-
+                                            onClick={this.updateStep.bind(this)}
+                                            title={"Yes"}
                                             type={"submit"}>
-                                            Submit
                                         </GreenButton>
                                     </div>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <GreenBorderButton
-                                            type={"button"}
-                                            title={"Cancel"}
-                                            onClick={this.showPopUpAction}
+                                        <BlueBorderButton
+                                            onClick={()=>this.showPopUpStepAction()}
+                                            title={"No"}
 
                                         >
-
-                                        </GreenBorderButton>
+                                        </BlueBorderButton>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </ModalBody>
-                </Modal>
+                </GlobalDialog>
 
-                <Modal
-                    className={"loop-popup"}
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                    show={this.state.showPopUpStepAction}
-                    onHide={this.showPopUpStepAction}
-                    animation={false}>
-                    <ModalBody>
-                        {/*<div className={"row justify-content-center"}>*/}
-                        {/*<div className={"col-4 text-center"}>*/}
-                        {/*<img className={"ring-pop-pup"} src={GrayLoop} alt=""/>*/}
-                        {/*</div>*/}
-                        {/*</div>*/}
 
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-10 text-center"}>
-                                <p className={"text-bold text-caps"}>
-                                    {this.state.stepAction === "accepted" && "Accept "}
-                                    {this.state.stepAction === "cancelled" && "Cancel "}
-                                    {this.state.stepAction === "rejected" && "Reject "}
-                                    {this.state.stepAction === "declined" && "Decline "}
-                                    {this.state.stepAction === "confirmed" && "Confirm "}
-                                    {this.state.stepAction === "progress" && "Progress "}
-                                    {this.state.stepAction === "completed" && "Complete "}
-                                    :Step Action
-                                </p>
-                                <p>Are you sure you want to proceed ?</p>
-                            </div>
-                        </div>
+            {/*    main action */}
 
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-12 text-center mt-2"}>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <button
-                                            onClick={this.updateStep.bind(this)}
-                                            className={
-                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                            }
-                                            type={"submit"}>
-                                            Submit
-                                        </button>
-                                    </div>
-                                    <div className={"col-6"} style={{ textAlign: "center" }}>
-                                        <p
-                                            onClick={this.showPopUpStepAction}
-                                            className={
-                                                "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                            }>
-                                            Cancel
-                                        </p>
-                                    </div>
+                <GlobalDialog
+                    size="sm"
+                    heading={this.state.action === "delivered"
+                        ? "Deliver"
+                        : this.state.action === "received"
+                            ? "Receive"
+                            : this.state.action === "closed"
+                                ? "Close"
+                                : this.state.action === "counter"
+                                    ? "Counter"
+                                    : this.state.action === "withdraw"
+                                        ? "Withdraw"
+                                        : this.state.action === "settled"
+                                            ? "Settle"
+                                            : this.state.action?this.state.action:""}
+
+                    subHeading={`Are you sure you want to ${this.state.action === "delivered"
+                        ? "Deliver"
+                        : this.state.action === "received"
+                            ? "Receive"
+                            : this.state.action === "closed"
+                                ? "Close"
+                                : this.state.action === "counter"
+                                    ? "Counter"
+                                    : this.state.action === "withdraw"
+                                        ? "Withdraw"
+                                        : this.state.action === "settled"
+                                            ? "Settle"
+                                            : this.state.action} ?`}
+                    show={this.state.showPopUpAction}
+                    hide={()=>this.togglePopUpAction()}
+                >
+
+                    <div className={"row justify-content-center"}>
+                        <div className={"col-12 text-center mt-2"}>
+                            <div className={"row justify-content-center"}>
+                                <div className={"col-6"} style={{ textAlign: "center" }}>
+                                    <GreenButton
+                                        title={"Submit"}
+                                        onClick={this.deliverCycle.bind(this)}
+
+                                        type={"submit"}>
+                                        Yes
+                                    </GreenButton>
+                                </div>
+                                <div className={"col-6"} style={{ textAlign: "center" }}>
+                                    <BlueBorderButton
+                                        type={"button"}
+                                        title={"No"}
+                                        onClick={()=>this.togglePopUpAction()}>
+                                    </BlueBorderButton>
                                 </div>
                             </div>
                         </div>
-                    </ModalBody>
-                </Modal>
+                    </div>
+                </GlobalDialog>
             </Layout>
         );
     }
@@ -1707,43 +1731,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function StatusTimeline(props) {
-    return (
-        <>
-            {props.cycle.steps && (
-                <Timeline>
-                    {props.cycle.steps.map((item, index) => (
-                        <>
-                            <TimelineItem>
-                                <TimelineOppositeContent>
-                                    <Typography variant="h6" component="h1">
-                                        {item.step.type}
-                                    </Typography>
-                                    <Typography>{item.step.stage}</Typography>
-                                </TimelineOppositeContent>
-                                <TimelineSeparator>
-                                    <TimelineDot style={{ backgroundColor: "#27245C" }}>
-                                        <CheckIcon />
-                                    </TimelineDot>
-                                </TimelineSeparator>
-                                <TimelineContent>
-                                    <Typography variant="h6" component="h1">
-                                        {item.step.name}
-                                    </Typography>
-                                    <Typography>{item.step.description}</Typography>
-                                    <Typography>Creator: <OrgComponent orgId={item.creator_org_id.replace("Org/","")}  /></Typography>
-                                    <Typography>Owner: <OrgComponent orgId={item.owner_org_id.replace("Org/","")}  /></Typography>
-                                </TimelineContent>
-                            </TimelineItem>
-
-                            {index > 0 && <TimelineConnector />}
-                        </>
-                    ))}
-                </Timeline>
-            )}
-        </>
-    );
-}
 
 const mapStateToProps = (state) => {
     return {

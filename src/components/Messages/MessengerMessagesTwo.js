@@ -868,16 +868,12 @@ try{
 
 const markAllRead = (groupId) => {
 
-
-
     let url=`${baseUrl}message-group/read`
-
     axios
         .post(url,{
             msg_group_id: groupId
         })
         .then((res) => {
-
 
 
         })

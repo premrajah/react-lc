@@ -84,65 +84,158 @@ class ProductArchive extends Component {
     }
 
 
-    clearList=()=>{
 
-        this.setState({
-            offset:0,
-            items:[],
-            lastPageReached:false,
-            loadingResults: false,
-        })
-    }
+    clearList = () => {
 
-    setFilters=(data)=>{
+        setTimeout(() => {
+            this.setState({
+                offset: 0,
+                items: [],
+                lastPageReached: false,
+                loadingResults: false,
+            });
+        },250)
+    };
 
-        let filters= []
-        let subFilter=[]
+    // setFilters=(data)=>{
+    //
+    //     let filters= []
+    //     let subFilter=[]
+    //
+    //     let searchValue= data.searchValue
+    //     let activeFilter= data.filterValue
+    //
+    //     if (searchValue){
+    //
+    //         if (activeFilter){
+    //
+    //             subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
+    //
+    //         }else{
+    //
+    //             PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
+    //                 subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
+    //             )
+    //
+    //
+    //         }
+    //     }
+    //
+    //
+    //     filters.push({filters:subFilter,operator:"||"})
+    //
+    //
+    //     this.filters= filters
+    //
+    // }
 
-        let searchValue= data.searchValue
-        let activeFilter= data.filterValue
 
-        if (searchValue){
+    setFilters = (data) => {
+        let subFilter = [];
 
-            if (activeFilter){
+        let searchValue = data.searchValue;
+        let activeFilter = data.searchFilter;
 
-                subFilter.push({key:activeFilter, value:"%" + searchValue + "%", operator:"~"})
-
-            }else{
-
-                PRODUCTS_FILTER_VALUES_KEY.forEach((item)=>
-                    subFilter.push({key:item.key, value:"%" + searchValue + "%", operator:"~"})
-                )
-
-
+        if (searchValue) {
+            if (activeFilter) {
+                subFilter.push({ key: activeFilter, value: searchValue });
+            } else {
+                PRODUCTS_FILTER_VALUES_KEY.forEach((item) =>
+                    subFilter.push({ key: item.key, value: searchValue })
+                );
             }
         }
 
-
-        filters.push({filters:subFilter,operator:"||"})
-
-
-        this.filters= filters
-
-    }
-
-
+        this.filters = subFilter;
+    };
+    // seekCount=async () => {
+    //
+    //     let url = createSeekURL("product&relation=past_owner", true, true, null, null,
+    //         this.filters, "AND")
+    //
+    //
+    //     let result = await seekAxiosGet(url)
+    //
+    //
+    //
+    //     this.setState({
+    //         count: result.data.data,
+    //
+    //     })
+    //
+    //
+    //
+    // }
+    //
+    // loadProductsWithoutParentPageWise= async (data) => {
+    //
+    //     if (data.reset){
+    //
+    //         this.clearList()
+    //     }
+    //     this.setFilters(data)
+    //
+    //     this.seekCount()
+    //
+    //     this.setState({
+    //
+    //         loadingResults: true
+    //     })
+    //
+    //     let newOffset = this.state.offset
+    //
+    //
+    //     let url = createSeekURL("product&relation=past_owner", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
+    //
+    //     let result = await seekAxiosGet(url)
+    //
+    //
+    //     if (result && result.data && result.data.data) {
+    //
+    //         this.state.offset= newOffset + this.state.pageSize
+    //
+    //         this.setState({
+    //             items: this.state.items.concat(result.data.data),
+    //             loadingResults: false,
+    //             lastPageReached: (result.data.data.length === 0 ? true : false),
+    //             offset: newOffset + this.state.pageSize
+    //
+    //         })
+    //     }else{
+    //
+    //         if (result) {
+    //             this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+    //
+    //             this.setState({
+    //
+    //                 loadingResults: false,
+    //
+    //             })
+    //
+    //         }
+    //     }
+    //
+    //
+    //
+    // }
 
     seekCount=async () => {
 
-        let url = createSeekURL("product&relation=past_owner", true, true, null, null,
-            this.filters, "AND")
+        // let url = createSeekURL("Product&relation=service_agent_for", true, true, null, null,
+        //     this.filters, "AND")
+        let url = `${baseUrl}seek?name=Product&relation=past_owner&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
 
+        // let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
 
-        let result = await seekAxiosGet(url)
+        this.filters.forEach((item) => {
+            url = url + `&or=${item.key}~%${item.value}%`;
+        });
 
-
+        let result = await seekAxiosGet(url);
 
         this.setState({
-            count: result.data.data,
-
-        })
-
+            count: result.data ? result.data.data : 0,
+        });
 
 
     }
@@ -150,56 +243,67 @@ class ProductArchive extends Component {
     loadProductsWithoutParentPageWise= async (data) => {
 
 
-        if (data.reset){
+        if (data && data.reset) {
 
-            this.clearList()
+            this.clearList();
         }
-        this.setFilters(data)
 
-        this.seekCount()
+        if (data) this.setFilters(data);
+
+        this.seekCount();
 
         this.setState({
+            loadingResults: true,
+        });
 
-            loadingResults: true
+        let newOffset = this.state.offset;
+        // let url = createSeekURL("Product&relation=service_agent_for", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
+
+        let url = `${baseUrl}seek?name=Product&relation=past_owner&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at`;
+
+
+        this.filters.forEach((item) => {
+            url = url + `&or=${item.key}~%${item.value}%`;
+        });
+
+        this.setState({
+            activeQueryUrl:url
         })
 
-        let newOffset = this.state.offset
+        url = `${url}&offset=${this.state.offset}&size=${this.state.pageSize}`;
 
 
-        let url = createSeekURL("product&relation=past_owner", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
-
-        let result = await seekAxiosGet(url)
-
+        let result = await seekAxiosGet(url);
 
         if (result && result.data && result.data.data) {
-
-            this.state.offset= newOffset + this.state.pageSize
+            this.state.offset = newOffset + this.state.pageSize;
 
             this.setState({
-                items: this.state.items.concat(result.data.data),
+                items: this.state.items.concat(result.data ? result.data.data : []),
                 loadingResults: false,
-                lastPageReached: (result.data.data.length === 0 ? true : false),
-                offset: newOffset + this.state.pageSize
-
-            })
-        }else{
-
+                lastPageReached: result.data
+                    ? result.data.data.length === 0
+                        ? true
+                        : false
+                    : true,
+                offset: newOffset + this.state.pageSize,
+            });
+        } else {
             if (result) {
-                this.props.showSnackbar({show: true, severity: "warning", message: "Error: " + result})
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "warning",
+                    message: "Error: " + result,
+                });
 
                 this.setState({
-
                     loadingResults: false,
-
-                })
-
+                    lastPageReached: true,
+                });
             }
         }
 
-
-
     }
-
 
 
 
@@ -240,13 +344,13 @@ class ProductArchive extends Component {
 
 
                     <PaginationLayout
-                        onSearch={(sv) => this.handleSearch(sv)}
-                        onSearchFilter={(fv) => this.handleSearchFilter(fv)}
                         dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
                         count={this.state.count}
                         visibleCount={this.state.items.length}
                         loadingResults={this.state.loadingResults}
-                        lastPageReached={this.state.lastPageReached} loadMore={this.loadProductsWithoutParentPageWise} >
+                        lastPageReached={this.state.lastPageReached}
+                        loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}
+                    >
 
                     {this.state.items.map((item) => (
                             <>

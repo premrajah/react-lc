@@ -75,15 +75,10 @@ class Products extends Component {
         this.props.showProductPopUp({ type: "create_product", show: true });
     }
 
-    timeoutTmp
-    componentWillUnmount() {
-        if (this.timeoutTmp) {
-            clearTimeout(this.timeoutTmp);
-        }
-    }
+
     clearList = () => {
 
-        this.timeoutTmp = setTimeout(() => {
+       setTimeout(() => {
             this.setState({
                 offset: 0,
                 items: [],

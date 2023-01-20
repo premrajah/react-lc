@@ -242,15 +242,10 @@ class Sites extends Component {
 
     }
 
-    timeoutTmp
-    componentWillUnmount() {
-        if (this.timeoutTmp) {
-            clearTimeout(this.timeoutTmp);
-        }
-    }
+
     clearList = () => {
 
-        this.timeoutTmp = setTimeout(() => {
+        setTimeout(() => {
 
         this.setState({
             offset:0,

@@ -887,7 +887,8 @@ class Products extends Component {
                             visibleCount={this.state.items.length}
                             loadingResults={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
-                            loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}>
+                            loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}
+                        >
 
                             {/* Headings for condensed view */}
                             {this.state.productDisplayView !== "large" && <div className="row bg-white rad-4 p-1 mb-1">

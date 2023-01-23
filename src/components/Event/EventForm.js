@@ -336,10 +336,11 @@ class EventForm extends Component {
             validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
 
-            if (!this.state.endDate){
-                this.state.errors["endDate"].message="Required"
+            // if ((!this.state.endDate)&&(this.state.fields["endDate"])){
+            //     this.state.errors["endDate"].message="Required"
+                validations.push(validateFormatCreate("endDate", [{check: Validators.required, message: 'Required'}],fields))
 
-            }
+            // }
 
 
         }

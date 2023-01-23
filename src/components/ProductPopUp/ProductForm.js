@@ -25,8 +25,6 @@ import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
 import BlueButton from "../FormsUI/Buttons/BlueButton";
-import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
-import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 
 let slugify = require('slugify')
 

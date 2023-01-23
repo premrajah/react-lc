@@ -5,7 +5,6 @@ import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import axios from "axios/index";
 import {baseUrl, MIME_TYPES_ACCEPT, RECUR_UNITS} from "../../Util/Constants";
-import _ from "lodash";
 import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
@@ -18,19 +17,14 @@ import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import docs from "../../img/icons/docs.png";
 import ProductAutocomplete from "../AutocompleteSearch/ProductAutocomplete";
 import Switch from "@mui/material/Switch";
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import TextField from '@mui/material/TextField';
-import {Box} from "@mui/material";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 
-let slugify = require('slugify')
 
 
 function ValueLabelComponent(props) {
@@ -342,11 +336,17 @@ class EventForm extends Component {
             validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
 
-                validations.push(validateFormatCreate("endDate", [{check: Validators.required, message: 'Required'}],fields))
+            if (!this.state.endDate){
+                this.state.errors["endDate"].message="Required"
 
+            }
 
 
         }
+
+
+
+
 
 
 
@@ -638,6 +638,9 @@ class EventForm extends Component {
             console.log(this.props.event.event.recur_until_epoch_ms)
             this.loadImages(this.props.event.artifacts)
 
+
+            let fields=this.state.fields
+            fields["endDate"]=this.props.event.event.recur_until_epoch_ms
         }else{
 
             this.setState({
@@ -910,49 +913,7 @@ class EventForm extends Component {
                                                             </span>
                                               )}
 
-                                          {/*{this.state.showFieldErrors&&this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}*/}
 
-
-                                          {/*<LocalizationProvider dateAdapter={AdapterDateFns}>*/}
-
-                                              {/*    <DatePicker*/}
-
-                                              {/*        className={"full-width-field"}*/}
-                                              {/*        disableHighlightToday={true}*/}
-                                              {/*        minDate={new Date()}*/}
-                                              {/*        // label="Required By"*/}
-                                              {/*        inputVariant="outlined"*/}
-                                              {/*        variant={"outlined"}*/}
-                                              {/*        margin="normal"*/}
-                                              {/*        id="date-picker-dialog-1"*/}
-                                              {/*        // label="Available From"*/}
-                                              {/*        inputFormat="dd/MM/yyyy"*/}
-                                              {/*        hintText="Select Date"*/}
-                                              {/*        value={this.state.endDate}*/}
-                                              {/*        style={{position:"relative"}}*/}
-
-                                              {/*        OpenPickerIcon={<InfoIcon/>}*/}
-
-                                              {/*        // renderInput={(params) => <CustomizedInput {...params} />}*/}
-
-                                              {/*        renderInput=   {({ inputRef, inputProps, InputProps }) => (*/}
-                                              {/*            <div className="custom-calander-container">*/}
-                                              {/*                <CustomizedInput ref={inputRef} {...inputProps} />*/}
-                                              {/*                <span className="custom-calander-icon">{InputProps?.endAdornment}</span>*/}
-                                              {/*            </div>*/}
-                                              {/*        )}*/}
-                                              {/*        onChange={(value)=>this.handleChangeProduct(value,"endDate")}*/}
-
-                                              {/*    />*/}
-                                              {/*</LocalizationProvider>*/}
-                                              {/*{this.state.errors["endDate"] && (*/}
-                                              {/*    <span className={" small"}>*/}
-                                              {/*                  <span style={{ color: "red" }}>*/}
-                                              {/*                      **/}
-                                              {/*                  </span>*/}
-                                              {/*        {this.state.errors["endDate"]}*/}
-                                              {/*              </span>*/}
-                                              {/*)}*/}
 
                                           </div>
                                       <div className="col-6 ">

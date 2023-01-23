@@ -229,14 +229,14 @@ class SearchRecords extends Component {
                         <PageHeader
 
                             pageIcon={CubeBlue}
-                            pageTitle="Searches"
+                            pageTitle="Search Records"
                             subTitle="All your searches can be found here. You can accept or decline a match to start a loop"
                         />
 
                         <div className="row">
                             <div className="col-md-12 btn-rows">
-                                <Link to="/search-records" className="btn btn-sm btn-gray-border">
-                                    Search Records
+                                <Link to="/my-search" className="btn btn-sm btn-gray-border">
+                                    Search
                                 </Link>
                             </div>
 
@@ -247,7 +247,7 @@ class SearchRecords extends Component {
 
                         <PaginationLayout
 
-                            dropDownValues={LISTING_FILTER_VALUES}
+                            // dropDownValues={LISTING_FILTER_VALUES}
                             count={this.state.count}
                             visibleCount={this.state.items.length}
                             loadingResults={this.state.loadingResults}

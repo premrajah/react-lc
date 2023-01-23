@@ -91,17 +91,29 @@ marteplace
         return formIsValid;
     }
     deleteItem() {
+
+    try {
+
+   // alert("delete called")
+   //      console.log("axios call delete listig")
         axios
-            .delete(baseUrl + "listing/" + this.props.item.listing._key, )
+            .delete(baseUrl + "listing/" + this.state.item.listing._key, )
             .then(
                 (response) => {
                     // var responseAll = response.data.data;
-
+                    // console.log("response call delete listig", response)
                     this.props.history.push("/my-listings");
                     // this.props.loadProducts()
                 },
-                (error) => {}
+                (error) => {
+                    // alert("error")
+                    // console.log("error call delete listig", error)
+                }
             );
+
+    }catch (e){
+        // console.log(e)
+    }
     }
 
     callBackResult(action) {
@@ -469,7 +481,7 @@ marteplace
                                                 <div className="row justify-content-start  ">
                                                     <div className="col-12 ">
                                                         <div className="row">
-                                                            <div className="col-12">
+                                                            <div className="col-12 position-relative">
                                                                 <h4
                                                                     className={
                                                                         "text-capitalize product-title width-90"
@@ -507,7 +519,7 @@ marteplace
                                                                 </div>
                                                             </div>
 
-                                                            <div className="col-5 blue-text text-blue text-bold  text-right">
+                                                            <div className="col-5 blue-text text-blue text-bold  d-flex justify-content-end">
                                                                 {this.state.item.listing.price&&(this.state.item.listing.price.value!=0) ? (
                                                                     <>
                                                                         GBP {

@@ -247,7 +247,7 @@ class MySearch extends Component {
 
                         <PaginationLayout
 
-                            dropDownValues={LISTING_FILTER_VALUES}
+                            // dropDownValues={LISTING_FILTER_VALUES}
                             count={this.state.count}
                             visibleCount={this.state.items.length}
                             loadingResults={this.state.loadingResults}

@@ -207,6 +207,8 @@ class Notifications extends Component {
                 stageEventId:null
             })
         }
+
+
     }
 
     checkNotifications = (item, index) => {
@@ -428,9 +430,7 @@ class Notifications extends Component {
         this.getAllNotificationsCount();
     }
 
-    componentWillUnmount() {
-        clearInterval(this.timer);
-    }
+
 
     render() {
         return (
@@ -508,10 +508,11 @@ class Notifications extends Component {
                 </div>
 
                 <GlobalDialog
-                    heading="Update Stage"
+                    heading="View Event"
                     show={this.state.showStagePopup}
                     hide={this.showStageEventPopup}
                 ><div className="col-12">
+
                     <EventStatus
 
                         hide={this.showStageEventPopup} eventId={this.state.stageEventId}

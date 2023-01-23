@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {fetchErrorMessage, getTimeFormat} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, getTimeFormat, LoaderAnimated} from "../../Util/GlobalFunctions";
 import {baseUrl, checkImage, RECUR_UNITS} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
 import axios from "axios";
@@ -122,7 +122,7 @@ class EventDetail extends Component {
             return (
 
                 <>
-                    {this.state.event &&
+                    {this.state.event ?
                     <div className={"col-12"}>
                             <div className={"bg-white  rad-8  "}>
                                 <>
@@ -264,7 +264,10 @@ class EventDetail extends Component {
                                     </div>
                                     </>
                             </div>
-                        </div>}
+                        </div>
+
+                    :<LoaderAnimated/>
+                    }
 
                         {/*<TransitionTimeline />*/}
                     </>

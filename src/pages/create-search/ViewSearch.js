@@ -423,7 +423,6 @@ try {
 
     toggleEdit=()=> {
 
-        alert("clicke")
         this.setState({
             showEdit: !this.state.showEdit,
         });

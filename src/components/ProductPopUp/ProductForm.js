@@ -992,7 +992,6 @@ let slugify = require('slugify')
 
             })
 
-          // alert("called")
 
             if (this.props.item){
 

@@ -69,7 +69,6 @@ class EventItem extends Component {
     }
     getEVENT_OCVC = (Id) => {
 
-          // alert("call")
         axios
             .get(`${baseUrl}event/${Id}/oc-vc`)
             .then((res) => {

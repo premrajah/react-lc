@@ -72,7 +72,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
      if (prevProps!=this.props){
 
 
-         // alert("map change")
          setTimeout(()=> {
 
 

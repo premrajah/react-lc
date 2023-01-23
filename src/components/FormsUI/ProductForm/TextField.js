@@ -53,7 +53,6 @@ const TextFieldWrapper = ({
 
         if (reset) {
             setField("")
-            // alert(initialValue)
             onChange(initialValue);
         }
         // }

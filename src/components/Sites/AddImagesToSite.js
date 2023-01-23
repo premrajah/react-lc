@@ -124,7 +124,6 @@ class AddImagesToSite extends Component {
                 }
             })
             .catch((error) => {
-                // alert("error")
 
                 this.handleCallbackImagesUploadStatus("fail");
             });

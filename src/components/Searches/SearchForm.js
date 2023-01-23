@@ -791,8 +791,6 @@ if ((this.state.activeStep-1)==0){
         let {formIsValid, errors} = validateInputs(validations)
 
         this.setState({errors: errors});
-
-        console.log(formIsValid,errors)
         return formIsValid;
 
 

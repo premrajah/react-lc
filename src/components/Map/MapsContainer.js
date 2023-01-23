@@ -78,9 +78,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
              if (!this.props.searchLocation){
 
-                 console.log("shw polygons")
                  for (let i = 0; i < this.props.locations.length; i++) {
-                     console.log("shw polygons sites "+i)
 
                      this.polyLine.push({
                          lat: this.props.locations[i].location.lat,

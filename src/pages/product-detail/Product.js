@@ -97,8 +97,6 @@ class ProductView extends Component {
 
     componentDidMount() {
 
-// console.log("location",this.props.location)
-
         if (this.props.location.search.includes("r=true")&&this.props.userDetail.is_org_admin ){
 
             axios.get(baseUrl + "product/" + this.slug + "/code-artifact?r=true").then(

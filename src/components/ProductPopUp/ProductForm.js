@@ -407,10 +407,7 @@ let slugify = require('slugify')
 
             let {formIsValid,errors}= validateInputs(validations)
 
-            console.log(fields)
-
             this.setState({ errors: errors });
-                // console.log(errors)
             return formIsValid;
         }
 
@@ -586,8 +583,6 @@ let slugify = require('slugify')
 
                     } else {
 
-                        // console.log(completeData, this.state.fields["deliver"])
-                        // return
                         axios
                             .put(
                                 createProductUrl,

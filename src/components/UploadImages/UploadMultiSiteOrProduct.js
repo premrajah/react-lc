@@ -247,7 +247,6 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
-                    console.log("Product errors length",headers.length, productProperties[i].length)
                     return
                 }
                 if (!(productProperties[i].field.toLowerCase() === headers[i].toLowerCase())) {
@@ -260,7 +259,6 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
-                    console.log("Product errors field",productProperties[i].field.toLowerCase(),headers[i].toLowerCase())
 
                     return
                 }

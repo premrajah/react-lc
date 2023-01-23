@@ -191,24 +191,10 @@ class Notifications extends Component {
     };
 
     showStageEventPopup=(stageEventId)=>{
-
-
         this.setState({
             stageEventId:stageEventId,
             showStagePopup:!this.state.showStagePopup
         })
-
-        if (stageEventId)
-        {
-
-        }
-        else{
-            this.setState({
-                stageEventId:null
-            })
-        }
-
-
     }
 
     checkNotifications = (item, index) => {
@@ -512,12 +498,9 @@ class Notifications extends Component {
                     show={this.state.showStagePopup}
                     hide={this.showStageEventPopup}
                 ><div className="col-12">
-
-                    <EventStatus
-
+                    {this.state.stageEventId && <EventStatus
                         hide={this.showStageEventPopup} eventId={this.state.stageEventId}
-                    />
-
+                    />}
                 </div>
                 </GlobalDialog>
             </div>

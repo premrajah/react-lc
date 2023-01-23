@@ -341,7 +341,14 @@ class EventForm extends Component {
         if (this.state.showRepeatIntervalSelection){
             validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
+
+                validations.push(validateFormatCreate("endDate", [{check: Validators.required, message: 'Required'}],fields))
+
+
+
         }
+
+
 
 
 
@@ -423,14 +430,17 @@ class EventForm extends Component {
                 title: data.get("title"),
                 description: data.get("description"),
                 resolution_epoch_ms: new Date(this.state.startDate).getTime() + 100,
-                recur_until_epoch_ms: new Date(this.state.endDate).getTime() + 100,
-
                 process: data.get("process"),
             }
 
 
+
+
             if (data.get("recurValue") && data.get("recurUnit")) {
                 eventData.recur = {value: data.get("recurValue"), unit: data.get("recurUnit")}
+
+                eventData.recur_until_epoch_ms= new Date(this.state.endDate).getTime() + 100 // the next day it will get end
+
             }
 
             if (data.get("interval")) {
@@ -624,6 +634,8 @@ class EventForm extends Component {
                 startDate:this.props.event.event.resolution_epoch_ms,
                 endDate:this.props.event.event.recur_until_epoch_ms,
             })
+
+            console.log(this.props.event.event.recur_until_epoch_ms)
             this.loadImages(this.props.event.artifacts)
 
         }else{
@@ -641,22 +653,11 @@ class EventForm extends Component {
             else{
 
                 this.setState({
-                    startDate: new Date()
+                    startDate: new Date(),
+                    // endDate: new Date(),
                 })
             }
 
-
-            if (this.props.date) {
-                this.setState({
-                    startDate: this.props.date
-                })
-            }
-            else{
-
-                this.setState({
-                    startDate: new Date()
-                })
-            }
 
         }
     }
@@ -874,40 +875,84 @@ class EventForm extends Component {
                                                   }>
                                                   End Date
                                               </div>
-
                                               <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                  <DatePicker
+                                              <DesktopDatePicker
 
-                                                      className={"full-width-field"}
-                                                      disableHighlightToday={true}
-                                                      minDate={new Date()}
-                                                      // label="Required By"
-                                                      inputVariant="outlined"
-                                                      variant={"outlined"}
-                                                      margin="normal"
-                                                      id="date-picker-dialog-1"
-                                                      // label="Available From"
-                                                      inputFormat="dd/MM/yyyy"
-                                                      hintText="Select Date"
-                                                      value={this.state.endDate?this.state.endDate:new Date()}
-                                                      style={{position:"relative"}}
+                                                  className={"full-width-field"}
+                                                  disableHighlightToday={true}
+                                                  minDate={new Date()}
+                                                  disablePast
+                                                  inputVariant="outlined"
+                                                  variant={"outlined"}
+                                                  margin="normal"
+                                                  id="date-picker-dialog-1"
+                                                  inputFormat="dd/MM/yyyy"
+                                                  hintText="Select Date"
+                                                  value={this.state.endDate}
+                                                  style={{position:"relative"}}
+                                                  OpenPickerIcon={<InfoIcon/>}
+                                                  renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                      <div className="custom-calander-container">
+                                                          <CustomizedInput ref={inputRef} {...inputProps} />
+                                                          <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                      </div>
+                                                  )}
+                                                  onChange={(value)=>this.handleChangeProduct(value,"endDate")}
 
-                                                      OpenPickerIcon={<InfoIcon/>}
+                                              />
+                                          </LocalizationProvider>
 
-                                                      // renderInput={(params) => <CustomizedInput {...params} />}
+                                              {this.state.errors["endDate"] && (
+                                                  <span className={" text-danger"}>
 
-                                                      renderInput=   {({ inputRef, inputProps, InputProps }) => (
-                                                          <div className="custom-calander-container">
-                                                              <CustomizedInput ref={inputRef} {...inputProps} />
-                                                              <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
-                                                          </div>
-                                                      )}
-                                                      onChange={(value)=>this.handleChangeProduct(value,"endDate")}
+                                                      {this.state.errors["endDate"].message}
+                                                            </span>
+                                              )}
 
-                                                  />
-                                              </LocalizationProvider>
+                                          {/*{this.state.showFieldErrors&&this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}*/}
 
+
+                                          {/*<LocalizationProvider dateAdapter={AdapterDateFns}>*/}
+
+                                              {/*    <DatePicker*/}
+
+                                              {/*        className={"full-width-field"}*/}
+                                              {/*        disableHighlightToday={true}*/}
+                                              {/*        minDate={new Date()}*/}
+                                              {/*        // label="Required By"*/}
+                                              {/*        inputVariant="outlined"*/}
+                                              {/*        variant={"outlined"}*/}
+                                              {/*        margin="normal"*/}
+                                              {/*        id="date-picker-dialog-1"*/}
+                                              {/*        // label="Available From"*/}
+                                              {/*        inputFormat="dd/MM/yyyy"*/}
+                                              {/*        hintText="Select Date"*/}
+                                              {/*        value={this.state.endDate}*/}
+                                              {/*        style={{position:"relative"}}*/}
+
+                                              {/*        OpenPickerIcon={<InfoIcon/>}*/}
+
+                                              {/*        // renderInput={(params) => <CustomizedInput {...params} />}*/}
+
+                                              {/*        renderInput=   {({ inputRef, inputProps, InputProps }) => (*/}
+                                              {/*            <div className="custom-calander-container">*/}
+                                              {/*                <CustomizedInput ref={inputRef} {...inputProps} />*/}
+                                              {/*                <span className="custom-calander-icon">{InputProps?.endAdornment}</span>*/}
+                                              {/*            </div>*/}
+                                              {/*        )}*/}
+                                              {/*        onChange={(value)=>this.handleChangeProduct(value,"endDate")}*/}
+
+                                              {/*    />*/}
+                                              {/*</LocalizationProvider>*/}
+                                              {/*{this.state.errors["endDate"] && (*/}
+                                              {/*    <span className={" small"}>*/}
+                                              {/*                  <span style={{ color: "red" }}>*/}
+                                              {/*                      **/}
+                                              {/*                  </span>*/}
+                                              {/*        {this.state.errors["endDate"]}*/}
+                                              {/*              </span>*/}
+                                              {/*)}*/}
 
                                           </div>
                                       <div className="col-6 ">

@@ -236,7 +236,7 @@ class Notifications extends Component {
                 <Link
                     key={`${i}_${match}`}
                     to={`product/${match}`}
-                    onClick={() => this.messageRead(messageId)}>
+                    onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                     View Product
                 </Link>
             </>
@@ -246,7 +246,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to={`cycle/${match}`}
-                onClick={() => this.messageRead(messageId)}>
+                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                 Cycle
             </Link>
         ));
@@ -255,7 +255,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to={`matched/${match}`}
-                onClick={() => this.messageRead(messageId)}>
+                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                 Match
             </Link>
         ));
@@ -264,7 +264,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to="/approve?tab=0"
-                onClick={() => this.messageRead(messageId)}>
+                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                 To Approvals Page
             </Link>
         ));
@@ -273,7 +273,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to="/approve?tab=2"
-                onClick={() => this.messageRead(messageId)}>
+                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                 To Approvals Page
             </Link>
         ));
@@ -282,7 +282,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to="/approve?tab=1"
-                onClick={() => this.messageRead(messageId)}>
+                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                 To Approvals Page
             </Link>
         ));
@@ -291,7 +291,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to="/account?page=system-users"
-                onClick={() => this.messageRead(messageId)}>
+                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                 User Approvals
             </Link>
         ))
@@ -300,7 +300,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to={`/${match}`}
-                onClick={() => this.messageRead(messageId)}>
+                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                 Listing
             </Link>
         ));
@@ -309,7 +309,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to={`/search/${match}`}
-                onClick={() => this.messageRead(messageId)}>
+                onClick={!flags ?  () => this.messageRead(messageId) : undefined}>
                 Search
             </Link>
         ));
@@ -318,7 +318,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 // to={`/event/${match}`}
-                onClick={() => {this.showStageEventPopup(match); this.messageRead(messageId);  }}>
+                onClick={() => {this.showStageEventPopup(match); !flags && this.messageRead(messageId);  }}>
                 View Event
             </Link>
         ));
@@ -327,7 +327,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to={`/issue/${match}`}
-                onClick={() => this.messageRead(messageId)}>
+                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                 Issue
             </Link>
         ));
@@ -336,7 +336,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to={"/approve?tab=3"}
-                onClick={() => this.messageRead(messageId)}>
+                onClick={!flags ? () =>  this.messageRead(messageId) : undefined}>
                 Site Approvals
             </Link>
         ));

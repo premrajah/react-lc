@@ -90,15 +90,17 @@ class MyListings extends Component {
                 if (activeFilter=="product_name")
                     this.setState({
 
-                        searchUrl:this.state.url+(`&find-also-to=Product:listing_of:&or=description~%${searchValue}%&find-also-to=Product:listing_of:&or=name~%${searchValue}%`)
+                        searchUrl:this.state.url+(`&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
                     })
 
             }else{
 
 
                 this.setState({
+                    searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
 
-                    searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:&or=description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
+
+                    // searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:&or=description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
                 })
 
             }

@@ -901,7 +901,8 @@ class Products extends Component {
 
                             {this.state.items.map((item, index) => (
                                 <div id={`${item._key}-${index}`} key={item._key + "-" + index}>
-                                    {this.state.productDisplayView === "large" ? <ProductItem
+                                    {this.state.productDisplayView === "large" ?
+                                        <ProductItem
                                         showPreview
                                         index={index}
                                         goToLink={true}

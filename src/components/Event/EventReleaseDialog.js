@@ -148,7 +148,7 @@ class EventReleaseDialog extends Component {
             };
 
             axios
-                .post(baseUrl + "site-release/stage", data)
+                .post(baseUrl + "event-release/stage", data)
                 .then((res) => {
 
 

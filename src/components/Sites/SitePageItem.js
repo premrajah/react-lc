@@ -270,7 +270,8 @@ const SitePageItem = (  props) => {
                                 <div className={"col-12"}>
                                     {props.item.geo_codes&&props.item.geo_codes[0] ?
                                     <GoogleMap searchLocation siteId={props.item._key} width={"100%"}  height={"300px"}
-                                               location={{name:`${name} (${productCount} products)`,location:props.item.geo_codes[0].address_info.geometry.location,isCenter:true}} /> : <div>{`${address} -  not a valid site address.`}</div>
+                                               location={{name:`${name} (${productCount} products)`,location:props.item.geo_codes[0].address_info.geometry.location,isCenter:true}} /> :
+                                        <div className="title">{`Sorry, ${address} address not found on google.`}</div>
                                     }
                                 </div>
                             </div>

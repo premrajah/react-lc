@@ -95,7 +95,7 @@ class Approvals extends Component {
             eventReleases:[]
         })
 
-        let url=baseUrl + "seek?name=EventRelease&relation=&offset=0&size=100&count=false&include-to=Event:any"
+        let url=baseUrl + "seek?name=EventRelease&relation=&offset=0&size=100&count=false&include-to=Event:any&&include-to=Org:any"
 
         if (!this.state.toggleEvent){
 
@@ -168,7 +168,7 @@ class Approvals extends Component {
         this.fetchSiteReleaseRequests()
         // this.fetchRentalRequests()
         // this.fetchRentalReleases()
-        // this.fetchEventReleaseRequests()
+        this.fetchEventReleaseRequests()
 
     this.interval = setInterval(() => {
         this.props.fetchReleaseRequest();

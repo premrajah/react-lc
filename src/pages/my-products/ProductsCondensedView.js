@@ -92,8 +92,11 @@ const ProductsCondensedView = ({ product, index, site }) => {
 
             <GlobalDialog
                 size="md"
+                hideHeader
+                hideClose
                 hide={() => handleToggleGlobalDialogView()}
                 show={globalDialogView}
+                removePadding
                 heading={product && product.name}>
                 <div className="col-12">
                     <ProductItem

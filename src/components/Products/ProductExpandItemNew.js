@@ -13,6 +13,8 @@ import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import AddIcon from "@mui/icons-material/Add";
 import SubproductItemSkeleton from "./Item/SubproductItemSkeleton";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
+import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 
 
 class ProductExpandItem extends Component {
@@ -450,28 +452,44 @@ class ProductExpandItem extends Component {
                                     ))}
                                 </div>
 
-                                <div className="col-12 mt-4 ">
-                                    <button
+                                <div className="col-12 mt-2 ">
+                                    {/*<button*/}
+                                    {/*    onClick={this.addCount}*/}
+                                    {/*    className={*/}
+                                    {/*        "btn btn-default  btn-rounded shadow  blue-btn-border"*/}
+                                    {/*    }>*/}
+                                    {/*    <AddIcon />*/}
+                                    {/*    Add*/}
+                                    {/*</button>*/}
+
+                                    <BlueSmallBtn
                                         onClick={this.addCount}
-                                        className={
-                                            "btn btn-default  btn-rounded shadow  blue-btn-border"
-                                        }>
+                                        title={"Add"}
+
+                                    >
                                         <AddIcon />
-                                        Add
-                                    </button>
+                                    </BlueSmallBtn>
                                 </div>
 
                                 <div className="col-12 mt-4 mobile-menu">
                                     <div className="row text-center ">
                                         <div className="col-12 text-center">
-                                            <button
-                                                style={{ margin: "auto", width: "200px" }}
+                                            {/*<button*/}
+                                            {/*    style={{ margin: "auto", width: "200px" }}*/}
+                                            {/*    type={"submit"}*/}
+                                            {/*    className={*/}
+                                            {/*        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"*/}
+                                            {/*    }>*/}
+                                            {/*    Submit*/}
+                                            {/*</button>*/}
+                                            <GreenButton
+                                                title={"Add Subproduct"}
                                                 type={"submit"}
-                                                className={
-                                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                }>
-                                                Submit
-                                            </button>
+                                                // loading={this.state.loading}
+                                                // disabled={this.state.loading||this.state.isSubmitButtonPressed}
+
+                                            >
+                                            </GreenButton>
                                         </div>
                                     </div>
                                 </div>

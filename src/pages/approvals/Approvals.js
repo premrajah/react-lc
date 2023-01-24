@@ -360,7 +360,7 @@ render() {
                                             ))}
 
                                             {this.props.serviceAgentRequests.length === 0 && (
-                                                <div className={" column--message"}>
+                                                <div className={"mt-4 column--message"}>
                                                     <p>
                                                         {this.state.loading
                                                             ? "Loading..."
@@ -388,16 +388,16 @@ render() {
 
                                     </TabPanel>
                                     <TabPanel value="4">
-                                        <div className={"row"} >
-                                            <div className="col-12 mt-3 mb-3">
-                                                <div className="col d-flex justify-content-end">
-                                                    <Link to="/approved" className="btn btn-sm blue-btn"
-                                                          style={{color: "#fff"}}>
-                                                       Site Release  Records
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                            <div className={"listing-row-border "}></div>
+                                        <div className={"row "} >
+                                            {/*<div className="col-12 mt-3 mb-3">*/}
+                                            {/*    <div className="col d-flex justify-content-end">*/}
+                                            {/*        <Link to="/approved" className="btn btn-sm blue-btn"*/}
+                                            {/*              style={{color: "#fff"}}>*/}
+                                            {/*           Site Release  Records*/}
+                                            {/*        </Link>*/}
+                                            {/*    </div>*/}
+                                            {/*</div>*/}
+                                            <div className={"mb-4 listing-row-border "}></div>
 
 
                                             {this.state.siteReleases.filter(r =>
@@ -424,7 +424,7 @@ render() {
 
 
                                             {this.state.siteReleases.length === 0 && (
-                                                <div className={" column--message"}>
+                                                <div className={" mt-4 column--message"}>
                                                     <p>
                                                         {this.state.loading
                                                             ? "Loading..."
@@ -446,7 +446,7 @@ render() {
                                                     </Link>
                                                 </div>
                                             </div>
-                                            <div className={"listing-row-border "}></div>
+                                            <div className={"mb-4 listing-row-border "}></div>
 
 
                                             {this.state.rentalReleases.filter(r =>
@@ -474,7 +474,7 @@ render() {
 
 
                                             {this.state.siteReleases.length === 0 && (
-                                                <div className={" column--message"}>
+                                                <div className={"mt-4 column--message"}>
                                                     <p>
                                                         {this.state.loading
                                                             ? "Loading..."
@@ -521,7 +521,7 @@ render() {
 
 
                                             {this.state.siteReleases.length === 0 && (
-                                                <div className={" column--message"}>
+                                                <div className={"mt-4 column--message"}>
                                                     <p>
                                                         {this.state.loading
                                                             ? "Loading..."

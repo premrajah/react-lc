@@ -47,12 +47,12 @@ const ServiceAgentRecord = ({serviceAgentRequests, fetchServiceAgentRequest, his
                                         <ErrorBoundary skip>
                                         <div className="row" key={index}>
                                             <div className="col">
-                                                <Link to={`/product/${item.product_id.replace("Product/","")._key}`}>
+                                                {/*<Link to={`/product/${item.product_id.replace("Product/","")._key}`}>*/}
                                                     <RequestServiceAgentItem
                                                         history={history}
                                                         item={item}
                                                     />
-                                                </Link>
+                                                {/*</Link>*/}
                                             </div>
                                         </div>
                                         </ErrorBoundary>

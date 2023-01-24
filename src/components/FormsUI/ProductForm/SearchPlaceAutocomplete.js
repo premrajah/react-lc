@@ -55,13 +55,16 @@ const SearchPlaceAutocomplete = (props) => {
 
     useEffect(()=>{
         if (onChange) {
+            try {
+                if (initialValue && initialValue.geo_codes && initialValue.geo_codes.length > 0) {
+                    setAddress(initialValue.address)
+                    setLongitude(initialValue.geo_codes[0].address_info.geometry.location.lng)
+                    setLatitude(initialValue.geo_codes[0].address_info.geometry.location.lat)
+                }
+                onChange(initialValue)
+            }catch (e){
 
-            if (initialValue&&initialValue.geo_codes.length>0) {
-                setAddress(initialValue.address)
-                setLongitude(initialValue.geo_codes[0].address_info.geometry.location.lng)
-                setLatitude(initialValue.geo_codes[0].address_info.geometry.location.lat)
             }
-            onChange(initialValue)
         }
     },[])
 

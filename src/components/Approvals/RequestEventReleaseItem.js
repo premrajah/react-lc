@@ -227,7 +227,7 @@ class RequestEventReleaseItem extends Component {
 
     actionSubmit() {
         let data = {
-            id: this.state.item.Release._key,
+            id: this.state.item.EventRelease._key,
             new_stage: this.state.initiateAction,
             site_id: this.state.fields["site"],
             parent_product_id:this.state.fields["parent_parent_id"]
@@ -240,7 +240,7 @@ class RequestEventReleaseItem extends Component {
             isLoading:true
         })
         axios
-            .post(`${baseUrl}event-release/stage`, data)
+            .post(`${baseUrl}site-release/stage`, data)
             .then((res) => {
                 this.setState({
                     isLoading:false
@@ -263,11 +263,13 @@ class RequestEventReleaseItem extends Component {
 
 
         if (this.props.item.EventReleaseToEvent[0]&&this.props.item.EventReleaseToEvent[0].entries[0].Event){
+
             this.setState({
                 event:this.props.item.EventReleaseToEvent[0].entries[0].Event
             })
+            this.loadSiteSync(this.props.item.EventReleaseToEvent[0].entries[0].Event._key)
+            this.loadProductSync(this.props.item.EventReleaseToEvent[0].entries[0].Event._key)
         }
-
     }
 
     getArtifactsForProduct = () => {
@@ -287,16 +289,36 @@ class RequestEventReleaseItem extends Component {
 
     }
 
-    loadSiteSync = () => {
+    loadSiteSync = (key) => {
 
         axios
-            .get(baseUrl + "event/" + this.props.item.event_id.replace("Event/",""))
+            .get(baseUrl + "event/" + key)
+            .then(
+                (response) => {
+                    let responseAll = response.data;
+
+                    // this.setState({
+                    //     event:responseAll.data
+                    // })
+
+                },
+                (error) => {
+
+                }
+            );
+
+    };
+
+    loadProductSync = (key) => {
+
+        axios
+            .get(baseUrl + `event-release/${key}/next-action` )
             .then(
                 (response) => {
                     let responseAll = response.data;
 
                     this.setState({
-                        event:responseAll.data
+                        nextAction:responseAll.data
                     })
 
                 },
@@ -308,7 +330,6 @@ class RequestEventReleaseItem extends Component {
     };
 
 
-
     render() {
         const classes = withStyles();
 
@@ -318,7 +339,7 @@ class RequestEventReleaseItem extends Component {
                     <>
                         <div key={this.state.item.EventRelease._id}
                              id={this.state.item.EventRelease._id}
-                             className="row no-gutters bg-white rad-8 mt-2 p-3 justify-content-center  mb-4 ">
+                             className="row no-gutters bg-white rad-8 p-3 justify-content-center  mb-4 ">
                             {/*<div className={"col-md-2 col-sm-12 col-xs-12 "}>*/}
                             {/*    {this.state.event.geo_codes && this.state.event.geo_codes[0] ?*/}
                             {/*        <img className={"small-image img-fluid img-list rad-4"}*/}
@@ -335,9 +356,9 @@ class RequestEventReleaseItem extends Component {
                                     Stage: <span className={"text-blue"}>{this.state.item.EventRelease.stage}</span>
                                 </p>
 
-                                {/*<p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">*/}
-                                {/*    Product: <span className={"text-blue"}> {this.state.event&&this.state.event.product.product.name}</span>*/}
-                                {/*</p>*/}
+                                <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
+                                    Product: <span className={"text-blue"}> {this.state.product&&this.state.product.name}</span>
+                                </p>
 
                             </div>
                             <div style={{ textAlign: "right" }} className={"col-md-5 position-relative col-xs-12 col-sm-12"}>
@@ -347,52 +368,52 @@ class RequestEventReleaseItem extends Component {
                                         "DD MMM YYYY"
                                     )}
                                 </p>
-                                {/*<div className="row  pb-4 pb-4 mb-4">*/}
-                                {/*    <div className="col-12 text-right pb-2 pt-2">*/}
-                                {/*        {this.props.item.next_action.is_mine &&*/}
-                                {/*            this.props.item.next_action.possible_actions.map(*/}
-                                {/*                (actionName, index) =>*/}
-                                {/*                    <>*/}
+                                <div className="row  pb-4 pb-4 mb-4">
+                                    <div className="col-12 text-right pb-2 pt-2">
+                                        {this.state.next_action&&this.state.next_action.is_mine &&
+                                            this.props.item.next_action.possible_actions.map(
+                                                (actionName, index) =>
+                                                    <>
 
-                                {/*                        <button*/}
-                                {/*                            data-id={this.props.item.EventRelease._key}*/}
-                                {/*                            data-action={actionName}*/}
-                                {/*                            onClick={this.togglePopUpInitiateAction}*/}
-                                {/*                            type="button"*/}
-                                {/*                            className={*/}
-                                {/*                                actionName === "accepted"*/}
-                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"*/}
-                                {/*                                    : actionName === "cancelled"*/}
-                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"*/}
-                                {/*                                    : actionName === "rejected"*/}
-                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"*/}
-                                {/*                                    : actionName === "declined"*/}
-                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"*/}
-                                {/*                                    : actionName === "progress"*/}
-                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"*/}
-                                {/*                                    : actionName === "complete"*/}
-                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"*/}
-                                {/*                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"*/}
-                                {/*                            }>*/}
+                                                        <button
+                                                            data-id={this.props.item.EventRelease._key}
+                                                            data-action={actionName}
+                                                            onClick={this.togglePopUpInitiateAction}
+                                                            type="button"
+                                                            className={
+                                                                actionName === "accepted"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : actionName === "cancelled"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    : actionName === "rejected"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    : actionName === "declined"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    : actionName === "progress"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : actionName === "complete"
+                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                            }>
 
 
-                                {/*                            {actionName === "accepted" && "Accept"}*/}
-                                {/*                            {actionName === "cancelled" && "Cancel"}*/}
-                                {/*                            {actionName === "rejected" && "Reject"}*/}
-                                {/*                            {actionName === "declined" && "Decline"}*/}
+                                                            {actionName === "accepted" && "Accept"}
+                                                            {actionName === "cancelled" && "Cancel"}
+                                                            {actionName === "rejected" && "Reject"}
+                                                            {actionName === "declined" && "Decline"}
 
-                                {/*                            {actionName === "confirmed" &&*/}
-                                {/*                                "Confirm"}*/}
-                                {/*                            {actionName === "progress" &&*/}
-                                {/*                                "Progress"}*/}
-                                {/*                            {actionName === "complete" &&*/}
-                                {/*                                "Complete"}*/}
-                                {/*                        </button>*/}
-                                {/*                    </>*/}
+                                                            {actionName === "confirmed" &&
+                                                                "Confirm"}
+                                                            {actionName === "progress" &&
+                                                                "Progress"}
+                                                            {actionName === "complete" &&
+                                                                "Complete"}
+                                                        </button>
+                                                    </>
 
-                                {/*            )}*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
+                                            )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

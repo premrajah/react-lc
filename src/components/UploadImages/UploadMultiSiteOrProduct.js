@@ -45,8 +45,9 @@ let productProperties=[
 
     // {field:"is_manufacturer",required:false},
     {field:"line",required:false},
-    {field:"power_supply",required:false},
     {field:"is_listable",required:false},
+    {field:"power_supply",required:false},
+
     {field:"energy_rating",required:false},
 ]
 
@@ -247,6 +248,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
+                    console.log("length issue -",headers.length, productProperties[i].length)
                     return
                 }
                 if (!(productProperties[i].field.toLowerCase() === headers[i].toLowerCase())) {
@@ -259,7 +261,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
-
+                    console.log("field issue -",productProperties[i].field.toLowerCase() , headers[i].toLowerCase())
                     return
                 }
 

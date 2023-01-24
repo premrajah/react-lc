@@ -168,7 +168,6 @@ class CalenderEvents extends Component {
         var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
         // var timestamp = startOfDay / 1000;
 
-        // alert(arg.dateStr)
 
 
         this.getEvents(startOfDay, startOfDay+86400000)

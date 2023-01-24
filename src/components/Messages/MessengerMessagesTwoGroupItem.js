@@ -13,7 +13,6 @@ const MessengerMessagesTwoGroupItem = ({
 
     useEffect(()=>{
 
-        // alert(group.unread_count_for_org)
     },[group.unread_count_for_org])
     const handleListItemClick = () => {
 

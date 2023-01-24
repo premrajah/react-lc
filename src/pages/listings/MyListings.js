@@ -148,13 +148,9 @@ class MyListings extends Component {
 
             this.clearList()
         }
-        console.log("await call")
       await  this.setFilters(data)
-        console.log("after  call")
         this.seekCount()
-        console.log("seel  call")
         this.setState({
-
             loadingResults: true
         })
 

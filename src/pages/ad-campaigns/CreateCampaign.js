@@ -460,7 +460,6 @@ setParams=async () => {
 
     callStrategy=(conditionAny,conditionAll)=>{
 
-// alert("call strag")
 
         let data={}
         // if (this.state.conditionAll.length>0){

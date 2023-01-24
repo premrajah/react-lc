@@ -102,7 +102,6 @@ class PaginationLayout extends Component {
         this.filterValue = filterValue;
 
         if (this.searchValue) {
-            // alert("filter changed")
             this.loadMore(true);
         }
     };

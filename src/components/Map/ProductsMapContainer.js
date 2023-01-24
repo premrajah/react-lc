@@ -22,8 +22,6 @@ class ProductsMapContainer extends Component {
 
      onMarkerClick = (props, marker, e) =>{
 
-         console.log("props")
-         console.log(props)
          setTimeout(() => {
              this.setState({
                  selectedPlace: props,

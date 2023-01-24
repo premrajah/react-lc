@@ -140,7 +140,6 @@ class ProductExpandItem extends Component {
 
      loadProduct=(id)=> {
 
-        // alert(id)
 
         axios.get(baseUrl + "product/" + id+"/expand")
             .then(
@@ -230,7 +229,6 @@ class ProductExpandItem extends Component {
             });
             // this.loadProduct(this.props.productId);
 
-                // alert(this.props.productId)
         }
     }
 

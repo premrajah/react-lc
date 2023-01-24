@@ -94,8 +94,6 @@ marteplace
 
     try {
 
-   // alert("delete called")
-   //      console.log("axios call delete listig")
         axios
             .delete(baseUrl + "listing/" + this.state.item.listing._key, )
             .then(
@@ -106,7 +104,6 @@ marteplace
                     // this.props.loadProducts()
                 },
                 (error) => {
-                    // alert("error")
                     // console.log("error call delete listig", error)
                 }
             );

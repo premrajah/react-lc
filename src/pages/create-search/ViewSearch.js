@@ -906,12 +906,15 @@ try {
                                                                             {this.state.createSearchData.site.geo_codes && this.state.createSearchData.site.geo_codes[0] &&
 
                                                                             <div className={"bg-white rad-8 p-2"}>
-                                                                                <GoogleMap siteId={this.state.createSearchData.site._key} width={"100%"}
-                                                                                           height={"300px"} locations={[{
+                                                                                <GoogleMap
+
+                                                                                    searchLocation
+                                                                                    siteId={this.state.createSearchData.site._key} width={"100%"}
+                                                                                           height={"300px"} location={{
                                                                                     name: this.state.createSearchData.site.name,
                                                                                     location: this.state.createSearchData.site.geo_codes[0].address_info.geometry.location,
                                                                                     isCenter: true
-                                                                                }]}/>
+                                                                                }}/>
                                                                             </div>
 
                                                                             }

@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
-import GooglePlacesAutocomplete, {geocodeByPlaceId} from 'react-google-places-autocomplete';
 import {GoogleMap} from "../../Map/MapsContainer";
 import LocationSearchAutocomplete from "./LocationSearchAutocomplete";
-import TextFieldWrapper from "./TextField";
 
 
 const SearchPlaceAutocomplete = (props) => {

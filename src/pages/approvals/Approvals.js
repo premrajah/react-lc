@@ -17,6 +17,7 @@ import {baseUrl} from "../../Util/Constants";
 import RequestSiteReleaseItem from "../../components/Approvals/RequestSiteReleaseItem";
 import RequestRentalReleaseItem from "../../components/Approvals/RequestRentalReleaseItem";
 import RentalRequestItem from "../../components/Approvals/RentalRequestItem";
+import RequestEventReleaseItem from "../../components/Approvals/RequestEventReleaseItem";
 
 
 class Approvals extends Component {
@@ -31,6 +32,7 @@ class Approvals extends Component {
             registerRequests: [],
             rentalRequests: [],
             rentalReleases: [],
+            eventReleases: [],
             serviceAgentRequests: [],
             value: 0,
             loading: false,
@@ -70,6 +72,25 @@ class Approvals extends Component {
              }
          )
              .catch(error => {});
+    };
+    fetchEventReleaseRequests = () => {
+
+        axios.get(baseUrl + "event-release").then(
+            (response) => {
+
+                let responseAll = response.data.data;
+
+                this.setState({
+                    eventReleases:responseAll
+                })
+
+            },
+            (error) => {
+                // let status = error.response.status
+                // dispatch({ type: "PRODUCT_LIST", value: [] })
+            }
+        )
+            .catch(error => {});
     };
 
     componentDidMount() {
@@ -118,6 +139,7 @@ class Approvals extends Component {
         this.fetchSiteReleaseRequests()
         // this.fetchRentalRequests()
         // this.fetchRentalReleases()
+        this.fetchEventReleaseRequests()
 
     this.interval = setInterval(() => {
         this.props.fetchReleaseRequest();
@@ -513,30 +535,30 @@ render() {
 
                                     <TabPanel value="7">
                                         <div className={"row"} >
-                                            <div className="col-12 mt-3 mb-3">
-                                                <div className="col d-flex justify-content-end">
-                                                    <Link to="/rental-request-records" className="btn btn-sm blue-btn"
-                                                          style={{color: "#fff"}}>
-                                                        Event Release Records
-                                                    </Link>
-                                                </div>
-                                            </div>
+                                            {/*<div className="col-12 mt-3 mb-3">*/}
+                                            {/*    <div className="col d-flex justify-content-end">*/}
+                                            {/*        <Link to="/rental-request-records" className="btn btn-sm blue-btn"*/}
+                                            {/*              style={{color: "#fff"}}>*/}
+                                            {/*            Event Release Records*/}
+                                            {/*        </Link>*/}
+                                            {/*    </div>*/}
+                                            {/*</div>*/}
                                             <div className={"listing-row-border "}></div>
 
 
-                                            {this.state.rentalRequests.filter(r =>
-                                                r.registration.stage !== "complete" &&
-                                                r.registration.stage !== "cancelled" &&
-                                                r.registration.stage !== "invalidated").map((item, index) =>
+                                            {this.state.eventReleases.filter(r =>
+                                                r.Release.stage !== "complete" &&
+                                                r.Release.stage !== "cancelled" &&
+                                                r.Release.stage !== "invalidated").map((item, index) =>
                                                 <>
                                                     <div className="col-12"
-                                                         key={item.registration._key}
-                                                         id={item.registration._key}
+                                                         key={item.Release._key}
+                                                         id={item.Release._key}
                                                     >
 
-                                                        <RentalRequestItem
+                                                        <RequestEventReleaseItem
                                                             refresh={()=>{
-                                                                this.fetchRentalRequests();
+                                                                this.fetchEventReleaseRequests();
                                                             }}
                                                             history={this.props.history}
                                                             item={item}
@@ -546,7 +568,7 @@ render() {
                                             )}
 
 
-                                            {this.state.siteReleases.length === 0 && (
+                                            {this.state.eventReleases.length === 0 && (
                                                 <div className={" column--message"}>
                                                     <p>
                                                         {this.state.loading

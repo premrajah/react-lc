@@ -18,6 +18,7 @@ import RequestSiteReleaseItem from "../../components/Approvals/RequestSiteReleas
 import RequestRentalReleaseItem from "../../components/Approvals/RequestRentalReleaseItem";
 import RentalRequestItem from "../../components/Approvals/RentalRequestItem";
 import RequestEventReleaseItem from "../../components/Approvals/RequestEventReleaseItem";
+import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 
 
 class Approvals extends Component {
@@ -38,7 +39,9 @@ class Approvals extends Component {
             loading: false,
             tabQuery: 0,
             activeKey:"1",
-            siteReleases:[]
+            siteReleases:[],
+            eventToggle:false,
+            siteToggle:false,
         };
 
     }
@@ -53,6 +56,19 @@ class Approvals extends Component {
         })
     }
 
+
+    setEventToggle=()=>{
+        this.setState({
+            eventToggle:!this.state.eventToggle
+        })
+
+    }
+    setSiteToggle=()=>{
+        this.setState({
+            eventToggle:!this.state.eventToggle
+        })
+
+    }
 
      fetchSiteReleaseRequests = () => {
 
@@ -75,7 +91,20 @@ class Approvals extends Component {
     };
     fetchEventReleaseRequests = () => {
 
-        axios.get(baseUrl + "event-release").then(
+        this.setState({
+            eventReleases:[]
+        })
+
+        let url=baseUrl + "seek?name=EventRelease&relation=&offset=0&size=100&count=false&include-to=Event:any"
+
+        if (!this.state.toggleEvent){
+
+            // url=`${url}&or=stage%3D%3Dcompleted&or=stage%3D%3Dcancelled`
+        }else{
+            url=`${url}&or=stage%3D%3Dcompleted&or=stage%3D%3Dcancelled`
+        }
+
+        axios.get(url).then(
             (response) => {
 
                 let responseAll = response.data.data;
@@ -139,7 +168,7 @@ class Approvals extends Component {
         this.fetchSiteReleaseRequests()
         // this.fetchRentalRequests()
         // this.fetchRentalReleases()
-        this.fetchEventReleaseRequests()
+        // this.fetchEventReleaseRequests()
 
     this.interval = setInterval(() => {
         this.props.fetchReleaseRequest();
@@ -237,7 +266,7 @@ render() {
                                             <Tab label="Site Release " value="4" />
                                             {/*<Tab label="Rental Release " value="5" />*/}
                                             {/*<Tab label="Rental Requests " value="6" />*/}
-                                            <Tab label="Event Release " value="7" />
+                                            {/*<Tab label="Event Release " value="7" />*/}
                                         </TabList>
                                     </Box>
 
@@ -535,25 +564,29 @@ render() {
 
                                     <TabPanel value="7">
                                         <div className={"row"} >
-                                            {/*<div className="col-12 mt-3 mb-3">*/}
-                                            {/*    <div className="col d-flex justify-content-end">*/}
-                                            {/*        <Link to="/rental-request-records" className="btn btn-sm blue-btn"*/}
-                                            {/*              style={{color: "#fff"}}>*/}
-                                            {/*            Event Release Records*/}
-                                            {/*        </Link>*/}
-                                            {/*    </div>*/}
-                                            {/*</div>*/}
+                                            <div className="col-12 mt-3 mb-3">
+                                                <div className="col d-flex justify-content-end">
+                                                    {/*<Link to="/rental-request-records" className="btn btn-sm blue-btn"*/}
+                                                    {/*      style={{color: "#fff"}}>*/}
+                                                    {/*    Event Release Records*/}
+                                                    {/*</Link>*/}
+                                                    <BlueSmallBtn
+                                                    onClick={this.setEventToggle}
+                                                    title={!this.state.eventToggle?"Event Release Records":"Event Release"}
+                                                    />
+                                                </div>
+                                            </div>
                                             <div className={"listing-row-border "}></div>
 
 
                                             {this.state.eventReleases.filter(r =>
-                                                r.Release.stage !== "complete" &&
-                                                r.Release.stage !== "cancelled" &&
-                                                r.Release.stage !== "invalidated").map((item, index) =>
+                                                r.EventRelease.stage !== "complete" &&
+                                                r.EventRelease.stage !== "cancelled" &&
+                                                r.EventRelease.stage !== "invalidated").map((item, index) =>
                                                 <>
                                                     <div className="col-12"
-                                                         key={item.Release._key}
-                                                         id={item.Release._key}
+                                                         key={item.EventRelease._key}
+                                                         id={item.EventRelease._key}
                                                     >
 
                                                         <RequestEventReleaseItem

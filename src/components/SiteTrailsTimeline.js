@@ -33,7 +33,6 @@ const SiteTrailsTimeline=(props)=> {
             setSite(site);
             setShowMap(!showMap);
             // updateDistLookup();
-            console.log(props.siteTrails)
         }, 500);
     }
 
@@ -101,7 +100,6 @@ const SiteTrailsTimeline=(props)=> {
             for (let  i=(siteTrailsReversed.length-1);i>=0;i-- ) {
 
                 let itemSite=siteTrailsReversed[i]
-                console.log(itemSite)
                 const {site, _ts_epoch_ms} = itemSite;
                 let itemTmp = []
                 itemTmp.push(site.site.name)
@@ -124,7 +122,6 @@ const SiteTrailsTimeline=(props)=> {
             console.log(e)
         }
 
-        console.log(csvDataNew)
         exportToCSV(csvDataNew, keys)
 
     }
@@ -143,7 +140,6 @@ const SiteTrailsTimeline=(props)=> {
             })
             rows.unshift(itemTmp)
 
-            console.log(rows)
             for (const row of rows) {
                 const rowData = [];
                 for (const column of row) {

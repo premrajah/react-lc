@@ -573,7 +573,6 @@ class ViewCycle extends Component {
 
     declineOffer() {
 
-        alert("decline offer")
         this.setState({
             showPrompt: !this.state.showPrompt,
         });

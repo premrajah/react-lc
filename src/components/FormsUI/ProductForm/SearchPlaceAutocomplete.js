@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
-import GooglePlacesAutocomplete, {geocodeByPlaceId} from 'react-google-places-autocomplete';
 import {GoogleMap} from "../../Map/MapsContainer";
 import LocationSearchAutocomplete from "./LocationSearchAutocomplete";
-import TextFieldWrapper from "./TextField";
 
 
 const SearchPlaceAutocomplete = (props) => {
@@ -55,13 +53,16 @@ const SearchPlaceAutocomplete = (props) => {
 
     useEffect(()=>{
         if (onChange) {
+            try {
+                if (initialValue && initialValue.geo_codes && initialValue.geo_codes.length > 0) {
+                    setAddress(initialValue.address)
+                    setLongitude(initialValue.geo_codes[0].address_info.geometry.location.lng)
+                    setLatitude(initialValue.geo_codes[0].address_info.geometry.location.lat)
+                }
+                onChange(initialValue)
+            }catch (e){
 
-            if (initialValue&&initialValue.geo_codes.length>0) {
-                setAddress(initialValue.address)
-                setLongitude(initialValue.geo_codes[0].address_info.geometry.location.lng)
-                setLatitude(initialValue.geo_codes[0].address_info.geometry.location.lat)
             }
-            onChange(initialValue)
         }
     },[])
 

@@ -5,7 +5,6 @@ import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Publish} from "@mui/icons-material";
 import axios from "axios/index";
 import {baseUrl, MIME_TYPES_ACCEPT, RECUR_UNITS} from "../../Util/Constants";
-import _ from "lodash";
 import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
@@ -18,19 +17,14 @@ import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import docs from "../../img/icons/docs.png";
 import ProductAutocomplete from "../AutocompleteSearch/ProductAutocomplete";
 import Switch from "@mui/material/Switch";
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import TextField from '@mui/material/TextField';
-import {Box} from "@mui/material";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 
-let slugify = require('slugify')
 
 
 function ValueLabelComponent(props) {
@@ -341,7 +335,21 @@ class EventForm extends Component {
         if (this.state.showRepeatIntervalSelection){
             validations.push(validateFormatCreate("recurValue", [{check: Validators.required, message: 'Required'}],fields))
             validations.push(validateFormatCreate("recurUnit", [{check: Validators.required, message: 'Required'}],fields))
+
+            // if ((!this.state.endDate)&&(this.state.fields["endDate"])){
+            //     this.state.errors["endDate"].message="Required"
+                validations.push(validateFormatCreate("endDate", [{check: Validators.required, message: 'Required'}],fields))
+
+            // }
+
+
         }
+
+
+
+
+
+
 
 
 
@@ -423,14 +431,17 @@ class EventForm extends Component {
                 title: data.get("title"),
                 description: data.get("description"),
                 resolution_epoch_ms: new Date(this.state.startDate).getTime() + 100,
-                recur_until_epoch_ms: new Date(this.state.endDate).getTime() + 100,
-
                 process: data.get("process"),
             }
 
 
+
+
             if (data.get("recurValue") && data.get("recurUnit")) {
                 eventData.recur = {value: data.get("recurValue"), unit: data.get("recurUnit")}
+
+                eventData.recur_until_epoch_ms= new Date(this.state.endDate).getTime() + 100 // the next day it will get end
+
             }
 
             if (data.get("interval")) {
@@ -624,8 +635,13 @@ class EventForm extends Component {
                 startDate:this.props.event.event.resolution_epoch_ms,
                 endDate:this.props.event.event.recur_until_epoch_ms,
             })
+
+            console.log(this.props.event.event.recur_until_epoch_ms)
             this.loadImages(this.props.event.artifacts)
 
+
+            let fields=this.state.fields
+            fields["endDate"]=this.props.event.event.recur_until_epoch_ms
         }else{
 
             this.setState({
@@ -641,22 +657,11 @@ class EventForm extends Component {
             else{
 
                 this.setState({
-                    startDate: new Date()
+                    startDate: new Date(),
+                    // endDate: new Date(),
                 })
             }
 
-
-            if (this.props.date) {
-                this.setState({
-                    startDate: this.props.date
-                })
-            }
-            else{
-
-                this.setState({
-                    startDate: new Date()
-                })
-            }
 
         }
     }
@@ -874,39 +879,41 @@ class EventForm extends Component {
                                                   }>
                                                   End Date
                                               </div>
-
                                               <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                                                  <DatePicker
+                                              <DesktopDatePicker
 
-                                                      className={"full-width-field"}
-                                                      disableHighlightToday={true}
-                                                      minDate={new Date()}
-                                                      // label="Required By"
-                                                      inputVariant="outlined"
-                                                      variant={"outlined"}
-                                                      margin="normal"
-                                                      id="date-picker-dialog-1"
-                                                      // label="Available From"
-                                                      inputFormat="dd/MM/yyyy"
-                                                      hintText="Select Date"
-                                                      value={this.state.endDate?this.state.endDate:new Date()}
-                                                      style={{position:"relative"}}
+                                                  className={"full-width-field"}
+                                                  disableHighlightToday={true}
+                                                  minDate={new Date()}
+                                                  disablePast
+                                                  inputVariant="outlined"
+                                                  variant={"outlined"}
+                                                  margin="normal"
+                                                  id="date-picker-dialog-1"
+                                                  inputFormat="dd/MM/yyyy"
+                                                  hintText="Select Date"
+                                                  value={this.state.endDate}
+                                                  style={{position:"relative"}}
+                                                  OpenPickerIcon={<InfoIcon/>}
+                                                  renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                                      <div className="custom-calander-container">
+                                                          <CustomizedInput ref={inputRef} {...inputProps} />
+                                                          <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                                      </div>
+                                                  )}
+                                                  onChange={(value)=>this.handleChangeProduct(value,"endDate")}
 
-                                                      OpenPickerIcon={<InfoIcon/>}
+                                              />
+                                          </LocalizationProvider>
 
-                                                      // renderInput={(params) => <CustomizedInput {...params} />}
+                                              {this.state.errors["endDate"] && (
+                                                  <span className={" text-danger"}>
 
-                                                      renderInput=   {({ inputRef, inputProps, InputProps }) => (
-                                                          <div className="custom-calander-container">
-                                                              <CustomizedInput ref={inputRef} {...inputProps} />
-                                                              <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
-                                                          </div>
-                                                      )}
-                                                      onChange={(value)=>this.handleChangeProduct(value,"endDate")}
+                                                      {this.state.errors["endDate"].message}
+                                                            </span>
+                                              )}
 
-                                                  />
-                                              </LocalizationProvider>
 
 
                                           </div>

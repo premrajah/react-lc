@@ -102,7 +102,6 @@ class PaginationLayout extends Component {
         this.filterValue = filterValue;
 
         if (this.searchValue) {
-            // alert("filter changed")
             this.loadMore(true);
         }
     };
@@ -154,7 +153,7 @@ class PaginationLayout extends Component {
                     >
                     <DynamicElement
                         element={this.props.element=="tr"?"td":""}
-                        colspan={this.props.colspan}
+                        colSpan={this.props.colspan}
                         className={
                             this.props.element=="tr"?"" :"col-12 justify-content-center text-center"}
                         >

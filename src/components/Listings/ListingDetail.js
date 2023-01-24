@@ -91,17 +91,26 @@ marteplace
         return formIsValid;
     }
     deleteItem() {
+
+    try {
+
         axios
-            .delete(baseUrl + "listing/" + this.props.item.listing._key, )
+            .delete(baseUrl + "listing/" + this.state.item.listing._key, )
             .then(
                 (response) => {
                     // var responseAll = response.data.data;
-
+                    // console.log("response call delete listig", response)
                     this.props.history.push("/my-listings");
                     // this.props.loadProducts()
                 },
-                (error) => {}
+                (error) => {
+                    // console.log("error call delete listig", error)
+                }
             );
+
+    }catch (e){
+        // console.log(e)
+    }
     }
 
     callBackResult(action) {
@@ -469,7 +478,7 @@ marteplace
                                                 <div className="row justify-content-start  ">
                                                     <div className="col-12 ">
                                                         <div className="row">
-                                                            <div className="col-12">
+                                                            <div className="col-12 position-relative">
                                                                 <h4
                                                                     className={
                                                                         "text-capitalize product-title width-90"
@@ -507,7 +516,7 @@ marteplace
                                                                 </div>
                                                             </div>
 
-                                                            <div className="col-5 blue-text text-blue text-bold  text-right">
+                                                            <div className="col-5 blue-text text-blue text-bold  d-flex justify-content-end">
                                                                 {this.state.item.listing.price&&(this.state.item.listing.price.value!=0) ? (
                                                                     <>
                                                                         GBP {
@@ -595,12 +604,14 @@ marteplace
                                                                         {this.state.item.site.geo_codes && this.state.item.site.geo_codes[0] &&
 
                                                                         <div className={"bg-white rad-8 p-2"}>
-                                                                            <GoogleMap siteId={this.state.item.site._key} width={"100%"}
-                                                                                       height={"300px"} locations={[{
+                                                                            <GoogleMap
+                                                                                searchLocation
+                                                                                siteId={this.state.item.site._key} width={"100%"}
+                                                                                       height={"300px"} location={{
                                                                                 name: this.state.item.site.name,
                                                                                 location: this.state.item.site.geo_codes[0].address_info.geometry.location,
                                                                                 isCenter: true
-                                                                            }]}/>
+                                                                            }}/>
                                                                         </div>
 
                                                                         }

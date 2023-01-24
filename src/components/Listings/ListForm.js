@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import Close from "@mui/icons-material/Close";
 import "../../Util/upload-file.css";
 import {makeStyles} from "@mui/styles";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,22 +15,18 @@ import ProductTreeView from "../../components/ProductTreeView";
 
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
 
 import PageHeader from "../../components/PageHeader";
-import EditSite from "../../components/Sites/EditSite";
 import ProductItem from "../../components/Products/Item/ProductItem";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
-import {capitalize, fetchErrorMessage} from "../../Util/GlobalFunctions";
-import Layout from "../../components/Layout/Layout";
+import {capitalize} from "../../Util/GlobalFunctions";
 import {Link} from "react-router-dom";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
-import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
 import SiteFormNew from "../../components/Sites/SiteFormNew";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 import {Spinner} from "react-bootstrap";

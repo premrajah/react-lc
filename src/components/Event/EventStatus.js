@@ -65,6 +65,7 @@ class EventForm extends Component {
                 {key:"responded" ,value:"Responded"},
                 {key:"resolved" ,value:"Resolved"},
             ],
+            allowStateChange:false
 
 
 
@@ -170,6 +171,41 @@ class EventForm extends Component {
 
     };
 
+    getEVENT_OCVC = (Id) => {
+
+        axios
+            .get(`${baseUrl}event/${Id}/oc-vc`)
+            .then((res) => {
+                const data = res.data.data;
+                // setProductOCVC(data);
+                this.setState({
+                    ocVC:data
+                })
+
+
+                if (data){
+
+                    let actions=[]
+                    if (data.visibility_context) {
+
+
+                        if (data.visibility_context["allow_event_stage_change"]) {
+
+                            this.setState({
+                                allowStateChange:true
+                            })
+                        }
+
+
+                    }
+
+
+                }
+            })
+            .catch((e) => {
+                console.log("event oc-vc error ", e);
+            });
+    };
 
     getEvent=(eventId)=>{
 
@@ -215,6 +251,7 @@ class EventForm extends Component {
 
         if (this.props.eventId){
             this.getEvent(this.props.eventId)
+            this.getEVENT_OCVC(this.props.eventId)
         }
     }
 
@@ -230,6 +267,7 @@ class EventForm extends Component {
 
                     <EventDetail eventId={this.props.eventId} />
 
+                    {this.state.allowStateChange &&
                     <div className={"col-12"}>
                           <form onSubmit={this.handleSubmit}>
 
@@ -277,6 +315,7 @@ class EventForm extends Component {
                     </div>
                             </form>
                     </div>
+                    }
                 </div>
             </>
         );

@@ -25,8 +25,6 @@ import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
 import BlueButton from "../FormsUI/Buttons/BlueButton";
-import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
-import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 
 let slugify = require('slugify')
 
@@ -409,10 +407,7 @@ let slugify = require('slugify')
 
             let {formIsValid,errors}= validateInputs(validations)
 
-            console.log(fields)
-
             this.setState({ errors: errors });
-                // console.log(errors)
             return formIsValid;
         }
 
@@ -588,8 +583,6 @@ let slugify = require('slugify')
 
                     } else {
 
-                        // console.log(completeData, this.state.fields["deliver"])
-                        // return
                         axios
                             .put(
                                 createProductUrl,
@@ -999,7 +992,6 @@ let slugify = require('slugify')
 
             })
 
-          // alert("called")
 
             if (this.props.item){
 

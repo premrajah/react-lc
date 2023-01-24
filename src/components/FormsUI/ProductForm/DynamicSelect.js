@@ -35,7 +35,6 @@ const DynamicSelectArrayWrapper = (props) => {
     const handleChange = (event,selectValue) => {
 
         if (selectValue) {
-            console.log(selectValue)
 
             if (typeof selectValue === 'string') {
                 setValue(selectValue);

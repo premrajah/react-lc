@@ -206,7 +206,6 @@ class Products extends Component {
                 let itemTmp=[]
                 for (const key of selectedKeys.keys()) {
                     let keys=key.toString().split(".")
-                    // console.log("keys",keys, key,Product[key],Product[key])
                     if (keys&&keys.length>1){
 
                         itemTmp.push(Product[keys[0]][keys[1]])
@@ -246,7 +245,6 @@ class Products extends Component {
 
         let itemTmp=[]
         for (const key of selectedKeys.keys()) {
-            // console.log(key,selectedKeys.get(key));
             itemTmp.push(PRODUCTS_FIELD_SELECTION.
             find((itemTmp)=> itemTmp.key===key).value)
         }
@@ -901,7 +899,8 @@ class Products extends Component {
 
                             {this.state.items.map((item, index) => (
                                 <div id={`${item._key}-${index}`} key={item._key + "-" + index}>
-                                    {this.state.productDisplayView === "large" ? <ProductItem
+                                    {this.state.productDisplayView === "large" ?
+                                        <ProductItem
                                         showPreview
                                         index={index}
                                         goToLink={true}

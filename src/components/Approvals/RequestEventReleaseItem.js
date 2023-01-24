@@ -31,7 +31,7 @@ class RequestEventReleaseItem extends Component {
             initiateAction: null,
             item: this.props.item,
             sites: [],
-            site: null,
+            event: null,
             siteSelected: null,
             fieldsSite: {},
             fields:{},
@@ -161,7 +161,7 @@ class RequestEventReleaseItem extends Component {
             const phone = data.get("phone");
 
             const payload = {
-                site: {
+                event: {
                     name: name,
                     email: email,
                     contact: contact,
@@ -178,7 +178,7 @@ class RequestEventReleaseItem extends Component {
 
     addNewSite = (payload) => {
         axios
-            .put(`${baseUrl}site`, payload)
+            .put(`${baseUrl}event`, payload)
             .then((res) => {
                 this.props.loadSites();
 
@@ -201,7 +201,7 @@ class RequestEventReleaseItem extends Component {
 
         const data = new FormData(event.target);
 
-        const site = data.get("site");
+        const site = data.get("event");
 
         axios
             .post(baseUrl + "register",
@@ -240,7 +240,7 @@ class RequestEventReleaseItem extends Component {
             isLoading:true
         })
         axios
-            .post(`${baseUrl}site-release/stage`, data)
+            .post(`${baseUrl}event-release/stage`, data)
             .then((res) => {
                 this.setState({
                     isLoading:false
@@ -258,8 +258,15 @@ class RequestEventReleaseItem extends Component {
     }
 
     componentDidMount() {
-        this.loadSiteSync()
+        // this.loadSiteSync()
         // this.getArtifactsForProduct()
+
+
+        if (this.props.item.EventReleaseToEvent[0]&&this.props.item.EventReleaseToEvent[0].entries[0].Event){
+            this.setState({
+                event:this.props.item.EventReleaseToEvent[0].entries[0].Event
+            })
+        }
 
     }
 
@@ -283,13 +290,13 @@ class RequestEventReleaseItem extends Component {
     loadSiteSync = () => {
 
         axios
-            .get(baseUrl + "site/" + this.props.item.Site_id.replace("Site/",""))
+            .get(baseUrl + "event/" + this.props.item.event_id.replace("Event/",""))
             .then(
                 (response) => {
                     let responseAll = response.data;
 
                     this.setState({
-                        site:responseAll.data
+                        event:responseAll.data
                     })
 
                 },
@@ -307,90 +314,85 @@ class RequestEventReleaseItem extends Component {
 
         return (
             <>
-                {this.state.site && (
+                {this.state.event && (
                     <>
-                        <div key={this.state.item.Release._id}
-                             id={this.state.item.Release._id}
-                             className="row no-gutters bg-white rad-8 p-3 justify-content-center  mb-4 ">
-                            <div className={"col-md-2 col-sm-12 col-xs-12 "}>
-                                {this.state.site.geo_codes && this.state.site.geo_codes[0] ?
-                                    <img className={"small-image img-fluid img-list rad-4"}
-                                         src={`https://maps.googleapis.com/maps/api/staticmap?center=${this.state.site.geo_codes[0].address_info.geometry.location.lat},${this.state.site.geo_codes[0].address_info.geometry.location.lng}&markers=color:0x212529%7Clabel:C%7C${this.state.site.geo_codes[0].address_info.geometry.location.lat},${this.state.site.geo_codes[0].address_info.geometry.location.lng}&zoom=12&size=110x110&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
-                                    :<img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />}
-                            </div>
-                            <div className={"col-sm-5 col-xs-12 pl-3-desktop  content-box-listing"}>
+                        <div key={this.state.item.EventRelease._id}
+                             id={this.state.item.EventRelease._id}
+                             className="row no-gutters bg-white rad-8 mt-2 p-3 justify-content-center  mb-4 ">
+                            {/*<div className={"col-md-2 col-sm-12 col-xs-12 "}>*/}
+                            {/*    {this.state.event.geo_codes && this.state.event.geo_codes[0] ?*/}
+                            {/*        <img className={"small-image img-fluid img-list rad-4"}*/}
+                            {/*             src={`https://maps.googleapis.com/maps/api/staticmap?center=${this.state.site.geo_codes[0].address_info.geometry.location.lat},${this.state.site.geo_codes[0].address_info.geometry.location.lng}&markers=color:0x212529%7Clabel:C%7C${this.state.site.geo_codes[0].address_info.geometry.location.lat},${this.state.site.geo_codes[0].address_info.geometry.location.lng}&zoom=12&size=110x110&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />*/}
+                            {/*        :<img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />}*/}
+                            {/*</div>*/}
+                            <div className={"col-sm-7 col-xs-12 pl-3-desktop  content-box-listing"}>
                                 <p style={{ fontSize: "18px" }} className="title-bold mb-1 text-capitlize">
-                                    <Link to={`/ps/${this.state.site._key}`}>
-                                        {this.state.site&&this.state.site.name}
+                                    <Link to={`/ps/${this.state.event._key}`}>
+                                        {this.state.event&&this.state.event.title}
                                     </Link>
                                 </p>
-
-
-
                                 <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
-                                    Stage: <span className={"text-blue"}>{this.state.item.Release.stage}</span>
+                                    Stage: <span className={"text-blue"}>{this.state.item.EventRelease.stage}</span>
                                 </p>
 
-                                <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
-                                    Address: <span className={"text-blue"}> {this.state.site&&this.state.site.address}</span>
-                                </p>
-
-
+                                {/*<p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">*/}
+                                {/*    Product: <span className={"text-blue"}> {this.state.event&&this.state.event.product.product.name}</span>*/}
+                                {/*</p>*/}
 
                             </div>
                             <div style={{ textAlign: "right" }} className={"col-md-5 position-relative col-xs-12 col-sm-12"}>
 
                                 <p className={"text-gray-light   date-bottom"}>
-                                    {moment(this.state.item.Release._ts_epoch_ms).format(
+                                    {moment(this.state.item.EventRelease._ts_epoch_ms).format(
                                         "DD MMM YYYY"
                                     )}
                                 </p>
-                                <div className="row  pb-4 pb-4 mb-4">
-                                    <div className="col-12 text-right pb-2 pt-2">
-                                        {this.props.item.next_action.is_mine &&
-                                            this.props.item.next_action.possible_actions.map(
-                                                (actionName, index) =>
-                                                    <>
+                                {/*<div className="row  pb-4 pb-4 mb-4">*/}
+                                {/*    <div className="col-12 text-right pb-2 pt-2">*/}
+                                {/*        {this.props.item.next_action.is_mine &&*/}
+                                {/*            this.props.item.next_action.possible_actions.map(*/}
+                                {/*                (actionName, index) =>*/}
+                                {/*                    <>*/}
 
-                                                        <button
-                                                            data-id={this.props.item.Release._key}
-                                                            data-action={actionName}
-                                                            onClick={this.togglePopUpInitiateAction}
-                                                            type="button"
-                                                            className={
-                                                                actionName === "accepted"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
-                                                                    : actionName === "cancelled"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
-                                                                    : actionName === "rejected"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
-                                                                    : actionName === "declined"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
-                                                                    : actionName === "progress"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
-                                                                    : actionName === "complete"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
-                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
-                                                            }>
+                                {/*                        <button*/}
+                                {/*                            data-id={this.props.item.EventRelease._key}*/}
+                                {/*                            data-action={actionName}*/}
+                                {/*                            onClick={this.togglePopUpInitiateAction}*/}
+                                {/*                            type="button"*/}
+                                {/*                            className={*/}
+                                {/*                                actionName === "accepted"*/}
+                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"*/}
+                                {/*                                    : actionName === "cancelled"*/}
+                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"*/}
+                                {/*                                    : actionName === "rejected"*/}
+                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"*/}
+                                {/*                                    : actionName === "declined"*/}
+                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"*/}
+                                {/*                                    : actionName === "progress"*/}
+                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"*/}
+                                {/*                                    : actionName === "complete"*/}
+                                {/*                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"*/}
+                                {/*                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"*/}
+                                {/*                            }>*/}
 
 
-                                                            {actionName === "accepted" && "Accept"}
-                                                            {actionName === "cancelled" && "Cancel"}
-                                                            {actionName === "rejected" && "Reject"}
-                                                            {actionName === "declined" && "Decline"}
+                                {/*                            {actionName === "accepted" && "Accept"}*/}
+                                {/*                            {actionName === "cancelled" && "Cancel"}*/}
+                                {/*                            {actionName === "rejected" && "Reject"}*/}
+                                {/*                            {actionName === "declined" && "Decline"}*/}
 
-                                                            {actionName === "confirmed" &&
-                                                                "Confirm"}
-                                                            {actionName === "progress" &&
-                                                                "Progress"}
-                                                            {actionName === "complete" &&
-                                                                "Complete"}
-                                                        </button>
-                                                    </>
+                                {/*                            {actionName === "confirmed" &&*/}
+                                {/*                                "Confirm"}*/}
+                                {/*                            {actionName === "progress" &&*/}
+                                {/*                                "Progress"}*/}
+                                {/*                            {actionName === "complete" &&*/}
+                                {/*                                "Complete"}*/}
+                                {/*                        </button>*/}
+                                {/*                    </>*/}
 
-                                            )}
-                                    </div>
-                                </div>
+                                {/*            )}*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
                             </div>
                         </div>
 

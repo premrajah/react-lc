@@ -60,14 +60,13 @@ class MyListings extends Component {
 
 
     clearList=()=>{
-        setTimeout(() => {
+
         this.setState({
             offset:0,
             items:[],
             lastPageReached:false,
             loadingResults: false,
         })
-        },250)
     }
 
     setFilters=(data)=>{
@@ -98,8 +97,10 @@ class MyListings extends Component {
 
 
                 this.setState({
-
                     searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
+
+
+                    // searchUrl:this.state.url+(`&or=name~%${searchValue}%&or=description~%${searchValue}%&find-also-to=Product:listing_of:&or=description~%${searchValue}%&find-also-to=Product:listing_of:name~%${searchValue}%`)
                 })
 
             }
@@ -148,11 +149,8 @@ class MyListings extends Component {
             this.clearList()
         }
       await  this.setFilters(data)
-
         this.seekCount()
-
         this.setState({
-
             loadingResults: true
         })
 

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
+import {baseUrl, googleApisBaseURL} from "../../Util/Constants";
 import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import moment from "moment/moment";
@@ -315,7 +315,7 @@ class RequestSiteReleaseItem extends Component {
                             <div className={"col-md-2 col-sm-12 col-xs-12 "}>
                                 {this.state.site.geo_codes && this.state.site.geo_codes[0] ?
                                     <img className={"small-image img-fluid img-list rad-4"}
-                                         src={`https://maps.googleapis.com/maps/api/staticmap?center=${this.state.site.geo_codes[0].address_info.geometry.location.lat},${this.state.site.geo_codes[0].address_info.geometry.location.lng}&markers=color:0x212529%7Clabel:C%7C${this.state.site.geo_codes[0].address_info.geometry.location.lat},${this.state.site.geo_codes[0].address_info.geometry.location.lng}&zoom=12&size=110x110&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
+                                         src={`${googleApisBaseURL}staticmap?center=${this.state.site.geo_codes[0].address_info.geometry.location.lat},${this.state.site.geo_codes[0].address_info.geometry.location.lng}&markers=color:0x212529%7Clabel:C%7C${this.state.site.geo_codes[0].address_info.geometry.location.lat},${this.state.site.geo_codes[0].address_info.geometry.location.lng}&zoom=12&size=110x110&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
                                     :<img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />}
                             </div>
                             <div className={"col-sm-5 col-xs-12 pl-3-desktop  content-box-listing"}>

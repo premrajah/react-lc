@@ -21,7 +21,6 @@ const SubproductItem = (props) => {
 
 const loadProduct=(id)=> {
 
-    // alert(id)
 
     axios.get(baseUrl + "product/" + id)
         .then(
@@ -41,7 +40,6 @@ const loadProduct=(id)=> {
     useEffect(() => {
 
             if(item) {
-                // alert(item._key)
                 setItem(props.item)
                 getArtifactsForProduct(item._key)
             }

@@ -136,7 +136,6 @@ class MyCampaigns extends Component {
 
 
                             if (item.includes("campaign_")){
-                                console.log(JSON.parse(responseObj[item].value))
                                 try{
                                     templates.push({key: item, value: JSON.parse(responseObj[item].value)})
 
@@ -670,7 +669,7 @@ class MyCampaigns extends Component {
 
                                                                 <PaginationLayout
                                                                     element={"tr"}
-                                                                    colspan={5}
+                                                                    colSpan={5}
                                                                     hideSearch
                                                                     hideCount
                                                                     type="table"

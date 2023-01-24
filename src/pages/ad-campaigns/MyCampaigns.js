@@ -669,7 +669,7 @@ class MyCampaigns extends Component {
 
                                                                 <PaginationLayout
                                                                     element={"tr"}
-                                                                    colspan={5}
+                                                                    colSpan={5}
                                                                     hideSearch
                                                                     hideCount
                                                                     type="table"

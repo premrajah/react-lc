@@ -122,7 +122,7 @@ class EventDetail extends Component {
             return (
 
                 <>
-                    {this.state.event ?
+                    {(this.state.event && this.state.event.event) ?
                     <div className={"col-12"}>
                             <div className={"bg-white  rad-8  "}>
                                 <>

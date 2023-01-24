@@ -106,21 +106,21 @@ class EventItem extends Component {
 
                     if (data.ownership_context) {
 
-                        // if (data.ownership_context["is_owner"]) {
-                        //
-                        //
-                        //     actions.push({label:"Release",value:"release",data:this.props.item})
-                        // }
-                        // if (data.ownership_context["is_event_for"]) {
-                        //
-                        //
-                        //     actions.push({label:"Release",value:"release",data:this.props.item})
-                        // }
-                        // if (data.ownership_context["is_action_for"]) {
-                        //
-                        //
-                        //     actions.push({label:"Release",value:"release",data:this.props.item})
-                        // }
+                        if (data.ownership_context["is_owner"]) {
+
+
+                            actions.push({label:"Release",value:"release",data:this.props.item})
+                        }
+                        if (data.ownership_context["is_event_for"]) {
+
+
+                            actions.push({label:"Release",value:"release",data:this.props.item})
+                        }
+                        if (data.ownership_context["is_action_for"]) {
+
+
+                            actions.push({label:"Release",value:"release",data:this.props.item})
+                        }
                     }
 
                     actions.push(  {label:"Delete",value:"delete",data:this.props.item.event._key})

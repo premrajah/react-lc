@@ -9,7 +9,7 @@ import PlaceholderImg from "../../img/place-holder-lc.png";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
+import {baseUrl, googleApisBaseURL} from "../../Util/Constants";
 import IconButton from '@mui/material/IconButton';
 import moment from "moment/moment";
 import MoreMenu from "../MoreMenu";
@@ -151,7 +151,7 @@ const SitePageItem = (  props) => {
                         <>
 
                             {props.item.geo_codes && props.item.geo_codes[0] ?
-                            <img className={`${props.smallItem?"small-image":""} img-fluid img-list rad-4`} src={`https://maps.googleapis.com/maps/api/staticmap?center=${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
+                            <img className={`${props.smallItem?"small-image":""} img-fluid img-list rad-4`} src={`${googleApisBaseURL}staticmap?center=${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
                             &markers=color:0x212529%7Clabel:C%7C${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
                             &zoom=12&size=${props.smallItem?"110x110":"185x185"}&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
                             :<img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />}
@@ -194,7 +194,7 @@ const SitePageItem = (  props) => {
                            {/*</p>*/}
 
                            <div className="d-flex align-items-center">
-                               {!loading?   <IconButton className={"mr-1"}><MapIcon  fontSize="24px" onClick={() => handleMapModal(true)} /></IconButton>:
+                               {!loading?   <IconButton className={"mr-1"} onClick={() => handleMapModal(true)} ><MapIcon  fontSize="24px" /></IconButton>:
                                    <Spinner
                                        className="me-2"
                                        as="span"
@@ -207,7 +207,7 @@ const SitePageItem = (  props) => {
 
 
                                {props.showEdit &&
-                               <IconButton> <EditIcon  fontSize="24px" onClick={() => editSiteSelection()} /></IconButton>}
+                               <IconButton onClick={() => editSiteSelection()} > <EditIcon  fontSize="24px" /></IconButton>}
                                {props.moreMenu&& <MoreMenu
                                    triggerCallback={(action) =>
                                        callBackResult(action)

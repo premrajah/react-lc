@@ -54,6 +54,7 @@ console.log(`baseUrl ${baseUrl}, dashboardUrl ${dashboardUrl}`);
 console.log(`baseImgUrl ${baseImgUrl}`);
 console.log(`frontEndUrl ${frontEndUrl}`);
 
+export const googleApisBaseURL = "https://maps.googleapis.com/maps/api/";
 
 export const checkImage=(url)=> {
 

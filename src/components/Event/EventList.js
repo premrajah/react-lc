@@ -1,17 +1,10 @@
 import * as React from 'react';
 import {Component} from 'react';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import {fetchErrorMessage, getInitials, getTimeFormat} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, getTimeFormat} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import {baseUrl, checkImage, RECUR_UNITS} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
-import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import {Close, Delete, Done, Edit, FactCheck} from "@mui/icons-material";
 import EventForm from "./EventForm";
 import axios from "axios";
 import EventStatus from "./EventStatus";
@@ -19,25 +12,17 @@ import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import CustomPopover from "../FormsUI/CustomPopover";
 import SubproductItem from "../Products/Item/SubproductItem";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
-import {CSVLink} from "react-csv";
 import DownloadIcon from "@mui/icons-material/GetApp";
 
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import moment from "moment";
-import {Spinner} from "react-bootstrap";
 import {createEvents} from "ics";
-import MoreMenu from "../MoreMenu";
-import CustomMoreMenu from "../FormsUI/CustomMoreMenu";
-import SiteReleaseDialog from "../Sites/SiteReleaseDialog";
 import EventReleaseDialog from "./EventReleaseDialog";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 import EventItem from "./EventItem";
@@ -330,7 +315,8 @@ class EventList extends Component {
 
               let unit=event.recur.unit==="DAY"?"DAILY":event.recur.unit==="WEEK"?"WEEKLY":event.recur.unit==="MONTH"?"MONTHLY": event.recur.unit==="YEAR"?"YEARLY":""
 
-              return `FREQ=${unit};INTERVAL=${event.recur.value}`
+
+              return `FREQ=${unit};INTERVAL=${event.recur.value};UNTIL=${event.recur_until_epoch_ms}`
 
           }else{
               return ""
@@ -373,7 +359,7 @@ class EventList extends Component {
                     description:  event.description,
                     categories:[event.process],
                     recurrenceRule:this.getRule(event),
-                    end:[moment(event.recur_until_epoch_ms).toDate().getFullYear(), moment(event.recur_until_epoch_ms).toDate().getMonth()+1, moment(event.recur_until_epoch_ms).toDate().getDate(), 9, 0],
+                    // end:[moment(event.recur_until_epoch_ms).toDate().getFullYear(), moment(event.recur_until_epoch_ms).toDate().getMonth()+1, moment(event.recur_until_epoch_ms).toDate().getDate(), 9, 0],
 
                     // url: i.url
                 })

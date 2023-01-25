@@ -372,7 +372,9 @@ class EventList extends Component {
                     title:  event.title,
                     description:  event.description,
                     categories:[event.process],
-                    recurrenceRule:this.getRule(event)
+                    recurrenceRule:this.getRule(event),
+                    end:[moment(event.recur_until_epoch_ms).toDate().getFullYear(), moment(event.recur_until_epoch_ms).toDate().getMonth()+1, moment(event.recur_until_epoch_ms).toDate().getDate(), 9, 0],
+
                     // url: i.url
                 })
             })
@@ -1124,18 +1126,16 @@ class EventList extends Component {
                                 <div className="d-flex justify-content-center col-6">
 
 
-                                    <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")}
-                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")} title={"Download Calendar"} onClick={()=>{
-
+                                    <BlueSmallBtn
+                                        loading={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")}
+                                        disabled={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")} title={"Download Calendar"}
+                                        onClick={()=>{
                                         this.setState({
                                             events:[]
                                         })
-
                                         if (this.state.startDate&&this.state.endDate){
                                             this.getEvents(0,"ics");
                                         }else{
-
-
                                         }
 
                                     }

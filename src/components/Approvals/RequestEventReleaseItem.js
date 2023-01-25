@@ -268,7 +268,7 @@ class RequestEventReleaseItem extends Component {
                 event:this.props.item.EventReleaseToEvent[0].entries[0].Event
             })
             this.loadSiteSync(this.props.item.EventReleaseToEvent[0].entries[0].Event._key)
-            this.loadProductSync(this.props.item.EventReleaseToEvent[0].entries[0].Event._key)
+            this.loadProductSync(this.props.item.EventRelease._key)
         }
     }
 

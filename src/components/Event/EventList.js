@@ -316,7 +316,7 @@ class EventList extends Component {
               let unit=event.recur.unit==="DAY"?"DAILY":event.recur.unit==="WEEK"?"WEEKLY":event.recur.unit==="MONTH"?"MONTHLY": event.recur.unit==="YEAR"?"YEARLY":""
 
 
-              return `FREQ=${unit};INTERVAL=${event.recur.value};UNTIL=${event.recur_until_epoch_ms}`
+              return `FREQ=${unit};INTERVAL=${event.recur.value};UNTIL=${moment(event.recur_until_epoch_ms).format("YYYYMMDD")}`
 
           }else{
               return ""

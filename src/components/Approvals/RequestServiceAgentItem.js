@@ -431,18 +431,18 @@ class RequestServiceAgentItem extends Component {
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "cancelled"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "rejected"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "declined"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "progress"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "complete"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
-                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                             }>
                                                             {actionName === "accepted" && "Accept"}
                                                             {actionName === "cancelled" && "Cancel"}

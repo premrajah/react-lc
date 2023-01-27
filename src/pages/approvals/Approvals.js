@@ -590,7 +590,6 @@ render() {
                                                     />
                                                 </div>
                                             </div>
-                                            <div className={"listing-row-border "}></div>
 
 
                                             {this.state.eventReleases.filter(r =>

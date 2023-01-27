@@ -19,6 +19,7 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 
 
 class SiteFormNew extends Component {
@@ -958,6 +959,24 @@ class SiteFormNew extends Component {
 
                                     <div className="col-6 ps-1 ">
 
+                                        {/*<DynamicSelectArrayWrapper*/}
+                                        {/*    onChange={(value)=>this.handleChange(value,`parent`)}*/}
+                                        {/*    api={""}*/}
+                                        {/*    error={this.state.errors[`parent`]}*/}
+                                        {/*    name={`parent`}*/}
+                                        {/*    // options={this.props.siteList}*/}
+                                        {/*    apiUrl={baseUrl+"seek?name=Site&no_parent=true&count=false"}*/}
+                                        {/*    option={"Site"}*/}
+                                        {/*    subOption={"name"}*/}
+                                        {/*    searchKey={"name"}*/}
+                                        {/*    valueKey={"Site"}*/}
+                                        {/*    subValueKey={"_key"}*/}
+                                        {/*    title="Dispatch / Collection Address"*/}
+                                        {/*    details="Select product’s location from the existing sites or add new address below"*/}
+                                        {/*    initialValue={this.props.item&&this.props.item.site._key}*/}
+                                        {/*    initialValueTextbox={this.props.item&&this.props.item.site.name}*/}
+
+                                        {/*/>*/}
                                         <SelectArrayWrapper
                                             initialValue={this.props.edit?
                                                 this.props.item.parent_site&&this.props.item.parent_site._key:this.props.item?this.props.item.site?this.props.item.site._key:this.props.item._key:''}

@@ -19,7 +19,7 @@ const DynamicSelectArrayWrapper = (props) => {
     const [valueTextbox, setValueTextbox] = React.useState(initialValue);
     const [open, setOpen] = React.useState(false);
     const loading = open && (options?(options.length === 0):(response.length === 0));
-    const reset=()=>{
+    const reset=(clearExistingOptions)=>{
 
 
         setValue(null)
@@ -54,7 +54,8 @@ const DynamicSelectArrayWrapper = (props) => {
                 }
             }
         }else{
-           reset()
+            loadData()
+           reset(false)
         }
 
     };
@@ -69,6 +70,7 @@ const DynamicSelectArrayWrapper = (props) => {
                 setValueTextbox(initialValueTextbox)
             }else{
                 if (!options){
+
                     loadData()
                 }
             }
@@ -125,6 +127,7 @@ const DynamicSelectArrayWrapper = (props) => {
                             setOpen(false);
                         }}
 
+                        onBlur={()=>console.log("clicked somewhere else")}
                         onChange={
                             (event,value) =>{
 

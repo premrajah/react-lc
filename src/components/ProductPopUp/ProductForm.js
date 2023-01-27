@@ -25,6 +25,7 @@ import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
 import BlueButton from "../FormsUI/Buttons/BlueButton";
+import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 
 let slugify = require('slugify')
 
@@ -1833,7 +1834,7 @@ let slugify = require('slugify')
                     {this.state.showSubmitSite && (
                         <div
                             className={
-                                "row justify-content-center p-2 "
+                                "row justify-content-center  "
                             }>
 
 
@@ -1841,7 +1842,7 @@ let slugify = require('slugify')
                                 <div
                                     onClick={this.showSubmitSite}
                                     className={
-                                        "custom-label text-bold text-blue pt-2 pb-2 click-item"
+                                        "custom-label text-bold text-blue  pb-2 click-item"
                                     }>
                                     <ArrowBackIcon /> Add Product
                                 </div>

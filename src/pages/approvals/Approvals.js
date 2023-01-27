@@ -424,11 +424,12 @@ render() {
                                     <TabPanel value="4">
                                         <div className={"row "} >
                                             <div className="col-12 mt-3 mb-3">
-                                                <div className="col d-flex justify-content-end">
+                                                <div className="col d-flex align-items-center justify-content-between">
                                                     {/*<Link to="/approved" className="btn btn-sm blue-btn"*/}
                                                     {/*      style={{color: "#fff"}}>*/}
                                                     {/*   Site Release  Records*/}
                                                     {/*</Link>*/}
+                                                    <div className="subtitle">{this.state.siteToggle?"Site Release Records":"Site Releases"}</div>
                                                     <BlueSmallBtn
                                                         onClick={this.setSiteToggle}
                                                         title={!this.state.siteToggle?"Site Release Records":"Site Releases"}
@@ -441,9 +442,9 @@ render() {
                                                 // r.Release.stage !== "complete" &&
                                                 // r.Release.stage !== "cancelled" &&
                                                 // r.Release.stage !== "invalidated"
-                                                this.state.siteToggle?( r.Release.stage == "complete" ||
-                                                        r.Release.stage == "cancelled" ||
-                                                        r.Release.stage == "invalidated"):
+                                                this.state.siteToggle?( r.Release.stage === "complete" ||
+                                                        r.Release.stage === "cancelled" ||
+                                                        r.Release.stage === "invalidated"):
                                                     ( r.Release.stage !== "complete" &&
                                                         r.Release.stage !== "cancelled"&&
                                                         r.Release.stage !== "invalidated")

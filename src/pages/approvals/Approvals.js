@@ -579,11 +579,12 @@ render() {
                                     <TabPanel value="7">
                                         <div className={"row"} >
                                             <div className="col-12 mt-3 mb-3">
-                                                <div className="col d-flex justify-content-end">
+                                                <div className="col d-flex align-items-center justify-content-between">
                                                     {/*<Link to="/rental-request-records" className="btn btn-sm blue-btn"*/}
                                                     {/*      style={{color: "#fff"}}>*/}
                                                     {/*    Event Release Records*/}
                                                     {/*</Link>*/}
+                                                    <div className="subtitle">{this.state.eventToggle?"Event Release Records":"Event Releases"}</div>
                                                     <BlueSmallBtn
                                                     onClick={this.setEventToggle}
                                                     title={!this.state.eventToggle?"Event Release Records":"Event Releases"}

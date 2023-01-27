@@ -593,9 +593,9 @@ render() {
 
 
                                             {this.state.eventReleases.filter(r =>
-                                                this.state.eventToggle?( r.EventRelease.stage == "complete" ||
-                                                r.EventRelease.stage == "cancelled" ||
-                                                r.EventRelease.stage == "invalidated"):
+                                                this.state.eventToggle?( r.EventRelease.stage === "complete" ||
+                                                r.EventRelease.stage === "cancelled" ||
+                                                r.EventRelease.stage === "invalidated"):
                                                     ( r.EventRelease.stage !== "complete" &&
                                                         r.EventRelease.stage !== "cancelled"&&
                                                         r.EventRelease.stage !== "invalidated")

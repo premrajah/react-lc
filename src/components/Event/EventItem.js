@@ -170,10 +170,10 @@ class EventItem extends Component {
                                     </div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
                                     <div className="d-flex  flex-column right-btn-auto">
-                                    <CustomMoreMenu
+                                        {this.state.actions.length>0&&<CustomMoreMenu
                                         actions={this.state.actions}
                                         triggerCallback={(action)=>this.props.triggerCallback(action,this.state.allowDateChange)}
-                                    />
+                                    />}
                                     </div>
                                     {item.event.stage!=='resolved'   &&
                                     <div className="d-flex d-none flex-column right-btn-auto">

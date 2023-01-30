@@ -886,7 +886,7 @@ class CompanyDetails extends Component {
                                 {this.props.userContext&&   <MenuDropdown
                                     setSelection={this.switchOrg}
                                     initialValue={this.props.userContext.orgId}
-                                    options={this.state.orgs.filter((org)=>org.name!=this.props.userDetail.email)}
+                                    options={this.state.orgs.filter((org)=>org.name!==this.props.userDetail.email)}
                                     option={"name"}
                                     valueKey={"_key"}
                                 />}
@@ -951,7 +951,7 @@ class CompanyDetails extends Component {
                                     style={{ maxHeight: "150px", objectFit: "contain" }}
                                 />
                             ) : <>
-                            {this.state.org.name!=this.state.org.email &&<img
+                            {this.state.org.name!==this.state.org.email &&<img
                                     className={"rad-8"}
                                     src={PlaceholderImg}
                                     alt="logo"
@@ -960,7 +960,7 @@ class CompanyDetails extends Component {
                             </>
                             }
 
-                            {this.state.org.name!=this.state.org.email &&
+                            {this.state.org.name!==this.state.org.email &&
                             <>
                             <label className={"edit-icon d-flex"} htmlFor="fileInput-2">
                                 <EditIcon

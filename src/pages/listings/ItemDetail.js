@@ -63,7 +63,7 @@ class ItemDetail extends Component {
                         <>
                           <ListingDetail
                               type={"detail"}
-                              hideMatchesTab={this.marketplace=="marketplace"}
+                              hideMatchesTab={this.marketplace==="marketplace"}
                                          marketplace={this.marketplace}
                                          search={this.search}
                                          listingId={this.slug}  />

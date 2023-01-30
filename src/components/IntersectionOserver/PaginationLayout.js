@@ -17,7 +17,7 @@ class PaginationLayout extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps != this.props) {
+        if (prevProps !== this.props) {
 
             if (this.props.refresh){
 
@@ -148,14 +148,14 @@ class PaginationLayout extends Component {
                     element={this.props.element}
                     className={
                         this.props.loadingResults
-                            ?this.props.element=="tr"?"" : "row  justify-content-center filter-row  pt-3 pb-3"
+                            ?this.props.element==="tr"?"" : "row  justify-content-center filter-row  pt-3 pb-3"
                             : "d-none"}
                     >
                     <DynamicElement
-                        element={this.props.element=="tr"?"td":""}
+                        element={this.props.element==="tr"?"td":""}
                         colSpan={this.props.colspan}
                         className={
-                            this.props.element=="tr"?"" :"col-12 justify-content-center text-center"}
+                            this.props.element==="tr"?"" :"col-12 justify-content-center text-center"}
                         >
                         <LoaderAnimated />
                     </DynamicElement>

@@ -235,7 +235,7 @@ class ListFormNew extends Component {
 
             window.scrollTo(0, 0);
 
-            if (this.state.activeStep!=2) {
+            if (this.state.activeStep!==2) {
                 if (this.handleValidationList(this.state.activeStep + 1)) {
 
                     this.setState({
@@ -317,7 +317,7 @@ class ListFormNew extends Component {
     handleBack() {
 
 
-        if ((this.state.activeStep - 1) == 0) {
+        if ((this.state.activeStep - 1) === 0) {
 
             if (this.handleValidationList(this.state.activeStep - 1)) {
 
@@ -1076,7 +1076,7 @@ class ListFormNew extends Component {
 
 
                     {this.state.activeStep<3 &&
-                    <PageHeader pageTitle="New Listing" subTitle={this.state.activeStep==0?"Basic Details":this.state.activeStep==1?"More Details":"Preview"} />}
+                    <PageHeader pageTitle="New Listing" subTitle={this.state.activeStep===0?"Basic Details":this.state.activeStep===1?"More Details":"Preview"} />}
 
                         <div className={this.state.activeStep === 0 ? "" : "d-none"}>
                             <div className="row add-listing-container   pb-5 pt-2">

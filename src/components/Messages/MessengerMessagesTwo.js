@@ -278,7 +278,7 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
 
                     setGroupLoading(false)
 
-                    if (data.length==0){
+                    if (data.length===0){
                         setGroupListEndReached(true)
                     }
 
@@ -357,7 +357,7 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
 
             setShowTabs(false)
 
-            if (tab==0){
+            if (tab===0){
                 setOffset(0)
                 setLoading(loading)
                 setChatEndReached(false)
@@ -373,7 +373,7 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
 
         let url=`${baseUrl}message-group/${key}/message/no-links?offset=${currentOffset}&size=${pageSize}`
 
-        if (tab==1){
+        if (tab===1){
             url =`${url}&with-artifacts=true`
         }
 
@@ -384,7 +384,7 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
 
                 if (clear){
                     setShowTabs(true)
-                    if (tab==0){
+                    if (tab===0){
                         setClickedMessage([]); // clear previous chat
 
                         if (res.data.data.length<pageSize){
@@ -408,7 +408,7 @@ let orgArray=groupsTemp.map((item)=> item.value.replace("Org/",""))
 
 
                 }else{
-                    if (tab==0){
+                    if (tab===0){
                         setClickedMessage((chat) => chat.concat(res.data.data));
                     }else{
                         setClickedMessageArtifact((chat) => chat.concat(res.data.data));
@@ -443,7 +443,7 @@ try{
     if (groups.length>0){
         setSelectedMessageGroupOrgs(groups)
     }else{
-        setSelectedMessageGroupOrgs(allGroups.find(item=>item.message_group._key==key).orgs)
+        setSelectedMessageGroupOrgs(allGroups.find(item=>item.message_group._key===key).orgs)
     }
 
 }catch (e){
@@ -474,7 +474,7 @@ try{
         setFilterValues(values);
         if (filterValues) {
             let temp = allGroups.filter((item, index) => {
-                let orgs = item.orgs.filter((org) => org._id != userDetail.orgId);
+                let orgs = item.orgs.filter((org) => org._id !== userDetail.orgId);
 
                 let existFlag = false;
                 for (let i = 0; i < orgs.length; i++) {
@@ -781,7 +781,7 @@ try{
                                         onScroll={onUpScroll}
                                         setActiveTab={(data)=> {
                                             setActiveTab(data);
-                                            if (data==1){
+                                            if (data===1){
                                                 getSelectedGroupMessage(selectedMessageGroupKey,
                                                     true,true,0,1)
                                             }

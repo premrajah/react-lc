@@ -83,20 +83,20 @@ class MyCycles extends Component {
 
 
 
-                if (activeFilter=="listing_name")
+                if (activeFilter==="listing_name")
                     this.setState({
 
                         searchUrl:this.state.url+(`&find-also-to=Listing:listing_of:description~%${searchValue}%&find-also-to=Listing:listing_of:name~%${searchValue}%`)
                     })
 
 
-                if (activeFilter=="search_name")
+                if (activeFilter==="search_name")
                     this.setState({
 
                         searchUrl:this.state.url+(`&find-also-to=Search:search_for:description~%${searchValue}%&find-also-to=Search:search_for:name~%${searchValue}%`)
                     })
 
-                if (activeFilter=="product_name")
+                if (activeFilter==="product_name")
                     this.setState({
 
                         searchUrl:this.state.url+(`&find-also-to=Product:product_of:description~%${searchValue}%&find-also-to=Product:product_of:name~%${searchValue}%`)
@@ -274,12 +274,12 @@ class MyCycles extends Component {
 
                                                 sender={item.CycleToOrg.find((org)=>
 
-                                                    org.entries[0].CycleToOrg._relation=="sender_of").entries[0].Org
+                                                    org.entries[0].CycleToOrg._relation==="sender_of").entries[0].Org
                                                 }
 
                                                 receiver={item.CycleToOrg.find((org)=>
 
-                                                    org.entries[0].CycleToOrg._relation=="receiver_of").entries[0].Org
+                                                    org.entries[0].CycleToOrg._relation==="receiver_of").entries[0].Org
                                                 }
 
                                                 // receiver={item.CycleToOrg.find((org)=> {

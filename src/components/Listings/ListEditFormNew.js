@@ -835,7 +835,7 @@ class ListEditFormNew extends Component {
 
 
             if (this.state.previewProduct&&this.state.previewProduct.site_id&&
-                value!=this.state.previewProduct.site_id.replace("Site/","")){
+                value!==this.state.previewProduct.site_id.replace("Site/","")){
 
                 this.showAddressMismatch()
             }
@@ -1012,7 +1012,7 @@ class ListEditFormNew extends Component {
 
 
             this.setState({
-                free: this.props.item.listing.price.value==0?true:false,
+                free: this.props.item.listing.price.value===0?true:false,
                 startDate: this.props.item.listing.available_from_epoch_ms,
                 endDate: this.props.item.listing.expire_after_epoch_ms,
                 previewProduct:this.props.item.product

@@ -265,7 +265,7 @@ class CreateCampaign extends Component {
 
 componentDidUpdate(prevProps, prevState, snapshot) {
 
-        if (prevProps!=this.props){
+        if (prevProps!==this.props){
             this.setParams()
         }
 }
@@ -277,7 +277,7 @@ setParams=async () => {
     if (this.props.item) {
 
 
-        if (this.props.type != "draft") {
+        if (this.props.type !== "draft") {
 
             await this.loadSavedValues(this.props.item, this.props.type)
 
@@ -505,7 +505,7 @@ setParams=async () => {
 
 let item=null
 
-        if (type!="draft"){
+        if (type!=="draft"){
              item=data
         }else{
             item=data.value

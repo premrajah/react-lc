@@ -721,7 +721,7 @@ class TransferScaling extends Component {
 
                                                 <form onSubmit={this.addTransferScaling}>
 
-                                                      <div className={this.state.type!="delete"?"row":"d-none"}>
+                                                      <div className={this.state.type!=="delete"?"row":"d-none"}>
                                                         <div className={"col-12"}>
 
                                                                 <div className="row ">

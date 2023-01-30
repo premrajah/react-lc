@@ -464,24 +464,24 @@ class SignUp extends Component {
 
                             </>}
 
-                            <div className="col-12 ">
-                                <div className="row ">
-                                    {!this.state.isLoopCycleCompany &&
-                                    <div className="col-6 ">
-                                        <TextFieldWrapper
-                                            onChange={(value)=>this.handleChange(value,"no_of_staff")}
-                                            error={this.state.errors["no_of_staff"]}
-                                            name="no_of_staff" title="No. of staff" />
+                            {/*<div className="col-12 ">*/}
+                            {/*    <div className="row ">*/}
+                            {/*        {!this.state.isLoopCycleCompany &&*/}
+                            {/*        <div className="col-6 ">*/}
+                            {/*            <TextFieldWrapper*/}
+                            {/*                onChange={(value)=>this.handleChange(value,"no_of_staff")}*/}
+                            {/*                error={this.state.errors["no_of_staff"]}*/}
+                            {/*                name="no_of_staff" title="No. of staff" />*/}
 
-                                    </div>}
-                                    <div className="col-6 ">
-                                <TextFieldWrapper
-                                    onChange={(value)=>this.handleChange(value,"referral")}
-                                    error={this.state.errors["referral"]}
-                                    name="referral" title="Referral Code (If Any)" />
-                                    </div>
-                                </div>
-                            </div>
+                            {/*        </div>}*/}
+                            {/*        <div className="col-6 ">*/}
+                            {/*    <TextFieldWrapper*/}
+                            {/*        onChange={(value)=>this.handleChange(value,"referral")}*/}
+                            {/*        error={this.state.errors["referral"]}*/}
+                            {/*        name="referral" title="Referral Code (If Any)" />*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
 
 
                             <div className="col-12 ">

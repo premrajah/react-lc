@@ -709,7 +709,7 @@ class TransferScaling extends Component {
                                                 <p
                                                     style={{ textTransform: "Capitalize" }}
                                                     className={"text-bold text-blue"}>
-                                                    {this.state.type==="edit"?"Edit Transfer Scaling ":this.state.type=="add"?"Add Transfer Scaling":"Delete Transfer Scaling"}
+                                                    {this.state.type==="edit"?"Edit Transfer Scaling ":this.state.type==="add"?"Add Transfer Scaling":"Delete Transfer Scaling"}
                                                 </p>
                                             </div>
                                         </div>

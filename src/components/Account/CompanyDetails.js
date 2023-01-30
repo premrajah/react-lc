@@ -569,7 +569,7 @@ class CompanyDetails extends Component {
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps!=this.props){
+        if (prevProps!==this.props){
             this.setState({
                 orgs:[]
             })
@@ -793,7 +793,7 @@ class CompanyDetails extends Component {
 
         axios
             .delete(baseUrl + "user/org",{
-                data:{org_id:this.state.removeCompanyPopUpType==1?this.state.org._key:this.state.orgId}
+                data:{org_id:this.state.removeCompanyPopUpType===1?this.state.org._key:this.state.orgId}
             })
             .then((res) => {
 
@@ -811,12 +811,12 @@ class CompanyDetails extends Component {
 
                 this.removeCompany(0);
 
-                if (this.props.removeCompanyPopUpType==1) {
+                if (this.props.removeCompanyPopUpType===1) {
                     setTimeout(function () {
                         window.location.href = "/account";
                     }, 1000);
 
-                }else  if (this.props.removeCompanyPopUpType==2) {
+                }else  if (this.props.removeCompanyPopUpType===2) {
                     this.getOrgsApprovalForUser()
                 }
 
@@ -1055,7 +1055,7 @@ class CompanyDetails extends Component {
                                         <div className=" text-blue">
 
                                             <span className={"text-blue"}>
-                                                {this.state.org.name==this.state.org.email?"Thank you for signing up. We have received your request to join, we will review within 48 hours. Any questions, please message Loopcycle on the platform.":this.state.org.name}
+                                                {this.state.org.name===this.state.org.email?"Thank you for signing up. We have received your request to join, we will review within 48 hours. Any questions, please message Loopcycle on the platform.":this.state.org.name}
                                             </span>
                                         </div>
 
@@ -1325,7 +1325,7 @@ class CompanyDetails extends Component {
                     size={"xs"}
                     hide={this.removeCompany}
                     show={this.state.showRemoveCompany}
-                    heading={this.state.removeCompanyPopUpType==1?"Un-join "+this.state.org.name:"Cancel Join Request"}>
+                    heading={this.state.removeCompanyPopUpType===1?"Un-join "+this.state.org.name:"Cancel Join Request"}>
                     <>
                         <div className="col-12 ">
                             {this.state.errorCompany && (      <div className="row no-gutters">
@@ -1341,7 +1341,7 @@ class CompanyDetails extends Component {
 
                             <div className="row no-gutters">
                                 <div className="col-12 ">
-                                    {this.state.removeCompanyPopUpType==1?"Are you sure you want to un-join the company ?":
+                                    {this.state.removeCompanyPopUpType===1?"Are you sure you want to un-join the company ?":
                                         "Are you sure you want to cancel join request ?"}
                                 </div>
                             </div>

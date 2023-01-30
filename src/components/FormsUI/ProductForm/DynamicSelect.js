@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const DynamicSelectArrayWrapper = (props) => {
 
     const {label,title,option,initialValue,initialValueTextbox,detailsHeading,details,placeholder,valueKey,subValueKey,subOption,
-        name,select,onChange, helperText,disabled,defaultValueSelect,apiUrl,searchKey, defaultValue,options,error, ...rest} = props;
+        name,select,onChange, helperText,disabled,defaultValueSelect,filterKey,apiUrl,searchKey, defaultValue,options,error, ...rest} = props;
 
     const [value, setValue] = React.useState(initialValue);
     const [response, setResponse] = React.useState([]);
@@ -82,6 +82,7 @@ const DynamicSelectArrayWrapper = (props) => {
 
         let url=apiUrl
 
+
          if (searchValue)
          url = url+encodeURI(`&or=${searchKey}~%${searchValue}%`)
 
@@ -89,7 +90,20 @@ const DynamicSelectArrayWrapper = (props) => {
          setResponse([])
         axios.get(url).then(
             (res) => {
-                setResponse(res.data.data)
+
+
+                let items=res.data.data
+
+                if (filterKey){
+                   setResponse( items.filter((item)=>
+
+                        typeof item === 'string' ?
+                            item :subValueKey? item[`${valueKey}`][`${subValueKey}`]!=filterKey:item[`${valueKey}`]!=filterKey
+                    ))
+                }else{
+                    setResponse(items)
+                }
+
             },
             (error) => {
                 // let status = error.response.status

@@ -207,7 +207,12 @@ const SitePageItem = (  props) => {
 
 
                                {props.showEdit &&
-                               <IconButton onClick={() => editSiteSelection()} > <EditIcon  fontSize="24px" /></IconButton>}
+                               <IconButton onClick={() => {
+                                   // editSiteSelection()
+
+                                   props.toggleSite()
+
+                               }} > <EditIcon  fontSize="24px" /></IconButton>}
                                {props.moreMenu&& <MoreMenu
                                    triggerCallback={(action) =>
                                        callBackResult(action)

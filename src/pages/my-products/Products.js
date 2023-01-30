@@ -916,7 +916,11 @@ class Products extends Component {
                                         }
                                         showAddToListButton
                                     /> : <div id={`${item._key}-${index}`} key={item._key + "-" + index}>
-                                        <ProductsCondensedView product={item.Product} index={index} site={getSite(item)}  />
+                                        <ProductsCondensedView
+
+
+
+                                            product={item.Product} index={index} site={getSite(item)}  />
                                     </div>}
                                 </div>
                             ))}

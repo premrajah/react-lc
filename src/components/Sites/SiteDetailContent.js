@@ -646,7 +646,11 @@ class SiteDetailContent extends Component {
                                 <div className="col-12 ">
 
                                     <SiteFormNew
-                                        hide={this.toggleSite} edit item={this.props.item}
+                                        hide={this.toggleSite}
+                                        edit
+                                        item={this.props.item.site}
+                                        parent_site={this.props.item.parent_site}
+
                                                   refresh={()=>this.toggleSite(true)}
                                     />
                                 </div>

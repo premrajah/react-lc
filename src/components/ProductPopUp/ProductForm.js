@@ -1363,37 +1363,37 @@ let slugify = require('slugify')
                                             {!this.props.productLines &&
                                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
-                                                {/*<DynamicSelectArrayWrapper*/}
-                                                {/*    onChange={(value)=>this.handleChangeProduct(value,`deliver`)}*/}
-                                                {/*    api={""}*/}
-                                                {/*    error={this.state.errors[`deliver`]}*/}
-                                                {/*    name={`deliver`}*/}
-                                                {/*    // options={this.props.siteList}*/}
-                                                {/*    apiUrl={baseUrl+"seek?name=Site&no_parent=true&count=false"}*/}
-                                                {/*    option={"Site"}*/}
-                                                {/*    subOption={"name"}*/}
-                                                {/*    searchKey={"name"}*/}
-                                                {/*    valueKey={"Site"}*/}
-                                                {/*    subValueKey={"_key"}*/}
-                                                {/*    title="Dispatch / Collection Address"*/}
-                                                {/*    details="Select product’s location from the existing sites or add new address below"*/}
-                                                {/*    initialValue={this.props.item&&this.props.item.site._key}*/}
-                                                {/*    initialValueTextbox={this.props.item&&this.props.item.site.name}*/}
-
-                                                {/*/>*/}
-                                                <SelectArrayWrapper
-
+                                                <DynamicSelectArrayWrapper
+                                                    onChange={(value)=>this.handleChangeProduct(value,`deliver`)}
+                                                    api={""}
+                                                    error={this.state.errors[`deliver`]}
+                                                    name={`deliver`}
+                                                    // options={this.props.siteList}
+                                                    apiUrl={baseUrl+"seek?name=Site&no_parent=true&count=false"}
+                                                    option={"Site"}
+                                                    subOption={"name"}
+                                                    searchKey={"name"}
+                                                    valueKey={"Site"}
+                                                    subValueKey={"_key"}
+                                                    title="Dispatch / Collection Address"
                                                     details="Select product’s location from the existing sites or add new address below"
                                                     initialValue={this.props.item&&this.props.item.site._key}
-                                                    option={"name"}
-                                                    valueKey={"_key"}
-                                                    error={this.state.errors["deliver"]}
-                                                    onChange={(value)=> {this.handleChangeProduct(value,"deliver")}}
-                                                    select={"Select"}
-                                                    options={this.props.siteList}
-                                                    name={"deliver"}
-                                                    title="Dispatch / Collection Address"
+                                                    initialValueTextbox={this.props.item&&this.props.item.site.name}
+
                                                 />
+                                                {/*<SelectArrayWrapper*/}
+
+                                                {/*    details="Select product’s location from the existing sites or add new address below"*/}
+                                                {/*    initialValue={this.props.item&&this.props.item.site._key}*/}
+                                                {/*    option={"name"}*/}
+                                                {/*    valueKey={"_key"}*/}
+                                                {/*    error={this.state.errors["deliver"]}*/}
+                                                {/*    onChange={(value)=> {this.handleChangeProduct(value,"deliver")}}*/}
+                                                {/*    select={"Select"}*/}
+                                                {/*    options={this.props.siteList}*/}
+                                                {/*    name={"deliver"}*/}
+                                                {/*    title="Dispatch / Collection Address"*/}
+                                                {/*/>*/}
 
 
                                                 <p style={{ marginTop: "10px" }}>

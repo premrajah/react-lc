@@ -516,8 +516,10 @@ const UploadMultiSiteOrProduct = (props) => {
                     "is_listable": listItem.is_listable.toLowerCase()==="true"?true:false,
                     // "is_manufacturer": listItem.is_manufacturer.toLowerCase()==="true"?true:false,
                     "power_supply": listItem.power_supply?listItem.power_supply.toLowerCase():null,
-                    "gross_weight_kgs": listItem.gross_weight_kgs?listItem.gross_weight_kgs:0,
-                    "embodied_carbon_kgs": listItem.embodied_carbon_kgs?listItem.embodied_carbon_kgs:0,
+
+                    "gross_weight_kgs": listItem.gross_weight_kgs?listItem.gross_weight_kgs:null,
+                    "embodied_carbon_kgs": listItem.embodied_carbon_kgs?listItem.embodied_carbon_kgs:null,
+
 
 
                 }

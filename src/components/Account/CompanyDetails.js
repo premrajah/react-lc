@@ -577,6 +577,12 @@ class CompanyDetails extends Component {
         }
     }
 
+    UNSAFE_componentWillMount() {
+        this.props.loadUserDetail();
+        this.props.userContext();
+
+    }
+
     componentDidMount() {
 
         this.getOrgsForUser();
@@ -1386,6 +1392,8 @@ const mapStateToProps = (state) => {
         userDetail: state.userDetail,
         orgImage: state.orgImage,
         userContext: state.userContext,
+
+
     };
 };
 
@@ -1393,6 +1401,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+        loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
+        userContext: (data) => dispatch(actionCreator.userContext(data)),
     };
 };
 

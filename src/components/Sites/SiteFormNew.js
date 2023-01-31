@@ -510,7 +510,7 @@ class SiteFormNew extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
 
 
-        if (prevProps!=this.props) {
+        if (prevProps!==this.props) {
             this.getSubSites()
 
 

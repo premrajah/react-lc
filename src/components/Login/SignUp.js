@@ -401,17 +401,17 @@ class SignUp extends Component {
                             </div>
 
 
-                            <div className="col-12 ">
-                                <div className="row ">
+                            {/*<div className="col-12 ">*/}
+                            {/*    <div className="row ">*/}
 
-                                    <div className="col-6 ">
-                                <TextFieldWrapper
-                                    onChange={(value)=>this.handleChange(value,"referral")}
-                                    error={this.state.errors["referral"]}
-                                    name="referral" title="Referral Code (If Any)" />
-                                    </div>
-                                </div>
-                            </div>
+                            {/*        <div className="col-6 ">*/}
+                            {/*    <TextFieldWrapper*/}
+                            {/*        onChange={(value)=>this.handleChange(value,"referral")}*/}
+                            {/*        error={this.state.errors["referral"]}*/}
+                            {/*        name="referral" title="Referral Code (If Any)" />*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
 
 
                             <div className="col-12 ">

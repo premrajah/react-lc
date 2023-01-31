@@ -439,7 +439,7 @@ class ManageUserItem extends Component {
                         <div className=" col-5 text-right ">
 
                             {this.state.status.show &&  <p className={"  status text-right"}>
-                                <span className={this.state.status.type=="Approved"?" active text-capitlize":"text-capitlize waiting "}>
+                                <span className={this.state.status.type==="Approved"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.state.status.type}
                                 </span>
                             </p>}

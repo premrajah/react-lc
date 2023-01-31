@@ -291,7 +291,7 @@ class SearchFormPage extends Component {
     handleBack() {
 
 
-if ((this.state.activeStep-1)==0){
+if ((this.state.activeStep-1)===0){
 
     if(this.handleValidationSearch(this.state.activeStep-1)){
 
@@ -746,7 +746,7 @@ if ((this.state.activeStep-1)==0){
         if (this.handleValidationSearch(this.state.activeStep)){
 
 
-            if (this.state.activeStep==1){
+            if (this.state.activeStep===1){
 
                 if (this.validateDates()){
 

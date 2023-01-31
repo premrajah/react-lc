@@ -290,13 +290,13 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
 
 const SeenData=(props)=>{
 
-                let totalOrgs=props.orgs.filter(orgItem=> orgItem.actor=="message_to")
-                let orgsSeen=props.orgs.filter(orgItem=> orgItem.actor=="message_to"&&orgItem.read_flag)
+                let totalOrgs=props.orgs.filter(orgItem=> orgItem.actor==="message_to")
+                let orgsSeen=props.orgs.filter(orgItem=> orgItem.actor==="message_to"&&orgItem.read_flag)
     let seenStatus=0  // 0- no seen,1 atleast one seen, 2 - all seen
 
 
     if (totalOrgs.length>orgsSeen.length){
-        if (orgsSeen.length==0){
+        if (orgsSeen.length===0){
             seenStatus=0
         }else{
             seenStatus=1
@@ -319,12 +319,12 @@ const SeenData=(props)=>{
             ?<>
 
           <CustomPopover text={seenText}>  <>
-            {seenStatus==2&&<DoneAll fontSize={"small"}  style={{color:"var(--lc-green)"}}/>}
-            {seenStatus==1&&<DoneAll fontSize={"small"} style={{color:"var(--lc-light-gray)"}}/>}
+            {seenStatus===2&&<DoneAll fontSize={"small"}  style={{color:"var(--lc-green)"}}/>}
+            {seenStatus===1&&<DoneAll fontSize={"small"} style={{color:"var(--lc-light-gray)"}}/>}
           </>
           </CustomPopover>
 
-            {seenStatus==0&&<Done fontSize={"small"} style={{color:"var(--lc-light-gray)"}}/>}
+            {seenStatus===0&&<Done fontSize={"small"} style={{color:"var(--lc-light-gray)"}}/>}
             </>:""}
 </>
     )

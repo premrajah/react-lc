@@ -408,7 +408,7 @@ class AssumeRoles extends Component {
                                                 this.showSubmitSite()
 
                                             }}
-                                            className="col-12  "><span className={`${this.state.fields.value==item.Org._key?  "selected-green-item":""} tree-item-name`}>{item.Org.name}</span></div>
+                                            className="col-12  "><span className={`${this.state.fields.value===item.Org._key?  "selected-green-item":""} tree-item-name`}>{item.Org.name}</span></div>
                                     </div>
                                 </div>
                             ))}

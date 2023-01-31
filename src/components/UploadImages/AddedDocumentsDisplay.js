@@ -101,7 +101,7 @@ const AddedDocumentsDisplay = (props) => {
                                 return (
 
                                     <>
-                                        {index==0 &&  <p className=" custom-label text-bold text-blue mt-4 mb-4">
+                                        {index===0 &&  <p className=" custom-label text-bold text-blue mt-4 mb-4">
 
                                             Files Uploaded
 

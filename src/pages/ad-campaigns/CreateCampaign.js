@@ -217,7 +217,7 @@ class CreateCampaign extends Component {
 
 
 
-        if (value=="category"){
+        if (value==="category"){
 
             autocompleteOptions[field]=this.state.categories
 
@@ -226,7 +226,7 @@ class CreateCampaign extends Component {
             })
         }
 
-        else if (value=="type"){
+        else if (value==="type"){
 
             autocompleteOptions[field]=this.state.types
 
@@ -234,7 +234,7 @@ class CreateCampaign extends Component {
                 autocompleteOptions:autocompleteOptions
             })
         }
-        else if (value=="state"){
+        else if (value==="state"){
 
             autocompleteOptions[field]=this.state.states
 
@@ -265,7 +265,7 @@ class CreateCampaign extends Component {
 
 componentDidUpdate(prevProps, prevState, snapshot) {
 
-        if (prevProps!=this.props){
+        if (prevProps!==this.props){
             this.setParams()
         }
 }
@@ -277,7 +277,7 @@ setParams=async () => {
     if (this.props.item) {
 
 
-        if (this.props.type != "draft") {
+        if (this.props.type !== "draft") {
 
             await this.loadSavedValues(this.props.item, this.props.type)
 
@@ -393,13 +393,13 @@ setParams=async () => {
                     this.setState({
 
                         categories:categories.filter(function(item, pos) {
-                            return categories.indexOf(item) == pos;
+                            return categories.indexOf(item) === pos;
                         }),
                         states:states.filter(function(item, pos) {
-                            return states.indexOf(item) == pos;
+                            return states.indexOf(item) === pos;
                         }),
                         types:types.filter(function(item, pos) {
-                            return types.indexOf(item) == pos;
+                            return types.indexOf(item) === pos;
                         })
                     })
 
@@ -505,7 +505,7 @@ setParams=async () => {
 
 let item=null
 
-        if (type!="draft"){
+        if (type!=="draft"){
              item=data
         }else{
             item=data.value
@@ -577,18 +577,18 @@ let item=null
     handleNext = (event) => {
 
 
-        if(event.keyCode == 13) {
+        if(event.keyCode === 13) {
 
             event.preventDefault();
             return false;
         }
 
-        if (this.state.activeStep==0)
+        if (this.state.activeStep===0)
             this.countStrategyProducts()
 
         if (this.state.activeStep<(getSteps().length-1)&&this.handleValidation(this.state.activeStep)) {
 
-            if (this.state.activeStep==0&&!this.validateDates()){
+            if (this.state.activeStep===0&&!this.validateDates()){
 
                 return
             }

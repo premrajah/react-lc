@@ -82,7 +82,7 @@ gcp_deploy_dev:
     - develop-api2
 
 gcp_build_prod:
-  stage: build
+  stage: prod_build
   image: docker:git
   needs: ['start_to_teams']
   services:
@@ -108,7 +108,7 @@ gcp_build_prod:
     - master
 
 gcp_deploy_prod:
-  stage: deploy
+  stage: prod_deploy
   needs: ['gcp_build_prod']
   dependencies: ['gcp_build_prod']
   image: kiwigrid/gcloud-kubectl-helm
@@ -122,7 +122,7 @@ gcp_deploy_prod:
   when: manual
 
 gcp_build_stage:
-  stage: build
+  stage: stage_build
   image: docker:git
   needs: ['start_to_teams']
   services:
@@ -148,7 +148,7 @@ gcp_build_stage:
     - master
 
 gcp_deploy_stage:
-  stage: deploy
+  stage: stage_deploy
   needs: ['gcp_build_stage']
   dependencies: ['gcp_build_stage']
   image: kiwigrid/gcloud-kubectl-helm

@@ -135,7 +135,7 @@ class ConversionsTab extends Component {
 
                 this.updateUnitConversions()
                 this.props.loadCurrentProduct(this.props.item.product._key)
-                this.props.showSnackbar({show:true,severity:"success",message:this.state.type=="edit"?"Unit conversion edited successfully. Thanks":"`Unit conversion deleted successfully. Thanks`" })
+                this.props.showSnackbar({show:true,severity:"success",message:this.state.type==="edit"?"Unit conversion edited successfully. Thanks":"`Unit conversion deleted successfully. Thanks`" })
 
             })
             .catch((error) => {});

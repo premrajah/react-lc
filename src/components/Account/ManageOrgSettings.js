@@ -94,7 +94,7 @@ class ManageOrgSettings extends Component {
 
                     });
                     this.setState({
-                        roles: response.data.data.filter((item)=> item.type!="loopcycle_admin"),
+                        roles: response.data.data.filter((item)=> item.type!=="loopcycle_admin"),
 
                     });
                 },

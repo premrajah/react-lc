@@ -850,7 +850,7 @@ class EventList extends Component {
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
 
-                                                {this.state.selectedEvent.event.recur.value} {RECUR_UNITS.find(item=> item.key==this.state.selectedEvent.event.recur.unit).value}
+                                                {this.state.selectedEvent.event.recur.value} {RECUR_UNITS.find(item=> item.key===this.state.selectedEvent.event.recur.unit).value}
                                             </p>
                                         </div>}
 

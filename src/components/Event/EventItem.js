@@ -57,7 +57,7 @@ class EventItem extends Component {
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-          if (this.props!=prevProps){
+          if (this.props!==prevProps){
 
           }
     }

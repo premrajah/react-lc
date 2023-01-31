@@ -220,7 +220,7 @@ class ResourceItem extends Component {
                                 <p className={"status text-right"}>
 
 
-                                    <span className={this.props.item.listing.stage!="inactive"&&this.props.item.listing.stage!="expired"?" active text-capitlize":"text-capitlize waiting "}>
+                                    <span className={this.props.item.listing.stage!=="inactive"&&this.props.item.listing.stage!=="expired"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.listing.stage}
                                 </span>
                                 </p>

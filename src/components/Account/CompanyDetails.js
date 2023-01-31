@@ -569,12 +569,18 @@ class CompanyDetails extends Component {
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps!=this.props){
+        if (prevProps!==this.props){
             this.setState({
                 orgs:[]
             })
             this.getOrgsForUser();
         }
+    }
+
+    UNSAFE_componentWillMount() {
+        this.props.loadUserDetail();
+        this.props.userContext();
+
     }
 
     componentDidMount() {
@@ -584,6 +590,11 @@ class CompanyDetails extends Component {
         this.companyInfo();
         this.getFiltersCategories();
         this.setActiveKey(null,"1")
+    }
+
+    UNSAFE_componentWillMount() {
+        this.props.loadUserDetail();
+        this.props.userContext();
     }
 
     handleChangeProduct(value, field) {
@@ -793,7 +804,7 @@ class CompanyDetails extends Component {
 
         axios
             .delete(baseUrl + "user/org",{
-                data:{org_id:this.state.removeCompanyPopUpType==1?this.state.org._key:this.state.orgId}
+                data:{org_id:this.state.removeCompanyPopUpType===1?this.state.org._key:this.state.orgId}
             })
             .then((res) => {
 
@@ -811,12 +822,12 @@ class CompanyDetails extends Component {
 
                 this.removeCompany(0);
 
-                if (this.props.removeCompanyPopUpType==1) {
+                if (this.props.removeCompanyPopUpType===1) {
                     setTimeout(function () {
                         window.location.href = "/account";
                     }, 1000);
 
-                }else  if (this.props.removeCompanyPopUpType==2) {
+                }else  if (this.props.removeCompanyPopUpType===2) {
                     this.getOrgsApprovalForUser()
                 }
 
@@ -886,7 +897,7 @@ class CompanyDetails extends Component {
                                 {this.props.userContext&&   <MenuDropdown
                                     setSelection={this.switchOrg}
                                     initialValue={this.props.userContext.orgId}
-                                    options={this.state.orgs.filter((org)=>org.name!=this.props.userDetail.email)}
+                                    options={this.state.orgs.filter((org)=>org.name!==this.props.userDetail.email)}
                                     option={"name"}
                                     valueKey={"_key"}
                                 />}
@@ -951,7 +962,7 @@ class CompanyDetails extends Component {
                                     style={{ maxHeight: "150px", objectFit: "contain" }}
                                 />
                             ) : <>
-                            {this.state.org.name!=this.state.org.email &&<img
+                            {this.state.org.name!==this.state.org.email &&<img
                                     className={"rad-8"}
                                     src={PlaceholderImg}
                                     alt="logo"
@@ -960,7 +971,7 @@ class CompanyDetails extends Component {
                             </>
                             }
 
-                            {this.state.org.name!=this.state.org.email &&
+                            {this.state.org.name!==this.state.org.email &&
                             <>
                             <label className={"edit-icon d-flex"} htmlFor="fileInput-2">
                                 <EditIcon
@@ -1055,7 +1066,7 @@ class CompanyDetails extends Component {
                                         <div className=" text-blue">
 
                                             <span className={"text-blue"}>
-                                                {this.state.org.name==this.state.org.email?"Thank you for signing up. We have received your request to join, we will review within 48 hours. Any questions, please message Loopcycle on the platform.":this.state.org.name}
+                                                {this.state.org.name===this.state.org.email?"Thank you for signing up. We have received your request to join, we will review within 48 hours. Any questions, please message Loopcycle on the platform.":this.state.org.name}
                                             </span>
                                         </div>
 
@@ -1325,7 +1336,7 @@ class CompanyDetails extends Component {
                     size={"xs"}
                     hide={this.removeCompany}
                     show={this.state.showRemoveCompany}
-                    heading={this.state.removeCompanyPopUpType==1?"Un-join "+this.state.org.name:"Cancel Join Request"}>
+                    heading={this.state.removeCompanyPopUpType===1?"Un-join "+this.state.org.name:"Cancel Join Request"}>
                     <>
                         <div className="col-12 ">
                             {this.state.errorCompany && (      <div className="row no-gutters">
@@ -1341,7 +1352,7 @@ class CompanyDetails extends Component {
 
                             <div className="row no-gutters">
                                 <div className="col-12 ">
-                                    {this.state.removeCompanyPopUpType==1?"Are you sure you want to un-join the company ?":
+                                    {this.state.removeCompanyPopUpType===1?"Are you sure you want to un-join the company ?":
                                         "Are you sure you want to cancel join request ?"}
                                 </div>
                             </div>
@@ -1386,6 +1397,8 @@ const mapStateToProps = (state) => {
         userDetail: state.userDetail,
         orgImage: state.orgImage,
         userContext: state.userContext,
+
+
     };
 };
 
@@ -1393,6 +1406,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+        loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
+        userContext: (data) => dispatch(actionCreator.userContext(data)),
     };
 };
 

@@ -358,7 +358,7 @@ class RequestEventReleaseItem extends Component {
                                     </Link>
                                 </p>
                                 <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
-                                    Stage: <span className={"text-blue"}>{this.state.item.EventRelease.stage=="complete"?"Completed":this.state.item.EventRelease.stage}</span>
+                                    Stage: <span className={"text-blue"}>{this.state.item.EventRelease.stage==="complete"?"Completed":this.state.item.EventRelease.stage}</span>
                                 </p>
 
                                 <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">

@@ -529,28 +529,7 @@ class Products extends Component {
 
 
         try {
-            // let products = [];
-            //
-            // let mapData = [];
-            //
-            // this.state.selectedProducts.forEach((item) => {
-            //
-            //     mapData.push({_key: item.Product._key, name: item.Product.name,site:getSite(item)});
-            //     return products.push(item.Product._key);
-            // });
 
-
-
-
-
-            // let sites = res.data.data;
-            //
-            // for (let i = 0; i < mapData.length; i++) {
-            //     let site = sites.find(
-            //         (site) => site.product_id.replace("Product/", "") === mapData[i]._key
-            //     );
-            //     mapData[i].site = site.site;
-            // }
 
             let mapData=this.mapProductToSite()
             this.mapProductToSite()
@@ -559,29 +538,7 @@ class Products extends Component {
                 showMap: !this.state.showMap,
 
             });
-            // axios
-            //     .post(baseUrl + "product/site/get-many", {product_ids: products})
-            //     .then((res) => {
-            //         if (res.status === 200) {
-            //             let sites = res.data.data;
-            //
-            //             for (let i = 0; i < mapData.length; i++) {
-            //                 let site = sites.find(
-            //                     (site) => site.product_id.replace("Product/", "") === mapData[i]._key
-            //                 );
-            //                 mapData[i].site = site.site;
-            //             }
-            //
-            //             this.setState({
-            //                 showMap: !this.state.showMap,
-            //                 mapData: mapData,
-            //             });
-            //         } else {
-            //         }
-            //     })
-            //     .catch((error) => {
-            //         if (error.response) console.log(error);
-            //     });
+
 
         }catch (e){
             console.log(e)

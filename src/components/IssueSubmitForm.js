@@ -49,12 +49,12 @@ timeout=0
 
         if (add) {
 
-            if (keywords.length==0||!keywords.find((item)=>item==keyword))
+            if (keywords.length===0||!keywords.find((item)=>item===keyword))
              keywords.push(keyword)
 
         }else {
             if (keywords.length>0) {
-                keywords = keywords.filter((item) => keyword != item)
+                keywords = keywords.filter((item) => keyword !== item)
             }
         }
 
@@ -269,7 +269,7 @@ timeout=0
                                                       onChange={(keyword,add)=>
                                                       this.addToKeywords(keyword,add)}
                                                       selected={(this.props.issue&&this.props.issue.keywords
-                                                      &&this.props.issue.keywords.find((key)=>item.name==key))?true:false}
+                                                      &&this.props.issue.keywords.find((key)=>item.name===key))?true:false}
                                                       item={item} />
                                               )}
 

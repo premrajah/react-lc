@@ -93,7 +93,7 @@ class CycleItem extends Component {
                         </p>
 
                         <p className={"  status mt-3 text-right"}>
-                                <span className={this.props.item.cycle.stage!="closed"?" active text-capitlize":"text-capitlize waiting "}>
+                                <span className={this.props.item.cycle.stage!=="closed"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.cycle.stage}
                                 </span>
                         </p>

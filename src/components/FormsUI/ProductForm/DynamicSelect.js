@@ -98,7 +98,7 @@ const DynamicSelectArrayWrapper = (props) => {
                    setResponse( items.filter((item)=>
 
                         typeof item === 'string' ?
-                            item :subValueKey? item[`${valueKey}`][`${subValueKey}`]!=filterKey:item[`${valueKey}`]!=filterKey
+                            item :subValueKey? item[`${valueKey}`][`${subValueKey}`]!==filterKey:item[`${valueKey}`]!==filterKey
                     ))
                 }else{
                     setResponse(items)

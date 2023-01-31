@@ -581,7 +581,7 @@ class MatchItemSeller extends Component {
                     <div className="col-12">
 
 
-                            {this.state.messages.filter(item=> item.message.type=="message").map((message)=>
+                            {this.state.messages.filter(item=> item.message.type==="message").map((message)=>
                                 <>
                                     <hr/>
                                 <div className="row d-flex align-items-center">

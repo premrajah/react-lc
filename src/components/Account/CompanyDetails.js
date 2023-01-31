@@ -586,6 +586,11 @@ class CompanyDetails extends Component {
         this.setActiveKey(null,"1")
     }
 
+    UNSAFE_componentWillMount() {
+        this.props.loadUserDetail();
+        this.props.userContext();
+    }
+
     handleChangeProduct(value, field) {
         let fields = this.state.fields;
         fields[field] = value;
@@ -1393,6 +1398,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setOrgImage: (data) => dispatch(actionCreator.setOrgImage(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+        loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
+        userContext: (data) => dispatch(actionCreator.userContext(data)),
     };
 };
 

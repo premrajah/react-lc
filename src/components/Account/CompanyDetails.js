@@ -577,6 +577,12 @@ class CompanyDetails extends Component {
         }
     }
 
+    UNSAFE_componentWillMount() {
+        this.props.loadUserDetail();
+        this.props.userContext();
+
+    }
+
     componentDidMount() {
 
         this.getOrgsForUser();
@@ -1391,6 +1397,8 @@ const mapStateToProps = (state) => {
         userDetail: state.userDetail,
         orgImage: state.orgImage,
         userContext: state.userContext,
+
+
     };
 };
 

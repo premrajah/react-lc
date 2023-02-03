@@ -84,7 +84,7 @@ gcp_deploy_dev:
 gcp_build_prod:
   stage: prod_build
   image: docker:git
-  needs: ['start_to_teams']
+  needs: ['gcp_deploy_stage']
   services:
     - docker:dind
   before_script:

@@ -93,21 +93,23 @@ export const PRODUCTS_FILTER_VALUES = [
     {key:"category",label:"Category" },
     {key:"type",label:"Type" },
     {key:"state",label:"State" },
-    {key:"year_of_making",label:"Year Of Manufacture" },
+    // {key:"year_of_making",label:"Year Of Manufacture" },
     {key:"model",label:"Model" },
     {key:"serial",label:"Serial No." },
    ];
 export const PRODUCTS_FILTER_VALUES_KEY = [
+    {key:"_key",label:"Key" },
+    {key:"_id",label:"ID", id:"id" },
     {key:"name",label:"Name" },
     {key:"description",label:"Description" },
     {key:"condition",label:"Condition" },
-    {key:"sku.brand",label:"Brand" },
+    // {key:"sku.brand",label:"Brand" },
     {key:"category",label:"Category" },
     {key:"type",label:"Type" },
     {key:"state",label:"State"},
     {key:"year_of_making",label:"Year Of Manufacture"},
-    {key:"sku.model",label:"Model"},
-    {key:"sku.serial",label:"Serial No."},
+    // {key:"sku.model",label:"Model"},
+    // {key:"sku.serial",label:"Serial No."},
 ];
 
 

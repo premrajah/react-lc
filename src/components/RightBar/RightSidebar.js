@@ -6,10 +6,8 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import CloseIcon from '@mui/icons-material/Close';
 import {ChevronRight} from "@mui/icons-material";
 import Backdrop from '@mui/material/Backdrop';
-import PageHeader from "../PageHeader";
 
 
 const DrawerHeader = styled('div')(({ theme }) => ({

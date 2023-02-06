@@ -11,7 +11,7 @@ import MySearch from "./pages/search/MySearch";
 import MyListings from "./pages/listings/MyListings";
 import ItemDetail from "./pages/listings/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
-import ProductsNew from "./pages/my-products/Products";
+import ProductsNew from "./pages/my-products/ProductsNew";
 import Product from "./pages/product-detail/Product";
 import ProductsService from "./pages/my-products/ProductsService";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
@@ -196,7 +196,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
-                        <LoggedInRoute exact path="/product/:slug" component={Product} />
+                        <LoggedInRoute exact path="/product/:slug" component={ProductsNew} />
                         <LoggedInRoute exact path="/product/preview/:slug" component={Product} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <Route exact path="/ps/:slug" component={Site} />

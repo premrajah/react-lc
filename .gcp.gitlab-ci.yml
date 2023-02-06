@@ -136,7 +136,7 @@ gcp_build_stage:
     - export ENVIRONMENT=stage
     - sed -i.bak "s#\\\${ENVIRONMENT}#$ENVIRONMENT#" ./.env
     - export APP_NAME=loopcycyle/${CI_PROJECT_NAME}
-    - export IMAGE_TAG=${GCR_DOMAIN}/${GCP_PROJECT_ID}/${APP_NAME}:${CI_COMMIT_REF_NAME}.${CI_PIPELINE_IID}
+    - export IMAGE_TAG=${GCR_DOMAIN}/${GCP_PROJECT_ID}/${APP_NAME}:${CI_COMMIT_REF_NAME}.${ENVIRONMENT}.${CI_PIPELINE_IID}
     - docker build -t ${APP_NAME} .
     - docker tag ${APP_NAME} ${IMAGE_TAG}
     - docker push ${IMAGE_TAG}

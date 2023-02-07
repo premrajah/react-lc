@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
 import {withStyles} from "@mui/styles/index";
-import ProductItem from "../../components/Products/Item/ProductItem";
 import PageHeader from "../../components/PageHeader";
 import {baseUrl, PRODUCTS_FIELD_SELECTION, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
@@ -18,7 +17,6 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
-import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {getSite, seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
@@ -26,9 +24,7 @@ import ProductLines from "../../components/Account/ProductLines";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import CircularProgressWithLabel from "../../components/FormsUI/Buttons/CircularProgressWithLabel";
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
-import ProductsCondensedView from "./ProductsCondensedView";
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
-import CustomDataGridTable from "../../components/UIComponents/CustomDataGridTable";
 import PaginationGrid from "../../components/UIComponents/PaginationGrid";
 
 class ProductsNew extends Component {

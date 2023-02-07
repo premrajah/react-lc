@@ -92,6 +92,7 @@ import MyDiary from "./pages/diary/MyDiary";
 import RentalReleaseRecords from "./pages/approvals/RentalReleaseRecords";
 import PromptLoginRoute from "./Util/PromptLoginRoute";
 import ProductsCondensedView from "./pages/my-products/ProductsCondensedView";
+import TestRoute from "./components/TestRoute";
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -139,6 +140,7 @@ class App extends Component {
                     {/*<Header />*/}
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
+                        <Route exact path="/test-route" component={TestRoute} />
                         <Route exact path="/terms" component={TermsAndConditions} />
                         <Route exact path="/service" component={TermsAndService} />
                         <Route exact path="/cookie" component={Cookie} />

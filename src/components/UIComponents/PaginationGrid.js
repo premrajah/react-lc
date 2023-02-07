@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 import SearchBar from "../SearchBar";
-import {LoaderAnimated} from "../../Util/GlobalFunctions";
-import DynamicElement from "../UIComponents/DynamicElement";
 import CustomDataGridTable from "./CustomDataGridTable";
 import {PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 

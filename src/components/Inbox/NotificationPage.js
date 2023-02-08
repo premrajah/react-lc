@@ -3,6 +3,7 @@ import Notifications from "./Notifications";
 import Sidebar from "../../views/menu/Sidebar";
 import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../PageHeader";
+import NotificationsTwo from "./NotificationsTwo";
 
 function NotificationPage () {
 
@@ -38,7 +39,8 @@ function NotificationPage () {
                     <div className="row no-gutters">
                         <div className="col">
                             {trackingStatus}
-                            <Notifications trackingCallback={(status) => handleTrackCallback(status)} />
+                            {/*<Notifications trackingCallback={(status) => handleTrackCallback(status)} />*/}
+                            <NotificationsTwo />
                         </div>
                     </div>
                 </div>

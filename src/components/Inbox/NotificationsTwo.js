@@ -14,7 +14,7 @@ const NotificationsTwo = () => {
     const getNotifications = () => {
         axios
             .get(
-                `${baseUrl}seek?name=Message&relation=message_to&count=false&offset=0&size=50&filters=type:notification&include-to=Org:any&include-to=Message:any`
+                `${baseUrl}seek?name=Message&relation=message_to&count=false&offset=0&size=100&filters=type:notification&include-to=Org:any&include-to=Message:any`
             )
             .then((res) => {
                 const data = res.data.data;

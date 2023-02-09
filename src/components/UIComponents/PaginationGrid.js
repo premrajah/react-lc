@@ -7,7 +7,6 @@ class PaginationGrid extends Component {
     constructor(props) {
         super(props);
         this.loadingRef = React.createRef();
-
         this.state = {
             isIntersecting: false,
             intersectionRatio: 0,
@@ -47,11 +46,14 @@ class PaginationGrid extends Component {
 
     timeout = 0;
 
-    loadMore = (reset) => {
+    loadMore = (reset,sort) => {
+
+        // alert(sort.key+" "+sort.sort)
         this.props.loadMore({
             searchValue: this.searchValue,
             searchFilter: this.filterValue,
             reset: reset,
+            sort:sort
         });
     };
     timeoutSearch() {
@@ -113,13 +115,14 @@ class PaginationGrid extends Component {
                 )}
 
                 <CustomDataGridTable
-                    loadMore={(page) => this.loadMore(false)}
+                    loadMore={(reset,sortData) => this.loadMore(false,sortData)}
                     headers={PRODUCTS_FILTER_VALUES_KEY}
                     items={this.props.items}
                     pageSize={this.props.pageSize}
                     count={this.props.count}
                     loading={this.props.loading}
-
+                    actions={this.props.actions}
+                    // sortData={(sortData)=>this.loadMore(true, sortData)}
 
                 />
 

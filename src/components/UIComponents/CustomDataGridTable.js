@@ -15,10 +15,15 @@ import {styled} from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import Button from '@mui/material/Button';
+import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
+import {Cloud, Delete, PanoramaFishEye} from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {formatDate} from "@fullcalendar/react";
+import {capitalize,getTimeFormat} from "../../Util/GlobalFunctions";
 
 
-const CustomDataGridTable=({headers,pageSize,count,loading,loadMore, items,element,children, ...otherProps}) =>{
-
+const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, items,element,children, ...otherProps}) =>{
 
     const [tableHeader,setTableHeader] = useState([]);
     const [list,setList] = useState([]);
@@ -26,8 +31,17 @@ const CustomDataGridTable=({headers,pageSize,count,loading,loadMore, items,eleme
     const [value, setValue] = React.useState('');
     const [page, setPage] = React.useState(0);
     const [listLoading, setListLoading] = React.useState(false);
+    const [sortData, setSortData] = React.useState(null);
+
+    const [initialHeaderState, setInitialHeaderState] = React.useState(false);
 
 
+
+
+ const   actionCallback=(key,action)=>{
+
+        // props.actionCallback(key,action)
+    }
 
     useEffect(() => {
 
@@ -36,30 +50,35 @@ const CustomDataGridTable=({headers,pageSize,count,loading,loadMore, items,eleme
 
     useEffect(() => {
         let headersTmp=[]
-        headers.forEach((item)=>{
+        headers
+            // .filter(item=>item.visible)
+            .forEach((item)=>{
 
             headersTmp.push({
                 field: item.key,
                 headerName: item.label,
                 editable:true,
+                sortable:item.sortable,
+                hide:!item.visible,
+                hideable: !item.visible,
+                // colSpan: `${item.key==="category"?3:1}`,
+                // minWidth:`${item.key==="category"?300:50}`,
 
+                // flex:`${item.key==="category"?1:0.5}`,
+                // minWidth:50,
+
+
+
+                // maxWidth:"unset",
                 renderCell: (params) => (
 <>
-                    {params.field=="name" ? <strong>
-                        {/*{console.log(params)}*/}
-                         <Button
-                            variant="contained"
-                            size="small"
-                            style={{ marginLeft: 16 }}
-                            tabIndex={params.hasFocus ? 0 : -1}
-                        >
-                            {params.value}
-                        </Button>
-
-                    </strong>: params.value}
+                    {params.field=="_ts_epoch_ms" ? <span>
+                            {getTimeFormat(params.value)}
+                    </span>:
+                        params.field=="category" ? <GetCatBox item={params.row} />:
+                        params.value +item.visible}
 </>
                 ),
-
                 // description: 'This column has a value getter and is not sortable.',
                 // sortable: false,
                 // minWidth: 160,
@@ -70,6 +89,38 @@ const CustomDataGridTable=({headers,pageSize,count,loading,loadMore, items,eleme
         })
 
 
+        if (actions&&actions.length>0) {
+
+    headersTmp.push({
+                    field: "action-key",
+                    headerName: "Actions",
+                    editable: false,
+                    sortable: false,
+        hide:false,
+        hideable: false,
+             //       minWidth: 60,
+             // flex:1,
+                    renderCell: (params) => (
+                        <>
+
+                            {actions.map((action)=>
+
+                                <ActionIconBtn
+                                    onClick={()=>actionCallback(params.row._key,action)}
+                                >
+                                    {action=="edit"?<EditIcon/>:action=="view"?<VisibilityIcon/>:action=="delete"?<Delete/>:action}
+                                </ActionIconBtn>
+
+                            )}
+
+
+
+                        </>
+                    ),
+                })
+
+
+        }
         setTableHeader(headersTmp)
 
 
@@ -85,10 +136,10 @@ const CustomDataGridTable=({headers,pageSize,count,loading,loadMore, items,eleme
             let Product=listItem.Product
             let itemTmp={}
 
-            headers.forEach((item)=>{
-
-                    // console.log(`${item.key}`,Product[`${item.key}`])
-                    itemTmp[`${item.id?item.id:item.key}`]=Product[`${item.key}`]
+            headers
+                // .filter(item=>item.visible)
+                .forEach((item)=>{
+                 itemTmp[`${item.key}`]=Product[`${item.key=="id"?"_key":item.key}`]
                 })
 
             itemsTmp.push(itemTmp)
@@ -100,7 +151,26 @@ const CustomDataGridTable=({headers,pageSize,count,loading,loadMore, items,eleme
         }
     }, [items])
 
+    const handleChange=(data)=>{
 
+     console.log(data)
+
+        if (loadMore&&data.length>0){
+
+            let filter={
+                key:data[0].field=="id"?"_key":data[0].field,
+                sort:data[0].sort
+            }
+
+
+            console.log(data.field=="id"?"_key":data.field,
+                data.sort)
+            loadMore(true,filter)
+
+
+        }
+
+    }
 
 
     const handlePopoverOpen = (event) => {
@@ -119,63 +189,53 @@ const CustomDataGridTable=({headers,pageSize,count,loading,loadMore, items,eleme
     return (
        <>
            {/*<Box sx={{ height: "90vh", minWidth: '100%' }}>*/}
-           <div style={{ display: 'flex', height: '90vh' }}>
-               <div style={{ flexGrow: 1 }}>
+           <div style={{  height: '90vh',width:"100%" ,flex:1}}>
+               {/*<div style={{  width:"100%"}}>*/}
 
 
                <DataGrid
 
+                   initialState={{
+                       columns: {
+                           columnVisibilityModel: {
+                               // Hide columns status and traderName, the other columns will remain visible
+                               description: false,
+                               // traderName: false,
+                           },
+                       },
+                   }}
 
+                   disableColumnMenu={true}
                    onPageChange={(newPage) => {
 
                        if (page<newPage){
 
                            setPage(newPage)
-                           loadMore()
+                           loadMore(false,sortData)
+
                        }
                    }}
                    onPageSizeChange={(newPageSize) => {
                        alert("page size "+newPageSize)
 
                         }}
-
+                   sortingMode="server"
+                   onSortModelChange={handleChange}
                    rowCount={count}
                    rows={list}
                    columns={tableHeader}
                    pageSize={pageSize}
-                   loading={listLoading}
+                   // loading={listLoading||list.length===0}
                    rowsPerPageOptions={[pageSize]}
                    checkboxSelection={true}
                    disableSelectionOnClick
                    experimentalFeatures={{ newEditingApi: true }}
-                   components={{
-                       Toolbar: CustomToolbar,
-                       LoadingOverlay: LinearProgress,
-                       // NoRowsOverlay: CustomNoRowsOverlay,
-                       // Pagination: CustomPagination,
 
-                   }}
-
-                   pageSize={pageSize}
-                   rowsPerPageOptions={[pageSize]}
-                   // componentsProps={{
-                   //     cell: {
-                   //         onMouseEnter: handlePopoverOpen,
-                   //         onMouseLeave: handlePopoverClose,
-                   //     },
-                   // }}
-
-                   // getCellClassName={(params) => {
-                   //     if (params.field === 'email' || params.value == null) {
-                   //         return '';
-                   //     }
-                   //     return params.value >= 15 ? 'hot-cell' : 'cold-cell';
-                   // }}
                />
 
 
                </div>
-           </div>
+           {/*</div>*/}
 
            {/*    <div style={{ display: 'flex', height: '90vh' }}>*/}
            {/*        <div style={{ flexGrow: 1 }}>*/}
@@ -304,6 +364,27 @@ function CustomPagination(props) {
 
 
 
+
+const GetCatBox=(props)=>{
+
+    // console.log(props.item)
+    return(
+
+        <span  className="text-capitlize mb-1 text-12 text-bold cat-box text-left p-1">
+                                <span className="text-capitlize">
+                                    {capitalize(props.item.category)}
+                                </span>
+                                <span className={"m-1 arrow-cat"}>&#10095;</span>
+                                <span className=" text-capitlize">
+                                    {capitalize(props.item.type)}
+                                </span>
+                                <span className={"m-1 arrow-cat"}>&#10095;</span>
+                                <span className="  text-capitlize">
+                                    {capitalize(props.item.state)}
+                                </span>
+                            </span>
+    )
+}
 
 
 

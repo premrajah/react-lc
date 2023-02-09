@@ -74,16 +74,16 @@ class ProductsNew extends Component {
     }
 
 
-    clearList = () => {
+    clearList = async () => {
 
-       setTimeout(() => {
+        // await setTimeout(() => {
             this.setState({
                 offset: 0,
                 items: [],
                 lastPageReached: false,
                 loadingResults: false,
             });
-        },250)
+        // }, 250)
     };
 
     handleChange(value, field) {
@@ -325,9 +325,9 @@ try {
         //     return
         // }
 
-        if (data && data.reset) {
+        if (data && data.reset){
 
-            this.clearList();
+         await   this.clearList();
         }
 
 
@@ -357,6 +357,13 @@ try {
         })
 
          url = `${url}&offset=${this.state.offset}&size=${this.state.pageSize}`;
+
+
+        if (data.sort){
+            url =
+                `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
+
+        }
 
 
         let result = await seekAxiosGet(url,null,this.controller);
@@ -851,6 +858,7 @@ try {
                             loading={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
                             loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}
+                            actions={["edit","view"]}
                         />
 
 

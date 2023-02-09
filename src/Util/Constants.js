@@ -98,18 +98,19 @@ export const PRODUCTS_FILTER_VALUES = [
     {key:"serial",label:"Serial No." },
    ];
 export const PRODUCTS_FILTER_VALUES_KEY = [
-    {key:"_key",label:"Key" },
-    {key:"_id",label:"ID", id:"id" },
-    {key:"name",label:"Name" },
-    {key:"description",label:"Description" },
-    {key:"condition",label:"Condition" },
-    // {key:"sku.brand",label:"Brand" },
-    {key:"category",label:"Category" },
-    {key:"type",label:"Type" },
-    {key:"state",label:"State"},
-    {key:"year_of_making",label:"Year Of Manufacture"},
-    // {key:"sku.model",label:"Model"},
-    // {key:"sku.serial",label:"Serial No."},
+    {key:"id",label:"ID" , visible:true,sortable:true},
+    // {key:"_id",label:"ID" ,visible:true,sortable:true},
+    {key:"name",label:"Name" ,visible:true,sortable:true},
+    {key:"description",label:"Description",visible:false ,sortable:false},
+    {key:"condition",label:"Condition" ,visible:false,sortable:false},
+    // {key:"sku.brand",label:"Brand" ,visible:false,sortable:false},
+    {key:"category",label:"Category" ,visible:true,sortable:false},
+    {key:"type",label:"Type" ,visible:false,sortable:false},
+    {key:"state",label:"State",visible:false,sortable:false},
+    {key:"_ts_epoch_ms",label:"Created At",visible:true,sortable:true},
+    {key:"year_of_making",label:"Year Of Manufacture",visible:false,sortable:false},
+    // {key:"sku.model",label:"Model",visible:false,sortable:false},
+    // {key:"sku.serial",label:"Serial No.",visible:false,sortable:false},
 ];
 
 

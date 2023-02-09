@@ -34,10 +34,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                 open={props.show}
                 TransitionComponent={Transition}
                 keepMounted
+                centerHeader
                 onClose={handleClose}
                 fullWidth={true}
                 maxWidth={props.size?props.size:"sm"}
-                    className={`${props.allowOverflow?" allow-overflow":""}  ${props.allowScroll?" allow-scroll":""}`}
+                    className={`${props.allowOverflow?" allow-overflow":""} custom-modal  ${props.allowScroll?" allow-scroll":""}`}
 
 
                 aria-describedby="alert-dialog-slide-description"

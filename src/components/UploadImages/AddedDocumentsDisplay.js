@@ -90,6 +90,7 @@ const AddedDocumentsDisplay = (props) => {
                             if (
                                 artifact.mime_type === "application/pdf" ||
                                 artifact.mime_type === "application/rtf" ||
+                                artifact.mime_type === "video/mp4" ||
                                 artifact.mime_type === "application/msword" ||
                                 artifact.mime_type === "text/rtf" ||
                                 artifact.mime_type ===

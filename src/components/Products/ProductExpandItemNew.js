@@ -334,6 +334,14 @@ class ProductExpandItem extends Component {
                 {this.state.item &&  this.state.showExisting && (
                     <>
                          <div className="row   justify-content-left">
+                             <div className="col-12 mt-2 ">
+                                 <BlueSmallBtn
+                                     onClick={this.addCount}
+                                     title={"Add"}
+                                 >
+                                     <AddIcon />
+                                 </BlueSmallBtn>
+                             </div>
                             <form style={{ width: "100%" }} onSubmit={this.linkSubProduct}>
                                 <div className="col-12 mt-4" style={{ padding: "0!important" }}>
                                     {this.state.addCount.map((item, index) => (
@@ -450,25 +458,6 @@ class ProductExpandItem extends Component {
                                             </div>
                                         </div>
                                     ))}
-                                </div>
-
-                                <div className="col-12 mt-2 ">
-                                    {/*<button*/}
-                                    {/*    onClick={this.addCount}*/}
-                                    {/*    className={*/}
-                                    {/*        "btn btn-default  btn-rounded shadow  blue-btn-border"*/}
-                                    {/*    }>*/}
-                                    {/*    <AddIcon />*/}
-                                    {/*    Add*/}
-                                    {/*</button>*/}
-
-                                    <BlueSmallBtn
-                                        onClick={this.addCount}
-                                        title={"Add"}
-
-                                    >
-                                        <AddIcon />
-                                    </BlueSmallBtn>
                                 </div>
 
                                 <div className="col-12 mt-4 mobile-menu">

@@ -114,7 +114,6 @@ function MyAccount(props) {
                                         {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
                                             <Tab key={9} label="Manage Orgs" value={9} />
                                         )}
-                                        }
                                     </Tabs>
                                 </div>
                                 <div className="col-md-9  p-0 rad-8 bg-white">

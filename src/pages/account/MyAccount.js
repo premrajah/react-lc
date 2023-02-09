@@ -94,7 +94,7 @@ function MyAccount(props) {
                                         <Tab key={1} label="Company Information" value={1} />
                                         {/*<Tab key={2} label="Change Password" value={2} />*/}
                                         {/*<Tab key={3} label="Product Lines" value={3} />*/}
-                                        <Tab key={4} label="Statistics" value={4} />
+                                        {/*<Tab key={4} label="Statistics" value={4} />*/}
                                         {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
                                             <Tab key={5} label="Manage Users" value={5} />
                                         )}

@@ -295,34 +295,35 @@ class ProductExpandItem extends Component {
                                                     )}
                                             </ol>
                                         </div>
-                                        <div className="col-12">
-                                            <p
-                                                style={{ margin: "10px 0px" }}
-                                                className={"  small"}>
-                                                <button
-                                                    className={
-                                                        " btn-gray-border  mr-2 "
-                                                    }
-                                                    // data-parent={this.props.currentProduct.product._key}
-                                                    // onClick={this.showProductSelection}
-
+                                        <div className="col-12 d-flex justify-content-between">
+                                                <div>
+                                                    <button
+                                                    className={"btn-gray-border  mr-2"}
                                                     onClick={()=> this.props.createNew(this.props.productId,'new')}
-
                                                 >
-                                                     <AddIcon />
+                                                    <AddIcon />
                                                     Create New
                                                 </button>
 
-                                                <button
-                                                    className={
-                                                        "btn-gray-border click-item ms-2"
-                                                    }
-                                                    data-parent={this.state.item.product._key}
-                                                    onClick={this.showExisting}>
-                                                     <AddLinkIcon />
-                                                    Link Existing
-                                                </button>
-                                            </p>
+                                                    <button
+                                                        className={
+                                                            "btn-gray-border click-item ms-2"
+                                                        }
+                                                        data-parent={this.state.item.product._key}
+                                                        onClick={this.showExisting}>
+                                                        <AddLinkIcon />
+                                                        Link Existing
+                                                    </button>
+                                                </div>
+                                            {this.state.showExisting && <div className="">
+                                                <BlueSmallBtn
+                                                    onClick={this.addCount}
+                                                    title={"Add"}
+                                                >
+                                                    <AddIcon/>
+                                                </BlueSmallBtn>
+                                            </div>}
+
                                         </div>
                                     </div>
                                 )}
@@ -334,14 +335,6 @@ class ProductExpandItem extends Component {
                 {this.state.item &&  this.state.showExisting && (
                     <>
                          <div className="row   justify-content-left">
-                             <div className="col-12 mt-2 ">
-                                 <BlueSmallBtn
-                                     onClick={this.addCount}
-                                     title={"Add"}
-                                 >
-                                     <AddIcon />
-                                 </BlueSmallBtn>
-                             </div>
                             <form style={{ width: "100%" }} onSubmit={this.linkSubProduct}>
                                 <div className="col-12 mt-4" style={{ padding: "0!important" }}>
                                     {this.state.addCount.map((item, index) => (

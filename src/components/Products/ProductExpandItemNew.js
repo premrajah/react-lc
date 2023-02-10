@@ -84,7 +84,7 @@ class ProductExpandItem extends Component {
 
     subtractCount() {
         if (this.state.count > 1) {
-            var array = this.state.addCount;
+            let array = this.state.addCount;
 
             array.pop();
 

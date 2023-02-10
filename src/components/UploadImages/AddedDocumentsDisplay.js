@@ -9,12 +9,27 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import MoreMenu from "../MoreMenu";
+import GlobalDialog from "../RightBar/GlobalDialog";
+import ReactPlayer from "react-player";
+import {Dialog} from "@mui/material";
 const AddedDocumentsDisplay = (props) => {
     const { artifacts, pageRefreshCallback } = props;
 
     const [show, setShow] = useState(false);
     const [docKey, setDocKey] = useState(null);
+    const [currentBlobUrl, setCurrentBlobUrl] = useState(null);
+    const [artifactDialogDisplay, setArtifactDialogDisplay] = useState(false);
     let { slug } = useParams();
+
+    const handleArtifactDialogDisplayOpen = (blobUrl) => {
+        setArtifactDialogDisplay(true);
+        setCurrentBlobUrl(blobUrl)
+    }
+    const handleArtifactDialogDisplayClose = () => {
+        setArtifactDialogDisplay(false);
+        setCurrentBlobUrl(null);
+    }
+
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -89,7 +104,7 @@ const AddedDocumentsDisplay = (props) => {
                                 artifact.mime_type === MIME_TYPES.XLSX
                             ) {
                                 return (
-                                    <>
+                                    <React.Fragment key={artifact._key}>
                                         {index === 0 && (
                                             <p className=" custom-label text-bold text-blue mt-4 mb-4">
                                                 Files Uploaded
@@ -101,14 +116,25 @@ const AddedDocumentsDisplay = (props) => {
                                             <div className={"col-10"}>
                                                 {artifact.mime_type === MIME_TYPES.MOV ||
                                                 artifact.mime_type === MIME_TYPES.MP4 ? (
-                                                    <OndemandVideoIcon
-                                                        style={{
-                                                            background: "#EAEAEF",
-                                                            opacity: "0.5",
-                                                            fontSize: " 2.5rem",
-                                                        }}
-                                                        className={"rad-4"}
-                                                    />
+                                                    <>
+                                                        <OndemandVideoIcon
+                                                            style={{
+                                                                background: "#EAEAEF",
+                                                                opacity: "0.5",
+                                                                fontSize: " 2.5rem",
+                                                            }}
+                                                            className="rad-4 click-item"
+                                                            onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}
+                                                        />
+                                                        <GlobalDialog size="md" show={artifactDialogDisplay} hide={() => handleArtifactDialogDisplayClose()}>
+                                                            {currentBlobUrl && <ReactPlayer
+                                                                url={currentBlobUrl}
+                                                                controls
+                                                                playing={false}
+
+                                                            />}
+                                                        </GlobalDialog>
+                                                    </>
                                                 ) : (
                                                     <DescriptionIcon
                                                         style={{
@@ -155,7 +181,7 @@ const AddedDocumentsDisplay = (props) => {
                                                 )}
                                             </div>
                                         </div>
-                                    </>
+                                    </React.Fragment>
                                 );
                             }
                         })

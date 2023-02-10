@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import axios from "axios";
-import {baseUrl, MIME_TYPES} from "../../Util/Constants";
+import { baseUrl, MIME_TYPES } from "../../Util/Constants";
 import { useParams } from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import DescriptionIcon from "@mui/icons-material/Description";
-import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
+import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import MoreMenu from "../MoreMenu";
 const AddedDocumentsDisplay = (props) => {
@@ -84,7 +84,7 @@ const AddedDocumentsDisplay = (props) => {
                                 artifact.mime_type === MIME_TYPES.MOV ||
                                 artifact.mime_type === MIME_TYPES.DOC ||
                                 artifact.mime_type === MIME_TYPES.TEXT_RTF ||
-                                artifact.mime_type === MIME_TYPES.DOCX||
+                                artifact.mime_type === MIME_TYPES.DOCX ||
                                 artifact.mime_type === MIME_TYPES.XLS ||
                                 artifact.mime_type === MIME_TYPES.XLSX
                             ) {
@@ -99,19 +99,26 @@ const AddedDocumentsDisplay = (props) => {
                                             key={index}
                                             className="mt-1 mb-1 text-left pt-1 pb-1 bg-white row">
                                             <div className={"col-10"}>
-                                                {artifact.mime_type === MIME_TYPES.MOV || artifact.mime_type === MIME_TYPES.MP4 ? <OndemandVideoIcon style={{
-                                                    background: "#EAEAEF",
-                                                    opacity: "0.5",
-                                                    fontSize: " 2.5rem",
-                                                }}
-                                                    className={"rad-4"} /> : <DescriptionIcon
-                                                    style={{
-                                                        background: "#EAEAEF",
-                                                        opacity: "0.5",
-                                                        fontSize: " 2.5rem",
-                                                    }}
-                                                    className={"rad-4"}
-                                                />}
+                                                {artifact.mime_type === MIME_TYPES.MOV ||
+                                                artifact.mime_type === MIME_TYPES.MP4 ? (
+                                                    <OndemandVideoIcon
+                                                        style={{
+                                                            background: "#EAEAEF",
+                                                            opacity: "0.5",
+                                                            fontSize: " 2.5rem",
+                                                        }}
+                                                        className={"rad-4"}
+                                                    />
+                                                ) : (
+                                                    <DescriptionIcon
+                                                        style={{
+                                                            background: "#EAEAEF",
+                                                            opacity: "0.5",
+                                                            fontSize: " 2.5rem",
+                                                        }}
+                                                        className={"rad-4"}
+                                                    />
+                                                )}
                                                 <span
                                                     className="ms-4  text-blue text-bold"
                                                     // href={artifact.blob_url}

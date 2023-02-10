@@ -62,6 +62,20 @@ export const checkImage=(url)=> {
 
 
 }
+export const MIME_TYPES = {
+    JPEG:"image/jpeg",
+    JPG:"image/jpg",
+    PNG:"image/png",
+    MP4:"video/mp4",
+    MOV:"video/quicktime",
+    DOC:"application/msword",
+    PDF:"application/pdf",
+    APP_RTF:"application/rtf",
+    DOCX:"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    TEXT_RTF:"text/rtf",
+    XLS:"application/vnd.ms-excel",
+    XLSX:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+}
 export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,video/mp4,video/quicktime,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 export const CAMPAIGN_FILTER_VALUES = ["name", "description"];

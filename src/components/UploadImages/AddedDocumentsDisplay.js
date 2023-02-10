@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import axios from "axios";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl, MIME_TYPES} from "../../Util/Constants";
 import { useParams } from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import DescriptionIcon from "@mui/icons-material/Description";
+import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import MoreMenu from "../MoreMenu";
 const AddedDocumentsDisplay = (props) => {
@@ -77,17 +78,15 @@ const AddedDocumentsDisplay = (props) => {
                     {artifacts.length > 0 ? (
                         artifacts.map((artifact, index) => {
                             if (
-                                artifact.mime_type === "application/pdf" ||
-                                artifact.mime_type === "application/rtf" ||
-                                artifact.mime_type === "video/mp4" ||
-                                artifact.mime_type === "video/quicktime" ||
-                                artifact.mime_type === "application/msword" ||
-                                artifact.mime_type === "text/rtf" ||
-                                artifact.mime_type ===
-                                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-                                artifact.mime_type ===
-                                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-                                artifact.mime_type === "application/vnd.ms-excel"
+                                artifact.mime_type === MIME_TYPES.PDF ||
+                                artifact.mime_type === MIME_TYPES.APP_RTF ||
+                                artifact.mime_type === MIME_TYPES.MP4 ||
+                                artifact.mime_type === MIME_TYPES.MOV ||
+                                artifact.mime_type === MIME_TYPES.DOC ||
+                                artifact.mime_type === MIME_TYPES.TEXT_RTF ||
+                                artifact.mime_type === MIME_TYPES.DOCX||
+                                artifact.mime_type === MIME_TYPES.XLS ||
+                                artifact.mime_type === MIME_TYPES.XLSX
                             ) {
                                 return (
                                     <>
@@ -98,16 +97,21 @@ const AddedDocumentsDisplay = (props) => {
                                         )}
                                         <div
                                             key={index}
-                                            className="mt-3 mb-3 text-left pt-3 pb-3 bg-white row">
+                                            className="mt-1 mb-1 text-left pt-1 pb-1 bg-white row">
                                             <div className={"col-10"}>
-                                                <DescriptionIcon
+                                                {artifact.mime_type === MIME_TYPES.MOV || artifact.mime_type === MIME_TYPES.MP4 ? <OndemandVideoIcon style={{
+                                                    background: "#EAEAEF",
+                                                    opacity: "0.5",
+                                                    fontSize: " 2.5rem",
+                                                }}
+                                                    className={"rad-4"} /> : <DescriptionIcon
                                                     style={{
                                                         background: "#EAEAEF",
                                                         opacity: "0.5",
                                                         fontSize: " 2.5rem",
                                                     }}
-                                                    className={" p-1 rad-4"}
-                                                />
+                                                    className={"rad-4"}
+                                                />}
                                                 <span
                                                     className="ms-4  text-blue text-bold"
                                                     // href={artifact.blob_url}
@@ -116,7 +120,7 @@ const AddedDocumentsDisplay = (props) => {
                                                     {artifact.name}
                                                 </span>
                                             </div>
-                                            <div className={"col-2"}>
+                                            <div className="col-2 d-flex justify-content-end">
                                                 <MoreMenu
                                                     triggerCallback={(action) =>
                                                         callBackResult(

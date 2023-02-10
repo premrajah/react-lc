@@ -428,7 +428,7 @@ class ProductExpandItem extends Component {
                                                     id="outlined-basic"
                                                     variant="outlined"
                                                     fullWidth={true}
-                                                    InputProps={{ inputProps: { min: 0 } }}
+                                                    inputProps={{ inputProps: { min: 0 } }}
                                                 />
                                                 {this.state.errors["volume"] && (
                                                     <span className={" small"}>

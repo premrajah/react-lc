@@ -178,13 +178,13 @@ class ProductExpandItem extends Component {
 
         const data = new FormData(event.target);
 
-        var array = [];
+        let array = [];
 
         for (let i = 0; i < this.state.addCount.length; i++) {
             array.push({ id: data.get(`product[${i}]`) });
         }
 
-        var dataForm = {
+        let dataForm = {
             product_id: this.state.item.product._key,
             sub_products: array,
         };

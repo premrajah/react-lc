@@ -32,6 +32,8 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
     const [page, setPage] = React.useState(0);
     const [listLoading, setListLoading] = React.useState(false);
     const [sortData, setSortData] = React.useState(null);
+    const [sortModel, setSortModel] = React.useState([]);
+
 
     const [initialHeaderState, setInitialHeaderState] = React.useState(false);
 
@@ -153,6 +155,8 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
 
     const handleChange=(data)=>{
 
+        setSortModel(data)
+
      console.log(data)
 
         if (loadMore&&data.length>0){
@@ -207,9 +211,7 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
 
                    disableColumnMenu={true}
                    onPageChange={(newPage) => {
-
                        if (page<newPage){
-
                            setPage(newPage)
                            loadMore(false,sortData)
 
@@ -219,13 +221,15 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
                        alert("page size "+newPageSize)
 
                         }}
-                   sortingMode="server"
+                   // sortingMode="server"
+                   // sortModel={sortModel}
+                   // onSortModelChange={(newSortModel) => setSortModel(newSortModel)}
                    onSortModelChange={handleChange}
                    rowCount={count}
                    rows={list}
                    columns={tableHeader}
                    pageSize={pageSize}
-                   // loading={listLoading||list.length===0}
+                   loading={listLoading||list.length===0}
                    rowsPerPageOptions={[pageSize]}
                    checkboxSelection={true}
                    disableSelectionOnClick

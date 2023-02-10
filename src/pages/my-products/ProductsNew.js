@@ -74,16 +74,18 @@ class ProductsNew extends Component {
     }
 
 
-    clearList = async () => {
+    clearList =  () => {
 
-        // await setTimeout(() => {
+        // alert("Clear")
+
+         // setTimeout(() => {
             this.setState({
                 offset: 0,
                 items: [],
                 lastPageReached: false,
                 loadingResults: false,
             });
-        // }, 250)
+        // }, 500)
     };
 
     handleChange(value, field) {

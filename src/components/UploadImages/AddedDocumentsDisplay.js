@@ -10,7 +10,7 @@ import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import MoreMenu from "../MoreMenu";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player/lazy";
 import {Dialog} from "@mui/material";
 const AddedDocumentsDisplay = (props) => {
     const { artifacts, pageRefreshCallback } = props;

@@ -136,14 +136,16 @@ const AddedDocumentsDisplay = (props) => {
                                                         </GlobalDialog>
                                                     </>
                                                 ) : (
-                                                    <DescriptionIcon
-                                                        style={{
-                                                            background: "#EAEAEF",
-                                                            opacity: "0.5",
-                                                            fontSize: " 2.5rem",
-                                                        }}
-                                                        className={"rad-4"}
-                                                    />
+                                                    <a href={artifact.blob_url} download>
+                                                        <DescriptionIcon
+                                                            style={{
+                                                                background: "#EAEAEF",
+                                                                opacity: "0.5",
+                                                                fontSize: " 2.5rem",
+                                                            }}
+                                                            className={"rad-4"}
+                                                        />
+                                                    </a>
                                                 )}
                                                 <span
                                                     className="ms-4  text-blue text-bold"

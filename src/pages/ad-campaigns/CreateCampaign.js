@@ -28,6 +28,7 @@ import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
+import ErrorBoundary from "../../components/ErrorBoundary";
 let slugify = require('slugify')
 
 class CreateCampaign extends Component {
@@ -1260,7 +1261,7 @@ let item=null
 
 
         return (
-            <>
+            <ErrorBoundary skip>
 
                 <div className="wrapper">
 
@@ -1937,7 +1938,7 @@ let item=null
 
                     </div>
                 </div>
-            </>
+            </ErrorBoundary>
         );
     }
 }

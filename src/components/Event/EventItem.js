@@ -14,6 +14,7 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CustomPopover from "../FormsUI/CustomPopover";
 import CustomMoreMenu from "../FormsUI/CustomMoreMenu";
+import ErrorBoundary from "../ErrorBoundary";
 
 class EventItem extends Component {
         constructor(props) {
@@ -140,7 +141,7 @@ class EventItem extends Component {
 
           const {item}=this.props
 
-            return <>
+            return <ErrorBoundary skip>
                     <ListItem className={`mb-2 bg-white ${item.event.stage !=="resolved"?"new-event":"past-event"}`}
                               onClick={this.props.showEventPopup} alignItems="flex-start">
                         {!this.props.smallView &&
@@ -207,7 +208,7 @@ class EventItem extends Component {
                         />
                     </ListItem>
 
-                </>
+                </ErrorBoundary>
 
 
         }

@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import moment from "moment/moment";
 import MoreMenu from "../MoreMenu";
 import {Spinner} from "react-bootstrap";
+import ErrorBoundary from "../ErrorBoundary";
 
 const SitePageItem = (  props) => {
     const { key, name, address, email, contact, phone, others, itemKey, is_head_office } = props?props.item:null;
@@ -142,7 +143,7 @@ const SitePageItem = (  props) => {
     }
 
     return (
-        <>
+        <ErrorBoundary skip>
 
                <div id={props.item._key+"-site-item"} key={props.item._key+"-site-item"} className="row no-gutters site-item-list justify-content-start  mb-4 bg-white rad-8  p-3 ">
                 <div  className={`${props.smallItem?"col-md-2 p-0":"col-md-2 p-0"} col-xs-12 `}>
@@ -284,7 +285,7 @@ const SitePageItem = (  props) => {
                     </div>
                 </>
             )}
-        </>
+        </ErrorBoundary>
     );
 };
 

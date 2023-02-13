@@ -7,6 +7,7 @@ import moment from "moment/moment";
 import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
 import OrgComponent from "../Org/OrgComponent";
 import {capitalize} from "../../Util/GlobalFunctions";
+import ErrorBoundary from "../ErrorBoundary";
 
 class CycleItem extends Component {
     constructor(props) {
@@ -24,6 +25,8 @@ class CycleItem extends Component {
 
     render() {
         return (
+
+            <ErrorBoundary skip >
             <div className="row no-gutters justify-content-left mb-3 p-3 rad-8 bg-white ">
                 <div className={"col-md-2 p-0 col-sm-12 col-xs-12 text-left"}>
                     <Link to={"cycle/" + this.props.item.cycle._key}>
@@ -107,6 +110,7 @@ class CycleItem extends Component {
 
 
             </div>
+            </ErrorBoundary>
         );
     }
 }

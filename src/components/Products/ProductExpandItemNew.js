@@ -71,10 +71,10 @@ class ProductExpandItem extends Component {
         });
     }
 
-    addCount() {
+    addCount(index) {
         var array = this.state.addCount;
 
-        array.push(this.state.count + 1);
+        array.push(this.state.count );
 
         this.setState({
             addCount: array,
@@ -84,9 +84,11 @@ class ProductExpandItem extends Component {
 
     subtractCount() {
         if (this.state.count > 1) {
-            let array = this.state.addCount;
+            var array = this.state.addCount;
 
-            array.pop();
+
+
+            // array=array.filter(item=>item==(index+1));
 
             if (this.state.count > 1)
                 this.setState({
@@ -140,7 +142,7 @@ class ProductExpandItem extends Component {
     // }
 
 
-     loadProduct=(id)=> {
+    loadProduct=(id)=> {
 
 
         axios.get(baseUrl + "product/" + id+"/expand")
@@ -178,6 +180,20 @@ class ProductExpandItem extends Component {
 
         const data = new FormData(event.target);
 
+
+
+        console.log(data)
+        console.log(data.get("product[]"))
+
+
+        // data.get("product[]")
+        // console.log(data.get("product[]"),data.get("product[]").length)
+
+        for (let i = 0; i < this.state.addCount.length; i++) {
+            console.log(i, data.get(`product`)[i]);
+        }
+
+        return
         var array = [];
 
         for (let i = 0; i < this.state.addCount.length; i++) {
@@ -224,7 +240,7 @@ class ProductExpandItem extends Component {
 
     componentDidUpdate(prevProps) {
 
-            if (prevProps !== this.props) {
+        if (prevProps !== this.props) {
             // if (prevProps.productId !== this.props.productId) {
             this.setState({
                 product: null,
@@ -263,7 +279,7 @@ class ProductExpandItem extends Component {
 
                                             <ol>
                                                 {this.state.item.sub_products&&
-                                                this.state.item.sub_products.map(
+                                                    this.state.item.sub_products.map(
                                                         (item, index) => (
                                                             <>
                                                                 <li className={"text-gray-light"}>
@@ -295,35 +311,36 @@ class ProductExpandItem extends Component {
                                                     )}
                                             </ol>
                                         </div>
-                                        <div className="col-12 d-flex justify-content-between">
-                                                <div>
-                                                    <button
-                                                    className={"btn-gray-border  mr-2"}
+                                        <div className="col-12">
+                                            <p
+                                                style={{ margin: "10px 0px" }}
+                                                className={"  small"}>
+                                                <button
+                                                    type="button"
+                                                    className={
+                                                        " btn-gray-border  mr-2 "
+                                                    }
+                                                    // data-parent={this.props.currentProduct.product._key}
+                                                    // onClick={this.showProductSelection}
+
                                                     onClick={()=> this.props.createNew(this.props.productId,'new')}
+
                                                 >
                                                     <AddIcon />
                                                     Create New
                                                 </button>
 
-                                                    <button
-                                                        className={
-                                                            "btn-gray-border click-item ms-2"
-                                                        }
-                                                        data-parent={this.state.item.product._key}
-                                                        onClick={this.showExisting}>
-                                                        <AddLinkIcon />
-                                                        Link Existing
-                                                    </button>
-                                                </div>
-                                            {this.state.showExisting && <div className="">
-                                                <BlueSmallBtn
-                                                    onClick={this.addCount}
-                                                    title={"Add"}
-                                                >
-                                                    <AddIcon/>
-                                                </BlueSmallBtn>
-                                            </div>}
-
+                                                <button
+                                                    type="button"
+                                                    className={
+                                                        "btn-gray-border click-item ms-2"
+                                                    }
+                                                    data-parent={this.state.item.product._key}
+                                                    onClick={this.showExisting}>
+                                                    <AddLinkIcon />
+                                                    Link Existing
+                                                </button>
+                                            </p>
                                         </div>
                                     </div>
                                 )}
@@ -334,7 +351,7 @@ class ProductExpandItem extends Component {
 
                 {this.state.item &&  this.state.showExisting && (
                     <>
-                         <div className="row   justify-content-left">
+                        <div className="row   justify-content-left">
                             <form style={{ width: "100%" }} onSubmit={this.linkSubProduct}>
                                 <div className="col-12 mt-4" style={{ padding: "0!important" }}>
                                     {this.state.addCount.map((item, index) => (
@@ -344,9 +361,10 @@ class ProductExpandItem extends Component {
 
                                                 <FormControl
                                                     variant="outlined"
-                                                   >
+                                                >
                                                     <CustomizedSelect
-                                                        name={`product[${index}]`}
+                                                        name={`product[]`}
+                                                        id={`product[${index}]`}
                                                         variant={"standard"}
                                                         required={true}
                                                         native
@@ -369,11 +387,11 @@ class ProductExpandItem extends Component {
                                                             )
                                                             .filter(
                                                                 (item) =>
-                                                                        !this.state.item.sub_products.filter(
-                                                                            (subItem) =>
-                                                                                subItem._key ===
-                                                                                item._key
-                                                                        ).length > 0
+                                                                    !this.state.item.sub_products.filter(
+                                                                        (subItem) =>
+                                                                            subItem._key ===
+                                                                            item._key
+                                                                    ).length > 0
 
                                                             )
                                                             .map((item) => (
@@ -421,7 +439,7 @@ class ProductExpandItem extends Component {
                                                     id="outlined-basic"
                                                     variant="outlined"
                                                     fullWidth={true}
-                                                    inputProps={{ inputProps: { min: 0 } }}
+                                                    InputProps={{ inputProps: { min: 0 } }}
                                                 />
                                                 {this.state.errors["volume"] && (
                                                     <span className={" small"}>
@@ -444,13 +462,32 @@ class ProductExpandItem extends Component {
                                                                 color: "#ccc",
                                                                 margin: "auto",
                                                             }}
-                                                            onClick={() => this.subtractCount()}
+                                                            onClick={() => this.subtractCount(index)}
                                                         />
                                                     </>
                                                 )}
                                             </div>
                                         </div>
                                     ))}
+                                </div>
+
+                                <div className="col-12 mt-2 ">
+                                    {/*<button*/}
+                                    {/*    onClick={this.addCount}*/}
+                                    {/*    className={*/}
+                                    {/*        "btn btn-default  btn-rounded shadow  blue-btn-border"*/}
+                                    {/*    }>*/}
+                                    {/*    <AddIcon />*/}
+                                    {/*    Add*/}
+                                    {/*</button>*/}
+
+                                    <BlueSmallBtn
+                                        onClick={this.addCount}
+                                        title={"Add"}
+
+                                    >
+                                        <AddIcon />
+                                    </BlueSmallBtn>
                                 </div>
 
                                 <div className="col-12 mt-4 mobile-menu">

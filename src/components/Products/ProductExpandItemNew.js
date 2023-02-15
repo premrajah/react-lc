@@ -5,16 +5,16 @@ import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import FormControl from "@mui/material/FormControl";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {Spinner} from "react-bootstrap";
 import SubproductItem from "./Item/SubproductItem";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
-import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
-import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import AddIcon from "@mui/icons-material/Add";
 import SubproductItemSkeleton from "./Item/SubproductItemSkeleton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
+import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
+import { v4 as uuid } from 'uuid';
+import LinkExistingProductList from "./LinkExistingProductList";
 
 
 class ProductExpandItem extends Component {
@@ -30,20 +30,20 @@ class ProductExpandItem extends Component {
             fields: {},
             errors: {},
             subProductSelected: null,
-            addCount: [],
+            existingProductItems: [ {index: uuid(),product:"",productText:""}],
             count: 0,
             showExisting: false,
             productList:[],
             loading: false,
-            item:null
+            item:null,
+
 
         };
 
         this.showPopUp = this.showPopUp.bind(this);
-        this.showProductSelection = this.showProductSelection.bind(this);
         this.linkSubProduct = this.linkSubProduct.bind(this);
-        this.addCount = this.addCount.bind(this);
-        this.subtractCount = this.subtractCount.bind(this);
+        // this.addCount = this.addCount.bind(this);
+        // this.subtractCount = this.subtractCount.bind(this);
         this.showExisting = this.showExisting.bind(this);
         this.removeItem = this.removeItem.bind(this);
     }
@@ -71,63 +71,121 @@ class ProductExpandItem extends Component {
         });
     }
 
-    addCount() {
-        var array = this.state.addCount;
+    addItem=()=> {
 
-        array.push(this.state.count + 1);
 
+        this.setState(prevState => ({
+            existingProductItems: [
+                ...prevState.existingProductItems,
+                {
+                    index:uuid(),
+                    name: "",
+
+                }
+            ]
+        }));
+
+        // let array = this.state.addCount;
+        //
+        // array.push(this.state.count + 1);
+        //
+        // this.setState({
+        //     addCount: array,
+        //     count: this.state.count + 1,
+        // });
+    }
+
+    deleteItem=(record)=> {
+
+
+        console.log(record)
+        console.log(this.state.existingProductItems)
         this.setState({
-            addCount: array,
-            count: this.state.count + 1,
+            existingProductItems: this.state.existingProductItems.filter(r => r !== record)
         });
-    }
-
-    subtractCount() {
-        if (this.state.count > 1) {
-            let array = this.state.addCount;
-
-            array.pop();
-
-            if (this.state.count > 1)
-                this.setState({
-                    addCount: array,
-                    count: this.state.count - 1,
-                });
-        }
-    }
+        console.log(this.state.existingProductItems)
 
 
 
 
-    handleChange(field, e, i) {
-        let fields = this.state.fields;
 
-        fields[field] = e.target.value;
 
-        // const { name, value } = e.target;
-
-        this.setState({ fields });
-
-        if (field === "product") {
-            this.setState({
-                subProductSelected: this.props.productList.filter(
-                    (item) => item._key === e.target.value
-                )[0],
-            });
-        }
+        // if (this.state.count > 1) {
+        //     let array = this.state.addCount;
+        //
+        //     array.pop();
+        //
+        //     if (this.state.count > 1)
+        //         this.setState({
+        //             addCount: array,
+        //             count: this.state.count - 1,
+        //         });
+        // }
     }
 
 
 
 
-    showProductSelection(event) {
+    handleChange=( value,valueText,field,uId,index) =>{
+
+
+
+        let existingProductItems = [...this.state.existingProductItems];
+        existingProductItems[index] = {
+            product:value,productText:valueText,
+            index:uId
+        };
+        this.setState({
+            existingProductItems:existingProductItems
+        })
+
+        console.log(existingProductItems)
+
+        // fields[field] = {value:value,valueText:valueText,uId:uId}
+        //
+        // this.setState({ fields });
+        //
+        //
+        // console.log(fields)
+        // if (field === "product") {
+        //     this.setState({
+        //         subProductSelected: this.props.productList.filter(
+        //             (item) => item._key === e.target.value
+        //         )[0],
+        //     });
+        // }
+    }
+
+
+
+    handleChangeForm=( e) =>{
+
+        console.log(e.target.name, e.target.value)
+
+        // if (
+        //     ["name", "author", "type", "dateOfPublish", "price"].includes(
+        //         e.target.name
+        //     )
+        // ) {
+        //     let fieldDetails = [...this.state.fieldDetails];
+        //     fieldDetails[e.target.dataset.id][e.target.name] = e.target.value;
+        //
+        //
+        // } else {
+        //     this.setState({ [e.target.name]: e.target.value });
+        // }
+    }
+
+
+
+    showProductSelection=()=> {
         // this.props.setProduct(this.props.currentProduct)
         // this.props.setParentProduct(this.props.currentProduct)
 
         this.props.showProductPopUp({
             type: "create_sub_product",
             show: true,
-            parentId: event.currentTarget.dataset.parent,
+            // parentId: event.currentTarget.dataset.parent,
         });
     }
 
@@ -180,8 +238,9 @@ class ProductExpandItem extends Component {
 
         let array = [];
 
-        for (let i = 0; i < this.state.addCount.length; i++) {
-            array.push({ id: data.get(`product[${i}]`) });
+        for (let i = 0; i < this.state.existingProductItems.length; i++) {
+            if (this.state.existingProductItems[i].product)
+            array.push({ id: this.state.existingProductItems[i].product});
         }
 
         let dataForm = {
@@ -189,14 +248,20 @@ class ProductExpandItem extends Component {
             sub_products: array,
         };
 
+        // console.log(this.state.fields)
+        // return
+
+
+
         axios
             .post(baseUrl + "product/sub-product", dataForm)
             .then((res) => {
                 // dispatch({type: "SIGN_UP", value : res.data})
 
                 this.setState({
-                    addCount: [],
-                    count: 0,
+                    existingProductItems: [],
+                    showExisting: false,
+
                 });
                 this.loadProduct(this.state.item.product._key);
                 this.props.loadCurrentProduct(this.state.item.product._key)
@@ -212,10 +277,10 @@ class ProductExpandItem extends Component {
 
     componentDidMount() {
         this.loadProduct(this.props.productId);
-        this.setState({
-            addCount: [1],
-            count: 1,
-        });
+        // this.setState({
+        //     addCount: [1],
+        //     count: 1,
+        // });
 
         this.props.loadProducts(this.props.userDetail.token);
         this.props.loadProductsWithoutParent(this.props.userDetail.token);
@@ -295,6 +360,8 @@ class ProductExpandItem extends Component {
                                                     )}
                                             </ol>
                                         </div>
+
+
                                         <div className="col-12 d-flex justify-content-between">
                                             <div>
                                                 <button
@@ -317,7 +384,7 @@ class ProductExpandItem extends Component {
                                             </div>
                                             {this.state.showExisting && <div className="">
                                                 <BlueSmallBtn
-                                                    onClick={this.addCount}
+                                                    onClick={this.addItem}
                                                     title={"Add"}
                                                 >
                                                     <AddIcon/>
@@ -335,122 +402,16 @@ class ProductExpandItem extends Component {
                 {this.state.item &&  this.state.showExisting && (
                     <>
                         <div className="row   justify-content-left">
-                            <form style={{ width: "100%" }} onSubmit={this.linkSubProduct}>
+                            <form onChange={this.handleChangeForm} style={{ width: "100%" }}
+                                  onSubmit={this.linkSubProduct}
+                            >
                                 <div className="col-12 mt-4" style={{ padding: "0!important" }}>
-                                    {this.state.addCount.map((item, index) => (
-                                        <div className="row mt-2">
-                                            <div className="col-11">
-                                                {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
 
-                                                <FormControl
-                                                    variant="outlined"
-                                                >
-                                                    <CustomizedSelect
-                                                        name={`product[${index}]`}
-                                                        variant={"standard"}
-                                                        required={true}
-                                                        native
-                                                        onChange={this.handleChange.bind(
-                                                            this,
-                                                            "product"
-                                                        )}
-                                                        inputProps={{
-                                                            // name: {`product[${index}]`},
-                                                            id: "outlined-age-native-simple",
-                                                        }}>
-                                                        <option value={null}>Select</option>
-
-                                                        {this.props.productList
-                                                            .filter(
-                                                                (item) =>
-                                                                    item._key !==
-                                                                    this.state.item.product
-                                                                        ._key
-                                                            )
-                                                            .filter(
-                                                                (item) =>
-                                                                    !this.state.item.sub_products.filter(
-                                                                        (subItem) =>
-                                                                            subItem._key ===
-                                                                            item._key
-                                                                    ).length > 0
-
-                                                            )
-                                                            .map((item) => (
-                                                                <option value={item._key}>
-                                                                    {item.name}
-                                                                </option>
-                                                            ))}
-
-
-                                                    </CustomizedSelect>
-                                                    {this.props.productList.length===0&&   <Spinner
-                                                        as="span"
-                                                        animation="border"
-                                                        size="sm"
-                                                        role="status"
-                                                        aria-hidden="true"
-                                                        style={{color:"#07AD88"}}
-                                                        className={"spinner-select"}
-                                                    />}
-                                                    {this.state.errors["product"] && (
-                                                        <span className={" small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errors["product"]}
-                                                        </span>
-                                                    )}
-
-
-                                                </FormControl>
-
-
-                                            </div>
-
-                                            <div className="col-3 d-none">
-                                                {/*<div className={"custom-label text-bold text-blue mb-1"}>Volume</div>*/}
-
-                                                <CustomizedInput
-                                                    // required={true}
-                                                    type={"number"}
-                                                    onChange={this.handleChange.bind(
-                                                        this,
-                                                        "volume"
-                                                    )}
-                                                    name={`volume[${index}]`}
-                                                    placeholder={"Volume"}
-                                                    id="outlined-basic"
-                                                    variant="outlined"
-                                                    fullWidth={true}
-                                                    inputProps={{ inputProps: { min: 0 } }}
-                                                />
-                                                {this.state.errors["volume"] && (
-                                                    <span className={" small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["volume"]}
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            <div
-                                                className="col-1 text-center"
-                                                style={{ display: "flex" }}>
-                                                {item > 1 && (
-                                                    <>
-                                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
-
-                                                        <DeleteIcon
-                                                            classname={"click-item"}
-                                                            style={{
-                                                                color: "#ccc",
-                                                                margin: "auto",
-                                                            }}
-                                                            onClick={() => this.subtractCount()}
-                                                        />
-                                                    </>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
+                                    <LinkExistingProductList
+                                        fields={this.state.fields}
+                                        deleteItem={this.deleteItem}
+                                        handleChange={this.handleChange}
+                                        existingProductItems={this.state.existingProductItems} />
                                 </div>
 
                                 <div className="col-12 mt-4 mobile-menu">
@@ -464,14 +425,14 @@ class ProductExpandItem extends Component {
                                             {/*    }>*/}
                                             {/*    Submit*/}
                                             {/*</button>*/}
-                                            <GreenButton
+                                            {this.state.existingProductItems.length>0 && <GreenButton
                                                 title={"Add Subproduct"}
                                                 type={"submit"}
                                                 // loading={this.state.loading}
                                                 // disabled={this.state.loading||this.state.isSubmitButtonPressed}
 
                                             >
-                                            </GreenButton>
+                                            </GreenButton>}
                                         </div>
                                     </div>
                                 </div>

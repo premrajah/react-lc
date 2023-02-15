@@ -39,18 +39,20 @@ const DynamicSelectArrayWrapper = (props) => {
             if (typeof selectValue === 'string') {
                 setValue(selectValue);
                 setValueTextbox(selectValue);
-                onChange(selectValue)
+                onChange(selectValue,selectValue)
             } else if (subOption) {
                 setValue(selectValue[`${valueKey}`][`${subValueKey}`])
                 setValueTextbox(selectValue[`${option}`][`${subOption}`])
                 if (onChange) {
-                    onChange(selectValue[`${valueKey}`][`${subValueKey}`])
+
+
+                    onChange(selectValue[`${valueKey}`][`${subValueKey}`],selectValue[`${option}`][`${subOption}`])
                 }
             } else {
                 setValue(selectValue[`${valueKey}`])
                 setValueTextbox(selectValue[`${option}`])
                 if (onChange) {
-                    onChange(selectValue[`${valueKey}`])
+                    onChange(selectValue[`${valueKey}`],selectValue[`${option}`])
                 }
             }
         }else{
@@ -61,11 +63,12 @@ const DynamicSelectArrayWrapper = (props) => {
     };
 
     useEffect(()=>{
-            if (onChange) {
-                onChange(initialValue)
-            }
 
-            if (initialValue){
+
+            if (initialValue&&initialValueTextbox){
+                if (onChange) {
+                    onChange(initialValue)
+                }
                 setValue(initialValue)
                 setValueTextbox(initialValueTextbox)
             }else{
@@ -84,7 +87,7 @@ const DynamicSelectArrayWrapper = (props) => {
 
 
          if (searchValue)
-         url = url+encodeURI(`&or=${searchKey}~%${searchValue}%`)
+         url = url+encodeURI(`&size=10&offset=0&or=${searchKey}~%${searchValue}%`)
 
 
          setResponse([])
@@ -141,7 +144,7 @@ const DynamicSelectArrayWrapper = (props) => {
                             setOpen(false);
                         }}
 
-                        onBlur={()=>console.log("clicked somewhere else")}
+                        // onBlur={()=>console.log("clicked somewhere else")}
                         onChange={
                             (event,value) =>{
 
@@ -166,16 +169,21 @@ const DynamicSelectArrayWrapper = (props) => {
                             />
                         }
                         options={options?options:response}
-                        getOptionLabel={(optionTmp) =>
-                            typeof optionTmp === 'string' ?
-                                optionTmp :subOption? optionTmp[`${option}`][`${subOption}`]:optionTmp[`${option}`]
-                        }
+                        getOptionLabel={(optionTmp) => {
+                            console.log("optionTmp",optionTmp)
+                            return (typeof optionTmp === 'string'
+                                ? optionTmp :subOption? optionTmp[`${option}`][`${subOption}`]:optionTmp[`${option}`])
+                        }}
                         noOptionsText="No results found"
                         renderOption={(props, optionTmp) => (
                             <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
 
-                                {typeof optionTmp === 'string' ?
-                                    optionTmp :subOption? optionTmp[`${option}`][`${subOption}`]:optionTmp[`${option}`]}
+                                {typeof optionTmp === 'string'
+                                    ? optionTmp
+                                    :subOption
+                                        ? optionTmp[`${option}`][`${subOption}`]
+                                        :optionTmp[`${option}`]
+                                }
                             </Box>
                         )}
 

@@ -1,5 +1,7 @@
 import DOMPurify from 'dompurify'
 import {useEffect, useRef} from "react";
+// import {uuid}  from  'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 export const { REACT_APP_BRANCH_ENV } = process.env;
 
@@ -155,6 +157,20 @@ export const SITES_FILTER_VALUES = [
     {key:"site id",label:"Site ID" },
     {key:"address",label:"Address" },
     ];
+
+export const LINK_EXISTING_FIELDS = [
+    {key:"name",label:"Name" ,type:"text"},
+    {key:"products",label:"Products" ,type:"multiple",
+        fields:[{
+                 index: uuid(),
+              key:"product",
+                type:"dynamicselect",
+                label:"Select Product"
+            },
+
+        ]},
+
+];
 export const LISTING_FILTER_VALUES = [
     {key:"name",label:"Name" },
     {key:"product_name",label:"Product Name" },];

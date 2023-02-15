@@ -85,50 +85,21 @@ class ProductExpandItem extends Component {
             ]
         }));
 
-        // let array = this.state.addCount;
-        //
-        // array.push(this.state.count + 1);
-        //
-        // this.setState({
-        //     addCount: array,
-        //     count: this.state.count + 1,
-        // });
     }
 
     deleteItem=(record)=> {
 
-
-        console.log(record)
-        console.log(this.state.existingProductItems)
         this.setState({
             existingProductItems: this.state.existingProductItems.filter(r => r !== record)
         });
-        console.log(this.state.existingProductItems)
 
 
-
-
-
-
-        // if (this.state.count > 1) {
-        //     let array = this.state.addCount;
-        //
-        //     array.pop();
-        //
-        //     if (this.state.count > 1)
-        //         this.setState({
-        //             addCount: array,
-        //             count: this.state.count - 1,
-        //         });
-        // }
     }
 
 
 
 
     handleChange=( value,valueText,field,uId,index) =>{
-
-
 
         let existingProductItems = [...this.state.existingProductItems];
         existingProductItems[index] = {
@@ -139,41 +110,12 @@ class ProductExpandItem extends Component {
             existingProductItems:existingProductItems
         })
 
-        console.log(existingProductItems)
-
-        // fields[field] = {value:value,valueText:valueText,uId:uId}
-        //
-        // this.setState({ fields });
-        //
-        //
-        // console.log(fields)
-        // if (field === "product") {
-        //     this.setState({
-        //         subProductSelected: this.props.productList.filter(
-        //             (item) => item._key === e.target.value
-        //         )[0],
-        //     });
-        // }
     }
 
 
 
     handleChangeForm=( e) =>{
 
-        console.log(e.target.name, e.target.value)
-
-        // if (
-        //     ["name", "author", "type", "dateOfPublish", "price"].includes(
-        //         e.target.name
-        //     )
-        // ) {
-        //     let fieldDetails = [...this.state.fieldDetails];
-        //     fieldDetails[e.target.dataset.id][e.target.name] = e.target.value;
-        //
-        //
-        // } else {
-        //     this.setState({ [e.target.name]: e.target.value });
-        // }
     }
 
 
@@ -189,13 +131,6 @@ class ProductExpandItem extends Component {
         });
     }
 
-    // loadProduct(productKey) {
-    //
-    //
-    //     if (productKey)
-    //     this.props.loadCurrentProduct(productKey)
-    //
-    // }
 
 
     loadProduct=(id)=> {
@@ -247,10 +182,6 @@ class ProductExpandItem extends Component {
             product_id: this.state.item.product._key,
             sub_products: array,
         };
-
-        // console.log(this.state.fields)
-        // return
-
 
 
         axios
@@ -417,14 +348,7 @@ class ProductExpandItem extends Component {
                                 <div className="col-12 mt-4 mobile-menu">
                                     <div className="row text-center ">
                                         <div className="col-12 text-center">
-                                            {/*<button*/}
-                                            {/*    style={{ margin: "auto", width: "200px" }}*/}
-                                            {/*    type={"submit"}*/}
-                                            {/*    className={*/}
-                                            {/*        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"*/}
-                                            {/*    }>*/}
-                                            {/*    Submit*/}
-                                            {/*</button>*/}
+
                                             {this.state.existingProductItems.length>0 && <GreenButton
                                                 title={"Add Subproduct"}
                                                 type={"submit"}

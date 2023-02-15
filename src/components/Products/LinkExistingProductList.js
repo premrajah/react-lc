@@ -28,19 +28,6 @@ const DynamicAutoCompleteBox=(props)=> {
     const [textValue, setTextValue] = useState("")
 
 
-    // useEffect(()=>{
-    //
-    //     if (props.fields[`product[${props.index}]`]){
-    //
-    //         // setValue()
-    //         console.log("use effect",props.fields[`product[${props.index}]`])
-    //
-    //
-    //         setValue(props.val.product)
-    //         setTextValue(props.val.productText)
-    //     }
-    // },[props.val])
-
     useEffect(()=>{
 
 
@@ -67,13 +54,8 @@ const DynamicAutoCompleteBox=(props)=> {
                         name={`product[${props.index}]`}
                         required={true}
                         onChange={(value,valueText) => {
-                            // props.handleChange(value, valueText,`product[${props.index}]`,props.uId,props.index)
                             props.handleChange(value, valueText,`product`,props.uId,props.index);
 
-                            // console.log(value,valueText)
-
-                            // setValue(value);
-                            //     setTextValue(valueText)
                         }}
                         initialValue={props.val.product}
                         initialValueTextbox={props.val.productText}

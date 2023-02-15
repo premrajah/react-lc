@@ -30,7 +30,7 @@ class ProductExpandItem extends Component {
             fields: {},
             errors: {},
             subProductSelected: null,
-            existingProductItems: [ {index: uuid(),product:"",productText:""}],
+            existingProductItems: [ {index: uuid(),product:"",productText:"",error:null}],
             count: 0,
             showExisting: false,
             productList:[],
@@ -104,7 +104,8 @@ class ProductExpandItem extends Component {
         let existingProductItems = [...this.state.existingProductItems];
         existingProductItems[index] = {
             product:value,productText:valueText,
-            index:uId
+            index:uId,
+            error:false
         };
         this.setState({
             existingProductItems:existingProductItems
@@ -173,11 +174,30 @@ class ProductExpandItem extends Component {
 
         let array = [];
 
+        let errorFlag=false
         for (let i = 0; i < this.state.existingProductItems.length; i++) {
-            if (this.state.existingProductItems[i].product)
-            array.push({ id: this.state.existingProductItems[i].product});
+            if (this.state.existingProductItems[i].product&&this.state.existingProductItems[i].product.length>0){
+
+                array.push({ id: this.state.existingProductItems[i].product});
+            }else{
+
+                errorFlag=true
+                let existingProductItems = this.state.existingProductItems;
+
+                existingProductItems[i].error=true
+                this.setState({
+                    existingProductItems:existingProductItems
+                })
+
+
+            }
+
         }
 
+        if (errorFlag){
+
+            return
+        }
         let dataForm = {
             product_id: this.state.item.product._key,
             sub_products: array,

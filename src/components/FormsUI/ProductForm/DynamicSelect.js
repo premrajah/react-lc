@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const DynamicSelectArrayWrapper = (props) => {
 
     const {label,title,option,initialValue,initialValueTextbox,detailsHeading,details,placeholder,valueKey,subValueKey,subOption,
-        name,select,onChange, helperText,disabled,defaultValueSelect,filterKey,apiUrl,searchKey, defaultValue,options,error, ...rest} = props;
+        name,select,onChange, helperText,disabled,defaultValueSelect,filterKey,apiUrl,searchKey,errorNoMessage, defaultValue,options,error, ...rest} = props;
 
     const [value, setValue] = React.useState(initialValue);
     const [response, setResponse] = React.useState([]);
@@ -24,6 +24,10 @@ const DynamicSelectArrayWrapper = (props) => {
 
         setValue(null)
         setValueTextbox(null)
+
+
+        if (onChange)
+        onChange(null,null)
     }
 
 
@@ -170,7 +174,7 @@ const DynamicSelectArrayWrapper = (props) => {
                         }
                         options={options?options:response}
                         getOptionLabel={(optionTmp) => {
-                            console.log("optionTmp",optionTmp)
+
                             return (typeof optionTmp === 'string'
                                 ? optionTmp :subOption? optionTmp[`${option}`][`${subOption}`]:optionTmp[`${option}`])
                         }}
@@ -196,6 +200,8 @@ const DynamicSelectArrayWrapper = (props) => {
                 </FormControl>
 
                 {error && <span style={{color:"#f44336",fontSize: "12px!important"}} className={"text-danger"}> {error.message}</span>}
+                {errorNoMessage && <span style={{color:"#f44336",fontSize: "12px!important"}} className={"text-danger"}> Required</span>}
+
             </div>
         </>
     );

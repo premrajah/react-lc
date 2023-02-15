@@ -43,7 +43,7 @@ const DynamicAutoCompleteBox=(props)=> {
                     <DynamicSelectArrayWrapper
 
                         api={""}
-                        // error={this.state.errors["product"][`${index}`]}
+                        errorNoMessage={props.val.error}
                         apiUrl={baseUrl + "seek?name=Product&no_parent=true&count=false"}
                         option={"Product"}
                         subOption={"name"}
@@ -52,15 +52,12 @@ const DynamicAutoCompleteBox=(props)=> {
                         subValueKey={"_key"}
                         title="Select Product"
                         name={`product[${props.index}]`}
-                        required={true}
                         onChange={(value,valueText) => {
                             props.handleChange(value, valueText,`product`,props.uId,props.index);
 
                         }}
                         initialValue={props.val.product}
                         initialValueTextbox={props.val.productText}
-
-
 
                     />
 

@@ -221,6 +221,8 @@ class ProductExpandItem extends Component {
                 });
                 this.loadProduct(this.state.item.product._key);
                 this.props.loadCurrentProduct(this.state.item.product._key)
+                this.props.showSnackbar({show:true,severity:"success",message:"Subproducts linked successfully. Thanks"})
+
             })
             .catch((error) => {
                 // dispatch(stopLoading())
@@ -436,7 +438,7 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadCurrentProduct: (data) =>
             dispatch(actionCreator.loadCurrentProduct(data)),
-
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductExpandItem);

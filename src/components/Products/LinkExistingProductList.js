@@ -46,7 +46,7 @@ console.log(props.filters)
                         searchKey={"name"}
                         valueKey={"Product"}
                         subValueKey={"_key"}
-                        title="Select Product"
+                        // title="Select Product"
                         name={`product[${props.index}]`}
                         onChange={(value,valueText) => {
                             props.handleChange(value, valueText,`product`,props.uId,props.index);

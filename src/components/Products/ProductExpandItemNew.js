@@ -162,6 +162,10 @@ class ProductExpandItem extends Component {
     linkSubProduct(event) {
         event.preventDefault();
 
+
+        try {
+
+
         const form = event.currentTarget;
 
         // if (this.handleValidationSite()){
@@ -179,6 +183,7 @@ class ProductExpandItem extends Component {
             if (this.state.existingProductItems[i].product&&this.state.existingProductItems[i].product.length>0){
 
                 array.push({ id: this.state.existingProductItems[i].product});
+
             }else{
 
                 errorFlag=true
@@ -223,6 +228,11 @@ class ProductExpandItem extends Component {
                 // dispatch({ type: AUTH_FAILED });
                 // dispatch({ type: ERROR, payload: error.data.error.message });
             });
+
+        }catch (e){
+            console.log("error link submit product")
+            console.log(e)
+        }
     }
 
 
@@ -359,6 +369,8 @@ class ProductExpandItem extends Component {
                                 <div className="col-12 mt-4" style={{ padding: "0!important" }}>
 
                                     <LinkExistingProductList
+
+                                        filters={[this.state.item.product._key,...this.state.item.sub_products.map(item=>item._key)]}
                                         fields={this.state.fields}
                                         deleteItem={this.deleteItem}
                                         handleChange={this.handleChange}

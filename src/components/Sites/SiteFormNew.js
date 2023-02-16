@@ -985,7 +985,7 @@ class SiteFormNew extends Component {
                                             details="Select product’s location from the existing sites or add new address below"
                                             initialValue={this.props.parent_site&&this.props.parent_site._key}
                                             initialValueTextbox={this.props.parent_site&&this.props.parent_site.name}
-                                           filterKey={this.props.item?this.props.item._key:null}
+                                            filterData={this.props.item?[this.props.item._key]:[]}
 
                                         />
                                         {/*<SelectArrayWrapper*/}

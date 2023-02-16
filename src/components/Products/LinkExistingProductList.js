@@ -11,7 +11,7 @@ const LinkExistingProductList=(props)=>{
         return (
             <>
 <DynamicAutoCompleteBox
-
+    filters={props.filters}
     deleteItem={props.deleteItem} val={val} handleChange={props.handleChange} uId={val.index} index={index}/>
             </>)
 
@@ -23,13 +23,8 @@ const LinkExistingProductList=(props)=>{
 const DynamicAutoCompleteBox=(props)=> {
 
 
-    const [visible, setVisible] = useState(true)
-    const [value, setValue] = useState("")
-    const [textValue, setTextValue] = useState("")
-
-
     useEffect(()=>{
-
+console.log(props.filters)
 
     },[])
 
@@ -41,8 +36,9 @@ const DynamicAutoCompleteBox=(props)=> {
                 <div className="col-11">
 
                     <DynamicSelectArrayWrapper
-
+                        filterData={props.filters}
                         api={""}
+
                         errorNoMessage={props.val.error}
                         apiUrl={baseUrl + "seek?name=Product&no_parent=true&count=false"}
                         option={"Product"}

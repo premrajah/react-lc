@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const DynamicSelectArrayWrapper = (props) => {
 
     const {label,title,option,initialValue,initialValueTextbox,detailsHeading,details,placeholder,valueKey,subValueKey,subOption,
-        name,select,onChange, helperText,disabled,defaultValueSelect,filterKey,apiUrl,searchKey,errorNoMessage, defaultValue,options,error, ...rest} = props;
+        name,select,onChange, helperText,disabled,defaultValueSelect,filterKey,filterData,apiUrl,searchKey,errorNoMessage, defaultValue,options,error, ...rest} = props;
 
     const [value, setValue] = React.useState(initialValue);
     const [response, setResponse] = React.useState([]);
@@ -98,15 +98,21 @@ const DynamicSelectArrayWrapper = (props) => {
         axios.get(url).then(
             (res) => {
 
-
                 let items=res.data.data
+                if (filterData&&filterData.length>0){
 
-                if (filterKey){
-                   setResponse( items.filter((item)=>
+                    try{
+                       items= items.reverse().filter((item)=>
+                            typeof item === 'string'
+                                ? !(filterData.find(item))
+                                : subValueKey
+                                    ? !filterData.find(itemTemp=> itemTemp===item[`${valueKey}`][`${subValueKey}`])
+                                    : !filterData.find(itemTemp=> itemTemp===item[`${valueKey}`])
+                        )
+                    }catch (e){
+                    }
 
-                        typeof item === 'string' ?
-                            item :subValueKey? item[`${valueKey}`][`${subValueKey}`]!==filterKey:item[`${valueKey}`]!==filterKey
-                    ))
+                   setResponse(items )
                 }else{
                     setResponse(items)
                 }
@@ -134,10 +140,7 @@ const DynamicSelectArrayWrapper = (props) => {
             <div className={"field-box mb-2"}>
                 <FormControl variant="outlined" >
                     {label && <InputLabel >{label}</InputLabel>}
-
-
                     <Autocomplete
-
                         style={{width:"100%"}}
                         value={valueTextbox}
                         open={open}
@@ -148,17 +151,13 @@ const DynamicSelectArrayWrapper = (props) => {
                             setOpen(false);
                         }}
 
-                        // onBlur={()=>console.log("clicked somewhere else")}
                         onChange={
                             (event,value) =>{
-
                                 handleChange(event,value)
                         }}
                         className={`custom-autocomplete ${error&&"border-red-error"}`}
                         renderInput={(params) =>
                             <TextField
-
-
                                  onChange={(event) =>handleSearch(event,event.target.value)}
                                  variant="standard" {...params}
                                 InputProps={{

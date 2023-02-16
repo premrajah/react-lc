@@ -142,7 +142,7 @@ class ProductAutocomplete extends Component {
                 // });
 
                 this.setState({
-                    filteredSuggestions: products.filter(product=> !this.props.filterData.find(item=>product._key==item)),
+                    filteredSuggestions: products.filter(product=> !this.props.filterData.find(item=>product._key===item)),
                 });
                 this.setState({
                     activeSuggestion: 0,

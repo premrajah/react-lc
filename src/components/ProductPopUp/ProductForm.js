@@ -26,6 +26,7 @@ import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
+import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 
 let slugify = require('slugify')
 
@@ -1081,28 +1082,32 @@ let slugify = require('slugify')
                     {this.state.showForm &&
                     <div className={`${!this.state.showSubmitSite?"":"d-none"} `}>
                         <div className="row">
-                        <div className="col-md-8  col-xs-12">
-                            <h4 className={"blue-text text-heading "}>
+                        <div className="col-md-12 d-flex mb-2  col-xs-12">
+                            <h4 className={"blue-text text-heading me-2 "}>
                                 {this.props.edit?"Edit Product":this.props.productLines?this.props.item?"Edit "+this.props.item.name:"Add Product Line":this.state.parentProductId?"Add subproduct":"Add product"}
 
                             </h4>
 
-                        </div>
                             {!this.props.hideUpload&&!this.props.productLines &&
-                            <div className="col-md-4  col-xs-12 desktop-right">
-                            {/*<button className="btn btn-sm blue-btn pt-2" */}
-                            {/*        */}
-                            {/*        ></button>*/}
-                                <BlueButton
-                                    sleek
-                                    onClick={() => this.showMultipleUpload()}
-                                    title={"Upload Multiple Products"}
-                                    fullWidth
-                                    type="button"
-                                >
-                                </BlueButton>
+                                // <div className="col-md-4  col-xs-12 desktop-right">
+                                //     {/*<button className="btn btn-sm blue-btn pt-2" */}
+                                //     {/*        */}
+                                //     {/*        ></button>*/}
+                                    <BlueSmallBtn
 
-                            </div>}
+                                        sleek
+                                        onClick={() => this.showMultipleUpload()}
+                                        title={"Upload Multiple Products"}
+
+                                        type="button"
+                                    >
+                                    </BlueSmallBtn>
+
+                                // </div>
+                        }
+
+                        </div>
+
 
                             {!this.props.item&&!this.props.productLines &&this.state.templates.length>0&&
                             <div className="col-4 ">

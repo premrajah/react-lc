@@ -14,7 +14,7 @@ import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 import { v4 as uuid } from 'uuid';
-import LinkExistingProductList from "./LinkExistingProductList";
+import LinkExistingList from "./LinkExistingList";
 
 
 class ProductExpandItem extends Component {
@@ -30,7 +30,7 @@ class ProductExpandItem extends Component {
             fields: {},
             errors: {},
             subProductSelected: null,
-            existingProductItems: [ {index: uuid(),product:"",productText:"",error:null}],
+            existingItems: [],
             count: 0,
             showExisting: false,
             productList:[],
@@ -66,17 +66,29 @@ class ProductExpandItem extends Component {
     }
 
     showExisting() {
+
         this.setState({
             showExisting: !this.state.showExisting,
+
         });
+        setTimeout(()=>{
+            this.setState({
+                existingItems:  this.state.showExisting?[ {index: uuid(),value:"",valueText:"",error:null}]:[]
+
+            });
+
+        },100)
+
+
+        // console.log(this.state.existingItems)
     }
 
     addItem=()=> {
 
 
         this.setState(prevState => ({
-            existingProductItems: [
-                ...prevState.existingProductItems,
+            existingItems: [
+                ...prevState.existingItems,
                 {
                     index:uuid(),
                     name: "",
@@ -90,7 +102,7 @@ class ProductExpandItem extends Component {
     deleteItem=(record)=> {
 
         this.setState({
-            existingProductItems: this.state.existingProductItems.filter(r => r !== record)
+            existingItems: this.state.existingItems.filter(r => r !== record)
         });
 
 
@@ -101,14 +113,14 @@ class ProductExpandItem extends Component {
 
     handleChange=( value,valueText,field,uId,index) =>{
 
-        let existingProductItems = [...this.state.existingProductItems];
-        existingProductItems[index] = {
-            product:value,productText:valueText,
+        let existingItems = [...this.state.existingItems];
+        existingItems[index] = {
+            value:value,valueText:valueText,
             index:uId,
             error:false
         };
         this.setState({
-            existingProductItems:existingProductItems
+            existingItems:existingItems
         })
 
     }
@@ -179,19 +191,19 @@ class ProductExpandItem extends Component {
         let array = [];
 
         let errorFlag=false
-        for (let i = 0; i < this.state.existingProductItems.length; i++) {
-            if (this.state.existingProductItems[i].product&&this.state.existingProductItems[i].product.length>0){
+        for (let i = 0; i < this.state.existingItems.length; i++) {
+            if (this.state.existingItems[i].value&&this.state.existingItems[i].value.length>0){
 
-                array.push({ id: this.state.existingProductItems[i].product});
+                array.push({ id: this.state.existingItems[i].value});
 
             }else{
 
                 errorFlag=true
-                let existingProductItems = this.state.existingProductItems;
+                let existingItems = this.state.existingItems;
 
-                existingProductItems[i].error=true
+                existingItems[i].error=true
                 this.setState({
-                    existingProductItems:existingProductItems
+                    existingItems:existingItems
                 })
 
 
@@ -215,20 +227,17 @@ class ProductExpandItem extends Component {
                 // dispatch({type: "SIGN_UP", value : res.data})
 
                 this.setState({
-                    existingProductItems: [],
+                    existingItems: [],
                     showExisting: false,
-
                 });
+                this.props.showSnackbar({show:true,severity:"success",message:"Subproducts linked successfully. Thanks"})
+
                 this.loadProduct(this.state.item.product._key);
                 this.props.loadCurrentProduct(this.state.item.product._key)
-                this.props.showSnackbar({show:true,severity:"success",message:"Subproducts linked successfully. Thanks"})
 
             })
             .catch((error) => {
-                // dispatch(stopLoading())
-                // dispatch(signUpFailed(error.response.data.content.message))
-                // dispatch({ type: AUTH_FAILED });
-                // dispatch({ type: ERROR, payload: error.data.error.message });
+
             });
 
         }catch (e){
@@ -345,18 +354,13 @@ class ProductExpandItem extends Component {
                                                     Link Existing
                                                 </button>
                                             </div>
-                                            {this.state.showExisting && <div className="">
-                                                <BlueSmallBtn
-                                                    onClick={this.addItem}
-                                                    title={"Add"}
-                                                >
-                                                    <AddIcon/>
-                                                </BlueSmallBtn>
-                                            </div>}
+
 
                                         </div>
                                     </div>
                                 )}
+
+
                             </>
                         )}
                     </div>
@@ -370,20 +374,41 @@ class ProductExpandItem extends Component {
                             >
                                 <div className="col-12 mt-4" style={{ padding: "0!important" }}>
 
-                                    <LinkExistingProductList
+                                    <LinkExistingList
 
+                                        option={"Product"}
+                                        subOption={"name"}
+                                        searchKey={"name"}
+                                        valueKey={"Product"}
+                                        subValueKey={"_key"}
+                                        field={"product"}
+                                        apiUrl={baseUrl + "seek?name=Product&no_parent=true&count=false"}
                                         filters={[this.state.item.product._key,...this.state.item.sub_products.map(item=>item._key)]}
                                         fields={this.state.fields}
                                         deleteItem={this.deleteItem}
                                         handleChange={this.handleChange}
-                                        existingProductItems={this.state.existingProductItems} />
+                                        existingItems={this.state.existingItems} />
                                 </div>
+                                {this.state.showExisting &&
+                                    <div className="row   ">
+                                        <div className="col-12 mt-2  ">
+                                            <div className="">
+                                                <BlueSmallBtn
+                                                    onClick={this.addItem}
+                                                    title={"Add"}
+                                                    type="button"
+                                                >
+                                                    <AddIcon/>
+                                                </BlueSmallBtn>
+                                            </div>
+                                        </div>
+                                    </div>}
 
                                 <div className="col-12 mt-4 mobile-menu">
                                     <div className="row text-center ">
                                         <div className="col-12 text-center">
 
-                                            {this.state.existingProductItems.length>0 && <GreenButton
+                                            {this.state.existingItems.length>0 && <GreenButton
                                                 title={"Add Subproduct"}
                                                 type={"submit"}
                                                 // loading={this.state.loading}

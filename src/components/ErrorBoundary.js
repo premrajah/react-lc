@@ -37,7 +37,7 @@ class ErrorBoundary extends Component {
         if (this.state.hasError) {
 
 
-            return this.props.skip?<></>:<UnableToLoad />;
+            return this.props.skip?<></>:<UnableToLoad error={this.state.error} />;
         }
 
 

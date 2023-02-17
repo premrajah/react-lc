@@ -4,15 +4,25 @@ import {baseUrl} from "../../Util/Constants";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useEffect, useState} from "react";
 
-const LinkExistingProductList=(props)=>{
+const LinkExistingList=(props)=>{
 
-    return props.existingProductItems.map((val, index) => {
+
+    // const [existingProductItems,existingItems]=useState([])
+    // useEffect(()=>{
+    //
+    //     existingItems(props.existingItems)
+    // },[props.existingItems])
+
+    return props.existingItems.map((val, index) => {
 
         return (
             <>
 <DynamicAutoCompleteBox
-    filters={props.filters}
-    deleteItem={props.deleteItem} val={val} handleChange={props.handleChange} uId={val.index} index={index}/>
+    {...props}
+    val={val} h
+    uId={val.index}
+    index={index}
+/>
             </>)
 
 
@@ -38,22 +48,23 @@ console.log(props.filters)
                     <DynamicSelectArrayWrapper
                         filterData={props.filters}
                         api={""}
-
                         errorNoMessage={props.val.error}
-                        apiUrl={baseUrl + "seek?name=Product&no_parent=true&count=false"}
-                        option={"Product"}
-                        subOption={"name"}
-                        searchKey={"name"}
-                        valueKey={"Product"}
-                        subValueKey={"_key"}
+                        apiUrl={props.apiUrl}
+
+                        option={props.option}
+                        subOption={props.subOption}
+                        searchKey={props.searchKey}
+                        valueKey={props.valueKey}
+                        subValueKey={props.subValueKey}
+
                         // title="Select Product"
                         name={`product[${props.index}]`}
                         onChange={(value,valueText) => {
-                            props.handleChange(value, valueText,`product`,props.uId,props.index);
+                            props.handleChange(value, valueText,props.field,props.uId,props.index);
 
                         }}
-                        initialValue={props.val.product}
-                        initialValueTextbox={props.val.productText}
+                        initialValue={props.val.value}
+                        initialValueTextbox={props.val.valueText}
 
                     />
 
@@ -88,4 +99,4 @@ console.log(props.filters)
     )
 }
 
-export default LinkExistingProductList
+export default LinkExistingList

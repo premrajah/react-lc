@@ -290,6 +290,8 @@ class Sites extends Component {
     }
 
     toggleSite=(refresh,siteItem) =>{
+
+
         if (refresh){
 
             this.loadSitesWithoutParentPageWise({reset:true})

@@ -17,6 +17,7 @@ import Layout from "../../components/Layout/Layout";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
+import CustomPopover from "../../components/FormsUI/CustomPopover";
 
 
 
@@ -276,8 +277,25 @@ class TrackedProducts extends Component {
                                     Products
                                 </Link>
 
-                                <Link to="/product-archive" className="btn btn-sm btn-gray-border me-2">
-                                    Records
+                                <Link
+                                    to="/product-records"
+                                    className=" btn-sm btn-gray-border  me-2">
+                                    <CustomPopover
+                                        text={
+                                            "All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "
+                                        }>
+                                        Records
+                                    </CustomPopover>
+                                </Link>
+                                <Link
+                                    to="/product-archive"
+                                    className=" btn-sm btn-gray-border  me-2">
+                                    {/*<CustomPopover*/}
+                                    {/*    text={*/}
+                                    {/*        "Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"*/}
+                                    {/*    }>*/}
+                                    Archive
+                                    {/*</CustomPopover>*/}
                                 </Link>
                                 <Link to="/issues" className=" btn-sm btn-gray-border ml-2-desktop ">
                                     {/*<CustomPopover*/}

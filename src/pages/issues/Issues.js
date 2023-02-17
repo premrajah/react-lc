@@ -222,11 +222,24 @@ class Issues extends Component {
                                     <CustomPopover text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}>Tracked</CustomPopover>
                                 </Link>
 
-                                <Link to="/products-service" className=" btn-sm btn-gray-border ml-2-desktop ">
+                                <Link
+                                    to="/product-records"
+                                    className=" btn-sm btn-gray-border  me-2">
+                                    <CustomPopover
+                                        text={
+                                            "All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "
+                                        }>
+                                        Records
+                                    </CustomPopover>
+                                </Link>
+                                <Link
+                                    to="/product-archive"
+                                    className=" btn-sm btn-gray-border  me-2">
                                     {/*<CustomPopover*/}
-                                    {/*    // text={"Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"}*/}
-                                    {/*>*/}
-                                    Service
+                                    {/*    text={*/}
+                                    {/*        "Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"*/}
+                                    {/*    }>*/}
+                                    Archive
                                     {/*</CustomPopover>*/}
                                 </Link>
 

@@ -13,6 +13,7 @@ import Layout from "../../components/Layout/Layout";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
+import CustomPopover from "../../components/FormsUI/CustomPopover";
 
 class ProductRecords extends Component {
 
@@ -329,6 +330,16 @@ class ProductRecords extends Component {
                                     Products
                                 </Link>
 
+                                <Link
+                                    to="/product-archive"
+                                    className=" btn-sm btn-gray-border  me-2">
+                                    {/*<CustomPopover*/}
+                                    {/*    text={*/}
+                                    {/*        "Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"*/}
+                                    {/*    }>*/}
+                                    Archive
+                                    {/*</CustomPopover>*/}
+                                </Link>
                                 <Link to="/product-tracked" className="btn btn-sm btn-gray-border me-2">
                                     Tracked
                                 </Link>

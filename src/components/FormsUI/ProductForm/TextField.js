@@ -105,7 +105,7 @@ const TextFieldWrapper = ({
                         dangerouslySetInnerHTML={{__html:title}}
                         className={"title-bold"} style={{ textTransform: "capitalize" }} />
                     {details && (
-                        <CustomPopover heading={detailsHeading} text={details}>
+                        <CustomPopover  {...otherProps} heading={detailsHeading} text={details}>
                             <InfoIcon />
                         </CustomPopover>
                     )}
@@ -117,8 +117,6 @@ const TextFieldWrapper = ({
 
             <div className={`${type !== "hidden" ? "field-box " : "d-none"} ${noMargin?"":"mb-2"}`}>
                 <CustomizedInput
-
-
                     disabled={disabled}
                     type={type}
                     variant="outlined"
@@ -129,8 +127,6 @@ const TextFieldWrapper = ({
                     onChange={handleChange}
                     name={name}
                     {...configTextField}
-
-
 
                 />
             </div>

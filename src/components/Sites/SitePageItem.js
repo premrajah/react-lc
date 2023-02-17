@@ -155,7 +155,7 @@ const SitePageItem = (  props) => {
                             <img className={`${props.smallItem?"small-image":""} img-fluid img-list rad-4`} src={`${googleApisBaseURL}staticmap?center=${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
                             &markers=color:0x212529%7Clabel:C%7C${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
                             &zoom=12&size=${props.smallItem?"110x110":"185x185"}&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
-                            :<img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />}
+                            :<img className={ `${props.smallItem?"small-image":""}  img-fluid img-list`} src={PlaceholderImg} alt="" />}
 
                         </>
                     </Link>

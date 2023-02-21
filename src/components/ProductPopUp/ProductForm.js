@@ -421,7 +421,16 @@ let slugify = require('slugify')
 
                 let fields = this.state.fields;
             fields[field] = value;
+
+
+             if (field==="year_of_making"){
+                 fields[field]= Number(value)
+             }
+
+
             this.setState({ fields });
+
+
 
             if (field==="purpose"&&value==="Aggregate"){
 
@@ -757,6 +766,25 @@ let slugify = require('slugify')
 
         updateImages() {
 
+
+            let flagChange=false
+
+            if (this.state.images.length!==this.props.item.artifacts.length){
+                flagChange=true
+            }
+            this.state.images.forEach((item)=>{
+
+                if (!this.props.item.artifacts.find(artifact=> artifact._key==item)){
+                    flagChange=true
+                }
+
+            })
+
+
+            if (!flagChange){
+                return
+            }
+
             axios
                 .post(
                     baseUrl + "product/artifact/replace",
@@ -767,12 +795,15 @@ let slugify = require('slugify')
                     },
                 )
                 .then((res) => {
+
                     if (!this.props.parentProduct) {
                         // this.setState({
                         //     product: res.data.data,
                         //     parentProduct: res.data.data,
                         // });
                     }
+                    this.props.loadCurrentProduct(this.props.item.product._key)
+
 
                     this.triggerCallback();
 

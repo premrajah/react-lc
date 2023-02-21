@@ -129,12 +129,10 @@ export const validateInputs = (validations,fields,editMode) => {
     let errors=[]
 
     if (validations && validations.length) {
-        console.log(fields)
 
         for (let j = 0; j < validations.length; j++) {
             let inputField=validations[j]
 
-            console.log(inputField)
             if (editMode&&fields[inputField.field]=== undefined){
 
                 // console.log("skip",fields[inputField.field],inputField.field)

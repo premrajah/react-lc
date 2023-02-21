@@ -833,101 +833,99 @@ let slugify = require('slugify')
                 });
         }
 
-        updateSubmitProduct = (event,formData) => {
+        updateSubmitProduct = async (event, formData) => {
 
             event.preventDefault();
             event.stopPropagation()
             console.log(this.state.fields)
 
 
-            let fields=this.state.fields
+            let fields = this.state.fields
 
-            if (!this.handleValidationProduct(true)){
+            if (!this.handleValidationProduct(true)) {
                 return
             }
-
 
 
             this.updateImages();
 
 
-            if (fields["deliver"]!==undefined){
+            if (fields["deliver"] !== undefined) {
                 this.updateSite(fields["deliver"]);
 
                 // this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
                 // this.props.triggerCallback("edit")
-                removeKeyFromObj(fields,['deliver'])
+                removeKeyFromObj(fields, ['deliver'])
 
             }
 
-            if (fields["deliver"]!==undefined){
 
-                fields.sku={
-                                serial: fields.serial,
-                                model: fields.model,
-                                brand: fields.brand,
-                                sku: fields.sku,
-                                upc: fields.upc,
-                                part_no: fields.part_no,
-                                // power_supply: power_supply,
-                                embodied_carbon_kgs: fields.embodied_carbon_kgs?fields.embodied_carbon_kgs:null,
-                                gross_weight_kgs:fields.gross_weight_kgs?fields.gross_weight_kgs:null
-                }
-
-
-                removeKeyFromObj(fields,["sku","serial","model","upc","part_no",
-                    "embodied_carbon_kgs","gross_weight_kgs","brand"])
-            }
-
-
-
-            if (Object.keys(fields).length==0){
+            if (Object.keys(fields).length == 0) {
                 this.props.triggerCallback("edit")
 
                 return;
             }
 
+            if (fields["serial"] !== undefined || fields["model"] !== undefined || fields["brand"] !== undefined ||
+                fields["sku"] !== undefined || fields["upc"] !== undefined || fields["gross_weight_kgs"] !== undefined || fields["embodied_carbon_kgs"] !== undefined) {
 
 
+                let sku = {}
 
+                let skuFields = ["sku", "serial", "model", "upc", "part_no",
+                    "embodied_carbon_kgs", "gross_weight_kgs", "brand","external_reference"]
+
+                skuFields.forEach(item => {
+                    if (!(fields[item] === undefined)) {
+
+                        sku[item] = fields[item]
+                    }
+                })
+
+                console.log("fields",fields)
+                console.log("sku",sku)
+
+                await removeKeyFromObj(fields, skuFields)
+
+                fields.sku = sku
+                console.log(fields)
+            }
 
 
             this.setState({
                 btnLoading: true,
-                loading:true
+                loading: true
             });
-
 
 
             try {
 
 
-
-               //   const data = formData;
-               //
-               //
-               //  const title = data.get("title");
-               //  const purpose = data.get("purpose");
-               //  const condition = data.get("condition");
-               //  const description = data.get("description");
-               //  const category = data.get("category");
-               //  const type = data.get("type");
-               //  const units = data.get("units");
-               //
-               //  const serial = data.get("serial");
-               //  const model = data.get("model");
-               //  const brand = data.get("brand");
-               //
-               //  const volume = data.get("volume");
-               //  const sku = data.get("sku");
-               //  const upc = data.get("upc");
-               //  const part_no = data.get("part_no");
-               //  const state = data.get("state");
-               // const external_reference = data.get("external_reference")
-               //  const site = data.get("deliver");
-               // const power_supply = data.get("power_supply");
-               //  const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
-               //  const gross_weight_kgs = data.get("gross_weight_kgs");
+                //   const data = formData;
+                //
+                //
+                //  const title = data.get("title");
+                //  const purpose = data.get("purpose");
+                //  const condition = data.get("condition");
+                //  const description = data.get("description");
+                //  const category = data.get("category");
+                //  const type = data.get("type");
+                //  const units = data.get("units");
+                //
+                //  const serial = data.get("serial");
+                //  const model = data.get("model");
+                //  const brand = data.get("brand");
+                //
+                //  const volume = data.get("volume");
+                //  const sku = data.get("sku");
+                //  const upc = data.get("upc");
+                //  const part_no = data.get("part_no");
+                //  const state = data.get("state");
+                // const external_reference = data.get("external_reference")
+                //  const site = data.get("deliver");
+                // const power_supply = data.get("power_supply");
+                //  const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
+                //  const gross_weight_kgs = data.get("gross_weight_kgs");
                 //
                 // let productData = {
                 //     id: this.props.item.product._key,
@@ -964,13 +962,11 @@ let slugify = require('slugify')
                 // };
 
 
-
-
                 let productData = {
                     id: this.props.item.product._key,
-                    is_manufacturer: this.state.is_manufacturer?true:false,
+                    is_manufacturer: this.state.is_manufacturer ? true : false,
                     update:
-                       fields
+                    fields
                 };
 
 
@@ -985,11 +981,15 @@ let slugify = require('slugify')
                     )
                     .then((res) => {
 
-                            // this.updateSite(site);
-                            // this.updateImages();
-                           this.props.loadCurrentProduct(this.props.item.product._key)
-                          this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
-                         this.props.triggerCallback("edit")
+                        // this.updateSite(site);
+                        // this.updateImages();
+                        this.props.loadCurrentProduct(this.props.item.product._key)
+                        this.props.showSnackbar({
+                            show: true,
+                            severity: "success",
+                            message: this.props.item.product.name + " updated successfully. Thanks"
+                        })
+                        this.props.triggerCallback("edit")
 
 
                     })
@@ -1004,7 +1004,7 @@ let slugify = require('slugify')
 
                     });
 
-            }catch (e){
+            } catch (e) {
                 console.log(e)
                 this.setState({
                     btnLoading: false,

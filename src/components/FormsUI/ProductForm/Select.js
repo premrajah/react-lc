@@ -11,7 +11,7 @@ const SelectArrayWrapper = (props) => {
     const {label,title,option,notNative,initialValue,detailsHeading,details,noBorder,textAlignRight,
         subOption,subValueKey,
         placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect,
-        defaultValue,options,multiple,error,noMargin,disableAutoLoadingIcon, ...rest} = props;
+        defaultValue,options,multiple,error,editMode,noMargin,disableAutoLoadingIcon, ...rest} = props;
 
     const [value, setValue] = React.useState();
     const [loading, setLoading] = React.useState(false);
@@ -25,8 +25,10 @@ const SelectArrayWrapper = (props) => {
     useEffect(()=>{
         if (onChange) {
               setValue(initialValue)
-                onChange(initialValue)
 
+            if (!editMode) {
+                onChange(initialValue)
+            }
         }
     },[initialValue])
 

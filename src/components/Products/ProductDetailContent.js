@@ -849,6 +849,7 @@ class ProductDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
+
                         {this.state.zoomQrCode&&
                         <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
                             {this.props.item&&this.props.item.qr_artifact && (

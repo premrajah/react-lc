@@ -57,7 +57,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                 </div>:
                         <div className="top-right mt-3 me-3 "><CloseButtonPopUp onClick={handleClose}/></div>
                     }
-                    <div className={`${(props.removePadding||!props.hideHeading||!props.heading||!props.heading.length===0)?" p-0 ":"pb-3 pt-3"} row  justify-content-center align-items-center`}>
+                    <div className={`${(props.removePadding||!props.hideHeading||!props.heading||!props.heading.length===0)?" p-0 ":"pb-3 "} row  justify-content-center align-items-center`}>
 
                         {children}
                     </div>

@@ -419,3 +419,24 @@ try {
     return text
 }
 }
+
+
+
+export const compareProductEditFields=(newData,prevData)=>{
+
+
+    console.log(newData)
+    console.log(prevData)
+
+}
+
+export const removeKeyFromObj=(obj,keys)=>{
+
+    for(let i=0;i<keys.length;i++){
+        delete obj[keys[i]]
+    }
+
+
+    return obj
+
+}

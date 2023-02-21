@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const DynamicSelectArrayWrapper = (props) => {
 
     const {label,title,option,initialValue,initialValueTextbox,detailsHeading,details,placeholder,valueKey,subValueKey,subOption,
-        name,select,onChange, helperText,disabled,defaultValueSelect,filterKey,filterData,apiUrl,searchKey,errorNoMessage, defaultValue,options,error, ...rest} = props;
+        name,select,onChange, helperText,disabled,defaultValueSelect,filterKey,editMode,filterData,apiUrl,searchKey,errorNoMessage, defaultValue,options,error, ...rest} = props;
 
     const [value, setValue] = React.useState(initialValue);
     const [response, setResponse] = React.useState([]);
@@ -48,8 +48,6 @@ const DynamicSelectArrayWrapper = (props) => {
                 setValue(selectValue[`${valueKey}`][`${subValueKey}`])
                 setValueTextbox(selectValue[`${option}`][`${subOption}`])
                 if (onChange) {
-
-
                     onChange(selectValue[`${valueKey}`][`${subValueKey}`],selectValue[`${option}`][`${subOption}`])
                 }
             } else {
@@ -67,40 +65,35 @@ const DynamicSelectArrayWrapper = (props) => {
     };
 
     useEffect(()=>{
-
-
-            if (initialValue&&initialValueTextbox){
-                if (onChange) {
-                    onChange(initialValue)
-                }
-                setValue(initialValue)
-                setValueTextbox(initialValueTextbox)
-            }else{
                 if (!options){
-
                     loadData()
                 }
-            }
-
-
     },[])
+
+
+    useEffect(()=>{
+        if (initialValue&&initialValueTextbox){
+            if (onChange&&!editMode) {
+                onChange(initialValue)
+            }
+            setValue(initialValue)
+            setValueTextbox(initialValueTextbox)
+        }
+
+    },[initialValue])
 
      const loadData = (searchValue) =>  {
 
         let url=apiUrl
 
-
          if (searchValue)
          url = url+encodeURI(`&size=10&offset=0&or=${searchKey}~%${searchValue}%`)
-
 
          setResponse([])
         axios.get(url).then(
             (res) => {
-
                 let items=res.data.data
                 if (filterData&&filterData.length>0){
-
                     try{
                        items= items.reverse().filter((item)=>
                             typeof item === 'string'
@@ -194,7 +187,9 @@ const DynamicSelectArrayWrapper = (props) => {
                         // value={value}
 
                     />
-                    <input name={name} onChange={()=>alert(value)} type={"hidden"} value={value}/>
+                    <input name={name}
+                           // onChange={()=>alert(value)}
+                           type={"hidden"} value={value}/>
 
                 </FormControl>
 

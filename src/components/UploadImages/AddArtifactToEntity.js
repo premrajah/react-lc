@@ -4,20 +4,63 @@ import { Button, MenuItem } from "@mui/material";
 import {Add, Upload} from '@mui/icons-material';
 import { useState } from "react";
 import MenuDropdown from "../FormsUI/MenuDropdown";
-import {BYTES_TO_SIZE, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import {baseUrl, BYTES_TO_SIZE, getImageAsBytes, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import axios from "axios";
+import {cleanFilename} from "../../Util/GlobalFunctions";
+import login from "../../views/login/Login";
+import * as actionCreator from "../../store/actions/actions";
+import {connect} from "react-redux";
 
 const UPLOAD_TYPE_VALUES = ["From System", "Youtube Id", "Video link"];
 const MAX_COUNT = 5;
 const MAX_FILE_SIZE = 26214400;
 
-const AddArtifactToEntity = ({ entityId }) => {
+const AddArtifactToEntity = ({ entityId, loadCurrentProduct, showSnackbar }) => {
     // console.log("entity Id ", entityId);
     const [uploadType, setUploadType] = useState(UPLOAD_TYPE_VALUES[0]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [fileLimit, setFileLimit] = useState(false);
 
+
+
+    const addArtifactToProduct = async (key) => {
+
+        const payload = {
+            product_id: entityId,
+            artifact_ids: [key],
+        };
+
+        const uploadToServer = await  axios.post(`${baseUrl}product/artifact`, payload);
+
+        if(uploadToServer.status === 200) {
+            setUploadedFiles([]);
+            loadCurrentProduct(entityId); // reload page
+            showSnackbar({show:true,severity:"success",message:"Artifacts added successfully to product. Thanks"});
+        }
+    }
+
     const handleUploadFileToProduct = () => {
 
+        uploadedFiles.map((file, index) => {
+            getImageAsBytes(file)
+                .then(async convertedData => {
+                    try {
+
+                        const uploadedFile = await axios.post(`${baseUrl}artifact/load?name=${cleanFilename(file.name.toLowerCase())}`, convertedData);
+                        const uploadedToCloudDataKey = uploadedFile.data.data._key;
+
+                        // add to product
+                        await addArtifactToProduct(uploadedToCloudDataKey);
+
+                    }catch (error) {
+                        console.log("handleUploadFileToProduct try/catch error ", error);
+                        showSnackbar({show:true,severity:"warning",message:"Unable to add images at this time."});
+                    }
+                })
+                .catch(error => {
+                    console.log("getImageAsBytes error ", error);
+                });
+        })
     }
 
     const handleUploadedFiles = (files) => {
@@ -28,15 +71,13 @@ const AddArtifactToEntity = ({ entityId }) => {
             // check if already exist
             if (uploaded.findIndex((f) => f.name === file.name) === -1) {
                 if(file.size > MAX_FILE_SIZE) {
-                    console.log("File size too big");
-                    // TODO Display toast
+                    showSnackbar({show:true,severity:"warning",message:`File is too large`});
                     return;
                 } else {
                     uploaded.push(file);
                     if (uploaded.length === MAX_COUNT) setFileLimit(true);
                     if (uploaded.length > MAX_COUNT) {
-                        // TODO Display toast message
-                        console.log(` you can only add a maximum of ${MAX_COUNT} files`);
+                        showSnackbar({show:true,severity:"warning",message:` you can only add a maximum of ${MAX_COUNT} files`});
                         setFileLimit(false);
                         limitExceeded = true;
                         return true;
@@ -96,7 +137,12 @@ const AddArtifactToEntity = ({ entityId }) => {
                                 </div>}
                             </div>
                             <div>
-                                <small>Upto {MAX_COUNT} files at a time only. Each file {BYTES_TO_SIZE(MAX_FILE_SIZE)}.</small>
+                                <small>Upto {MAX_COUNT} files at a time only. Each file {BYTES_TO_SIZE(MAX_FILE_SIZE)}.
+                                    {uploadedFiles.length > 0 && <span className="ms-3 click-item" onClick={() => {
+                                        setUploadedFiles([]);
+                                        setFileLimit(false);
+                                    }}>Clear all selected</span>}
+                                </small>
                             </div>
                         </>
                     )}
@@ -143,4 +189,18 @@ const AddArtifactToEntity = ({ entityId }) => {
     );
 };
 
-export default AddArtifactToEntity;
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn,
+        userDetail: state.userDetail,
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadCurrentProduct: (data) => dispatch(actionCreator.loadCurrentProduct(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+        setProduct: (data) => dispatch(actionCreator.setProduct(data)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddArtifactToEntity);

@@ -3,6 +3,7 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import AddImagesToProduct from "../UploadImages/AddImagesToProduct";
 import AddedDocumentsDisplay from "../UploadImages/AddedDocumentsDisplay";
+import AddArtifactToEntity from "../UploadImages/AddArtifactToEntity";
 
 
 class ArtifactProductsTab extends Component {
@@ -20,9 +21,9 @@ class ArtifactProductsTab extends Component {
 
         return (
             <>
-                {!this.props.hideAdd &&
-                <AddImagesToProduct  hideAdd={this.props.hideAdd?this.props.hideAdd:false} item={this.props.item}/>}
-
+               {/*{!this.props.hideAdd &&*/}
+               {/* <AddImagesToProduct  hideAdd={this.props.hideAdd?this.props.hideAdd:false} item={this.props.item}/>} */}
+                <AddArtifactToEntity entityId={this.props.item.product._key} />
                 <AddedDocumentsDisplay
                     hideAdd={this.props.hideAdd?this.props.hideAdd:false}
                     artifacts={this.props.item.artifacts}

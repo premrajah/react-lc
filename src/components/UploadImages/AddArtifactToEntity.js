@@ -23,6 +23,7 @@ const AddArtifactToEntity = ({ entityId, loadCurrentProduct, showSnackbar }) => 
 
 
 
+
     const addArtifactToProduct = async (key) => {
 
         const payload = {
@@ -146,6 +147,7 @@ const AddArtifactToEntity = ({ entityId, loadCurrentProduct, showSnackbar }) => 
                             </div>
                         </>
                     )}
+
                     {uploadType === UPLOAD_TYPE_VALUES[1] && (
                         <>
                             <form noValidate autoComplete="off">
@@ -157,6 +159,7 @@ const AddArtifactToEntity = ({ entityId, loadCurrentProduct, showSnackbar }) => 
                             </form>
                         </>
                     )}
+
                     {uploadType === UPLOAD_TYPE_VALUES[2] && (
                         <>
                             <form noValidate autoComplete="off">
@@ -171,7 +174,7 @@ const AddArtifactToEntity = ({ entityId, loadCurrentProduct, showSnackbar }) => 
                 </div>
             </div>
 
-            <div className="row mt-2">
+            {uploadedFiles.length > 0 && <div className="row mt-2">
                 <div className="col-12">
                     {uploadedFiles.map((file, index) => (
                         <div key={index} className="mb-1">
@@ -184,7 +187,7 @@ const AddArtifactToEntity = ({ entityId, loadCurrentProduct, showSnackbar }) => 
                         </div>
                     ))}
                 </div>
-            </div>
+            </div>}
         </>
     );
 };

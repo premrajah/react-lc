@@ -4,6 +4,8 @@ import {connect} from "react-redux";
 import AddImagesToProduct from "../UploadImages/AddImagesToProduct";
 import AddedDocumentsDisplay from "../UploadImages/AddedDocumentsDisplay";
 import AddArtifactToEntity from "../UploadImages/AddArtifactToEntity";
+import {ENTITY_TYPES} from "../../Util/Constants";
+
 
 
 class ArtifactProductsTab extends Component {
@@ -23,7 +25,8 @@ class ArtifactProductsTab extends Component {
             <>
                {/*{!this.props.hideAdd &&*/}
                {/* <AddImagesToProduct  hideAdd={this.props.hideAdd?this.props.hideAdd:false} item={this.props.item}/>} */}
-                <AddArtifactToEntity entityId={this.props.item.product._key} />
+                <AddArtifactToEntity entityId={this.props.item.product._key} entityType={ENTITY_TYPES.Product} />
+                <div className="border mt-1 mb-1"></div>
                 <AddedDocumentsDisplay
                     hideAdd={this.props.hideAdd?this.props.hideAdd:false}
                     artifacts={this.props.item.artifacts}

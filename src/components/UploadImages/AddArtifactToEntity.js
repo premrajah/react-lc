@@ -3,7 +3,14 @@ import { Button, MenuItem } from "@mui/material";
 import { Add, Upload } from "@mui/icons-material";
 import React, { useState } from "react";
 import MenuDropdown from "../FormsUI/MenuDropdown";
-import { baseUrl, BYTES_TO_SIZE, getImageAsBytes, MIME_TYPES_ACCEPT } from "../../Util/Constants";
+import {
+    baseUrl,
+    BYTES_TO_SIZE,
+    ENTITY_TYPES,
+    getImageAsBytes,
+    MIME_TYPES,
+    MIME_TYPES_ACCEPT
+} from "../../Util/Constants";
 import axios from "axios";
 import { cleanFilename } from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
@@ -14,7 +21,7 @@ import TextField from "@mui/material/TextField";
 
 const UPLOAD_TYPE_VALUES = ["From System", "Youtube Id", "Video link"];
 const MAX_COUNT = 5;
-const MAX_FILE_SIZE = 26214400;
+const MAX_FILE_SIZE = 52428800;
 
 const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSnackbar }) => {
     // console.log("entity Id ", entityId);
@@ -29,21 +36,24 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
     };
 
     const addArtifactToProduct = async (key) => {
-        const payload = {
-            product_id: entityId,
-            artifact_ids: [key],
-        };
+        try {
+            const payload = {
+                product_id: entityId,
+                artifact_ids: [key],
+            };
 
-        const uploadToServer = await axios.post(`${baseUrl}product/artifact`, payload);
+            const uploadToServer = await axios.post(`${baseUrl}product/artifact`, payload);
 
-        if (uploadToServer.status === 200) {
-            setUploadedFiles([]);
-            loadCurrentProduct(entityId); // reload page
-            showSnackbar({
-                show: true,
-                severity: "success",
-                message: "Artifacts added successfully to product. Thanks",
-            });
+            if (uploadToServer.status === 200) {
+                loadCurrentProduct(entityId); // reload page
+                showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Artifacts added successfully to product. Thanks",
+                });
+            }
+        } catch (error) {
+            console.log("addArtifactToProduct error ", error)
         }
     };
 
@@ -59,10 +69,15 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                             )}`,
                             convertedData
                         );
-                        const uploadedToCloudDataKey = uploadedFile.data.data._key;
 
-                        // add to product
-                        await addArtifactToProduct(uploadedToCloudDataKey);
+                        if(uploadedFile) {
+                            const uploadedToCloudDataKey = uploadedFile.data.data._key;
+
+                            if(entityType === ENTITY_TYPES.Product) {
+                                // add to product
+                                await addArtifactToProduct(uploadedToCloudDataKey);
+                            }
+                        }
                     } catch (error) {
                         console.log("handleUploadFileToProduct try/catch error ", error);
                         showSnackbar({
@@ -76,7 +91,38 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                     console.log("getImageAsBytes error ", error);
                 });
         });
+
     };
+
+    const handleUploadYoutubeIds = () => {
+        uploadedYoutubeIds.map(async (yId, index) => {
+            try {
+                const payload = {
+                    "context" : "youtube-id",
+                    "content": `Youtube id uploaded by user [${yId.youtubeId}]`,
+                    "blob_data": {
+                        "blob_url": yId.youtubeId,
+                        "blob_name": yId.youtubeIdTitle,
+                        "blob_mime": MIME_TYPES.MP4
+                    }
+                }
+
+                const youtubeIdsUpload = await axios.post(`${baseUrl}artifact/preloaded`, payload);
+
+                if(youtubeIdsUpload) {
+
+                    const youtubeIdsUploadedKey = youtubeIdsUpload.data.data._key;
+                    if(entityType === ENTITY_TYPES.Product) {
+                        // add to product
+                        await addArtifactToProduct(youtubeIdsUploadedKey);
+                    }
+                }
+
+            } catch (error) {
+                console.log("handleUploadYoutubeIds error ", error);
+            }
+        })
+    }
 
     const handleUploadedFiles = (files) => {
         const uploaded = [...uploadedFiles];
@@ -317,6 +363,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                         </Button>
                                         {uploadedYoutubeIds.length > 0 && (
                                             <Button
+                                                onClick={() => handleUploadYoutubeIds()}
                                                 sx={{ maxHeight: 40 }}
                                                 variant="outlined"
                                                 type="button">

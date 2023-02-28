@@ -110,8 +110,8 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                 const youtubeIdsUpload = await axios.post(`${baseUrl}artifact/preloaded`, payload);
 
                 if(youtubeIdsUpload) {
-
                     const youtubeIdsUploadedKey = youtubeIdsUpload.data.data._key;
+
                     if(entityType === ENTITY_TYPES.Product) {
                         // add to product
                         await addArtifactToProduct(youtubeIdsUploadedKey);
@@ -120,6 +120,37 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
 
             } catch (error) {
                 console.log("handleUploadYoutubeIds error ", error);
+            }
+        })
+    }
+
+    const handleUploadVideoLinks = () => {
+        videoLinks.map(async (vId) => {
+            try {
+                const payload = {
+                    "context" : "video-link",
+                    "content": `Direct video uploaded by user [${vId.videoLink}]`,
+                    "blob_data": {
+                        // "blob_url": yId.youtubeId,
+                        "blob_url": vId.videoLink,
+                        "blob_name": vId.videoLinkTitle,
+                        "blob_mime": MIME_TYPES.MP4
+                    }
+                }
+
+                const videoLinksUploaded = await axios.post(`${baseUrl}artifact/preloaded`, payload);
+
+                if(videoLinksUploaded) {
+                    const videoLinksUploadedKey = videoLinksUploaded.data.data._key;
+
+                    if(entityType === ENTITY_TYPES.Product) {
+                        // add to product
+                        await addArtifactToProduct(videoLinksUploadedKey);
+                    }
+                }
+
+            } catch (error) {
+                console.log("handleUploadVideoLinks error ", error);
             }
         })
     }
@@ -450,6 +481,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                             Add
                                         </Button>
                                         {videoLinks.length > 0 && <Button
+                                            onClick={() => handleUploadVideoLinks()}
                                             sx={{maxHeight: 40}}
                                             variant="outlined"
                                             type="button">

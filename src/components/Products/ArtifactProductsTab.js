@@ -26,7 +26,6 @@ class ArtifactProductsTab extends Component {
                {/*{!this.props.hideAdd &&*/}
                {/* <AddImagesToProduct  hideAdd={this.props.hideAdd?this.props.hideAdd:false} item={this.props.item}/>} */}
                 <AddArtifactToEntity entityId={this.props.item.product._key} entityType={ENTITY_TYPES.Product} />
-                <div className="border mt-1 mb-1"></div>
                 <AddedDocumentsDisplay
                     hideAdd={this.props.hideAdd?this.props.hideAdd:false}
                     artifacts={this.props.item.artifacts}

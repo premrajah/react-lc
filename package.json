@@ -68,6 +68,7 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.1.0",
     "react-string-replace": "^0.4.4",
+    "react-youtube": "^10.1.0",
     "reactstrap": "^8.6.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",

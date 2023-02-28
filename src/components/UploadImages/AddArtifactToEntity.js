@@ -1,6 +1,5 @@
 import FormControl from "@mui/material/FormControl";
-import { Button, MenuItem } from "@mui/material";
-import { Add, Upload } from "@mui/icons-material";
+import { Button } from "@mui/material";
 import React, { useState } from "react";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import {
@@ -59,7 +58,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
 
     const handleUploadFiles = () => {
 
-        uploadedFiles.map((file, index) => {
+        uploadedFiles.map((file) => {
             getImageAsBytes(file)
                 .then(async (convertedData) => {
                     try {
@@ -95,13 +94,14 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
     };
 
     const handleUploadYoutubeIds = () => {
-        uploadedYoutubeIds.map(async (yId, index) => {
+        uploadedYoutubeIds.map(async (yId) => {
             try {
                 const payload = {
                     "context" : "youtube-id",
                     "content": `Youtube id uploaded by user [${yId.youtubeId}]`,
                     "blob_data": {
-                        "blob_url": yId.youtubeId,
+                        // "blob_url": yId.youtubeId,
+                        "blob_url": `https://www.youtube.com/watch?v=${yId.youtubeId}`,
                         "blob_name": yId.youtubeIdTitle,
                         "blob_mime": MIME_TYPES.MP4
                     }
@@ -253,7 +253,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                         variant="outlined"
                                         component="label"
                                         disabled={fileLimit}>
-                                        <Add /> Files
+                                        Add Files
                                         <input
                                             type="file"
                                             hidden
@@ -269,7 +269,6 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                             <Button
                                                 variant="outlined"
                                                 onClick={() => handleUploadFiles()}>
-                                                <Upload />
                                                 Upload
                                             </Button>
                                         </div>
@@ -277,8 +276,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                 </div>
                                 <div>
                                     <small>
-                                        Upto {MAX_COUNT} files at a time only. Each file{" "}
-                                        {BYTES_TO_SIZE(MAX_FILE_SIZE)}.
+                                        Upto {MAX_COUNT} files at a time only. Each file {BYTES_TO_SIZE(MAX_FILE_SIZE)} Max.
                                         {uploadedFiles.length > 0 && (
                                             <span className="ms-3 click-item">
                                                 Clear all selected
@@ -485,6 +483,8 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                     )}
                 </div>
             </div>
+
+            <div className="border mt-1 mb-1"></div>
         </>
     );
 };

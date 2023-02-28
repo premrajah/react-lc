@@ -8,7 +8,7 @@ import {
     ENTITY_TYPES,
     getImageAsBytes,
     MIME_TYPES,
-    MIME_TYPES_ACCEPT
+    MIME_TYPES_ACCEPT,
 } from "../../Util/Constants";
 import axios from "axios";
 import { cleanFilename } from "../../Util/GlobalFunctions";
@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import TextField from "@mui/material/TextField";
+
 
 const UPLOAD_TYPE_VALUES = ["From System", "Youtube Id", "Video link"];
 const MAX_COUNT = 5;
@@ -29,6 +30,8 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
     const [fileLimit, setFileLimit] = useState(false);
     const [uploadedYoutubeIds, setUploadedYoutubeIds] = useState([]);
     const [videoLinks, setVideoLinks] = useState([]);
+
+    const [loading, setLoading] = useState(false);
 
     const handleUploadTypeSelect = (value) => {
         setUploadType(value);
@@ -44,7 +47,6 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             const uploadToServer = await axios.post(`${baseUrl}product/artifact`, payload);
 
             if (uploadToServer.status === 200) {
-                loadCurrentProduct(entityId); // reload page
                 showSnackbar({
                     show: true,
                     severity: "success",
@@ -52,12 +54,11 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                 });
             }
         } catch (error) {
-            console.log("addArtifactToProduct error ", error)
+            console.log("addArtifactToProduct error ", error);
         }
     };
 
     const handleUploadFiles = () => {
-
         uploadedFiles.map((file) => {
             getImageAsBytes(file)
                 .then(async (convertedData) => {
@@ -69,10 +70,10 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                             convertedData
                         );
 
-                        if(uploadedFile) {
+                        if (uploadedFile) {
                             const uploadedToCloudDataKey = uploadedFile.data.data._key;
 
-                            if(entityType === ENTITY_TYPES.Product) {
+                            if (entityType === ENTITY_TYPES.Product) {
                                 // add to product
                                 await addArtifactToProduct(uploadedToCloudDataKey);
                             }
@@ -90,70 +91,70 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                     console.log("getImageAsBytes error ", error);
                 });
         });
-
     };
 
     const handleUploadYoutubeIds = () => {
         uploadedYoutubeIds.map(async (yId) => {
             try {
                 const payload = {
-                    "context" : "youtube-id",
-                    "content": `Youtube id uploaded by user [${yId.youtubeId}]`,
-                    "blob_data": {
+                    context: "youtube-id",
+                    content: `Youtube id uploaded by user [${yId.youtubeId}]`,
+                    blob_data: {
                         // "blob_url": yId.youtubeId,
-                        "blob_url": `https://www.youtube.com/watch?v=${yId.youtubeId}`,
-                        "blob_name": yId.youtubeIdTitle,
-                        "blob_mime": MIME_TYPES.MP4
-                    }
-                }
+                        blob_url: `https://www.youtube.com/watch?v=${yId.youtubeId}`,
+                        blob_name: yId.youtubeIdTitle,
+                        blob_mime: MIME_TYPES.MP4,
+                    },
+                };
 
                 const youtubeIdsUpload = await axios.post(`${baseUrl}artifact/preloaded`, payload);
 
-                if(youtubeIdsUpload) {
+                if (youtubeIdsUpload) {
                     const youtubeIdsUploadedKey = youtubeIdsUpload.data.data._key;
 
-                    if(entityType === ENTITY_TYPES.Product) {
+                    if (entityType === ENTITY_TYPES.Product) {
                         // add to product
                         await addArtifactToProduct(youtubeIdsUploadedKey);
                     }
                 }
-
             } catch (error) {
                 console.log("handleUploadYoutubeIds error ", error);
             }
-        })
-    }
+        });
+    };
 
     const handleUploadVideoLinks = () => {
         videoLinks.map(async (vId) => {
             try {
                 const payload = {
-                    "context" : "video-link",
-                    "content": `Direct video uploaded by user [${vId.videoLink}]`,
-                    "blob_data": {
+                    context: "video-link",
+                    content: `Direct video uploaded by user [${vId.videoLink}]`,
+                    blob_data: {
                         // "blob_url": yId.youtubeId,
-                        "blob_url": vId.videoLink,
-                        "blob_name": vId.videoLinkTitle,
-                        "blob_mime": MIME_TYPES.MP4
-                    }
-                }
+                        blob_url: vId.videoLink,
+                        blob_name: vId.videoLinkTitle,
+                        blob_mime: MIME_TYPES.MP4,
+                    },
+                };
 
-                const videoLinksUploaded = await axios.post(`${baseUrl}artifact/preloaded`, payload);
+                const videoLinksUploaded = await axios.post(
+                    `${baseUrl}artifact/preloaded`,
+                    payload
+                );
 
-                if(videoLinksUploaded) {
+                if (videoLinksUploaded) {
                     const videoLinksUploadedKey = videoLinksUploaded.data.data._key;
 
-                    if(entityType === ENTITY_TYPES.Product) {
+                    if (entityType === ENTITY_TYPES.Product) {
                         // add to product
                         await addArtifactToProduct(videoLinksUploadedKey);
                     }
                 }
-
             } catch (error) {
                 console.log("handleUploadVideoLinks error ", error);
             }
-        })
-    }
+        });
+    };
 
     const handleUploadedFiles = (files) => {
         const uploaded = [...uploadedFiles];
@@ -219,7 +220,29 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             uploaded.splice(index, 1);
             setVideoLinks(uploaded);
         }
-    }
+    };
+
+    const handleUploadAllFiles = async () => {
+
+        if (uploadedFiles.length > 0) {
+            console.log("uploaded files")
+            await handleUploadFiles();
+        }
+        if (uploadedYoutubeIds.length > 0) {
+            console.log("youtube ids")
+            await handleUploadYoutubeIds();
+        }
+        if (videoLinks.length > 0) {
+            console.log("video links")
+            await handleUploadVideoLinks();
+        }
+
+        if(ENTITY_TYPES.Product === entityType) {
+            console.log("reload page")
+            // setTimeout(await loadCurrentProduct(entityId), 1000);
+        }
+
+    };
 
     const validationYoutubeIdSchema = yup.object({
         youtubeId: yup.string("Enter Youtube id").required("Youtube id required"),
@@ -258,7 +281,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                 videoLink: values.videoLink,
                 videoLinkTitle: values.videoLinkTitle,
             };
-            setVideoLinks(oldArray => [...oldArray, data]);
+            setVideoLinks((oldArray) => [...oldArray, data]);
             resetForm();
         },
     });
@@ -274,7 +297,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                         />
                     </FormControl>
                 </div>
-                <div className="col-md-9">
+                <div className="col-md-8">
                     {uploadType === UPLOAD_TYPE_VALUES[0] && (
                         <>
                             <div className="row">
@@ -294,20 +317,11 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                             disabled={fileLimit}
                                         />
                                     </Button>
-
-                                    {uploadedFiles.length > 0 && (
-                                        <div>
-                                            <Button
-                                                variant="outlined"
-                                                onClick={() => handleUploadFiles()}>
-                                                Upload
-                                            </Button>
-                                        </div>
-                                    )}
                                 </div>
                                 <div>
                                     <small>
-                                        Upto {MAX_COUNT} files at a time only. Each file {BYTES_TO_SIZE(MAX_FILE_SIZE)} Max.
+                                        Upto {MAX_COUNT} files at a time only. Each file{" "}
+                                        {BYTES_TO_SIZE(MAX_FILE_SIZE)} Max.
                                         {uploadedFiles.length > 0 && (
                                             <span className="ms-3 click-item">
                                                 Clear all selected
@@ -316,23 +330,6 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                     </small>
                                 </div>
                             </div>
-
-                            {uploadedFiles.length > 0 && (
-                                <div className="row mt-2">
-                                    <div className="col-12">
-                                        {uploadedFiles.map((file, index) => (
-                                            <div key={index} className="mb-1">
-                                                <span
-                                                    className="me-2 click-item text-danger border p-1"
-                                                    onClick={() => handleRemoveUploadedFiles(file)}>
-                                                    X
-                                                </span>
-                                                {file.name}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
                         </>
                     )}
 
@@ -343,7 +340,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                 autoComplete="off"
                                 onSubmit={formikYoutubeIdForm.handleSubmit}>
                                 <div className="row">
-                                    <div className="col-md-4">
+                                    <div className="col-md-5">
                                         <TextField
                                             size="small"
                                             fullWidth
@@ -381,7 +378,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                             }
                                         />
                                     </div>
-                                    <div className="col-md-3 d-flex">
+                                    <div className="col-md-2 d-flex">
                                         <Button
                                             className="me-1"
                                             sx={{ maxHeight: 40 }}
@@ -390,39 +387,9 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                             type="submit">
                                             Add
                                         </Button>
-                                        {uploadedYoutubeIds.length > 0 && (
-                                            <Button
-                                                onClick={() => handleUploadYoutubeIds()}
-                                                sx={{ maxHeight: 40 }}
-                                                variant="outlined"
-                                                type="button">
-                                                Upload
-                                            </Button>
-                                        )}
                                     </div>
                                 </div>
                             </form>
-
-                            {uploadedYoutubeIds.length > 0 && (
-                                <div className="row mt-2">
-                                    <div className="col-12">
-                                        {/*TODO are you sure*/}
-                                        <small>Clear all selected</small>
-                                    </div>
-                                    <div className="col-12">
-                                        {uploadedYoutubeIds.map((yId, index) => (
-                                            <div key={index} className="mb-1">
-                                                <span
-                                                    className="me-2 click-item text-danger border p-1"
-                                                    onClick={() => handleRemoveYoutubeIds(yId)}>
-                                                    X
-                                                </span>
-                                                {yId.youtubeId} {yId.youtubeIdTitle}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
                         </>
                     )}
 
@@ -433,7 +400,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                 autoComplete="off"
                                 onSubmit={formikVideoLinkForm.handleSubmit}>
                                 <div className="row">
-                                    <div className="col-md-4">
+                                    <div className="col-md-5">
                                         <TextField
                                             size="small"
                                             fullWidth
@@ -471,7 +438,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                             }
                                         />
                                     </div>
-                                    <div className="col-md-3 d-flex">
+                                    <div className="col-md-2 d-flex">
                                         <Button
                                             className="me-1"
                                             sx={{ maxHeight: 40 }}
@@ -480,40 +447,69 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                             type="submit">
                                             Add
                                         </Button>
-                                        {videoLinks.length > 0 && <Button
-                                            onClick={() => handleUploadVideoLinks()}
-                                            sx={{maxHeight: 40}}
-                                            variant="outlined"
-                                            type="button">
-                                            Upload
-                                        </Button>}
                                     </div>
                                 </div>
                             </form>
-
-                            {videoLinks.length > 0 && (
-                                <div className="row mt-2">
-                                    <div className="col-12">
-                                        {/*TODO are you sure*/}
-                                        <small>Clear all selected</small>
-                                    </div>
-                                    <div className="col-12">
-                                        {videoLinks.map((vid, index) => (
-                                            <div key={index} className="mb-1">
-                                                <span
-                                                    className="me-2 click-item text-danger border p-1"
-                                                    onClick={() => handleRemoveVideoLinks(vid)}>
-                                                    X
-                                                </span>
-                                                {vid.videoLink} {vid.videoLinkTitle}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
                         </>
                     )}
                 </div>
+
+                {(uploadedFiles.length > 0 || uploadedYoutubeIds.length > 0 || videoLinks.length > 0) && <div className="col-md-1">
+                    <Button
+                        variant="outlined"
+                        onClick={() => handleUploadAllFiles()}
+                    >
+                        Upload
+                    </Button>
+                </div>}
+            </div>
+
+            <div className="row">
+
+                {uploadedFiles.length > 0 && (
+                    <div className="col-12">
+                        {uploadedFiles.map((file, index) => (
+                            <div key={index} className="mb-1">
+                                <span
+                                    className="me-2 click-item text-danger border p-1"
+                                    onClick={() => handleRemoveUploadedFiles(file)}>
+                                    X
+                                </span>
+                                {file.name}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {uploadedYoutubeIds.length > 0 && (
+                    <div className="col-12">
+                        {uploadedYoutubeIds.map((yId, index) => (
+                            <div key={index} className="mb-1">
+                                <span
+                                    className="me-2 click-item text-danger border p-1"
+                                    onClick={() => handleRemoveYoutubeIds(yId)}>
+                                    X
+                                </span>
+                                {yId.youtubeId} - {yId.youtubeIdTitle}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {videoLinks.length > 0 && (
+                    <div className="col-12">
+                        {videoLinks.map((vid, index) => (
+                            <div key={index} className="mb-1">
+                                <span
+                                    className="me-2 click-item text-danger border p-1"
+                                    onClick={() => handleRemoveVideoLinks(vid)}>
+                                    X
+                                </span>
+                                {vid.videoLink} - {vid.videoLinkTitle}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
 
             <div className="border mt-1 mb-1"></div>

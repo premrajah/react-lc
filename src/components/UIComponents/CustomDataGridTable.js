@@ -21,6 +21,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {formatDate} from "@fullcalendar/react";
 import {capitalize,getTimeFormat} from "../../Util/GlobalFunctions";
+import {Link} from "react-router-dom";
 
 
 const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, items,element,children, ...otherProps}) =>{
@@ -59,7 +60,7 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
             headersTmp.push({
                 field: item.key,
                 headerName: item.label,
-                editable:true,
+                editable:false,
                 sortable:item.sortable,
                 hide:!item.visible,
                 hideable: !item.visible,
@@ -69,6 +70,7 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
                 // flex:`${item.key==="category"?1:0.5}`,
                 // minWidth:50,
 
+                flex:item.flex?item.flex:1,
 
 
                 // maxWidth:"unset",
@@ -77,8 +79,16 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
                     {params.field=="_ts_epoch_ms" ? <span>
                             {getTimeFormat(params.value)}
                     </span>:
-                        params.field=="category" ? <GetCatBox item={params.row} />:
-                        params.value +item.visible}
+
+                            params.field==="name" ? <span className="text-blue">
+                                     <Link to={`/product/${params.row.id}`}>{params.value}</Link>
+                    </span>:
+                        params.field==="year_of_making" ? <span>
+                            {(params.value===0?"":params.value)}
+                    </span>:
+
+                        params.field==="category" ? <GetCatBox item={params.row} />:
+                        params.value}
 </>
                 ),
                 // description: 'This column has a value getter and is not sortable.',
@@ -204,7 +214,9 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
                            columnVisibilityModel: {
                                // Hide columns status and traderName, the other columns will remain visible
                                description: false,
-                               // traderName: false,
+                               id:false,
+                               type:false,
+                               state:false
                            },
                        },
                    }}

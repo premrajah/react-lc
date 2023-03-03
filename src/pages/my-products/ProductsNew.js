@@ -45,7 +45,7 @@ class ProductsNew extends Component {
             items: [],
             lastPageReached: false,
             offset: 0,
-            pageSize: 50,
+            pageSize: 15,
             loadingResults: false,
             count: 0,
             showProductPopUp: false,
@@ -762,7 +762,7 @@ try {
                             subTitle="All your added products can be found here"
                         />
 
-                        <div className="row">
+                        <div className="row d-none">
                             <div className="col-md-7 btn-rows">
                                 <Link
                                     to="/products-service"
@@ -850,6 +850,8 @@ try {
                         </div>
 
 
+
+
                         <PaginationGrid
                             dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
                             count={this.state.count}
@@ -860,7 +862,7 @@ try {
                             loading={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
                             loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}
-                            actions={["edit","view"]}
+                            actions={["map","edit","view"]}
                         />
 
 

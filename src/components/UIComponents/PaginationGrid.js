@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import SearchBar from "../SearchBar";
 import CustomDataGridTable from "./CustomDataGridTable";
 import {PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
+import MenuDropdown from "../FormsUI/MenuDropdown";
+import SearchBox from "./SearchBox";
 
 class PaginationGrid extends Component {
     constructor(props) {
@@ -93,8 +95,17 @@ class PaginationGrid extends Component {
             <>
                 {!this.props.hideSearch && (
                     <div className="row  justify-content-center search-container  pt-3 pb-3">
-                        <div className={"col-12"}>
-                            <SearchBar
+                        <div className={"col-6"}>
+                            <MenuDropdown
+                                // setSelection={this.switchOrg}
+                                // initialValue={this.props.userContext.orgId}
+                                options={["Products","Service","Records","Tracked","Issues"]}
+                                // option={"name"}
+                                valueKey={"_key"}
+                            />
+                        </div>
+                        <div className={"col-6"}>
+                            <SearchBox
                                 onSearch={(sv) => this.handleSearch(sv)}
                                 onSearchFilter={(fv) => this.handleSearchFilter(fv)}
                                 dropDown
@@ -104,15 +115,15 @@ class PaginationGrid extends Component {
                     </div>
                 )}
 
-                {!this.props.hideCount && (
-                    <div className="row  justify-content-center filter-row  pb-3">
-                        <div className="col">
-                            <p className="text-gray-light ms-2 ">
-                                Showing {this.props.visibleCount} of {this.props.count}
-                            </p>
-                        </div>
-                    </div>
-                )}
+                {/*{!this.props.hideCount && (*/}
+                {/*    <div className="row  justify-content-center filter-row  pb-3">*/}
+                {/*        <div className="col">*/}
+                {/*            <p className="text-gray-light ms-2 ">*/}
+                {/*                Showing {this.props.visibleCount} of {this.props.count}*/}
+                {/*            </p>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*)}*/}
 
                 <CustomDataGridTable
                     loadMore={(reset,sortData) => this.loadMore(false,sortData)}

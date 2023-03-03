@@ -740,6 +740,7 @@ class ProductDetailContent extends Component {
 
 
         if (refresh){
+
             this.props.loadSites();
 
         }

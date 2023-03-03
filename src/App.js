@@ -93,6 +93,7 @@ import RentalReleaseRecords from "./pages/approvals/RentalReleaseRecords";
 import PromptLoginRoute from "./Util/PromptLoginRoute";
 import ProductsCondensedView from "./pages/my-products/ProductsCondensedView";
 import TestRoute from "./components/TestRoute";
+import ProductView from "./pages/product-detail/Product";
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -198,7 +199,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
-                        <LoggedInRoute exact path="/product/:slug" component={ProductsNew} />
+                        <LoggedInRoute exact path="/product/:slug" component={ProductView} />
                         <LoggedInRoute exact path="/product/preview/:slug" component={Product} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <Route exact path="/ps/:slug" component={Site} />

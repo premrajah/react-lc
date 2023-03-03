@@ -869,6 +869,7 @@ let slugify = require('slugify')
             if (fields["serial"] !== undefined || fields["model"] !== undefined || fields["brand"] !== undefined ||
                 fields["sku"] !== undefined || fields["upc"] !== undefined || fields["gross_weight_kgs"] !== undefined || fields["embodied_carbon_kgs"] !== undefined) {
 
+
                 let sku = {}
 
                 let skuFields = ["sku", "serial", "model", "upc", "part_no",

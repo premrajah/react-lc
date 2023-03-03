@@ -26,8 +26,8 @@ const MAX_FILE_SIZE = 52428800;
 const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSnackbar }) => {
     // console.log("entity Id ", entityId);
     const [uploadType, setUploadType] = useState(UPLOAD_TYPE_VALUES[0]);
-    const [uploadedFiles, setUploadedFiles] = useState([]);
     const [fileLimit, setFileLimit] = useState(false);
+    const [uploadedFiles, setUploadedFiles] = useState([]);
     const [uploadedYoutubeIds, setUploadedYoutubeIds] = useState([]);
     const [videoLinks, setVideoLinks] = useState([]);
 
@@ -36,6 +36,12 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
     const handleUploadTypeSelect = (value) => {
         setUploadType(value);
     };
+
+    const resetAllFileUploads = () => {
+        setUploadedFiles([]);
+        setUploadedYoutubeIds([]);
+        setVideoLinks([]);
+    }
 
     const addArtifactToProduct = async (key) => {
         try {
@@ -58,7 +64,8 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         }
     };
 
-    const handleUploadFiles = () => {
+    const handleUploadFiles = async () => {
+        console.log("handleUploadFiles")
         uploadedFiles.map((file) => {
             getImageAsBytes(file)
                 .then(async (convertedData) => {
@@ -93,7 +100,8 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         });
     };
 
-    const handleUploadYoutubeIds = () => {
+    const handleUploadYoutubeIds = async () => {
+        console.log("handleUploadYoutubeIds")
         uploadedYoutubeIds.map(async (yId) => {
             try {
                 const payload = {
@@ -123,7 +131,8 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         });
     };
 
-    const handleUploadVideoLinks = () => {
+    const handleUploadVideoLinks = async () => {
+        console.log("handleUploadVideoLinks")
         videoLinks.map(async (vId) => {
             try {
                 const payload = {
@@ -225,20 +234,21 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
     const handleUploadAllFiles = async () => {
 
         if (uploadedFiles.length > 0) {
-            console.log("uploaded files")
             await handleUploadFiles();
+            console.log("uploaded files finish")
         }
         if (uploadedYoutubeIds.length > 0) {
-            console.log("youtube ids")
             await handleUploadYoutubeIds();
+            console.log("youtube ids finish ")
         }
         if (videoLinks.length > 0) {
-            console.log("video links")
             await handleUploadVideoLinks();
+            console.log("video links finish")
         }
 
         if(ENTITY_TYPES.Product === entityType) {
             console.log("reload page")
+            resetAllFileUploads();
             // setTimeout(await loadCurrentProduct(entityId), 1000);
         }
 

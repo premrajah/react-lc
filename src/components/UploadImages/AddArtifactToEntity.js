@@ -23,7 +23,7 @@ const UPLOAD_TYPE_VALUES = ["From System", "Youtube Id", "Video link"];
 const MAX_COUNT = 5;
 const MAX_FILE_SIZE = 52428800;
 
-const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSnackbar }) => {
+const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSnackbar ,refresh}) => {
     // console.log("entity Id ", entityId);
     const [uploadType, setUploadType] = useState(UPLOAD_TYPE_VALUES[0]);
     const [fileLimit, setFileLimit] = useState(false);
@@ -53,6 +53,8 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             const uploadToServer = await axios.post(`${baseUrl}product/artifact`, payload);
 
             if (uploadToServer.status === 200) {
+
+                refresh()
                 showSnackbar({
                     show: true,
                     severity: "success",
@@ -154,6 +156,8 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                     if (entityType === ENTITY_TYPES.Product) {
                         // add to product
                         await addArtifactToProduct(videoLinksUploadedKey);
+
+
                     }
                 }
             } catch (error) {
@@ -458,17 +462,18 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                     )}
                 </div>
 
-                {(uploadedFiles.length > 0 || uploadedYoutubeIds.length > 0 || videoLinks.length > 0) && <div className="col-md-1">
-                    <Button
-                        variant="outlined"
-                        onClick={() => handleUploadAllFiles()}
-                    >
-                        Upload
-                    </Button>
-                </div>}
+
             </div>
 
             <div className="row">
+
+
+
+                {(uploadedFiles.length > 0 || uploadedYoutubeIds.length > 0 || videoLinks.length > 0) &&
+                    <div className="col-md-12">
+                        <p className="pt-2 text-14 pb-2 mb-2"> Files waiting to upload</p>
+                    </div>
+                }
 
                 {uploadedFiles.length > 0 && (
                     <div className="col-12">
@@ -514,6 +519,19 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                         ))}
                     </div>
                 )}
+
+
+                <div className="col-12  pt-2 pb-2">
+
+                {(uploadedFiles.length > 0 || uploadedYoutubeIds.length > 0 || videoLinks.length > 0) && <div className="col-md-1">
+                    <Button
+                        variant="outlined"
+                        onClick={() => handleUploadAllFiles()}
+                    >
+                        Upload
+                    </Button>
+                </div>}
+                </div>
             </div>
 
             <div className="border mt-1 mb-1"></div>

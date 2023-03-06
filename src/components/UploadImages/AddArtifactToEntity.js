@@ -31,7 +31,7 @@ const AddArtifactToEntity = ({ entityId, entityType, showSnackbar, refresh}) => 
     const [uploadedYoutubeIds, setUploadedYoutubeIds] = useState([]);
     const [videoLinks, setVideoLinks] = useState([]);
 
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleUploadTypeSelect = (value) => {
         setUploadType(value);

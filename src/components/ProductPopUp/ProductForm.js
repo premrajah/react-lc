@@ -310,6 +310,9 @@ let slugify = require('slugify')
                                         this.setState({
                                             files: currentFiles,
                                         });
+
+
+                                        console.log(this.state.images.length,this.props.item.artifacts.length)
                                     })
                                     .catch(error => {
 
@@ -766,25 +769,26 @@ let slugify = require('slugify')
 
         updateImages() {
 
+            alert("udpate img called")
 
             let flagChange=false
 
+
+            console.log(this.state.images.length,this.props.item.artifacts.length)
             if (this.state.images.length!==this.props.item.artifacts.length){
                 flagChange=true
             }
             this.state.images.forEach((item)=>{
 
-                if (!this.props.item.artifacts.find(artifact=> artifact._key==item)){
+                if (!this.props.item.artifacts.find(artifact=> artifact._key===item)){
                     flagChange=true
                 }
 
             })
 
 
-            if (!flagChange){
-                return
-            }
-
+            if (flagChange)
+            alert("image chagned")
             axios
                 .post(
                     baseUrl + "product/artifact/replace",

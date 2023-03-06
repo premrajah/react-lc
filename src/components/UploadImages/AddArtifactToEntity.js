@@ -1,6 +1,6 @@
 import FormControl from "@mui/material/FormControl";
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import {
     baseUrl,
@@ -23,7 +23,7 @@ const UPLOAD_TYPE_VALUES = ["From System", "Youtube Id", "Video link"];
 const MAX_COUNT = 5;
 const MAX_FILE_SIZE = 52428800;
 
-const AddArtifactToEntity = ({ entityId, entityType, showSnackbar, refresh}) => {
+const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSnackbar ,refresh}) => {
     // console.log("entity Id ", entityId);
     const [uploadType, setUploadType] = useState(UPLOAD_TYPE_VALUES[0]);
     const [fileLimit, setFileLimit] = useState(false);
@@ -36,6 +36,9 @@ const AddArtifactToEntity = ({ entityId, entityType, showSnackbar, refresh}) => 
     const handleUploadTypeSelect = (value) => {
         setUploadType(value);
     };
+
+
+
 
     const resetAllFileUploads = async () => {
         setUploadedFiles([]);
@@ -56,6 +59,13 @@ const AddArtifactToEntity = ({ entityId, entityType, showSnackbar, refresh}) => 
             if (uploadToServer.status === 200) {
 
                 refresh()
+
+
+
+
+                loadCurrentProduct(entityId)
+
+
                 showSnackbar({
                     show: true,
                     severity: "success",

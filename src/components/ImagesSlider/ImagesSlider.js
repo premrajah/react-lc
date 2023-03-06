@@ -5,8 +5,7 @@ import styles from './ImagesSlider.module.css'; // Import css modules stylesheet
 
 import  ArrowBackRoundedIcon from '@mui/icons-material/ArrowCircleDown';
 
-class
-ImagesSlider extends React.Component {
+class ImagesSlider extends React.Component {
     imagesArray = [];
 
     constructor(props) {

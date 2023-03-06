@@ -101,6 +101,7 @@ const AddedDocumentsDisplay = (props) => {
                                 artifact.mime_type === MIME_TYPES.TEXT_RTF ||
                                 artifact.mime_type === MIME_TYPES.DOCX ||
                                 artifact.mime_type === MIME_TYPES.XLS ||
+                                artifact.mime_type === MIME_TYPES.XLSX||
                                 artifact.mime_type === MIME_TYPES.XLSX
                             ) {
                                 return (

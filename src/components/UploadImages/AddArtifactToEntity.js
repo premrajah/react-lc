@@ -23,7 +23,7 @@ const UPLOAD_TYPE_VALUES = ["From System", "Youtube Id", "Video link"];
 const MAX_COUNT = 5;
 const MAX_FILE_SIZE = 52428800;
 
-const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSnackbar ,refresh}) => {
+const AddArtifactToEntity = ({ entityId, entityType, showSnackbar, refresh}) => {
     // console.log("entity Id ", entityId);
     const [uploadType, setUploadType] = useState(UPLOAD_TYPE_VALUES[0]);
     const [fileLimit, setFileLimit] = useState(false);
@@ -37,10 +37,11 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         setUploadType(value);
     };
 
-    const resetAllFileUploads = () => {
+    const resetAllFileUploads = async () => {
         setUploadedFiles([]);
         setUploadedYoutubeIds([]);
         setVideoLinks([]);
+        setFileLimit(false); // reset size limit
     }
 
     const addArtifactToProduct = async (key) => {
@@ -245,10 +246,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
 
         }
 
-        if(ENTITY_TYPES.Product === entityType) {
-            resetAllFileUploads();
-            // setTimeout(await loadCurrentProduct(entityId), 1000);
-        }
+        await resetAllFileUploads();
 
     };
 

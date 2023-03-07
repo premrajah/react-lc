@@ -24,7 +24,6 @@ const MAX_COUNT = 5;
 const MAX_FILE_SIZE = 52428800;
 
 const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSnackbar ,refresh}) => {
-    // console.log("entity Id ", entityId);
     const [uploadType, setUploadType] = useState(UPLOAD_TYPE_VALUES[0]);
     const [fileLimit, setFileLimit] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -117,7 +116,6 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
 
     const handleUploadYoutubeIds = async (data) => {
 
-        alert("youtube video id")
         // uploadedYoutubeIds.map(async (yId) => {
             try {
                 const payload = {
@@ -194,9 +192,6 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         let limitExceeded = false;
 
         files.some((file) => {
-            // debugger;
-            console.log(file)
-            // check if already exist
 
             if (!checkIfMimeTypeAllowed(file)){
                 showSnackbar({ show: true, severity: "warning", message: `${file.name} File type not supported` });
@@ -277,7 +272,6 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
 
         if (uploadedYoutubeIds.length > 0) {
 
-            alert("start video id "+uploadedYoutubeIds)
             await handleUploadYoutubeIds();
         }
         if (videoLinks.length > 0) {

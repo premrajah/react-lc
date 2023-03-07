@@ -339,7 +339,7 @@ class ProductDetailContent extends Component {
 
                 this.loadInfo();
             }
-            this.setActiveKey(null,"1")
+            // this.setActiveKey(null,"1")
         }
     }
 

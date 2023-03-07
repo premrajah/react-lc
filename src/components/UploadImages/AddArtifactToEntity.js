@@ -1,6 +1,6 @@
 import FormControl from "@mui/material/FormControl";
 import { Button } from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import {
     baseUrl,
@@ -11,19 +11,24 @@ import {
     MIME_TYPES_ACCEPT,
 } from "../../Util/Constants";
 import axios from "axios";
-import {checkIfMimeTypeAllowed, cleanFilename} from "../../Util/GlobalFunctions";
+import { checkIfMimeTypeAllowed, cleanFilename } from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import TextField from "@mui/material/TextField";
 
-
 const UPLOAD_TYPE_VALUES = ["From System", "Youtube Id", "Video link"];
 const MAX_COUNT = 5;
 const MAX_FILE_SIZE = 52428800;
 
-const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSnackbar ,refresh}) => {
+const AddArtifactToEntity = ({
+    entityId,
+    entityType,
+    loadCurrentProduct,
+    showSnackbar,
+    refresh,
+}) => {
     const [uploadType, setUploadType] = useState(UPLOAD_TYPE_VALUES[0]);
     const [fileLimit, setFileLimit] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -36,17 +41,14 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         setUploadType(value);
     };
 
-
-
-
     const resetAllFileUploads = async () => {
         setUploadedFiles([]);
         setUploadedYoutubeIds([]);
         setVideoLinks([]);
         setFileLimit(false); // reset size limit
-    }
+    };
 
-    const addArtifactToProduct = async (key,type) => {
+    const addArtifactToProduct = async (key, type) => {
         try {
             const payload = {
                 product_id: entityId,
@@ -56,17 +58,15 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             const uploadToServer = await axios.post(`${baseUrl}product/artifact`, payload);
 
             if (uploadToServer.status === 200) {
+                refresh();
 
-                refresh()
-
-
-                if (type === MIME_TYPES.PNG ||
+                if (
+                    type === MIME_TYPES.PNG ||
                     type === MIME_TYPES.JPEG ||
-                    type === MIME_TYPES.JPG ){
-
-                    loadCurrentProduct(entityId)
+                    type === MIME_TYPES.JPG
+                ) {
+                    loadCurrentProduct(entityId);
                 }
-
 
                 showSnackbar({
                     show: true,
@@ -81,109 +81,94 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
 
     const handleUploadFiles = async (file) => {
         // uploadedFiles.map((file) => {
-            getImageAsBytes(file)
-                .then(async (convertedData) => {
-                    try {
-                        const uploadedFile = await axios.post(
-                            `${baseUrl}artifact/load?name=${cleanFilename(
-                                file.name.toLowerCase()
-                            )}`,
-                            convertedData
-                        );
+        getImageAsBytes(file)
+            .then(async (convertedData) => {
+                try {
+                    const uploadedFile = await axios.post(
+                        `${baseUrl}artifact/load?name=${cleanFilename(file.name.toLowerCase())}`,
+                        convertedData
+                    );
 
-                        if (uploadedFile) {
-                            const uploadedToCloudDataKey = uploadedFile.data.data._key;
+                    if (uploadedFile) {
+                        const uploadedToCloudDataKey = uploadedFile.data.data._key;
 
-                            if (entityType === ENTITY_TYPES.Product) {
-                                // add to product
-                                await addArtifactToProduct(uploadedToCloudDataKey,file.type);
-                            }
+                        if (entityType === ENTITY_TYPES.Product) {
+                            // add to product
+                            await addArtifactToProduct(uploadedToCloudDataKey, file.type);
                         }
-                    } catch (error) {
-                        console.log("handleUploadFileToProduct try/catch error ", error);
-                        showSnackbar({
-                            show: true,
-                            severity: "warning",
-                            message: "Unable to add images at this time.",
-                        });
                     }
-                })
-                .catch((error) => {
-                    console.log("getImageAsBytes error ", error);
-                });
+                } catch (error) {
+                    console.log("handleUploadFileToProduct try/catch error ", error);
+                    showSnackbar({
+                        show: true,
+                        severity: "warning",
+                        message: "Unable to add images at this time.",
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log("getImageAsBytes error ", error);
+            });
         // });
     };
 
     const handleUploadYoutubeIds = async (data) => {
-
         // uploadedYoutubeIds.map(async (yId) => {
-            try {
-                const payload = {
-                    context: "youtube-id",
-                    content: `Youtube id uploaded by user [${data.youtubeId}]`,
-                    blob_data: {
-                        // "blob_url": yId.youtubeId,
-                        blob_url: `https://www.youtube.com/watch?v=${data.youtubeId}`,
-                        blob_name: data.youtubeIdTitle,
-                        blob_mime: MIME_TYPES.MP4,
-                    },
-                };
+        try {
+            const payload = {
+                context: "youtube-id",
+                content: `Youtube id uploaded by user [${data.youtubeId}]`,
+                blob_data: {
+                    // "blob_url": yId.youtubeId,
+                    blob_url: `https://www.youtube.com/watch?v=${data.youtubeId}`,
+                    blob_name: data.youtubeIdTitle,
+                    blob_mime: MIME_TYPES.MP4,
+                },
+            };
 
-                const youtubeIdsUpload = await axios.post(`${baseUrl}artifact/preloaded`, payload);
+            const youtubeIdsUpload = await axios.post(`${baseUrl}artifact/preloaded`, payload);
 
-                if (youtubeIdsUpload) {
-                    const youtubeIdsUploadedKey = youtubeIdsUpload.data.data._key;
+            if (youtubeIdsUpload) {
+                const youtubeIdsUploadedKey = youtubeIdsUpload.data.data._key;
 
-                    if (entityType === ENTITY_TYPES.Product) {
-                        // add to product
-                        await addArtifactToProduct(youtubeIdsUploadedKey);
-                    }
+                if (entityType === ENTITY_TYPES.Product) {
+                    // add to product
+                    await addArtifactToProduct(youtubeIdsUploadedKey);
                 }
-            } catch (error) {
-                console.log("handleUploadYoutubeIds error ", error);
             }
+        } catch (error) {
+            console.log("handleUploadYoutubeIds error ", error);
+        }
         // });
     };
 
     const handleUploadVideoLinks = async (data) => {
-
-
         // videoLinks.map(async (vId) => {
-            try {
-                const payload = {
-                    context: "video-link",
-                    content: `Direct video uploaded by user [${data.videoLink}]`,
-                    blob_data: {
-                        // "blob_url": yId.youtubeId,
-                        blob_url: data.videoLink,
-                        blob_name: data.videoLinkTitle,
-                        blob_mime: MIME_TYPES.MP4,
-                    },
-                };
+        try {
+            const payload = {
+                context: "video-link",
+                content: `Direct video uploaded by user [${data.videoLink}]`,
+                blob_data: {
+                    // "blob_url": yId.youtubeId,
+                    blob_url: data.videoLink,
+                    blob_name: data.videoLinkTitle,
+                    blob_mime: MIME_TYPES.MP4,
+                },
+            };
 
-                const videoLinksUploaded = await axios.post(
-                    `${baseUrl}artifact/preloaded`,
-                    payload
-                );
+            const videoLinksUploaded = await axios.post(`${baseUrl}artifact/preloaded`, payload);
 
-                if (videoLinksUploaded) {
+            if (videoLinksUploaded) {
+                const videoLinksUploadedKey = videoLinksUploaded.data.data._key;
 
-
-
-                    const videoLinksUploadedKey = videoLinksUploaded.data.data._key;
-
-                    if (entityType === ENTITY_TYPES.Product) {
-                        // add to product
-                        await addArtifactToProduct(videoLinksUploadedKey);
-
-
-                    }
-
-
+                if (entityType === ENTITY_TYPES.Product) {
+                    // add to product
+                    await addArtifactToProduct(videoLinksUploadedKey);
                 }
-            } catch (error) {
-                console.log("handleUploadVideoLinks error ", error);
             }
+        } catch (error) {
+            console.log("handleUploadVideoLinks error ", error);
+        }
         // });
     };
 
@@ -192,20 +177,21 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         let limitExceeded = false;
 
         files.some((file) => {
-
-            if (!checkIfMimeTypeAllowed(file)){
-                showSnackbar({ show: true, severity: "warning", message: `${file.name} File type not supported` });
-                return
-            }
-           else if (uploaded.findIndex((f) => f.name === file.name) === -1) {
+            if (!checkIfMimeTypeAllowed(file)) {
+                showSnackbar({
+                    show: true,
+                    severity: "warning",
+                    message: `${file.name} File type not supported`,
+                });
+                return;
+            } else if (uploaded.findIndex((f) => f.name === file.name) === -1) {
                 if (file.size > MAX_FILE_SIZE) {
                     showSnackbar({ show: true, severity: "warning", message: `File is too large` });
                     return;
                 } else {
-
                     uploaded.push(file);
 
-                    handleUploadFiles(file)
+                    handleUploadFiles(file);
 
                     if (uploaded.length === MAX_COUNT) setFileLimit(true);
                     if (uploaded.length > MAX_COUNT) {
@@ -222,9 +208,6 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             }
         });
         if (!limitExceeded) setUploadedFiles(uploaded);
-
-
-
     };
 
     const handleFileEvent = (e) => {
@@ -265,22 +248,18 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
     };
 
     const handleUploadAllFiles = async () => {
-
         if (uploadedFiles.length > 0) {
             await handleUploadFiles();
         }
 
         if (uploadedYoutubeIds.length > 0) {
-
             await handleUploadYoutubeIds();
         }
         if (videoLinks.length > 0) {
             await handleUploadVideoLinks();
-
         }
 
         await resetAllFileUploads();
-
     };
 
     const validationYoutubeIdSchema = yup.object({
@@ -294,7 +273,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             youtubeIdTitle: "",
         },
         validationSchema: validationYoutubeIdSchema,
-        onSubmit:  (values, {resetForm}) => {
+        onSubmit: (values, { resetForm }) => {
             const data = {
                 youtubeId: values.youtubeId,
                 youtubeIdTitle: values.youtubeIdTitle,
@@ -302,9 +281,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             setUploadedYoutubeIds((oldArray) => [...oldArray, data]);
             resetForm();
 
-            handleUploadYoutubeIds(data)
-
-
+            handleUploadYoutubeIds(data);
         },
     });
 
@@ -327,8 +304,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             setVideoLinks((oldArray) => [...oldArray, data]);
             resetForm();
 
-             handleUploadVideoLinks(data);
-
+            handleUploadVideoLinks(data);
         },
     });
 
@@ -499,12 +475,9 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                         </>
                     )}
                 </div>
-
-
             </div>
 
             <div className="row d-none">
-
                 {uploadedFiles.length > 0 && (
                     <div className="col-12">
                         {uploadedFiles.map((file, index) => (
@@ -550,17 +523,16 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                     </div>
                 )}
 
-
                 <div className="col-12  pt-2 pb-2">
-
-                {(uploadedFiles.length > 0 || uploadedYoutubeIds.length > 0 || videoLinks.length > 0) && <div className="col-md-1">
-                    <Button
-                        variant="outlined"
-                        onClick={() => handleUploadAllFiles()}
-                    >
-                        Upload
-                    </Button>
-                </div>}
+                    {(uploadedFiles.length > 0 ||
+                        uploadedYoutubeIds.length > 0 ||
+                        videoLinks.length > 0) && (
+                        <div className="col-md-1">
+                            <Button variant="outlined" onClick={() => handleUploadAllFiles()}>
+                                Upload
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
 

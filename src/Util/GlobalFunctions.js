@@ -253,8 +253,6 @@ export const checkIfMimeTypeAllowed = (file) => {
             flagFound=true
         }
     })
-
-    console.log(flagFound,"found")
     return flagFound
 };
 export const checkIfDocumentFromType = (mime_type) => {

@@ -342,13 +342,7 @@ const AddArtifactToEntity = ({
                                 </div>
                                 <div>
                                     <small>
-                                        Upto {MAX_COUNT} files at a time only. Each file{" "}
-                                        {BYTES_TO_SIZE(MAX_FILE_SIZE)} Max.
-                                        {/*{uploadedFiles.length > 0 && (*/}
-                                        {/*    <span className="ms-3 click-item">*/}
-                                        {/*        Clear all selected*/}
-                                        {/*    </span>*/}
-                                        {/*)}*/}
+                                        Upto {MAX_COUNT} files at a time only. Each file {BYTES_TO_SIZE(MAX_FILE_SIZE)} Max.
                                     </small>
                                 </div>
                             </div>

@@ -11,7 +11,7 @@ import {
     MIME_TYPES_ACCEPT,
 } from "../../Util/Constants";
 import axios from "axios";
-import { cleanFilename } from "../../Util/GlobalFunctions";
+import {checkIfMimeTypeAllowed, cleanFilename} from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import * as yup from "yup";
@@ -47,7 +47,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         setFileLimit(false); // reset size limit
     }
 
-    const addArtifactToProduct = async (key) => {
+    const addArtifactToProduct = async (key,type) => {
         try {
             const payload = {
                 product_id: entityId,
@@ -61,9 +61,12 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                 refresh()
 
 
+                if (type === MIME_TYPES.PNG ||
+                    type === MIME_TYPES.JPEG ||
+                    type === MIME_TYPES.JPG ){
 
-
-                loadCurrentProduct(entityId)
+                    loadCurrentProduct(entityId)
+                }
 
 
                 showSnackbar({
@@ -77,8 +80,8 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         }
     };
 
-    const handleUploadFiles = async () => {
-        uploadedFiles.map((file) => {
+    const handleUploadFiles = async (file) => {
+        // uploadedFiles.map((file) => {
             getImageAsBytes(file)
                 .then(async (convertedData) => {
                     try {
@@ -94,7 +97,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
 
                             if (entityType === ENTITY_TYPES.Product) {
                                 // add to product
-                                await addArtifactToProduct(uploadedToCloudDataKey);
+                                await addArtifactToProduct(uploadedToCloudDataKey,file.type);
                             }
                         }
                     } catch (error) {
@@ -109,19 +112,21 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                 .catch((error) => {
                     console.log("getImageAsBytes error ", error);
                 });
-        });
+        // });
     };
 
-    const handleUploadYoutubeIds = async () => {
-        uploadedYoutubeIds.map(async (yId) => {
+    const handleUploadYoutubeIds = async (data) => {
+
+        alert("youtube video id")
+        // uploadedYoutubeIds.map(async (yId) => {
             try {
                 const payload = {
                     context: "youtube-id",
-                    content: `Youtube id uploaded by user [${yId.youtubeId}]`,
+                    content: `Youtube id uploaded by user [${data.youtubeId}]`,
                     blob_data: {
                         // "blob_url": yId.youtubeId,
-                        blob_url: `https://www.youtube.com/watch?v=${yId.youtubeId}`,
-                        blob_name: yId.youtubeIdTitle,
+                        blob_url: `https://www.youtube.com/watch?v=${data.youtubeId}`,
+                        blob_name: data.youtubeIdTitle,
                         blob_mime: MIME_TYPES.MP4,
                     },
                 };
@@ -139,19 +144,21 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             } catch (error) {
                 console.log("handleUploadYoutubeIds error ", error);
             }
-        });
+        // });
     };
 
-    const handleUploadVideoLinks = async () => {
-        videoLinks.map(async (vId) => {
+    const handleUploadVideoLinks = async (data) => {
+
+
+        // videoLinks.map(async (vId) => {
             try {
                 const payload = {
                     context: "video-link",
-                    content: `Direct video uploaded by user [${vId.videoLink}]`,
+                    content: `Direct video uploaded by user [${data.videoLink}]`,
                     blob_data: {
                         // "blob_url": yId.youtubeId,
-                        blob_url: vId.videoLink,
-                        blob_name: vId.videoLinkTitle,
+                        blob_url: data.videoLink,
+                        blob_name: data.videoLinkTitle,
                         blob_mime: MIME_TYPES.MP4,
                     },
                 };
@@ -162,6 +169,9 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                 );
 
                 if (videoLinksUploaded) {
+
+
+
                     const videoLinksUploadedKey = videoLinksUploaded.data.data._key;
 
                     if (entityType === ENTITY_TYPES.Product) {
@@ -170,11 +180,13 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
 
 
                     }
+
+
                 }
             } catch (error) {
                 console.log("handleUploadVideoLinks error ", error);
             }
-        });
+        // });
     };
 
     const handleUploadedFiles = (files) => {
@@ -182,13 +194,24 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         let limitExceeded = false;
 
         files.some((file) => {
+            // debugger;
+            console.log(file)
             // check if already exist
-            if (uploaded.findIndex((f) => f.name === file.name) === -1) {
+
+            if (!checkIfMimeTypeAllowed(file)){
+                showSnackbar({ show: true, severity: "warning", message: `${file.name} File type not supported` });
+                return
+            }
+           else if (uploaded.findIndex((f) => f.name === file.name) === -1) {
                 if (file.size > MAX_FILE_SIZE) {
                     showSnackbar({ show: true, severity: "warning", message: `File is too large` });
                     return;
                 } else {
+
                     uploaded.push(file);
+
+                    handleUploadFiles(file)
+
                     if (uploaded.length === MAX_COUNT) setFileLimit(true);
                     if (uploaded.length > MAX_COUNT) {
                         showSnackbar({
@@ -204,6 +227,9 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             }
         });
         if (!limitExceeded) setUploadedFiles(uploaded);
+
+
+
     };
 
     const handleFileEvent = (e) => {
@@ -248,7 +274,10 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
         if (uploadedFiles.length > 0) {
             await handleUploadFiles();
         }
+
         if (uploadedYoutubeIds.length > 0) {
+
+            alert("start video id "+uploadedYoutubeIds)
             await handleUploadYoutubeIds();
         }
         if (videoLinks.length > 0) {
@@ -271,13 +300,17 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             youtubeIdTitle: "",
         },
         validationSchema: validationYoutubeIdSchema,
-        onSubmit: (values, { resetForm }) => {
+        onSubmit:  (values, {resetForm}) => {
             const data = {
                 youtubeId: values.youtubeId,
                 youtubeIdTitle: values.youtubeIdTitle,
             };
             setUploadedYoutubeIds((oldArray) => [...oldArray, data]);
             resetForm();
+
+            handleUploadYoutubeIds(data)
+
+
         },
     });
 
@@ -299,6 +332,9 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
             };
             setVideoLinks((oldArray) => [...oldArray, data]);
             resetForm();
+
+             handleUploadVideoLinks(data);
+
         },
     });
 
@@ -338,11 +374,11 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
                                     <small>
                                         Upto {MAX_COUNT} files at a time only. Each file{" "}
                                         {BYTES_TO_SIZE(MAX_FILE_SIZE)} Max.
-                                        {uploadedFiles.length > 0 && (
-                                            <span className="ms-3 click-item">
-                                                Clear all selected
-                                            </span>
-                                        )}
+                                        {/*{uploadedFiles.length > 0 && (*/}
+                                        {/*    <span className="ms-3 click-item">*/}
+                                        {/*        Clear all selected*/}
+                                        {/*    </span>*/}
+                                        {/*)}*/}
                                     </small>
                                 </div>
                             </div>
@@ -473,15 +509,7 @@ const AddArtifactToEntity = ({ entityId, entityType, loadCurrentProduct, showSna
 
             </div>
 
-            <div className="row">
-
-
-
-                {(uploadedFiles.length > 0 || uploadedYoutubeIds.length > 0 || videoLinks.length > 0) &&
-                    <div className="col-md-12">
-                        <p className="pt-2 text-14 pb-2 mb-2"> Files waiting to upload</p>
-                    </div>
-                }
+            <div className="row d-none">
 
                 {uploadedFiles.length > 0 && (
                     <div className="col-12">

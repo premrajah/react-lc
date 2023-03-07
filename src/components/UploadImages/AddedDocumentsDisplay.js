@@ -6,7 +6,9 @@ import { useParams } from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import DescriptionIcon from "@mui/icons-material/Description";
-import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
+import OndemandVideoIcon from "@mui/icons-material/YouTube";
+import ImageIcon from "@mui/icons-material/Image";
+
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import MoreMenu from "../MoreMenu";
 import GlobalDialog from "../RightBar/GlobalDialog";
@@ -92,18 +94,18 @@ const AddedDocumentsDisplay = (props) => {
                 <div className="col">
                     {artifacts.length > 0 ? (
                         artifacts.map((artifact, index) => {
-                            if (
-                                artifact.mime_type === MIME_TYPES.PDF ||
-                                artifact.mime_type === MIME_TYPES.APP_RTF ||
-                                artifact.mime_type === MIME_TYPES.MP4 ||
-                                artifact.mime_type === MIME_TYPES.MOV ||
-                                artifact.mime_type === MIME_TYPES.DOC ||
-                                artifact.mime_type === MIME_TYPES.TEXT_RTF ||
-                                artifact.mime_type === MIME_TYPES.DOCX ||
-                                artifact.mime_type === MIME_TYPES.XLS ||
-                                artifact.mime_type === MIME_TYPES.XLSX||
-                                artifact.mime_type === MIME_TYPES.XLSX
-                            ) {
+                            // if (
+                            //     artifact.mime_type === MIME_TYPES.PDF ||
+                            //     artifact.mime_type === MIME_TYPES.APP_RTF ||
+                            //     artifact.mime_type === MIME_TYPES.MP4 ||
+                            //     artifact.mime_type === MIME_TYPES.MOV ||
+                            //     artifact.mime_type === MIME_TYPES.DOC ||
+                            //     artifact.mime_type === MIME_TYPES.TEXT_RTF ||
+                            //     artifact.mime_type === MIME_TYPES.DOCX ||
+                            //     artifact.mime_type === MIME_TYPES.XLS ||
+                            //     artifact.mime_type === MIME_TYPES.XLSX||
+                            //     artifact.mime_type === MIME_TYPES.XLSX
+                            // ) {
                                 return (
                                     <React.Fragment key={artifact._key}>
                                         {index === 0 && (
@@ -136,7 +138,24 @@ const AddedDocumentsDisplay = (props) => {
                                                             />}
                                                         </GlobalDialog>
                                                     </>
-                                                ) : (
+                                                ) :
+
+                                                    artifact.mime_type === MIME_TYPES.PNG ||
+                                                    artifact.mime_type === MIME_TYPES.JPEG ||
+                                                    artifact.mime_type === MIME_TYPES.JPG ?    (
+                                                        <a href={artifact.blob_url} download>
+                                                            <ImageIcon
+                                                                style={{
+                                                                    background: "#EAEAEF",
+                                                                    opacity: "0.5",
+                                                                    fontSize: " 2.5rem",
+                                                                }}
+                                                                className={"rad-4"}
+                                                            />
+                                                        </a>
+                                                    ):
+
+                                                    (
                                                     <a href={artifact.blob_url} download>
                                                         <DescriptionIcon
                                                             style={{
@@ -147,7 +166,8 @@ const AddedDocumentsDisplay = (props) => {
                                                             className={"rad-4"}
                                                         />
                                                     </a>
-                                                )}
+                                                )
+                                                }
                                                 <span
                                                     className="ms-4  text-blue text-bold"
                                                     // href={artifact.blob_url}
@@ -186,7 +206,7 @@ const AddedDocumentsDisplay = (props) => {
                                         </div>
                                     </React.Fragment>
                                 );
-                            }
+                            // }
                         })
                     ) : (
                         <div className="mt-2">No documents added.</div>

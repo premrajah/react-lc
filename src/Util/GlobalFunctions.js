@@ -1,7 +1,9 @@
 import axios from "axios";
-import { baseUrl } from "./Constants";
+import {baseUrl, MIME_TYPES, MIME_TYPES_ARRAY} from "./Constants";
 import React from "react";
 import moment from "moment/moment";
+
+
 
 export const capitalize = (sentence) => {
     if (!sentence) return "";
@@ -242,30 +244,18 @@ export const hasSplChar = (myString) => {
     return /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(myString);
 };
 
-export const checkIfDocument = (file) => {
-    let artifact = file.file;
+export const checkIfMimeTypeAllowed = (file) => {
+    let flagFound=false
+    const mimeTypesArray =  MIME_TYPES_ARRAY;
 
-    if (
-        artifact.mime_type === "application/pdf" ||
-        artifact.mime_type === "application/rtf" ||
-        artifact.mime_type === "application/msword" ||
-        artifact.mime_type === "text/rtf" ||
-        artifact.mime_type ===
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        artifact.mime_type ===
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-        artifact.mime_type === "application/vnd.ms-excel" ||
-        artifact.type === "application/pdf" ||
-        artifact.type === "application/rtf" ||
-        artifact.type === "application/msword" ||
-        artifact.type === "text/rtf" ||
-        artifact.type ===
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        artifact.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-        artifact.type === "application/vnd.ms-excel"
-    ) {
-        return true;
-    } else return false;
+        mimeTypesArray.map((typeAllowed)=>{
+        if (typeAllowed.toLowerCase()===file.type.toLowerCase()){
+            flagFound=true
+        }
+    })
+
+    console.log(flagFound,"found")
+    return flagFound
 };
 export const checkIfDocumentFromType = (mime_type) => {
     if (
@@ -426,3 +416,5 @@ export const removeKeyFromObj = (obj, keys) => {
     }
     return obj;
 };
+
+

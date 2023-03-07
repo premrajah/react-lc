@@ -41,10 +41,10 @@ const OrgComponent = (props) => {
                     {org.description && (
                         <>
                             <span className={"text-gray-light  "}>{org.description}</span>
-                            {/*<br />*/}
-                            {/*<span className={"text-gray-light  "}>*/}
-                            {/*    Email: <span className={"text-pink"}>{org.email}</span>*/}
-                            {/*</span>*/}
+                            <br />
+                            <span className={"text-gray-light  "}>
+                                Email: <span className={"text-pink"}>{org.email}</span>
+                            </span>
                         </>
                     )}
                 </div>

@@ -60,6 +60,9 @@ export const googleApisBaseURL = "https://maps.googleapis.com/maps/api/";
 export const checkImage = (url) => {
     return /(jpg|jpeg|png|webp|avif|gif|svg)/.test(url);
 };
+
+
+
 export const MIME_TYPES = {
     JPEG: "image/jpeg",
     JPG: "image/jpg",
@@ -74,8 +77,13 @@ export const MIME_TYPES = {
     XLS: "application/vnd.ms-excel",
     XLSX: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 };
+
+export const MIME_TYPES_ARRAY = Object.keys(MIME_TYPES).map((key)=>MIME_TYPES[key])
+
 export const MIME_TYPES_ACCEPT =
-    "image/jpeg,image/jpg,image/png,video/mp4,video/quicktime,application/msword,application/pdf,application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    "image/jpeg,image/jpg,image/png,video/mp4," +
+    "video/quicktime,application/msword,application/pdf," +
+    "application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
 
 export const ENTITY_TYPES = {

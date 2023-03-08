@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import EventDetail from "./EventDetail";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
+import ErrorBoundary from "../ErrorBoundary";
 
 let slugify = require('slugify')
 
@@ -262,7 +263,7 @@ class EventForm extends Component {
 
 
         return (
-            <>
+            <ErrorBoundary skip>
                 <div className={"row justify-content-center create-product-row"}>
 
                     <EventDetail eventId={this.props.eventId} />
@@ -317,7 +318,7 @@ class EventForm extends Component {
                     </div>
                     }
                 </div>
-            </>
+            </ErrorBoundary>
         );
     }
 }

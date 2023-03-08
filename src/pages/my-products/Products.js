@@ -763,7 +763,7 @@ class Products extends Component {
                                 </Link>
 
                                 <Link
-                                    to="/product-archive"
+                                    to="/product-records"
                                     className=" btn-sm btn-gray-border  me-2">
                                     <CustomPopover
                                         text={
@@ -771,6 +771,16 @@ class Products extends Component {
                                         }>
                                         Records
                                     </CustomPopover>
+                                </Link>
+                                <Link
+                                    to="/product-archive"
+                                    className=" btn-sm btn-gray-border  me-2">
+                                    {/*<CustomPopover*/}
+                                    {/*    text={*/}
+                                    {/*        "Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"*/}
+                                    {/*    }>*/}
+                                    Archive
+                                    {/*</CustomPopover>*/}
                                 </Link>
 
                                 <Link
@@ -783,6 +793,7 @@ class Products extends Component {
                                         Tracked
                                     </CustomPopover>
                                 </Link>
+
 
                                 <Link to="/issues" className=" btn-sm btn-gray-border me-2  ">
                                     Issues

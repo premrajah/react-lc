@@ -5,16 +5,16 @@ import {connect} from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import FormControl from "@mui/material/FormControl";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {Spinner} from "react-bootstrap";
 import SubproductItem from "./Item/SubproductItem";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
-import CustomizedSelect from "../FormsUI/ProductForm/CustomizedSelect";
-import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import AddIcon from "@mui/icons-material/Add";
 import SubproductItemSkeleton from "./Item/SubproductItemSkeleton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
+import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
+import { v4 as uuid } from 'uuid';
+import LinkExistingList from "./LinkExistingList";
 
 
 class ProductExpandItem extends Component {
@@ -30,20 +30,20 @@ class ProductExpandItem extends Component {
             fields: {},
             errors: {},
             subProductSelected: null,
-            addCount: [],
+            existingItems: [],
             count: 0,
             showExisting: false,
             productList:[],
             loading: false,
-            item:null
+            item:null,
+
 
         };
 
         this.showPopUp = this.showPopUp.bind(this);
-        this.showProductSelection = this.showProductSelection.bind(this);
         this.linkSubProduct = this.linkSubProduct.bind(this);
-        this.addCount = this.addCount.bind(this);
-        this.subtractCount = this.subtractCount.bind(this);
+        // this.addCount = this.addCount.bind(this);
+        // this.subtractCount = this.subtractCount.bind(this);
         this.showExisting = this.showExisting.bind(this);
         this.removeItem = this.removeItem.bind(this);
     }
@@ -66,81 +66,87 @@ class ProductExpandItem extends Component {
     }
 
     showExisting() {
+
         this.setState({
             showExisting: !this.state.showExisting,
+
         });
+        setTimeout(()=>{
+            this.setState({
+                existingItems:  this.state.showExisting?[ {index: uuid(),value:"",valueText:"",error:null}]:[]
+
+            });
+
+        },100)
+
+
+        // console.log(this.state.existingItems)
     }
 
-    addCount() {
-        var array = this.state.addCount;
+    addItem=()=> {
 
-        array.push(this.state.count + 1);
+
+        this.setState(prevState => ({
+            existingItems: [
+                ...prevState.existingItems,
+                {
+                    index:uuid(),
+                    name: "",
+
+                }
+            ]
+        }));
+
+    }
+
+    deleteItem=(record)=> {
 
         this.setState({
-            addCount: array,
-            count: this.state.count + 1,
+            existingItems: this.state.existingItems.filter(r => r !== record)
         });
-    }
 
-    subtractCount() {
-        if (this.state.count > 1) {
-            var array = this.state.addCount;
 
-            array.pop();
-
-            if (this.state.count > 1)
-                this.setState({
-                    addCount: array,
-                    count: this.state.count - 1,
-                });
-        }
     }
 
 
 
 
-    handleChange(field, e, i) {
-        let fields = this.state.fields;
+    handleChange=( value,valueText,field,uId,index) =>{
 
-        fields[field] = e.target.value;
+        let existingItems = [...this.state.existingItems];
+        existingItems[index] = {
+            value:value,valueText:valueText,
+            index:uId,
+            error:false
+        };
+        this.setState({
+            existingItems:existingItems
+        })
 
-        // const { name, value } = e.target;
-
-        this.setState({ fields });
-
-        if (field === "product") {
-            this.setState({
-                subProductSelected: this.props.productList.filter(
-                    (item) => item._key === e.target.value
-                )[0],
-            });
-        }
     }
 
 
 
+    handleChangeForm=( e) =>{
 
-    showProductSelection(event) {
+    }
+
+
+
+    showProductSelection=()=> {
         // this.props.setProduct(this.props.currentProduct)
         // this.props.setParentProduct(this.props.currentProduct)
 
         this.props.showProductPopUp({
             type: "create_sub_product",
             show: true,
-            parentId: event.currentTarget.dataset.parent,
+            // parentId: event.currentTarget.dataset.parent,
         });
     }
 
-    // loadProduct(productKey) {
-    //
-    //
-    //     if (productKey)
-    //     this.props.loadCurrentProduct(productKey)
-    //
-    // }
 
 
-     loadProduct=(id)=> {
+    loadProduct=(id)=> {
 
 
         axios.get(baseUrl + "product/" + id+"/expand")
@@ -168,6 +174,10 @@ class ProductExpandItem extends Component {
     linkSubProduct(event) {
         event.preventDefault();
 
+
+        try {
+
+
         const form = event.currentTarget;
 
         // if (this.handleValidationSite()){
@@ -178,16 +188,38 @@ class ProductExpandItem extends Component {
 
         const data = new FormData(event.target);
 
-        var array = [];
+        let array = [];
 
-        for (let i = 0; i < this.state.addCount.length; i++) {
-            array.push({ id: data.get(`product[${i}]`) });
+        let errorFlag=false
+        for (let i = 0; i < this.state.existingItems.length; i++) {
+            if (this.state.existingItems[i].value&&this.state.existingItems[i].value.length>0){
+
+                array.push({ id: this.state.existingItems[i].value});
+
+            }else{
+
+                errorFlag=true
+                let existingItems = this.state.existingItems;
+
+                existingItems[i].error=true
+                this.setState({
+                    existingItems:existingItems
+                })
+
+
+            }
+
         }
 
-        var dataForm = {
+        if (errorFlag){
+
+            return
+        }
+        let dataForm = {
             product_id: this.state.item.product._key,
             sub_products: array,
         };
+
 
         axios
             .post(baseUrl + "product/sub-product", dataForm)
@@ -195,27 +227,32 @@ class ProductExpandItem extends Component {
                 // dispatch({type: "SIGN_UP", value : res.data})
 
                 this.setState({
-                    addCount: [],
-                    count: 0,
+                    existingItems: [],
+                    showExisting: false,
                 });
+                this.props.showSnackbar({show:true,severity:"success",message:"Subproducts linked successfully. Thanks"})
+
                 this.loadProduct(this.state.item.product._key);
                 this.props.loadCurrentProduct(this.state.item.product._key)
+
             })
             .catch((error) => {
-                // dispatch(stopLoading())
-                // dispatch(signUpFailed(error.response.data.content.message))
-                // dispatch({ type: AUTH_FAILED });
-                // dispatch({ type: ERROR, payload: error.data.error.message });
+
             });
+
+        }catch (e){
+            console.log("error link submit product")
+            console.log(e)
+        }
     }
 
 
     componentDidMount() {
         this.loadProduct(this.props.productId);
-        this.setState({
-            addCount: [1],
-            count: 1,
-        });
+        // this.setState({
+        //     addCount: [1],
+        //     count: 1,
+        // });
 
         this.props.loadProducts(this.props.userDetail.token);
         this.props.loadProductsWithoutParent(this.props.userDetail.token);
@@ -224,7 +261,7 @@ class ProductExpandItem extends Component {
 
     componentDidUpdate(prevProps) {
 
-            if (prevProps !== this.props) {
+        if (prevProps !== this.props) {
             // if (prevProps.productId !== this.props.productId) {
             this.setState({
                 product: null,
@@ -263,7 +300,7 @@ class ProductExpandItem extends Component {
 
                                             <ol>
                                                 {this.state.item.sub_products&&
-                                                this.state.item.sub_products.map(
+                                                    this.state.item.sub_products.map(
                                                         (item, index) => (
                                                             <>
                                                                 <li className={"text-gray-light"}>
@@ -295,21 +332,15 @@ class ProductExpandItem extends Component {
                                                     )}
                                             </ol>
                                         </div>
-                                        <div className="col-12">
-                                            <p
-                                                style={{ margin: "10px 0px" }}
-                                                className={"  small"}>
+
+
+                                        <div className="col-12 d-flex justify-content-between">
+                                            <div>
                                                 <button
-                                                    className={
-                                                        " btn-gray-border  mr-2 "
-                                                    }
-                                                    // data-parent={this.props.currentProduct.product._key}
-                                                    // onClick={this.showProductSelection}
-
+                                                    className={"btn-gray-border  mr-2"}
                                                     onClick={()=> this.props.createNew(this.props.productId,'new')}
-
                                                 >
-                                                     <AddIcon />
+                                                    <AddIcon />
                                                     Create New
                                                 </button>
 
@@ -319,13 +350,17 @@ class ProductExpandItem extends Component {
                                                     }
                                                     data-parent={this.state.item.product._key}
                                                     onClick={this.showExisting}>
-                                                     <AddLinkIcon />
+                                                    <AddLinkIcon />
                                                     Link Existing
                                                 </button>
-                                            </p>
+                                            </div>
+
+
                                         </div>
                                     </div>
                                 )}
+
+
                             </>
                         )}
                     </div>
@@ -333,163 +368,54 @@ class ProductExpandItem extends Component {
 
                 {this.state.item &&  this.state.showExisting && (
                     <>
-                         <div className="row   justify-content-left">
-                            <form style={{ width: "100%" }} onSubmit={this.linkSubProduct}>
+                        <div className="row   justify-content-left">
+                            <form onChange={this.handleChangeForm} style={{ width: "100%" }}
+                                  onSubmit={this.linkSubProduct}
+                            >
                                 <div className="col-12 mt-4" style={{ padding: "0!important" }}>
-                                    {this.state.addCount.map((item, index) => (
-                                        <div className="row mt-2">
-                                            <div className="col-11">
-                                                {/*<div className={"custom-label text-bold text-blue mb-1"}>Sub Product</div>*/}
 
-                                                <FormControl
-                                                    variant="outlined"
-                                                   >
-                                                    <CustomizedSelect
-                                                        name={`product[${index}]`}
-                                                        variant={"standard"}
-                                                        required={true}
-                                                        native
-                                                        onChange={this.handleChange.bind(
-                                                            this,
-                                                            "product"
-                                                        )}
-                                                        inputProps={{
-                                                            // name: {`product[${index}]`},
-                                                            id: "outlined-age-native-simple",
-                                                        }}>
-                                                        <option value={null}>Select</option>
+                                    <LinkExistingList
 
-                                                        {this.props.productList
-                                                            .filter(
-                                                                (item) =>
-                                                                    item._key !==
-                                                                    this.state.item.product
-                                                                        ._key
-                                                            )
-                                                            .filter(
-                                                                (item) =>
-                                                                        !this.state.item.sub_products.filter(
-                                                                            (subItem) =>
-                                                                                subItem._key ===
-                                                                                item._key
-                                                                        ).length > 0
-
-                                                            )
-                                                            .map((item) => (
-                                                                <option value={item._key}>
-                                                                    {item.name}
-                                                                </option>
-                                                            ))}
-
-
-                                                    </CustomizedSelect>
-                                                    {this.props.productList.length===0&&   <Spinner
-                                                        as="span"
-                                                        animation="border"
-                                                        size="sm"
-                                                        role="status"
-                                                        aria-hidden="true"
-                                                        style={{color:"#07AD88"}}
-                                                        className={"spinner-select"}
-                                                    />}
-                                                    {this.state.errors["product"] && (
-                                                        <span className={" small"}>
-                                                            <span style={{ color: "red" }}>* </span>
-                                                            {this.state.errors["product"]}
-                                                        </span>
-                                                    )}
-
-
-                                                </FormControl>
-
-
-                                            </div>
-
-                                            <div className="col-3 d-none">
-                                                {/*<div className={"custom-label text-bold text-blue mb-1"}>Volume</div>*/}
-
-                                                <CustomizedInput
-                                                    // required={true}
-                                                    type={"number"}
-                                                    onChange={this.handleChange.bind(
-                                                        this,
-                                                        "volume"
-                                                    )}
-                                                    name={`volume[${index}]`}
-                                                    placeholder={"Volume"}
-                                                    id="outlined-basic"
-                                                    variant="outlined"
-                                                    fullWidth={true}
-                                                    InputProps={{ inputProps: { min: 0 } }}
-                                                />
-                                                {this.state.errors["volume"] && (
-                                                    <span className={" small"}>
-                                                        <span style={{ color: "red" }}>* </span>
-                                                        {this.state.errors["volume"]}
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            <div
-                                                className="col-1 text-center"
-                                                style={{ display: "flex" }}>
-                                                {item > 1 && (
-                                                    <>
-                                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
-
-                                                        <DeleteIcon
-                                                            classname={"click-item"}
-                                                            style={{
-                                                                color: "#ccc",
-                                                                margin: "auto",
-                                                            }}
-                                                            onClick={() => this.subtractCount()}
-                                                        />
-                                                    </>
-                                                )}
+                                        option={"Product"}
+                                        subOption={"name"}
+                                        searchKey={"name"}
+                                        valueKey={"Product"}
+                                        subValueKey={"_key"}
+                                        field={"product"}
+                                        apiUrl={baseUrl + "seek?name=Product&no_parent=true&count=false"}
+                                        filters={[this.state.item.product._key,...this.state.item.sub_products.map(item=>item._key)]}
+                                        fields={this.state.fields}
+                                        deleteItem={this.deleteItem}
+                                        handleChange={this.handleChange}
+                                        existingItems={this.state.existingItems} />
+                                </div>
+                                {this.state.showExisting &&
+                                    <div className="row   ">
+                                        <div className="col-12 mt-2  ">
+                                            <div className="">
+                                                <BlueSmallBtn
+                                                    onClick={this.addItem}
+                                                    title={"Add"}
+                                                    type="button"
+                                                >
+                                                    <AddIcon/>
+                                                </BlueSmallBtn>
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
-
-                                <div className="col-12 mt-2 ">
-                                    {/*<button*/}
-                                    {/*    onClick={this.addCount}*/}
-                                    {/*    className={*/}
-                                    {/*        "btn btn-default  btn-rounded shadow  blue-btn-border"*/}
-                                    {/*    }>*/}
-                                    {/*    <AddIcon />*/}
-                                    {/*    Add*/}
-                                    {/*</button>*/}
-
-                                    <BlueSmallBtn
-                                        onClick={this.addCount}
-                                        title={"Add"}
-
-                                    >
-                                        <AddIcon />
-                                    </BlueSmallBtn>
-                                </div>
+                                    </div>}
 
                                 <div className="col-12 mt-4 mobile-menu">
                                     <div className="row text-center ">
                                         <div className="col-12 text-center">
-                                            {/*<button*/}
-                                            {/*    style={{ margin: "auto", width: "200px" }}*/}
-                                            {/*    type={"submit"}*/}
-                                            {/*    className={*/}
-                                            {/*        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"*/}
-                                            {/*    }>*/}
-                                            {/*    Submit*/}
-                                            {/*</button>*/}
-                                            <GreenButton
+
+                                            {this.state.existingItems.length>0 && <GreenButton
                                                 title={"Add Subproduct"}
                                                 type={"submit"}
                                                 // loading={this.state.loading}
                                                 // disabled={this.state.loading||this.state.isSubmitButtonPressed}
 
                                             >
-                                            </GreenButton>
+                                            </GreenButton>}
                                         </div>
                                     </div>
                                 </div>
@@ -537,7 +463,7 @@ const mapDispachToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadCurrentProduct: (data) =>
             dispatch(actionCreator.loadCurrentProduct(data)),
-
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductExpandItem);

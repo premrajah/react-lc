@@ -120,7 +120,7 @@ export const validateInput = (validators, value) => {
     return false;
 };
 
-export const validateInputs = (validations) => {
+export const validateInputs = (validations,fields,editMode) => {
 
 
 
@@ -132,6 +132,12 @@ export const validateInputs = (validations) => {
 
         for (let j = 0; j < validations.length; j++) {
             let inputField=validations[j]
+
+            if (editMode&&fields[inputField.field]=== undefined){
+
+                // console.log("skip",fields[inputField.field],inputField.field)
+                continue
+            }
 
             if (inputField && inputField.validations.length) {
                 for (let i = 0; i < inputField.validations.length; i++) {

@@ -13,6 +13,7 @@ import ImageOnlyThumbnail from "../../ImageOnlyThumbnail";
 import {Add, Info} from "@mui/icons-material";
 import {capitalize} from "../../../Util/GlobalFunctions";
 import OCVCDisplay from "../../UIComponents/OCVCDisplay";
+import ErrorBoundary from "../../ErrorBoundary";
 
 class ProductItemNew extends Component {
     constructor(props) {
@@ -268,7 +269,7 @@ class ProductItemNew extends Component {
 
     render() {
         return (
-            <>
+            <ErrorBoundary skip>
                 <div
                     id={this.props.item._key + "-product-item"}
                     key={this.props.item._key + "-product-item"}
@@ -564,7 +565,7 @@ class ProductItemNew extends Component {
                         </div>
                     </ModalBody>
                 </Modal>
-            </>
+            </ErrorBoundary>
         );
     }
 }

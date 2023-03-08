@@ -339,7 +339,7 @@ class ProductDetailContent extends Component {
 
                 this.loadInfo();
             }
-            this.setActiveKey(null,"1")
+            // this.setActiveKey(null,"1")
         }
     }
 
@@ -376,9 +376,11 @@ class ProductDetailContent extends Component {
     }
 
     callBackResult(action) {
+
+
         if (action === "edit") {
             this.showProductEdit();
-        } else if (action === "delete") {
+        } else if (action === "archive") {
             this.deleteItem();
         } else if (action === "duplicate") {
             this.submitDuplicateProduct();
@@ -400,14 +402,21 @@ class ProductDetailContent extends Component {
     }
 
     deleteItem() {
-        axios.delete(baseUrl + "listing/" + this.state.item.listing._key).then(
-            (response) => {
-                // var responseAll = response.data.data;
-                // this.props.history.push("/my-products")
-                // this.props.loadProducts()
-            },
-            (error) => {}
-        );
+
+        axios
+            .post(baseUrl + "product/archive", {
+                product_id: this.state.item.product._key,
+            })
+            .then((res) => {
+                this.props.showSnackbar({show:true,severity:"success",message:"Product is move to archive successfully. Thanks"})
+
+            })
+            .catch((error) => {
+                // this.setState({
+                //
+                //     errorRegister:error.response.data.errors[0].message
+                // })
+            });
     }
 
     showProductEdit() {
@@ -840,6 +849,7 @@ class ProductDetailContent extends Component {
             <>
                 {this.state.item ? (
                     <>
+
                         {this.state.zoomQrCode&&
                         <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
                             {this.props.item&&this.props.item.qr_artifact && (
@@ -914,14 +924,19 @@ class ProductDetailContent extends Component {
                                                         triggerCallback={(action) =>
                                                             this.callBackResult(action)
                                                         }
+
+                                                        archive={
+                                                            this.state.item.org._id ===
+                                                            this.props.userDetail.orgId
+                                                                ? true
+                                                                : false
+                                                        }
                                                         serviceAgent={
                                                             this.state.item.service_agent._id ===
                                                             this.props.userDetail.orgId
                                                                 ? true
                                                                 : false
                                                         }
-
-
 
                                                         duplicate={
                                                             this.state.item.org._id ===

@@ -29,6 +29,7 @@ import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 import OrgComponent from "../Org/OrgComponent";
+import ErrorBoundary from "../ErrorBoundary";
 
 
 class CompanyDetails extends Component {
@@ -848,7 +849,7 @@ class CompanyDetails extends Component {
 
     render() {
         return (
-            <>
+            <ErrorBoundary skip>
                 <Modal
                     className={"loop-popup"}
                     aria-labelledby="contained-modal-title-vcenter"
@@ -858,6 +859,7 @@ class CompanyDetails extends Component {
                     animation={false}>
                     <ModalBody>
                         <div
+
                             style={{
                                 position: "absolute",
                                 background: "white",
@@ -898,6 +900,8 @@ class CompanyDetails extends Component {
                                     setSelection={this.switchOrg}
                                     initialValue={this.props.userContext.orgId}
                                     options={this.state.orgs.filter((org)=>org.name!==this.props.userDetail.email)}
+                                    // options={""}
+
                                     option={"name"}
                                     valueKey={"_key"}
                                 />}
@@ -1250,16 +1254,6 @@ class CompanyDetails extends Component {
 
                 </div>}
 
-
-
-
-
-
-
-
-
-
-
                 <GlobalDialog
                     allowOverflow
                     size={"xs"}
@@ -1383,7 +1377,7 @@ class CompanyDetails extends Component {
                         </div>
                     </>
                 </GlobalDialog>
-            </>
+            </ErrorBoundary>
         );
     }
 }

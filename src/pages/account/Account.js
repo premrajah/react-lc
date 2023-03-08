@@ -12,6 +12,7 @@ import {Link} from "react-router-dom";
 import HeaderDark from "../../views/header/HeaderDark";
 import Sidebar from "../../views/menu/Sidebar";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 class Account extends Component {
     constructor(props) {
@@ -29,6 +30,7 @@ class Account extends Component {
 
     render() {
         return (
+            <ErrorBoundary skip>
             <div>
                 <Sidebar />
                 <div className="wrapper  ">
@@ -161,6 +163,7 @@ class Account extends Component {
                     </div>
                 </div>
             </div>
+            </ErrorBoundary>
         );
     }
 }

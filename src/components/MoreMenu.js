@@ -22,17 +22,17 @@ class MoreMenu extends Component {
             open: false,
             anchorEl: null,
             showDeletePopUp: false,
-            showDuplicatePopUp: false,
+            showConfirmPopUp: false,
             removePopUp: false,
+            actionConfirm:null
         };
 
         this.triggerCallback = this.triggerCallback.bind(this);
         this.setOpen = this.setOpen.bind(this);
         this.deleteAction = this.deleteAction.bind(this);
-        this.duplicateAction = this.duplicateAction.bind(this);
 
         this.showDeletePopUp = this.showDeletePopUp.bind(this);
-        this.showDuplicatePopUp = this.showDuplicatePopUp.bind(this);
+        this.showConfirmPopUp = this.showConfirmPopUp.bind(this);
         this.removePopUp = this.removePopUp.bind(this);
         this.removeAction = this.removeAction.bind(this);
     }
@@ -43,9 +43,9 @@ class MoreMenu extends Component {
         });
     }
 
-    showDuplicatePopUp(event) {
+    showConfirmPopUp(event) {
         this.setState({
-            showDuplicatePopUp: !this.state.showDuplicatePopUp,
+            showConfirmPopUp: !this.state.showConfirmPopUp,
         });
     }
 
@@ -78,14 +78,14 @@ class MoreMenu extends Component {
         this.props.triggerCallback("delete");
     }
 
-    duplicateAction(event) {
+    takeAction=(event) =>{
         // event.stopPropagation();
         // event.preventDefault();
 
         this.setState({
-            showDuplicatePopUp: !this.state.showDuplicatePopUp,
+            showConfirmPopUp: !this.state.showConfirmPopUp,
         });
-        this.props.triggerCallback("duplicate");
+        this.props.triggerCallback(this.state.actionConfirm);
     }
 
     setOpen(event) {
@@ -104,11 +104,16 @@ class MoreMenu extends Component {
         } else if (action === "remove") {
             // this.props.triggerCallback(action)
             this.removePopUp();
-        } else if (action === "duplicate") {
-            // this.props.triggerCallback(action)
+        } else if (action === "duplicate"||action === "archive") {
 
-            this.showDuplicatePopUp();
-        } else {
+            this.setState({
+                actionConfirm:action
+            })
+
+            this.showConfirmPopUp();
+        }
+
+        else {
 
             this.props.triggerCallback(action);
         }
@@ -129,9 +134,9 @@ class MoreMenu extends Component {
         event.stopPropagation();
         event.preventDefault();
         event.nativeEvent.stopImmediatePropagation();
-
-        if (event.currentTarget.dataset.action) {
-            var action = event.currentTarget.dataset.action;
+        
+         if (event.currentTarget.dataset.action) {
+            let action = event.currentTarget.dataset.action;
 
             this.triggerCallback(action);
         }
@@ -162,6 +167,12 @@ class MoreMenu extends Component {
                             {this.props.edit && (
                                 <MenuItem data-action={"edit"} onClick={this.handleClose}>
                                     Edit
+                                </MenuItem>
+                            )}
+
+                            {this.props.archive && (
+                                <MenuItem data-action={"archive"} onClick={this.handleClose}>
+                                    Archive
                                 </MenuItem>
                             )}
                             {this.props.download && (
@@ -299,29 +310,19 @@ class MoreMenu extends Component {
                         </Modal>
                     </div>
 
-                    {/*<div onClick={(e) => e.stopPropagation()}>*/}
-                        {/*<Modal*/}
-                        {/*    className={"loop-popup"}*/}
-                        {/*    aria-labelledby="contained-modal-title-vcenter"*/}
-                        {/*    centered*/}
-                        {/*    show={this.state.showDuplicatePopUp}*/}
-                        {/*    onHide={this.showDuplicatePopUp}*/}
-                        {/*    animation={false}>*/}
-                        {/*    <ModalBody>*/}
-
                                 <GlobalDialog
                                     size="sm"
 
-                                    heading={"Duplicate "}
-                                    show={this.state.showDuplicatePopUp}
-                                    hide={this.showDuplicatePopUp}
+                                    heading={this.state.actionConfirm}
+                                    show={this.state.showConfirmPopUp}
+                                    hide={this.showConfirmPopUp}
                                 >
                                     <div className={"col-12"}>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-12"}>
 
                                         <p>
-                                            Are you sure you want to duplicate this item?
+                                            {`Are you sure you want to ${this.state.actionConfirm} this item?`}
                                         </p>
                                     </div>
                                 </div>
@@ -333,7 +334,7 @@ class MoreMenu extends Component {
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
                                                 <GreenButton
-                                                    onClick={this.duplicateAction}
+                                                    onClick={this.takeAction}
 
                                                     title={"Submit"}
                                                     type={"submit"}>
@@ -344,7 +345,7 @@ class MoreMenu extends Component {
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
                                                 <BlueBorderButton
-                                                    onClick={this.showDuplicatePopUp}
+                                                    onClick={this.showConfirmPopUp}
                                                     title={"Cancel"}
                                                 >
 
@@ -355,9 +356,7 @@ class MoreMenu extends Component {
                                 </div>
                                     </div>
                                 </GlobalDialog>
-                        {/*    </ModalBody>*/}
-                        {/*</Modal>*/}
-                    {/*</div>*/}
+
 
                     <div onClick={(e) => e.stopPropagation()}>
                         <Modal

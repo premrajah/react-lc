@@ -11,6 +11,7 @@ import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompl
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css'
 import ChangePassword from "../../components/Account/ChangePassword";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 
 class EditAccount extends Component {
@@ -228,7 +229,7 @@ class EditAccount extends Component {
 
 
             <div className="container ">
-
+                <ErrorBoundary skip>
                         <PageHeader
                             pageTitle="Personal Info"
                             subTitle="Add and change your personal details here"
@@ -357,7 +358,7 @@ class EditAccount extends Component {
                     <ChangePassword />
                     </div>
                 </div>
-
+                </ErrorBoundary>
                     </div>
 
         );

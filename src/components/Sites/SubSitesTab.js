@@ -140,6 +140,8 @@ class SubSitesTab extends Component {
                     parent_site={this.props.item.parent_site}
                     hide={this.showSiteSelection}
                     item={this.props.item.site}
+                    children_sites={this.props.item.children_sites}
+
                     link
                     showHeader={false}  refresh={() => {}}   />
 

@@ -15,7 +15,7 @@ import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
 
-class ProductArchive extends Component {
+class ProductRecords extends Component {
 
     constructor(props) {
         super(props);
@@ -224,7 +224,7 @@ class ProductArchive extends Component {
 
         // let url = createSeekURL("Product&relation=service_agent_for", true, true, null, null,
         //     this.filters, "AND")
-        let url = `${baseUrl}seek?name=Product&relation=archived&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
+        let url = `${baseUrl}seek?name=Product&relation=past_owner&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
 
         // let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
 
@@ -260,7 +260,7 @@ class ProductArchive extends Component {
         let newOffset = this.state.offset;
         // let url = createSeekURL("Product&relation=service_agent_for", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
 
-        let url = `${baseUrl}seek?name=Product&relation=archived&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at`;
+        let url = `${baseUrl}seek?name=Product&relation=past_owner&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at`;
 
 
         this.filters.forEach((item) => {
@@ -315,8 +315,8 @@ class ProductArchive extends Component {
                 <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={ArchiveIcon}
-                            pageTitle="Product Archive"
-                            subTitle="Your archived products"
+                            pageTitle="Product Record"
+                            subTitle="Your previously owned products"
                             // bottomLine={<hr />}
                         />
 
@@ -331,17 +331,15 @@ class ProductArchive extends Component {
                                 </Link>
 
                                 <Link
-                                    to="/product-records"
+                                    to="/product-archive"
                                     className=" btn-sm btn-gray-border  me-2">
-                                    <CustomPopover
-                                        text={
-                                            "All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "
-                                        }>
-                                        Records
-                                    </CustomPopover>
+                                    {/*<CustomPopover*/}
+                                    {/*    text={*/}
+                                    {/*        "Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"*/}
+                                    {/*    }>*/}
+                                    Archive
+                                    {/*</CustomPopover>*/}
                                 </Link>
-
-
                                 <Link to="/product-tracked" className="btn btn-sm btn-gray-border me-2">
                                     Tracked
                                 </Link>
@@ -409,4 +407,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductArchive);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductRecords);

@@ -44,18 +44,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
             >
                 <DialogContent>
 
-                    {!props.hideHeader &&
-                    <div className=" row  justify-content-center align-items-center">
-                    <div className="col-10">
-                        {!props.hideHeading &&
-                        <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>{props.heading}</h4>}
+                    {!props.hideHeader &&!props.hideHeading ?
+                        <div className=" row  justify-content-center align-items-center">
+                         <div className="col-10">
+
+                        <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>{props.heading}</h4>
                         {props.subHeading&&<p className={"ellipsis-end mb-0 text-capitalize"}>{props.subHeading}</p>}
                     </div>
                     <div className="col-2 d-flex  justify-content-end">
                         {!props.hideClose && <CloseButtonPopUp onClick={handleClose}/>}
                     </div>
-                </div>}
-                    <div className={`${props.removePadding?" g-0 ":"pb-3 pt-3"} row  justify-content-center align-items-center`}>
+                </div>:
+                        <div className="top-right mt-3 me-3 "><CloseButtonPopUp onClick={handleClose}/></div>
+                    }
+                    <div className={`${(props.removePadding||!props.hideHeading||!props.heading||!props.heading.length===0)?" p-0 ":"pb-3 "} row  justify-content-center align-items-center`}>
 
                         {children}
                     </div>

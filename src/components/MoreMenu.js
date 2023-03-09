@@ -24,7 +24,7 @@ class MoreMenu extends Component {
             showDeletePopUp: false,
             showConfirmPopUp: false,
             removePopUp: false,
-            actionConfirm:null
+            actionConfirm: null,
         };
 
         this.triggerCallback = this.triggerCallback.bind(this);
@@ -78,7 +78,7 @@ class MoreMenu extends Component {
         this.props.triggerCallback("delete");
     }
 
-    takeAction=(event) =>{
+    takeAction = (event) => {
         // event.stopPropagation();
         // event.preventDefault();
 
@@ -86,7 +86,7 @@ class MoreMenu extends Component {
             showConfirmPopUp: !this.state.showConfirmPopUp,
         });
         this.props.triggerCallback(this.state.actionConfirm);
-    }
+    };
 
     setOpen(event) {
         event.stopPropagation();
@@ -104,17 +104,13 @@ class MoreMenu extends Component {
         } else if (action === "remove") {
             // this.props.triggerCallback(action)
             this.removePopUp();
-        } else if (action === "duplicate"||action === "archive") {
-
+        } else if (action === "duplicate" || action === "archive") {
             this.setState({
-                actionConfirm:action
-            })
+                actionConfirm: action,
+            });
 
             this.showConfirmPopUp();
-        }
-
-        else {
-
+        } else {
             this.props.triggerCallback(action);
         }
     }
@@ -134,8 +130,8 @@ class MoreMenu extends Component {
         event.stopPropagation();
         event.preventDefault();
         event.nativeEvent.stopImmediatePropagation();
-        
-         if (event.currentTarget.dataset.action) {
+
+        if (event.currentTarget.dataset.action) {
             let action = event.currentTarget.dataset.action;
 
             this.triggerCallback(action);
@@ -180,7 +176,6 @@ class MoreMenu extends Component {
                                     Download
                                 </MenuItem>
                             )}
-
 
                             {this.props.delete && (
                                 <MenuItem data-action={"delete"} onClick={this.handleClose}>
@@ -261,115 +256,69 @@ class MoreMenu extends Component {
                         </Menu>
                     </Button>
 
-                    {/*<div onClick={(e) => e.stopPropagation()}>*/}
-                    {/*    <Modal*/}
-                    {/*        className={"loop-popup"}*/}
-                    {/*        aria-labelledby="contained-modal-title-vcenter"*/}
-                    {/*        centered*/}
-                    {/*        show={this.state.showDeletePopUp}*/}
-                    {/*        onHide={this.showDeletePopUp}*/}
-                    {/*        animation={false}>*/}
-                    {/*        <ModalBody>*/}
                     <GlobalDialog
                         size="sm"
                         heading="Delete"
                         show={this.state.showDeletePopUp}
-                        hide={this.showDeletePopUp}
-                    >
+                        hide={this.showDeletePopUp}>
                         <div className={"col-12"}>
                             <div className={"row justify-content-center"}>
                                 <div className={"col-12"}>
-
                                     <p>Are you sure you want to delete this item?</p>
                                 </div>
                             </div>
-                                {/*<div className={"row justify-content-center"}>*/}
-                                {/*    <div className={"col-10 text-center"}>*/}
-                                {/*        <p className={"text-bold text-caps"}>Delete</p>*/}
-                                {/*        <p>Are you sure you want to delete ?</p>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
-
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-12 text-center mt-2"}>
-                                        <div className={"row justify-content-center"}>
-                                            <div
-                                                className={"col-6"}
-                                                style={{ textAlign: "center" }}>
-                                                <GreenButton
-                                                    onClick={this.deleteAction}
-
-                                                    title={"Submit"}
-                                                    type={"submit"}>
-
-                                                </GreenButton>
-                                            </div>
-                                            <div
-                                                className={"col-6"}
-                                                style={{ textAlign: "center" }}>
-                                                <BlueBorderButton
-                                                    onClick={this.showDeletePopUp}
-                                                    title={"Cancel"}
-                                                >
-
-                                                </BlueBorderButton>
-                                            </div>
+                            <div className={"row justify-content-center"}>
+                                <div className={"col-12 text-center mt-2"}>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+                                            <GreenButton
+                                                onClick={this.deleteAction}
+                                                title={"Submit"}
+                                                type={"submit"}></GreenButton>
+                                        </div>
+                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+                                            <BlueBorderButton
+                                                onClick={this.showDeletePopUp}
+                                                title={"Cancel"}></BlueBorderButton>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </GlobalDialog>
-                            {/*</ModalBody>*/}
-                        {/*</Modal>*/}
-                    {/*</div>*/}
-
-                                <GlobalDialog
-                                    size="sm"
-
-                                    heading={this.state.actionConfirm}
-                                    show={this.state.showConfirmPopUp}
-                                    hide={this.showConfirmPopUp}
-                                >
-                                    <div className={"col-12"}>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-12"}>
-
-                                        <p>
-                                            {`Are you sure you want to ${this.state.actionConfirm} this item?`}
-                                        </p>
-                                    </div>
+                    <GlobalDialog
+                        size="sm"
+                        heading={this.state.actionConfirm}
+                        show={this.state.showConfirmPopUp}
+                        hide={this.showConfirmPopUp}>
+                        <div className={"col-12"}>
+                            <div className={"row justify-content-center"}>
+                                <div className={"col-12"}>
+                                    <p>
+                                        {`Are you sure you want to ${this.state.actionConfirm} this item?`}
+                                    </p>
                                 </div>
+                            </div>
 
-                                <div className={"row mt-4 justify-content-center"}>
-                                    <div className={"col-12 text-center "}>
-                                        <div className={"row justify-content-center"}>
-                                            <div
-                                                className={"col-6"}
-                                                style={{ textAlign: "center" }}>
-                                                <GreenButton
-                                                    onClick={this.takeAction}
-
-                                                    title={"Submit"}
-                                                    type={"submit"}>
-
-                                                </GreenButton>
-                                            </div>
-                                            <div
-                                                className={"col-6"}
-                                                style={{ textAlign: "center" }}>
-                                                <BlueBorderButton
-                                                    onClick={this.showConfirmPopUp}
-                                                    title={"Cancel"}
-                                                >
-
-                                                </BlueBorderButton>
-                                            </div>
+                            <div className={"row mt-4 justify-content-center"}>
+                                <div className={"col-12 text-center "}>
+                                    <div className={"row justify-content-center"}>
+                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+                                            <GreenButton
+                                                onClick={this.takeAction}
+                                                title={"Submit"}
+                                                type={"submit"}></GreenButton>
+                                        </div>
+                                        <div className={"col-6"} style={{ textAlign: "center" }}>
+                                            <BlueBorderButton
+                                                onClick={this.showConfirmPopUp}
+                                                title={"Cancel"}></BlueBorderButton>
                                         </div>
                                     </div>
                                 </div>
-                                    </div>
-                                </GlobalDialog>
-
+                            </div>
+                        </div>
+                    </GlobalDialog>
 
                     <div onClick={(e) => e.stopPropagation()}>
                         <Modal
@@ -396,7 +345,7 @@ class MoreMenu extends Component {
                                                 <GreenButton
                                                     fullWidth
                                                     onClick={this.removeAction}
-                                                   title={"Submit"}
+                                                    title={"Submit"}
                                                     type={"submit"}>
                                                     Submit
                                                 </GreenButton>
@@ -407,8 +356,7 @@ class MoreMenu extends Component {
                                                 <GreenBorderButton
                                                     fullWidth
                                                     title={"Cancel"}
-                                                    onClick={this.removePopUp}
-                                                    >
+                                                    onClick={this.removePopUp}>
                                                     Cancel
                                                 </GreenBorderButton>
                                             </div>

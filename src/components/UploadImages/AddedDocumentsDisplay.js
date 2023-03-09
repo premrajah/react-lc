@@ -134,7 +134,7 @@ const AddedDocumentsDisplay = (props) => {
                                                                 url={currentBlobUrl}
                                                                 controls
                                                                 playing={false}
-
+                                                                width="100%"
                                                             />}
                                                         </GlobalDialog>
                                                     </>

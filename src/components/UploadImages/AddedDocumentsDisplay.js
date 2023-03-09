@@ -130,12 +130,14 @@ const AddedDocumentsDisplay = (props) => {
                                                             onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}
                                                         />
                                                         <GlobalDialog size="md" show={artifactDialogDisplay} hide={() => handleArtifactDialogDisplayClose()}>
-                                                            {currentBlobUrl && <ReactPlayer
-                                                                url={currentBlobUrl}
-                                                                controls
-                                                                playing={false}
-                                                                width="100%"
-                                                            />}
+                                                            {currentBlobUrl && <div className="react-player-container">
+                                                                <ReactPlayer
+                                                                    url={currentBlobUrl}
+                                                                    controls
+                                                                    playing={false}
+                                                                    width="100%"
+                                                                />
+                                                            </div>}
                                                         </GlobalDialog>
                                                     </>
                                                 ) :

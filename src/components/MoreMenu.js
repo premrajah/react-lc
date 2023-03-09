@@ -261,21 +261,34 @@ class MoreMenu extends Component {
                         </Menu>
                     </Button>
 
-                    <div onClick={(e) => e.stopPropagation()}>
-                        <Modal
-                            className={"loop-popup"}
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered
-                            show={this.state.showDeletePopUp}
-                            onHide={this.showDeletePopUp}
-                            animation={false}>
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p className={"text-bold text-caps"}>Delete</p>
-                                        <p>Are you sure you want to delete ?</p>
-                                    </div>
+                    {/*<div onClick={(e) => e.stopPropagation()}>*/}
+                    {/*    <Modal*/}
+                    {/*        className={"loop-popup"}*/}
+                    {/*        aria-labelledby="contained-modal-title-vcenter"*/}
+                    {/*        centered*/}
+                    {/*        show={this.state.showDeletePopUp}*/}
+                    {/*        onHide={this.showDeletePopUp}*/}
+                    {/*        animation={false}>*/}
+                    {/*        <ModalBody>*/}
+                    <GlobalDialog
+                        size="sm"
+                        heading="Delete"
+                        show={this.state.showDeletePopUp}
+                        hide={this.showDeletePopUp}
+                    >
+                        <div className={"col-12"}>
+                            <div className={"row justify-content-center"}>
+                                <div className={"col-12"}>
+
+                                    <p>Are you sure you want to delete this item?</p>
                                 </div>
+                            </div>
+                                {/*<div className={"row justify-content-center"}>*/}
+                                {/*    <div className={"col-10 text-center"}>*/}
+                                {/*        <p className={"text-bold text-caps"}>Delete</p>*/}
+                                {/*        <p>Are you sure you want to delete ?</p>*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
 
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-12 text-center mt-2"}>
@@ -283,32 +296,32 @@ class MoreMenu extends Component {
                                             <div
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
-                                                <button
+                                                <GreenButton
                                                     onClick={this.deleteAction}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                    }
+
+                                                    title={"Submit"}
                                                     type={"submit"}>
-                                                    Submit
-                                                </button>
+
+                                                </GreenButton>
                                             </div>
                                             <div
                                                 className={"col-6"}
                                                 style={{ textAlign: "center" }}>
-                                                <button
+                                                <BlueBorderButton
                                                     onClick={this.showDeletePopUp}
-                                                    className={
-                                                        "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                    }>
-                                                    Cancel
-                                                </button>
+                                                    title={"Cancel"}
+                                                >
+
+                                                </BlueBorderButton>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </ModalBody>
-                        </Modal>
-                    </div>
+                        </div>
+                    </GlobalDialog>
+                            {/*</ModalBody>*/}
+                        {/*</Modal>*/}
+                    {/*</div>*/}
 
                                 <GlobalDialog
                                     size="sm"

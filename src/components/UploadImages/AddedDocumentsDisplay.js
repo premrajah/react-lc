@@ -15,12 +15,13 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import ReactPlayer from "react-player/lazy";
 
 const AddedDocumentsDisplay = (props) => {
-    const { artifacts, pageRefreshCallback } = props;
+    const { artifacts, pageRefreshCallback, showSnackbar} = props;
 
     const [show, setShow] = useState(false);
     const [docKey, setDocKey] = useState(null);
     const [currentBlobUrl, setCurrentBlobUrl] = useState(null);
     const [artifactDialogDisplay, setArtifactDialogDisplay] = useState(false);
+    const [isReactPlayerReady, setIsReactPlayerReady] = useState(true);
     let { slug } = useParams();
 
     const handleArtifactDialogDisplayOpen = (blobUrl) => {
@@ -131,11 +132,16 @@ const AddedDocumentsDisplay = (props) => {
                                                         />
                                                         <GlobalDialog size="md" show={artifactDialogDisplay} hide={() => handleArtifactDialogDisplayClose()}>
                                                             {currentBlobUrl && <div className="react-player-container">
+                                                                {isReactPlayerReady && <div>Loading the video, please wait...</div>}
                                                                 <ReactPlayer
                                                                     url={currentBlobUrl}
                                                                     controls
                                                                     playing={false}
                                                                     width="100%"
+                                                                    onReady={() => setIsReactPlayerReady(false)}
+                                                                    onError={() => showSnackbar({ show: true, severity: "warning", message: `Unable to load video at this time` })}
+                                                                    onBuffer={() => setIsReactPlayerReady(true)}
+                                                                    onBufferEnd={() => setIsReactPlayerReady(false)}
                                                                 />
                                                             </div>}
                                                         </GlobalDialog>

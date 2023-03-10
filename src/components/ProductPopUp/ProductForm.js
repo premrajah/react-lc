@@ -311,8 +311,6 @@ let slugify = require('slugify')
                                             files: currentFiles,
                                         });
 
-
-                                        console.log(this.state.images.length,this.props.item.artifacts.length)
                                     })
                                     .catch(error => {
 
@@ -769,12 +767,8 @@ let slugify = require('slugify')
 
         updateImages() {
 
-            alert("udpate img called")
-
             let flagChange=false
 
-
-            console.log(this.state.images.length,this.props.item.artifacts.length)
             if (this.state.images.length!==this.props.item.artifacts.length){
                 flagChange=true
             }
@@ -788,7 +782,7 @@ let slugify = require('slugify')
 
 
             if (flagChange)
-            alert("image chagned")
+
             axios
                 .post(
                     baseUrl + "product/artifact/replace",
@@ -841,8 +835,6 @@ let slugify = require('slugify')
 
             event.preventDefault();
             event.stopPropagation()
-            console.log(this.state.fields)
-
 
             let fields = this.state.fields
 
@@ -886,13 +878,10 @@ let slugify = require('slugify')
                     }
                 })
 
-                console.log("fields",fields)
-                console.log("sku",sku)
-
                 await removeKeyFromObj(fields, skuFields)
 
                 fields.sku = sku
-                console.log(fields)
+
             }
 
 
@@ -974,7 +963,6 @@ let slugify = require('slugify')
                 };
 
 
-                console.log(productData)
 
 
                 axios

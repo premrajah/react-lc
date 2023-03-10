@@ -655,7 +655,6 @@ export default function
                                     // day: true,
                                     week: true,
                                     month: true,
-                                    // year: <Year handleYearClick={()=>{alert("here")}} />,
                                     year: Year,
                                 }}
                                 onView={onView}

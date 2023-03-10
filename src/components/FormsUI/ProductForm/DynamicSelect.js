@@ -188,7 +188,6 @@ const DynamicSelectArrayWrapper = (props) => {
 
                     />
                     <input name={name}
-                           // onChange={()=>alert(value)}
                            type={"hidden"} value={value}/>
 
                 </FormControl>

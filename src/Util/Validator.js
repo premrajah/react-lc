@@ -135,7 +135,7 @@ export const validateInputs = (validations,fields,editMode) => {
 
             if (editMode&&fields[inputField.field]=== undefined){
 
-                // console.log("skip",fields[inputField.field],inputField.field)
+
                 continue
             }
 

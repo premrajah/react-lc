@@ -150,7 +150,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
        setErrors(result.errors);
 
-        // console.log(result)
+
         return result.formIsValid;
     }
 
@@ -249,7 +249,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
-                    console.log("length issue -",headers.length, productProperties[i].length)
+
                     return
                 }
                 if (!(productProperties[i].field.toLowerCase() === headers[i].toLowerCase())) {
@@ -262,7 +262,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
-                    console.log("field issue -",productProperties[i].field.toLowerCase() , headers[i].toLowerCase())
+
                     return
                 }
 

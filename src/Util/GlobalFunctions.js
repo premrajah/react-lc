@@ -397,16 +397,11 @@ export const PreProcessCSVData = (text) => {
         }
         return text;
     } catch (e) {
-        // console.log("Error Column",text)
-        // console.log(e)
+        console.log(e)
         return text;
     }
 };
 
-export const compareProductEditFields = (newData, prevData) => {
-    console.log(newData);
-    console.log(prevData);
-};
 
 export const removeKeyFromObj = (obj, keys) => {
     for (let i = 0; i < keys.length; i++) {

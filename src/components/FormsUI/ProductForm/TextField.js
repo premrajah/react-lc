@@ -41,10 +41,7 @@ const TextFieldWrapper = ({
     useEffect(() => {
 
             if (onChange) {
-                // console.log("initial value",initialValue)
                 setField(initialValue)
-
-
                 if (!editMode){
                     onChange(initialValue);
                 }

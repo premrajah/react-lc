@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import SearchBar from "../SearchBar";
 import CustomDataGridTable from "./CustomDataGridTable";
 import {PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import MenuDropdown from "../FormsUI/MenuDropdown";

@@ -10,18 +10,16 @@ import {
     useGridApiContext,
     useGridSelector
 } from '@mui/x-data-grid';
-import LinearProgress from '@mui/material/LinearProgress';
 import {styled} from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
-import Button from '@mui/material/Button';
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import {Cloud, Delete, PanoramaFishEye} from "@mui/icons-material";
+import {Delete} from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {formatDate} from "@fullcalendar/react";
-import {capitalize,getTimeFormat} from "../../Util/GlobalFunctions";
+import {capitalize, getTimeFormat} from "../../Util/GlobalFunctions";
 import {Link} from "react-router-dom";
+import MapIcon from "@mui/icons-material/Place";
 
 
 const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, items,element,children, ...otherProps}) =>{
@@ -66,13 +64,9 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
                 hideable: !item.visible,
                 // colSpan: `${item.key==="category"?3:1}`,
                 // minWidth:`${item.key==="category"?300:50}`,
-
                 // flex:`${item.key==="category"?1:0.5}`,
                 // minWidth:50,
-
                 flex:item.flex?item.flex:1,
-
-
                 // maxWidth:"unset",
                 renderCell: (params) => (
 <>
@@ -110,22 +104,20 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
                     sortable: false,
         hide:false,
         hideable: false,
+        flex:1,
              //       minWidth: 60,
              // flex:1,
                     renderCell: (params) => (
                         <>
-
                             {actions.map((action)=>
 
                                 <ActionIconBtn
                                     onClick={()=>actionCallback(params.row._key,action)}
                                 >
-                                    {action=="edit"?<EditIcon/>:action=="view"?<VisibilityIcon/>:action=="delete"?<Delete/>:action}
+                                    {action=="edit"?<EditIcon/>:action=="view"?<VisibilityIcon/>:action=="delete"?<Delete/>:action=="map"?<MapIcon/>:action}
                                 </ActionIconBtn>
 
                             )}
-
-
 
                         </>
                     ),

@@ -33,7 +33,7 @@ import BlueButton from "../FormsUI/Buttons/BlueButton";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
-import {getTimeFormat} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, getTimeFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
 import SiteFormNew from "../Sites/SiteFormNew";
@@ -408,7 +408,7 @@ class ProductDetailContent extends Component {
                 product_id: this.state.item.product._key,
             })
             .then((res) => {
-                this.props.showSnackbar({show:true,severity:"success",message:"Product is move to archive successfully. Thanks"})
+                this.props.showSnackbar({show:true,severity:"success",message:"Product has moved to archive successfully. Thanks"})
 
             })
             .catch((error) => {
@@ -416,6 +416,8 @@ class ProductDetailContent extends Component {
                 //
                 //     errorRegister:error.response.data.errors[0].message
                 // })
+
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
             });
     }
 

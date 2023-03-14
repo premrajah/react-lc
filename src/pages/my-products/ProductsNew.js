@@ -26,6 +26,11 @@ import CircularProgressWithLabel from "../../components/FormsUI/Buttons/Circular
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import PaginationGrid from "../../components/UIComponents/PaginationGrid";
+import ProductForm from "../../components/ProductPopUp/ProductForm";
+import {showProductPopUp} from "../../store/actions/actions";
+import SubproductItem from "../../components/Products/Item/SubproductItem";
+import {GoogleMap} from "../../components/Map/MapsContainer";
+import MenuDropdown from "../../components/FormsUI/MenuDropdown";
 
 class ProductsNew extends Component {
     constructor(props) {
@@ -55,6 +60,9 @@ class ProductsNew extends Component {
             allDownloadItems:[],
             showFieldSelection:false,
             productDisplayView: "large",
+            showProductEdit:false,
+            showQuickView:false,
+            selectedURl:"name=Product&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -73,19 +81,25 @@ class ProductsNew extends Component {
         this.props.showProductPopUp({ type: "create_product", show: true });
     }
 
+    actionCallback=(key,action)=>{
+        if (action=="edit"){
+            this.showProductEditPopUp(key)
+        }
+        else if (action=="view"){
+            this.showQuickViewPopUp(key)
+        }
+        else if (action=="map"){
+            this.showSiteViewPopUp(key)
+        }
+    }
 
     clearList =  () => {
-
-        // alert("Clear")
-
-         // setTimeout(() => {
-            this.setState({
+        this.setState({
                 offset: 0,
                 items: [],
                 lastPageReached: false,
                 loadingResults: false,
             });
-        // }, 500)
     };
 
     handleChange(value, field) {
@@ -186,6 +200,49 @@ class ProductsNew extends Component {
     };
 
 
+    setSelection=(selection)=>{
+
+        if (selection==="Product"){
+
+            this.setState({
+                selectedURl:"name=Product&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+            })
+        }
+       else if (selection==="Service"){
+            this.setState({
+                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+            })
+        }
+        else if (selection==="Records"){
+            this.setState({
+                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+            })
+        }
+        else if (selection==="Tracked"){
+            this.setState({
+                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+            })
+        }
+        else if (selection==="Issues"){
+            this.setState({
+                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+            })
+        }
+        else if (selection==="Archive"){
+            this.setState({
+                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+            })
+        }
+
+       setTimeout(()=>{
+           this.loadProductsWithoutParentPageWise({
+               reset: true,
+
+           })
+       },100)
+
+    }
+
     formatData=(selectedKeys,selected=false)=>{
 
 
@@ -277,9 +334,70 @@ class ProductsNew extends Component {
 
     }
 
+    showProductEditPopUp=(key)=> {
+
+        if (key)
+            axios.get(baseUrl + "product/" + key+"/expand")
+                .then(
+                    (response) => {
+
+                        this.setState({
+                            showProductEdit: !this.state.showProductEdit,
+                            editItemSelected: response.data.data,
+                        });
+
+                    },
+                    (error) => {
+
+
+                    }
+                );
+
+        else{
+            this.setState({
+                showProductEdit: !this.state.showProductEdit,
+                editItemSelected: null,
+            });
+        }
+
+    }
+
+
+
+    showSiteViewPopUp=(key)=> {
+
+        if (key){
+            this.setState({
+                showSiteView: !this.state.showSiteView,
+                viewSiteSelected: getSite(this.state.items.find(item=>item.Product._key==key)),
+            });
+        } else{
+            this.setState({
+                showSiteView: !this.state.showSiteView,
+                viewSiteSelected: null,
+            });
+        }
+
+    }
+    showQuickViewPopUp=(key)=> {
+
+        if (key){
+            this.setState({
+                showQuickView: !this.state.showQuickView,
+                viewItemSelectedKey: key,
+            });
+        } else{
+            this.setState({
+                showQuickView: !this.state.showQuickView,
+                viewItemSelectedKey: null,
+            });
+        }
+
+    }
+
     seekCount = async () => {
         this.controllerSeek.abort()
-        let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
+        let url = `${baseUrl}seek?${this.state.selectedURl}`;
 
         this.filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
@@ -316,23 +434,10 @@ class ProductsNew extends Component {
      controller = new AbortController();
     controllerSeek = new AbortController();
     loadProductsWithoutParentPageWise = async (data) => {
-
 try {
-
-
-        // alert("load products main")
-        // console.log(data)
-        //
-        // if (this.state.offset>0){
-        //     return
-        // }
-
         if (data && data.reset){
-
          await   this.clearList();
         }
-
-
 
         this.controller.abort()
 
@@ -346,9 +451,7 @@ try {
 
         let newOffset = this.state.offset;
 
-        // let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
-
-        let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at`;
+        let url = `${baseUrl}seek?${this.state.selectedURl}`;
 
         this.filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
@@ -357,16 +460,10 @@ try {
         this.setState({
             activeQueryUrl:url
         })
-
-         url = `${url}&offset=${this.state.offset}&size=${this.state.pageSize}`;
-
-
+         url = `${url}&offset=${data.newPage?data.newPage:0}&size=${this.state.pageSize}`;
         if (data.sort){
-            url =
-                `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
-
+            url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
         }
-
 
         let result = await seekAxiosGet(url,null,this.controller);
 
@@ -374,7 +471,9 @@ try {
             this.state.offset = newOffset + this.state.pageSize;
 
             this.setState({
-                items: this.state.items.concat(result.data ? result.data.data : []),
+                // items: this.state.items.concat(result.data ? result.data.data : []),
+                items: result.data ? result.data.data : [],
+
                 loadingResults: false,
                 lastPageReached: result.data
                     ? result.data.data.length === 0
@@ -548,10 +647,7 @@ try {
 
     getSitesForProducts = () => {
 
-
-
         try {
-
 
             let mapData=this.mapProductToSite()
             this.mapProductToSite()
@@ -863,7 +959,17 @@ try {
                             lastPageReached={this.state.lastPageReached}
                             loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}
                             actions={["map","edit","view"]}
-                        />
+                            checkboxSelection={false}
+                            actionCallback={this.actionCallback}
+                        >
+                            <MenuDropdown
+                                setSelection={this.setSelection}
+                                // initialValue={this.props.userContext.orgId}
+                                options={["Products","Service","Records","Tracked","Issues"]}
+                                // option={"name"}
+                                // valueKey={"_key"}
+                            />
+                        </PaginationGrid>
 
 
                     </div>
@@ -1023,6 +1129,69 @@ try {
                         </div>
                     </ModalBody>
                 </Modal>
+
+                <GlobalDialog
+                    size="md"
+                    removePadding
+                    hideHeader
+                    show={this.state.showQuickView}
+                    hide={()=> {
+                        this.showQuickViewPopUp();
+                    }} >
+
+                    <div className="form-col-left col-12">
+                        {this.state.showQuickView &&
+                            <SubproductItem hideMoreMenu hideDate smallImage={true} productId={this.state.viewItemSelectedKey} />
+                        }
+                    </div>
+
+                </GlobalDialog>
+                <GlobalDialog
+                    size="md"
+                    removePadding
+                    hideHeader
+                    show={this.state.showSiteView}
+                    hide={()=> {
+                        this.showSiteViewPopUp();
+                    }} >
+
+                    <div className="form-col-left col-12">
+                        {this.state.showSiteView &&
+                            <div className="col-12">
+                                {this.state.viewSiteSelected  && this.state.viewSiteSelected.geo_codes && this.state.viewSiteSelected.geo_codes.length>0&&
+                                    <GoogleMap searchLocation
+                                               siteId={this.state.viewSiteSelected._key}
+                                               width={"100%"} height={"300px"}
+                                               location={{
+                                                   name: `${this.state.viewSiteSelected.name}`,
+                                                   location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
+                                                   isCenter: true
+                                               }}/>}
+                            </div>
+                        }
+                    </div>
+
+                </GlobalDialog>
+                <GlobalDialog
+                    size="md"
+                    heading={"Add Product"}
+                    hideHeading
+                    show={this.state.showProductEdit}
+                    hide={()=> {
+                        this.showProductEditPopUp();
+                    }} >
+
+                    <div className="form-col-left col-12">
+                        {this.state.showProductEdit &&
+                            <ProductForm hideUpload edit
+                                         triggerCallback={(action) => this.callBackSubmit(action)}
+                                         heading={"Edit Product"}
+                                         item={this.state.editItemSelected}
+                            />
+                        }
+                    </div>
+
+                </GlobalDialog>
             </Layout>
         );
     }

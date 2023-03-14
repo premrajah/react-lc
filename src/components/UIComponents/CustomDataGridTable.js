@@ -22,7 +22,7 @@ import {Link} from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
 
 
-const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, items,element,children, ...otherProps}) =>{
+const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore,checkboxSelection,actionCallback, items,element,children, ...otherProps}) =>{
 
     const [tableHeader,setTableHeader] = useState([]);
     const [list,setList] = useState([]);
@@ -31,18 +31,24 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
     const [page, setPage] = React.useState(0);
     const [listLoading, setListLoading] = React.useState(false);
     const [sortData, setSortData] = React.useState(null);
-    const [sortModel, setSortModel] = React.useState([]);
-
+    const [visibleFields, setVisibleFields] = React.useState({});
 
     const [initialHeaderState, setInitialHeaderState] = React.useState(false);
 
+    const [sortModel, setSortModel] = React.useState();
+    const [paginationModel, setPaginationModel] = React.useState({
+        pageSize: pageSize,
+        page: 0,
+    });
+
+    const [rowCountState, setRowCountState] = React.useState(count);
+    React.useEffect(() => {
+        setRowCountState((prevRowCountState) =>
+            count !== undefined ? count : prevRowCountState,
+        );
+    }, [count, setRowCountState]);
 
 
-
- const   actionCallback=(key,action)=>{
-
-        // props.actionCallback(key,action)
-    }
 
     useEffect(() => {
 
@@ -50,23 +56,27 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
     },[loading])
 
     useEffect(() => {
+
         let headersTmp=[]
-        headers
-            // .filter(item=>item.visible)
-            .forEach((item)=>{
+        let fields={}
+        headers.forEach((item)=>{
+
+            if (!item.visible)
+            fields[item.field]=item.visible
 
             headersTmp.push({
-                field: item.key,
+                field: item.subField?item.subField:item.field,
                 headerName: item.label,
                 editable:false,
                 sortable:item.sortable,
-                hide:!item.visible,
-                hideable: !item.visible,
-                // colSpan: `${item.key==="category"?3:1}`,
-                // minWidth:`${item.key==="category"?300:50}`,
-                // flex:`${item.key==="category"?1:0.5}`,
-                // minWidth:50,
+                sortingOrder:item.sortingOrder?item.sortingOrder:['asc', 'desc', null],
+                // hide:!item.visible,
+                // hideable: !item.visible,
                 flex:item.flex?item.flex:1,
+                // colSpan: `${item.field==="category"?3:1}`,
+                // minWidth:`${item.field==="category"?300:50}`,
+                // flex:`${item.field==="category"?1:0.5}`,
+                // minWidth:50,
                 // maxWidth:"unset",
                 renderCell: (params) => (
 <>
@@ -85,14 +95,14 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
                         params.value}
 </>
                 ),
-                // description: 'This column has a value getter and is not sortable.',
-                // sortable: false,
-                // minWidth: 160,
-                // valueGetter: (params) =>
-                //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+
             })
 
         })
+
+
+        setVisibleFields(fields)
+
 
 
         if (actions&&actions.length>0) {
@@ -112,9 +122,9 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
                             {actions.map((action)=>
 
                                 <ActionIconBtn
-                                    onClick={()=>actionCallback(params.row._key,action)}
+                                    onClick={()=>actionCallback(params.row.id,action)}
                                 >
-                                    {action=="edit"?<EditIcon/>:action=="view"?<VisibilityIcon/>:action=="delete"?<Delete/>:action=="map"?<MapIcon/>:action}
+                                    {action=="edit"?<EditIcon />:action=="view"?<VisibilityIcon/>:action=="delete"?<Delete/>:action=="map"?<MapIcon/>:action}
                                 </ActionIconBtn>
 
                             )}
@@ -127,39 +137,54 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
         }
         setTableHeader(headersTmp)
 
+        setSortModel(headers.filter(item=>item.sort))
+
+
+
 
     }, [])
 
     useEffect(() => {
 
-        if (items.length>list.length){
+        // if (items.length>list.length){
 
 
-        let itemsTmp=[]
+        let listTmp=[]
+
         items.forEach((listItem)=>{
             let Product=listItem.Product
             let itemTmp={}
 
             headers
-                // .filter(item=>item.visible)
                 .forEach((item)=>{
-                 itemTmp[`${item.key}`]=Product[`${item.key=="id"?"_key":item.key}`]
+                    try {
+
+                    if (item.subField){
+                        itemTmp[`${item.subField}`] = Product[`${item.field}`][`${item.subField}`]
+                    }else{
+                        itemTmp[`${item.field}`]=Product[`${item.field=="id"?"_key":item.field}`]
+                    }
+                    }catch(e){
+                      console.log(e)
+
+                    }
                 })
 
-            itemsTmp.push(itemTmp)
+
+            listTmp.push(itemTmp)
         })
 
-        setList(itemsTmp)
+        setList(listTmp)
         // console.log(itemsTmp)
 
-        }
+        // }
     }, [items])
 
     const handleChange=(data)=>{
 
         setSortModel(data)
 
-     console.log(data)
+     console.log("Sort modal",data)
 
         if (loadMore&&data.length>0){
 
@@ -169,8 +194,7 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
             }
 
 
-            console.log(data.field=="id"?"_key":data.field,
-                data.sort)
+            console.log(data.field=="id"?"_key":data.field, data.sort)
             loadMore(true,filter)
 
 
@@ -201,44 +225,50 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore, ite
 
                <DataGrid
 
-                   initialState={{
-                       columns: {
-                           columnVisibilityModel: {
-                               // Hide columns status and traderName, the other columns will remain visible
-                               description: false,
-                               id:false,
-                               type:false,
-                               state:false
-                           },
-                       },
-                   }}
+                   columnVisibilityModel={visibleFields}
+                   // initialState={{
+                   //
+                   //     // columns: {
+                   //     //     columnVisibilityModel: {
+                   //     //         // Hide columns status and traderName, the other columns will remain visible
+                   //     //         description: false,
+                   //     //         id:false,
+                   //     //         type:false,
+                   //     //         state:false,
+                   //     //
+                   //     //     },
+                   //     // },
+                   // }}
 
                    disableColumnMenu={true}
                    onPageChange={(newPage) => {
-                       if (page<newPage){
-                           setPage(newPage)
-                           loadMore(false,sortData)
 
-                       }
+                           setPage(newPage)
+                           loadMore(false,sortData,newPage)
+
+
                    }}
                    onPageSizeChange={(newPageSize) => {
                        alert("page size "+newPageSize)
 
                         }}
-                   // sortingMode="server"
-                   // sortModel={sortModel}
+                   // autoPageSize
+                   sortModel={sortModel}
                    // onSortModelChange={(newSortModel) => setSortModel(newSortModel)}
-                   onSortModelChange={handleChange}
-                   rowCount={count}
+                   onSortModelChange={(model) => handleChange(model)}
+                   sortingMode="server"
+                   rowCount={rowCountState}
                    rows={list}
                    columns={tableHeader}
                    pageSize={pageSize}
                    loading={listLoading||list.length===0}
                    rowsPerPageOptions={[pageSize]}
-                   checkboxSelection={true}
+                   checkboxSelection={checkboxSelection}
                    disableSelectionOnClick
                    experimentalFeatures={{ newEditingApi: true }}
-
+                   paginationMode="server"
+                   paginationModel={paginationModel}
+                   onPaginationModelChange={setPaginationModel}
                />
 
 

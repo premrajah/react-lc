@@ -47,14 +47,15 @@ class PaginationGrid extends Component {
 
     timeout = 0;
 
-    loadMore = (reset,sort) => {
+    loadMore = (reset,sort,newPage) => {
 
         // alert(sort.key+" "+sort.sort)
         this.props.loadMore({
             searchValue: this.searchValue,
             searchFilter: this.filterValue,
             reset: reset,
-            sort:sort
+            sort:sort,
+            newPage:newPage
         });
     };
     timeoutSearch() {
@@ -94,16 +95,10 @@ class PaginationGrid extends Component {
             <>
                 {!this.props.hideSearch && (
                     <div className="row  justify-content-center search-container  pt-3 pb-3">
-                        <div className={"col-6"}>
-                            <MenuDropdown
-                                // setSelection={this.switchOrg}
-                                // initialValue={this.props.userContext.orgId}
-                                options={["Products","Service","Records","Tracked","Issues"]}
-                                // option={"name"}
-                                valueKey={"_key"}
-                            />
+                        <div className={"col-md-6 col-12"}>
+                            {children}
                         </div>
-                        <div className={"col-6"}>
+                        <div className={"col-md-6 col-12"}>
                             <SearchBox
                                 onSearch={(sv) => this.handleSearch(sv)}
                                 onSearchFilter={(fv) => this.handleSearchFilter(fv)}
@@ -125,13 +120,15 @@ class PaginationGrid extends Component {
                 {/*)}*/}
 
                 <CustomDataGridTable
-                    loadMore={(reset,sortData) => this.loadMore(false,sortData)}
+                    loadMore={(reset,sortData,newPage) => this.loadMore(false,sortData,newPage)}
                     headers={PRODUCTS_FILTER_VALUES_KEY}
                     items={this.props.items}
                     pageSize={this.props.pageSize}
                     count={this.props.count}
                     loading={this.props.loading}
                     actions={this.props.actions}
+                    checkboxSelection={this.props.checkboxSelection}
+                    actionCallback={this.props.actionCallback}
                     // sortData={(sortData)=>this.loadMore(true, sortData)}
 
                 />

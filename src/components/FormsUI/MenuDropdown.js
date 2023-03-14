@@ -5,6 +5,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useEffect } from "react";
+import ErrorBoundary from "../ErrorBoundary";
+
 import Paper from '@mui/material/Paper';
 export default function MenuDropdown(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -47,7 +49,7 @@ export default function MenuDropdown(props) {
     };
 
     return (
-        <>
+        <ErrorBoundary skip>
             <List
                 className={"p-0"}
                 component="span"
@@ -88,6 +90,8 @@ export default function MenuDropdown(props) {
                 ))}
             </Menu>
             </Paper>
+        </ErrorBoundary>
+
         </>
     );
 }

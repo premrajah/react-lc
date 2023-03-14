@@ -90,7 +90,6 @@ class ProductView extends Component {
         } catch(e) {
             console.log(e)
 
-
         }
     };
 

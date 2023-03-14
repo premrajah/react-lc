@@ -12,6 +12,7 @@ import {Link} from "react-router-dom";
 import ImageOnlyThumbnail from "../ImageOnlyThumbnail";
 import Attachment from "@mui/icons-material/Attachment";
 import DescriptionIcon from "@mui/icons-material/Description";
+import ErrorBoundary from "../ErrorBoundary";
 
 class CampaignItem extends Component {
     constructor(props) {
@@ -72,7 +73,7 @@ class CampaignItem extends Component {
         const {index} = this.props
 
         return (
-            <>
+            <ErrorBoundary skip>
                 {this.state.item &&
                 <tr className="" role="alert">
 
@@ -138,7 +139,7 @@ class CampaignItem extends Component {
                     </td>
 
                 </tr>}
-            </>
+            </ErrorBoundary>
         );
 
 

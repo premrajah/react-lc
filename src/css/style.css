@@ -4002,6 +4002,7 @@ input:focus {
     position: absolute;
     right: 10px;
     top: 0px;
+    z-index: 1;
 }
 
 .message-row {
@@ -4915,4 +4916,11 @@ select option {
 .rbc-big-calender>div{
     border-radius: 4px;
 }
+ul,ol {
+    padding-left: 20px;
+    /*     list-style-type: none; */
+}
 
+.min-vh-80 {
+    min-height: 80vh !important;
+}

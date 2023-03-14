@@ -1,7 +1,9 @@
 import axios from "axios";
-import { baseUrl } from "./Constants";
+import {baseUrl, MIME_TYPES, MIME_TYPES_ARRAY} from "./Constants";
 import React from "react";
 import moment from "moment/moment";
+
+
 
 export const capitalize = (sentence) => {
     if (!sentence) return "";
@@ -123,19 +125,21 @@ export const ownerCheck = (userDetail, orgId) => {
     return userDetail.orgId === orgId;
 };
 
-export const seekAxiosGet = (url, doNotEncode,controller) => {
+export const seekAxiosGet = (url, doNotEncode, controller) => {
     let urlEncode = url;
 
     if (!doNotEncode) {
         urlEncode = encodeURI(urlEncode);
     }
 
-    return axios.get(urlEncode, {
-        signal: controller?controller.signal:null
-    }).catch((error) => {
-        console.error(error);
-        return "Unknown error occurred.";
-    });
+    return axios
+        .get(urlEncode, {
+            signal: controller ? controller.signal : null,
+        })
+        .catch((error) => {
+            console.error(error);
+            return "Unknown error occurred.";
+        });
 };
 
 export const getTimeFormat = (time) => {
@@ -240,30 +244,16 @@ export const hasSplChar = (myString) => {
     return /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(myString);
 };
 
-export const checkIfDocument = (file) => {
-    let artifact = file.file;
+export const checkIfMimeTypeAllowed = (file) => {
+    let flagFound=false
+    const mimeTypesArray =  MIME_TYPES_ARRAY;
 
-    if (
-        artifact.mime_type === "application/pdf" ||
-        artifact.mime_type === "application/rtf" ||
-        artifact.mime_type === "application/msword" ||
-        artifact.mime_type === "text/rtf" ||
-        artifact.mime_type ===
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        artifact.mime_type ===
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-        artifact.mime_type === "application/vnd.ms-excel" ||
-        artifact.type === "application/pdf" ||
-        artifact.type === "application/rtf" ||
-        artifact.type === "application/msword" ||
-        artifact.type === "text/rtf" ||
-        artifact.type ===
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        artifact.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-        artifact.type === "application/vnd.ms-excel"
-    ) {
-        return true;
-    } else return false;
+        mimeTypesArray.map((typeAllowed)=>{
+        if (typeAllowed.toLowerCase()===file.type.toLowerCase()){
+            flagFound=true
+        }
+    })
+    return flagFound
 };
 export const checkIfDocumentFromType = (mime_type) => {
     if (
@@ -360,62 +350,64 @@ export const urlify = (text) => {
 };
 
 export const getNumberFromString = (txt) => {
-
     var numb = txt.match(/\d/g);
-    if (numb)
-    numb = numb.join("");
+    if (numb) numb = numb.join("");
 
-    return numb
+    return numb;
 };
 
 export const cleanFilename = (string) => {
-    if(!string) return;
-    let fileExtension = string.substring(string.lastIndexOf('.')+1, string.length) || string;
+    if (!string) return;
+    let fileExtension = string.substring(string.lastIndexOf(".") + 1, string.length) || string;
     let filenameWithOutExtension = string.replace(/\.[^/.]+$/, "");
-    let cleanedFileName = filenameWithOutExtension.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    let cleanedFileName = filenameWithOutExtension.replace(/[^a-z0-9]/gi, "_").toLowerCase();
     return `${cleanedFileName}.${fileExtension}`;
-}
+};
 
 export const getSite = (site) => {
+    let ProductToSite = site.ProductToSite;
 
+    if (ProductToSite && ProductToSite.length > 0 && ProductToSite[0].entries.length > 0) {
+        return ProductToSite[0].entries[0].Site;
+    } else return null;
+};
 
-    let ProductToSite=site.ProductToSite
+export const PreProcessCSVData = (text) => {
+    try {
+        if (text)
+            text = text
+                .toString()
+                .replace("ı", "i")
+                .replace("ç", "c")
+                .replace("ö", "o")
+                .replace("ş", "s")
+                .replace("ü", "u")
+                .replace("ğ", "g")
+                .replace("İ", "I")
+                .replace("Ç", "C")
+                .replace("Ö", "O")
+                .replace("Ş", "S")
+                .replace("Ü", "U")
+                .replace("Ğ", "G")
+                .replace('"', '""')
+                .trim();
 
-    if (ProductToSite&&ProductToSite.length>0&&ProductToSite[0].entries.length>0){
-        return ProductToSite[0].entries[0].Site
+        if (text && text.includes(",")) {
+            text = '"' + text + '"';
+        }
+        return text;
+    } catch (e) {
+        console.log(e)
+        return text;
     }
-    else return null
+};
 
 
-}
-
-
-export const  PreProcessCSVData=( text)=>
-{
-try {
-    if (text)
-        text = text.toString().replace('ı', 'i')
-            .replace('ç', 'c')
-            .replace('ö', 'o')
-            .replace('ş', 's')
-            .replace('ü', 'u')
-            .replace('ğ', 'g')
-            .replace('İ', 'I')
-            .replace('Ç', 'C')
-            .replace('Ö', 'O')
-            .replace('Ş', 'S')
-            .replace('Ü', 'U')
-            .replace('Ğ', 'G')
-            .replace('"', '""').trim();
-
-    if (text && text.includes(",")) {
-        text = '"' + text + '"';
+export const removeKeyFromObj = (obj, keys) => {
+    for (let i = 0; i < keys.length; i++) {
+        delete obj[keys[i]];
     }
-    return text;
+    return obj;
+};
 
-}catch (e){
-    // console.log("Error Column",text)
-    // console.log(e)
-    return text
-}
-}
+

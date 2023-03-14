@@ -28,6 +28,7 @@ import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
+import ErrorBoundary from "../../components/ErrorBoundary";
 let slugify = require('slugify')
 
 class CreateCampaign extends Component {
@@ -318,7 +319,6 @@ setParams=async () => {
 }
 
     keyDownHandler = event => {
-        // console.log('User pressed: ', event.key);
 
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -674,12 +674,6 @@ let item=null
 
     handleSubmit = (event) => {
 
-
-        // if(event.keyCode == 13) {
-        //     console.log("enter pressed")
-        //     event.preventDefault();
-        //     return false;
-        // }
 
         let fields=this.state.fields
 
@@ -1260,7 +1254,7 @@ let item=null
 
 
         return (
-            <>
+            <ErrorBoundary skip>
 
                 <div className="wrapper">
 
@@ -1937,7 +1931,7 @@ let item=null
 
                     </div>
                 </div>
-            </>
+            </ErrorBoundary>
         );
     }
 }

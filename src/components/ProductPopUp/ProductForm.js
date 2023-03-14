@@ -13,7 +13,7 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
+import {cleanFilename, compareProductEditFields, fetchErrorMessage, removeKeyFromObj} from "../../Util/GlobalFunctions";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
@@ -24,8 +24,8 @@ import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
-import BlueButton from "../FormsUI/Buttons/BlueButton";
 import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
+import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 
 let slugify = require('slugify')
 
@@ -265,6 +265,11 @@ let slugify = require('slugify')
             });
         }
 
+
+        handleChangeForm=(event)=>{
+
+            console.log(event)
+        }
         uploadImage(files) {
             if (files.length > 0) {
                 for (let i = 0; i < files.length; i++) {
@@ -305,6 +310,7 @@ let slugify = require('slugify')
                                         this.setState({
                                             files: currentFiles,
                                         });
+
                                     })
                                     .catch(error => {
 
@@ -371,20 +377,19 @@ let slugify = require('slugify')
         }
 
 
-        handleValidationProduct() {
+        handleValidationProduct(editMode) {
 
 
             let fields = this.state.fields;
 
 
             let validations=[
-                validateFormatCreate("title", [{check: Validators.required, message: 'Required'}],fields),
+                validateFormatCreate("name", [{check: Validators.required, message: 'Required'}],fields),
                 validateFormatCreate("brand", [{check: Validators.required, message: 'Required'}],fields),
                 validateFormatCreate("description", [{check: Validators.required, message: 'Required'}],fields),
                 validateFormatCreate("category", [{check: Validators.required, message: 'Required'}],fields),
                 validateFormatCreate("type", [{check: Validators.required, message: 'Required'}],fields),
                 validateFormatCreate("state", [{check: Validators.required, message: 'Required'}],fields),
-
             ]
 
             if(!this.props.productLines&&!this.props.item){
@@ -406,17 +411,27 @@ let slugify = require('slugify')
 
 
 
-            let {formIsValid,errors}= validateInputs(validations)
+            let {formIsValid,errors}= validateInputs(validations,fields,editMode)
 
+            console.log(errors)
             this.setState({ errors: errors });
             return formIsValid;
         }
 
         handleChangeProduct(value,field ) {
 
-            let fields = this.state.fields;
+                let fields = this.state.fields;
             fields[field] = value;
+
+
+             if (field==="year_of_making"){
+                 fields[field]= Number(value)
+             }
+
+
             this.setState({ fields });
+
+
 
             if (field==="purpose"&&value==="Aggregate"){
 
@@ -476,14 +491,9 @@ let slugify = require('slugify')
                 const data = new FormData(event.target);
 
 
-                if (this.props.item&&!this.props.productLines){
 
 
-                    this.updateSubmitProduct(data)
-                }
-                else {
-
-                    const title = data.get("title");
+                    const name = data.get("name");
                     const purpose = data.get("purpose");
                     const condition = data.get("condition");
                     const description = data.get("description");
@@ -514,7 +524,7 @@ let slugify = require('slugify')
                     let productData = {
                         purpose: purpose.toLowerCase(),
                         condition: condition.toLowerCase(),
-                        name: title,
+                        name: name,
                         description: description,
                         category: category,
                         type: type,
@@ -602,7 +612,7 @@ let slugify = require('slugify')
                                 this.props.showSnackbar({
                                     show: true,
                                     severity: "success",
-                                    message: title + " created successfully. Thanks"
+                                    message: name + " created successfully. Thanks"
                                 })
                                 this.showProductSelection();
 
@@ -639,7 +649,7 @@ let slugify = require('slugify')
                                 this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
 
                             });
-                    }
+
                 }
         };
 
@@ -756,6 +766,23 @@ let slugify = require('slugify')
 
 
         updateImages() {
+
+            let flagChange=false
+
+            if (this.state.images.length!==this.props.item.artifacts.length){
+                flagChange=true
+            }
+            this.state.images.forEach((item)=>{
+
+                if (!this.props.item.artifacts.find(artifact=> artifact._key===item)){
+                    flagChange=true
+                }
+
+            })
+
+
+            if (flagChange)
+
             axios
                 .post(
                     baseUrl + "product/artifact/replace",
@@ -766,12 +793,15 @@ let slugify = require('slugify')
                     },
                 )
                 .then((res) => {
+
                     if (!this.props.parentProduct) {
                         // this.setState({
                         //     product: res.data.data,
                         //     parentProduct: res.data.data,
                         // });
                     }
+                    this.props.loadCurrentProduct(this.props.item.product._key)
+
 
                     this.triggerCallback();
 
@@ -791,86 +821,150 @@ let slugify = require('slugify')
                         site_id: site,
                     },
                 )
-                .then((res) => {})
+                .then((res) => {
+
+                    this.props.loadCurrentProduct(this.props.item.product._key)
+
+                })
                 .catch((error) => {
 
                 });
         }
 
-        updateSubmitProduct = (formData) => {
+        updateSubmitProduct = async (event, formData) => {
 
+            event.preventDefault();
+            event.stopPropagation()
+
+            let fields = this.state.fields
+
+            if (!this.handleValidationProduct(true)) {
+                return
+            }
+
+
+            this.updateImages();
+
+
+            if (fields["deliver"] !== undefined) {
+                this.updateSite(fields["deliver"]);
+
+                // this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
+                // this.props.triggerCallback("edit")
+                removeKeyFromObj(fields, ['deliver'])
+
+            }
+
+
+            if (Object.keys(fields).length == 0) {
+                this.props.triggerCallback("edit")
+
+                return;
+            }
+
+            if (fields["serial"] !== undefined || fields["model"] !== undefined || fields["brand"] !== undefined ||
+                fields["sku"] !== undefined || fields["upc"] !== undefined || fields["gross_weight_kgs"] !== undefined || fields["embodied_carbon_kgs"] !== undefined) {
+
+
+                let sku = {}
+
+                let skuFields = ["sku", "serial", "model", "upc", "part_no",
+                    "embodied_carbon_kgs", "gross_weight_kgs", "brand","external_reference"]
+
+                skuFields.forEach(item => {
+                    if (!(fields[item] === undefined)) {
+
+                        sku[item] = fields[item]
+                    }
+                })
+
+                await removeKeyFromObj(fields, skuFields)
+
+                fields.sku = sku
+
+            }
+
+
+            this.setState({
+                btnLoading: true,
+                loading: true
+            });
 
 
             try {
 
 
+                //   const data = formData;
+                //
+                //
+                //  const title = data.get("title");
+                //  const purpose = data.get("purpose");
+                //  const condition = data.get("condition");
+                //  const description = data.get("description");
+                //  const category = data.get("category");
+                //  const type = data.get("type");
+                //  const units = data.get("units");
+                //
+                //  const serial = data.get("serial");
+                //  const model = data.get("model");
+                //  const brand = data.get("brand");
+                //
+                //  const volume = data.get("volume");
+                //  const sku = data.get("sku");
+                //  const upc = data.get("upc");
+                //  const part_no = data.get("part_no");
+                //  const state = data.get("state");
+                // const external_reference = data.get("external_reference")
+                //  const site = data.get("deliver");
+                // const power_supply = data.get("power_supply");
+                //  const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
+                //  const gross_weight_kgs = data.get("gross_weight_kgs");
+                //
+                // let productData = {
+                //     id: this.props.item.product._key,
+                //     is_manufacturer: this.state.is_manufacturer?true:false,
+                //     update: {
+                //         artifacts: this.state.images,
+                //         purpose: purpose.toLowerCase(),
+                //         condition: condition.toLowerCase(),
+                //         name: title,
+                //         description: description,
+                //         category: category,
+                //         type: type,
+                //         units: units,
+                //         state: state,
+                //         volume: Number(volume),
+                //         stage: "certified",
+                //         energy_rating : this.state.energyRating,
+                //         external_reference : external_reference,
+                //         // is_listable: false,
+                //         sku: {
+                //             serial: serial,
+                //             model: model,
+                //             brand: brand,
+                //             sku: sku,
+                //             upc: upc,
+                //             part_no: part_no,
+                //             // power_supply: power_supply,
+                //             embodied_carbon_kgs: embodied_carbon_kgs?embodied_carbon_kgs:null,
+                //             gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:null
+                //         },
+                //         year_of_making: Number(data.get("manufacturedDate")),
+                //
+                //     },
+                // };
 
-                 const data = formData;
-
-
-                const title = data.get("title");
-                const purpose = data.get("purpose");
-                const condition = data.get("condition");
-                const description = data.get("description");
-                const category = data.get("category");
-                const type = data.get("type");
-                const units = data.get("units");
-
-                const serial = data.get("serial");
-                const model = data.get("model");
-                const brand = data.get("brand");
-
-                const volume = data.get("volume");
-                const sku = data.get("sku");
-                const upc = data.get("upc");
-                const part_no = data.get("part_no");
-                const state = data.get("state");
-               const external_reference = data.get("external_reference")
-                const site = data.get("deliver");
-               const power_supply = data.get("power_supply");
-                const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
-                const gross_weight_kgs = data.get("gross_weight_kgs");
 
                 let productData = {
                     id: this.props.item.product._key,
-                    is_manufacturer: this.state.is_manufacturer?true:false,
-                    update: {
-                        artifacts: this.state.images,
-                        purpose: purpose.toLowerCase(),
-                        condition: condition.toLowerCase(),
-                        name: title,
-                        description: description,
-                        category: category,
-                        type: type,
-                        units: units,
-                        state: state,
-                        volume: Number(volume),
-                        stage: "certified",
-                        energy_rating : this.state.energyRating,
-                        external_reference : external_reference,
-                        // is_listable: false,
-                        sku: {
-                            serial: serial,
-                            model: model,
-                            brand: brand,
-                            sku: sku,
-                            upc: upc,
-                            part_no: part_no,
-                            // power_supply: power_supply,
-                            embodied_carbon_kgs: embodied_carbon_kgs?embodied_carbon_kgs:null,
-                            gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:null
-                        },
-                        year_of_making: Number(data.get("manufacturedDate")),
-
-                    },
+                    is_manufacturer: this.state.is_manufacturer ? true : false,
+                    update:
+                    fields
                 };
 
 
-            if (power_supply){
 
-                productData.update.sku.power_supply=  power_supply.toLowerCase()
 
-            }
                 axios
                     .post(
                         baseUrl + "product",
@@ -879,11 +973,14 @@ let slugify = require('slugify')
                     )
                     .then((res) => {
 
-                            this.updateSite(site);
-                            this.updateImages();
-                           this.props.loadCurrentProduct(this.props.item.product._key)
-                        this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
-
+                        // this.updateSite(site);
+                        // this.updateImages();
+                        this.props.loadCurrentProduct(this.props.item.product._key)
+                        this.props.showSnackbar({
+                            show: true,
+                            severity: "success",
+                            message: this.props.item.product.name + " updated successfully. Thanks"
+                        })
                         this.props.triggerCallback("edit")
 
 
@@ -899,7 +996,7 @@ let slugify = require('slugify')
 
                     });
 
-            }catch (e){
+            } catch (e) {
                 console.log(e)
                 this.setState({
                     btnLoading: false,
@@ -1081,28 +1178,32 @@ let slugify = require('slugify')
                     {this.state.showForm &&
                     <div className={`${!this.state.showSubmitSite?"":"d-none"} `}>
                         <div className="row">
-                        <div className="col-md-8  col-xs-12">
-                            <h4 className={"blue-text text-heading "}>
+                        <div className="col-md-12 d-flex mb-2  col-xs-12">
+                            <h4 className={"blue-text text-heading me-2 "}>
                                 {this.props.edit?"Edit Product":this.props.productLines?this.props.item?"Edit "+this.props.item.name:"Add Product Line":this.state.parentProductId?"Add subproduct":"Add product"}
 
                             </h4>
 
-                        </div>
                             {!this.props.hideUpload&&!this.props.productLines &&
-                            <div className="col-md-4  col-xs-12 desktop-right">
-                            {/*<button className="btn btn-sm blue-btn pt-2" */}
-                            {/*        */}
-                            {/*        ></button>*/}
-                                <BlueButton
-                                    sleek
-                                    onClick={() => this.showMultipleUpload()}
-                                    title={"Upload Multiple Products"}
-                                    fullWidth
-                                    type="button"
-                                >
-                                </BlueButton>
+                                // <div className="col-md-4  col-xs-12 desktop-right">
+                                //     {/*<button className="btn btn-sm blue-btn pt-2" */}
+                                //     {/*        */}
+                                //     {/*        ></button>*/}
+                                    <BlueSmallBtn
 
-                            </div>}
+                                        sleek
+                                        onClick={() => this.showMultipleUpload()}
+                                        title={"Upload Multiple Products"}
+
+                                        type="button"
+                                    >
+                                    </BlueSmallBtn>
+
+                                // </div>
+                        }
+
+                        </div>
+
 
                             {!this.props.item&&!this.props.productLines &&this.state.templates.length>0&&
                             <div className="col-4 ">
@@ -1150,7 +1251,7 @@ let slugify = require('slugify')
 
                     <div className={"row justify-content-center create-product-row"}>
                         <div className={"col-12"}>
-                              <form onSubmit={this.handleSubmit}>
+                              <form  onChange={this.handleChangeForm} onSubmit={this.props.item?this.updateSubmitProduct:this.handleSubmit}>
                                 <div className="row ">
                                     {this.props.productLines &&
                                     <div className="col-12 mt-2">
@@ -1169,13 +1270,18 @@ let slugify = require('slugify')
                                     <div className="col-12 mt-2">
 
                                        <TextFieldWrapper
+                                           editMode
                                            details="The name of a product"
-                                         initialValue={(this.props.item?this.props.item.product.name:"")
-                                         ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.name:"")
-                                         }
-                                         onChange={(value)=>this.handleChangeProduct(value,"title")}
-                                         error={this.state.errors["title"]}
-                                         name="title" title="Title"
+                                         // initialValue={(this.props.item&&this.props.item.product.name)
+                                         // ||(this.state.selectedTemplate&&this.state.selectedTemplate.value.product.name)
+                                         // }
+
+                                           initialValue={this.props.item&&this.props.item.product.name
+                                               ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.name:"")
+                                           }
+                                         onChange={(value)=>this.handleChangeProduct(value,"name")}
+                                         error={this.state.errors["name"]}
+                                         name="name" title="Title"
 
                                        />
 
@@ -1207,6 +1313,7 @@ let slugify = require('slugify')
                                     <div className="col-md-4 col-sm-12">
 
                                         <SelectArrayWrapper
+                                            editMode
                                             details="Materials or category a product belongs to Type"
                                             initialValue={this.props.item?this.props.item.product.category:""
                                             ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.category:"")
@@ -1242,6 +1349,7 @@ let slugify = require('slugify')
                                     <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
                                         <SelectArrayWrapper
+                                            editMode
                                             initialValue={this.props.item?this.props.item.product.type:""
                                             ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.type:"")
                                             }
@@ -1297,6 +1405,7 @@ let slugify = require('slugify')
                                     <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
                                         <SelectArrayWrapper
+                                            editMode
                                             disableAutoLoadingIcon
                                             initialValue={this.props.item?this.props.item.product.state:""
                                             ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
@@ -1314,7 +1423,7 @@ let slugify = require('slugify')
                                     <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
                                         <SelectArrayWrapper
-
+                                            editMode
                                             initialValue={this.props.item?(this.props.item.product.condition):""
                                             ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.condition:"")
                                             }
@@ -1336,6 +1445,7 @@ let slugify = require('slugify')
                                             <div className="col-md-4 d-none col-sm-12 col-xs-12  ">
 
                                                 <SelectArrayWrapper
+                                                    editMode
                                                     detailsHeading="What is the purpose of your product?"
                                                     details="Defined: a whole product,
                                                     Aggregate: a product made up from other products,
@@ -1353,6 +1463,7 @@ let slugify = require('slugify')
                                             </div>
                                             <div className="col-md-4 col-sm-12 col-xs-12  ">
                                             <TextFieldWrapper
+                                                editMode
                                                 details="The brand name of a product"
                                                 initialValue={this.props.item&&this.props.item.product.sku.brand||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.brand:"")}
                                                 onChange={(value)=>this.handleChangeProduct(value,"brand")}
@@ -1364,6 +1475,7 @@ let slugify = require('slugify')
                                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
 
                                                 <DynamicSelectArrayWrapper
+                                                    editMode
                                                     onChange={(value)=>this.handleChangeProduct(value,`deliver`)}
                                                     api={""}
                                                     error={this.state.errors[`deliver`]}
@@ -1414,6 +1526,7 @@ let slugify = require('slugify')
                                             </div>}
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <SelectArrayWrapper
+                                                    editMode
                                                     disableAutoLoadingIcon
                                                     initialValue={this.props.item&&this.props.item.product.sku.power_supply
                                                     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.power_supply:"")
@@ -1470,7 +1583,9 @@ let slugify = require('slugify')
                                                 </div>
 
                                                 <div className="col-md-4 col-xs-12 ">
-                                                    <SelectArrayWrapper  details="A measurement chosen as a standard"
+                                                    <SelectArrayWrapper
+                                                        editMode
+                                                        details="A measurement chosen as a standard"
                                                         select={"Select"}
                                                                          disableAutoLoadingIcon
                                                         initialValue={this.props.item&&this.props.item.product.units}
@@ -1484,6 +1599,7 @@ let slugify = require('slugify')
 
                                                     {!this.state.disableVolume&&   <TextFieldWrapper
                                                         numberInput
+                                                        editMode
                                                         details="The number of units"
                                                         placeholder={"Numbers e.g 1,2.. "}
                                                         // readonly ={this.state.disableVolume}
@@ -1501,7 +1617,9 @@ let slugify = require('slugify')
                                 <div className="row  mt-2">
                                     <div className="col-12">
 
-                                        <TextFieldWrapper  details="Describe the product your adding"
+                                        <TextFieldWrapper
+                                            editMode
+                                            details="Describe the product your adding"
                                             initialValue={this.props.item&&this.props.item.product.description
                                             ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.description:"")
                                             }
@@ -1533,6 +1651,7 @@ let slugify = require('slugify')
                                 <div className={`row  ${this.state.moreDetail?"mt-2":"d-none"}`}>
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <SelectArrayWrapper
+                                                        editMode
                                                         initialValue={this.props.item?this.props.item.product.year_of_making:""
                                                         ||(this.state.selectedTemplate?parseInt(this.state.selectedTemplate.value.product.year_of_making):"")
                                                         }
@@ -1548,6 +1667,7 @@ let slugify = require('slugify')
                                     <div className="col-md-4 col-sm-6 col-xs-6">
 
                                                     <TextFieldWrapper
+                                                        editMode
                                                         initialValue={this.props.item?this.props.item.product.sku.model:""
                                                         ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.model:"")}
                                                         name="model"
@@ -1562,6 +1682,7 @@ let slugify = require('slugify')
                                     {!this.props.productLines &&
                                     <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <TextFieldWrapper
+                                                        editMode
                                                         initialValue={this.props.item?this.props.item.product.sku.serial:null}
                                                         name="serial"
 
@@ -1572,6 +1693,7 @@ let slugify = require('slugify')
 
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <TextFieldWrapper
+                                                        editMode
                                                         details="Stock Keeping Unit"
                                                         initialValue={this.props.item?this.props.item.product.sku.sku:""
                                                         ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.sku:"")
@@ -1584,6 +1706,7 @@ let slugify = require('slugify')
 
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <TextFieldWrapper
+                                                        editMode
                                                         onChange={(value)=>this.handleChangeProduct(value,"upc")}
                                                         details="Universal Product Code"
                                                         initialValue={this.props.item?this.props.item.product.sku.upc:""
@@ -1594,6 +1717,7 @@ let slugify = require('slugify')
 
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <TextFieldWrapper
+                                                        editMode
                                                         onChange={(value)=>this.handleChangeProduct(value,"part_no")}
                                                         initialValue={this.props.item?this.props.item.product.sku.part_no:""
                                                         ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.part_no:"")
@@ -1602,6 +1726,7 @@ let slugify = require('slugify')
                                                 </div>
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <TextFieldWrapper
+                                                        editMode
                                                         onChange={(value)=>this.handleChangeProduct(value,"external_reference")}
                                                         details="A unique number used by external systems"
                                                                        initialValue={this.props.item?this.props.item.product.external_reference:""
@@ -1612,6 +1737,7 @@ let slugify = require('slugify')
 
                                     <div className="col-md-4 col-sm-6 col-xs-6">
                                         <TextFieldWrapper
+                                            editMode
                                             onChange={(value)=>this.handleChangeProduct(value,"embodied_carbon_kgs")}
                                             // details="A unique number used by external systems"
                                             initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_kgs:""
@@ -1621,6 +1747,7 @@ let slugify = require('slugify')
                                     </div>
                                     <div className="col-md-4 col-sm-6 col-xs-6">
                                         <TextFieldWrapper
+                                            editMode
                                             onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
                                             // details="A unique number used by external systems"
                                             initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""

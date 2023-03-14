@@ -120,7 +120,7 @@ export const validateInput = (validators, value) => {
     return false;
 };
 
-export const validateInputs = (validations) => {
+export const validateInputs = (validations,fields,editMode) => {
 
 
 
@@ -132,6 +132,12 @@ export const validateInputs = (validations) => {
 
         for (let j = 0; j < validations.length; j++) {
             let inputField=validations[j]
+
+            if (editMode&&fields[inputField.field]=== undefined){
+
+
+                continue
+            }
 
             if (inputField && inputField.validations.length) {
                 for (let i = 0; i < inputField.validations.length; i++) {

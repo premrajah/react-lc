@@ -313,7 +313,7 @@ const mapStateToProps = (state) => {
         userDetail: state.userDetail,
     };
 };
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
 
         loadCurrentProduct: (data) =>
@@ -324,4 +324,4 @@ const mapDispachToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispachToProps)(AddImagesToProduct);
+export default connect(mapStateToProps, mapDispatchToProps)(AddImagesToProduct);

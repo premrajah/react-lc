@@ -24,6 +24,7 @@ import GreenSmallBtn from "../FormsUI/Buttons/GreenSmallBtn";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import DownloadIcon from "@mui/icons-material/GetApp";
 import EventList from "./EventList";
+import ErrorBoundary from "../ErrorBoundary";
 
 
 const mLocalizer = momentLocalizer(moment);
@@ -215,7 +216,7 @@ export default function
         };
 
         return (
-            <>
+            <ErrorBoundary skip>
                 <div className="rbc-toolbar-1 mb-2">
                     <div>
                         <div>
@@ -342,7 +343,7 @@ export default function
                             }}/>
                     </div>
                 </div>
-            </>
+            </ErrorBoundary>
         );
     };
 
@@ -591,6 +592,7 @@ export default function
 
     return (
         <Fragment>
+            <ErrorBoundary skip>
             <GlobalDialog
                 size="sm"
                 heading={"Add event"}
@@ -653,7 +655,6 @@ export default function
                                     // day: true,
                                     week: true,
                                     month: true,
-                                    // year: <Year handleYearClick={()=>{alert("here")}} />,
                                     year: Year,
                                 }}
                                 onView={onView}
@@ -820,6 +821,7 @@ export default function
                     </div>
                 </div>
             )}
+            </ErrorBoundary>
         </Fragment>
     );
 }

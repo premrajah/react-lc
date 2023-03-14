@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { makeStyles } from "@mui/styles";
+import React, {useEffect, useState} from "react";
+import {makeStyles} from "@mui/styles";
 import CustomizedInput from "./CustomizedInput";
 import CustomPopover from "../CustomPopover";
 import InfoIcon from "./InfoIcon";
-import {replace} from "formik";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -31,6 +30,7 @@ const TextFieldWrapper = ({
     disabled,
     readonly,ignoreTrim,
     customReadOnly,reset,noMargin,
+                              editMode,
                               numberInput,
     ...otherProps
 }) => {
@@ -42,7 +42,10 @@ const TextFieldWrapper = ({
 
             if (onChange) {
                 setField(initialValue)
-                onChange(initialValue);
+                if (!editMode){
+                    onChange(initialValue);
+                }
+
             }
         // }
     }, [initialValue]);
@@ -105,7 +108,7 @@ const TextFieldWrapper = ({
                         dangerouslySetInnerHTML={{__html:title}}
                         className={"title-bold"} style={{ textTransform: "capitalize" }} />
                     {details && (
-                        <CustomPopover heading={detailsHeading} text={details}>
+                        <CustomPopover  {...otherProps} heading={detailsHeading} text={details}>
                             <InfoIcon />
                         </CustomPopover>
                     )}
@@ -117,7 +120,7 @@ const TextFieldWrapper = ({
 
             <div className={`${type !== "hidden" ? "field-box " : "d-none"} ${noMargin?"":"mb-2"}`}>
                 <CustomizedInput
-
+                    // defaultValue={"name"}
 
                     disabled={disabled}
                     type={type}

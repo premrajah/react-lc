@@ -9,6 +9,7 @@ import IssueSubmitForm from "../../components/IssueSubmitForm";
 import ImageOnlyThumbnail from "../../components/ImageOnlyThumbnail";
 import {capitalize} from "../../Util/GlobalFunctions";
 import KeywordChip from "./KeywordChip";
+import ErrorBoundary from "../ErrorBoundary";
 
 const IssueItem = ({ item, onSubmitted }) => {
     const { artifacts, creator, issue, product, service_agent } = item;
@@ -43,7 +44,7 @@ const IssueItem = ({ item, onSubmitted }) => {
     };
 
     return (
-        <>
+        <ErrorBoundary skip>
             {item && (
                 <Link to={`/issue/${issue._key}`}>
 
@@ -168,7 +169,7 @@ const IssueItem = ({ item, onSubmitted }) => {
                     />
 
             </Modal>
-        </>
+        </ErrorBoundary>
     );
 };
 

@@ -650,6 +650,7 @@ class SiteDetailContent extends Component {
                                         edit
                                         item={this.props.item.site}
                                         parent_site={this.props.item.parent_site}
+                                        children_sites={this.props.item.children_sites}
 
                                                   refresh={()=>this.toggleSite(true)}
                                     />

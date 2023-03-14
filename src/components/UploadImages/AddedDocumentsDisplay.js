@@ -15,13 +15,18 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import ReactPlayer from "react-player/lazy";
 
 const AddedDocumentsDisplay = (props) => {
-    const { artifacts, pageRefreshCallback } = props;
+    const { artifacts, pageRefreshCallback, showSnackbar} = props;
 
     const [show, setShow] = useState(false);
     const [docKey, setDocKey] = useState(null);
     const [currentBlobUrl, setCurrentBlobUrl] = useState(null);
+    const [currentImageBlobUrl, setCurrentImageBlobUrl] = useState(null);
     const [artifactDialogDisplay, setArtifactDialogDisplay] = useState(false);
+    const [artifactImageDialogDisplay, setArtifactImageDialogDisplay] = useState(false);
+    const [isReactPlayerReady, setIsReactPlayerReady] = useState(true);
     let { slug } = useParams();
+
+
 
     const handleArtifactDialogDisplayOpen = (blobUrl) => {
         setArtifactDialogDisplay(true);
@@ -30,6 +35,16 @@ const AddedDocumentsDisplay = (props) => {
     const handleArtifactDialogDisplayClose = () => {
         setArtifactDialogDisplay(false);
         setCurrentBlobUrl(null);
+    }
+
+    const handleArtifactImageDialogDisplayOpen = (blobUrl) => {
+        setArtifactImageDialogDisplay(true);
+        setCurrentImageBlobUrl(blobUrl)
+    }
+
+    const handleArtifactImageDialogDisplayClose = () => {
+        setArtifactImageDialogDisplay(false);
+        setCurrentImageBlobUrl(null);
     }
 
 
@@ -129,32 +144,25 @@ const AddedDocumentsDisplay = (props) => {
                                                             className="rad-4 click-item"
                                                             onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}
                                                         />
-                                                        <GlobalDialog size="md" show={artifactDialogDisplay} hide={() => handleArtifactDialogDisplayClose()}>
-                                                            {currentBlobUrl && <div className="react-player-container">
-                                                                <ReactPlayer
-                                                                    url={currentBlobUrl}
-                                                                    controls
-                                                                    playing={false}
-                                                                    width="100%"
-                                                                />
-                                                            </div>}
-                                                        </GlobalDialog>
                                                     </>
                                                 ) :
 
                                                     artifact.mime_type === MIME_TYPES.PNG ||
                                                     artifact.mime_type === MIME_TYPES.JPEG ||
                                                     artifact.mime_type === MIME_TYPES.JPG ?    (
-                                                        <a href={artifact.blob_url} download>
-                                                            <ImageIcon
-                                                                style={{
-                                                                    background: "#EAEAEF",
-                                                                    opacity: "0.5",
-                                                                    fontSize: " 2.5rem",
-                                                                }}
-                                                                className={"rad-4"}
-                                                            />
-                                                        </a>
+                                                        // <a href={artifact.blob_url} download>
+                                                            <>
+                                                                <ImageIcon
+                                                                    style={{
+                                                                        background: "#EAEAEF",
+                                                                        opacity: "0.5",
+                                                                        fontSize: " 2.5rem",
+                                                                    }}
+                                                                    className="rad-4 click-item"
+                                                                    onClick={() => handleArtifactImageDialogDisplayOpen(artifact.blob_url)}
+                                                                />
+                                                            </>
+                                                        // </a>
                                                     ):
 
                                                     (
@@ -215,6 +223,28 @@ const AddedDocumentsDisplay = (props) => {
                     )}
                 </div>
             </div>
+
+            <GlobalDialog size="md" show={artifactImageDialogDisplay} hide={() => handleArtifactImageDialogDisplayClose()}>
+                {currentImageBlobUrl && <div className="d-flex justify-content-center align-items-center" >
+                    <img style={{width: "50%", maxWidth: '50%', height: "50%", maxHeight: '50%', objectFit: "contain"}} src={currentImageBlobUrl ? currentImageBlobUrl : ""} alt={currentImageBlobUrl} width="50%" height="50%"/>
+                </div>}
+            </GlobalDialog>
+
+            <GlobalDialog size="md" show={artifactDialogDisplay} hide={() => handleArtifactDialogDisplayClose()}>
+                {currentBlobUrl && <div className="react-player-container">
+                    {isReactPlayerReady && <div>Loading the video, please wait...</div>}
+                    <ReactPlayer
+                        url={currentBlobUrl}
+                        controls
+                        playing={false}
+                        width="100%"
+                        onReady={() => setIsReactPlayerReady(false)}
+                        onError={() => showSnackbar({ show: true, severity: "warning", message: `Unable to load video at this time` })}
+                        onBuffer={() => setIsReactPlayerReady(true)}
+                        onBufferEnd={() => setIsReactPlayerReady(false)}
+                    />
+                </div>}
+            </GlobalDialog>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

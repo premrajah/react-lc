@@ -130,21 +130,6 @@ const AddedDocumentsDisplay = (props) => {
                                                             className="rad-4 click-item"
                                                             onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}
                                                         />
-                                                        <GlobalDialog size="md" show={artifactDialogDisplay} hide={() => handleArtifactDialogDisplayClose()}>
-                                                            {currentBlobUrl && <div className="react-player-container">
-                                                                {isReactPlayerReady && <div>Loading the video, please wait...</div>}
-                                                                <ReactPlayer
-                                                                    url={currentBlobUrl}
-                                                                    controls
-                                                                    playing={false}
-                                                                    width="100%"
-                                                                    onReady={() => setIsReactPlayerReady(false)}
-                                                                    onError={() => showSnackbar({ show: true, severity: "warning", message: `Unable to load video at this time` })}
-                                                                    onBuffer={() => setIsReactPlayerReady(true)}
-                                                                    onBufferEnd={() => setIsReactPlayerReady(false)}
-                                                                />
-                                                            </div>}
-                                                        </GlobalDialog>
                                                     </>
                                                 ) :
 
@@ -221,6 +206,22 @@ const AddedDocumentsDisplay = (props) => {
                     )}
                 </div>
             </div>
+
+            <GlobalDialog size="md" show={artifactDialogDisplay} hide={() => handleArtifactDialogDisplayClose()}>
+                {currentBlobUrl && <div className="react-player-container">
+                    {isReactPlayerReady && <div>Loading the video, please wait...</div>}
+                    <ReactPlayer
+                        url={currentBlobUrl}
+                        controls
+                        playing={false}
+                        width="100%"
+                        onReady={() => setIsReactPlayerReady(false)}
+                        onError={() => showSnackbar({ show: true, severity: "warning", message: `Unable to load video at this time` })}
+                        onBuffer={() => setIsReactPlayerReady(true)}
+                        onBufferEnd={() => setIsReactPlayerReady(false)}
+                    />
+                </div>}
+            </GlobalDialog>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

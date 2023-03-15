@@ -3,6 +3,7 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import styles from "./ImagesSlider.module.css"; // Import css modules stylesheet as styles
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowCircleDown";
+import {MIME_TYPES} from "../../Util/Constants";
 
 class ImagesSlider extends React.Component {
     imagesArray = [];
@@ -20,8 +21,9 @@ class ImagesSlider extends React.Component {
         for (let i = 0; i < this.props.images.length; i++) {
             //
             if (
-                this.props.images[i].mime_type === "image/jpeg" ||
-                this.props.images[i].mime_type === "image/png"
+                this.props.images[i].mime_type === MIME_TYPES.JPEG ||
+                this.props.images[i].mime_type === MIME_TYPES.JPG ||
+                this.props.images[i].mime_type === MIME_TYPES.PNG
             ) {
                 this.imagesArray.push({
                     original: this.props.images[i].blob_url,

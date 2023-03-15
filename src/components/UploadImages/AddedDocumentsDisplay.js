@@ -5,48 +5,16 @@ import { baseUrl, MIME_TYPES } from "../../Util/Constants";
 import { useParams } from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
-import DescriptionIcon from "@mui/icons-material/Description";
-import OndemandVideoIcon from "@mui/icons-material/YouTube";
-import ImageIcon from "@mui/icons-material/Image";
-
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import MoreMenu from "../MoreMenu";
-import GlobalDialog from "../RightBar/GlobalDialog";
-import ReactPlayer from "react-player/lazy";
+import FileTypeIconBasedOnMimeType from "./FileTypeIconBasedOnMimeType";
 
 const AddedDocumentsDisplay = (props) => {
     const { artifacts, pageRefreshCallback, showSnackbar} = props;
 
     const [show, setShow] = useState(false);
     const [docKey, setDocKey] = useState(null);
-    const [currentBlobUrl, setCurrentBlobUrl] = useState(null);
-    const [currentImageBlobUrl, setCurrentImageBlobUrl] = useState(null);
-    const [artifactDialogDisplay, setArtifactDialogDisplay] = useState(false);
-    const [artifactImageDialogDisplay, setArtifactImageDialogDisplay] = useState(false);
-    const [isReactPlayerReady, setIsReactPlayerReady] = useState(true);
     let { slug } = useParams();
-
-
-
-    const handleArtifactDialogDisplayOpen = (blobUrl) => {
-        setArtifactDialogDisplay(true);
-        setCurrentBlobUrl(blobUrl)
-    }
-    const handleArtifactDialogDisplayClose = () => {
-        setArtifactDialogDisplay(false);
-        setCurrentBlobUrl(null);
-    }
-
-    const handleArtifactImageDialogDisplayOpen = (blobUrl) => {
-        setArtifactImageDialogDisplay(true);
-        setCurrentImageBlobUrl(blobUrl)
-    }
-
-    const handleArtifactImageDialogDisplayClose = () => {
-        setArtifactImageDialogDisplay(false);
-        setCurrentImageBlobUrl(null);
-    }
-
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -109,18 +77,6 @@ const AddedDocumentsDisplay = (props) => {
                 <div className="col">
                     {artifacts.length > 0 ? (
                         artifacts.map((artifact, index) => {
-                            // if (
-                            //     artifact.mime_type === MIME_TYPES.PDF ||
-                            //     artifact.mime_type === MIME_TYPES.APP_RTF ||
-                            //     artifact.mime_type === MIME_TYPES.MP4 ||
-                            //     artifact.mime_type === MIME_TYPES.MOV ||
-                            //     artifact.mime_type === MIME_TYPES.DOC ||
-                            //     artifact.mime_type === MIME_TYPES.TEXT_RTF ||
-                            //     artifact.mime_type === MIME_TYPES.DOCX ||
-                            //     artifact.mime_type === MIME_TYPES.XLS ||
-                            //     artifact.mime_type === MIME_TYPES.XLSX||
-                            //     artifact.mime_type === MIME_TYPES.XLSX
-                            // ) {
                                 return (
                                     <React.Fragment key={artifact._key}>
                                         {index === 0 && (
@@ -131,53 +87,8 @@ const AddedDocumentsDisplay = (props) => {
                                         <div
                                             key={index}
                                             className="mt-1 mb-1 text-left pt-1 pb-1 bg-white row">
-                                            <div className={"col-10"}>
-                                                {artifact.mime_type === MIME_TYPES.MOV ||
-                                                artifact.mime_type === MIME_TYPES.MP4 ? (
-                                                    <>
-                                                        <OndemandVideoIcon
-                                                            style={{
-                                                                background: "#EAEAEF",
-                                                                opacity: "0.5",
-                                                                fontSize: " 2.5rem",
-                                                            }}
-                                                            className="rad-4 click-item"
-                                                            onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}
-                                                        />
-                                                    </>
-                                                ) :
-
-                                                    artifact.mime_type === MIME_TYPES.PNG ||
-                                                    artifact.mime_type === MIME_TYPES.JPEG ||
-                                                    artifact.mime_type === MIME_TYPES.JPG ?    (
-                                                        // <a href={artifact.blob_url} download>
-                                                            <>
-                                                                <ImageIcon
-                                                                    style={{
-                                                                        background: "#EAEAEF",
-                                                                        opacity: "0.5",
-                                                                        fontSize: " 2.5rem",
-                                                                    }}
-                                                                    className="rad-4 click-item"
-                                                                    onClick={() => handleArtifactImageDialogDisplayOpen(artifact.blob_url)}
-                                                                />
-                                                            </>
-                                                        // </a>
-                                                    ):
-
-                                                    (
-                                                    <a href={artifact.blob_url} download>
-                                                        <DescriptionIcon
-                                                            style={{
-                                                                background: "#EAEAEF",
-                                                                opacity: "0.5",
-                                                                fontSize: " 2.5rem",
-                                                            }}
-                                                            className={"rad-4"}
-                                                        />
-                                                    </a>
-                                                )
-                                                }
+                                            <div className="col-10">
+                                                <FileTypeIconBasedOnMimeType mimeType={artifact.mime_type} URL={artifact.blob_url} />
                                                 <span
                                                     className="ms-4  text-blue text-bold"
                                                     // href={artifact.blob_url}
@@ -224,27 +135,7 @@ const AddedDocumentsDisplay = (props) => {
                 </div>
             </div>
 
-            <GlobalDialog size="md" show={artifactImageDialogDisplay} hide={() => handleArtifactImageDialogDisplayClose()}>
-                {currentImageBlobUrl && <div className="d-flex justify-content-center align-items-center" >
-                    <img style={{width: "50%", maxWidth: '50%', height: "50%", maxHeight: '50%', objectFit: "contain"}} src={currentImageBlobUrl ? currentImageBlobUrl : ""} alt={currentImageBlobUrl} width="50%" height="50%"/>
-                </div>}
-            </GlobalDialog>
 
-            <GlobalDialog size="md" show={artifactDialogDisplay} hide={() => handleArtifactDialogDisplayClose()}>
-                {currentBlobUrl && <div className="react-player-container">
-                    {isReactPlayerReady && <div>Loading the video, please wait...</div>}
-                    <ReactPlayer
-                        url={currentBlobUrl}
-                        controls
-                        playing={false}
-                        width="100%"
-                        onReady={() => setIsReactPlayerReady(false)}
-                        onError={() => showSnackbar({ show: true, severity: "warning", message: `Unable to load video at this time` })}
-                        onBuffer={() => setIsReactPlayerReady(true)}
-                        onBufferEnd={() => setIsReactPlayerReady(false)}
-                    />
-                </div>}
-            </GlobalDialog>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -281,7 +172,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         logIn: (data) => dispatch(actionCreator.logIn(data)),
         signUp: (data) => dispatch(actionCreator.signUp(data)),
@@ -294,4 +185,4 @@ const mapDispachToProps = (dispatch) => {
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
-export default connect(mapStateToProps, mapDispachToProps)(AddedDocumentsDisplay);
+export default connect(mapStateToProps, mapDispatchToProps)(AddedDocumentsDisplay);

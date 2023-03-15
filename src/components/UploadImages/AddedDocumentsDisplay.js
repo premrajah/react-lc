@@ -7,7 +7,7 @@ import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import MoreMenu from "../MoreMenu";
-import FileTypeIconBasedOnMimeType from "./FileTypeIconBasedOnMimeType";
+import ArtifactIconDisplayBasedOnMimeType from "./ArtifactIconDisplayBasedOnMimeType";
 
 const AddedDocumentsDisplay = (props) => {
     const { artifacts, pageRefreshCallback, showSnackbar} = props;
@@ -88,7 +88,7 @@ const AddedDocumentsDisplay = (props) => {
                                             key={index}
                                             className="mt-1 mb-1 text-left pt-1 pb-1 bg-white row">
                                             <div className="col-10">
-                                                <FileTypeIconBasedOnMimeType mimeType={artifact.mime_type} URL={artifact.blob_url} />
+                                                <ArtifactIconDisplayBasedOnMimeType artifact={artifact}  />
                                                 <span
                                                     className="ms-4  text-blue text-bold"
                                                     // href={artifact.blob_url}

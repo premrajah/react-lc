@@ -23,7 +23,7 @@ const ImageIconStyle = {
     objectFit: 'contain'
 }
 
-const FileTypeIconBasedOnMimeType = ({ mimeType, URL = "", showSnackbar }) => {
+const ArtifactIconDisplayBasedOnMimeType = ({ artifact, showSnackbar }) => {
 
     const [currentBlobUrl, setCurrentBlobUrl] = useState(null);
     const [currentImageBlobUrl, setCurrentImageBlobUrl] = useState(null);
@@ -69,9 +69,9 @@ const FileTypeIconBasedOnMimeType = ({ mimeType, URL = "", showSnackbar }) => {
                     {/*/>*/}
                     <span
                         className="rad-4 click-item"
-                        onClick={() => handleArtifactImageDialogDisplayOpen(URL)}
+                        onClick={() => handleArtifactImageDialogDisplayOpen(artifact.blob_url)}
                     >
-                        <img src={URL} alt={URL} style={ImageIconStyle}/>
+                        <img src={artifact.blob_url} alt={artifact.name} style={ImageIconStyle}/>
                     </span>
                 </>
             // Videos
@@ -80,7 +80,7 @@ const FileTypeIconBasedOnMimeType = ({ mimeType, URL = "", showSnackbar }) => {
                 return <OndemandVideoIcon
                     style={FileIconStyle}
                     className="rad-4 click-item"
-                    onClick={() => handleArtifactDialogDisplayOpen(URL)}
+                    onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}
                 />;
             // Documents
             case MIME_TYPES.XLSX:
@@ -91,7 +91,7 @@ const FileTypeIconBasedOnMimeType = ({ mimeType, URL = "", showSnackbar }) => {
             case MIME_TYPES.DOC:
             case MIME_TYPES.PDF:
                 return (
-                    <a href={URL} download>
+                    <a href={artifact.blob_url} download>
                         <DescriptionIcon
                             style={FileIconStyle}
                             className="rad-4 click-item"
@@ -104,7 +104,7 @@ const FileTypeIconBasedOnMimeType = ({ mimeType, URL = "", showSnackbar }) => {
     };
 
     return <>
-        {DisplayIcons(mimeType)}
+        {DisplayIcons(artifact.mime_type)}
 
         <GlobalDialog size="md" show={artifactImageDialogDisplay} hide={() => handleArtifactImageDialogDisplayClose()}>
             {currentImageBlobUrl && <div className="d-flex justify-content-center align-items-center" >
@@ -143,4 +143,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FileTypeIconBasedOnMimeType);
+export default connect(mapStateToProps, mapDispatchToProps)(ArtifactIconDisplayBasedOnMimeType);

@@ -4,6 +4,16 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import styles from "./ImagesSlider.module.css"; // Import css modules stylesheet as styles
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowCircleDown";
 import {MIME_TYPES} from "../../Util/Constants";
+import PlaceholderImg from '../../img/place-holder-lc.png';
+
+const Size = "100%"
+const ImageDisplayStyle = {
+    height: Size,
+    maxHeight: Size,
+    width: Size,
+    maxWidth: Size,
+    objectFit: "contain"
+}
 
 class ImagesSlider extends React.Component {
     imagesArray = [];
@@ -58,19 +68,23 @@ class ImagesSlider extends React.Component {
             <>
                 <div className={"row g-0 bg-white   "}>
                     <div className={"col-12 gray-border "}>
-                        <ImageGallery
-                            className={""}
-                            ref={this.refImg}
-                            showThumbnails={false}
-                            thumbnailClass={"custom-gallery-thumbnail"}
-                            showNav={false}
-                            showPlayButton={false}
-                            infinite={false}
-                            autoPlay={false}
-                            items={this.imagesArray}
-                        />
+                        {this.imagesArray.length > 0 ? <div>
+                            <ImageGallery
+                                className={""}
+                                ref={this.refImg}
+                                showThumbnails={false}
+                                thumbnailClass={"custom-gallery-thumbnail"}
+                                showNav={false}
+                                showPlayButton={false}
+                                infinite={false}
+                                autoPlay={false}
+                                items={this.imagesArray}
+                            />
+                        </div> : <div className="d-flex justify-content-center align-items-center">
+                            <img src={PlaceholderImg} alt="" style={ImageDisplayStyle}/>
+                        </div>}
                     </div>
-                    <div className={"col-12 "}>
+                    {this.imagesArray.length > 1 && <div className={"col-12 "}>
                         <div className={"row g-0 p-2 " + styles.grayBox}>
                             <div className={"col-6 text-left"}>
                                 <span className={""}>
@@ -99,7 +113,7 @@ class ImagesSlider extends React.Component {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div>}
                 </div>
             </>
         );

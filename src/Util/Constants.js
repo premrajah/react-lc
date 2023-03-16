@@ -2,7 +2,10 @@ import DOMPurify from "dompurify";
 import { useEffect, useRef } from "react";
 // import {uuid}  from  'uuidv4';
 import { v4 as uuid } from "uuid";
-
+import OndemandVideoIcon from "@mui/icons-material/YouTube";
+import ImageIcon from "@mui/icons-material/Image";
+import DescriptionIcon from "@mui/icons-material/Description";
+import BrowserNotSupportedIcon from "@mui/icons-material/BrowserNotSupported";
 export const { REACT_APP_BRANCH_ENV } = process.env;
 
 export const dashboardUrl =
@@ -261,3 +264,44 @@ export const randomRGBAGen = () => {
         s = 255;
     return "rgba(" + o(r() * s) + "," + o(r() * s) + "," + o(r() * s) + "," + r().toFixed(1) + ")";
 };
+
+
+export const getMimeTypeAndIcon=(mime,classes,style)=>{
+
+    switch (mime) {
+        // Images
+        case MIME_TYPES.JPG:
+        case MIME_TYPES.JPEG:
+        case MIME_TYPES.PNG:
+            return ({
+                icon:<ImageIcon className={classes} style={style}/>,
+                type:"image"
+            });
+
+        // Videos
+        case MIME_TYPES.MOV:
+        case MIME_TYPES.MP4:
+            return ({
+                icon:<OndemandVideoIcon className={classes} style={style} />,
+                type:"video"
+            });
+        // Documents
+        case MIME_TYPES.XLSX:
+        case MIME_TYPES.XLS:
+        case MIME_TYPES.TEXT_RTF:
+        case MIME_TYPES.APP_RTF:
+        case MIME_TYPES.DOCX:
+        case MIME_TYPES.DOC:
+        case MIME_TYPES.PDF:
+               return ({
+            icon:<DescriptionIcon className={classes} style={style} />,
+            type:"document"
+        });
+        default:
+            return ({
+                icon:<DescriptionIcon className={classes} style={style} />,
+                type:"document"
+            });
+    }
+
+}

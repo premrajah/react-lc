@@ -4922,3 +4922,7 @@ ul,ol {
 .min-vh-80 {
     min-height: 80vh !important;
 }
+.text-48{
+    font-size: 48px!important;
+
+}

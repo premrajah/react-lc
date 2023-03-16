@@ -5,7 +5,7 @@ import Select from "@mui/material/Select";
 import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
 import axios from "axios/index";
-import {baseUrl, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import {baseUrl, getMimeTypeAndIcon, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import _ from "lodash";
 import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
@@ -26,6 +26,7 @@ import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
 import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
+
 
 let slugify = require('slugify')
 
@@ -123,7 +124,8 @@ let slugify = require('slugify')
                 templates:[],
                 selectedTemplated:null,
                 artifacts:[],
-                is_manufacturer:true
+                is_manufacturer:true,
+                prevImages:[]
 
             };
 
@@ -311,6 +313,9 @@ let slugify = require('slugify')
                                             files: currentFiles,
                                         });
 
+
+                                        console.log(this.props.item.artifacts,this.state.images)
+
                                     })
                                     .catch(error => {
 
@@ -490,9 +495,6 @@ let slugify = require('slugify')
 
                 const data = new FormData(event.target);
 
-
-
-
                     const name = data.get("name");
                     const purpose = data.get("purpose");
                     const condition = data.get("condition");
@@ -533,8 +535,6 @@ let slugify = require('slugify')
                         volume: volume,
                         energy_rating: energy_rating,
                         is_listable: is_listable,
-
-
                         "external_reference": external_reference,
                         sku: {
                             serial: serial,
@@ -545,19 +545,15 @@ let slugify = require('slugify')
                             part_no: part_no,
                             embodied_carbon_kgs: embodied_carbon_kgs?embodied_carbon_kgs:null,
                             gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:null
-
                         },
                         year_of_making: year_of_making,
                     };
 
                     if (power_supply){
-
                         productData.sku.power_supply=  power_supply.toLowerCase()
-
                     }
 
                     if (this.props.createProductId) {
-
                         productData._id = "Product/" + this.props.createProductId
                     }
 
@@ -585,13 +581,9 @@ let slugify = require('slugify')
 
                     this.setState({isSubmitButtonPressed: true})
 
-
                     if (this.props.productLines) {
-
                         completeData.name=data.get("templateName")
-
                         this.saveProductLines(data.get("templateName") ,completeData)
-
                     } else {
 
                         axios
@@ -732,6 +724,12 @@ let slugify = require('slugify')
 
             let images = [];
 
+            // alert("load called")
+
+            this.setState({
+                prevImages:artifacts
+            })
+
             let currentFiles = [];
 
 
@@ -767,19 +765,21 @@ let slugify = require('slugify')
 
         updateImages() {
 
-            let flagChange=false
+            let flagChange = true
 
-            if (this.state.images.length!==this.props.item.artifacts.length){
-                flagChange=true
-            }
-            this.state.images.forEach((item)=>{
 
-                if (!this.props.item.artifacts.find(artifact=> artifact._key===item)){
-                    flagChange=true
-                }
-
-            })
-
+            // console.log(this.state.images , this.state.prevImages)
+            // if (this.state.images.length !== this.props.item.artifacts.length) {
+            //     flagChange = true
+            // } else {
+            //     this.state.images.forEach((item) => {
+            //
+            //         if (!this.props.item.artifacts.find(artifact => artifact._key === item)) {
+            //             flagChange = true
+            //         }
+            //
+            //     })
+            // }
 
             if (flagChange)
 
@@ -800,7 +800,7 @@ let slugify = require('slugify')
                         //     parentProduct: res.data.data,
                         // });
                     }
-                    this.props.loadCurrentProduct(this.props.item.product._key)
+                    // this.props.loadCurrentProduct(this.props.item.product._key)
 
 
                     this.triggerCallback();
@@ -842,29 +842,24 @@ let slugify = require('slugify')
                 return
             }
 
-
-            this.updateImages();
-
-
+            console.log("check image")
+            await   this.updateImages();
+            console.log("done image")
             if (fields["deliver"] !== undefined) {
                 this.updateSite(fields["deliver"]);
-
                 // this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
                 // this.props.triggerCallback("edit")
                 removeKeyFromObj(fields, ['deliver'])
-
             }
 
 
             if (Object.keys(fields).length == 0) {
                 this.props.triggerCallback("edit")
-
                 return;
             }
 
             if (fields["serial"] !== undefined || fields["model"] !== undefined || fields["brand"] !== undefined ||
                 fields["sku"] !== undefined || fields["upc"] !== undefined || fields["gross_weight_kgs"] !== undefined || fields["embodied_carbon_kgs"] !== undefined) {
-
 
                 let sku = {}
 
@@ -879,91 +874,21 @@ let slugify = require('slugify')
                 })
 
                 await removeKeyFromObj(fields, skuFields)
-
                 fields.sku = sku
-
             }
-
 
             this.setState({
                 btnLoading: true,
                 loading: true
             });
 
-
             try {
-
-
-                //   const data = formData;
-                //
-                //
-                //  const title = data.get("title");
-                //  const purpose = data.get("purpose");
-                //  const condition = data.get("condition");
-                //  const description = data.get("description");
-                //  const category = data.get("category");
-                //  const type = data.get("type");
-                //  const units = data.get("units");
-                //
-                //  const serial = data.get("serial");
-                //  const model = data.get("model");
-                //  const brand = data.get("brand");
-                //
-                //  const volume = data.get("volume");
-                //  const sku = data.get("sku");
-                //  const upc = data.get("upc");
-                //  const part_no = data.get("part_no");
-                //  const state = data.get("state");
-                // const external_reference = data.get("external_reference")
-                //  const site = data.get("deliver");
-                // const power_supply = data.get("power_supply");
-                //  const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
-                //  const gross_weight_kgs = data.get("gross_weight_kgs");
-                //
-                // let productData = {
-                //     id: this.props.item.product._key,
-                //     is_manufacturer: this.state.is_manufacturer?true:false,
-                //     update: {
-                //         artifacts: this.state.images,
-                //         purpose: purpose.toLowerCase(),
-                //         condition: condition.toLowerCase(),
-                //         name: title,
-                //         description: description,
-                //         category: category,
-                //         type: type,
-                //         units: units,
-                //         state: state,
-                //         volume: Number(volume),
-                //         stage: "certified",
-                //         energy_rating : this.state.energyRating,
-                //         external_reference : external_reference,
-                //         // is_listable: false,
-                //         sku: {
-                //             serial: serial,
-                //             model: model,
-                //             brand: brand,
-                //             sku: sku,
-                //             upc: upc,
-                //             part_no: part_no,
-                //             // power_supply: power_supply,
-                //             embodied_carbon_kgs: embodied_carbon_kgs?embodied_carbon_kgs:null,
-                //             gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:null
-                //         },
-                //         year_of_making: Number(data.get("manufacturedDate")),
-                //
-                //     },
-                // };
-
-
                 let productData = {
                     id: this.props.item.product._key,
                     is_manufacturer: this.state.is_manufacturer ? true : false,
                     update:
                     fields
                 };
-
-
-
 
                 axios
                     .post(
@@ -1014,7 +939,6 @@ let slugify = require('slugify')
                 if (this.props.item){
                     this.isManufacturer()
                     this.loadImages(this.props.item.artifacts)
-
                     this.checkListable(this.props.item.product.is_listable)
 
 
@@ -1807,14 +1731,12 @@ let slugify = require('slugify')
                                                                 {this.state.files &&
                                                                 this.state.files.map(
                                                                     (item, index) => (
-                                                                        <div
+                                                                        <>
+
+                                                                        {getMimeTypeAndIcon(item.file.mime_type).type==="image"&&<div
                                                                             key={index}
-                                                                            className={
-                                                                                "file-uploader-thumbnail-container"
-                                                                            }>
-
+                                                                            className={"file-uploader-thumbnail-container"}>
                                                                             <div
-
                                                                                 data-index={
                                                                                     index
                                                                                 }
@@ -1823,8 +1745,7 @@ let slugify = require('slugify')
                                                                                 }
 
                                                                                 style={{
-                                                                                    backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}"),url(${docs})`
-
+                                                                                    backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
                                                                                 }}
                                                                             >
                                                                                 {item.status ===
@@ -1901,8 +1822,196 @@ let slugify = require('slugify')
                                                                                     }
                                                                                 />
                                                                             </div>
-                                                                        </div>
+                                                                        </div>}
+
+                                                                            {getMimeTypeAndIcon(item.file.mime_type).type==="document"&&<div
+                                                                                key={index}
+                                                                                className={"file-uploader-thumbnail-container"}>
+                                                                                <div
+                                                                                    data-index={
+                                                                                        index
+                                                                                    }
+                                                                                    className="file-uploader-thumbnail"
+                                                                                    // style={{
+                                                                                    //     backgroundImage: getMimeTypeAndIcon(item.file.mime_type).icon
+                                                                                    // }}
+                                                                                >
+
+                                                                                    {getMimeTypeAndIcon(item.file.mime_type,"text-48",{"font-size":"60",color:"#ccc",position:"absolute",margin:"auto",left:0,right:0,bottom:0,top:0}).icon}
+                                                                                    {item.status ===
+                                                                                        0 && (
+                                                                                            <Spinner
+                                                                                                as="span"
+                                                                                                animation="border"
+                                                                                                size="sm"
+                                                                                                role="status"
+                                                                                                aria-hidden="true"
+                                                                                                style={{
+                                                                                                    color:
+                                                                                                        "#cccccc",
+                                                                                                }}
+                                                                                                className={
+                                                                                                    "center-spinner"
+                                                                                                }
+                                                                                            />
+                                                                                        )}
+
+                                                                                    {item.status ===
+                                                                                        1 && (
+                                                                                            <Check
+                                                                                                style={{
+                                                                                                    color:
+                                                                                                        "#cccccc",
+                                                                                                }}
+                                                                                                className={
+                                                                                                    " file-upload-img-thumbnail-check"
+                                                                                                }
+                                                                                            />
+                                                                                        )}
+                                                                                    {item.status ===
+                                                                                        2 && (
+                                                                                            <span
+                                                                                                className={
+                                                                                                    "file-upload-img-thumbnail-error"
+                                                                                                }>
+                                                                                                    <Error
+                                                                                                        style={{
+                                                                                                            color:
+                                                                                                                "red",
+                                                                                                        }}
+                                                                                                        className={
+                                                                                                            " "
+                                                                                                        }
+                                                                                                    />
+                                                                                                    <p>
+                                                                                                        Error!
+                                                                                                    </p>
+                                                                                                </span>
+                                                                                        )}
+                                                                                    <Cancel
+                                                                                        data-name={
+                                                                                            item.file &&
+                                                                                            item
+                                                                                                .file[
+                                                                                                "name"
+                                                                                                ]
+                                                                                                ? item
+                                                                                                    .file[
+                                                                                                    "name"
+                                                                                                    ]
+                                                                                                : ""
+                                                                                        }
+                                                                                        data-index={
+                                                                                            item.id
+                                                                                        }
+                                                                                        onClick={this.handleCancel.bind(
+                                                                                            this
+                                                                                        )}
+                                                                                        className=
+                                                                                            "file-upload-img-thumbnail-cancel position-relative"
+
+                                                                                    />
+                                                                                </div>
+                                                                            </div>}
+
+                                                                            {getMimeTypeAndIcon(item.file.mime_type).type==="video"&&<div
+                                                                                key={index}
+                                                                                className={"file-uploader-thumbnail-container"}>
+                                                                                <div
+                                                                                    data-index={
+                                                                                        index
+                                                                                    }
+                                                                                    className={
+                                                                                        "file-uploader-thumbnail"
+                                                                                    }
+
+                                                                                    style={{
+                                                                                        // backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
+                                                                                    }}
+                                                                                >
+                                                                                   <video className="position-absolute" controls width="100%" height="100%"><source src={item.imgUrl} type="video/mp4"/></video>
+                                                                                    {item.status ===
+                                                                                        0 && (
+                                                                                            <Spinner
+                                                                                                as="span"
+                                                                                                animation="border"
+                                                                                                size="sm"
+                                                                                                role="status"
+                                                                                                aria-hidden="true"
+                                                                                                style={{
+                                                                                                    color:
+                                                                                                        "#cccccc",
+                                                                                                }}
+                                                                                                className={
+                                                                                                    "center-spinner"
+                                                                                                }
+                                                                                            />
+                                                                                        )}
+
+                                                                                    {item.status ===
+                                                                                        1 && (
+                                                                                            <Check
+                                                                                                style={{
+                                                                                                    color:
+                                                                                                        "#cccccc",
+                                                                                                }}
+                                                                                                className={
+                                                                                                    " file-upload-img-thumbnail-check"
+                                                                                                }
+                                                                                            />
+                                                                                        )}
+                                                                                    {item.status ===
+                                                                                        2 && (
+                                                                                            <span
+                                                                                                className=
+                                                                                                    "file-upload-img-thumbnail-error"
+                                                                                            >
+                                                                                                    <Error
+                                                                                                        style={{
+                                                                                                            color:
+                                                                                                                "red",
+
+                                                                                                        }}
+                                                                                                        className={
+                                                                                                            " "
+                                                                                                        }
+                                                                                                    />
+                                                                                                    <p>
+                                                                                                        Error!
+                                                                                                    </p>
+                                                                                                </span>
+                                                                                        )}
+                                                                                    <Cancel
+
+
+                                                                                        data-name={
+                                                                                            item.file &&
+                                                                                            item
+                                                                                                .file[
+                                                                                                "name"
+                                                                                                ]
+                                                                                                ? item
+                                                                                                    .file[
+                                                                                                    "name"
+                                                                                                    ]
+                                                                                                : ""
+                                                                                        }
+                                                                                        data-index={
+                                                                                            item.id
+                                                                                        }
+                                                                                        onClick={this.handleCancel.bind(
+                                                                                            this
+                                                                                        )}
+                                                                                        className=
+                                                                                            "file-upload-img-thumbnail-cancel position-relative"
+
+                                                                                    />
+                                                                                </div>
+                                                                            </div>}
+
+                                                                        </>
                                                                     )
+
                                                                 )}
                                                             </div>
                                                         </div>

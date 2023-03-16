@@ -62,7 +62,7 @@ class ProductsNew extends Component {
             productDisplayView: "large",
             showProductEdit:false,
             showQuickView:false,
-            selectedURl:"name=Product&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+            selectedURl:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at",
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -205,32 +205,32 @@ class ProductsNew extends Component {
         if (selection==="Product"){
 
             this.setState({
-                selectedURl:"name=Product&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+                selectedURl:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at",
             })
         }
        else if (selection==="Service"){
             this.setState({
-                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at",
             })
         }
         else if (selection==="Records"){
             this.setState({
-                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+                selectedURl:"name=Product&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at",
             })
         }
         else if (selection==="Tracked"){
             this.setState({
-                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+                selectedURl:"name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at",
             })
         }
         else if (selection==="Issues"){
             this.setState({
-                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at",
             })
         }
         else if (selection==="Archive"){
             this.setState({
-                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at",
+                selectedURl:"name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at",
             })
         }
 
@@ -397,7 +397,7 @@ class ProductsNew extends Component {
 
     seekCount = async () => {
         this.controllerSeek.abort()
-        let url = `${baseUrl}seek?${this.state.selectedURl}`;
+        let url = `${baseUrl}seek?${this.state.selectedURl}&count=true`;
 
         this.filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
@@ -460,7 +460,7 @@ try {
         this.setState({
             activeQueryUrl:url
         })
-         url = `${url}&offset=${data.newPage?data.newPage:0}&size=${this.state.pageSize}`;
+         url = `${url}&count=false&offset=${data.newPage?data.newPage:0}&size=${this.state.pageSize}`;
         if (data.sort){
             url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
         }
@@ -961,14 +961,64 @@ try {
                             actions={["map","edit","view"]}
                             checkboxSelection={false}
                             actionCallback={this.actionCallback}
+
                         >
-                            <MenuDropdown
-                                setSelection={this.setSelection}
-                                // initialValue={this.props.userContext.orgId}
-                                options={["Products","Service","Records","Tracked","Issues"]}
-                                // option={"name"}
-                                // valueKey={"_key"}
-                            />
+                            <div className="row ">
+                                <div className="col-md-2 btn-rows">
+                                    <MenuDropdown
+                                        setSelection={this.setSelection}
+                                        // initialValue={this.props.userContext.orgId}
+                                        options={["Products","Service","Records","Tracked","Issues"]}
+                                        // option={"name"}
+                                        // valueKey={"_key"}
+                                    />
+                                </div>
+                                <div className="col-md-10 btn-rows">
+                                    <Link to="/issues" className=" btn-sm btn-gray-border me-2  ">
+                                        Issues
+                                    </Link>
+                                    <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
+                                        <button
+                                            className="btn btn-sm mt-mobile btn-gray-border"
+                                            onClick={() => this.toggleDownloadQrCodes()}
+                                            type="button">
+                                            Download Open Cyclecodes
+                                        </button>
+                                    </CustomPopover>
+                                    <button
+                                        className="d-none btn btn-sm btn-gray-border ms-1"
+                                        onClick={() => this.toggleMultiSite()}
+                                        type="button">
+                                        Upload Multiple Products
+                                    </button>
+                                {/*</div>*/}
+                                {/*<div className="col-md-5 d-flex justify-content-end">*/}
+                                    <div className="me-2">
+                                        <CustomPopover text={"Export all products to csv."}>
+                                            <BlueSmallBtn
+                                                title={"Export To CSV"}
+                                                // disabled={this.state.downloadAllLoading}
+                                                // progressLoading={this.state.downloadAllLoading}
+                                                // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
+                                                // onClick={()=>this.downloadAll(0,100)}
+                                                onClick={this.fieldSelection}
+                                            >
+
+                                            </BlueSmallBtn>
+                                        </CustomPopover>
+                                    </div>
+                                    <div className="me-2">
+                                        <CustomPopover text={"Add Product Lines"}>
+                                            <BlueSmallBtn onClick={this.addProductLine}>
+                                                Product Lines
+                                            </BlueSmallBtn>
+                                        </CustomPopover>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
                         </PaginationGrid>
 
 

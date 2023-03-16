@@ -145,16 +145,7 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
     // {key:"year_of_making",label:"Manufactured",visible:false,sortable:false,flex:0.7},
     // {key:"sku.model",label:"Model",visible:false,sortable:false},
     // {key:"sku.serial",label:"Serial No.",visible:false,sortable:false},
-    { key: "name", label: "Name" },
-    { key: "description", label: "Description" },
-    { key: "condition", label: "Condition" },
-    { key: "sku.brand", label: "Brand" },
-    { key: "category", label: "Category" },
-    { key: "type", label: "Type" },
-    { key: "state", label: "State" },
-    { key: "year_of_making", label: "Year Of Manufacture" },
-    { key: "sku.model", label: "Model" },
-    { key: "sku.serial", label: "Serial No." },
+   
 ];
 
 export const PRODUCTS_FIELD_SELECTION = [

@@ -49,6 +49,7 @@ export default function MenuDropdown(props) {
     };
 
     return (
+        <>
         <ErrorBoundary skip>
             <List
                 className={"p-0"}

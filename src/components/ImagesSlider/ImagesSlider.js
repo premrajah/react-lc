@@ -66,8 +66,8 @@ class ImagesSlider extends React.Component {
     render() {
         return (
             <>
-                <div className={"row g-0 bg-white   "}>
-                    <div className={"col-12 gray-border "}>
+                <div className="row g-0 bg-white">
+                    <div className="col-12 gray-border">
                         {this.imagesArray.length > 0 ? <div>
                             <ImageGallery
                                 className={""}

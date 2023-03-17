@@ -98,13 +98,11 @@ marteplace
             .delete(baseUrl + "listing/" + this.state.item.listing._key, )
             .then(
                 (response) => {
-                    // var responseAll = response.data.data;
-                    // console.log("response call delete listig", response)
                     this.props.history.push("/my-listings");
                     // this.props.loadProducts()
                 },
                 (error) => {
-                    // console.log("error call delete listig", error)
+                    console.log("error call delete listing", error)
                 }
             );
 

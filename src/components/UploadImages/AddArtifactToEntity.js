@@ -1,6 +1,6 @@
 import FormControl from "@mui/material/FormControl";
 import { Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import {
     baseUrl,
@@ -11,12 +11,13 @@ import {
     MIME_TYPES_ACCEPT,
 } from "../../Util/Constants";
 import axios from "axios";
-import { checkIfMimeTypeAllowed, cleanFilename } from "../../Util/GlobalFunctions";
+import {checkIfMimeTypeAllowed, cleanFilename, LoaderAnimated} from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import TextField from "@mui/material/TextField";
+
 
 const UPLOAD_TYPE_VALUES = ["From System", "Youtube Id", "Video link"];
 const MAX_COUNT = 5;
@@ -58,7 +59,9 @@ const AddArtifactToEntity = ({
             const uploadToServer = await axios.post(`${baseUrl}product/artifact`, payload);
 
             if (uploadToServer.status === 200) {
+                setIsLoading(false);
                 refresh();
+                setUploadedFiles([]); // reset uploaded files
 
                 if (
                     type === MIME_TYPES.PNG ||
@@ -76,10 +79,12 @@ const AddArtifactToEntity = ({
             }
         } catch (error) {
             console.log("addArtifactToProduct error ", error);
+            setIsLoading(false);
         }
     };
 
     const handleUploadFiles = async (file) => {
+        setIsLoading(true);
         // uploadedFiles.map((file) => {
         getImageAsBytes(file)
             .then(async (convertedData) => {
@@ -99,6 +104,7 @@ const AddArtifactToEntity = ({
                     }
                 } catch (error) {
                     console.log("handleUploadFileToProduct try/catch error ", error);
+                    setIsLoading(false);
                     showSnackbar({
                         show: true,
                         severity: "warning",
@@ -108,6 +114,7 @@ const AddArtifactToEntity = ({
             })
             .catch((error) => {
                 console.log("getImageAsBytes error ", error);
+                setIsLoading(false);
             });
         // });
     };
@@ -323,9 +330,9 @@ const AddArtifactToEntity = ({
                     {uploadType === UPLOAD_TYPE_VALUES[0] && (
                         <>
                             <div className="row">
-                                <div className="d-flex">
-                                    <Button
-                                        className="me-3"
+                                <div className="">
+                                    {!isLoading ? <Button
+                                        className=""
                                         variant="outlined"
                                         component="label"
                                         disabled={fileLimit}>
@@ -338,7 +345,7 @@ const AddArtifactToEntity = ({
                                             accept={MIME_TYPES_ACCEPT}
                                             disabled={fileLimit}
                                         />
-                                    </Button>
+                                    </Button> : <LoaderAnimated />}
                                 </div>
                                 <div>
                                     <small>

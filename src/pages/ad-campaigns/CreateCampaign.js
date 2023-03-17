@@ -319,7 +319,6 @@ setParams=async () => {
 }
 
     keyDownHandler = event => {
-        // console.log('User pressed: ', event.key);
 
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -675,12 +674,6 @@ let item=null
 
     handleSubmit = (event) => {
 
-
-        // if(event.keyCode == 13) {
-        //     console.log("enter pressed")
-        //     event.preventDefault();
-        //     return false;
-        // }
 
         let fields=this.state.fields
 

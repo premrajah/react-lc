@@ -79,8 +79,6 @@ class ProductExpandItem extends Component {
 
         },100)
 
-
-        // console.log(this.state.existingItems)
     }
 
     addItem=()=> {

@@ -74,7 +74,6 @@ const DocumentsDisplay = (props) => {
             })
             .catch(error => {
                 console.log('artifact replace error ', error);
-                // handlePageRefreshCallback("fail", payload.product_id)
             })
     }
 

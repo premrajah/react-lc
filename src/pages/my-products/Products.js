@@ -410,7 +410,6 @@ class Products extends Component {
 
     handleAddToProductsExportList = (returnedItem) => {
 
-        // console.log(returnedItem)
 
         let filteredProduct = this.state.selectedProducts.filter(
                     (product) => product.Product._key !== returnedItem.Product._key
@@ -450,7 +449,6 @@ class Products extends Component {
 
         if (allData){
 
-            // console.log("all csv data",this.state.allDownloadItems)
             this.state.allDownloadItems.forEach((item) => {
                 const { Product } = item;
                 return csvData.push([
@@ -569,7 +567,6 @@ class Products extends Component {
     })
 
 
-        console.log(data)
         return data
 
     }

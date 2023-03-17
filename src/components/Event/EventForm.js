@@ -636,7 +636,6 @@ class EventForm extends Component {
                 endDate:this.props.event.event.recur_until_epoch_ms,
             })
 
-            console.log(this.props.event.event.recur_until_epoch_ms)
             this.loadImages(this.props.event.artifacts)
 
 

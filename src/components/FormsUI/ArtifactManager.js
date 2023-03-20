@@ -1,5 +1,4 @@
-import FormControl from "@mui/material/FormControl";
-import { Button } from "@mui/material";
+import {Button} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import {
@@ -13,14 +12,12 @@ import {
 import axios from "axios";
 import {checkIfMimeTypeAllowed, cleanFilename, LoaderAnimated} from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import * as yup from "yup";
-import { useFormik } from "formik";
-import TextField from "@mui/material/TextField";
+import {useFormik} from "formik";
 import ArtifactIconDisplayBasedOnMimeType from "../UploadImages/ArtifactIconDisplayBasedOnMimeType";
 import MoreMenu from "../MoreMenu";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
-import {Modal} from "react-bootstrap";
 import TextFieldWrapper from "./ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 
@@ -206,26 +203,8 @@ const ArtifactManager = ({
 
 
                                 const a = uploadedFile.data.data;
-
-                                // setArtifactsTmp(b => [...artifactsTmp, a])
-
                                 setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
 
-
-                                // artifactsTmp.push(a)
-                                // console.log(artifactsTmp)
-                                // setArtifactsTmp(artifactsTmp => [...artifactsTmp, uploadedFile.data.data]);
-                                // await setArtifacts(artifactsTmp);
-                                // console.log(artifactsTmp)
-                                // setTimeout(()=>{
-
-
-                                // debugger
-                                // },1000)
-
-                                // debugger
-
-                            // }
                         }
                     }
                 } catch (error) {
@@ -303,16 +282,8 @@ const ArtifactManager = ({
                 const youtubeIdsUploadedKey = youtubeIdsUpload.data.data._key;
 
                 if (entityType === ENTITY_TYPES.Product) {
-                    // add to product
                     if (type!=="add")
                         await addArtifactToProduct(youtubeIdsUploadedKey);
-                    // else{
-                        // let files=uploadedFiles
-                        //
-                        // console.log(youtubeIdsUpload)
-                        // setUploadedFiles(files => [...files, youtubeIdsUpload]);
-                        // setArtifacts(files => [...files, youtubeIdsUpload])
-                        // setIsLoading(false);
                         const a = youtubeIdsUpload.data.data;
 
 
@@ -389,26 +360,10 @@ const ArtifactManager = ({
                 });
                 return;
             } else if (uploaded.findIndex((f) => f.name === file.name) === -1) {
-                // if (file.size > MAX_FILE_SIZE) {
-                //     showSnackbar({ show: true, severity: "warning", message: `File is too large` });
-                //     return;
-                // } else {
                     uploaded.push(file);
                     handleUploadFiles(file);
 
-                    // if (uploaded.length === MAX_COUNT) setFileLimit(true);
-                    // if (uploaded.length > MAX_COUNT) {
-                    //     showSnackbar({
-                    //         show: true,
-                    //         severity: "warning",
-                    //         message: ` you can only add a maximum of ${MAX_COUNT} files`,
-                    //     });
-                    //     setFileLimit(false);
-                    //     limitExceeded = true;
-                    //     return true;
-                    // }
                 }
-            // }
         });
         if (!limitExceeded) setUploadedFiles(uploaded);
     };
@@ -659,11 +614,6 @@ const ArtifactManager = ({
                                                 <MoreMenu
                                                 triggerCallback={(action) =>
                                                 {
-                                                    // callBackResult(
-                                                    //     action,
-                                                    //     artifact._key,
-                                                    //     artifact.blob_url
-                                                    // )
                                                     handleDeleteDocument(artifact._key)
                                                 }}
                                                 download={true}
@@ -693,23 +643,6 @@ const ArtifactManager = ({
                     )}
                 </div>
             </div>
-
-
-
-            {/*<Modal show={show} onHide={handleClose}>*/}
-            {/*    <Modal.Header closeButton>*/}
-            {/*        <Modal.Title>Remove Document</Modal.Title>*/}
-            {/*    </Modal.Header>*/}
-            {/*    <Modal.Body>Are you sure you want to remove document</Modal.Body>*/}
-            {/*    <Modal.Footer>*/}
-            {/*        <button className="btn btn-green me-1" onClick={() => handleDeleteDocument()}>*/}
-            {/*            Yes*/}
-            {/*        </button>*/}
-            {/*        <button className="btn btn-close" onClick={handleClose}>*/}
-            {/*            Cancel*/}
-            {/*        </button>*/}
-            {/*    </Modal.Footer>*/}
-            {/*</Modal>*/}
 
         </>
     );

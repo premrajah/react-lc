@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { baseUrl, MIME_TYPES } from "../../Util/Constants";
@@ -10,10 +10,19 @@ import MoreMenu from "../MoreMenu";
 import ArtifactIconDisplayBasedOnMimeType from "./ArtifactIconDisplayBasedOnMimeType";
 
 const AddedDocumentsDisplay = (props) => {
-    const { artifacts, pageRefreshCallback, showSnackbar} = props;
+    const {  pageRefreshCallback, showSnackbar} = props;
 
     const [show, setShow] = useState(false);
+
+    const [artifacts,setArtifacts]=useState(props.artifacts)
     const [docKey, setDocKey] = useState(null);
+
+    useEffect(()=>{
+
+        setArtifacts(props.artifacts)
+
+    },[props.artifacts])
+
     let { slug } = useParams();
 
     const handleClose = () => setShow(false);

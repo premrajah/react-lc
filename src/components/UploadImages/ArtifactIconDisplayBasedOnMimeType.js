@@ -106,10 +106,15 @@ const ArtifactIconDisplayBasedOnMimeType = ({ artifact, showSnackbar }) => {
     return <>
         {DisplayIcons(artifact.mime_type)}
 
-        <GlobalDialog size="md" show={artifactImageDialogDisplay} hide={() => handleArtifactImageDialogDisplayClose()}>
-            {currentImageBlobUrl && <div className="d-flex justify-content-center align-items-center" >
-                <img style={{width: "50%", maxWidth: '50%', height: "50%", maxHeight: '50%', objectFit: "contain"}} src={currentImageBlobUrl ? currentImageBlobUrl : ""} alt={currentImageBlobUrl} width="50%" height="50%"/>
-            </div>}
+        <GlobalDialog hideHeading removePadding size="md" show={artifactImageDialogDisplay} hide={() => handleArtifactImageDialogDisplayClose()}>
+            <div className="col-12">
+            {currentImageBlobUrl &&
+                <div className="d-flex justify-content-center align-items-center" >
+                <img style={{width: "100%", maxWidth: '100%', height: "auto", objectFit: "contain"}} src={currentImageBlobUrl ? currentImageBlobUrl : ""} alt={currentImageBlobUrl} width="50%" height="50%"/>
+            </div>
+
+            }
+            </div>
         </GlobalDialog>
 
         <GlobalDialog size="md" show={artifactDialogDisplay} hide={() => handleArtifactDialogDisplayClose()}>

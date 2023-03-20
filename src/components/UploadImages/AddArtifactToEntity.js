@@ -1,6 +1,6 @@
 import FormControl from "@mui/material/FormControl";
 import { Button } from "@mui/material";
-import React, {useState } from "react";
+import React, {useEffect, useState} from "react";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import {
     baseUrl,
@@ -28,13 +28,14 @@ const AddArtifactToEntity = ({
     entityType,
     loadCurrentProduct,
     showSnackbar,
-    refresh,
+    refresh,type,setArtifacts,...props
 }) => {
     const [uploadType, setUploadType] = useState(UPLOAD_TYPE_VALUES[0]);
     const [fileLimit, setFileLimit] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [uploadedYoutubeIds, setUploadedYoutubeIds] = useState([]);
     const [videoLinks, setVideoLinks] = useState([]);
+    const [artifactsTmp,setArtifactsTmp] = useState([])
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -60,7 +61,10 @@ const AddArtifactToEntity = ({
 
             if (uploadToServer.status === 200) {
                 setIsLoading(false);
+
+
                 refresh();
+
                 setUploadedFiles([]); // reset uploaded files
 
                 if (
@@ -83,6 +87,13 @@ const AddArtifactToEntity = ({
         }
     };
 
+    useEffect(()=>{
+        setIsLoading(false);
+        console.log(artifactsTmp)
+        setArtifacts(artifactsTmp)
+
+    },[artifactsTmp])
+
     const handleUploadFiles = async (file) => {
         setIsLoading(true);
         // uploadedFiles.map((file) => {
@@ -95,11 +106,40 @@ const AddArtifactToEntity = ({
                     );
 
                     if (uploadedFile) {
+
                         const uploadedToCloudDataKey = uploadedFile.data.data._key;
 
                         if (entityType === ENTITY_TYPES.Product) {
                             // add to product
-                            await addArtifactToProduct(uploadedToCloudDataKey, file.type);
+                            if (type!=="add"){
+                                await addArtifactToProduct(uploadedToCloudDataKey, file.type);
+                            }
+
+                            else{
+
+                                console.log(uploadedFile.data.data)
+
+
+                                const a = uploadedFile.data.data;
+
+                                // setArtifactsTmp(b => [...artifactsTmp, a])
+
+                                setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
+
+                                // artifactsTmp.push(a)
+                                // console.log(artifactsTmp)
+                                // setArtifactsTmp(artifactsTmp => [...artifactsTmp, uploadedFile.data.data]);
+                                // await setArtifacts(artifactsTmp);
+                                // console.log(artifactsTmp)
+                                // setTimeout(()=>{
+
+
+                                    // debugger
+                                // },1000)
+
+                                // debugger
+
+                            }
                         }
                     }
                 } catch (error) {
@@ -140,7 +180,17 @@ const AddArtifactToEntity = ({
 
                 if (entityType === ENTITY_TYPES.Product) {
                     // add to product
+                    if (type!=="add")
                     await addArtifactToProduct(youtubeIdsUploadedKey);
+                    else{
+                        let files=uploadedFiles
+
+                        console.log(youtubeIdsUpload)
+                        setUploadedFiles(files => [...files, youtubeIdsUpload]);
+
+                        setArtifacts(files => [...files, youtubeIdsUpload])
+                        setIsLoading(false);
+                    }
                 }
             }
         } catch (error) {
@@ -170,7 +220,19 @@ const AddArtifactToEntity = ({
 
                 if (entityType === ENTITY_TYPES.Product) {
                     // add to product
+                    if (type!=="add")
                     await addArtifactToProduct(videoLinksUploadedKey);
+                    else{
+                        let files=uploadedFiles
+
+
+                        console.log(videoLinksUploaded)
+
+                        setUploadedFiles(files => [...files, videoLinksUploaded]);
+
+                        setArtifacts(files => [...files, videoLinksUploaded])
+                        setIsLoading(false);
+                    }
                 }
             }
         } catch (error) {
@@ -280,7 +342,8 @@ const AddArtifactToEntity = ({
             youtubeIdTitle: "",
         },
         validationSchema: validationYoutubeIdSchema,
-        onSubmit: (values, { resetForm }) => {
+        onSubmit: (values, e, { resetForm }) => {
+
             const data = {
                 youtubeId: values.youtubeId,
                 youtubeIdTitle: values.youtubeIdTitle,
@@ -304,6 +367,7 @@ const AddArtifactToEntity = ({
         },
         validationSchema: validationVideoLinkSchema,
         onSubmit: (values, { resetForm }) => {
+
             const data = {
                 videoLink: values.videoLink,
                 videoLinkTitle: values.videoLinkTitle,
@@ -361,7 +425,7 @@ const AddArtifactToEntity = ({
                             <form
                                 noValidate
                                 autoComplete="off"
-                                onSubmit={formikYoutubeIdForm.handleSubmit}>
+                                onSubmit={e => formikYoutubeIdForm.handleSubmit(e)}>
                                 <div className="row">
                                     <div className="col-md-5">
                                         <TextField
@@ -478,7 +542,7 @@ const AddArtifactToEntity = ({
                 </div>
             </div>
 
-            <div className="row d-none">
+            <div className={`row  ${props.hideMenu?"":"d-none"}`}>
                 {uploadedFiles.length > 0 && (
                     <div className="col-12">
                         {uploadedFiles.map((file, index) => (
@@ -556,4 +620,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddArtifactToEntity);
+export default  connect(mapStateToProps, mapDispatchToProps)(AddArtifactToEntity);

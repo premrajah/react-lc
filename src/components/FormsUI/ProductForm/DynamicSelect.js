@@ -134,7 +134,7 @@ const DynamicSelectArrayWrapper = (props) => {
                 <FormControl variant="outlined" >
                     {label && <InputLabel >{label}</InputLabel>}
                     <Autocomplete
-                        style={{width:"100%"}}
+                        style={{width:"100%", }}
                         value={valueTextbox}
                         open={open}
                         onOpen={() => {

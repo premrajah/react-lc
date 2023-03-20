@@ -7,8 +7,6 @@ import AddArtifactToEntity from "../UploadImages/AddArtifactToEntity";
 import {baseUrl, ENTITY_TYPES} from "../../Util/Constants";
 import axios from "axios";
 
-
-
 class ArtifactProductsTab extends Component {
     slug;
     search;
@@ -18,19 +16,25 @@ class ArtifactProductsTab extends Component {
         this.state = {
             artifacts:[]
         }
-
     }
-
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps!=this.props){
-            this.getArtifactsForProduct()
+            if (this.props.item&&this.props.entityType=="product"){
+                this.getArtifactsForProduct()
+            }
+            else if (!this.props.item&&this.props.type==="add"&&this.props.entityType=="product"){
+                // this.getArtifactsForProduct()
+            }
         }
     }
 
     componentDidMount() {
 
-        this.getArtifactsForProduct()
+
+        if (this.props.item&&this.props.entityType=="product"){
+            this.getArtifactsForProduct()
+        }
     }
 
     getArtifactsForProduct = () => {
@@ -44,24 +48,36 @@ class ArtifactProductsTab extends Component {
             })
             .catch(error => {
             })
-
-
     }
-
 
     render() {
 
-
         return (
             <>
-               {/*{!this.props.hideAdd &&*/}
-               {/* <AddImagesToProduct  hideAdd={this.props.hideAdd?this.props.hideAdd:false} item={this.props.item}/>} */}
+
                 <AddArtifactToEntity
                     refresh={this.getArtifactsForProduct}
-                    entityId={this.props.item.product._key} entityType={ENTITY_TYPES.Product} />
+                    setArtifacts={(artifacts)=>{
+                        this.setState({artifacts:artifacts});
+                        if (this.props.setArtifacts){
+                            this.props.setArtifacts(artifacts)
+                        }
+
+                    }}
+                    entityId={this.props.item?this.props.item.product._key:null}
+                    entityType={this.props.entityType}
+                    type={this.props.type}
+                    hideMenu={this.props.hideMenu}
+                    showCancel={this.props.showCancel}
+
+                />
                 <AddedDocumentsDisplay
                     hideAdd={this.props.hideAdd?this.props.hideAdd:false}
                     artifacts={this.state.artifacts}
+                    hideMenu={this.props.hideMenu}
+                    showCancel={this.props.showCancel}
+
+
                 />
             </>
         );

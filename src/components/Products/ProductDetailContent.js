@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import {baseUrl} from "../../Util/Constants";
+import {baseUrl, ENTITY_TYPES} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 import {Alert, Modal, ModalBody} from "react-bootstrap";
@@ -37,6 +37,7 @@ import {fetchErrorMessage, getTimeFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
 import SiteFormNew from "../Sites/SiteFormNew";
+import ArtifactManager from "../FormsUI/ArtifactManager";
 
 
 class ProductDetailContent extends Component {
@@ -1108,7 +1109,20 @@ class ProductDetailContent extends Component {
                                                     </>
                                                 )}
                                                 <TabPanel value="7">
-                                                    <ArtifactProductsTab item={this.props.item}/>
+                                                    {/*<ArtifactProductsTab*/}
+                                                    {/*    entityType={ENTITY_TYPES.Product}*/}
+                                                    {/*    item={this.props.item}*/}
+                                                    {/*    type={"edit"}*/}
+                                                    {/*/>*/}
+                                                    <div className=" bg-white rad-8 mt-4 p-3">
+                                                    <ArtifactManager
+                                                        entityType={ENTITY_TYPES.Product}
+                                                        item={this.props.item}
+                                                        entityId={this.props.item.product._key}
+                                                        artifacts={this.props.item.artifacts}
+                                                        type={"edit"}
+                                                    />
+                                                    </div>
                                                 </TabPanel>
 
                                                   <TabPanel value="8">

@@ -5,7 +5,7 @@ import Select from "@mui/material/Select";
 import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
 import axios from "axios/index";
-import {baseUrl, getMimeTypeAndIcon, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import {baseUrl, ENTITY_TYPES, getMimeTypeAndIcon, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import _ from "lodash";
 import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
@@ -26,6 +26,9 @@ import ProductExpandItemNew from "../Products/ProductExpandItemNew";
 import docs from '../../img/icons/docs.png';
 import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
+import ReactPlayer from "react-player/lazy";
+import ArtifactProductsTab from "../Products/ArtifactProductsTab";
+import ArtifactManager from "../FormsUI/ArtifactManager";
 
 
 let slugify = require('slugify')
@@ -741,6 +744,7 @@ let slugify = require('slugify')
                 let fileItem = {
                     status: 1,
                     id: artifacts[k]._key,
+                    context: artifacts[k].context,
                     imgUrl: artifacts[k].blob_url,
                     file: {
                         mime_type: artifacts[k].mime_type,
@@ -760,6 +764,9 @@ let slugify = require('slugify')
                 files: currentFiles,
                 images: images,
             });
+
+
+
         }
 
 
@@ -1683,13 +1690,31 @@ let slugify = require('slugify')
                                             </div>
 
 
-                       <div className={"row"}>
-                                <div className="col-12 mt-2">
+
+                                  {/*<ArtifactProductsTab*/}
+                                  {/*    hideMenu*/}
+                                  {/*    setArtifacts={(artifacts)=>this.loadImages(artifacts)}*/}
+                                  {/*    showCancel*/}
+                                  {/*    item={this.props.item?this.props.item:null}*/}
+                                  {/*    type={this.props.item?"edit":"add"}*/}
+                                  {/*    entityType={ENTITY_TYPES.Product}*/}
+                                  {/*    setFiles={(files)=>this.setState({files:files})}*/}
+                                  {/*/>*/}
+                       <div className={"row "}>
+                                <div className="    col-12 mt-2">
                                     <div className={"custom-label text-bold text-blue mb-3"}>
                                        Add Attachments <CustomPopover text="Add images, videos, manuals and other documents or external links (png, jpeg, jpg, doc, csv)"><InfoIcon/></CustomPopover>
                                     </div>
-
-                                    <div className="container-fluid  pb-3 ">
+                                    <ArtifactManager
+                                        hideMenu
+                                        setArtifacts={(artifacts)=>this.loadImages(artifacts)}
+                                        showDelete
+                                        item={this.props.item?this.props.item:null}
+                                        type={this.props.item?"edit":"add"}
+                                        entityType={ENTITY_TYPES.Product}
+                                        setFiles={(files)=>this.setState({files:files})}
+                                    />
+                                    <div className="container-fluid  pb-3 d-none">
                                         <div className="row camera-grids      ">
                                             <div className="col-12  text-left ">
                                                 <div className="">
@@ -1732,7 +1757,7 @@ let slugify = require('slugify')
                                                                 this.state.files.map(
                                                                     (item, index) => (
                                                                         <>
-
+                                                                            {console.log(item)}
                                                                         {getMimeTypeAndIcon(item.file.mime_type).type==="image"&&<div
                                                                             key={index}
                                                                             className={"file-uploader-thumbnail-container"}>
@@ -1929,7 +1954,18 @@ let slugify = require('slugify')
                                                                                         // backgroundImage: `url("${item.imgUrl ? item.imgUrl : URL.createObjectURL(item.file)}")`
                                                                                     }}
                                                                                 >
-                                                                                   <video className="position-absolute" controls width="100%" height="100%"><source src={item.imgUrl} type="video/mp4"/></video>
+
+                                                                                        <ReactPlayer
+                                                                                            url={item.imgUrl}
+                                                                                            controls
+                                                                                            // playing={false}
+                                                                                            width="100%"
+                                                                                            height="100%"
+                                                                                            mime
+
+                                                                                        />
+
+
                                                                                     {item.status ===
                                                                                         0 && (
                                                                                             <Spinner
@@ -2013,6 +2049,7 @@ let slugify = require('slugify')
                                                                     )
 
                                                                 )}
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2069,10 +2106,7 @@ let slugify = require('slugify')
 
                     {this.state.showSubmitSite && (
                         <div
-                            className={
-                                "row justify-content-center  "
-                            }>
-
+                            className="row justify-content-center  ">
 
                             <div className="col-md-12 col-sm-12 col-xs-12 ">
                                 <div

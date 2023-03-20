@@ -111,28 +111,37 @@ const NotificationTwoItemGroup = ({ items }) => {
     };
 
     return (
-        <>
+        <div className="bg-white">
             {items.length > 0 &&
                 items.map((itemGroup, index) => {
                     return (
-                        <Accordion
-                            className="mb-1"
-                            key={itemGroup[0].Message._key}
-                            id={itemGroup[0].Message._key} expanded={accordionExpand}>
-                            <AccordionSummary  expandIcon={itemGroup.length > 1 && <ExpandMoreIcon onClick={() => toggleAccordion()} />}>
-                                <div className="">{itemGroup[0].Message.text}</div>
-                            </AccordionSummary>
-                            {itemGroup.length > 1 &&
-                                itemGroup.map((ig, i) => {
-                                    console.log("=> ", ig)
-                                    return <div>
-                                        <AccordionDetails>{ig.Message.text}</AccordionDetails>
-                                    </div>;
-                                })}
-                        </Accordion>
+                        <div className="row g-1">
+                            <div className="col-10">
+                                <Accordion
+                                    className="mb-1"
+                                    key={itemGroup[0].Message._key}
+                                    id={itemGroup[0].Message._key} expanded={accordionExpand}>
+                                    <AccordionSummary  expandIcon={itemGroup.length > 1 && <ExpandMoreIcon onClick={() => toggleAccordion()} />}>
+                                        <div className="">{itemGroup[0].Message.text}</div>
+                                    </AccordionSummary>
+                                    {itemGroup.length > 1 &&
+                                        itemGroup.map((ig, i) => {
+                                            console.log("=> ", ig)
+                                            return <div>
+                                                <AccordionDetails>{ig.Message.text}</AccordionDetails>
+                                            </div>;
+                                        })}
+                                </Accordion>
+                            </div>
+                            <div className="col-2">
+                                <div className="">
+                                    extra
+                                </div>
+                            </div>
+                        </div>
                     );
                 })}
-        </>
+        </div>
     );
 };
 

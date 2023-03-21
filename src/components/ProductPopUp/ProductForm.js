@@ -2145,7 +2145,7 @@ let slugify = require('slugify')
                                 </div>
                                 <div className={"row"}>
                                     <div className={"col-12"}>
-                                        <SiteFormNew showHeader={false}  refresh={() => this.showSubmitSite()}   />
+                                        {this.state.showSubmitSite && <SiteFormNew dontCallUpdate showHeader={false}  refresh={() => this.showSubmitSite()}   />}
                                     </div>
                                 </div>
                             </div>

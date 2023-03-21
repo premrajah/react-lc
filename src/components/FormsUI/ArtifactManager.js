@@ -325,7 +325,7 @@ const ArtifactManager = ({
                             <div className="col-md-2  mb-2">
                                 <Button
                                     className="me-1"
-                                    style={{height: '61px'}}
+                                    style={{height: '44px'}}
                                     variant="outlined"
                                     size="small"
                                     onClick={handleUploadVideoLinks}>

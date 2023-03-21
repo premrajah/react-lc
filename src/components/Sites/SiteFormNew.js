@@ -537,15 +537,17 @@ class SiteFormNew extends Component {
 
 
         if (prevProps!==this.props) {
+
+            if (!this.props.dontCallUpdate)
             this.getSubSites()
-
-
         }
     }
 
     componentDidMount() {
 
         window.scrollTo(0, 0);
+
+
         this.getSubSites()
 
 

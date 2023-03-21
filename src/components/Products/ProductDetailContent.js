@@ -745,17 +745,17 @@ class ProductDetailContent extends Component {
         );
     }
 
-    toggleSite=(refresh)=> {
-        this.setState({
-            showCreateSite: !this.state.showCreateSite,
-        });
-
-
-        if (refresh){
-            this.props.loadSites();
-
-        }
-    }
+    // toggleSite=(refresh)=> {
+    //     this.setState({
+    //         showCreateSite: !this.state.showCreateSite,
+    //     });
+    //
+    //
+    //     if (refresh){
+    //         this.props.loadSites();
+    //
+    //     }
+    // }
     loadProduct(productKey) {
         if (productKey)
             axios.get(baseUrl + "product/" + productKey + "/expand").then(
@@ -1193,21 +1193,21 @@ class ProductDetailContent extends Component {
                         </GlobalDialog>
 
 
-                        <GlobalDialog
+                        {/*<GlobalDialog*/}
 
-                            size={"sm"}
-                            hide={this.toggleSite}
-                            show={this.state.showCreateSite}
-                            heading={"Add new site"}
+                        {/*    size={"sm"}*/}
+                        {/*    hide={this.toggleSite}*/}
+                        {/*    show={this.state.showCreateSite}*/}
+                        {/*    heading={"Add new site"}*/}
 
-                        >
-                            <>
-                                <div className="col-12 ">
+                        {/*>*/}
+                        {/*    <>*/}
+                        {/*        <div className="col-12 ">*/}
 
-                                    <SiteFormNew refresh={()=>this.toggleSite(true)} />
-                                </div>
-                            </>
-                        </GlobalDialog>
+                        {/*            <SiteFormNew refresh={()=>this.toggleSite(true)} />*/}
+                        {/*        </div>*/}
+                        {/*    </>*/}
+                        {/*</GlobalDialog>*/}
 
                         <GlobalDialog
                             allowOverflow

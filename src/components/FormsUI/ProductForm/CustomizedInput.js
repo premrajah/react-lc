@@ -11,8 +11,6 @@ const CustomizedInput = styled(InputBase)(({ theme }) => ({
 
         position: 'relative',
         // backgroundColor:  '#fcfcfb' ,
-
-
         width: '100%!important',
         // padding: '10px 12px',
         padding: '18.5px 14px',

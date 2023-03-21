@@ -945,9 +945,6 @@ try {
                             </div>
                         </div>
 
-
-
-
                         <PaginationGrid
                             dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
                             count={this.state.count}
@@ -959,10 +956,8 @@ try {
                             lastPageReached={this.state.lastPageReached}
                             loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}
                             actions={["map","edit","view"]}
-                            checkboxSelection={false}
-                            actionCallback={this.actionCallback}
-
-                        >
+                            checkboxSelection={true}
+                            actionCallback={this.actionCallback}>
                             <div className="row ">
                                 <div className="col-md-2 btn-rows">
                                     <MenuDropdown
@@ -974,9 +969,9 @@ try {
                                     />
                                 </div>
                                 <div className="col-md-10 btn-rows">
-                                    <Link to="/issues" className=" btn-sm btn-gray-border me-2  ">
-                                        Issues
-                                    </Link>
+                                    {/*<Link to="/issues" className=" btn-sm btn-gray-border me-2  ">*/}
+                                    {/*    Issues*/}
+                                    {/*</Link>*/}
                                     <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
                                         <button
                                             className="btn btn-sm mt-mobile btn-gray-border"

@@ -314,10 +314,7 @@ const ArtifactManager = ({
                         // setArtifacts(files => [...files, youtubeIdsUpload])
                         // setIsLoading(false);
                         const a = youtubeIdsUpload.data.data;
-
-
                         setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
-
                         resetForm("youtubeId")
                     // }
                 }

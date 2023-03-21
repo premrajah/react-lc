@@ -8,7 +8,7 @@ import {
     MIME_TYPES_ACCEPT,
 } from "../../Util/Constants";
 import axios from "axios";
-import { checkIfMimeTypeAllowed, cleanFilename, LoaderAnimated } from "../../Util/GlobalFunctions";
+import {checkIfMimeTypeAllowed, cleanFilename, isValidUrl, LoaderAnimated} from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import ArtifactIconDisplayBasedOnMimeType from "../UploadImages/ArtifactIconDisplayBasedOnMimeType";
@@ -214,33 +214,41 @@ const ArtifactManager = ({
             return;
         }
 
+        if(isValidUrl(fields.videoLink)) {
 
-        try {
-            const payload = {
-                context: "video-link",
-                content: `Direct video uploaded by user [${fields.videoLink}]`,
-                blob_data: {
-                    blob_url: fields.videoLink,
-                    blob_name: fields.videoLinkTitle,
-                    blob_mime: MIME_TYPES.MP4,
-                },
-            };
+            try {
+                const payload = {
+                    context: "video-link",
+                    content: `Direct video uploaded by user [${fields.videoLink}]`,
+                    blob_data: {
+                        blob_url: fields.videoLink,
+                        blob_name: fields.videoLinkTitle,
+                        blob_mime: MIME_TYPES.MP4,
+                    },
+                };
 
-            const videoLinksUploaded = await axios.post(`${baseUrl}artifact/preloaded`, payload);
+                const videoLinksUploaded = await axios.post(`${baseUrl}artifact/preloaded`, payload);
 
-            if (videoLinksUploaded) {
-                const videoLinksUploadedKey = videoLinksUploaded.data.data._key;
+                if (videoLinksUploaded) {
+                    const videoLinksUploadedKey = videoLinksUploaded.data.data._key;
 
-                if (entityType === ENTITY_TYPES.Product) {
-                    if (type !== "add") await addArtifactToProduct(videoLinksUploadedKey);
-                    const a = videoLinksUploaded.data.data;
+                    if (entityType === ENTITY_TYPES.Product) {
+                        if (type !== "add") await addArtifactToProduct(videoLinksUploadedKey);
+                        const a = videoLinksUploaded.data.data;
 
-                    setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
-                    resetForm("link");
+                        setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
+                        resetForm("link");
+                    }
                 }
+            } catch (error) {
+                console.log("handleUploadVideoLinks error ", error);
             }
-        } catch (error) {
-            console.log("handleUploadVideoLinks error ", error);
+        } else {
+            showSnackbar({
+                show: true,
+                severity: "warning",
+                message: "Please enter a valid url.",
+            });
         }
     };
 

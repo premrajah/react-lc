@@ -4926,3 +4926,18 @@ ul,ol {
     font-size: 48px!important;
 
 }
+
+/*react image gallery height issue */
+.image-gallery-slides .image-gallery-slide{
+    width: 100%!important;
+    height: 100%!important;
+
+
+}
+.image-gallery-slides{
+    width: 100%; /*width you want*/
+    height: 50vh; height;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}

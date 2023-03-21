@@ -538,7 +538,7 @@ class SiteFormNew extends Component {
 
         if (prevProps!==this.props) {
 
-            if (!this.props.dontCallUpdate)
+            // if (!this.props.dontCallUpdate)
             this.getSubSites()
         }
     }

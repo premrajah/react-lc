@@ -128,7 +128,8 @@ let slugify = require('slugify')
                 selectedTemplated:null,
                 artifacts:[],
                 is_manufacturer:true,
-                prevImages:[]
+                prevImages:[],
+                errorPending:false
 
             };
 
@@ -421,8 +422,19 @@ let slugify = require('slugify')
 
             let {formIsValid,errors}= validateInputs(validations,fields,editMode)
 
-            console.log(errors)
+            // console.log(errors)
             this.setState({ errors: errors });
+
+                if (!formIsValid){
+                    this.setState({
+                        errorPending:true
+                    })
+                }else{
+                    this.setState({
+                        errorPending:false
+                    })
+                }
+
             return formIsValid;
         }
 
@@ -807,10 +819,12 @@ let slugify = require('slugify')
                         //     parentProduct: res.data.data,
                         // });
                     }
-                    // this.props.loadCurrentProduct(this.props.item.product._key)
+
+                    this.props.loadCurrentProduct(this.props.item.product._key)
 
 
-                    this.triggerCallback();
+
+                    // this.triggerCallback();
 
                 })
                 .catch((error) => {
@@ -849,9 +863,9 @@ let slugify = require('slugify')
                 return
             }
 
-            console.log("check image")
+
             await   this.updateImages();
-            console.log("done image")
+
             if (fields["deliver"] !== undefined) {
                 this.updateSite(fields["deliver"]);
                 // this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
@@ -1707,12 +1721,14 @@ let slugify = require('slugify')
                                     </div>
                                     <ArtifactManager
                                         hideMenu
+                                        artifacts={this.props.item?this.props.item.artifacts:[]}
                                         setArtifacts={(artifacts)=>this.loadImages(artifacts)}
                                         showDelete
                                         item={this.props.item?this.props.item:null}
                                         type={this.props.item?"edit":"add"}
                                         entityType={ENTITY_TYPES.Product}
                                         setFiles={(files)=>this.setState({files:files})}
+                                        entityId={this.props.item?this.props.item.product._key:null}
                                     />
                                     <div className="container-fluid  pb-3 d-none">
                                         <div className="row camera-grids      ">
@@ -2060,6 +2076,7 @@ let slugify = require('slugify')
                                 </div>
     </div>
                                      <div className={"row"}>
+                                         {this.state.errorPending&&<div className="col-12 text-center text-danger">Required fields are missing.</div>}
                                 <div className="col-12 text-center  mb-2">
                                     {this.state.files.length > 0 ? (
                                         this.state.files.filter((item) => item.status === 0).length >
@@ -2097,6 +2114,7 @@ let slugify = require('slugify')
 
                                     )}
                                 </div>
+
                         </div>
                                 </form>
                         </div>

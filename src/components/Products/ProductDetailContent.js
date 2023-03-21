@@ -1182,7 +1182,12 @@ class ProductDetailContent extends Component {
                             }} >
 
                                     <div className="form-col-left col-12">
-                                        {this.state.showProductEdit &&  <ProductForm hideUpload edit triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.props.item} />}
+                                        {this.state.showProductEdit &&  <ProductForm
+                                            hideUpload
+                                            edit
+                                            triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"}
+                                            item={this.props.item} />
+                                        }
                                     </div>
 
                         </GlobalDialog>

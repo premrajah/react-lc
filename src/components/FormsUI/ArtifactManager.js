@@ -295,7 +295,7 @@ const ArtifactManager = ({
 
                                 <div className="">
                                     <Button variant="outlined" onClick={() => setIsLinksVisible(prev => !prev)}>
-                                        Add Links {isLinksVisible ? <ArrowDropUp /> : <ArrowDropDown/> }
+                                        Add Video Links {isLinksVisible ? <ArrowDropUp /> : <ArrowDropDown/> }
                                     </Button>
                                 </div>
                             </div>
@@ -325,7 +325,7 @@ const ArtifactManager = ({
                             <div className="col-md-2  mb-2">
                                 <Button
                                     className="me-1"
-                                    sx={{maxHeight: 40}}
+                                    style={{height: '61px'}}
                                     variant="outlined"
                                     size="small"
                                     onClick={handleUploadVideoLinks}>

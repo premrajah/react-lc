@@ -178,12 +178,12 @@ const ArtifactManager = ({
             validations = [
                 validateFormatCreate(
                     "videoLink",
-                    [{ check: Validators.required, message: "Required" }],
+                    [{ check: Validators.required, message: "" }],
                     fields
                 ),
                 validateFormatCreate(
                     "videoLinkTitle",
-                    [{ check: Validators.required, message: "Required" }],
+                    [{ check: Validators.required, message: "" }],
                     fields
                 ),
             ];
@@ -191,7 +191,7 @@ const ArtifactManager = ({
         let { formIsValid, errors } = validateInputs(validations, fields);
 
 
-        setErrorsTmp(errorsTmp);
+        setErrorsTmp(errors);
         return formIsValid;
     };
 

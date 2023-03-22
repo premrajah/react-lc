@@ -7,7 +7,7 @@ import {Close} from "@mui/icons-material";
 const CloseButtonPopUp = ({onClick, ...otherProps}) => {
 
 
-    return   <IconButton onClick={onClick}>
+    return   <IconButton style={{border: "1px solid #eee"}} onClick={onClick}>
         <Close />
     </IconButton>
 

@@ -288,7 +288,7 @@ let slugify = require('slugify')
 
         handleChangeForm=(event)=>{
 
-            console.log(event)
+            // console.log(event)
         }
         uploadImage(files) {
             if (files.length > 0) {

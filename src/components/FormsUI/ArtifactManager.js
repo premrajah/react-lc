@@ -129,8 +129,6 @@ const ArtifactManager = ({
 
     useEffect(() => {
         setIsLoading(false);
-
-
         // alert("change detected")
         console.log(artifactsTmp)
         if (setArtifacts && artifactsTmp && artifactsTmp.length > 0) {
@@ -260,7 +258,6 @@ const ArtifactManager = ({
 
     const handleUploadedFiles = (files) => {
         const uploaded = [...uploadedFiles];
-        let limitExceeded = false;
 
         files.some((file) => {
             if (!checkIfMimeTypeAllowed(file)) {
@@ -275,7 +272,7 @@ const ArtifactManager = ({
                 handleUploadFiles(file);
             }
         });
-        if (!limitExceeded) setUploadedFiles(uploaded);
+
     };
 
     const handleFileEvent = (e) => {
@@ -292,7 +289,7 @@ const ArtifactManager = ({
                             <div className="col-12 d-flex mb-2">
                                 <div className="me-3">
                                     {!isLoading ? (
-                                        <Button className="" variant="outlined" component="label">
+                                        <Button style={{height:"61px"}} className="" variant="outlined" component="label">
                                             Upload Files
                                             <input
                                                 type="file"
@@ -308,7 +305,7 @@ const ArtifactManager = ({
                                 </div>
 
                                 <div className="">
-                                    <Button variant="outlined" onClick={() => setIsLinksVisible(prev => !prev)}>
+                                    <Button  style={{height:"61px"}} variant="outlined" onClick={() => setIsLinksVisible(prev => !prev)}>
                                         Add Video Links {isLinksVisible ? <ArrowDropUp /> : <ArrowDropDown/> }
                                     </Button>
                                 </div>

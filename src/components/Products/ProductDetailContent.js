@@ -454,12 +454,16 @@ class ProductDetailContent extends Component {
                 this.props.history.push("/my-products");
 
 
+
             })
             .catch((error) => {
                 // this.setState({
                 //
                 //     errorRegister:error.response.data.errors[0].message
                 // })
+
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
+
             });
     };
 

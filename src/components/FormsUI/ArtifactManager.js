@@ -132,7 +132,7 @@ const ArtifactManager = ({
 
 
         // alert("change detected")
-        // console.log(artifactsTmp)
+        console.log(artifactsTmp)
         if (setArtifacts && artifactsTmp && artifactsTmp.length > 0) {
             setArtifacts(artifactsTmp);
         }
@@ -325,10 +325,12 @@ const ArtifactManager = ({
                                     name="videoLink"
                                     error={errorsTmp["videoLink"]}
                                     placeholder="Link"
+                                    height={"44px"}
                                 />
                             </div>
                             <div className="col-md-5">
                                 <TextFieldWrapper
+                                    height={"44px"}
                                     reset={resetTmp["videoLinkTitle"]}
                                     onChange={(value) => handleChange(value, "videoLinkTitle")}
                                     name="videoLinkTitle"
@@ -339,7 +341,7 @@ const ArtifactManager = ({
                             <div className="col-md-2  mb-2">
                                 <Button
                                     className="me-1"
-                                    style={{height: '44px'}}
+                                    style={{height: '61px'}}
                                     variant="outlined"
                                     size="small"
                                     onClick={handleUploadVideoLinks}>

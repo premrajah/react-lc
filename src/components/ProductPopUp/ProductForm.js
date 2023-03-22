@@ -129,7 +129,8 @@ let slugify = require('slugify')
                 artifacts:[],
                 is_manufacturer:true,
                 prevImages:[],
-                errorPending:false
+                errorPending:false,
+                selectedSite:null
 
             };
 
@@ -143,7 +144,7 @@ let slugify = require('slugify')
             this.showMoreDetails = this.showMoreDetails.bind(this);
         }
 
-        showSubmitSite=()=> {
+        showSubmitSite=(data)=> {
 
             window.scrollTo(0, 0);
 
@@ -155,6 +156,19 @@ let slugify = require('slugify')
                 showSubmitSite: !this.state.showSubmitSite,
             });
 
+            if (data){
+                let fields=this.state.fields
+                fields["deliver"]=data._key
+
+                this.setState({
+                    selectedSite: data,
+                    fields:fields
+                })
+            }else{
+                this.setState({
+                    selectedSite: null
+                })
+            }
             this.props.loadSites(this.props.userDetail.token);
         }
 
@@ -1434,8 +1448,8 @@ let slugify = require('slugify')
                                                     subValueKey={"_key"}
                                                     title="Dispatch / Collection Address"
                                                     details="Select product’s location from the existing sites or add new address below"
-                                                    initialValue={this.props.item&&this.props.item.site._key}
-                                                    initialValueTextbox={this.props.item&&this.props.item.site.name}
+                                                    initialValue={this.state.selectedSite?this.state.selectedSite._key: this.props.item?this.props.item.site._key:null}
+                                                    initialValueTextbox={this.state.selectedSite?this.state.selectedSite.name:this.props.item?this.props.item.site.name:""}
 
                                                 />
                                                 {/*<SelectArrayWrapper*/}
@@ -1571,8 +1585,10 @@ let slugify = require('slugify')
                                             onChange={(value)=>this.handleChangeProduct(value,"description")}
                                             error={this.state.errors["description"]}
                                             multiline
-                                      rows={4}
-                                                           name="description" title="Description" />
+                                            rows={4}
+                                            name="description"
+                                            title="Description"
+                                        />
 
 
                                     </div>
@@ -2075,7 +2091,7 @@ let slugify = require('slugify')
                                     </div>
                                 </div>
     </div>
-                                     <div className={"row"}>
+                        <div className={"row"}>
                                          {this.state.errorPending&&<div className="col-12 text-center text-danger">Required fields are missing.</div>}
                                 <div className="col-12 text-center  mb-2">
                                     {this.state.files.length > 0 ? (
@@ -2095,21 +2111,14 @@ let slugify = require('slugify')
                                             title={this.props.productLines?"Submit":this.props.item?"Update Product":"Add Product"}
                                             type={"submit"}
                                             loading={this.state.loading}
-                                            disabled={this.state.loading||this.state.isSubmitButtonPressed}
-
-                                        >
-                                        </GreenButton>
-
-                                        )
+                                            disabled={this.state.loading||this.state.isSubmitButtonPressed}>
+                                        </GreenButton>)
                                     ) : (
                                         <GreenButton
                                         title={this.props.productLines?"Submit":this.props.item?"Update Product":"Add Product"}
                                         type={"submit"}
                                         loading={this.state.loading}
-
-                                        disabled={this.state.loading||this.state.isSubmitButtonPressed}
-
-                                        >
+                                        disabled={this.state.loading||this.state.isSubmitButtonPressed}>
                                         </GreenButton>
 
                                     )}
@@ -2145,7 +2154,7 @@ let slugify = require('slugify')
                                 </div>
                                 <div className={"row"}>
                                     <div className={"col-12"}>
-                                        {this.state.showSubmitSite && <SiteFormNew dontCallUpdate showHeader={false}  refresh={() => this.showSubmitSite()}   />}
+                                        {this.state.showSubmitSite && <SiteFormNew dontCallUpdate showHeader={false}  refresh={(data) => this.showSubmitSite(data)}   />}
                                     </div>
                                 </div>
                             </div>

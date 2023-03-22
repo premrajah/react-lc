@@ -335,7 +335,7 @@ class SiteFormNew extends Component {
                 })
 
                 if (this.props.refresh)
-                this.props.refresh()
+                this.props.refresh(res.data.data)
 
 
                 if (this.props.setSite)

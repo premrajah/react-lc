@@ -17,6 +17,7 @@ import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox
 import TextFieldWrapper from "./ProductForm/TextField";
 import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
 import {ArrowDropUp, ArrowDropDown} from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const ArtifactManager = ({
     entityId,
@@ -121,12 +122,17 @@ const ArtifactManager = ({
     };
 
     useEffect(() => {
-        setArtifactsTmp(props.artifacts ? props.artifacts : []);
+
+        if (props.artifacts&&props.artifacts.length>0)
+        setArtifactsTmp(props.artifacts);
     }, [props.artifacts]);
 
     useEffect(() => {
         setIsLoading(false);
 
+
+        // alert("change detected")
+        // console.log(artifactsTmp)
         if (setArtifacts && artifactsTmp && artifactsTmp.length > 0) {
             setArtifacts(artifactsTmp);
         }
@@ -352,6 +358,7 @@ const ArtifactManager = ({
                             return (
                                 <React.Fragment key={artifact._key}>
                                     <div key={index} className="mt-1 mb-1 text-left pt-1 pb-1  row">
+
                                         <div className="col-10 ellipsis-end">
                                             <ArtifactIconDisplayBasedOnMimeType
                                                 artifact={artifact}
@@ -379,13 +386,14 @@ const ArtifactManager = ({
                                                     onClick={() =>
                                                         handleDeleteDocument(artifact._key)
                                                     }>
-                                                    <IndeterminateCheckBoxIcon
-                                                        style={{ opacity: "0.5" }}
-                                                        className={"text-blue"}
+                                                    <CloseIcon
+                                                        // style={{ opacity: "0.5" }}
+                                                        className=" text-danger "
                                                     />
                                                 </span>
                                             )}
                                         </div>
+
                                     </div>
                                 </React.Fragment>
                             );

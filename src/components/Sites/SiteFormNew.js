@@ -803,8 +803,6 @@ class SiteFormNew extends Component {
 
                                     
                                     
-                                    
-                                    
                                 </div>
                             </div>
                             {this.state.addExisting &&  <div className="row   ">

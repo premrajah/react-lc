@@ -87,8 +87,8 @@ class PaginationGrid extends Component {
         return (
             <>
                 {!this.props.hideSearch && (
-                    <div className="row  justify-content-center search-container  pt-3 pb-3">
-                        <div className={"col-md-12 col-12"}>
+                    <div className="row  justify-content-center search-container d-flex align-items-center  pt-3 pb-3">
+                        <div className="col-md-12 col-12 position-relative ">
                             {children}
 
 

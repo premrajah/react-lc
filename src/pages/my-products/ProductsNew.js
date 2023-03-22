@@ -962,16 +962,15 @@ try {
                                 <div className="col-md-2 btn-rows">
                                     <MenuDropdown
                                         setSelection={this.setSelection}
-                                        // initialValue={this.props.userContext.orgId}
                                         options={["Products","Service","Records","Tracked","Issues"]}
-                                        // option={"name"}
-                                        // valueKey={"_key"}
+
                                     />
                                 </div>
-                                <div className="col-md-10 btn-rows">
+                                <div className="col-md-10 d-flex flex-row">
                                     {/*<Link to="/issues" className=" btn-sm btn-gray-border me-2  ">*/}
                                     {/*    Issues*/}
                                     {/*</Link>*/}
+                                    <div className="me-2">
                                     <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
                                         <button
                                             className="btn btn-sm mt-mobile btn-gray-border"
@@ -980,6 +979,7 @@ try {
                                             Download Open Cyclecodes
                                         </button>
                                     </CustomPopover>
+                                    </div>
                                     <button
                                         className="d-none btn btn-sm btn-gray-border ms-1"
                                         onClick={() => this.toggleMultiSite()}

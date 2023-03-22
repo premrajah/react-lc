@@ -79,7 +79,7 @@ console.log(show,this.state.searchQueryChanged,this.state.filterChanged)
     render() {
         const { title, searchType, onSearch, dropDown, dropDownValues } = this.props;
         return (
-            <div className="row ">
+            <div className="row position-absolute " style={{right:0,top:0,bottom:0}}>
                 <div className="col-12 d-flex justify-content-end align-items-center position-relative">
 
                     <div onMouseEnter={()=>this.showSearchFilter(true)}

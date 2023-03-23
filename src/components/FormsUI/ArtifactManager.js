@@ -306,7 +306,7 @@ const ArtifactManager = ({
             <div className="row d-flex align-items-end mt-3 mb-2">
                 <div className="col-md-10">
                     <>
-                        <div className="row d-flex align-items-end">
+                        {!props.isArchiver &&  <div className="row d-flex align-items-end">
                             <div className="col-12 d-flex mb-2">
                                 <div className="me-3">
                                     {!isLoading ? (
@@ -331,7 +331,7 @@ const ArtifactManager = ({
                                     </Button>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                     </>
 
                     {isLinksVisible && <>
@@ -405,7 +405,7 @@ const ArtifactManager = ({
                                                         handleDeleteDocument(artifact._key);
                                                     }}
                                                     download={true}
-                                                    delete={props.isLoggedIn}
+                                                    delete={props.isLoggedIn&&!props.isArchiver}
                                                 />
                                             )}
                                             {props.showDelete && (

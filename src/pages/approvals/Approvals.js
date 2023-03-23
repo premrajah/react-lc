@@ -61,11 +61,16 @@ class Approvals extends Component {
         this.setState({
             eventToggle:!this.state.eventToggle
         })
+        // setTimeout(()=>{
+        //
+        //     this.fetchEventReleaseRequests()
+        // },100)
+
 
     }
     setSiteToggle=()=>{
         this.setState({
-            eventToggle:!this.state.eventToggle
+            siteToggle:!this.state.siteToggle
         })
 
     }
@@ -97,12 +102,12 @@ class Approvals extends Component {
 
         let url=baseUrl + "seek?name=EventRelease&relation=&offset=0&size=100&count=false&include-to=Event:any&&include-to=Org:any"
 
-        if (!this.state.toggleEvent){
-
-            // url=`${url}&or=stage%3D%3Dcompleted&or=stage%3D%3Dcancelled`
-        }else{
-            url=`${url}&or=stage%3D%3Dcompleted&or=stage%3D%3Dcancelled`
-        }
+        // if (!this.state.eventToggle){
+        //
+        //     // url=`${url}&or=stage%3D%3Dcompleted&or=stage%3D%3Dcancelled`
+        // }else{
+        //     url=`${url}&or=stage%3D%3Dcompleted&or=stage%3D%3Dcancelled`
+        // }
 
         axios.get(url).then(
             (response) => {
@@ -266,7 +271,7 @@ render() {
                                             <Tab label="Site Release " value="4" />
                                             {/*<Tab label="Rental Release " value="5" />*/}
                                             {/*<Tab label="Rental Requests " value="6" />*/}
-                                            {/*<Tab label="Event Release " value="7" />*/}
+                                            <Tab label="Event Release " value="7" />
                                         </TabList>
                                     </Box>
 
@@ -418,21 +423,33 @@ render() {
                                     </TabPanel>
                                     <TabPanel value="4">
                                         <div className={"row "} >
-                                            {/*<div className="col-12 mt-3 mb-3">*/}
-                                            {/*    <div className="col d-flex justify-content-end">*/}
-                                            {/*        <Link to="/approved" className="btn btn-sm blue-btn"*/}
-                                            {/*              style={{color: "#fff"}}>*/}
-                                            {/*           Site Release  Records*/}
-                                            {/*        </Link>*/}
-                                            {/*    </div>*/}
-                                            {/*</div>*/}
-                                            <div className={"mb-4 listing-row-border "}></div>
+                                            <div className="col-12 mt-3 mb-3">
+                                                <div className="col d-flex align-items-center justify-content-between">
+                                                    {/*<Link to="/approved" className="btn btn-sm blue-btn"*/}
+                                                    {/*      style={{color: "#fff"}}>*/}
+                                                    {/*   Site Release  Records*/}
+                                                    {/*</Link>*/}
+                                                    <div className="subtitle">{this.state.siteToggle?"Site Release Records":"Site Releases"}</div>
+                                                    <BlueSmallBtn
+                                                        onClick={this.setSiteToggle}
+                                                        title={!this.state.siteToggle?"Site Release Records":"Site Releases"}
+                                                    />
+                                                </div>
+                                            </div>
 
 
                                             {this.state.siteReleases.filter(r =>
-                                                r.Release.stage !== "complete" &&
-                                                r.Release.stage !== "cancelled" &&
-                                                r.Release.stage !== "invalidated").map((item, index) =>
+                                                // r.Release.stage !== "complete" &&
+                                                // r.Release.stage !== "cancelled" &&
+                                                // r.Release.stage !== "invalidated"
+                                                this.state.siteToggle?( r.Release.stage === "complete" ||
+                                                        r.Release.stage === "cancelled" ||
+                                                        r.Release.stage === "invalidated"):
+                                                    ( r.Release.stage !== "complete" &&
+                                                        r.Release.stage !== "cancelled"&&
+                                                        r.Release.stage !== "invalidated")
+
+                                            ).map((item, index) =>
                                                 <>
                                                 <div className="col-12"
                                                      key={item.Site_id.replace("Site/","")}
@@ -475,8 +492,6 @@ render() {
                                                     </Link>
                                                 </div>
                                             </div>
-                                            <div className={"mb-4 listing-row-border "}></div>
-
 
                                             {this.state.rentalReleases.filter(r =>
                                                 r.Release.stage !== "complete" &&
@@ -565,24 +580,28 @@ render() {
                                     <TabPanel value="7">
                                         <div className={"row"} >
                                             <div className="col-12 mt-3 mb-3">
-                                                <div className="col d-flex justify-content-end">
+                                                <div className="col d-flex align-items-center justify-content-between">
                                                     {/*<Link to="/rental-request-records" className="btn btn-sm blue-btn"*/}
                                                     {/*      style={{color: "#fff"}}>*/}
                                                     {/*    Event Release Records*/}
                                                     {/*</Link>*/}
+                                                    <div className="subtitle">{this.state.eventToggle?"Event Release Records":"Event Releases"}</div>
                                                     <BlueSmallBtn
                                                     onClick={this.setEventToggle}
-                                                    title={!this.state.eventToggle?"Event Release Records":"Event Release"}
+                                                    title={!this.state.eventToggle?"Event Release Records":"Event Releases"}
                                                     />
                                                 </div>
                                             </div>
-                                            <div className={"listing-row-border "}></div>
 
 
                                             {this.state.eventReleases.filter(r =>
-                                                r.EventRelease.stage !== "complete" &&
-                                                r.EventRelease.stage !== "cancelled" &&
-                                                r.EventRelease.stage !== "invalidated").map((item, index) =>
+                                                this.state.eventToggle?( r.EventRelease.stage === "complete" ||
+                                                r.EventRelease.stage === "cancelled" ||
+                                                r.EventRelease.stage === "invalidated"):
+                                                    ( r.EventRelease.stage !== "complete" &&
+                                                        r.EventRelease.stage !== "cancelled"&&
+                                                        r.EventRelease.stage !== "invalidated")
+                                            ).map((item, index) =>
                                                 <>
                                                     <div className="col-12"
                                                          key={item.EventRelease._key}

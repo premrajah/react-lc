@@ -4,13 +4,13 @@ import {OverlayTrigger, Popover} from "react-bootstrap";
 class CustomPopover extends React.Component {
 
 
-    constructor({HtmlText,...props}) {
+    constructor(props) {
         super(props);
     }
-    HtmlText
+    // HtmlText
 
     componentDidMount() {
-        this.HtmlText=this.props.HtmlText
+        // this.HtmlText=this.props.HtmlText
 
     }
 

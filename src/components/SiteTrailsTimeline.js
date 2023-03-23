@@ -25,6 +25,7 @@ const SiteTrailsTimeline=(props)=> {
 
     const [showMap, setShowMap] = useState(false);
     const [locations, setLocations] = useState([]);
+    const [reverseLocations, setReverseLocations] = useState([]);
     const [site, setSite] = useState(null);
     const [distLookup, setDistLookup] = useState(new Map());
 
@@ -77,6 +78,9 @@ const SiteTrailsTimeline=(props)=> {
 
 
         setLocations(locationsList)
+
+        let revLoc=locationsList.reverse()
+        setReverseLocations(revLoc)
 
     }, [props.siteTrails])
 
@@ -237,7 +241,9 @@ const SiteTrailsTimeline=(props)=> {
                                     >
                                         <p className={"text-blue text-14"}>
                                             {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes && item.site.site.geo_codes.length > 0 &&
-                                            <MapIcon onClick={() =>
+                                            <MapIcon
+                                                style={{color:`${item._relation === "located_at" ? "#27245C" : "#05AD88"}`}}
+                                                onClick={() =>
                                                 handleMapModal(item.site.site)}/>}
 
                                         </p>
@@ -275,7 +281,7 @@ const SiteTrailsTimeline=(props)=> {
                             width={"100%"}
                             height={"460px"}
                             siteId={site._key}
-                            locations={locations}
+                            locations={reverseLocations}
                         />
                     </div>}
 

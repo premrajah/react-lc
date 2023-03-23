@@ -211,7 +211,7 @@ class ListFormPage extends Component {
 
             window.scrollTo(0, 0);
 
-            if (this.state.activeStep!=2) {
+            if (this.state.activeStep!==2) {
                 if (this.handleValidationList(this.state.activeStep + 1)) {
 
                     this.setState({
@@ -293,7 +293,7 @@ class ListFormPage extends Component {
     handleBack() {
 
 
-        if ((this.state.activeStep - 1) == 0) {
+        if ((this.state.activeStep - 1) === 0) {
 
             if (this.handleValidationList(this.state.activeStep - 1)) {
 

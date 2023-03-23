@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import moment from "moment/moment";
 import MoreMenu from "../MoreMenu";
 import {Spinner} from "react-bootstrap";
+import ErrorBoundary from "../ErrorBoundary";
 
 const SitePageItem = (  props) => {
     const { key, name, address, email, contact, phone, others, itemKey, is_head_office } = props?props.item:null;
@@ -142,7 +143,7 @@ const SitePageItem = (  props) => {
     }
 
     return (
-        <>
+        <ErrorBoundary skip>
 
                <div id={props.item._key+"-site-item"} key={props.item._key+"-site-item"} className="row no-gutters site-item-list justify-content-start  mb-4 bg-white rad-8  p-3 ">
                 <div  className={`${props.smallItem?"col-md-2 p-0":"col-md-2 p-0"} col-xs-12 `}>
@@ -154,7 +155,7 @@ const SitePageItem = (  props) => {
                             <img className={`${props.smallItem?"small-image":""} img-fluid img-list rad-4`} src={`${googleApisBaseURL}staticmap?center=${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
                             &markers=color:0x212529%7Clabel:C%7C${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
                             &zoom=12&size=${props.smallItem?"110x110":"185x185"}&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
-                            :<img className={"img-fluid img-list"} src={PlaceholderImg} alt="" />}
+                            :<img className={ `${props.smallItem?"small-image":""}  img-fluid img-list`} src={PlaceholderImg} alt="" />}
 
                         </>
                     </Link>
@@ -207,7 +208,12 @@ const SitePageItem = (  props) => {
 
 
                                {props.showEdit &&
-                               <IconButton onClick={() => editSiteSelection()} > <EditIcon  fontSize="24px" /></IconButton>}
+                               <IconButton onClick={() => {
+                                   // editSiteSelection()
+
+                                   props.toggleSite()
+
+                               }} > <EditIcon  fontSize="24px" /></IconButton>}
                                {props.moreMenu&& <MoreMenu
                                    triggerCallback={(action) =>
                                        callBackResult(action)
@@ -279,7 +285,7 @@ const SitePageItem = (  props) => {
                     </div>
                 </>
             )}
-        </>
+        </ErrorBoundary>
     );
 };
 

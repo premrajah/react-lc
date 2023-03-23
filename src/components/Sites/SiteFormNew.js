@@ -19,6 +19,10 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
+import {v4 as uuid} from "uuid";
+import LinkExistingList from "../Products/LinkExistingList";
+import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 
 
 class SiteFormNew extends Component {
@@ -43,7 +47,7 @@ class SiteFormNew extends Component {
             isHeadOffice: false,
             moreDetail: false,
             isSubmitButtonPressed: false,
-            addCount: [],
+            existingItems: [],
             createNew:false,
             addExisting:false,
             searchAddress:null,
@@ -67,31 +71,32 @@ class SiteFormNew extends Component {
 
 
 
-    addCount = () => {
-        var array = this.state.addCount;
 
-        array.push(this.state.count + 1);
+    addItem=()=> {
+
+        this.setState(prevState => ({
+            existingItems: [
+                ...prevState.existingItems,
+                {
+                    index:uuid(),
+                    name: "",
+
+                }
+            ]
+        }));
+
+    }
+
+    deleteItem=(record)=> {
 
         this.setState({
-            addCount: array,
-            count: this.state.count + 1,
+            existingItems: this.state.existingItems.filter(r => r !== record)
         });
+
+
     }
-
-    subtractCount = () => {
-        if (this.state.count > 1) {
-            var array = this.state.addCount;
-
-            array.pop();
-
-            if (this.state.count > 1)
-                this.setState({
-                    addCount: array,
-                    count: this.state.count - 1,
-                });
-        }
-    }
-
+    
+    
     toggleCreateNew = () => {
 
         this.setState({
@@ -102,11 +107,19 @@ class SiteFormNew extends Component {
         });
     }
     toggleAddExisting = () => {
-
+        
         this.setState({
             addExisting: !this.state.addExisting,
             addNew: false,
         });
+        setTimeout(()=>{
+            this.setState({
+                existingItems:  this.state.showExisting?[ {index: uuid(),value:"",valueText:"",error:null}]:[]
+
+            });
+
+        },100)
+
     }
 
     toggleMapSelection = () => {
@@ -229,6 +242,20 @@ class SiteFormNew extends Component {
 
     }
 
+
+    handleChangeLinkExisting=( value,valueText,field,uId,index) =>{
+
+        let existingItems = [...this.state.existingItems];
+        existingItems[index] = {
+            value:value,valueText:valueText,
+            index:uId,
+            error:false
+        };
+        this.setState({
+            existingItems:existingItems
+        })
+
+    }
     handleSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -308,7 +335,7 @@ class SiteFormNew extends Component {
                 })
 
                 if (this.props.refresh)
-                this.props.refresh()
+                this.props.refresh(res.data.data)
 
 
                 if (this.props.setSite)
@@ -317,8 +344,8 @@ class SiteFormNew extends Component {
                 if (this.props.hide)
                     this.props.hide()
 
-                if (this.props.item&&this.props.item.site)
-                this.props.loadCurrentSite(this.props.item.site._key)
+                if (this.props.item&&this.props.item)
+                this.props.loadCurrentSite(this.props.item._key)
 
                 this.props.showSnackbar({show: true, severity: "success", message: "Site created successfully. Thanks"})
 
@@ -345,7 +372,7 @@ class SiteFormNew extends Component {
     updateSite = (event) => {
         event.preventDefault();
 
-        let item=this.props.item&&this.props.item.site
+        let item=this.props.item&&this.props.item
 
         if (!this.handleValidation()) {
             return
@@ -397,7 +424,7 @@ class SiteFormNew extends Component {
             .then(res => {
                 if (res.status === 200) {
 
-                    if (this.props.item&&this.props.item.site.parent_site&&!data.get("parent")){
+                    if (this.props.item&&this.props.parent_site&&!data.get("parent")){
 
                         //removal of parent site id
                         this.updateParentSite(data.get("parent"), res.data.data._key,item._key,true)
@@ -411,18 +438,28 @@ class SiteFormNew extends Component {
                     if (this.props.hide)
                         this.props.hide()
 
-                    if (this.props.item&&this.props.item.site)
-                        this.props.loadCurrentSite(this.props.item.site._key)
+                    if (this.props.item&&this.props.item)
+                        this.props.loadCurrentSite(this.props.item._key)
 
                 }
+
+
             })
             .catch(error => {
 
+                this.setState({
+
+                    loading:false
+                })
+
+                this.setState({isSubmitButtonPressed: false})
+                this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+                if (this.props.hide)
+                    this.props.hide()
+
             }) .finally(()=>
         {
-            this.hidePopUp()
-            this.props.refreshPage(true)
-            this.props.showSnackbar({show: true, severity: "success", message: "Site updated successfully. Thanks"})
+
 
         });
     }
@@ -486,8 +523,8 @@ class SiteFormNew extends Component {
 
             try {
                 this.setState({
-                    latitude: this.props.item.site.geo_codes[0].address_info.geometry.location.lat,
-                    longitude: this.props.item.site.geo_codes[0].address_info.geometry.location.lng,
+                    latitude: this.props.item.geo_codes[0].address_info.geometry.location.lat,
+                    longitude: this.props.item.geo_codes[0].address_info.geometry.location.lng,
                 })
             }catch (error){
 
@@ -499,16 +536,18 @@ class SiteFormNew extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
 
 
-        if (prevProps!=this.props) {
+        if (prevProps!==this.props) {
+
+            // if (!this.props.dontCallUpdate)
             this.getSubSites()
-
-
         }
     }
 
     componentDidMount() {
 
         window.scrollTo(0, 0);
+
+
         this.getSubSites()
 
 
@@ -581,10 +620,11 @@ class SiteFormNew extends Component {
 
     linkSubSites = async (event) => {
 
-        let parentId=this.props.item.site._key
-
-
         event.preventDefault();
+        event.stopPropagation()
+
+        let parentId=this.props.item._key
+
 
 
         // if (this.handleValidationSite()){
@@ -595,17 +635,46 @@ class SiteFormNew extends Component {
 
         const data = new FormData(event.target);
 
-        var arraySites = [];
+        let arraySites = [];
+        let errorFlag=false
 
-        for (let i = 0; i < this.state.addCount.length; i++) {
+        for (let i = 0; i < this.state.existingItems.length; i++) {
+            if (this.state.existingItems[i].value&&this.state.existingItems[i].value.length>0){
+
+                arraySites.push( this.state.existingItems[i].value);
+
+            }else{
+
+                errorFlag=true
+                let existingItems = this.state.existingItems;
+
+                existingItems[i].error=true
+                this.setState({
+                    existingItems:existingItems
+                })
+
+
+            }
+
+        }
+
+        if (errorFlag){
+
+            return
+        }
+
+        for (let i = 0; i < arraySites.length; i++) {
 
             await   axios
-                .post(baseUrl + "site/parent", {"parent_site_id":parentId,site_id:data.get(`site[${i}]`)}, {
-                    headers: {
-                        Authorization: "Bearer " + this.props.userDetail.token,
-                    },
-                })
+                .post(baseUrl + "site/parent", {"parent_site_id":parentId,site_id:arraySites[i]})
                 .then((res) => {
+
+                    this.setState({
+                        existingItems: [],
+                        showExisting: false,
+                    });
+                    this.props.showSnackbar({show:true,severity:"success",message:"Subsites linked successfully. Thanks"})
+
 
                     this.props.loadCurrentSite(parentId)
 
@@ -631,7 +700,7 @@ class SiteFormNew extends Component {
 
     linkSubProducts = async (event) => {
 
-        let item=this.props.item&&this.props.item.site
+        let item=this.props.item&&this.props.item
 
         event.preventDefault();
 
@@ -716,157 +785,50 @@ class SiteFormNew extends Component {
                         <form style={{ width: "100%" }} onSubmit={this.linkSubSites}>
 
                             <div className="row   ">
-                                <div className="col-12 p-0" style={{ padding: "0!important" }}>
-                                    {this.state.addCount.map((item, index) => (
-                                        <div className="row mt-2">
-                                            <div className="col-10">
+                                <div className="col-12 " style={{ padding: "0!important" }}>
 
+                                    <LinkExistingList
 
+                                        option={"Site"}
+                                        subOption={"name"}
+                                        searchKey={"name"}
+                                        valueKey={"Site"}
+                                        subValueKey={"_key"}
+                                        field={"site"}
+                                        apiUrl={baseUrl + "seek?name=Site&no_parent=true&count=false"}
+                                        filters={[this.props.item._key,...this.props.children_sites.map(item=>item._key)]}
+                                        fields={this.state.fields}
+                                        deleteItem={this.deleteItem}
+                                        handleChange={this.handleChangeLinkExisting}
+                                        existingItems={this.state.existingItems} />
+                                    
 
-                                                {/*<CustomizedSelect*/}
-                                                {/*    variant={"standard"}*/}
-
-                                                {/*    name={`site[${index}]`}*/}
-                                                {/*    // label={"Link a product"}*/}
-                                                {/*    required={true}*/}
-                                                {/*    native*/}
-                                                {/*    onChange={this.handleChange.bind(*/}
-                                                {/*        this,*/}
-                                                {/*        "site"*/}
-                                                {/*    )}*/}
-                                                {/*    inputProps={{*/}
-                                                {/*        // name: {`product[${index}]`},*/}
-                                                {/*        id: "outlined-age-native-simple",*/}
-                                                {/*    }}>*/}
-                                                {/*    <option value={null}>Select</option>*/}
-
-                                                {/*    {this.state.subSites*/}
-                                                {/*        .filter(*/}
-                                                {/*            (item) =>*/}
-                                                {/*                (item.Site._key !==*/}
-                                                {/*                    this.props.item.site._key)*/}
-                                                {/*                &&*/}
-                                                {/*                !(*/}
-                                                {/*                    this.props.item.children_sites*/}
-                                                {/*                    &&this.props.item.children_sites.filter(*/}
-                                                {/*                        (subItem) =>*/}
-                                                {/*                            subItem._key ===*/}
-                                                {/*                            item.Site._key*/}
-                                                {/*                    ).length > 0*/}
-                                                {/*                )*/}
-                                                {/*        )*/}
-
-                                                {/*        .map((item) => (*/}
-                                                {/*            <option  value={item.Site._key}>*/}
-                                                {/*                {item.Site.name}{GetParent(item)}*/}
-                                                {/*            </option>*/}
-                                                {/*        ))}*/}
-
-
-                                                {/*</CustomizedSelect>*/}
-                                                {/*{this.state.subSites.length===0&&*/}
-                                                {/*<Spinner*/}
-                                                {/*    as="span"*/}
-                                                {/*    animation="border"*/}
-                                                {/*    size="sm"*/}
-                                                {/*    role="status"*/}
-                                                {/*    aria-hidden="true"*/}
-                                                {/*    style={{color:"#07AD88"}}*/}
-                                                {/*    className={"spinner-select"}*/}
-                                                {/*/>}*/}
-                                                {/*{this.state.errorsLink["site"] && (*/}
-                                                {/*    <span className={" small"}>*/}
-                                                {/*            <span style={{ color: "red" }}>* </span>*/}
-                                                {/*        {this.state.errorsLink["site"]}*/}
-                                                {/*        </span>*/}
-                                                {/*)}*/}
-                                                <SelectArrayWrapper
-                                                    name={`site[${index}]`}
-                                                    onChange={(value) => {
-                                                        this.handleChange(value, "site")
-                                                    }}
-                                                    // label={"Link a product"}
-                                                    required={true}
-
-                                                    option={"Site"}
-                                                    subOption={"name"}
-                                                    valueKey={"Site"}
-                                                    subValueKey={"_key"}
-
-                                                    select={"Select"}
-                                                    options={this.state.subSites
-                                                        .filter(
-                                                            (item) =>
-                                                                (item.Site._key !==
-                                                                    this.props.item.site._key)
-                                                                &&
-                                                                !(
-                                                                    this.props.item.children_sites
-                                                                    &&this.props.item.children_sites.filter(
-                                                                        (subItem) =>
-                                                                            subItem._key ===
-                                                                            item.Site._key
-                                                                    ).length > 0
-                                                                )
-                                                        )}
-
-                                                    title="Select site"/>
-
-
-
-                                            </div>
-
-
-
-                                            <div
-                                                className="col-2 text-center"
-                                                style={{ display: "flex" }}>
-                                                {item > 1 && (
-                                                    <>
-                                                        {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
-
-                                                        <DeleteIcon
-                                                            classname={"click-item"}
-                                                            style={{
-                                                                color: "#ccc",
-                                                                margin: "auto",
-                                                            }}
-                                                            onClick={() => this.subtractCount()}
-                                                        />
-                                                    </>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
+                                    
+                                    
+                                    
+                                    
                                 </div>
                             </div>
-                            <div className="row   ">
-                                <div className="col-12 mt-4 p-0 ">
-                                    <span
-                                        onClick={this.addCount}
-                                        className={
-                                            "btn  click-item btn-rounded shadow  blue-btn-border"
-                                        }>
-                                         <AddIcon />
-                                        Add
-                                    </span>
+                            {this.state.addExisting &&  <div className="row   ">
+                                <div className="col-12 mt-2  ">
+                                   <div className="">
+                                        <BlueSmallBtn
+                                            onClick={this.addItem}
+                                            title={"Add"}
+                                            type="button"
+                                        >
+                                            <AddIcon/>
+                                        </BlueSmallBtn>
+                                    </div>
                                 </div>
-                            </div>
+                            </div>}
                             <div className="row    pt-2 ">
 
-                                <div className="col-12 mt-4 mobile-menu">
+                                <div className="col-12  mobile-menu">
                                     <div className="row text-center ">
                                         <div className="col-12 text-center">
-                                            {/*<button*/}
-                                            {/*    style={{ margin: "auto", width: "200px" }}*/}
-                                            {/*    type={"submit"}*/}
-                                            {/*    className={*/}
-                                            {/*        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"*/}
-                                            {/*    }>*/}
-                                            {/*    Submit*/}
-                                            {/*</button>*/}
-
-                                            {this.state.count>0 &&     <GreenButton
+                                          
+                                            {this.state.existingItems.length>0 &&     <GreenButton
                                                 title={"Submit"}
                                                 type={"submit"}
                                                 loading={this.state.loading}
@@ -889,10 +851,6 @@ class SiteFormNew extends Component {
                 <div className="row   justify-content-start mobile-menu-row   pb-3 mb-3 ">
 
 
-                    {/*link existing or new site*/}
-
-
-
                     <div className="col-12  ">
 
 
@@ -905,7 +863,7 @@ class SiteFormNew extends Component {
                                     <div className="col-12 ">
 
                                         <TextFieldWrapper
-                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.name}
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item && this.props.item&&this.props.item.name}
                                             onChange={(value) => this.handleChange(value, "name")}
                                             error={this.state.errors["name"]}
                                             name="name" title="Name"/>
@@ -916,7 +874,7 @@ class SiteFormNew extends Component {
                                     <div className="col-md-6 col-sm-12  justify-content-start align-items-center">
 
                                         <CheckboxWrapper
-                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.is_head_office}
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item && this.props.item&&this.props.item.is_head_office}
                                             onChange={(checked) => this.checkListable(checked)} color="primary"
                                             name={"isHeadOffice"} title="Head Office ?"/>
 
@@ -925,7 +883,7 @@ class SiteFormNew extends Component {
                                     <div className="col-md-6 col-sm-12">
 
                                         <TextFieldWrapper
-                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.contact}
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item && this.props.item&&this.props.item.contact}
                                             onChange={(value) => this.handleChange(value, "contact")}
                                             error={this.state.errors["contact"]}
                                             name="contact" title="Contact"/>
@@ -937,7 +895,7 @@ class SiteFormNew extends Component {
                                     <div className="col-12 ">
 
                                         <TextFieldWrapper
-                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.description}
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item && this.props.item&&this.props.item.description}
                                             onChange={(value) => this.handleChange(value, "description")}
                                             error={this.state.errors["description"]}
                                             name="description" title="Description"/>
@@ -950,7 +908,7 @@ class SiteFormNew extends Component {
 
 
                                         <TextFieldWrapper
-                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.external_reference}
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item && this.props.item&&this.props.item.external_reference}
                                             onChange={(value) => this.handleChange(value, "external_reference")}
                                             error={this.state.errors["external_reference"]}
                                             name="external_reference" title="External Reference"/>
@@ -958,37 +916,26 @@ class SiteFormNew extends Component {
 
                                     <div className="col-6 ps-1 ">
 
-                                        <SelectArrayWrapper
-                                            initialValue={this.props.edit?
-                                                this.props.item.parent_site&&this.props.item.parent_site._key:this.props.item?this.props.item.site?this.props.item.site._key:this.props.item._key:''}
+                                        <DynamicSelectArrayWrapper
+                                            onChange={(value)=>this.handleChange(value,`parent`)}
+                                            api={""}
+                                            error={this.state.errors[`parent`]}
+                                            name={`parent`}
+                                            // options={this.props.siteList}
+                                            apiUrl={baseUrl+"seek?name=Site&no_parent=true&count=false"}
                                             option={"Site"}
                                             subOption={"name"}
+                                            searchKey={"name"}
                                             valueKey={"Site"}
                                             subValueKey={"_key"}
-                                            error={this.state.errors["parent"]}
-                                            onChange={(value) => {
-                                                this.handleChange(value, "parent")
-                                            }}
-                                            select={"Select"}
-                                            options={this.state.subSites
-                                                .filter(
-                                                    (item) =>
-                                                        !(this.props.edit&&item.Site._key ==
-                                                            this.props.item.site._key)
-                                                )
-                                            .filter(
-                                                (item) =>
+                                            title="Select parent site/address"
+                                            details="Select product’s location from the existing sites or add new address below"
+                                            initialValue={this.props.parent_site&&this.props.parent_site._key}
+                                            initialValueTextbox={this.props.parent_site&&this.props.parent_site.name}
+                                            filterData={this.props.item?[this.props.item._key]:[]}
 
-                                                    !(
-                                                        this.props.item&&this.props.item.children_sites
-                                                        &&this.props.item.children_sites.filter(
-                                                            (subItem) =>
-                                                                subItem._key ===
-                                                                item.Site._key
-                                                        ).length > 0
-                                                    )
-                                            )}
-                                            name={"parent"} title="Select parent site/address"/>
+                                        />
+
 
                                     </div>
                                 </div>
@@ -1004,7 +951,7 @@ class SiteFormNew extends Component {
 
                                                 <PhoneInput
 
-                                                    value={this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.phone}
+                                                    value={this.props.item&&this.props.item && this.props.item&&this.props.item.phone}
                                                     onChange={this.handleChange.bind(this, "phone")}
                                                     inputClass={this.state.phoneNumberInValid ? "is-invalid" : ""}
                                                     inputProps={{
@@ -1026,7 +973,7 @@ class SiteFormNew extends Component {
 
                                                 <TextFieldWrapper
 
-                                                    initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.email}
+                                                    initialValue={this.props.edit&&this.props.item&&this.props.item && this.props.item&&this.props.item.email}
                                                     onChange={(value) => this.handleChange(value, "email")}
                                                     error={this.state.errors["email"]}
                                                     name="email" title="Email"/>
@@ -1042,7 +989,7 @@ class SiteFormNew extends Component {
 
                                         <TextFieldWrapper
                                             type={this.state.showAddressField ? "text" : "hidden"}
-                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.address}
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item && this.props.item&&this.props.item.address}
                                             onChange={(value) => this.handleChange(value, "address")}
                                             error={this.state.errors["address"]}
                                             value={this.state.fields["address"] ? this.state.fields["address"] : this.state.searchAddress ? this.state.searchAddress : null}
@@ -1058,7 +1005,7 @@ class SiteFormNew extends Component {
                                         {this.state.showMapSelection &&
 
                                         <SearchPlaceAutocomplete
-                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site}
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item}
                                             onChange={(value) => this.handleSearchAddress(value)}
                                             error={this.state.errors["address"]}
                                         />
@@ -1079,7 +1026,7 @@ class SiteFormNew extends Component {
                                     <div className="col-12">
 
                                         <TextFieldWrapper
-                                            initialValue={this.props.edit&&this.props.item&&this.props.item.site && this.props.item&&this.props.item.site.others}
+                                            initialValue={this.props.edit&&this.props.item&&this.props.item && this.props.item&&this.props.item.others}
                                             onChange={(value) => this.handleChange(value, "other")}
                                             error={this.state.errors["description"]}
                                             name="other" title="Other"/>
@@ -1094,7 +1041,7 @@ class SiteFormNew extends Component {
                                     <div className="col-12 mt-4 mb-2">
 
                                         <BlueButton
-                                            title={this.props.item&&this.props.item.site ? "Update Site" : "Add Site"}
+                                            title={this.props.item&&this.props.item ? "Update Site" : "Add Site"}
                                             type={"submit"}
 
                                             disabled={this.state.isSubmitButtonPressed}

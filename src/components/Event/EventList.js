@@ -1,17 +1,10 @@
 import * as React from 'react';
 import {Component} from 'react';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import {fetchErrorMessage, getInitials, getTimeFormat} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, getTimeFormat} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import {baseUrl, checkImage, RECUR_UNITS} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
-import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import {Close, Delete, Done, Edit, FactCheck} from "@mui/icons-material";
 import EventForm from "./EventForm";
 import axios from "axios";
 import EventStatus from "./EventStatus";
@@ -19,25 +12,17 @@ import GreenButton from "../FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import CustomPopover from "../FormsUI/CustomPopover";
 import SubproductItem from "../Products/Item/SubproductItem";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import GrayBorderBtn from "../FormsUI/Buttons/GrayBorderBtn";
-import {CSVLink} from "react-csv";
 import DownloadIcon from "@mui/icons-material/GetApp";
 
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 import moment from "moment";
-import {Spinner} from "react-bootstrap";
 import {createEvents} from "ics";
-import MoreMenu from "../MoreMenu";
-import CustomMoreMenu from "../FormsUI/CustomMoreMenu";
-import SiteReleaseDialog from "../Sites/SiteReleaseDialog";
 import EventReleaseDialog from "./EventReleaseDialog";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 import EventItem from "./EventItem";
@@ -330,7 +315,8 @@ class EventList extends Component {
 
               let unit=event.recur.unit==="DAY"?"DAILY":event.recur.unit==="WEEK"?"WEEKLY":event.recur.unit==="MONTH"?"MONTHLY": event.recur.unit==="YEAR"?"YEARLY":""
 
-              return `FREQ=${unit};INTERVAL=${event.recur.value}`
+
+              return `FREQ=${unit};INTERVAL=${event.recur.value};UNTIL=${moment(event.recur_until_epoch_ms).format("YYYYMMDD")}`
 
           }else{
               return ""
@@ -372,7 +358,9 @@ class EventList extends Component {
                     title:  event.title,
                     description:  event.description,
                     categories:[event.process],
-                    recurrenceRule:this.getRule(event)
+                    recurrenceRule:this.getRule(event),
+                    // end:[moment(event.recur_until_epoch_ms).toDate().getFullYear(), moment(event.recur_until_epoch_ms).toDate().getMonth()+1, moment(event.recur_until_epoch_ms).toDate().getDate(), 9, 0],
+
                     // url: i.url
                 })
             })
@@ -556,113 +544,11 @@ class EventList extends Component {
 
                 <>
                     <EventItem
-
-
                         item={item}
                         smallView={this.props.smallView}
                         showEventPopup={()=>this.showEventPopup(item)}
-                        // showEditEventPopup={(dateChange)=>
-                        // {
-                        //      alert(dateChange+" edit event")
-                        //     this.showEditEventPopup(item,dateChange)
-                        // }}
-                        //
-                        // showStageEventPopup={(e)=>{
-                        //     e.stopPropagation()
-                        //     e.preventDefault()
-                        //     this.showStageEventPopup(item.event._key)
-                        // }}
-                        //
-                        // toggleDelete={(e)=>{
-                        //     e.stopPropagation()
-                        //     e.preventDefault()
-                        //     this.toggleDelete(item.event._key)
-                        // }}
                         triggerCallback={(action,dateChange) => this.menuAction(action,dateChange)}
                     />
-                    {/*<ListItem className={`mb-2 bg-white*/}
-                    {/* ${item.event.stage !=="resolved"?"new-event":"past-event"}`}*/}
-                    {/*          onClick={()=>this.showEventPopup(item)} alignItems="flex-start">*/}
-                    {/*    {!this.props.smallView &&*/}
-                    {/*    <ListItemAvatar>*/}
-                    {/*        <Avatar className={`${item.event.stage==='resolved'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />*/}
-                    {/*    </ListItemAvatar>}*/}
-                    {/*    <ListItemText*/}
-                    {/*        className="title-bold"*/}
-                    {/*        primary={*/}
-                    {/*            item.event.stage==="resolved"?<del>{item.event.title}</del>:*/}
-                    {/*                    item.event.title*/}
-                    {/*            }*/}
-
-                    {/*        secondary={*/}
-                    {/*            <React.Fragment>*/}
-                    {/*                <Typography*/}
-                    {/*                    sx={{ display: 'inline' }}*/}
-                    {/*                    component="span"*/}
-                    {/*                    variant="body2"*/}
-                    {/*                    color="text.primary"*/}
-                    {/*                >*/}
-                    {/*                   <span className="text-capitalize"> {item.event.process}, {item.event.stage}</span>*/}
-                    {/*                </Typography>*/}
-                    {/*                <div className="mb-0">*/}
-                    {/*                    {item.event.description}*/}
-
-                    {/*                </div>*/}
-                    {/*                <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>*/}
-                    {/*                <div className="d-flex  flex-column right-btn-auto">*/}
-                    {/*                <CustomMoreMenu*/}
-
-                    {/*                    actions={[*/}
-                    {/*                        {label:"Edit",value:"edit",data: item},*/}
-                    {/*                        {label:"Update Stage",value:"update",data:item.event._key},*/}
-                    {/*                        {label:"Release",value:"release",data:item},*/}
-                    {/*                        {label:"Delete",value:"delete",data:item.event._key},*/}
-
-                    {/*                    ] }*/}
-                    {/*                    triggerCallback={(action) => this.menuAction(action)}*/}
-                    {/*                />*/}
-                    {/*                </div>*/}
-                    {/*                {item.event.stage!=='resolved'   &&*/}
-                    {/*                <div className="d-flex d-none flex-column right-btn-auto">*/}
-                    {/*                        /!*{item.event.resolution_epoch_ms > Date.now() &&*!/*/}
-                    {/*                        <CustomPopover text={"Edit"}>*/}
-                    {/*                            <ActionIconBtn*/}
-                    {/*                    size="small"*/}
-
-                    {/*                    onClick={(e)=>{*/}
-                    {/*                        e.stopPropagation()*/}
-                    {/*                        e.preventDefault()*/}
-                    {/*                       this.showEditEventPopup(item)*/}
-                    {/*                    }}><Edit /></ActionIconBtn>*/}
-                    {/*                        </CustomPopover>*/}
-                    {/*                            /!*}*!/*/}
-                    {/*                        <CustomPopover text={"Update Stage"}>*/}
-                    {/*                <ActionIconBtn*/}
-                    {/*                    size="small"*/}
-
-                    {/*                onClick={(e)=>{*/}
-                    {/*                e.stopPropagation()*/}
-                    {/*                e.preventDefault()*/}
-                    {/*                this.showStageEventPopup(item.event._key)*/}
-                    {/*            }}><FactCheck/>*/}
-                    {/*            </ActionIconBtn>*/}
-                    {/*                        </CustomPopover>*/}
-                    {/*                        <CustomPopover text={"Delete"}>*/}
-                    {/*                        <ActionIconBtn*/}
-                    {/*                            size="small"*/}
-                    {/*                            onClick={(e)=>{*/}
-                    {/*                                e.stopPropagation()*/}
-                    {/*                                e.preventDefault()*/}
-                    {/*                                this.toggleDelete(item.event._key)*/}
-                    {/*                            }}><Close/>*/}
-                    {/*                        </ActionIconBtn>*/}
-                    {/*                        </CustomPopover>*/}
-                    {/*                    </div>}*/}
-
-                    {/*            </React.Fragment>*/}
-                    {/*        }*/}
-                    {/*    />*/}
-                    {/*</ListItem>*/}
 
                 </>
             )}
@@ -862,7 +748,7 @@ class EventList extends Component {
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
 
-                                                {this.state.selectedEvent.event.recur.value} {RECUR_UNITS.find(item=> item.key==this.state.selectedEvent.event.recur.unit).value}
+                                                {this.state.selectedEvent.event.recur.value} {RECUR_UNITS.find(item=> item.key===this.state.selectedEvent.event.recur.unit).value}
                                             </p>
                                         </div>}
 
@@ -1124,18 +1010,16 @@ class EventList extends Component {
                                 <div className="d-flex justify-content-center col-6">
 
 
-                                    <BlueSmallBtn loading={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")}
-                                                  disabled={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")} title={"Download Calendar"} onClick={()=>{
-
+                                    <BlueSmallBtn
+                                        loading={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")}
+                                        disabled={this.state.loadingEventsDownload&&(this.state.downloadType==="ics")} title={"Download Calendar"}
+                                        onClick={()=>{
                                         this.setState({
                                             events:[]
                                         })
-
                                         if (this.state.startDate&&this.state.endDate){
                                             this.getEvents(0,"ics");
                                         }else{
-
-
                                         }
 
                                     }

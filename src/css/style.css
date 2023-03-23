@@ -4000,6 +4000,7 @@ input:focus {
     position: absolute;
     right: 10px;
     top: 0px;
+    z-index: 1;
 }
 
 .message-row {
@@ -4422,8 +4423,8 @@ select option {
     z-index: 11111 !important;
 }
 .small-log-view {
-    height: 320px;
-    overflow-y: scroll !important;
+    /*height: 320px;*/
+    /*overflow-y: scroll !important;*/
 }
 .past-event {
     /*background: #eee !important;*/
@@ -4912,4 +4913,30 @@ select option {
 }
 .rbc-big-calender>div{
     border-radius: 4px;
+}
+ul,ol {
+    padding-left: 20px;
+    /*     list-style-type: none; */
+}
+
+.min-vh-80 {
+    min-height: 80vh !important;
+}
+.text-48{
+    font-size: 48px!important;
+
+}
+
+/*react image gallery height issue */
+.image-gallery-slides .image-gallery-slide{
+    width: 100%!important;
+    height: 100%!important;
+
+}
+.image-gallery-slides{
+    width: 100%; /*width you want*/
+    height: 50vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
 }

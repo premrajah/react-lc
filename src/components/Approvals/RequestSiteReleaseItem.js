@@ -359,18 +359,18 @@ class RequestSiteReleaseItem extends Component {
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "cancelled"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "rejected"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "declined"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "progress"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "complete"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
-                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                             }>
 
 
@@ -497,7 +497,7 @@ class RequestSiteReleaseItem extends Component {
                                                         onClick={this.actionSubmit}
                                                        fullWidth
                                                         // className={
-                                                        //     "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
+                                                        //     "shadow-sm me-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
                                                         // }
                                                         title={"Yes"}
                                                         type={"submit"}>
@@ -512,7 +512,7 @@ class RequestSiteReleaseItem extends Component {
                                                         title={"Cancel"}
                                                         onClick={this.togglePopUpInitiateAction}
                                                         // className={
-                                                        //     "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
+                                                        //     "shadow-sm me-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
                                                         // }
                                                     >
 

@@ -17,6 +17,7 @@ class CompanyInfo extends Component {
                     pageTitle="Company Info"
                     subTitle="Add and change your company details here"
                 />
+
                 <CompanyDetails showImage />
             </div>
         );

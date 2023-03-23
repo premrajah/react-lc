@@ -476,7 +476,7 @@ class MyCampaigns extends Component {
 
 
                     for (let i=0;i<mapData.length;i++){
-                        let site=sites.find((site)=>site.product_id.replace("Product/","")==mapData[i]._key)
+                        let site=sites.find((site)=>site.product_id.replace("Product/","")===mapData[i]._key)
 
                         mapData[i].site=site.site
 
@@ -541,10 +541,10 @@ class MyCampaigns extends Component {
 
                 <div className="wrapper">
 
-                    <RightSidebar heading={this.state.campaignMode ==1? "Create Campaign":this.state.campaignMode ==2?"Campaign Details":"Edit Campaign"} toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
+                    <RightSidebar heading={this.state.campaignMode ===1? "Create Campaign":this.state.campaignMode ===2?"Campaign Details":"Edit Campaign"} toggleOpen={()=>this.toggleRightBar()} open={this.state.toggleBar} width={"70%"}>
 <>
 
-                        {this.state.campaignMode ==1 &&
+                        {this.state.campaignMode ===1 &&
                         <CreateCampaign
                             draft
                             refreshData={
@@ -557,7 +557,7 @@ class MyCampaigns extends Component {
 
                             }} />
                         }
-                        {this.state.campaignMode ==3 && this.state.selectedItem&&
+                        {this.state.campaignMode ===3 && this.state.selectedItem&&
                         <CreateCampaign
 
                             item={this.state.selectedItem}
@@ -570,7 +570,7 @@ class MyCampaigns extends Component {
                                                 }}
                         />}
 
-                        {this.state.campaignMode ==2
+                        {this.state.campaignMode ===2
                         && this.state.editItem &&
                         <CampaignDetailContent toggleEditMode={this.toggleEditMode} item={this.state.editItem} />}
 

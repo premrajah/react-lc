@@ -111,7 +111,7 @@ class AutocompleteCustom extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props!=prevProps){
+        if (this.props!==prevProps){
             if (this.props.initialOrgId) {
 
                 this.setState({
@@ -172,7 +172,7 @@ class AutocompleteCustom extends Component {
                     for (let i = 0; i < responseAll.orgs.length; i++) {
 
                         if (this.props.filterOrgs&&this.props.filterOrgs.length>0
-                            &&this.props.filterOrgs.find((item)=> item._id==responseAll.orgs[i]._id)){
+                            &&this.props.filterOrgs.find((item)=> item._id===responseAll.orgs[i]._id)){
 
                          continue
                         }

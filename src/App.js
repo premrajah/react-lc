@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import "animate.css";
 import "./css/style.css";
 import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";
@@ -92,6 +91,7 @@ import MyDiary from "./pages/diary/MyDiary";
 import RentalReleaseRecords from "./pages/approvals/RentalReleaseRecords";
 import PromptLoginRoute from "./Util/PromptLoginRoute";
 import ProductsCondensedView from "./pages/my-products/ProductsCondensedView";
+import ProductRecords from "./pages/my-products/ProductRecords";
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -168,6 +168,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/issues" component={Issues} />
                         <LoggedInRoute exact path="/issue/:issueKey" component={IssueDetail} />
                         <LoggedInRoute exact path="/product-archive" component={ProductArchive} />
+                        <LoggedInRoute exact path="/product-records" component={ProductRecords} />
+
                         <LoggedInRoute exact path="/product-tracked" component={TrackedProducts} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/my-cycles" component={MyCycles} />

@@ -161,7 +161,7 @@ class MarketplaceResourceItem extends Component {
                                             Available: <span className="text-bold">{moment(this.props.item.available_from_epoch_ms).format("DD MMM YYYY")} - {moment(this.props.item.expire_after_epoch_ms).format("DD MMM YYYY")}</span>
                                         </span>
                                         <p className={"d-none  status text-right"}>
-                                <span className={this.props.item.stage!="inactive"?" active text-capitlize":"text-capitlize waiting "}>
+                                <span className={this.props.item.stage!=="inactive"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.stage}
                                 </span>
                                         </p>

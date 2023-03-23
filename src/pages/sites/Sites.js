@@ -244,7 +244,7 @@ class Sites extends Component {
 
     clearList = () => {
 
-        setTimeout(() => {
+
 
         this.setState({
             offset:0,
@@ -252,7 +252,7 @@ class Sites extends Component {
             lastPageReached:false,
             loadingResults: false,
         })
-        },250)
+
     };
 
     loadProductsWithoutParentPageWise=()=>{
@@ -289,13 +289,16 @@ class Sites extends Component {
 
     }
 
-    toggleSite=(refresh) =>{
+    toggleSite=(refresh,siteItem) =>{
+
+
         if (refresh){
 
             this.loadSitesWithoutParentPageWise({reset:true})
         }
 
         this.setState({
+            editSiteItem:siteItem,
             showCreateSite: !this.state.showCreateSite,
         });
     }
@@ -368,7 +371,12 @@ class Sites extends Component {
                         {this.state.items&&this.state.items
                             .map((site, index) =>
                             <React.Fragment key={index}>
-                                <SitePageItem  showEdit={true} item={site.Site}/>
+                                <SitePageItem
+                                    showEdit={true} item={site.Site}
+                                    toggleSite={()=> {
+
+                                        this.toggleSite(false,site.Site); } }
+                                />
                                 {/*<SiteCondensedView site={site.Site} index={index} />*/}
                             </React.Fragment>
                         )}
@@ -402,11 +410,17 @@ class Sites extends Component {
                     size={"sm"}
                     hide={this.toggleSite}
                     show={this.state.showCreateSite}
-                    heading={"Add site"}>
+                    heading={this.state.editSiteItem?"Edit Site":"Add site"}>
                     <>
                         {this.state.showCreateSite && <div className="col-12 ">
 
-                            <SiteFormNew refresh={()=>this.toggleSite(true)} />
+                            <SiteFormNew
+
+
+                                edit={this.state.editSiteItem?true:null}
+                                hide={()=>this.toggleSite(true,null)}
+                                 item={this.state.editSiteItem}
+                                refresh={()=>this.toggleSite(true)} />
                         </div>}
                     </>
                 </GlobalDialog>

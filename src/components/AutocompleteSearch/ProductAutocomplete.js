@@ -1,20 +1,11 @@
-import React, { Component, Fragment } from "react";
+import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
 import "./autocomplete-custom.css";
-import { baseUrl } from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import CompaniesHouseLogo from "../../img/hmrc.png";
 import LoopcycleLogo from '../../img/logo-small.png';
 import PencilIcon from '@mui/icons-material/Edit';
-import IconBtn from "../FormsUI/Buttons/IconBtn";
-import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
-import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
-import PhoneInput from "react-phone-input-2";
-import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 import {Spinner} from "react-bootstrap";
 
 class ProductAutocomplete extends Component {
@@ -47,6 +38,7 @@ class ProductAutocomplete extends Component {
             newCompany:false,
             fields: {},
             errors: {},
+            value:null
         };
     }
     toggleCompanyCreateForm=(e)=> {
@@ -74,6 +66,9 @@ class ProductAutocomplete extends Component {
 
     componentDidMount() {
 
+        console.log("this.props.filter")
+
+        console.log(this.props.filterData)
         if (this.props.initialOrgId){
 
             this.setState({
@@ -135,19 +130,19 @@ class ProductAutocomplete extends Component {
 
                 let responseAll = response.data.data;
 
+                // this.setState({
+                //     orgs: responseAll,
+                // });
+                //
+                let products = responseAll;
+                //
+                //
+                // this.setState({
+                //     orgNames: companies,
+                // });
+
                 this.setState({
-                    orgs: responseAll,
-                });
-
-                let companies = responseAll;
-
-
-                this.setState({
-                    orgNames: companies,
-                });
-
-                this.setState({
-                    filteredSuggestions: companies,
+                    filteredSuggestions: products.filter(product=> !this.props.filterData.find(item=>product._key===item)),
                 });
                 this.setState({
                     activeSuggestion: 0,
@@ -193,60 +188,6 @@ class ProductAutocomplete extends Component {
 
     }
 
-    handleSubmitCompany = (event) => {
-
-
-        let parentId;
-
-        if (!this.handleValidation()) {
-            return
-        }
-
-        this.setState({
-            btnLoading: true,
-        });
-
-
-
-             const   name= this.state.fields["name"]
-             const  email=this.state.fields["email"]
-
-
-        this.setState({isSubmitButtonPressed: true})
-
-        // return false
-        axios
-                .get(baseUrl + "org/name?name="+name+"&email="+email)
-            .then((res) => {
-
-                this.setState({
-                    activeSuggestion: 0,
-                    filteredSuggestions: [],
-                    showSuggestions: false,
-                    userInput:  res.data.data.name,
-                    selected:true,
-                    image:LoopcycleLogo,
-                    showCompanyCreateForm:false,
-                    newCompany:false,
-
-                });
-
-                this.props.selectedCompany({
-                    name: res.data.data.name,
-                    company: null,
-                    org: res.data.data._key,
-
-                });
-
-
-            })
-            .catch((error) => {
-                this.setState({isSubmitButtonPressed: false})
-            });
-
-
-    };
-
     onChange = (e) => {
 
         const { suggestions } = this.props;
@@ -278,11 +219,20 @@ class ProductAutocomplete extends Component {
 
         });
 
-        this.props.selectedProduct({
-            name: e.currentTarget.dataset.name,
-            key: e.currentTarget.dataset.key,
 
-        });
+        if (this.props.selectedProduct){
+            this.props.selectedProduct({
+                name: e.currentTarget.dataset.name,
+                key: e.currentTarget.dataset.key,
+
+            });
+        }
+
+        if (this.props.name){
+            this.setState({
+                value:e.currentTarget.dataset.key
+            })
+        }
 
         }catch (e){
             console.log(e)
@@ -400,6 +350,8 @@ class ProductAutocomplete extends Component {
 
                 <div className="position-relative">
 
+
+                    {this.props.name&&<input type="hidden"  value={this.state.value} name={this.props.name?this.props.name:""}/>}
                 <input
 
                     className={`${this.state.selected&&"d-none "} custom-input `}
@@ -409,6 +361,7 @@ class ProductAutocomplete extends Component {
                     autoComplete={"new-password"}
                     placeholder={"Product (Type your product name here)"}
                     ref="itemInput"
+
 
                 />
 

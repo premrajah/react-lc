@@ -13,6 +13,7 @@ import Layout from "../../components/Layout/Layout";
 import PaginationLayout from "../../components/IntersectionOserver/PaginationLayout";
 import {createSeekURL, seekAxiosGet} from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
+import CustomPopover from "../../components/FormsUI/CustomPopover";
 
 class ProductArchive extends Component {
 
@@ -223,7 +224,7 @@ class ProductArchive extends Component {
 
         // let url = createSeekURL("Product&relation=service_agent_for", true, true, null, null,
         //     this.filters, "AND")
-        let url = `${baseUrl}seek?name=Product&relation=past_owner&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
+        let url = `${baseUrl}seek?name=Product&relation=archived&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
 
         // let url = `${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=true&include-to=Site:located_at`;
 
@@ -259,7 +260,7 @@ class ProductArchive extends Component {
         let newOffset = this.state.offset;
         // let url = createSeekURL("Product&relation=service_agent_for", true, false, data.reset?0:this.state.offset, this.state.pageSize, this.filters, "AND","")
 
-        let url = `${baseUrl}seek?name=Product&relation=past_owner&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at`;
+        let url = `${baseUrl}seek?name=Product&relation=archived&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at`;
 
 
         this.filters.forEach((item) => {
@@ -314,8 +315,8 @@ class ProductArchive extends Component {
                 <div className="container  pb-4 pt-4">
                         <PageHeader
                             pageIcon={ArchiveIcon}
-                            pageTitle="Product Record"
-                            subTitle="Your previously owned products"
+                            pageTitle="Product Archive"
+                            subTitle="Your archived products"
                             // bottomLine={<hr />}
                         />
 
@@ -328,6 +329,18 @@ class ProductArchive extends Component {
                                 <Link to="/my-products" className="btn btn-sm btn-gray-border me-2">
                                     Products
                                 </Link>
+
+                                <Link
+                                    to="/product-records"
+                                    className=" btn-sm btn-gray-border  me-2">
+                                    <CustomPopover
+                                        text={
+                                            "All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "
+                                        }>
+                                        Records
+                                    </CustomPopover>
+                                </Link>
+
 
                                 <Link to="/product-tracked" className="btn btn-sm btn-gray-border me-2">
                                     Tracked
@@ -357,7 +370,7 @@ class ProductArchive extends Component {
 
                                 <ErrorBoundary>
                                 <ProductItem
-                                    toProvenance={true}
+                                    toProvenance={false}
                                     goToLink={true}
                                     delete={false}
                                     edit={true}

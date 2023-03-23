@@ -37,8 +37,8 @@ let productProperties=[
     {field:"brand",required:true},
     {field:"model",required:false},
     {field:"serial",required:false},
-    {field:"sku",required:false},
-    {field:"upc",required:false},
+    // {field:"sku",required:false},
+    // {field:"upc",required:false},
     {field:"part_no",required:false},
 
 
@@ -47,8 +47,9 @@ let productProperties=[
     {field:"line",required:false},
     {field:"is_listable",required:false},
     {field:"power_supply",required:false},
-
     {field:"energy_rating",required:false},
+    {field:"gross_weight_kgs",required:false},
+    {field:"embodied_carbon_kgs",required:false},
 ]
 
 let siteProperties=[
@@ -149,7 +150,7 @@ const UploadMultiSiteOrProduct = (props) => {
 
        setErrors(result.errors);
 
-        // console.log(result)
+
         return result.formIsValid;
     }
 
@@ -248,7 +249,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
-                    console.log("length issue -",headers.length, productProperties[i].length)
+
                     return
                 }
                 if (!(productProperties[i].field.toLowerCase() === headers[i].toLowerCase())) {
@@ -261,7 +262,7 @@ const UploadMultiSiteOrProduct = (props) => {
                     }
                     setErrors(errorsFound)
                     errorFound = true
-                    console.log("field issue -",productProperties[i].field.toLowerCase() , headers[i].toLowerCase())
+
                     return
                 }
 
@@ -508,13 +509,19 @@ const UploadMultiSiteOrProduct = (props) => {
                     "brand": listItem.brand,
                     "model": listItem.model,
                     "serial": listItem.serial,
-                    "sku": listItem.sku,
-                    "upc": listItem.upc,
+                    // "sku": listItem.sku,
+                    // "upc": listItem.upc,
                     "part_no": listItem.part_no,
                     "line": listItem.line,
                     "is_listable": listItem.is_listable.toLowerCase()==="true"?true:false,
                     // "is_manufacturer": listItem.is_manufacturer.toLowerCase()==="true"?true:false,
                     "power_supply": listItem.power_supply?listItem.power_supply.toLowerCase():null,
+
+                    "gross_weight_kgs": listItem.gross_weight_kgs?listItem.gross_weight_kgs:null,
+                    "embodied_carbon_kgs": listItem.embodied_carbon_kgs?listItem.embodied_carbon_kgs:null,
+
+
+
                 }
             }
 

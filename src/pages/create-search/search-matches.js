@@ -69,7 +69,7 @@ class SearchMatches extends Component {
                     var matches = [];
 
                     for (var i = 0; i < responseAll.length; i++) {
-                        if (responseAll[i].listing.stage=="active") {
+                        if (responseAll[i].listing.stage==="active") {
                             matches.push({listing: responseAll[i]});
                         }
                     }
@@ -198,7 +198,7 @@ class SearchMatches extends Component {
                                     <TabPanel value="1">
                                         <div className="row mt-3">
                                             <div className="col-12 ">
-                                        {this.state.listingsForSearch.length==0&&
+                                        {this.state.listingsForSearch.length===0&&
                                         <div className="row text-center">
                                             <div className={"col-12 pt-4"}>
                                                 No results founds</div> </div>
@@ -227,7 +227,7 @@ class SearchMatches extends Component {
                                     {!this.props.hideConfirmed &&  <TabPanel value="2">
                                         <div className="row mt-3">
                                             <div className="col-12 ">
-                                        {this.state.matches.length==0&&
+                                        {this.state.matches.length===0&&
                                         <div className="row text-center">
                                             <div className={"col-12 pt-4"}>
                                             No results founds</div> </div>

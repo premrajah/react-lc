@@ -101,7 +101,7 @@ class EventDetail extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-            if (this.props!=prevProps){
+            if (this.props!==prevProps){
                 this.getEvent(this.props.eventId)
             }
     }
@@ -200,7 +200,7 @@ class EventDetail extends Component {
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
 
-                                                {this.state.event.event.recur.value} {RECUR_UNITS.find(item=> item.key==this.state.event.event.recur.unit).value}
+                                                {this.state.event.event.recur.value} {RECUR_UNITS.find(item=> item.key===this.state.event.event.recur.unit).value}
                                             </p>
                                         </div>}
 

@@ -20,7 +20,7 @@ class SubProductsTab extends Component {
 
 
 
-                {this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id&&
+                {this.props.isOwner&&
 
                 <div  className={
                     " mt-4  text-right"}>
@@ -54,7 +54,7 @@ class SubProductsTab extends Component {
                                 <SubproductItem
                                     smallImage={true}
                                     noLinking={this.props.noLinking}
-                                    hideMoreMenu={this.props.userDetail&&this.props.userDetail.orgId===this.props.item.org._id?false:true}
+                                    hideMoreMenu={!this.props.isOwner}
                                     key={index}
                                     item={subItem}
                                     parentId={this.props.item.product._key}

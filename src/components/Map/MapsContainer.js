@@ -69,7 +69,7 @@ class MapsContainer extends Component {
 
 componentDidUpdate(prevProps, prevState, snapshot) {
 
-     if (prevProps!=this.props){
+     if (prevProps!==this.props){
 
 
          setTimeout(()=> {
@@ -151,14 +151,14 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
             >
 
-                {this.props.locations.reverse().map((item)=>
+                {this.props.locations.map((item,index)=>
 
 
                  <Marker
                      // label={"som label"}
                     onClick={this.onMarkerClick}
                   icon={{
-                      url :item.isCenter?"/icon/blue-marker.png":"/icon/green-marker.png",
+                      url :(index+1)===this.props.locations.length?"/icon/blue-marker.png":"/icon/green-marker.png",
                       anchor: new this.props.google.maps.Point(25,25),
                       scaledSize: new this.props.google.maps.Size(50,50)
 

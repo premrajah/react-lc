@@ -14,6 +14,7 @@ import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import CustomPopover from "../FormsUI/CustomPopover";
 import CustomMoreMenu from "../FormsUI/CustomMoreMenu";
+import ErrorBoundary from "../ErrorBoundary";
 
 class EventItem extends Component {
         constructor(props) {
@@ -57,7 +58,7 @@ class EventItem extends Component {
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-          if (this.props!=prevProps){
+          if (this.props!==prevProps){
 
           }
     }
@@ -106,24 +107,25 @@ class EventItem extends Component {
 
                     if (data.ownership_context) {
 
-                        // if (data.ownership_context["is_owner"]) {
-                        //
-                        //
-                        //     actions.push({label:"Release",value:"release",data:this.props.item})
-                        // }
-                        // if (data.ownership_context["is_event_for"]) {
-                        //
-                        //
-                        //     actions.push({label:"Release",value:"release",data:this.props.item})
-                        // }
-                        // if (data.ownership_context["is_action_for"]) {
-                        //
-                        //
-                        //     actions.push({label:"Release",value:"release",data:this.props.item})
-                        // }
+                        if (data.ownership_context["is_owner"]) {
+
+
+                            actions.push({label:"Release",value:"release",data:this.props.item})
+                            actions.push(  {label:"Delete",value:"delete",data:this.props.item.event._key})
+                        }
+                        if (data.ownership_context["is_event_for"]) {
+
+
+                            actions.push({label:"Release",value:"release",data:this.props.item})
+                        }
+                        if (data.ownership_context["is_action_for"]) {
+
+
+                            actions.push({label:"Release",value:"release",data:this.props.item})
+                        }
                     }
 
-                    actions.push(  {label:"Delete",value:"delete",data:this.props.item.event._key})
+
                     this.setState({
                         actions:actions
                     })
@@ -139,7 +141,7 @@ class EventItem extends Component {
 
           const {item}=this.props
 
-            return <>
+            return <ErrorBoundary skip>
                     <ListItem className={`mb-2 bg-white ${item.event.stage !=="resolved"?"new-event":"past-event"}`}
                               onClick={this.props.showEventPopup} alignItems="flex-start">
                         {!this.props.smallView &&
@@ -169,10 +171,10 @@ class EventItem extends Component {
                                     </div>
                                     <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
                                     <div className="d-flex  flex-column right-btn-auto">
-                                    <CustomMoreMenu
+                                        {this.state.actions.length>0&&<CustomMoreMenu
                                         actions={this.state.actions}
                                         triggerCallback={(action)=>this.props.triggerCallback(action,this.state.allowDateChange)}
-                                    />
+                                    />}
                                     </div>
                                     {item.event.stage!=='resolved'   &&
                                     <div className="d-flex d-none flex-column right-btn-auto">
@@ -206,7 +208,7 @@ class EventItem extends Component {
                         />
                     </ListItem>
 
-                </>
+                </ErrorBoundary>
 
 
         }

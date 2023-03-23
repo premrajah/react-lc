@@ -24,6 +24,7 @@ import GreenSmallBtn from "../FormsUI/Buttons/GreenSmallBtn";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import DownloadIcon from "@mui/icons-material/GetApp";
 import EventList from "./EventList";
+import ErrorBoundary from "../ErrorBoundary";
 
 
 const mLocalizer = momentLocalizer(moment);
@@ -124,7 +125,7 @@ export default function
                 onClick={(eventNew) => {
 
                     if(!smallView) {
-                        if (eventNew.detail == 1) {
+                        if (eventNew.detail === 1) {
                             setSelectedDate(event.start);
                             getEvents(
                                 moment(event.start).startOf("day").format("x"),
@@ -132,7 +133,7 @@ export default function
                             );
                         }
 
-                        if (eventNew.detail == 2) {
+                        if (eventNew.detail === 2) {
                             setShowAddEventPopUp(!showAddEventPopUp);
                         }
                     }
@@ -180,13 +181,13 @@ export default function
         };
 
         const getLabel = (date) => {
-            if (view == "year") {
+            if (view === "year") {
                 return date.getFullYear();
-            } else if (view == "month") {
+            } else if (view === "month") {
                 return (
                     date.toLocaleString("default", { month: "long" }) + ", " + date.getFullYear()
                 );
-            } else if (view == "week") {
+            } else if (view === "week") {
                 const startDate = moment(date).startOf("week").toDate();
                 const endDate = moment(date).endOf("week").toDate();
 
@@ -215,7 +216,7 @@ export default function
         };
 
         return (
-            <>
+            <ErrorBoundary skip>
                 <div className="rbc-toolbar-1 mb-2">
                     <div>
                         <div>
@@ -342,7 +343,7 @@ export default function
                             }}/>
                     </div>
                 </div>
-            </>
+            </ErrorBoundary>
         );
     };
 
@@ -389,7 +390,7 @@ export default function
                 // WORK_WEEK: 'work_week',
                 // DAY: 'day',
                 AGENDA: "agenda",
-            }).map((k) => (k != "YEAR" ? Views[k] : Year)),
+            }).map((k) => (k !== "YEAR" ? Views[k] : Year)),
         }),
         []
     );
@@ -446,7 +447,7 @@ export default function
 
                     setMonthEvents((monthEvents) => monthEvents.concat(responseAll));
 
-                    if (responseAll.length == size) {
+                    if (responseAll.length === size) {
                         getEventsByMonth(start, end, offset + size);
                     }
                 },
@@ -591,6 +592,7 @@ export default function
 
     return (
         <Fragment>
+            <ErrorBoundary skip>
             <GlobalDialog
                 size="sm"
                 heading={"Add event"}
@@ -635,7 +637,7 @@ export default function
                                 className={` ${
                                     smallView ? " rbc-small-calender" : "rbc-big-calender"
                                 }`}
-                                style={{ height: tmpView=="week"?"auto":"600px", maxHeight: "600px", overflowY: "scroll" }}
+                                style={{ height: tmpView==="week"?"auto":"600px", maxHeight: "600px", overflowY: "scroll" }}
 
 
                                 components={components}
@@ -653,7 +655,6 @@ export default function
                                     // day: true,
                                     week: true,
                                     month: true,
-                                    // year: <Year handleYearClick={()=>{alert("here")}} />,
                                     year: Year,
                                 }}
                                 onView={onView}
@@ -752,7 +753,7 @@ export default function
                                     smallView ? " rbc-small-calender" : "rbc-big-calender"
                                 }`}
                                 style={{
-                                    height: tmpView=="week"?"auto":"600px", width: "100%"
+                                    height: tmpView==="week"?"auto":"600px", width: "100%"
                                 }}
                                 components={components}
                                 defaultDate={defaultDate}
@@ -820,6 +821,7 @@ export default function
                     </div>
                 </div>
             )}
+            </ErrorBoundary>
         </Fragment>
     );
 }

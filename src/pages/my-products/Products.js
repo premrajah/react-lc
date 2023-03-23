@@ -410,7 +410,6 @@ class Products extends Component {
 
     handleAddToProductsExportList = (returnedItem) => {
 
-        // console.log(returnedItem)
 
         let filteredProduct = this.state.selectedProducts.filter(
                     (product) => product.Product._key !== returnedItem.Product._key
@@ -450,7 +449,6 @@ class Products extends Component {
 
         if (allData){
 
-            // console.log("all csv data",this.state.allDownloadItems)
             this.state.allDownloadItems.forEach((item) => {
                 const { Product } = item;
                 return csvData.push([
@@ -529,28 +527,7 @@ class Products extends Component {
 
 
         try {
-            // let products = [];
-            //
-            // let mapData = [];
-            //
-            // this.state.selectedProducts.forEach((item) => {
-            //
-            //     mapData.push({_key: item.Product._key, name: item.Product.name,site:getSite(item)});
-            //     return products.push(item.Product._key);
-            // });
 
-
-
-
-
-            // let sites = res.data.data;
-            //
-            // for (let i = 0; i < mapData.length; i++) {
-            //     let site = sites.find(
-            //         (site) => site.product_id.replace("Product/", "") === mapData[i]._key
-            //     );
-            //     mapData[i].site = site.site;
-            // }
 
             let mapData=this.mapProductToSite()
             this.mapProductToSite()
@@ -559,29 +536,7 @@ class Products extends Component {
                 showMap: !this.state.showMap,
 
             });
-            // axios
-            //     .post(baseUrl + "product/site/get-many", {product_ids: products})
-            //     .then((res) => {
-            //         if (res.status === 200) {
-            //             let sites = res.data.data;
-            //
-            //             for (let i = 0; i < mapData.length; i++) {
-            //                 let site = sites.find(
-            //                     (site) => site.product_id.replace("Product/", "") === mapData[i]._key
-            //                 );
-            //                 mapData[i].site = site.site;
-            //             }
-            //
-            //             this.setState({
-            //                 showMap: !this.state.showMap,
-            //                 mapData: mapData,
-            //             });
-            //         } else {
-            //         }
-            //     })
-            //     .catch((error) => {
-            //         if (error.response) console.log(error);
-            //     });
+
 
         }catch (e){
             console.log(e)
@@ -612,7 +567,6 @@ class Products extends Component {
     })
 
 
-        console.log(data)
         return data
 
     }
@@ -806,7 +760,7 @@ class Products extends Component {
                                 </Link>
 
                                 <Link
-                                    to="/product-archive"
+                                    to="/product-records"
                                     className=" btn-sm btn-gray-border  me-2">
                                     <CustomPopover
                                         text={
@@ -814,6 +768,16 @@ class Products extends Component {
                                         }>
                                         Records
                                     </CustomPopover>
+                                </Link>
+                                <Link
+                                    to="/product-archive"
+                                    className=" btn-sm btn-gray-border  me-2">
+                                    {/*<CustomPopover*/}
+                                    {/*    text={*/}
+                                    {/*        "Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"*/}
+                                    {/*    }>*/}
+                                    Archive
+                                    {/*</CustomPopover>*/}
                                 </Link>
 
                                 <Link
@@ -826,6 +790,7 @@ class Products extends Component {
                                         Tracked
                                     </CustomPopover>
                                 </Link>
+
 
                                 <Link to="/issues" className=" btn-sm btn-gray-border me-2  ">
                                     Issues
@@ -916,7 +881,11 @@ class Products extends Component {
                                         }
                                         showAddToListButton
                                     /> : <div id={`${item._key}-${index}`} key={item._key + "-" + index}>
-                                        <ProductsCondensedView product={item.Product} index={index} site={getSite(item)}  />
+                                        <ProductsCondensedView
+
+
+
+                                            product={item.Product} index={index} site={getSite(item)}  />
                                     </div>}
                                 </div>
                             ))}

@@ -709,7 +709,7 @@ class TransferScaling extends Component {
                                                 <p
                                                     style={{ textTransform: "Capitalize" }}
                                                     className={"text-bold text-blue"}>
-                                                    {this.state.type==="edit"?"Edit Transfer Scaling ":this.state.type=="add"?"Add Transfer Scaling":"Delete Transfer Scaling"}
+                                                    {this.state.type==="edit"?"Edit Transfer Scaling ":this.state.type==="add"?"Add Transfer Scaling":"Delete Transfer Scaling"}
                                                 </p>
                                             </div>
                                         </div>
@@ -721,7 +721,7 @@ class TransferScaling extends Component {
 
                                                 <form onSubmit={this.addTransferScaling}>
 
-                                                      <div className={this.state.type!="delete"?"row":"d-none"}>
+                                                      <div className={this.state.type!=="delete"?"row":"d-none"}>
                                                         <div className={"col-12"}>
 
                                                                 <div className="row ">

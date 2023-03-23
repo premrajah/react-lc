@@ -98,13 +98,11 @@ marteplace
             .delete(baseUrl + "listing/" + this.state.item.listing._key, )
             .then(
                 (response) => {
-                    // var responseAll = response.data.data;
-                    // console.log("response call delete listig", response)
                     this.props.history.push("/my-listings");
                     // this.props.loadProducts()
                 },
                 (error) => {
-                    // console.log("error call delete listig", error)
+                    console.log("error call delete listing", error)
                 }
             );
 
@@ -275,7 +273,7 @@ marteplace
             //     activeKey:"0"
             // })
 
-            if (this.props.type=="detail"){
+            if (this.props.type==="detail"){
 
                 this.slug = this.props.listingId;
                 // this.marketplace = props.match.path.includes("marketplace")?"marketplace":"my-listings";
@@ -284,7 +282,7 @@ marteplace
             }
 
 
-            if (this.props.type=="search"){
+            if (this.props.type==="search"){
                 this.slug = this.props.listingId;
                 this.listing = this.props.listingId;
                 this.search = this.props.searchId;
@@ -403,7 +401,7 @@ marteplace
             activeKey:"0"
         })
 
-        if (this.props.type=="detail"){
+        if (this.props.type==="detail"){
 
             this.slug = this.props.listingId;
             // this.marketplace = props.match.path.includes("marketplace")?"marketplace":"my-listings";
@@ -412,7 +410,7 @@ marteplace
         }
 
 
-        if (this.props.type=="search"){
+        if (this.props.type==="search"){
             this.slug = this.props.listingId;
             this.listing = this.props.listingId;
             this.search = this.props.searchId;
@@ -451,7 +449,7 @@ marteplace
 
                                         {!this.props.hideBreadcrumbs &&    <div className="row  pt-4   justify-content-start">
                                             <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
-                                                <Link to={"/"+this.marketplace}>{this.marketplace=="marketplace"?"All Listings":"My Listings"}</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.listing.name}</span>
+                                                <Link to={"/"+this.marketplace}>{this.marketplace==="marketplace"?"All Listings":"My Listings"}</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.listing.name}</span>
                                             </div>
                                         </div>}
                                         <div className="row   justify-content-center mt-4 mb-4 pb-4">
@@ -517,7 +515,7 @@ marteplace
                                                             </div>
 
                                                             <div className="col-5 blue-text text-blue text-bold  d-flex justify-content-end">
-                                                                {this.state.item.listing.price&&(this.state.item.listing.price.value!=0) ? (
+                                                                {this.state.item.listing.price&&(this.state.item.listing.price.value!==0) ? (
                                                                     <>
                                                                         GBP {
                                                                             this.state.item.listing

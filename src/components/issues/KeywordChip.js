@@ -124,7 +124,7 @@ const KeywordChip = (props) => {
                         checkedIcon={<Chip
                             label={keyword.name} style={{
                             color: "white",
-                            background: `${keyword.avoidability == "unavoidable" ? "#0F835E" : "#07ad88"}`,
+                            background: `${keyword.avoidability === "unavoidable" ? "#0F835E" : "#07ad88"}`,
                         }} label={keyword.name} avatar={<DoneIcon style={{color: "white"}}
                         />}
                         />}/>:
@@ -135,7 +135,7 @@ const KeywordChip = (props) => {
                             label={keyword.name}
                             style={{
                             color: "white",
-                            background: `${keyword.avoidability == "unavoidable" ? "#0F835E" : "#07ad88"}`,
+                            background: `${keyword.avoidability === "unavoidable" ? "#0F835E" : "#07ad88"}`,
                         }}
                             label={keyword.name} avatar={<DoneIcon style={{color: "white"}}
                         />}

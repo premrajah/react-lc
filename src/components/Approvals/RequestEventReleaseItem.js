@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import OrgComponent from "../Org/OrgComponent";
 
 class RequestEventReleaseItem extends Component {
     constructor(props) {
@@ -38,7 +39,9 @@ class RequestEventReleaseItem extends Component {
             errorsSite: {},
             isLoading:false,
             product:null,
-            artifacts:[]
+            artifacts:[],
+            receiver:null,
+            sender:null
         };
 
         this.actionSubmit = this.actionSubmit.bind(this);
@@ -240,7 +243,7 @@ class RequestEventReleaseItem extends Component {
             isLoading:true
         })
         axios
-            .post(`${baseUrl}site-release/stage`, data)
+            .post(`${baseUrl}event-release/stage`, data)
             .then((res) => {
                 this.setState({
                     isLoading:false
@@ -265,10 +268,12 @@ class RequestEventReleaseItem extends Component {
         if (this.props.item.EventReleaseToEvent[0]&&this.props.item.EventReleaseToEvent[0].entries[0].Event){
 
             this.setState({
-                event:this.props.item.EventReleaseToEvent[0].entries[0].Event
+                event:this.props.item.EventReleaseToEvent[0].entries[0].Event,
+                receiver:this.props.item.EventReleaseToOrg[1].entries[0].Org,
+                sender:this.props.item.EventReleaseToOrg[0].entries[0].Org
             })
             this.loadSiteSync(this.props.item.EventReleaseToEvent[0].entries[0].Event._key)
-            this.loadProductSync(this.props.item.EventReleaseToEvent[0].entries[0].Event._key)
+            this.loadActions(this.props.item.EventRelease._key)
         }
     }
 
@@ -297,9 +302,9 @@ class RequestEventReleaseItem extends Component {
                 (response) => {
                     let responseAll = response.data;
 
-                    // this.setState({
-                    //     event:responseAll.data
-                    // })
+                    this.setState({
+                        product:responseAll.data.product.product
+                    })
 
                 },
                 (error) => {
@@ -309,7 +314,7 @@ class RequestEventReleaseItem extends Component {
 
     };
 
-    loadProductSync = (key) => {
+    loadActions = (key) => {
 
         axios
             .get(baseUrl + `event-release/${key}/next-action` )
@@ -353,12 +358,16 @@ class RequestEventReleaseItem extends Component {
                                     </Link>
                                 </p>
                                 <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
-                                    Stage: <span className={"text-blue"}>{this.state.item.EventRelease.stage}</span>
+                                    Stage: <span className={"text-blue"}>{this.state.item.EventRelease.stage==="complete"?"Completed":this.state.item.EventRelease.stage}</span>
                                 </p>
 
                                 <p style={{ fontSize: "16px" }} className="text-gray-light  mt-1 mb-1  text-capitalize">
                                     Product: <span className={"text-blue"}> {this.state.product&&this.state.product.name}</span>
                                 </p>
+                                <div  className=" mt-1 mb-1">
+                                    {this.state.sender &&  <OrgComponent org={this.state.sender} />} →
+                                    {this.state.receiver && <OrgComponent org={this.state.receiver} />}
+                                </div>
 
                             </div>
                             <div style={{ textAlign: "right" }} className={"col-md-5 position-relative col-xs-12 col-sm-12"}>
@@ -370,8 +379,8 @@ class RequestEventReleaseItem extends Component {
                                 </p>
                                 <div className="row  pb-4 pb-4 mb-4">
                                     <div className="col-12 text-right pb-2 pt-2">
-                                        {this.state.next_action&&this.state.next_action.is_mine &&
-                                            this.props.item.next_action.possible_actions.map(
+                                        {this.state.nextAction&&this.state.nextAction.is_mine &&
+                                            this.state.nextAction.possible_actions.map(
                                                 (actionName, index) =>
                                                     <>
 
@@ -382,18 +391,18 @@ class RequestEventReleaseItem extends Component {
                                                             type="button"
                                                             className={
                                                                 actionName === "accepted"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "cancelled"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "rejected"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "declined"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 orange-btn-border"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
                                                                     : actionName === "progress"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                                     : actionName === "complete"
-                                                                    ? "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
-                                                                    : "shadow-sm mr-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
+                                                                    : "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border-auto"
                                                             }>
 
 
@@ -426,7 +435,7 @@ class RequestEventReleaseItem extends Component {
                         >
                             <>
 
-                                    <div className={"col-12 text-center"}>
+                                    <div className={"col-12 "}>
 
                                         <div className=" mb-2 text-left title-bold">
                                             Are you sure you want to <span className={"text-lowercase"}>{this.state.initiateAction==="cancelled"?"cancel":this.state.initiateAction}?</span>
@@ -520,7 +529,7 @@ class RequestEventReleaseItem extends Component {
                                                         onClick={this.actionSubmit}
                                                        fullWidth
                                                         // className={
-                                                        //     "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
+                                                        //     "shadow-sm me-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
                                                         // }
                                                         title={"Yes"}
                                                         type={"submit"}>
@@ -535,7 +544,7 @@ class RequestEventReleaseItem extends Component {
                                                         title={"Cancel"}
                                                         onClick={this.togglePopUpInitiateAction}
                                                         // className={
-                                                        //     "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
+                                                        //     "shadow-sm me-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
                                                         // }
                                                     >
 

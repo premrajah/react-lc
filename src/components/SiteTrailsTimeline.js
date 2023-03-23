@@ -241,7 +241,9 @@ const SiteTrailsTimeline=(props)=> {
                                     >
                                         <p className={"text-blue text-14"}>
                                             {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes && item.site.site.geo_codes.length > 0 &&
-                                            <MapIcon onClick={() =>
+                                            <MapIcon
+                                                style={{color:`${item._relation === "located_at" ? "#27245C" : "#05AD88"}`}}
+                                                onClick={() =>
                                                 handleMapModal(item.site.site)}/>}
 
                                         </p>

@@ -171,6 +171,12 @@ class MoreMenu extends Component {
                                     Archive
                                 </MenuItem>
                             )}
+                            {this.props.unArchive && (
+                                <MenuItem data-action={"unArchive"} onClick={this.handleClose}>
+                                    Unarchive
+                                </MenuItem>
+                            )}
+
                             {this.props.download && (
                                 <MenuItem data-action={"download"} onClick={this.handleClose}>
                                     Download

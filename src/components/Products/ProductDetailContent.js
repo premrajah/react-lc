@@ -84,7 +84,10 @@ class ProductDetailContent extends Component {
             activeReleaseTabKey:"1",
             zoomQrCode:false,
             releases:[],
-            events:[]
+            events:[],
+            isOwner:false,
+            isArchiver:false,
+            isServiceAgent:false
 
         };
 
@@ -325,6 +328,8 @@ class ProductDetailContent extends Component {
 
         this.getEvents(this.state.item.product._key)
 
+        this.ocVCProduct()
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -376,14 +381,38 @@ class ProductDetailContent extends Component {
         }
     }
 
+    ocVCProduct = () => {
+
+        axios.get(baseUrl + "product/"+this.props.item.product._key+"/oc-vc" ).then(
+            (response) => {
+
+
+                this.setState({
+                    isOwner:response.data.data.ownership_context.is_owner,
+                    isArchiver:response.data.data.ownership_context.is_archiver,
+                    isServiceAgent:response.data.data.ownership_context.is_service_agent,
+                })
+
+
+            }
+        ).catch(error => {});
+
+    };
+
     callBackResult(action) {
 
 
         if (action === "edit") {
             this.showProductEdit();
-        } else if (action === "archive") {
+        }
+        else if (action === "archive") {
             this.deleteItem();
-        } else if (action === "duplicate") {
+        }
+        else if (action === "unArchive") {
+            this.unarchiveItem();
+        }
+
+        else if (action === "duplicate") {
             this.submitDuplicateProduct();
         } else if (action === "release") {
             this.showReleaseProductPopUp();
@@ -411,6 +440,7 @@ class ProductDetailContent extends Component {
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product has moved to archive successfully. Thanks"})
 
+                this.ocVCProduct()
             })
             .catch((error) => {
                 // this.setState({
@@ -421,7 +451,22 @@ class ProductDetailContent extends Component {
                 this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
             });
     }
+    unarchiveItem() {
 
+        axios
+            .post(baseUrl + "product/unarchive", {
+                product_id: this.state.item.product._key,
+            })
+            .then((res) => {
+                this.props.showSnackbar({show:true,severity:"success",message:"Product unarchived successfully. Thanks"})
+
+                this.ocVCProduct()
+            })
+            .catch((error) => {
+
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
+            });
+    }
     showProductEdit() {
         this.setState({
             showProductEdit: !this.state.showProductEdit,
@@ -933,34 +978,26 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         archive={
-                                                            this.state.item.org._id ===
-                                                            this.props.userDetail.orgId
-                                                                ? true
-                                                                : false
+                                                            this.state.isOwner
+                                                        }
+                                                        unArchive={
+                                                            this.state.isArchiver
                                                         }
                                                         serviceAgent={
-                                                            this.state.item.service_agent._id ===
-                                                            this.props.userDetail.orgId
-                                                                ? true
-                                                                : false
-                                                        }
+                                                            this.state.isServiceAgent}
 
                                                         duplicate={
-                                                            this.state.item.org._id ===
-                                                            this.props.userDetail.orgId
-                                                                ? true
-                                                                : false
+                                                            this.state.isOwner
                                                         }
                                                         edit={
-                                                            this.state.item.org._id ===
-                                                            this.props.userDetail.orgId
-                                                                ? true
-                                                                : false
+                                                            this.state.isOwner
                                                         }
 
-                                                        addEvent={(action)=>
-                                                            this.callBackResult(action)
-                                                        }
+                                                        // addEvent={(action)=>
+                                                        //     this.callBackResult(action)
+                                                        // }
+
+                                                        addEvent={this.state.isOwner}
 
                                                     />
 
@@ -978,8 +1015,7 @@ class ProductDetailContent extends Component {
                                                 <OrgComponent org={this.state.item.org} />
                                             </div>
                                             <div className="col-5 text-right justify-content-end d-flex">
-                                                {this.state.item.org._id ===
-                                                this.props.userDetail.orgId
+                                                {this.state.isOwner
                                                     ?  <span onClick={this.showReleaseProductPopUp} className="click-item d-flex flex-row align-items-center">
                                                Release   <ReportIcon className="click-Item ms-2 mr-1 text-blue" />
                                                 </span>:""}
@@ -1057,7 +1093,9 @@ class ProductDetailContent extends Component {
                                                     <AggregatesTab item={this.props.item}/>
                                                 </TabPanel>}
                                                 <TabPanel value="3">
-                                                    <SubProductsTab item={this.props.item}/>
+                                                    <SubProductsTab
+                                                        isOwner={this.state.isOwner}
+                                                        item={this.props.item}/>
                                                 </TabPanel>
                                                 <TabPanel value="4">
                                                     <>

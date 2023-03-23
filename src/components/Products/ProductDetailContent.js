@@ -38,6 +38,7 @@ import EventForm from "../Event/EventForm";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
 import SiteFormNew from "../Sites/SiteFormNew";
 import ArtifactManager from "../FormsUI/ArtifactManager";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 
 class ProductDetailContent extends Component {
@@ -964,6 +965,7 @@ class ProductDetailContent extends Component {
                                     <div className="col-12 ">
                                         <div className="row">
                                             <div className="col-12 position-relative">
+                                                {this.state.isArchiver && <small className="text-danger d-flex justify-content-start align-items-center "><PriorityHighIcon style={{fontSize:"16px"}} />Archived product.</small>}
                                                 <h4 className="text-capitalize product-title width-90">
                                                     {this.state.item.product.name}
                                                 </h4>

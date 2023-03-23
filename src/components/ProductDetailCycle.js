@@ -44,6 +44,8 @@ import GreenButton from "./FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 import ImageHeader from "./UIComponents/ImageHeader";
 import ArtifactManager from "./FormsUI/ArtifactManager";
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+
 
 class ProductDetailCycle extends Component {
     slug;
@@ -810,6 +812,7 @@ class ProductDetailCycle extends Component {
                             <div className="col-12 ">
                                 <div className="row">
                                     <div className="col-12 position-relative">
+
                                         <h4 className="text-capitalize product-title width-80">
                                                 {this.props.item.product.name}</h4>
 

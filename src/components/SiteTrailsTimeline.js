@@ -25,6 +25,7 @@ const SiteTrailsTimeline=(props)=> {
 
     const [showMap, setShowMap] = useState(false);
     const [locations, setLocations] = useState([]);
+    const [reverseLocations, setReverseLocations] = useState([]);
     const [site, setSite] = useState(null);
     const [distLookup, setDistLookup] = useState(new Map());
 
@@ -77,6 +78,9 @@ const SiteTrailsTimeline=(props)=> {
 
 
         setLocations(locationsList)
+
+        let revLoc=locationsList.reverse()
+        setReverseLocations(revLoc)
 
     }, [props.siteTrails])
 
@@ -275,7 +279,7 @@ const SiteTrailsTimeline=(props)=> {
                             width={"100%"}
                             height={"460px"}
                             siteId={site._key}
-                            locations={locations}
+                            locations={reverseLocations}
                         />
                     </div>}
 

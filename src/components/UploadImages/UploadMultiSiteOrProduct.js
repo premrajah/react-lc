@@ -37,8 +37,8 @@ let productProperties=[
     {field:"brand",required:true},
     {field:"model",required:false},
     {field:"serial",required:false},
-    {field:"sku",required:false},
-    {field:"upc",required:false},
+    // {field:"sku",required:false},
+    // {field:"upc",required:false},
     {field:"part_no",required:false},
 
 
@@ -509,8 +509,8 @@ const UploadMultiSiteOrProduct = (props) => {
                     "brand": listItem.brand,
                     "model": listItem.model,
                     "serial": listItem.serial,
-                    "sku": listItem.sku,
-                    "upc": listItem.upc,
+                    // "sku": listItem.sku,
+                    // "upc": listItem.upc,
                     "part_no": listItem.part_no,
                     "line": listItem.line,
                     "is_listable": listItem.is_listable.toLowerCase()==="true"?true:false,

@@ -337,7 +337,7 @@ const ArtifactManager = ({
                         </div>}
                     </>
 
-                    {isLinksVisible && <>
+                    {isLinksVisible &&!props.isArchiver &&  <>
                         <div className="row d-flex align-items-end">
                             <div className="col-md-5">
                                 <TextFieldWrapper

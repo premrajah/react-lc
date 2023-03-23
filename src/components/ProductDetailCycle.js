@@ -3,7 +3,7 @@ import * as actionCreator from "../store/actions/actions";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
-import {baseUrl, frontEndUrl, RECUR_UNITS} from "../Util/Constants";
+import {baseUrl, ENTITY_TYPES, frontEndUrl, RECUR_UNITS} from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider/ImagesSlider";
 import encodeUrl from "encodeurl";
@@ -43,6 +43,7 @@ import SelectArrayWrapper from "./FormsUI/ProductForm/Select";
 import GreenButton from "./FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 import ImageHeader from "./UIComponents/ImageHeader";
+import ArtifactManager from "./FormsUI/ArtifactManager";
 
 class ProductDetailCycle extends Component {
     slug;
@@ -983,7 +984,18 @@ class ProductDetailCycle extends Component {
                                             </TabPanel>
                                         )}
                                         <TabPanel value="7">
-                                            <ArtifactProductsTab  hideAdd={true} item={this.props.item}/>
+                                            {/*<ArtifactProductsTab  hideAdd={true} item={this.props.item}/>*/}
+
+                                            <div className=" bg-white rad-8 mt-4 p-3">
+                                                <ArtifactManager
+                                                    entityType={ENTITY_TYPES.Product}
+                                                    item={this.props.item}
+                                                    entityId={this.props.item.product._key}
+                                                    artifacts={this.props.item.artifacts}
+                                                    type={"edit"}
+                                                    isArchiver={true}
+                                                />
+                                            </div>
                                         </TabPanel>
 
                                     </TabContext>

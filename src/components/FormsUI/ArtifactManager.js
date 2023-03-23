@@ -92,6 +92,11 @@ const ArtifactManager = ({
             })
             .catch((error) => {
                 console.log("artifact replace error ", error);
+                showSnackbar({
+                    show: true,
+                    severity: "warning",
+                    message: "Unable to delete artifact at this time",
+                });
             });
     };
 
@@ -126,6 +131,11 @@ const ArtifactManager = ({
         } catch (error) {
             console.log("addArtifactToProduct error ", error);
             setIsLoading(false);
+            showSnackbar({
+                show: true,
+                severity: "warning",
+                message: "Unable to add Artifacts to the product at this time.",
+            });
         }
     };
 
@@ -172,7 +182,7 @@ const ArtifactManager = ({
                     showSnackbar({
                         show: true,
                         severity: "warning",
-                        message: "Unable to add images at this time.",
+                        message: "Unable to add artifact at this time.",
                     });
                 }
             })

@@ -18,6 +18,7 @@ import TextFieldWrapper from "./ProductForm/TextField";
 import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
 import {ArrowDropUp, ArrowDropDown} from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
+import CustomPopover from "./CustomPopover";
 
 const ArtifactManager = ({
     entityId,
@@ -308,22 +309,24 @@ const ArtifactManager = ({
                     <>
                         {!props.isArchiver &&  <div className="row d-flex align-items-end">
                             <div className="col-12 d-flex mb-2">
+                                <CustomPopover text="Accepted files: JPG, JPEG, PNG, DOC, DOCX, PDF, XLS, XLSX, TXT, MP4, MOV">
                                 <div className="me-3">
                                     {!isLoading ? (
-                                        <Button style={{height:"61px"}} className="" variant="outlined" component="label">
-                                            Upload Files
-                                            <input
-                                                type="file"
-                                                hidden
-                                                onChange={handleFileEvent}
-                                                multiple
-                                                accept={MIME_TYPES_ACCEPT}
-                                            />
-                                        </Button>
+                                            <Button style={{height:"61px"}} className="" variant="outlined" component="label">
+                                                Upload Files
+                                                <input
+                                                    type="file"
+                                                    hidden
+                                                    onChange={handleFileEvent}
+                                                    multiple
+                                                    accept={MIME_TYPES_ACCEPT}
+                                                />
+                                            </Button>
                                     ) : (
                                         <LoaderAnimated />
                                     )}
                                 </div>
+                                </CustomPopover>
 
                                 <div className="">
                                     <Button  style={{height:"61px"}} variant="outlined" onClick={() => setIsLinksVisible(prev => !prev)}>

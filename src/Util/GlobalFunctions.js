@@ -192,7 +192,7 @@ export const LoaderAnimated = () => {
                 />
             </svg>
 
-            <span className={"m-4"}>Loading ...</span>
+            <span className={"m-1"}>Loading ...</span>
         </div>
     );
 };

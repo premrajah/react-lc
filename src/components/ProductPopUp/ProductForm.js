@@ -1789,7 +1789,6 @@ let slugify = require('slugify')
                                                                 this.state.files.map(
                                                                     (item, index) => (
                                                                         <>
-                                                                            {console.log(item)}
                                                                         {getMimeTypeAndIcon(item.file.mime_type).type==="image"&&<div
                                                                             key={index}
                                                                             className={"file-uploader-thumbnail-container"}>

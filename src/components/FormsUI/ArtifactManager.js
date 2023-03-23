@@ -36,6 +36,7 @@ const ArtifactManager = ({
     const [resetTmp, setResetTmp] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [isLinksVisible, setIsLinksVisible] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(null);
 
 
     const resetForm = (type) => {
@@ -68,7 +69,14 @@ const ArtifactManager = ({
         if (entityId) handleReplaceArtifacts(payload);
     };
 
+    const onUploadProgress = event => {
+        const percentCompleted = Math.round((event.loaded * 100) / event.total);
+        // console.log('onUploadProgress', percentCompleted);
+        setUploadProgress(percentCompleted);
+    };
+
     const handleReplaceArtifacts = (payload) => {
+
         axios
             .post(`${baseUrl}product/artifact/replace`, payload)
             .then((response) => {
@@ -129,8 +137,6 @@ const ArtifactManager = ({
 
     useEffect(() => {
         setIsLoading(false);
-        // alert("change detected")
-        console.log(artifactsTmp)
         if (setArtifacts && artifactsTmp && artifactsTmp.length > 0) {
             setArtifacts(artifactsTmp);
         }
@@ -144,7 +150,7 @@ const ArtifactManager = ({
                 try {
                     const uploadedFile = await axios.post(
                         `${baseUrl}artifact/load?name=${cleanFilename(file.name.toLowerCase())}`,
-                        convertedData
+                        convertedData, {onUploadProgress}
                     );
 
                     if (uploadedFile) {
@@ -173,6 +179,9 @@ const ArtifactManager = ({
             .catch((error) => {
                 console.log("getImageAsBytes error ", error);
                 setIsLoading(false);
+            })
+            .finally(() => {
+                setUploadProgress(null);
             });
     };
     const handleValidationFile = (type) => {
@@ -231,7 +240,7 @@ const ArtifactManager = ({
                     },
                 };
 
-                const videoLinksUploaded = await axios.post(`${baseUrl}artifact/preloaded`, payload);
+                const videoLinksUploaded = await axios.post(`${baseUrl}artifact/preloaded`, payload, {onUploadProgress});
 
                 if (videoLinksUploaded) {
                     const videoLinksUploadedKey = videoLinksUploaded.data.data._key;
@@ -246,6 +255,8 @@ const ArtifactManager = ({
                 }
             } catch (error) {
                 console.log("handleUploadVideoLinks error ", error);
+            } finally {
+                setUploadProgress(null);
             }
         } else {
             showSnackbar({
@@ -350,6 +361,16 @@ const ArtifactManager = ({
                 </div>
             </div>
 
+            <div className="row">
+                <div className="col">
+                    {uploadProgress && <>
+                        <small>{uploadProgress}% Uploaded</small>
+                        <progress id="progressBar" value={uploadProgress ? uploadProgress : 0} max="100"
+                                  style={{width: '100%'}}></progress>
+                    </>}
+                </div>
+            </div>
+
             <div className="row ">
                 <div className="col-12">
                     {artifactsTmp && artifactsTmp.length > 0 ? (
@@ -357,7 +378,6 @@ const ArtifactManager = ({
                             return (
                                 <React.Fragment key={artifact._key}>
                                     <div key={index} className="mt-1 mb-1 text-left pt-1 pb-1  row">
-
                                         <div className="col-10 ellipsis-end">
                                             <ArtifactIconDisplayBasedOnMimeType
                                                 artifact={artifact}
@@ -396,7 +416,7 @@ const ArtifactManager = ({
                                     </div>
                                 </React.Fragment>
                             );
-                            // }
+
                         })
                     ) : (
                         <div className="mt-2 d-none">No documents added.</div>

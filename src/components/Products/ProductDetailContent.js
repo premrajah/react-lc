@@ -1163,6 +1163,7 @@ class ProductDetailContent extends Component {
                                                         entityId={this.props.item.product._key}
                                                         artifacts={this.props.item.artifacts}
                                                         type={"edit"}
+                                                        isArchiver={this.state.isArchiver}
                                                     />
                                                     </div>
                                                 </TabPanel>

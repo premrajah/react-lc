@@ -29,6 +29,7 @@ const TextFieldWrapper = ({
     initialValue,
     disabled,
     readonly,ignoreTrim,
+    height,
     customReadOnly,reset,noMargin,
                               editMode,
                               numberInput,
@@ -122,6 +123,7 @@ const TextFieldWrapper = ({
                 <CustomizedInput
                     // defaultValue={"name"}
 
+                    // padding={height}
                     disabled={disabled}
                     type={type}
                     variant="outlined"

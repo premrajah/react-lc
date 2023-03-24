@@ -38,6 +38,7 @@ import EventForm from "../Event/EventForm";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
 import SiteFormNew from "../Sites/SiteFormNew";
 import ArtifactManager from "../FormsUI/ArtifactManager";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 
 class ProductDetailContent extends Component {
@@ -84,7 +85,10 @@ class ProductDetailContent extends Component {
             activeReleaseTabKey:"1",
             zoomQrCode:false,
             releases:[],
-            events:[]
+            events:[],
+            isOwner:false,
+            isArchiver:false,
+            isServiceAgent:false
 
         };
 
@@ -325,6 +329,8 @@ class ProductDetailContent extends Component {
 
         this.getEvents(this.state.item.product._key)
 
+        this.ocVCProduct()
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -376,14 +382,38 @@ class ProductDetailContent extends Component {
         }
     }
 
+    ocVCProduct = () => {
+
+        axios.get(baseUrl + "product/"+this.props.item.product._key+"/oc-vc" ).then(
+            (response) => {
+
+
+                this.setState({
+                    isOwner:response.data.data.ownership_context.is_owner,
+                    isArchiver:response.data.data.ownership_context.is_archiver,
+                    isServiceAgent:response.data.data.ownership_context.is_service_agent,
+                })
+
+
+            }
+        ).catch(error => {});
+
+    };
+
     callBackResult(action) {
 
 
         if (action === "edit") {
             this.showProductEdit();
-        } else if (action === "archive") {
+        }
+        else if (action === "archive") {
             this.deleteItem();
-        } else if (action === "duplicate") {
+        }
+        else if (action === "unArchive") {
+            this.unarchiveItem();
+        }
+
+        else if (action === "duplicate") {
             this.submitDuplicateProduct();
         } else if (action === "release") {
             this.showReleaseProductPopUp();
@@ -411,6 +441,7 @@ class ProductDetailContent extends Component {
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product has moved to archive successfully. Thanks"})
 
+                this.ocVCProduct()
             })
             .catch((error) => {
                 // this.setState({
@@ -421,7 +452,22 @@ class ProductDetailContent extends Component {
                 this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
             });
     }
+    unarchiveItem() {
 
+        axios
+            .post(baseUrl + "product/unarchive", {
+                product_id: this.state.item.product._key,
+            })
+            .then((res) => {
+                this.props.showSnackbar({show:true,severity:"success",message:"Product unarchived successfully. Thanks"})
+
+                this.ocVCProduct()
+            })
+            .catch((error) => {
+
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
+            });
+    }
     showProductEdit() {
         this.setState({
             showProductEdit: !this.state.showProductEdit,
@@ -454,12 +500,16 @@ class ProductDetailContent extends Component {
                 this.props.history.push("/my-products");
 
 
+
             })
             .catch((error) => {
                 // this.setState({
                 //
                 //     errorRegister:error.response.data.errors[0].message
                 // })
+
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
+
             });
     };
 
@@ -745,17 +795,17 @@ class ProductDetailContent extends Component {
         );
     }
 
-    toggleSite=(refresh)=> {
-        this.setState({
-            showCreateSite: !this.state.showCreateSite,
-        });
-
-
-        if (refresh){
-            this.props.loadSites();
-
-        }
-    }
+    // toggleSite=(refresh)=> {
+    //     this.setState({
+    //         showCreateSite: !this.state.showCreateSite,
+    //     });
+    //
+    //
+    //     if (refresh){
+    //         this.props.loadSites();
+    //
+    //     }
+    // }
     loadProduct(productKey) {
         if (productKey)
             axios.get(baseUrl + "product/" + productKey + "/expand").then(
@@ -915,6 +965,7 @@ class ProductDetailContent extends Component {
                                     <div className="col-12 ">
                                         <div className="row">
                                             <div className="col-12 position-relative">
+                                                {this.state.isArchiver && <small className="text-danger d-flex justify-content-start align-items-center "><PriorityHighIcon style={{fontSize:"16px"}} />Archived product.</small>}
                                                 <h4 className="text-capitalize product-title width-90">
                                                     {this.state.item.product.name}
                                                 </h4>
@@ -929,34 +980,26 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         archive={
-                                                            this.state.item.org._id ===
-                                                            this.props.userDetail.orgId
-                                                                ? true
-                                                                : false
+                                                            this.state.isOwner
+                                                        }
+                                                        unArchive={
+                                                            this.state.isArchiver
                                                         }
                                                         serviceAgent={
-                                                            this.state.item.service_agent._id ===
-                                                            this.props.userDetail.orgId
-                                                                ? true
-                                                                : false
-                                                        }
+                                                            this.state.isServiceAgent}
 
                                                         duplicate={
-                                                            this.state.item.org._id ===
-                                                            this.props.userDetail.orgId
-                                                                ? true
-                                                                : false
+                                                            this.state.isOwner
                                                         }
                                                         edit={
-                                                            this.state.item.org._id ===
-                                                            this.props.userDetail.orgId
-                                                                ? true
-                                                                : false
+                                                            this.state.isOwner
                                                         }
 
-                                                        addEvent={(action)=>
-                                                            this.callBackResult(action)
-                                                        }
+                                                        // addEvent={(action)=>
+                                                        //     this.callBackResult(action)
+                                                        // }
+
+                                                        addEvent={this.state.isOwner}
 
                                                     />
 
@@ -974,8 +1017,7 @@ class ProductDetailContent extends Component {
                                                 <OrgComponent org={this.state.item.org} />
                                             </div>
                                             <div className="col-5 text-right justify-content-end d-flex">
-                                                {this.state.item.org._id ===
-                                                this.props.userDetail.orgId
+                                                {this.state.isOwner
                                                     ?  <span onClick={this.showReleaseProductPopUp} className="click-item d-flex flex-row align-items-center">
                                                Release   <ReportIcon className="click-Item ms-2 mr-1 text-blue" />
                                                 </span>:""}
@@ -1053,7 +1095,9 @@ class ProductDetailContent extends Component {
                                                     <AggregatesTab item={this.props.item}/>
                                                 </TabPanel>}
                                                 <TabPanel value="3">
-                                                    <SubProductsTab item={this.props.item}/>
+                                                    <SubProductsTab
+                                                        isOwner={this.state.isOwner}
+                                                        item={this.props.item}/>
                                                 </TabPanel>
                                                 <TabPanel value="4">
                                                     <>
@@ -1121,6 +1165,7 @@ class ProductDetailContent extends Component {
                                                         entityId={this.props.item.product._key}
                                                         artifacts={this.props.item.artifacts}
                                                         type={"edit"}
+                                                        isArchiver={this.state.isArchiver}
                                                     />
                                                     </div>
                                                 </TabPanel>
@@ -1182,27 +1227,32 @@ class ProductDetailContent extends Component {
                             }} >
 
                                     <div className="form-col-left col-12">
-                                        {this.state.showProductEdit &&  <ProductForm hideUpload edit triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"} item={this.props.item} />}
+                                        {this.state.showProductEdit &&  <ProductForm
+                                            hideUpload
+                                            edit
+                                            triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"}
+                                            item={this.props.item} />
+                                        }
                                     </div>
 
                         </GlobalDialog>
 
 
-                        <GlobalDialog
+                        {/*<GlobalDialog*/}
 
-                            size={"sm"}
-                            hide={this.toggleSite}
-                            show={this.state.showCreateSite}
-                            heading={"Add new site"}
+                        {/*    size={"sm"}*/}
+                        {/*    hide={this.toggleSite}*/}
+                        {/*    show={this.state.showCreateSite}*/}
+                        {/*    heading={"Add new site"}*/}
 
-                        >
-                            <>
-                                <div className="col-12 ">
+                        {/*>*/}
+                        {/*    <>*/}
+                        {/*        <div className="col-12 ">*/}
 
-                                    <SiteFormNew refresh={()=>this.toggleSite(true)} />
-                                </div>
-                            </>
-                        </GlobalDialog>
+                        {/*            <SiteFormNew refresh={()=>this.toggleSite(true)} />*/}
+                        {/*        </div>*/}
+                        {/*    </>*/}
+                        {/*</GlobalDialog>*/}
 
                         <GlobalDialog
                             allowOverflow

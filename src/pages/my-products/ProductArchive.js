@@ -370,7 +370,7 @@ class ProductArchive extends Component {
 
                                 <ErrorBoundary>
                                 <ProductItem
-                                    toProvenance={true}
+                                    toProvenance={false}
                                     goToLink={true}
                                     delete={false}
                                     edit={true}

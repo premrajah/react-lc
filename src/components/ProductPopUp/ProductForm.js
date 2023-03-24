@@ -128,7 +128,9 @@ let slugify = require('slugify')
                 selectedTemplated:null,
                 artifacts:[],
                 is_manufacturer:true,
-                prevImages:[]
+                prevImages:[],
+                errorPending:false,
+                selectedSite:null
 
             };
 
@@ -142,7 +144,7 @@ let slugify = require('slugify')
             this.showMoreDetails = this.showMoreDetails.bind(this);
         }
 
-        showSubmitSite=()=> {
+        showSubmitSite=(data)=> {
 
             window.scrollTo(0, 0);
 
@@ -154,6 +156,19 @@ let slugify = require('slugify')
                 showSubmitSite: !this.state.showSubmitSite,
             });
 
+            if (data){
+                let fields=this.state.fields
+                fields["deliver"]=data._key
+
+                this.setState({
+                    selectedSite: data,
+                    fields:fields
+                })
+            }else{
+                this.setState({
+                    selectedSite: null
+                })
+            }
             this.props.loadSites(this.props.userDetail.token);
         }
 
@@ -273,7 +288,7 @@ let slugify = require('slugify')
 
         handleChangeForm=(event)=>{
 
-            console.log(event)
+            // console.log(event)
         }
         uploadImage(files) {
             if (files.length > 0) {
@@ -421,8 +436,19 @@ let slugify = require('slugify')
 
             let {formIsValid,errors}= validateInputs(validations,fields,editMode)
 
-            console.log(errors)
+            // console.log(errors)
             this.setState({ errors: errors });
+
+                if (!formIsValid){
+                    this.setState({
+                        errorPending:true
+                    })
+                }else{
+                    this.setState({
+                        errorPending:false
+                    })
+                }
+
             return formIsValid;
         }
 
@@ -807,10 +833,12 @@ let slugify = require('slugify')
                         //     parentProduct: res.data.data,
                         // });
                     }
-                    // this.props.loadCurrentProduct(this.props.item.product._key)
+
+                    this.props.loadCurrentProduct(this.props.item.product._key)
 
 
-                    this.triggerCallback();
+
+                    // this.triggerCallback();
 
                 })
                 .catch((error) => {
@@ -849,9 +877,9 @@ let slugify = require('slugify')
                 return
             }
 
-            console.log("check image")
+
             await   this.updateImages();
-            console.log("done image")
+
             if (fields["deliver"] !== undefined) {
                 this.updateSite(fields["deliver"]);
                 // this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
@@ -1420,8 +1448,8 @@ let slugify = require('slugify')
                                                     subValueKey={"_key"}
                                                     title="Dispatch / Collection Address"
                                                     details="Select product’s location from the existing sites or add new address below"
-                                                    initialValue={this.props.item&&this.props.item.site._key}
-                                                    initialValueTextbox={this.props.item&&this.props.item.site.name}
+                                                    initialValue={this.state.selectedSite?this.state.selectedSite._key: this.props.item?this.props.item.site._key:null}
+                                                    initialValueTextbox={this.state.selectedSite?this.state.selectedSite.name:this.props.item?this.props.item.site.name:""}
 
                                                 />
                                                 {/*<SelectArrayWrapper*/}
@@ -1557,8 +1585,10 @@ let slugify = require('slugify')
                                             onChange={(value)=>this.handleChangeProduct(value,"description")}
                                             error={this.state.errors["description"]}
                                             multiline
-                                      rows={4}
-                                                           name="description" title="Description" />
+                                            rows={4}
+                                            name="description"
+                                            title="Description"
+                                        />
 
 
                                     </div>
@@ -1622,29 +1652,29 @@ let slugify = require('slugify')
 
                                                 </div>}
 
-                                                <div className="col-md-4 col-sm-6 col-xs-6">
-                                                    <TextFieldWrapper
-                                                        editMode
-                                                        details="Stock Keeping Unit"
-                                                        initialValue={this.props.item?this.props.item.product.sku.sku:""
-                                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.sku:"")
-                                                        }
-                                                        onChange={(value)=>this.handleChangeProduct(value,"sku")}
-                                                        name="sku"
-                                                        title="Sku" />
+                                                {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}
+                                                {/*    <TextFieldWrapper*/}
+                                                {/*        editMode*/}
+                                                {/*        details="Stock Keeping Unit"*/}
+                                                {/*        initialValue={this.props.item?this.props.item.product.sku.sku:""*/}
+                                                {/*        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.sku:"")*/}
+                                                {/*        }*/}
+                                                {/*        onChange={(value)=>this.handleChangeProduct(value,"sku")}*/}
+                                                {/*        name="sku"*/}
+                                                {/*        title="Sku" />*/}
 
-                                                </div>
+                                                {/*</div>*/}
 
-                                                <div className="col-md-4 col-sm-6 col-xs-6">
-                                                    <TextFieldWrapper
-                                                        editMode
-                                                        onChange={(value)=>this.handleChangeProduct(value,"upc")}
-                                                        details="Universal Product Code"
-                                                        initialValue={this.props.item?this.props.item.product.sku.upc:""
-                                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.upc:"")
-                                                        } name="upc" title="UPC" />
+                                                {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}
+                                                {/*    <TextFieldWrapper*/}
+                                                {/*        editMode*/}
+                                                {/*        onChange={(value)=>this.handleChangeProduct(value,"upc")}*/}
+                                                {/*        details="Universal Product Code"*/}
+                                                {/*        initialValue={this.props.item?this.props.item.product.sku.upc:""*/}
+                                                {/*        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.upc:"")*/}
+                                                {/*        } name="upc" title="UPC" />*/}
 
-                                                </div>
+                                                {/*</div>*/}
 
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <TextFieldWrapper
@@ -1707,12 +1737,14 @@ let slugify = require('slugify')
                                     </div>
                                     <ArtifactManager
                                         hideMenu
+                                        artifacts={this.props.item?this.props.item.artifacts:[]}
                                         setArtifacts={(artifacts)=>this.loadImages(artifacts)}
                                         showDelete
                                         item={this.props.item?this.props.item:null}
                                         type={this.props.item?"edit":"add"}
                                         entityType={ENTITY_TYPES.Product}
                                         setFiles={(files)=>this.setState({files:files})}
+                                        entityId={this.props.item?this.props.item.product._key:null}
                                     />
                                     <div className="container-fluid  pb-3 d-none">
                                         <div className="row camera-grids      ">
@@ -1757,7 +1789,6 @@ let slugify = require('slugify')
                                                                 this.state.files.map(
                                                                     (item, index) => (
                                                                         <>
-                                                                            {console.log(item)}
                                                                         {getMimeTypeAndIcon(item.file.mime_type).type==="image"&&<div
                                                                             key={index}
                                                                             className={"file-uploader-thumbnail-container"}>
@@ -2059,7 +2090,8 @@ let slugify = require('slugify')
                                     </div>
                                 </div>
     </div>
-                                     <div className={"row"}>
+                        <div className={"row"}>
+                                         {this.state.errorPending&&<div className="col-12 text-center text-danger">Required fields are missing.</div>}
                                 <div className="col-12 text-center  mb-2">
                                     {this.state.files.length > 0 ? (
                                         this.state.files.filter((item) => item.status === 0).length >
@@ -2078,25 +2110,19 @@ let slugify = require('slugify')
                                             title={this.props.productLines?"Submit":this.props.item?"Update Product":"Add Product"}
                                             type={"submit"}
                                             loading={this.state.loading}
-                                            disabled={this.state.loading||this.state.isSubmitButtonPressed}
-
-                                        >
-                                        </GreenButton>
-
-                                        )
+                                            disabled={this.state.loading||this.state.isSubmitButtonPressed}>
+                                        </GreenButton>)
                                     ) : (
                                         <GreenButton
                                         title={this.props.productLines?"Submit":this.props.item?"Update Product":"Add Product"}
                                         type={"submit"}
                                         loading={this.state.loading}
-
-                                        disabled={this.state.loading||this.state.isSubmitButtonPressed}
-
-                                        >
+                                        disabled={this.state.loading||this.state.isSubmitButtonPressed}>
                                         </GreenButton>
 
                                     )}
                                 </div>
+
                         </div>
                                 </form>
                         </div>
@@ -2127,7 +2153,7 @@ let slugify = require('slugify')
                                 </div>
                                 <div className={"row"}>
                                     <div className={"col-12"}>
-                                        <SiteFormNew showHeader={false}  refresh={() => this.showSubmitSite()}   />
+                                        {this.state.showSubmitSite && <SiteFormNew dontCallUpdate showHeader={false}  refresh={(data) => this.showSubmitSite(data)}   />}
                                     </div>
                                 </div>
                             </div>

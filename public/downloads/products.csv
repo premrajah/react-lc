@@ -1,2 +1,2 @@
-name,description,external_reference,parent_reference,condition,purpose,year_of_making,category,type,state,units,volume,brand,model,serial,sku,upc,part_no,line,is_listable,power_supply,energy_rating,gross_weight_kgs,embodied_carbon_kgs
-Example Text,Example Text,abcd123,,new,defined,2021,commercial kitchen equipment ,complete,fully functional,units,2,loopcycle,loopcycle 123,123456,98765,,,,TRUE,gas,5,100,10
+name,description,external_reference,parent_reference,condition,purpose,year_of_making,category,type,state,units,volume,brand,model,serial,part_no,line,is_listable,power_supply,energy_rating,gross_weight_kgs,embodied_carbon_kgs
+Example Text,Example Text,abcd123,,new,defined,2021,commercial kitchen equipment ,complete,fully functional,units,2,loopcycle,loopcycle 123,123456,,,TRUE,gas,5,100,10

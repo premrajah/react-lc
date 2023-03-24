@@ -170,45 +170,45 @@ class InfoTabContent extends Component {
                     </div>
                 )}
 
-                {this.props.item &&
-                this.props.item.product.sku.sku && (
-                    <div className="row  justify-content-start search-container  pb-2 ">
-                        <div className={"col-auto"}>
-                            <p
+                {/*{this.props.item &&*/}
+                {/*this.props.item.product.sku.sku && (*/}
+                {/*    <div className="row  justify-content-start search-container  pb-2 ">*/}
+                {/*        <div className={"col-auto"}>*/}
+                {/*            <p*/}
 
-                                className=" text-label text-label text-blue mb-1">
-                                Sku
-                            </p>
-                            <p
+                {/*                className=" text-label text-label text-blue mb-1">*/}
+                {/*                Sku*/}
+                {/*            </p>*/}
+                {/*            <p*/}
 
-                                className="text-gray-light  mb-1">
-                                {this.props.item &&
-                                this.props.item.product.sku
-                                    .sku}
-                            </p>
-                        </div>
-                    </div>
-                )}
+                {/*                className="text-gray-light  mb-1">*/}
+                {/*                {this.props.item &&*/}
+                {/*                this.props.item.product.sku*/}
+                {/*                    .sku}*/}
+                {/*            </p>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*)}*/}
 
-                {this.props.item &&
-                this.props.item.product.sku.upc && (
-                    <div className="row  justify-content-start search-container  pb-2 ">
-                        <div className={"col-auto"}>
-                            <p
+                {/*{this.props.item &&*/}
+                {/*this.props.item.product.sku.upc && (*/}
+                {/*    <div className="row  justify-content-start search-container  pb-2 ">*/}
+                {/*        <div className={"col-auto"}>*/}
+                {/*            <p*/}
 
-                                className=" text-label text-label text-blue mb-1">
-                                UPC
-                            </p>
-                            <p
+                {/*                className=" text-label text-label text-blue mb-1">*/}
+                {/*                UPC*/}
+                {/*            </p>*/}
+                {/*            <p*/}
 
-                                className="text-gray-light  mb-1">
-                                {this.props.item &&
-                                this.props.item.product.sku
-                                    .upc}
-                            </p>
-                        </div>
-                    </div>
-                )}
+                {/*                className="text-gray-light  mb-1">*/}
+                {/*                {this.props.item &&*/}
+                {/*                this.props.item.product.sku*/}
+                {/*                    .upc}*/}
+                {/*            </p>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*)}*/}
 
                 {this.props.item &&
                 this.props.item.product.sku.part_no && (

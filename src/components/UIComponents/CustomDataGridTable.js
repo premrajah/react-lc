@@ -17,12 +17,12 @@ import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {Delete} from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {capitalize, getTimeFormat} from "../../Util/GlobalFunctions";
+import {capitalize, getSite, getTimeFormat} from "../../Util/GlobalFunctions";
 import {Link} from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
 
 
-const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore,checkboxSelection,actionCallback, items,element,children, ...otherProps}) =>{
+const CustomDataGridTable=({headers,pageSize,count,actions,linkUrl,dataKey,loading,loadMore,checkboxSelection,setMultipleSelectFlag,actionCallback, items,element,children, ...otherProps}) =>{
 
     const [tableHeader,setTableHeader] = useState([]);
     const [list,setList] = useState([]);
@@ -32,6 +32,7 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore,chec
     const [listLoading, setListLoading] = React.useState(false);
     const [sortData, setSortData] = React.useState(null);
     const [visibleFields, setVisibleFields] = React.useState({});
+    const [selectedRows, setSelectedRows] = React.useState([]);
 
     const [initialHeaderState, setInitialHeaderState] = React.useState(false);
 
@@ -48,7 +49,16 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore,chec
         );
     }, [count, setRowCountState]);
 
+    useEffect(() => {
 
+        console.log(selectedRows)
+
+        if (selectedRows.length>0){
+            setMultipleSelectFlag(selectedRows)
+        }else{
+            setMultipleSelectFlag([])
+        }
+    },[selectedRows])
 
     useEffect(() => {
 
@@ -85,7 +95,7 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore,chec
                     </span>:
 
                             params.field==="name" ? <span className="text-blue">
-                                     <Link to={`/product/${params.row.id}`}>{params.value}</Link>
+                                     <Link to={`/${linkUrl}/${params.row.id}`}>{params.value}</Link>
                     </span>:
                         params.field==="year_of_making" ? <span>
                             {(params.value===0?"":params.value)}
@@ -99,11 +109,7 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore,chec
             })
 
         })
-
-
         setVisibleFields(fields)
-
-
 
         if (actions&&actions.length>0) {
 
@@ -140,44 +146,56 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore,chec
         setSortModel(headers.filter(item=>item.sort))
 
 
+        console.log("headers set",headersTmp)
 
 
-    }, [])
+    }, [headers])
 
     useEffect(() => {
 
         // if (items.length>list.length){
 
+        setTimeout(()=>{
 
+            items.forEach((listItem)=>{
+                let Product=listItem[`${dataKey}`]
+
+                if (Product){
+                    let itemTmp={}
+
+                    console.log(headers)
+                    headers
+                        .forEach((item)=>{
+                            try {
+
+
+                                if (item.subField) {
+                                    itemTmp[`${item.subField}`] = Product[`${item.field}`][`${item.subField}`]
+                                } else {
+
+                                    itemTmp[`${item.field}`] = Product[`${item.field == "id" ? "_key" : item.field}`]
+                                }
+
+                            }catch(e){
+                                console.log(e)
+
+                            }
+                        })
+
+
+                    listTmp.push(itemTmp)
+                }
+
+            })
+
+            console.log(" set data","new data")
+            setList(listTmp)
+
+        },100)
         let listTmp=[]
 
-        items.forEach((listItem)=>{
-            let Product=listItem.Product
-            let itemTmp={}
-
-            headers
-                .forEach((item)=>{
-                    try {
-
-                    if (item.subField){
-                        itemTmp[`${item.subField}`] = Product[`${item.field}`][`${item.subField}`]
-                    }else{
-                        itemTmp[`${item.field}`]=Product[`${item.field=="id"?"_key":item.field}`]
-                    }
-                    }catch(e){
-                      console.log(e)
-
-                    }
-                })
 
 
-            listTmp.push(itemTmp)
-        })
-
-        setList(listTmp)
-        // console.log(itemsTmp)
-
-        // }
     }, [items])
 
     const handleChange=(data)=>{
@@ -239,14 +257,10 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore,chec
                    //     //     },
                    //     // },
                    // }}
-
                    disableColumnMenu={true}
                    onPageChange={(newPage) => {
-
-                           setPage(newPage)
-                           loadMore(false,sortData,newPage)
-
-
+                       setPage(newPage)
+                       loadMore(false,sortData,newPage)
                    }}
                    onPageSizeChange={(newPageSize) => {
                        alert("page size "+newPageSize)
@@ -269,6 +283,20 @@ const CustomDataGridTable=({headers,pageSize,count,actions,loading,loadMore,chec
                    paginationMode="server"
                    paginationModel={paginationModel}
                    onPaginationModelChange={setPaginationModel}
+                   onSelectionModelChange={(ids) => {
+                       try {
+                           const selectedIDs = new Set(ids);
+                           const selectedRows = items.filter((row) =>
+                               selectedIDs.has(row.Product._key)
+                       );
+
+                           setSelectedRows(selectedRows);
+                       }catch (e){
+                           console.log(e)
+                       }
+
+                   }}
+                   keepNonExistentRowsSelected
                />
 
 

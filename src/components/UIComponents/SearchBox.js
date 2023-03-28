@@ -42,8 +42,8 @@ class SearchBox extends Component {
 
     handleSearchFilter = (value) => {
 
-        this.setState({filterDefaultValue: value});
 
+        this.setState({filterDefaultValue: value});
 
         if (value)
         this.setState({
@@ -61,7 +61,7 @@ class SearchBox extends Component {
 
     showSearchFilter=(show)=>{
 
-console.log(show,this.state.searchQueryChanged,this.state.filterChanged)
+
         if (this.state.searchQueryChanged||this.state.filterChanged){
             this.setState({
                 displayFields:true
@@ -91,12 +91,14 @@ console.log(show,this.state.searchQueryChanged,this.state.filterChanged)
                                 <select className="search-select text-capitlize "
                                         // onBlur={()=>{ this.showSearchFilter(false)}}
                                         // style={{width:  'auto'}}
-                                        label="Filter"  value={this.state.filterDefaultValue} onChange={(e) => this.handleSearchFilter(e.target.value)} >
+                                        label="Filter"
+                                        value={this.state.filterDefaultValue}
+                                        onChange={(e) => this.handleSearchFilter(e.target.value)} >
                                     <option value="" >
                                         Filter By
                                     </option>
                                     {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
-                                        return <option   key={index} value={drop.key}>{drop.label}</option>
+                                        return <option   key={index} value={drop.field}>{drop.label}</option>
                                     }) : null}
                                 </select>}
                         <input

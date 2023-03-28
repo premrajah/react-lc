@@ -107,7 +107,8 @@ class PaginationGrid extends Component {
 
                 <CustomDataGridTable
                     loadMore={(reset,sortData,newPage) => this.loadMore(false,sortData,newPage)}
-                    headers={PRODUCTS_FILTER_VALUES_KEY}
+
+                    headers={this.props.headers}
                     items={this.props.items}
                     pageSize={this.props.pageSize}
                     count={this.props.count}
@@ -115,7 +116,10 @@ class PaginationGrid extends Component {
                     actions={this.props.actions}
                     checkboxSelection={this.props.checkboxSelection}
                     actionCallback={this.props.actionCallback}
-                    // sortData={(sortData)=>this.loadMore(true, sortData)}
+                    sortData={(sortData)=>this.loadMore(true, sortData)}
+                    setMultipleSelectFlag={this.props.setMultipleSelectFlag}
+                    dataKey={this.props.dataKey}
+                    linkUrl={this.props.linkUrl}
 
                 />
 

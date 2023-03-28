@@ -5,7 +5,12 @@ import CubeBlue from "../../img/icons/product-icon-big.png";
 import {Link} from "react-router-dom";
 import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
-import {baseUrl, PRODUCTS_FIELD_SELECTION, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
+import {
+    baseUrl,
+    ISSUES_FILTER_VALUES_KEY,
+    PRODUCTS_FIELD_SELECTION,
+    PRODUCTS_FILTER_VALUES_KEY
+} from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
 import {Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
@@ -31,6 +36,8 @@ import {showProductPopUp} from "../../store/actions/actions";
 import SubproductItem from "../../components/Products/Item/SubproductItem";
 import {GoogleMap} from "../../components/Map/MapsContainer";
 import MenuDropdown from "../../components/FormsUI/MenuDropdown";
+import ErrorBoundary from "../../components/ErrorBoundary";
+import MapIcon from "@mui/icons-material/Place";
 
 class ProductsNew extends Component {
     constructor(props) {
@@ -62,7 +69,9 @@ class ProductsNew extends Component {
             productDisplayView: "large",
             showProductEdit:false,
             showQuickView:false,
+            selectedRows:[],
             selectedURl:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at",
+            selectionMode:"Products"
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -119,7 +128,7 @@ class ProductsNew extends Component {
                 subFilter.push({ key: activeFilter, value: searchValue });
             } else {
                 PRODUCTS_FILTER_VALUES_KEY.forEach((item) =>
-                    subFilter.push({ key: item.key, value: searchValue })
+                    subFilter.push({ key: item.field, value: searchValue })
                 );
             }
         }
@@ -143,7 +152,7 @@ class ProductsNew extends Component {
 
 
 
-        if (this.state.selectedProducts.length>0){
+        if (this.state.selectedRows.length>0){
 
             this.formatData(data,true)
 
@@ -160,7 +169,6 @@ class ProductsNew extends Component {
 
             let url = `${this.state.activeQueryUrl}&offset=${page}&size=${size}`;
 
-
             axios.get(encodeURI(url)).then(
                 (response) => {
                     let responseAll = response.data.data;
@@ -174,19 +182,12 @@ class ProductsNew extends Component {
 
                     } else {
 
-
-                        let list = this.state.allDownloadItems.length > 0 ?
-                            this.state.allDownloadItems.concat(responseAll) : responseAll
-
+                        let list = this.state.allDownloadItems.length > 0?this.state.allDownloadItems.concat(responseAll) : responseAll
                         this.setState({
                             allDownloadItems: list
                         })
-
                         this.downloadAll(page + size, 100, data)
-
                     }
-
-
                 },
                 (error) => {
 
@@ -202,7 +203,12 @@ class ProductsNew extends Component {
 
     setSelection=(selection)=>{
 
-        if (selection==="Product"){
+        this.clearList()
+        this.setState({
+            selectionMode:selection
+        })
+
+        if (selection==="Products"){
 
             this.setState({
                 selectedURl:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at",
@@ -225,7 +231,7 @@ class ProductsNew extends Component {
         }
         else if (selection==="Issues"){
             this.setState({
-                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at",
+                selectedURl:`name=Issue`,
             })
         }
         else if (selection==="Archive"){
@@ -233,6 +239,7 @@ class ProductsNew extends Component {
                 selectedURl:"name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at",
             })
         }
+
 
        setTimeout(()=>{
            this.loadProductsWithoutParentPageWise({
@@ -245,7 +252,6 @@ class ProductsNew extends Component {
 
     formatData=(selectedKeys,selected=false)=>{
 
-
         try {
 
             let productList=[]
@@ -257,7 +263,6 @@ class ProductsNew extends Component {
             }
         let csvDataNew = [];
         productList.forEach(item => {
-
 
                 const {Product, event, service_agent} = item;
                 let itemTmp=[]
@@ -439,6 +444,7 @@ try {
          await   this.clearList();
         }
 
+        console.log(data)
         this.controller.abort()
 
         if (data) this.setFilters(data);
@@ -639,6 +645,13 @@ try {
         });
     };
 
+    setMultipleSelectFlag=(rows)=>{
+        console.log(rows)
+        this.setState({
+            selectedRows: rows,
+        });
+    }
+
     toggleProductView = (viewType) => {
         this.setState({
             productDisplayView: viewType
@@ -649,8 +662,9 @@ try {
 
         try {
 
-            let mapData=this.mapProductToSite()
-            this.mapProductToSite()
+
+            let mapData=this.mapProductToSite(this.state.selectedRows)
+
             this.setState({
                 mapData: mapData,
                 showMap: !this.state.showMap,
@@ -665,9 +679,9 @@ try {
 
 
 
-    mapProductToSite=()=>{
+    mapProductToSite=(selectedData)=>{
 
-        let products=this.state.selectedProducts
+        let products=selectedData
         let data=[]
         products.forEach(product=>{
 
@@ -687,7 +701,7 @@ try {
     })
 
 
-        console.log(data)
+
         return data
 
     }
@@ -945,8 +959,9 @@ try {
                             </div>
                         </div>
 
+                        <ErrorBoundary>
                         <PaginationGrid
-                            dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
+                            headers={this.state.selectionMode==="Issues"?ISSUES_FILTER_VALUES_KEY:PRODUCTS_FILTER_VALUES_KEY}
                             count={this.state.count}
                             items={this.state.items}
                             pageSize={this.state.pageSize}
@@ -955,10 +970,15 @@ try {
                             loading={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
                             loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}
-                            actions={["map","edit","view"]}
-                            checkboxSelection={true}
-                            actionCallback={this.actionCallback}>
+                            actions={this.state.selectionMode==="Issues"?[]:["map","edit","view"]}
+                            checkboxSelection={this.state.selectionMode!=="Issues"}
+                            setMultipleSelectFlag={this.setMultipleSelectFlag}
+                            actionCallback={this.actionCallback}
+                            dataKey={this.state.selectionMode==="Issues"?"Issue":"Product"}
+                            linkUrl={this.state.selectionMode==="Issues"?"issue":this.state.selectionMode==="Records"?"p":"product"}
+                        >
                             <div className="row ">
+                                {this.state.selectedRows.length===0? <>
                                 <div className="col-md-2 btn-rows">
                                     <MenuDropdown
                                         setSelection={this.setSelection}
@@ -967,9 +987,7 @@ try {
                                     />
                                 </div>
                                 <div className="col-md-10 d-flex flex-row">
-                                    {/*<Link to="/issues" className=" btn-sm btn-gray-border me-2  ">*/}
-                                    {/*    Issues*/}
-                                    {/*</Link>*/}
+
                                     <div className="me-2">
                                     <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
                                         <button
@@ -980,14 +998,6 @@ try {
                                         </button>
                                     </CustomPopover>
                                     </div>
-                                    <button
-                                        className="d-none btn btn-sm btn-gray-border ms-1"
-                                        onClick={() => this.toggleMultiSite()}
-                                        type="button">
-                                        Upload Multiple Products
-                                    </button>
-                                {/*</div>*/}
-                                {/*<div className="col-md-5 d-flex justify-content-end">*/}
                                     <div className="me-2">
                                         <CustomPopover text={"Export all products to csv."}>
                                             <BlueSmallBtn
@@ -1009,13 +1019,31 @@ try {
                                             </BlueSmallBtn>
                                         </CustomPopover>
                                     </div>
-
                                 </div>
+                                      </>:
+
+                                    <div className="col-md-12 ">
+                                        <BlueSmallBtn
+                                            title={"Locations"}
+                                            onClick={this.getSitesForProducts}
+                                        >
+                                            <MapIcon style={{fontSize:"20px"}} />
+                                        </BlueSmallBtn>
+
+                                    <BlueSmallBtn
+                                        classAdd={'ms-2'}
+                                    title={"CSV"}
+                                    onClick={()=>this.fieldSelection()}>
+                                    <DownloadIcon style={{ fontSize: "20px" }} />
+                                    </BlueSmallBtn>
+
+                                    </div>
+                                }
 
                             </div>
 
                         </PaginationGrid>
-
+                        </ErrorBoundary>
 
                     </div>
                 </>
@@ -1041,7 +1069,7 @@ try {
                     size={"md"}
                     hide={this.fieldSelection}
                     show={this.state.showFieldSelection}
-                    heading={"Download Product"}>
+                    heading={"Download Products"}>
                     <>
                         {this.state.showFieldSelection && (
                             <>

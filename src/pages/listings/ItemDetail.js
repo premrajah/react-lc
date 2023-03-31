@@ -1,33 +1,8 @@
 import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
-import AppBar from "@mui/material/AppBar";
-import {Link} from "react-router-dom";
-import PlaceholderImg from "../../img/place-holder-lc.png";
-import {makeStyles} from "@mui/styles";
-import {baseUrl} from "../../Util/Constants";
-import axios from "axios/index";
-import encodeUrl from "encodeurl";
-import {Modal, ModalBody} from "react-bootstrap";
 import {withStyles} from "@mui/styles/index";
-import TextField from "@mui/material/TextField";
-import MatchItemSeller from "../../components/MatchItemSeller";
-import NotFound from "../../views/NotFound";
-import ProductExpandItem from "../../components/Products/ProductExpandItem";
-import MoreMenu from "../../components/MoreMenu";
-import ListEditForm from "../../components/Listings/ListEditForm";
 import Layout from "../../components/Layout/Layout";
-import OrgComponent from "../../components/Org/OrgComponent";
-import Box from "@mui/material/Box";
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import Tab from "@mui/material/Tab";
-import TabPanel from "@mui/lab/TabPanel";
-import InfoTabContent from "../../components/Listings/InfoTabContent";
-import {GoogleMap} from "../../components/Map/MapsContainer";
-import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import ListingDetail from "../../components/Listings/ListingDetail";
 
 class ItemDetail extends Component {

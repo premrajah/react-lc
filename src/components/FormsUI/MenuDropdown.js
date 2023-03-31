@@ -7,6 +7,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useEffect } from "react";
 import ErrorBoundary from "../ErrorBoundary";
 
+import Paper from '@mui/material/Paper';
 export default function MenuDropdown(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [options, setOptions] = React.useState(props.options);
@@ -48,6 +49,7 @@ export default function MenuDropdown(props) {
     };
 
     return (
+        <>
         <ErrorBoundary skip>
             <List
                 className={"p-0"}
@@ -60,7 +62,8 @@ export default function MenuDropdown(props) {
                     aria-haspopup="listbox"
                     aria-controls="lock-menu"
                     aria-label="when device is locked"
-                    aria-expanded={open ? "true" : undefined}
+                    aria-expanded=
+                        {open ? "true" : undefined}
                     onClick={handleClickListItem}>
                     {props.option ? options[selectedIndex][props.option] : options[selectedIndex]}
 
@@ -68,8 +71,8 @@ export default function MenuDropdown(props) {
                     <KeyboardArrowDownIcon />
                 </ListItem>
             </List>
+            <Paper style={{ width: 220 }}>
             <Menu
-                style={{ width: "200px!important", height: props.height }}
                 id="lock-menu"
                 anchorEl={anchorEl}
                 open={open}
@@ -87,6 +90,9 @@ export default function MenuDropdown(props) {
                     </MenuItem>
                 ))}
             </Menu>
+            </Paper>
         </ErrorBoundary>
+
+        </>
     );
 }

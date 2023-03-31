@@ -16,7 +16,6 @@ import ImageHeader from "../UIComponents/ImageHeader";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";
 import SubProductsTab from "./SubProductsTab";
-import ArtifactProductsTab from "./ArtifactProductsTab";
 import ProductForm from "../ProductPopUp/ProductForm";
 import {GoogleMap} from "../Map/MapsContainer";
 import AggregatesTab from "./AggregatesTab";
@@ -36,7 +35,6 @@ import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
 import {fetchErrorMessage, getTimeFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
-import SiteFormNew from "../Sites/SiteFormNew";
 import ArtifactManager from "../FormsUI/ArtifactManager";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 

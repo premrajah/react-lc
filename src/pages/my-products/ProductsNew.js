@@ -71,7 +71,16 @@ class ProductsNew extends Component {
             showQuickView:false,
             selectedRows:[],
             selectedURl:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at",
-            selectionMode:"Products"
+            selectionMode:"Products",
+            selectedFilter:null,
+            selectedSearch:null,
+            data:{
+                linkUrl:"product",
+                linkField:"name",
+                objKey:"Product",
+                linkParams:`type=Product`
+
+            }
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -117,11 +126,46 @@ class ProductsNew extends Component {
         this.setState({ fields });
     }
 
-    setFilters = (data) => {
-        let subFilter = [];
 
+    setData=(selection,reset,filter,keyword)=>{
+
+
+        let linkUrl=selection==="Issues"?`issue`:selection===`Records`?`p`:`product`
+        let linkParams=`type=${selection}`
+        if (!reset){
+                if (filter){
+                    linkParams=`${linkParams}&filter=${filter}`
+                }
+                if (keyword){
+                    linkParams=`${linkParams}?&keyword=${keyword}`
+                }
+        }
+
+        console.log("set link url",linkParams)
+        this.setState({
+            data:{
+                linkUrl:linkUrl,
+                linkField:selection==="Issues"?"title":"name",
+                objKey:selection==="Issues"?"Issue":"Product",
+                linkParams:linkParams,
+            }
+        })
+
+    }
+
+    setFilters = (data,selection) => {
+
+        let subFilter = [];
         let searchValue = data.searchValue;
         let activeFilter = data.searchFilter;
+
+        this.setState({
+            selectedFilter:activeFilter?activeFilter:null,
+            selectedSearch:searchValue?searchValue:null,
+        })
+
+        this.setData(selection,false,activeFilter,searchValue)
+
 
         if (searchValue) {
             if (activeFilter) {
@@ -149,8 +193,6 @@ class ProductsNew extends Component {
         });
     };
     downloadAll = (page=0,size=100,data) => {
-
-
 
         if (this.state.selectedRows.length>0){
 
@@ -204,9 +246,8 @@ class ProductsNew extends Component {
     setSelection=(selection)=>{
 
         this.clearList()
-        this.setState({
-            selectionMode:selection
-        })
+
+       // this.setData(selection,true)
 
         if (selection==="Products"){
 
@@ -224,7 +265,7 @@ class ProductsNew extends Component {
                 selectedURl:"name=Product&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at",
             })
         }
-        else if (selection==="Tracked"){
+        else if (selection==="Track"){
             this.setState({
                 selectedURl:"name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at",
             })
@@ -245,7 +286,7 @@ class ProductsNew extends Component {
            this.loadProductsWithoutParentPageWise({
                reset: true,
 
-           })
+           },selection)
        },100)
 
     }
@@ -438,17 +479,16 @@ class ProductsNew extends Component {
     }
      controller = new AbortController();
     controllerSeek = new AbortController();
-    loadProductsWithoutParentPageWise = async (data) => {
-try {
+    loadProductsWithoutParentPageWise = async (data,selection) => {
+
+        try {
         if (data && data.reset){
          await   this.clearList();
         }
 
-        console.log(data)
         this.controller.abort()
 
-        if (data) this.setFilters(data);
-
+        if (data) this.setFilters(data,selection?selection:this.state.selectionMode);
         this.seekCount();
 
         this.setState({
@@ -466,7 +506,9 @@ try {
         this.setState({
             activeQueryUrl:url
         })
-         url = `${url}&count=false&offset=${data.newPage?data.newPage:0}&size=${this.state.pageSize}`;
+
+        url = `${url}&count=false&offset=${data.newPage?data.newPage:0}&size=${this.state.pageSize}`;
+
         if (data.sort){
             url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
         }
@@ -533,6 +575,8 @@ try {
 
     componentDidMount() {
         // this.detectChange()
+
+
     }
 
     handleAddToProductsExportList = (returnedItem) => {
@@ -787,7 +831,7 @@ try {
         ];
 
         return (
-            <Layout>
+            <Layout params={{type:this.state.selectionMode,filter:this.state.selectedFilter,keyword:this.state.selectedSearch}}  >
                 <>
                     {this.state.selectedProducts.length > 0 ? (
                         <div
@@ -974,15 +1018,14 @@ try {
                             checkboxSelection={this.state.selectionMode!=="Issues"}
                             setMultipleSelectFlag={this.setMultipleSelectFlag}
                             actionCallback={this.actionCallback}
-                            dataKey={this.state.selectionMode==="Issues"?"Issue":"Product"}
-                            linkUrl={this.state.selectionMode==="Issues"?"issue":this.state.selectionMode==="Records"?"p":"product"}
+                            data={this.state.data}
                         >
                             <div className="row ">
                                 {this.state.selectedRows.length===0? <>
                                 <div className="col-md-2 btn-rows">
                                     <MenuDropdown
                                         setSelection={this.setSelection}
-                                        options={["Products","Service","Records","Tracked","Issues"]}
+                                        options={["Products","Service","Records","Track","Issues","Archive"]}
 
                                     />
                                 </div>
@@ -1269,6 +1312,9 @@ try {
         );
     }
 }
+
+
+
 
 const mapStateToProps = (state) => {
     return {

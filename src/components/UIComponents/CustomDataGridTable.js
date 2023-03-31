@@ -22,7 +22,7 @@ import {Link} from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
 
 
-const CustomDataGridTable=({headers,pageSize,count,actions,linkUrl,dataKey,loading,loadMore,checkboxSelection,setMultipleSelectFlag,actionCallback, items,element,children, ...otherProps}) =>{
+const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkField,dataKey,loading,loadMore,checkboxSelection,setMultipleSelectFlag,actionCallback, items,element,children, ...otherProps}) =>{
 
     const [tableHeader,setTableHeader] = useState([]);
     const [list,setList] = useState([]);
@@ -94,8 +94,8 @@ const CustomDataGridTable=({headers,pageSize,count,actions,linkUrl,dataKey,loadi
                             {getTimeFormat(params.value)}
                     </span>:
 
-                            params.field==="name" ? <span className="text-blue">
-                                     <Link to={`/${linkUrl}/${params.row.id}`}>{params.value}</Link>
+                            params.field===data.linkField? <span className="text-blue">
+                                     <Link to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>{params.value}</Link>
                     </span>:
                         params.field==="year_of_making" ? <span>
                             {(params.value===0?"":params.value)}
@@ -113,11 +113,11 @@ const CustomDataGridTable=({headers,pageSize,count,actions,linkUrl,dataKey,loadi
 
         if (actions&&actions.length>0) {
 
-    headersTmp.push({
-                    field: "action-key",
-                    headerName: "Actions",
-                    editable: false,
-                    sortable: false,
+        headersTmp.push({
+            field: "action-key",
+            headerName: "Actions",
+            editable: false,
+            sortable: false,
         hide:false,
         hideable: false,
         flex:1,
@@ -139,17 +139,16 @@ const CustomDataGridTable=({headers,pageSize,count,actions,linkUrl,dataKey,loadi
                     ),
                 })
 
-
         }
         setTableHeader(headersTmp)
 
         setSortModel(headers.filter(item=>item.sort))
 
 
-        console.log("headers set",headersTmp)
+        // console.log("headers set",headersTmp)
 
 
-    }, [headers])
+    }, [headers,data])
 
     useEffect(() => {
 
@@ -158,14 +157,15 @@ const CustomDataGridTable=({headers,pageSize,count,actions,linkUrl,dataKey,loadi
         setTimeout(()=>{
 
             items.forEach((listItem)=>{
-                let Product=listItem[`${dataKey}`]
+                let Product=listItem[`${data.objKey}`]
 
                 if (Product){
+
                     let itemTmp={}
 
-                    console.log(headers)
+                    // console.log(headers)
                     headers
-                        .forEach((item)=>{
+                        .forEach((item)=>   {
                             try {
 
 
@@ -188,7 +188,7 @@ const CustomDataGridTable=({headers,pageSize,count,actions,linkUrl,dataKey,loadi
 
             })
 
-            console.log(" set data","new data")
+            // console.log(" set data","new data")
             setList(listTmp)
 
         },100)
@@ -198,21 +198,21 @@ const CustomDataGridTable=({headers,pageSize,count,actions,linkUrl,dataKey,loadi
 
     }, [items])
 
-    const handleChange=(data)=>{
+    const handleChange=(dataTmp)=>{
 
-        setSortModel(data)
+        setSortModel(dataTmp)
 
-     console.log("Sort modal",data)
+     // console.log("Sort modal",data)
 
-        if (loadMore&&data.length>0){
+        if (loadMore&&dataTmp.length>0){
 
             let filter={
-                key:data[0].field=="id"?"_key":data[0].field,
-                sort:data[0].sort
+                key:dataTmp[0].field=="id"?"_key":dataTmp[0].field,
+                sort:dataTmp[0].sort
             }
 
 
-            console.log(data.field=="id"?"_key":data.field, data.sort)
+            // console.log(data.field=="id"?"_key":data.field, data.sort)
             loadMore(true,filter)
 
 

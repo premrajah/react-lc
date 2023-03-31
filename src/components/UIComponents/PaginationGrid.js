@@ -90,24 +90,19 @@ class PaginationGrid extends Component {
                     <div className="row  justify-content-center search-container d-flex align-items-center  pt-3 pb-3">
                         <div className="col-md-12 col-12 position-relative ">
                             {children}
-
-
                             <SearchBox
                                 onSearch={(sv) => this.handleSearch(sv)}
                                 onSearchFilter={(fv) => this.handleSearchFilter(fv)}
                                 dropDown
-                                dropDownValues={this.props.dropDownValues}
+                                dropDownValues={this.props.headers}
                             />
                         </div>
 
                     </div>
                 )}
 
-
-
                 <CustomDataGridTable
                     loadMore={(reset,sortData,newPage) => this.loadMore(false,sortData,newPage)}
-
                     headers={this.props.headers}
                     items={this.props.items}
                     pageSize={this.props.pageSize}
@@ -118,9 +113,7 @@ class PaginationGrid extends Component {
                     actionCallback={this.props.actionCallback}
                     sortData={(sortData)=>this.loadMore(true, sortData)}
                     setMultipleSelectFlag={this.props.setMultipleSelectFlag}
-                    dataKey={this.props.dataKey}
-                    linkUrl={this.props.linkUrl}
-
+                    data={this.props.data}
                 />
 
 

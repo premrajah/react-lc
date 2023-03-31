@@ -1,24 +1,41 @@
-import React from "react";
+import React, {useEffect,useState} from "react";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import BackToTop from "./SrollToTop/BackToTop";
 import ErrorBoundary from "../ErrorBoundary";
+import { useLocation,useHistory  } from "react-router-dom";
 
-class Layout extends React.Component {
-    constructor(props) {
-        super(props);
+const Layout=(props)=>{
 
-        this.showLoginPopUp = this.showLoginPopUp.bind(this);
-    }
+    const history = useHistory()
+    const [currentParams, setCurrentParams] = useState({})
 
-    showLoginPopUp() {
-        if (!this.props.isLoggedIn) {
-            this.props.showLoginPopUp(true);
+
+
+    useEffect(() => {
+        const params = new URLSearchParams()
+        if (currentParams) {
+            Object.keys(currentParams).map((key)=>{
+                if (currentParams[key])
+                params.append(key, currentParams[key])
+            })
+            history.push({search: params.toString()})
         }
-    }
+    }, [currentParams])
 
-    render() {
-        const { children } = this.props
+    useEffect(()=>{
+        if (props.params&&(JSON.stringify(props.params)!==JSON.stringify(currentParams))){
+            console.log("change detected")
+            console.log(currentParams,props.params)
+
+            setCurrentParams(props.params)
+
+        }
+    },[props.params])
+
+
+
+        const { children } = props
         return (
             <div  className='layout layout-main'>
                 <Header />
@@ -27,11 +44,11 @@ class Layout extends React.Component {
                 {children}
                     </ErrorBoundary>
                 </div>
-                {!this.props.hideFooter&&<Footer/>}
+                {!props.hideFooter&&<Footer/>}
                 <BackToTop/>
             </div>
         );
-    }
+
 }
 
 

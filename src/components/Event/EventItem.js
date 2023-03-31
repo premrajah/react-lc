@@ -31,32 +31,6 @@ class EventItem extends Component {
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     componentDidUpdate(prevProps, prevState, snapshot) {
           if (this.props!==prevProps){
 

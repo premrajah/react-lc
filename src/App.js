@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import "animate.css";
 import "./css/style.css";
 import {BrowserRouter, Route, Switch, withRouter} from "react-router-dom";
@@ -10,7 +11,7 @@ import MySearch from "./pages/search/MySearch";
 import MyListings from "./pages/listings/MyListings";
 import ItemDetail from "./pages/listings/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
-import ProductsNew from "./pages/my-products/Products";
+import ProductsNew from "./pages/my-products/ProductsNew";
 import Product from "./pages/product-detail/Product";
 import ProductsService from "./pages/my-products/ProductsService";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
@@ -91,7 +92,8 @@ import MyDiary from "./pages/diary/MyDiary";
 import RentalReleaseRecords from "./pages/approvals/RentalReleaseRecords";
 import PromptLoginRoute from "./Util/PromptLoginRoute";
 import ProductsCondensedView from "./pages/my-products/ProductsCondensedView";
-import ProductRecords from "./pages/my-products/ProductRecords";
+import TestRoute from "./components/TestRoute";
+import ProductView from "./pages/product-detail/Product";
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -139,6 +141,7 @@ class App extends Component {
                     {/*<Header />*/}
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
+                        <Route exact path="/test-route" component={TestRoute} />
                         <Route exact path="/terms" component={TermsAndConditions} />
                         <Route exact path="/service" component={TermsAndService} />
                         <Route exact path="/cookie" component={Cookie} />
@@ -168,8 +171,6 @@ class App extends Component {
                         <LoggedInRoute exact path="/issues" component={Issues} />
                         <LoggedInRoute exact path="/issue/:issueKey" component={IssueDetail} />
                         <LoggedInRoute exact path="/product-archive" component={ProductArchive} />
-                        <LoggedInRoute exact path="/product-records" component={ProductRecords} />
-
                         <LoggedInRoute exact path="/product-tracked" component={TrackedProducts} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/my-cycles" component={MyCycles} />
@@ -198,7 +199,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
-                        <LoggedInRoute exact path="/product/:slug" component={Product} />
+                        <LoggedInRoute exact path="/product/:slug" component={ProductView} />
                         <LoggedInRoute exact path="/product/preview/:slug" component={Product} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <Route exact path="/ps/:slug" component={Site} />

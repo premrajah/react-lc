@@ -91,9 +91,11 @@ export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
 
 export const ENTITY_TYPES = {
     Product: "product",
+    PRODUCT: "Product",
     Site: "site",
     Event: "event"
 }
+
 
 export const RECUR_UNITS = [
     { key: "DAY", value: "Day" },

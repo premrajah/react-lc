@@ -3,6 +3,7 @@ import CustomDataGridTable from "./CustomDataGridTable";
 import {PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import SearchBox from "./SearchBox";
+import {removeEmptyValuesObj} from "../../Util/GlobalFunctions";
 
 class PaginationGrid extends Component {
     constructor(props) {
@@ -31,7 +32,7 @@ class PaginationGrid extends Component {
     filterValue= ""
     componentDidMount() {
 
-        this.loadMore(true);
+        // this.loadMore(true);
     }
 
     componentWillUnmount() {
@@ -43,13 +44,21 @@ class PaginationGrid extends Component {
     loadMore = (reset,sort,newPage) => {
 
         // alert(sort.key+" "+sort.sort)
-        this.props.loadMore({
+
+        let filterData={
             searchValue: this.searchValue,
             searchFilter: this.filterValue,
             reset: reset,
             sort:sort,
             newPage:newPage
-        });
+        }
+
+        // console.log(filterData)
+        // removeEmptyValuesObj(filterData)
+
+        // console.log(filterData)
+
+        this.props.loadMore(filterData);
     };
     timeoutSearch() {
         if (this.timeout) {
@@ -63,13 +72,13 @@ class PaginationGrid extends Component {
         }, 3000);
     }
 
-    handleSearch = (searchValue) => {
+    handleSearch = (filterValue,searchValue) => {
         searchValue = searchValue.trim();
 
         this.searchValue = searchValue;
         // this.setState({ searchValue: searchValue });
 
-        this.searchValue=searchValue
+        this.filterValue=filterValue
             this.timeoutSearch();
 
     };
@@ -91,10 +100,11 @@ class PaginationGrid extends Component {
                         <div className="col-md-12 col-12 position-relative ">
                             {children}
                             <SearchBox
-                                onSearch={(sv) => this.handleSearch(sv)}
-                                onSearchFilter={(fv) => this.handleSearchFilter(fv)}
+                                initialFilter={this.props.initialFilter}
+                                onSearch={this.handleSearch}
+                                // onSearchFilter={(fv) => this.handleSearchFilter(fv)}
                                 dropDown
-                                dropDownValues={this.props.headers}
+                                dropDownValues={this.props.data.headers}
                             />
                         </div>
 
@@ -102,11 +112,13 @@ class PaginationGrid extends Component {
                 )}
 
                 <CustomDataGridTable
-                    loadMore={(reset,sortData,newPage) => this.loadMore(false,sortData,newPage)}
-                    headers={this.props.headers}
+                    loadMore={(reset,sortData,newPage) => this.loadMore(reset,sortData,newPage)}
+                    // headers={this.props.headers}
                     items={this.props.items}
                     pageSize={this.props.pageSize}
                     count={this.props.count}
+
+                    currentPage={this.props.currentPage}
                     loading={this.props.loading}
                     actions={this.props.actions}
                     checkboxSelection={this.props.checkboxSelection}

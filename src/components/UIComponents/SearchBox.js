@@ -17,33 +17,57 @@ class SearchBox extends Component {
             displayFields:false,
             filterChanged:false,
             searchQueryChanged:false,
-            filterDefaultValue: '',
+            filterOldValue: {},
+
         };
     }
 
-    handleSearch = (value) => {
+    handleSearch = (type,value) => {
 
+        let filterVal=this.state.filterValue
+        let searchVal=this.state.searchValue
 
-        if (value)
-        this.setState({
-            searchQueryChanged:true
-        })
-        else{
+        if (type==="keyword"){
+            searchVal=value
             this.setState({
-                searchQueryChanged:false
+                searchValue:value
+            })
+        }
+        if (type==="filter"){
+            filterVal=value
+            this.setState({
+                filterValue:value
             })
         }
 
-        this.setState({
-            searchValue:value
-        })
-        return this.props.onSearch(value);
+
+
+        if (searchVal){
+
+            return this.props.onSearch(filterVal,searchVal);
+        }
+
+
+        // if (value)
+        // this.setState({
+        //     searchQueryChanged:true
+        // })
+        // else{
+        //     this.setState({
+        //         searchQueryChanged:false
+        //     })
+        // }
+        //
+        // this.setState({
+        //     searchValue:value
+        // })
+        // return this.props.onSearch(value);
     };
 
     handleSearchFilter = (value) => {
 
 
-        this.setState({filterDefaultValue: value});
+        this.setState({filterValue: value});
 
         if (value)
         this.setState({
@@ -76,6 +100,39 @@ class SearchBox extends Component {
 
     }
 
+componentDidMount() {
+    // this.setState({
+    //     searchValue: this.props.initialFilter.keyword,
+    //     filterValue: this.props.initialFilter.filter,
+    // })
+
+}
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        if (prevProps!==this.props){
+
+            if (  (JSON.stringify(this.props.initialFilter)!==JSON.stringify(this.state.filterOldValue))){
+                this.setState({
+                    filterOldValue:this.props.initialFilter
+                })
+                if (this.props.initialFilter.keyword){
+                    this.setState({
+                        searchValue: this.props.initialFilter.keyword,
+                    })
+                }
+                if (this.props.initialFilter.filter){
+                    this.setState({
+                        filterValue: this.props.initialFilter.filter,
+                    })
+                }
+            }
+
+
+
+        }
+    }
+
     render() {
         const { title, searchType, onSearch, dropDown, dropDownValues } = this.props;
         return (
@@ -92,13 +149,14 @@ class SearchBox extends Component {
                                         // onBlur={()=>{ this.showSearchFilter(false)}}
                                         // style={{width:  'auto'}}
                                         label="Filter"
-                                        value={this.state.filterDefaultValue}
-                                        onChange={(e) => this.handleSearchFilter(e.target.value)} >
+                                        value={this.state.filterValue}
+                                        onChange={(e) => this.handleSearch("filter",e.target.value)} >
                                     <option value="" >
                                         Filter By
                                     </option>
                                     {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
-                                        return <option   key={index} value={drop.field}>{drop.label}</option>
+                                        return <option selected={drop.field===this.state.filterValue}
+                                            key={index} value={drop.field}>{drop.label}</option>
                                     }) : null}
                                 </select>}
                         <input
@@ -111,7 +169,7 @@ class SearchBox extends Component {
                                 // onBlur={()=>{ this.showSearchFilter(false)}}
                                value={this.state.searchValue}
                                 placeholder={searchType ? searchType : "Search"}
-                                onChange={(e) => this.handleSearch(e.target.value)}
+                                onChange={(e) => this.handleSearch("keyword",e.target.value)}
 
                         />
                             <a  className="search-btn" href="#">

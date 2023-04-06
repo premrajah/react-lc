@@ -127,10 +127,16 @@ class IssueDetail extends Component {
         const { issueKey } = params;
         this.getIssue(issueKey);
     }
+    setParams=(params)=>{
 
+        this.setState({
+            paramsString:params
+        })
+
+    }
     render() {
         return (
-            <Layout>
+            <Layout sendParams={this.setParams}>
 
 
                     <div className="container  ">
@@ -139,7 +145,9 @@ class IssueDetail extends Component {
                             <>
                                 <div className="row  pt-4 pb-4  justify-content-start">
                                     <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
-                                        <Link to={"/issues"}>My Issues</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.issue.issue.title}</span>
+                                        <Link
+                                            to={`/issues${this.state.paramsString?this.state.paramsString:""}`}
+                                            >My Issues</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.issue.issue.title}</span>
 
                                     </div>
                                 </div>

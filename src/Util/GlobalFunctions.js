@@ -410,7 +410,20 @@ export const removeKeyFromObj = (obj, keys) => {
     return obj;
 };
 
-export const isValidUrl = (urlString) => {
+
+export const removeEmptyValuesObj=(object)=> {
+    for (let key in object) {
+        if (object.hasOwnProperty(key)) {
+            let value = object[key];
+            if (value === null || value === undefined || value === '') {
+                delete object[key];
+            }
+        }
+    }
+}
+
+
+        export const isValidUrl = (urlString) => {
     let urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
         '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address

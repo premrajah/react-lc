@@ -28,7 +28,9 @@ export default function MenuDropdown(props) {
                 setSelectedIndex(props.options.indexOf(props.initialValue));
             }
         }
-    }, [options]);
+    }, [props.initialValue,options]);
+
+
 
     const handleMenuItemClick = (event, index) => {
         setSelectedIndex(index);

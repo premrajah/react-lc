@@ -23,6 +23,7 @@ class ProductView extends Component {
             currentProduct:null,
             loading:false,
             notFound: false,
+            paramsString:null
         };
 
         this.slug = props.match.params.slug;
@@ -96,6 +97,7 @@ class ProductView extends Component {
 
     componentDidMount() {
 
+        console.log(this.props)
         if (this.props.location.search.includes("r=true")&&this.props.userDetail.is_org_admin ){
 
             axios.get(baseUrl + "product/" + this.slug + "/code-artifact?r=true").then(
@@ -112,6 +114,14 @@ class ProductView extends Component {
         }
     }
 
+    setParams=(params)=>{
+
+        this.setState({
+            paramsString:params
+        })
+
+    }
+
     render() {
 
 
@@ -126,12 +136,13 @@ class ProductView extends Component {
                 ) :
                 <>
                     {!this.props.location.pathname.includes("preview")?
-                    <Layout hideFooter={true}>
+                    <Layout hideFooter={true} sendParams={this.setParams}>
                     <div className={"container pb-5 mb-5"}>
                         {!this.state.loading&&this.props.currentProduct &&
                         <ProductDetailContent
                             history={this.props.history}
                             hideRegister={true}
+                            paramsString={this.state.paramsString}
                             item={this.props.currentProduct}
                         />}
 
@@ -140,6 +151,7 @@ class ProductView extends Component {
                         <div className={"container pb-5 mb-5"}>
                             {!this.state.loading&&this.props.currentProduct &&
                             <ProductDetailContent
+                                paramsString={this.state.paramsString}
                                 history={this.props.history}
                                 hideRegister={true}
                                 item={this.props.currentProduct}

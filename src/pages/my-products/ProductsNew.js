@@ -133,8 +133,8 @@ class ProductsNew extends Component {
 
         try{
 
-        console.log("new queryData,reset")
-        console.log(queryData)
+        // console.log("new queryData,reset")
+        // console.log(queryData)
         removeEmptyValuesObj(queryData)
 
         if (!queryData.reset){
@@ -143,8 +143,8 @@ class ProductsNew extends Component {
             queryData.page=0
         }
 
-        console.log("merged queryData,reset")
-        console.log(queryData)
+        // console.log("merged queryData,reset")
+        // console.log(queryData)
 
         this.setState({
             selectionMode:queryData.type
@@ -183,8 +183,8 @@ class ProductsNew extends Component {
             queryData:data
         })
 
-            console.log("final queryData,reset")
-            console.log(data)
+            // console.log("final queryData,reset")
+            // console.log(data)
 
         this.setFilters(data,data.type)
 
@@ -491,9 +491,9 @@ class ProductsNew extends Component {
     controllerSeek = new AbortController();
     loadProductsWithoutParentPageWise = async (data,filters) => {
 
-        console.log("data,selection,filters")
-        console.log(data)
-        console.log(filters)
+        // console.log("data,selection,filters")
+        // console.log(data)
+        // console.log(filters)
         try {
         if (data && data.reset){
          // await   this.clearList();
@@ -712,7 +712,7 @@ class ProductsNew extends Component {
     };
 
     setMultipleSelectFlag=(rows)=>{
-        console.log(rows)
+        // console.log(rows)
         this.setState({
             selectedRows: rows,
         });
@@ -839,8 +839,8 @@ class ProductsNew extends Component {
         this.setState({
             paramsString:params
         })
+        // console.log("params from layout",params)
 
-        console.log("params from layout",params)
         if (params){
 
             const type=new URLSearchParams(params).get("type");
@@ -860,7 +860,7 @@ class ProductsNew extends Component {
                 })
             }
 
-            console.log()
+
             this.setQueryData({
                 type:type?type:"Products",
                 reset:false,

@@ -22,7 +22,6 @@ const Layout=(props)=>{
     useEffect(() => {
 
         if (currentParams&&Object.keys(currentParams).length!==0) {
-            // console.log(currentParams, "current params changed")
             const params = new URLSearchParams()
             Object.keys(currentParams).map((key)=>{
                 if (currentParams[key])
@@ -37,8 +36,6 @@ const Layout=(props)=>{
 
     useEffect(()=>{
         if (props.params&&(JSON.stringify(props.params)!==JSON.stringify(currentParams))){
-            // console.log("change detected")
-            // console.log(currentParams,props.params)
 
             setCurrentParams(props.params)
 

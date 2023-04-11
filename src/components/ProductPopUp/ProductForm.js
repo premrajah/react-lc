@@ -331,9 +331,6 @@ let slugify = require('slugify')
                                             files: currentFiles,
                                         });
 
-
-                                        console.log(this.props.item.artifacts,this.state.images)
-
                                     })
                                     .catch(error => {
 
@@ -436,7 +433,6 @@ let slugify = require('slugify')
 
             let {formIsValid,errors}= validateInputs(validations,fields,editMode)
 
-            // console.log(errors)
             this.setState({ errors: errors });
 
                 if (!formIsValid){

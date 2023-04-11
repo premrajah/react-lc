@@ -980,7 +980,7 @@ class ProductsNew extends Component {
                     <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
-                            pageTitle="Products"
+                            pageTitle={this.state.selectionMode}
                             subTitle="All your added products can be found here"
                         />
 
@@ -1082,7 +1082,6 @@ class ProductsNew extends Component {
                             lastPageReached={this.state.lastPageReached}
                             currentPage={this.state.queryData.page?this.state.queryData.page:0}
                             loadMore={(data) =>{
-
                                     this.setQueryData({
                                         type: this.state.selectionMode,
                                         filter:data.searchFilter,

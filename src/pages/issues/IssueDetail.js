@@ -146,7 +146,7 @@ class IssueDetail extends Component {
                                 <div className="row  pt-4 pb-4  justify-content-start">
                                     <div className="text-left    col-sm-12 col-xs-12 breadcrumb-row">
                                         <Link
-                                            to={`/issues${this.state.paramsString?this.state.paramsString:""}`}
+                                            to={`/my-products${this.state.paramsString?this.state.paramsString:""}`}
                                             >My Issues</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.issue.issue.title}</span>
 
                                     </div>

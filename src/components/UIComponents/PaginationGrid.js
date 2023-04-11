@@ -102,6 +102,7 @@ class PaginationGrid extends Component {
                             <SearchBox
                                 initialFilter={this.props.initialFilter}
                                 onSearch={this.handleSearch}
+
                                 // onSearchFilter={(fv) => this.handleSearchFilter(fv)}
                                 dropDown
                                 dropDownValues={this.props.data.headers}

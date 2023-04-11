@@ -74,13 +74,13 @@ class ProductsNew extends Component {
             selectedSearch:null,
             queryData:{},
             initialFilter:{},
-            urlOptions:{
-                Products:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at",
-                Service:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at",
-                Records:"name=Product&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at",
-                Track:"name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at",
-                Archive:"name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at",
-                Issues:"name=Issue"
+            menuOptions:{
+                Products:{url:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at"},
+                Service:{url:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["map","view"]},
+                Records:{url:"name=Product&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at",actions:["map","view"]},
+                Track:{url:"name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["map","view"]},
+                Archive:{url:"name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["map","view"]},
+                Issues:{url:"name=Issue",actions:[]}
             },
             defaultSort:{key: "_ts_epoch_ms",sort: "desc"}
         };
@@ -162,7 +162,7 @@ class ProductsNew extends Component {
 
 
         let data={
-            dataUrl:this.state.urlOptions[queryData.type?queryData.type:"Products"],
+            dataUrl:this.state.menuOptions[queryData.type?queryData.type:"Products"].url,
             linkUrl:linkUrl,
             linkField:queryData.type==="Issues"?"title":"name",
             objKey:queryData.type==="Issues"?"Issue":"Product",
@@ -1004,7 +1004,8 @@ class ProductsNew extends Component {
                                         reset:data.reset
                                     })
                             }}
-                            actions={this.state.selectionMode==="Issues"?[]:["map","edit","view"]}
+                            actions={this.state.selectionMode&&this.state.menuOptions[this.state.selectionMode].actions?
+                                this.state.menuOptions[this.state.selectionMode].actions:["map","edit","view"]}
                             checkboxSelection={this.state.selectionMode!=="Issues"}
                             setMultipleSelectFlag={this.setMultipleSelectFlag}
                             actionCallback={this.actionCallback}
@@ -1017,8 +1018,8 @@ class ProductsNew extends Component {
                                     <MenuDropdown
                                         initialValue={this.state.initialFilter.type?this.state.initialFilter.type:null}
                                         setSelection={this.setSelection}
-                                        options={["Products","Service","Records","Track","Issues","Archive"]}
-
+                                        // options={["Products","Service","Records","Track","Issues","Archive"]}
+options={"he"}
                                     />
                                 </div>
                                 <div className="col-md-10 d-flex flex-row">

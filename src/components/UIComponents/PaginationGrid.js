@@ -69,7 +69,7 @@ class PaginationGrid extends Component {
         this.timeout = setTimeout(() => {
             this.loadMore(true);
             // console.debug("search this ",this.searchValue)
-        }, 3000);
+        }, 1500);
     }
 
     handleSearch = (filterValue,searchValue) => {

@@ -984,93 +984,6 @@ class ProductsNew extends Component {
                             subTitle="All your added products can be found here"
                         />
 
-                        <div className="row d-none">
-                            <div className="col-md-7 btn-rows">
-                                <Link
-                                    to="/products-service"
-                                    className=" btn-sm btn-gray-border me-2">
-                                    <CustomPopover
-                                        text={
-                                            " All of the products that you are responsible for as the Service Agent. The service agent is responsible for solving any issues that are reported by the owner of the product. "
-                                        }>
-                                        Service
-                                    </CustomPopover>
-                                </Link>
-
-                                <Link
-                                    to="/product-archive"
-                                    className=" btn-sm btn-gray-border  me-2">
-                                    <CustomPopover
-                                        text={
-                                            "All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "
-                                        }>
-                                        Records
-                                    </CustomPopover>
-                                </Link>
-
-                                <Link
-                                    to="/product-tracked"
-                                    className=" btn-sm btn-gray-border  me-2">
-                                    <CustomPopover
-                                        text={
-                                            "Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"
-                                        }>
-                                        Tracked
-                                    </CustomPopover>
-                                </Link>
-
-                                <Link to="/issues" className=" btn-sm btn-gray-border me-2  ">
-                                    Issues
-                                </Link>
-                                <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
-                                    <button
-                                        className="btn btn-sm mt-mobile btn-gray-border"
-                                        onClick={() => this.toggleDownloadQrCodes()}
-                                        type="button">
-                                        Download Open Cyclecodes
-                                    </button>
-                                </CustomPopover>
-                                <button
-                                    className="d-none btn btn-sm btn-gray-border ms-1"
-                                    onClick={() => this.toggleMultiSite()}
-                                    type="button">
-                                    Upload Multiple Products
-                                </button>
-                            </div>
-                            <div className="col-md-5 d-flex justify-content-end">
-                                <div className="me-2">
-                                <CustomPopover text={"Export all products to csv."}>
-                                    <BlueSmallBtn
-                                        title={"Export To CSV"}
-                                        // disabled={this.state.downloadAllLoading}
-                                        // progressLoading={this.state.downloadAllLoading}
-                                        // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
-                                        // onClick={()=>this.downloadAll(0,100)}
-                                    onClick={this.fieldSelection}
-                                    >
-
-                                    </BlueSmallBtn>
-                                </CustomPopover>
-                                </div>
-                                <div className="me-2">
-                                    <CustomPopover text={"Add Product Lines"}>
-                                        <BlueSmallBtn onClick={this.addProductLine}>
-                                            Product Lines
-                                        </BlueSmallBtn>
-                                    </CustomPopover>
-                                </div>
-                                {(this.state.items.length > 0 && this.state.productDisplayView === "large") ? <CustomPopover text="Product list view">
-                                    <BlueSmallBtn onClick={() => this.toggleProductView("compact")}>
-                                        <ViewHeadlineIcon/>
-                                    </BlueSmallBtn>
-                                </CustomPopover> : <CustomPopover text="Product list view">
-                                    <BlueSmallBtn onClick={() => this.toggleProductView("large")}>
-                                        <ViewAgendaIcon/>
-                                    </BlueSmallBtn>
-                                </CustomPopover>}
-                            </div>
-                        </div>
-
                         <ErrorBoundary>
                         <PaginationGrid
                             count={this.state.count}
@@ -1110,7 +1023,9 @@ class ProductsNew extends Component {
                                 </div>
                                 <div className="col-md-10 d-flex flex-row">
 
-                                    <div className="me-2">
+                                    {this.state.selectionMode!=="Issues"&&
+                                        <>
+                                        <div className="me-2">
                                     <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
                                         <button
                                             className="btn btn-sm mt-mobile btn-gray-border"
@@ -1141,6 +1056,7 @@ class ProductsNew extends Component {
                                             </BlueSmallBtn>
                                         </CustomPopover>
                                     </div>
+                                </>}
                                 </div>
                                       </>:
 

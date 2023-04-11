@@ -15,8 +15,10 @@ const Layout=(props)=>{
 
     useEffect(()=>{
 
-            if (props.sendParams)
-            props.sendParams(search)
+            if (props.sendParams){
+                props.sendParams(search)
+            }
+
 
     },[])
     useEffect(() => {

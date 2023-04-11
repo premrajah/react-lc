@@ -206,7 +206,7 @@ class IssueDetail extends Component {
                                                     {this.state.issue.issue && (
 
                                                             <Badge
-                                                                className="ml-3"
+                                                                className="ms-3"
                                                                 style={{"fontSize":"50%",verticalAlign: "middle"}}
                                                                 variant={this.checkPriority(
                                                                     this.state.issue.issue.priority

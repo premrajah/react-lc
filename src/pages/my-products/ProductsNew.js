@@ -1018,8 +1018,8 @@ class ProductsNew extends Component {
                                     <MenuDropdown
                                         initialValue={this.state.initialFilter.type?this.state.initialFilter.type:null}
                                         setSelection={this.setSelection}
-                                        // options={["Products","Service","Records","Track","Issues","Archive"]}
-options={"he"}
+                                        options={["Products","Service","Records","Track","Issues","Archive"]}
+
                                     />
                                 </div>
                                 <div className="col-md-10 d-flex flex-row">

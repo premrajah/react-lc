@@ -112,7 +112,8 @@ componentDidMount() {
 
         if (prevProps!==this.props){
 
-            if (  (JSON.stringify(this.props.initialFilter)!==JSON.stringify(this.state.filterOldValue))){
+
+            if ((JSON.stringify(this.props.initialFilter)!==JSON.stringify(this.state.filterOldValue))){
                 this.setState({
                     filterOldValue:this.props.initialFilter
                 })
@@ -120,10 +121,18 @@ componentDidMount() {
                     this.setState({
                         searchValue: this.props.initialFilter.keyword,
                     })
+                }else{
+                    this.setState({
+                        searchValue: "",
+                    })
                 }
                 if (this.props.initialFilter.filter){
                     this.setState({
                         filterValue: this.props.initialFilter.filter,
+                    })
+                }else {
+                    this.setState({
+                        filterValue: "",
                     })
                 }
             }

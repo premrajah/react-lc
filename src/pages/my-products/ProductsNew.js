@@ -129,7 +129,7 @@ class ProductsNew extends Component {
     }
 
 
-    setQueryData=(queryData)=>{
+    setQueryData=(queryData,filterReset)=>{
 
         try{
 
@@ -141,6 +141,14 @@ class ProductsNew extends Component {
             queryData={...this.state.queryData, ...queryData}
         }else{
             queryData.page=0
+
+        }
+
+        if (filterReset){
+
+            queryData.filter=null
+            queryData.keyword=null
+
         }
 
         // console.log("merged queryData,reset")
@@ -292,11 +300,15 @@ class ProductsNew extends Component {
 
 
     setSelection=(selection)=>{
-
+        this.setState({
+            initialFilter:{type:selection}
+        })
 
         this.setQueryData({
-            type:selection,reset:true,
-        })
+            type:selection,
+            reset:true
+        },true)
+
 
     }
 

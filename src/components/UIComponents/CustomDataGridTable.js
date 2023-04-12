@@ -214,14 +214,13 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
 
     const handleChange=(dataTmp)=>{
         setSortModel(dataTmp)
-     // console.log("Sort modal",data)
+
         if (loadMore&&dataTmp.length>0){
 
             let filter={
                 key:dataTmp[0].field=="id"?"_key":dataTmp[0].field,
                 sort:dataTmp[0].sort
             }
-            // console.log(data.field=="id"?"_key":data.field, data.sort)
             loadMore(true,filter)
         }
     }

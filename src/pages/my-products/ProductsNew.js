@@ -151,14 +151,14 @@ class ProductsNew extends Component {
         })
         let linkUrl=queryData.type==="Issues"?`issue`:queryData.type===`Records`?`p`:`product`
         let linkParams=`type=${queryData.type}`
-        if (!queryData.reset){
+        // if (!queryData.reset){
                 if (queryData.filter){
                     linkParams=`${linkParams}&filter=${queryData.filter}`
                 }
                 if (queryData.keyword){
                     linkParams=`${linkParams}&keyword=${queryData.keyword}`
                 }
-        }
+        // }
 
 
         let data={
@@ -712,7 +712,7 @@ class ProductsNew extends Component {
     };
 
     setMultipleSelectFlag=(rows)=>{
-        // console.log(rows)
+
         this.setState({
             selectedRows: rows,
         });
@@ -1242,7 +1242,9 @@ class ProductsNew extends Component {
 
                     <div className="form-col-left col-12">
                         {this.state.showQuickView &&
-                            <SubproductItem hideMoreMenu hideDate smallImage={true} productId={this.state.viewItemSelectedKey} />
+                            <SubproductItem
+                                customLink={`/${this.state.queryData["linkUrl"]}/${this.state.viewItemSelectedKey}?${this.state.queryData["linkParams"]?this.state.queryData["linkParams"]:""}`}
+                                hideMoreMenu hideDate smallImage={true} productId={this.state.viewItemSelectedKey} />
                         }
                     </div>
 

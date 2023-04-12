@@ -124,7 +124,7 @@ const loadProduct=(id)=> {
 
             <div className={`${props.smallImage?"col-10 ":"col-9 "}pl-2`}>
                 <div>
-                    <Link  to={props.noLinking?"#":`/product/${item._key}`}>
+                    <Link  to={props.noLinking?"#":props.customLink?props.customLink:`/product/${item._key}`}>
                         <span className={"title-bold"}>{item.name}</span>
                     </Link>
                 </div>
@@ -134,31 +134,16 @@ const loadProduct=(id)=> {
 
                 <div className="text-gray-light mt-2">
 
-                    <span
-
-                        className=" text-capitlize mb-1 cat-box text-left ">
-                                                            <span className="">
-                                                                {item.category}
-                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
-                            <span className=" text-capitlize">
-                                                                {capitalize(item.type)}
-                                                            </span><span className={"m-1 arrow-cat"}>&#10095;</span>
-                            <span className="  text-capitlize">
-                                                                {capitalize(item.state)}
-                                                            </span>
-
-
-
+                    <span className=" text-capitlize mb-1 cat-box text-left ">
+                                <span className="">{item.category}</span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                            <span className=" text-capitlize">{capitalize(item.type)}</span><span className={"m-1 arrow-cat"}>&#10095;</span>
+                            <span className="  text-capitlize">{capitalize(item.state)}</span>
                         </span>
 
 
                 </div>
-
                     {item.sku&&item.sku.brand&&
                     <p className={"text-capitalize text-gray-light"}>Brand: <span className={"sub-title-text-pink"}>{item.sku.brand}</span></p>}
-
-
-
                     {item.search_ids && <div className="text-gray-light">
                         <span className="mr-1">{item.search_ids.length}</span>
                         <span>Searches</span>

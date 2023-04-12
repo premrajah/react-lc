@@ -20,7 +20,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import {capitalize, getSite, getTimeFormat} from "../../Util/GlobalFunctions";
 import {Link} from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
-
+import Stack from '@mui/material/Stack';
 
 const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
                                linkField,dataKey,loading,loadMore,checkboxSelection,
@@ -269,7 +269,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
                    rows={list}
                    columns={tableHeader}
                    pageSize={pageSize}
-                   loading={listLoading||list.length===0}
+                   loading={listLoading}
                    rowsPerPageOptions={[pageSize]}
                    checkboxSelection={checkboxSelection}
                    disableSelectionOnClick
@@ -283,7 +283,6 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
                            const selectedRows = items.filter((row) =>
                                selectedIDs.has(row.Product._key)
                        );
-
                            setSelectedRows(selectedRows);
                        }catch (e){
                            console.log(e)
@@ -291,6 +290,19 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
 
                    }}
                    keepNonExistentRowsSelected
+
+                   components={{
+                       NoRowsOverlay: () => (
+                           <Stack height="100%" alignItems="center" justifyContent="center">
+                               No results found.
+                           </Stack>
+                       ),
+                       NoResultsOverlay: () => (
+                           <Stack height="100%" alignItems="center" justifyContent="center">
+                               No results found.
+                           </Stack>
+                       )
+                   }}
                />
 
 

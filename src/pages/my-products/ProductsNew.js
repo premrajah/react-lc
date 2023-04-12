@@ -240,11 +240,11 @@ class ProductsNew extends Component {
             showFieldSelection: !this.state.showFieldSelection,
         });
     };
-    downloadAll = (page=0,size=100,data) => {
+    downloadAll = (page=0,size=100,selectedKeys) => {
 
         if (this.state.selectedRows.length>0){
 
-            this.formatData(data,true)
+            this.formatData(selectedKeys,true)
 
         }
         else {
@@ -268,7 +268,7 @@ class ProductsNew extends Component {
                             downloadAllLoading: false,
                         });
 
-                        this.formatData(data)
+                        this.formatData(selectedKeys)
 
                     } else {
 
@@ -276,7 +276,7 @@ class ProductsNew extends Component {
                         this.setState({
                             allDownloadItems: list
                         })
-                        this.downloadAll(page + size, 100, data)
+                        this.downloadAll(page + size, 100, selectedKeys)
                     }
                 },
                 (error) => {
@@ -302,12 +302,12 @@ class ProductsNew extends Component {
 
     formatData=(selectedKeys,selected=false)=>{
 
+        // console.log(selectedKeys)
         try {
 
             let productList=[]
             if (selected){
-
-                productList=this.state.selectedProducts
+                productList=this.state.selectedRows
             }else{
                 productList=this.state.allDownloadItems
             }
@@ -346,6 +346,8 @@ class ProductsNew extends Component {
 
     exportToCSV=(csvData,selectedKeys,selected) =>{
 
+        // console.log(csvData)
+        // return
         let data = "";
         let tableDataNew = [];
 
@@ -827,9 +829,9 @@ class ProductsNew extends Component {
         event.preventDefault();
         event.stopPropagation()
 
-        const data = new FormData(event.target);
+        const selectedKeys = new FormData(event.target);
 
-        this.downloadAll(0,100,data)
+        this.downloadAll(0,100,selectedKeys)
 
 
     };

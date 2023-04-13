@@ -28,8 +28,8 @@ const NotificationTwoItemGroup = ({ items }) => {
     // }, []);
 
 
-    const toggleAccordion = () => {
-        setAccordionExpand((prev) => !prev);
+    const handleChange = panel => (e,isExpanded) => {
+        setAccordionExpand(isExpanded ? panel : false);
     }
 
     const messageRead = (key) => {
@@ -120,13 +120,16 @@ const NotificationTwoItemGroup = ({ items }) => {
                                 <Accordion
                                     className="mb-1"
                                     key={itemGroup[0].Message._key}
-                                    id={itemGroup[0].Message._key} expanded={accordionExpand}>
-                                    <AccordionSummary  expandIcon={itemGroup.length > 1 && <ExpandMoreIcon onClick={() => toggleAccordion()} />}>
+                                    id={itemGroup[0].Message._key} expanded={accordionExpand === itemGroup[0].Message._key}
+                                    onChange={handleChange(itemGroup[0].Message._key)}
+                                    disabled={itemGroup.length === 1}
+                                >
+                                    <AccordionSummary  expandIcon={itemGroup.length > 1 && <ExpandMoreIcon />}>
                                         <div className="">{itemGroup[0].Message.text}</div>
                                     </AccordionSummary>
                                     {itemGroup.length > 1 &&
                                         itemGroup.map((ig, i) => {
-                                            console.log("=> ", ig)
+                                            // console.log("=> ", ig)
                                             return <div>
                                                 <AccordionDetails>{ig.Message.text}</AccordionDetails>
                                             </div>;

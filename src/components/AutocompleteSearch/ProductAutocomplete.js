@@ -66,9 +66,6 @@ class ProductAutocomplete extends Component {
 
     componentDidMount() {
 
-        console.log("this.props.filter")
-
-        console.log(this.props.filterData)
         if (this.props.initialOrgId){
 
             this.setState({

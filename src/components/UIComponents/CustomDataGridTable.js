@@ -20,9 +20,11 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import {capitalize, getSite, getTimeFormat} from "../../Util/GlobalFunctions";
 import {Link} from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
+import Stack from '@mui/material/Stack';
 
-
-const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkField,dataKey,loading,loadMore,checkboxSelection,setMultipleSelectFlag,actionCallback, items,element,children, ...otherProps}) =>{
+const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
+                               linkField,dataKey,loading,loadMore,checkboxSelection,
+                               setMultipleSelectFlag,actionCallback, items,element,children, ...otherProps}) =>{
 
     const [tableHeader,setTableHeader] = useState([]);
     const [list,setList] = useState([]);
@@ -32,6 +34,7 @@ const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkFiel
     const [listLoading, setListLoading] = React.useState(false);
     const [sortData, setSortData] = React.useState(null);
     const [visibleFields, setVisibleFields] = React.useState({});
+    const [currentData, setCurrentData] = React.useState({});
     const [selectedRows, setSelectedRows] = React.useState([]);
 
     const [initialHeaderState, setInitialHeaderState] = React.useState(false);
@@ -51,7 +54,7 @@ const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkFiel
 
     useEffect(() => {
 
-        console.log(selectedRows)
+        // console.log(selectedRows)
 
         if (selectedRows.length>0){
             setMultipleSelectFlag(selectedRows)
@@ -65,90 +68,101 @@ const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkFiel
         setListLoading(loading)
     },[loading])
 
+
+
     useEffect(() => {
 
-        let headersTmp=[]
-        let fields={}
-        headers.forEach((item)=>{
+        if (data&&(JSON.stringify(data)!==JSON.stringify(currentData))) {
+            console.log("use effect data")
 
-            if (!item.visible)
-            fields[item.field]=item.visible
+            console.log(data)
 
-            headersTmp.push({
-                field: item.subField?item.subField:item.field,
-                headerName: item.label,
-                editable:false,
-                sortable:item.sortable,
-                sortingOrder:item.sortingOrder?item.sortingOrder:['asc', 'desc', null],
-                // hide:!item.visible,
-                // hideable: !item.visible,
-                flex:item.flex?item.flex:1,
-                // colSpan: `${item.field==="category"?3:1}`,
-                // minWidth:`${item.field==="category"?300:50}`,
-                // flex:`${item.field==="category"?1:0.5}`,
-                // minWidth:50,
-                // maxWidth:"unset",
-                renderCell: (params) => (
-<>
-                    {params.field=="_ts_epoch_ms" ? <span>
-                            {getTimeFormat(params.value)}
-                    </span>:
-
-                            params.field===data.linkField? <span className="text-blue">
-                                     <Link to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>{params.value}</Link>
-                    </span>:
-                        params.field==="year_of_making" ? <span>
-                            {(params.value===0?"":params.value)}
-                    </span>:
-
-                        params.field==="category" ? <GetCatBox item={params.row} />:
-                        params.value}
-</>
-                ),
-
+            setPaginationModel({
+                pageSize: pageSize,
+                page: data.page,
             })
 
-        })
-        setVisibleFields(fields)
+            setPage(data.page)
+            setCurrentData(data)
+            let headersTmp = []
+            let fields = {}
+            data.headers.forEach((item) => {
 
-        if (actions&&actions.length>0) {
+                if (!item.visible)
+                    fields[item.field] = item.visible
 
-        headersTmp.push({
-            field: "action-key",
-            headerName: "Actions",
-            editable: false,
-            sortable: false,
-        hide:false,
-        hideable: false,
-        flex:1,
-             //       minWidth: 60,
-             // flex:1,
+                headersTmp.push({
+                    field: item.subField ? item.subField : item.field,
+                    headerName: item.label,
+                    editable: false,
+                    sortable: item.sortable,
+                    sortingOrder: item.sortingOrder ? item.sortingOrder : ['asc', 'desc', null],
+                    // hide:!item.visible,
+                    // hideable: !item.visible,
+                    flex: item.flex ? item.flex : 1,
+                    // colSpan: `${item.field==="category"?3:1}`,
+                    // minWidth:`${item.field==="category"?300:50}`,
+                    // flex:`${item.field==="category"?1:0.5}`,
+                    // minWidth:50,
+                    // maxWidth:"unset",
                     renderCell: (params) => (
                         <>
-                            {actions.map((action)=>
+                            {params.field == "_ts_epoch_ms" ? <span>
+                            {getTimeFormat(params.value)}
+                    </span> :
+
+                                params.field === data.linkField ? <span className="text-blue">
+                                     <Link
+                                         to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>{params.value}</Link>
+                    </span> :
+                                    params.field === "year_of_making" ? <span>
+                            {(params.value === 0 ? "" : params.value)}
+                    </span> :
+
+                                        params.field === "category" ? <GetCatBox item={params.row}/> :
+                                            params.value}
+                        </>
+                    ),
+
+                })
+
+            })
+            setVisibleFields(fields)
+
+            if (actions && actions.length > 0) {
+
+                headersTmp.push({
+                    field: "action-key",
+                    headerName: "Actions",
+                    editable: false,
+                    sortable: false,
+                    hide: false,
+                    hideable: false,
+                    flex: 1,
+                    //       minWidth: 60,
+                    // flex:1,
+                    renderCell: (params) => (
+                        <>
+                            {actions.map((action) =>
 
                                 <ActionIconBtn
-                                    onClick={()=>actionCallback(params.row.id,action)}
+                                    onClick={() => actionCallback(params.row.id, action)}
                                 >
-                                    {action=="edit"?<EditIcon />:action=="view"?<VisibilityIcon/>:action=="delete"?<Delete/>:action=="map"?<MapIcon/>:action}
+                                    {action == "edit" ? <EditIcon/> : action == "view" ?
+                                        <VisibilityIcon/> : action == "delete" ? <Delete/> : action == "map" ?
+                                            <MapIcon/> : action}
                                 </ActionIconBtn>
-
                             )}
 
                         </>
                     ),
                 })
 
+            }
+            setTableHeader(headersTmp)
+            setSortModel(data.headers.filter(item => item.sort))
         }
-        setTableHeader(headersTmp)
-
-        setSortModel(headers.filter(item=>item.sort))
-
-
-        // console.log("headers set",headersTmp)
-
-
-    }, [headers,data])
+    }, [data])
 
     useEffect(() => {
 
@@ -164,7 +178,7 @@ const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkFiel
                     let itemTmp={}
 
                     // console.log(headers)
-                    headers
+                    data.headers
                         .forEach((item)=>   {
                             try {
 
@@ -199,10 +213,7 @@ const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkFiel
     }, [items])
 
     const handleChange=(dataTmp)=>{
-
         setSortModel(dataTmp)
-
-     // console.log("Sort modal",data)
 
         if (loadMore&&dataTmp.length>0){
 
@@ -210,14 +221,8 @@ const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkFiel
                 key:dataTmp[0].field=="id"?"_key":dataTmp[0].field,
                 sort:dataTmp[0].sort
             }
-
-
-            // console.log(data.field=="id"?"_key":data.field, data.sort)
             loadMore(true,filter)
-
-
         }
-
     }
 
 
@@ -242,28 +247,16 @@ const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkFiel
 
 
                <DataGrid
-
                    columnVisibilityModel={visibleFields}
-                   // initialState={{
-                   //
-                   //     // columns: {
-                   //     //     columnVisibilityModel: {
-                   //     //         // Hide columns status and traderName, the other columns will remain visible
-                   //     //         description: false,
-                   //     //         id:false,
-                   //     //         type:false,
-                   //     //         state:false,
-                   //     //
-                   //     //     },
-                   //     // },
-                   // }}
                    disableColumnMenu={true}
+                   page={currentPage}
                    onPageChange={(newPage) => {
                        setPage(newPage)
+
                        loadMore(false,sortData,newPage)
                    }}
                    onPageSizeChange={(newPageSize) => {
-                       alert("page size "+newPageSize)
+                       // alert("page size "+newPageSize)
 
                         }}
                    // autoPageSize
@@ -275,7 +268,7 @@ const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkFiel
                    rows={list}
                    columns={tableHeader}
                    pageSize={pageSize}
-                   loading={listLoading||list.length===0}
+                   loading={listLoading}
                    rowsPerPageOptions={[pageSize]}
                    checkboxSelection={checkboxSelection}
                    disableSelectionOnClick
@@ -289,7 +282,6 @@ const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkFiel
                            const selectedRows = items.filter((row) =>
                                selectedIDs.has(row.Product._key)
                        );
-
                            setSelectedRows(selectedRows);
                        }catch (e){
                            console.log(e)
@@ -297,6 +289,19 @@ const CustomDataGridTable=({headers,data,pageSize,count,actions,linkUrl,linkFiel
 
                    }}
                    keepNonExistentRowsSelected
+
+                   components={{
+                       NoRowsOverlay: () => (
+                           <Stack height="100%" alignItems="center" justifyContent="center">
+                               No results found.
+                           </Stack>
+                       ),
+                       NoResultsOverlay: () => (
+                           <Stack height="100%" alignItems="center" justifyContent="center">
+                               No results found.
+                           </Stack>
+                       )
+                   }}
                />
 
 

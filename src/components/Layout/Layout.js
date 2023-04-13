@@ -9,24 +9,35 @@ const Layout=(props)=>{
 
     const history = useHistory()
     const [currentParams, setCurrentParams] = useState({})
+    const [currentUrlParams, setCurrentUrlParams] = useState("")
+
+    const search = useLocation().search;
+
+    useEffect(()=>{
+
+            if (props.sendParams){
+                props.sendParams(search)
+            }
 
 
-
+    },[])
     useEffect(() => {
-        const params = new URLSearchParams()
-        if (currentParams) {
+
+        if (currentParams&&Object.keys(currentParams).length!==0) {
+            const params = new URLSearchParams()
             Object.keys(currentParams).map((key)=>{
                 if (currentParams[key])
                 params.append(key, currentParams[key])
             })
             history.push({search: params.toString()})
         }
+
+
+
     }, [currentParams])
 
     useEffect(()=>{
         if (props.params&&(JSON.stringify(props.params)!==JSON.stringify(currentParams))){
-            console.log("change detected")
-            console.log(currentParams,props.params)
 
             setCurrentParams(props.params)
 

@@ -22,7 +22,7 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
-import {getSite, seekAxiosGet} from "../../Util/GlobalFunctions";
+import {getSite, removeEmptyValuesObj, seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
@@ -32,7 +32,6 @@ import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import PaginationGrid from "../../components/UIComponents/PaginationGrid";
 import ProductForm from "../../components/ProductPopUp/ProductForm";
-import {showProductPopUp} from "../../store/actions/actions";
 import SubproductItem from "../../components/Products/Item/SubproductItem";
 import {GoogleMap} from "../../components/Map/MapsContainer";
 import MenuDropdown from "../../components/FormsUI/MenuDropdown";
@@ -70,17 +69,20 @@ class ProductsNew extends Component {
             showProductEdit:false,
             showQuickView:false,
             selectedRows:[],
-            selectedURl:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at",
-            selectionMode:"Products",
+            selectionMode:null,
             selectedFilter:null,
             selectedSearch:null,
-            data:{
-                linkUrl:"product",
-                linkField:"name",
-                objKey:"Product",
-                linkParams:`type=Product`
-
-            }
+            queryData:{},
+            initialFilter:{},
+            menuOptions:{
+                Products:{url:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at"},
+                Service:{url:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["map","view"]},
+                Records:{url:"name=Product&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at",actions:["map","view"]},
+                Track:{url:"name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["map","view"]},
+                Archive:{url:"name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["map","view"]},
+                Issues:{url:"name=Issue",actions:[]}
+            },
+            defaultSort:{key: "_ts_epoch_ms",sort: "desc"}
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -112,12 +114,12 @@ class ProductsNew extends Component {
     }
 
     clearList =  () => {
-        this.setState({
-                offset: 0,
-                items: [],
-                lastPageReached: false,
-                loadingResults: false,
-            });
+        // this.setState({
+        //         offset: 0,
+        //         items: [],
+        //         lastPageReached: false,
+        //         loadingResults: false,
+        //     });
     };
 
     handleChange(value, field) {
@@ -127,57 +129,111 @@ class ProductsNew extends Component {
     }
 
 
-    setData=(selection,reset,filter,keyword)=>{
+    setQueryData=(queryData,filterReset)=>{
 
+        try{
 
-        let linkUrl=selection==="Issues"?`issue`:selection===`Records`?`p`:`product`
-        let linkParams=`type=${selection}`
-        if (!reset){
-                if (filter){
-                    linkParams=`${linkParams}&filter=${filter}`
-                }
-                if (keyword){
-                    linkParams=`${linkParams}?&keyword=${keyword}`
-                }
+        // console.log("new queryData,reset")
+        // console.log(queryData)
+        removeEmptyValuesObj(queryData)
+
+        if (!queryData.reset){
+            queryData={...this.state.queryData, ...queryData}
+        }else{
+            queryData.page=0
+
         }
 
-        console.log("set link url",linkParams)
+        if (filterReset){
+
+            queryData.filter=null
+            queryData.keyword=null
+
+        }
+
+        // console.log("merged queryData,reset")
+        // console.log(queryData)
+
         this.setState({
-            data:{
-                linkUrl:linkUrl,
-                linkField:selection==="Issues"?"title":"name",
-                objKey:selection==="Issues"?"Issue":"Product",
-                linkParams:linkParams,
-            }
+            selectionMode:queryData.type
         })
+        let linkUrl=queryData.type==="Issues"?`issue`:queryData.type===`Records`?`p`:`product`
+        let linkParams=`type=${queryData.type}`
+        // if (!queryData.reset){
+                if (queryData.filter){
+                    linkParams=`${linkParams}&filter=${queryData.filter}`
+                }
+                if (queryData.keyword){
+                    linkParams=`${linkParams}&keyword=${queryData.keyword}`
+                }
+        // }
+
+
+        let data={
+            dataUrl:this.state.menuOptions[queryData.type?queryData.type:"Products"].url,
+            linkUrl:linkUrl,
+            linkField:queryData.type==="Issues"?"title":"name",
+            objKey:queryData.type==="Issues"?"Issue":"Product",
+            linkParams:linkParams,
+            headers:queryData.type==="Issues"?ISSUES_FILTER_VALUES_KEY:PRODUCTS_FILTER_VALUES_KEY,
+            keyword: queryData.keyword,
+            filter: queryData.filter,
+            reset: queryData.reset,
+            sort:queryData.sort,
+            page:queryData.page
+        }
+
+        if (!data.sort&&this.state.defaultSort){
+                data.sort=this.state.defaultSort
+        }
+
+        this.setState({
+            queryData:data
+        })
+
+            // console.log("final queryData,reset")
+            // console.log(data)
+
+        this.setFilters(data,data.type)
+
+        }catch (e){
+            console.log(e)
+        }
 
     }
 
-    setFilters = (data,selection) => {
+    setFilters = (data) => {
 
-        let subFilter = [];
-        let searchValue = data.searchValue;
-        let activeFilter = data.searchFilter;
+        try {
 
-        this.setState({
-            selectedFilter:activeFilter?activeFilter:null,
-            selectedSearch:searchValue?searchValue:null,
-        })
+            let subFilter = [];
+            let searchValue = data.keyword;
+            let activeFilter = data.filter;
 
-        this.setData(selection,false,activeFilter,searchValue)
+            this.setState({
+                selectedFilter: activeFilter ? activeFilter : null,
+                selectedSearch: searchValue ? searchValue : null,
+            })
 
-
-        if (searchValue) {
-            if (activeFilter) {
-                subFilter.push({ key: activeFilter, value: searchValue });
-            } else {
-                PRODUCTS_FILTER_VALUES_KEY.forEach((item) =>
-                    subFilter.push({ key: item.field, value: searchValue })
-                );
+            if (searchValue) {
+                if (activeFilter) {
+                    subFilter.push({key: activeFilter, value: searchValue});
+                } else {
+                    PRODUCTS_FILTER_VALUES_KEY.forEach((item) =>
+                        subFilter.push({key: item.field, value: searchValue})
+                    );
+                }
             }
-        }
 
-        this.filters = subFilter;
+            this.filters = subFilter;
+
+            setTimeout(() => {
+                this.loadProductsWithoutParentPageWise(data, subFilter)
+            }, 100)
+
+        }catch (e){
+            console.log(e)
+        }
     };
 
     addProductLine = () => {
@@ -192,11 +248,11 @@ class ProductsNew extends Component {
             showFieldSelection: !this.state.showFieldSelection,
         });
     };
-    downloadAll = (page=0,size=100,data) => {
+    downloadAll = (page=0,size=100,selectedKeys) => {
 
         if (this.state.selectedRows.length>0){
 
-            this.formatData(data,true)
+            this.formatData(selectedKeys,true)
 
         }
         else {
@@ -220,7 +276,7 @@ class ProductsNew extends Component {
                             downloadAllLoading: false,
                         });
 
-                        this.formatData(data)
+                        this.formatData(selectedKeys)
 
                     } else {
 
@@ -228,7 +284,7 @@ class ProductsNew extends Component {
                         this.setState({
                             allDownloadItems: list
                         })
-                        this.downloadAll(page + size, 100, data)
+                        this.downloadAll(page + size, 100, selectedKeys)
                     }
                 },
                 (error) => {
@@ -244,61 +300,26 @@ class ProductsNew extends Component {
 
 
     setSelection=(selection)=>{
+        this.setState({
+            initialFilter:{type:selection}
+        })
 
-        this.clearList()
+        this.setQueryData({
+            type:selection,
+            reset:true
+        },true)
 
-       // this.setData(selection,true)
-
-        if (selection==="Products"){
-
-            this.setState({
-                selectedURl:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at",
-            })
-        }
-       else if (selection==="Service"){
-            this.setState({
-                selectedURl:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at",
-            })
-        }
-        else if (selection==="Records"){
-            this.setState({
-                selectedURl:"name=Product&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at",
-            })
-        }
-        else if (selection==="Track"){
-            this.setState({
-                selectedURl:"name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at",
-            })
-        }
-        else if (selection==="Issues"){
-            this.setState({
-                selectedURl:`name=Issue`,
-            })
-        }
-        else if (selection==="Archive"){
-            this.setState({
-                selectedURl:"name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at",
-            })
-        }
-
-
-       setTimeout(()=>{
-           this.loadProductsWithoutParentPageWise({
-               reset: true,
-
-           },selection)
-       },100)
 
     }
 
     formatData=(selectedKeys,selected=false)=>{
 
+        // console.log(selectedKeys)
         try {
 
             let productList=[]
             if (selected){
-
-                productList=this.state.selectedProducts
+                productList=this.state.selectedRows
             }else{
                 productList=this.state.allDownloadItems
             }
@@ -337,6 +358,8 @@ class ProductsNew extends Component {
 
     exportToCSV=(csvData,selectedKeys,selected) =>{
 
+        // console.log(csvData)
+        // return
         let data = "";
         let tableDataNew = [];
 
@@ -441,11 +464,11 @@ class ProductsNew extends Component {
 
     }
 
-    seekCount = async () => {
+    seekCount = async (data,filters) => {
         this.controllerSeek.abort()
-        let url = `${baseUrl}seek?${this.state.selectedURl}&count=true`;
+        let url = `${baseUrl}seek?${data.dataUrl}&count=true`;
 
-        this.filters.forEach((item) => {
+        filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
         });
 
@@ -467,6 +490,7 @@ class ProductsNew extends Component {
                     items: [],
                     offset: 0,
                 });
+                this.initializeData()
 
                 // if (this.timeout) clearTimeout(this.timeout);
                 //
@@ -479,27 +503,35 @@ class ProductsNew extends Component {
     }
      controller = new AbortController();
     controllerSeek = new AbortController();
-    loadProductsWithoutParentPageWise = async (data,selection) => {
+    loadProductsWithoutParentPageWise = async (data,filters) => {
 
+        // console.log("data,selection,filters")
+        // console.log(data)
+        // console.log(filters)
         try {
         if (data && data.reset){
-         await   this.clearList();
+         // await   this.clearList();
+            this.setState({
+                    offset: 0,
+                    items: [],
+                    lastPageReached: false,
+                    loadingResults: false,
+                });
         }
 
         this.controller.abort()
 
-        if (data) this.setFilters(data,selection?selection:this.state.selectionMode);
-        this.seekCount();
+        // if (data) this.setFilters(data,selection?selection:this.state.selectionMode);
+        this.seekCount(data,filters);
 
         this.setState({
             loadingResults: true,
         });
 
-        let newOffset = this.state.offset;
+        let newOffset = data.page*this.state.pageSize;
+        let url = `${baseUrl}seek?${data.dataUrl}`;
 
-        let url = `${baseUrl}seek?${this.state.selectedURl}`;
-
-        this.filters.forEach((item) => {
+        filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
         });
 
@@ -507,7 +539,7 @@ class ProductsNew extends Component {
             activeQueryUrl:url
         })
 
-        url = `${url}&count=false&offset=${data.newPage?data.newPage:0}&size=${this.state.pageSize}`;
+        url = `${url}&count=false&offset=${newOffset?newOffset:0}&size=${this.state.pageSize}`;
 
         if (data.sort){
             url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
@@ -516,19 +548,17 @@ class ProductsNew extends Component {
         let result = await seekAxiosGet(url,null,this.controller);
 
         if (result && result.data && result.data.data) {
-            this.state.offset = newOffset + this.state.pageSize;
 
             this.setState({
                 // items: this.state.items.concat(result.data ? result.data.data : []),
                 items: result.data ? result.data.data : [],
-
                 loadingResults: false,
                 lastPageReached: result.data
                     ? result.data.data.length === 0
                         ? true
                         : false
                     : true,
-                offset: newOffset + this.state.pageSize,
+                offset: newOffset,
             });
         } else {
             if (result) {
@@ -551,6 +581,7 @@ class ProductsNew extends Component {
     };
 
     detectChange = () => {
+
         if (this.props.match.params.id) {
             let id = this.props.match.params.id;
 
@@ -573,8 +604,13 @@ class ProductsNew extends Component {
         }
     };
 
+
+
     componentDidMount() {
         // this.detectChange()
+
+
+      // this.setQueryData(this.state.selectionMode)
 
 
     }
@@ -690,7 +726,7 @@ class ProductsNew extends Component {
     };
 
     setMultipleSelectFlag=(rows)=>{
-        console.log(rows)
+
         this.setState({
             selectedRows: rows,
         });
@@ -805,13 +841,56 @@ class ProductsNew extends Component {
         event.preventDefault();
         event.stopPropagation()
 
-        const data = new FormData(event.target);
+        const selectedKeys = new FormData(event.target);
 
-        this.downloadAll(0,100,data)
+        this.downloadAll(0,100,selectedKeys)
 
 
     };
 
+    initializeData=(params)=>{
+
+        this.setState({
+            paramsString:params
+        })
+        // console.log("params from layout",params)
+
+        if (params){
+
+            const type=new URLSearchParams(params).get("type");
+            const filter=new URLSearchParams(params).get("filter");
+            const keyword=new URLSearchParams(params).get("keyword");
+
+            let iniValues={
+                filter:filter,
+                keyword:keyword,
+                type:type
+            }
+            // console.log("inivalues",iniValues)
+
+            if (type){
+                this.setState({
+                    initialFilter:iniValues
+                })
+            }
+
+
+            this.setQueryData({
+                type:type?type:"Products",
+                reset:false,
+                filter:filter,
+                keyword:keyword
+            })
+        }else{
+
+            this.setQueryData({
+                type:"Products",reset:true
+            })
+
+        }
+
+
+    }
 
     render() {
         const classesBottom = withStyles();
@@ -831,7 +910,10 @@ class ProductsNew extends Component {
         ];
 
         return (
-            <Layout params={{type:this.state.selectionMode,filter:this.state.selectedFilter,keyword:this.state.selectedSearch}}  >
+            <Layout
+                sendParams={this.initializeData}
+                params={{type:this.state.selectionMode,filter:this.state.selectedFilter,keyword:this.state.selectedSearch}}
+            >
                 <>
                     {this.state.selectedProducts.length > 0 ? (
                         <div
@@ -912,100 +994,12 @@ class ProductsNew extends Component {
                     <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
-                            pageTitle="Products"
+                            pageTitle={this.state.selectionMode}
                             subTitle="All your added products can be found here"
                         />
 
-                        <div className="row d-none">
-                            <div className="col-md-7 btn-rows">
-                                <Link
-                                    to="/products-service"
-                                    className=" btn-sm btn-gray-border me-2">
-                                    <CustomPopover
-                                        text={
-                                            " All of the products that you are responsible for as the Service Agent. The service agent is responsible for solving any issues that are reported by the owner of the product. "
-                                        }>
-                                        Service
-                                    </CustomPopover>
-                                </Link>
-
-                                <Link
-                                    to="/product-archive"
-                                    className=" btn-sm btn-gray-border  me-2">
-                                    <CustomPopover
-                                        text={
-                                            "All of your products that have been released to another and are now out of your possession. Records gives you the ability to interact with the user of the product and by seeing the provenance of where the products are currently. "
-                                        }>
-                                        Records
-                                    </CustomPopover>
-                                </Link>
-
-                                <Link
-                                    to="/product-tracked"
-                                    className=" btn-sm btn-gray-border  me-2">
-                                    <CustomPopover
-                                        text={
-                                            "Products that have entered the platform from another user that have your Brand attached to them. You have therefore wanted to know the provenance of these products and have now tracked these"
-                                        }>
-                                        Tracked
-                                    </CustomPopover>
-                                </Link>
-
-                                <Link to="/issues" className=" btn-sm btn-gray-border me-2  ">
-                                    Issues
-                                </Link>
-                                <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
-                                    <button
-                                        className="btn btn-sm mt-mobile btn-gray-border"
-                                        onClick={() => this.toggleDownloadQrCodes()}
-                                        type="button">
-                                        Download Open Cyclecodes
-                                    </button>
-                                </CustomPopover>
-                                <button
-                                    className="d-none btn btn-sm btn-gray-border ms-1"
-                                    onClick={() => this.toggleMultiSite()}
-                                    type="button">
-                                    Upload Multiple Products
-                                </button>
-                            </div>
-                            <div className="col-md-5 d-flex justify-content-end">
-                                <div className="me-2">
-                                <CustomPopover text={"Export all products to csv."}>
-                                    <BlueSmallBtn
-                                        title={"Export To CSV"}
-                                        // disabled={this.state.downloadAllLoading}
-                                        // progressLoading={this.state.downloadAllLoading}
-                                        // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
-                                        // onClick={()=>this.downloadAll(0,100)}
-                                    onClick={this.fieldSelection}
-                                    >
-
-                                    </BlueSmallBtn>
-                                </CustomPopover>
-                                </div>
-                                <div className="me-2">
-                                    <CustomPopover text={"Add Product Lines"}>
-                                        <BlueSmallBtn onClick={this.addProductLine}>
-                                            Product Lines
-                                        </BlueSmallBtn>
-                                    </CustomPopover>
-                                </div>
-                                {(this.state.items.length > 0 && this.state.productDisplayView === "large") ? <CustomPopover text="Product list view">
-                                    <BlueSmallBtn onClick={() => this.toggleProductView("compact")}>
-                                        <ViewHeadlineIcon/>
-                                    </BlueSmallBtn>
-                                </CustomPopover> : <CustomPopover text="Product list view">
-                                    <BlueSmallBtn onClick={() => this.toggleProductView("large")}>
-                                        <ViewAgendaIcon/>
-                                    </BlueSmallBtn>
-                                </CustomPopover>}
-                            </div>
-                        </div>
-
                         <ErrorBoundary>
                         <PaginationGrid
-                            headers={this.state.selectionMode==="Issues"?ISSUES_FILTER_VALUES_KEY:PRODUCTS_FILTER_VALUES_KEY}
                             count={this.state.count}
                             items={this.state.items}
                             pageSize={this.state.pageSize}
@@ -1013,17 +1007,30 @@ class ProductsNew extends Component {
                             visibleCount={this.state.items.length}
                             loading={this.state.loadingResults}
                             lastPageReached={this.state.lastPageReached}
-                            loadMore={(data) => this.loadProductsWithoutParentPageWise(data)}
-                            actions={this.state.selectionMode==="Issues"?[]:["map","edit","view"]}
+                            currentPage={this.state.queryData.page?this.state.queryData.page:0}
+                            loadMore={(data) =>{
+                                    this.setQueryData({
+                                        type: this.state.selectionMode,
+                                        filter:data.searchFilter,
+                                        keyword:data.searchValue,
+                                        sort:data.sort,
+                                        page:data.newPage,
+                                        reset:data.reset
+                                    })
+                            }}
+                            actions={this.state.selectionMode&&this.state.menuOptions[this.state.selectionMode].actions?
+                                this.state.menuOptions[this.state.selectionMode].actions:["map","edit","view"]}
                             checkboxSelection={this.state.selectionMode!=="Issues"}
                             setMultipleSelectFlag={this.setMultipleSelectFlag}
                             actionCallback={this.actionCallback}
-                            data={this.state.data}
+                            data={this.state.queryData}
+                            initialFilter={this.state.initialFilter}
                         >
                             <div className="row ">
                                 {this.state.selectedRows.length===0? <>
                                 <div className="col-md-2 btn-rows">
                                     <MenuDropdown
+                                        initialValue={this.state.initialFilter.type?this.state.initialFilter.type:null}
                                         setSelection={this.setSelection}
                                         options={["Products","Service","Records","Track","Issues","Archive"]}
 
@@ -1031,7 +1038,9 @@ class ProductsNew extends Component {
                                 </div>
                                 <div className="col-md-10 d-flex flex-row">
 
-                                    <div className="me-2">
+                                    {this.state.selectionMode!=="Issues"&&
+                                        <>
+                                        <div className="me-2">
                                     <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
                                         <button
                                             className="btn btn-sm mt-mobile btn-gray-border"
@@ -1062,6 +1071,7 @@ class ProductsNew extends Component {
                                             </BlueSmallBtn>
                                         </CustomPopover>
                                     </div>
+                                </>}
                                 </div>
                                       </>:
 
@@ -1120,11 +1130,8 @@ class ProductsNew extends Component {
                                     <form id={"product-field-form"} onSubmit={this.handleSubmit}>
                                     <div className="row  mt-2">
                                         {PRODUCTS_FIELD_SELECTION.map((item)=>
-
                                             <div className="col-md-3 col-sm-6  justify-content-start align-items-center">
-
                                                 <CheckboxWrapper
-
                                                     id={`${item.key}`}
                                                     // details="When listed, product will appear in the marketplace searches"
                                                     initialValue={item.checked}
@@ -1132,25 +1139,17 @@ class ProductsNew extends Component {
                                                     color="primary"
                                                     name={`${item.key}`}
                                                     title={`${item.value}`} />
-
                                             </div>
                                         )}
                                     </div>
                                         <div className="row  mt-2">
                                             <div className="col-12 d-flex justify-content-center">
-
                                                 {!this.state.downloadAllLoading?
                                                 <BlueSmallBtn
                                                 type={"submit"}
-                                            title={this.state.downloadAllLoading?"":" Download"}
-                                            disabled={this.state.downloadAllLoading}
-                                            // progressLoading={this.state.downloadAllLoading}
-                                            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
-                                            // onClick={()=>this.downloadAll(0,100)}
-
-                                        >
-
-                                        </BlueSmallBtn>:<CircularProgressWithLabel value={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0} />}
+                                                title={this.state.downloadAllLoading?"":" Download"}
+                                                disabled={this.state.downloadAllLoading}>
+                                                </BlueSmallBtn>:<CircularProgressWithLabel value={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0} />}
                                             </div>
                                         </div>
                                     </form>
@@ -1257,7 +1256,9 @@ class ProductsNew extends Component {
 
                     <div className="form-col-left col-12">
                         {this.state.showQuickView &&
-                            <SubproductItem hideMoreMenu hideDate smallImage={true} productId={this.state.viewItemSelectedKey} />
+                            <SubproductItem
+                                customLink={`/${this.state.queryData["linkUrl"]}/${this.state.viewItemSelectedKey}?${this.state.queryData["linkParams"]?this.state.queryData["linkParams"]:""}`}
+                                hideMoreMenu hideDate smallImage={true} productId={this.state.viewItemSelectedKey} />
                         }
                     </div>
 

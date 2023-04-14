@@ -120,7 +120,7 @@ const NotificationTwoItemGroup = ({ items }) => {
                                     className="mb-1"
                                     key={itemGroup[0].Message._key}
                                     id={itemGroup[0].Message._key} expanded={accordionExpand === itemGroup[0].Message._key}
-                                    onChange={handleChange(itemGroup[0].Message._key)}
+                                    onChange={itemGroup.length > 1 ? handleChange(itemGroup[0].Message._key) : undefined}
                                     // disabled={itemGroup.length === 1}
                                 >
                                     <AccordionSummary  expandIcon={itemGroup.length > 1 && <ExpandMoreIcon />}>

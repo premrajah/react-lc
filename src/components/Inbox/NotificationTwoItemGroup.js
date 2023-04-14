@@ -10,7 +10,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 
 const NotificationTwoItemGroup = ({ items }) => {
-    console.log(">>++ ", items);
     const [accordionExpand, setAccordionExpand] = useState(false);
 
     const [read, setRead] = useState(null);
@@ -122,15 +121,14 @@ const NotificationTwoItemGroup = ({ items }) => {
                                     key={itemGroup[0].Message._key}
                                     id={itemGroup[0].Message._key} expanded={accordionExpand === itemGroup[0].Message._key}
                                     onChange={handleChange(itemGroup[0].Message._key)}
-                                    disabled={itemGroup.length === 1}
+                                    // disabled={itemGroup.length === 1}
                                 >
                                     <AccordionSummary  expandIcon={itemGroup.length > 1 && <ExpandMoreIcon />}>
                                         <div className="">{itemGroup[0].Message.text}</div>
                                     </AccordionSummary>
                                     {itemGroup.length > 1 &&
                                         itemGroup.map((ig, i) => {
-                                            // console.log("=> ", ig)
-                                            return <div>
+                                            return <div key={ig.Message._key}>
                                                 <AccordionDetails>{ig.Message.text}</AccordionDetails>
                                             </div>;
                                         })}

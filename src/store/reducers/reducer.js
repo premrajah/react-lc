@@ -54,7 +54,14 @@ import {
     SITE_FORM_SHOW,
     SHOW_MULTIPLE_POP_UP,
     PRODUCT_PAGE_RESET,
-    PRODUCT_NOT_FOUND, TOGGLE_RIGHTBAR, TOGGLE_GLOBAL_DIALOG, ORG_CACHE, USER_CONTEXT, REFRESH_PAGE, USER_CACHE
+    PRODUCT_NOT_FOUND,
+    TOGGLE_RIGHTBAR,
+    TOGGLE_GLOBAL_DIALOG,
+    ORG_CACHE,
+    USER_CONTEXT,
+    REFRESH_PAGE,
+    USER_CACHE,
+    REFRESH_PAGE_SAVE_STATE
 } from "../types";
 
 export const initialState = {
@@ -96,6 +103,7 @@ export const initialState = {
     orgImage: null,
     messages: [],
     refresh:false,
+    refreshState:{},
     notifications: [],
     messageAlert: false,
     notificationAlert: false,
@@ -168,7 +176,9 @@ try{
         case REFRESH_PAGE:
             newState.refresh = action.value;
             break;
-
+        case REFRESH_PAGE_SAVE_STATE:
+            newState.refreshState = action.value;
+            break;
         case TOGGLE_RIGHTBAR:
             newState.showRightBar = !state.showRightBar;
             break;

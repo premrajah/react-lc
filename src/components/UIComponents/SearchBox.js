@@ -145,13 +145,14 @@ componentDidMount() {
     render() {
         const { title, searchType, onSearch, dropDown, dropDownValues } = this.props;
         return (
-            <div className="row position-absolute " style={{right:0,top:0,bottom:0}}>
+            <div className="row  " style={{right:0,top:0,bottom:0}}>
                 <div className="col-12 d-flex justify-content-end align-items-center position-relative">
 
-                    <div onMouseEnter={()=>this.showSearchFilter(true)}
+                    <div
+                        // onMouseEnter={()=>this.showSearchFilter(true)}
 
                          // onMouseLeave={()=>this.showSearchFilter(false)}
-                         className={`search-box-new ${this.state.displayFields?"search-box-hover":""} `} >
+                         className={`search-box-new w-100 ${this.state.displayFields||true?"search-box-hover":""} `} >
 
                             {dropDownValues&&dropDownValues.length > 0 &&
                                 <select className="search-select text-capitlize "
@@ -163,7 +164,7 @@ componentDidMount() {
                                     <option value="" >
                                         Filter By
                                     </option>
-                                    {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.map((drop, index) => {
+                                    {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.filter(item=> !item.notFilterable).map((drop, index) => {
                                         return <option selected={drop.field===this.state.filterValue}
                                             key={index} value={drop.field}>{drop.label}</option>
                                     }) : null}
@@ -280,10 +281,13 @@ height: 40px;
     padding: 0;
      //animation: animateSelect 1s reverse ;
      background: #eaeaef!important;
-  margin: 4px;
- 
+  //margin: 4px;
   //color: white;
   border-radius: 4px;
+}
+
+.search-box-hover .search-select{
+margin: 4px;
 }
 
 .search-box-new{
@@ -328,7 +332,7 @@ height: 40px;
 
 @keyframes animateInput {
   0%   {width:0; transform: scale(0);}
-  100% {width: 400px; transform: scale(1);}
+  100% {width: 100%; transform: scale(1);}
 }
 
 `}</style>

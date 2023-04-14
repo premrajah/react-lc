@@ -137,17 +137,17 @@ export const PRODUCTS_FILTER_VALUES = [
    ];
 
 export const PRODUCTS_FILTER_VALUES_KEY = [
-    {field:"id",label:"ID" , visible:false,sortable:true},
+    {field:"id",label:"ID" , visible:false,sortable:false,notFilterable:"true"},
     // {key:"_id",label:"ID" ,visible:true,sortable:true},
     {field:"name",label:"Name" ,visible:true,sortable:true,flex:2},
-    {field:"description",label:"Description",visible:false ,sortable:false},
+    {field:"description",label:"Description",visible:false ,sortable:false,notFilterable:"true"},
     {field:"condition",label:"Condition" ,visible:false,sortable:false,flex:0.5},
     {field:"sku",subField:"serial",label:"Serial No" ,visible:true,sortable:false},
-    // {field:"site",label:"Site" ,visible:false,sortable:false},
+    {field:"site",label:"Site" ,visible:true,sortable:false, notFilterable:"true"},
     // {key:"category",label:"Category" ,visible:true,sortable:false,flex:2.5},
     // {key:"type",label:"Type" ,visible:false,sortable:false},
     // {key:"state",label:"State",visible:false,sortable:false},
-    {field:"_ts_epoch_ms",label:"Added on",visible:true,sortable:true, sort: 'desc',sortingOrder:['desc', 'asc', null] },
+    {field:"_ts_epoch_ms",label:"Added on",visible:true,sortable:true, sort: 'desc',sortingOrder:['desc', 'asc', null] ,notFilterable:"true"},
     // {key:"year_of_making",label:"Manufactured",visible:false,sortable:false,flex:0.7},
     // {key:"sku.model",label:"Model",visible:false,sortable:false},
     // {key:"sku.serial",label:"Serial No.",visible:false,sortable:false},
@@ -155,17 +155,17 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
 ];
 
 export const ISSUES_FILTER_VALUES_KEY = [
-    {field:"id",label:"ID" , visible:false,sortable:true},
+    {field:"id",label:"ID" , visible:false,sortable:true,notFilterable:"true"},
     // {key:"_id",label:"ID" ,visible:true,sortable:true},
     {field:"title",label:"Title" ,visible:true,sortable:true,flex:2},
     {field:"description",label:"Description",visible:false ,sortable:false},
     {field:"priority",label:"Priority" ,visible:true,sortable:false,flex:0.5},
     // {field:"sku",subField:"serial",label:"Serial No" ,visible:true,sortable:false},
-    // {field:"site",label:"Site" ,visible:false,sortable:false},
+    // {field:"site",label:"Site" ,visible:true,sortable:false, notFilterable:"true"},
     // {key:"category",label:"Category" ,visible:true,sortable:false,flex:2.5},
     // {key:"type",label:"Type" ,visible:false,sortable:false},
     // {key:"state",label:"State",visible:false,sortable:false},
-    {field:"_ts_epoch_ms",label:"Added on",visible:true,sortable:true, sort: 'desc',sortingOrder:['desc', 'asc', null] },
+    {field:"_ts_epoch_ms",label:"Added on",visible:true,sortable:true, sort: 'desc',sortingOrder:['desc', 'asc', null],notFilterable:"true" },
     // {key:"year_of_making",label:"Manufactured",visible:false,sortable:false,flex:0.7},
     // {key:"sku.model",label:"Model",visible:false,sortable:false},
     // {key:"sku.serial",label:"Serial No.",visible:false,sortable:false},

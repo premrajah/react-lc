@@ -76,10 +76,10 @@ class ProductsNew extends Component {
             initialFilter:{},
             menuOptions:{
                 Products:{url:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at"},
-                Service:{url:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["map","view"]},
-                Records:{url:"name=Product&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at",actions:["map","view"]},
-                Track:{url:"name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["map","view"]},
-                Archive:{url:"name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["map","view"]},
+                Service:{url:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["view"]},
+                Records:{url:"name=Product&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at",actions:["view"]},
+                Track:{url:"name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["view"]},
+                Archive:{url:"name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["view"]},
                 Issues:{url:"name=Issue",actions:[]}
             },
             defaultSort:{key: "_ts_epoch_ms",sort: "desc"}
@@ -483,21 +483,25 @@ class ProductsNew extends Component {
         if (prevProps !== this.props) {
             this.detectChange();
 
-            if (this.props.refresh) {
-                this.props.refreshPage(false);
+            // console.log(this.props.refreshState)
+            if (Object.keys(this.props.refreshState).length!==0&&this.props.refreshState.refresh) {
 
-                this.setState({
-                    items: [],
-                    offset: 0,
-                });
-                this.initializeData()
+                if (this.props.refreshState.reset){
 
-                // if (this.timeout) clearTimeout(this.timeout);
-                //
-                // this.timeout = setTimeout(() => {
-                //     this.loadMore(true);
-                //     this.loadProductsWithoutParentPageWise({reset: true});
-                // }, 500);
+                    this.setState({
+                        items: [],
+                        offset: 0,
+                    });
+                    this.initializeData()
+                }else{
+                    this.setQueryData(this.state.queryData)
+                }
+
+                this.props.refreshPageWithSavedState({});
+
+            }else{
+
+
             }
         }
     }
@@ -1019,40 +1023,46 @@ class ProductsNew extends Component {
                                     })
                             }}
                             actions={this.state.selectionMode&&this.state.menuOptions[this.state.selectionMode].actions?
-                                this.state.menuOptions[this.state.selectionMode].actions:["map","edit","view"]}
+                                this.state.menuOptions[this.state.selectionMode].actions:["edit","view"]}
                             checkboxSelection={this.state.selectionMode!=="Issues"}
                             setMultipleSelectFlag={this.setMultipleSelectFlag}
                             actionCallback={this.actionCallback}
                             data={this.state.queryData}
                             initialFilter={this.state.initialFilter}
                         >
-                            <div className="row ">
+                            <div className="row  d-flex align-items-center">
                                 {this.state.selectedRows.length===0? <>
                                 <div className="col-md-2 btn-rows">
                                     <MenuDropdown
                                         initialValue={this.state.initialFilter.type?this.state.initialFilter.type:null}
                                         setSelection={this.setSelection}
                                         options={["Products","Service","Records","Track","Issues","Archive"]}
-
                                     />
                                 </div>
-                                <div className="col-md-10 d-flex flex-row">
+                                <div className="col-md-10 col-12 d-flex " style={{flexFlow:"wrap"}}>
 
                                     {this.state.selectionMode!=="Issues"&&
                                         <>
                                         <div className="me-2">
                                     <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
-                                        <button
-                                            className="btn btn-sm mt-mobile btn-gray-border"
+
+                                        <BlueSmallBtn
+                                            classAdd="mb-1"
+                                            title={"Download Open Cyclecodes"}
+                                            // disabled={this.state.downloadAllLoading}
+                                            // progressLoading={this.state.downloadAllLoading}
+                                            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
+                                            // onClick={()=>this.downloadAll(0,100)}
                                             onClick={() => this.toggleDownloadQrCodes()}
-                                            type="button">
-                                            Download Open Cyclecodes
-                                        </button>
+                                        >
+
+                                        </BlueSmallBtn>
                                     </CustomPopover>
                                     </div>
                                     <div className="me-2">
                                         <CustomPopover text={"Export all products to csv."}>
                                             <BlueSmallBtn
+                                                classAdd="mb-1"
                                                 title={"Export To CSV"}
                                                 // disabled={this.state.downloadAllLoading}
                                                 // progressLoading={this.state.downloadAllLoading}
@@ -1066,7 +1076,9 @@ class ProductsNew extends Component {
                                     </div>
                                     <div className="me-2">
                                         <CustomPopover text={"Add Product Lines"}>
-                                            <BlueSmallBtn onClick={this.addProductLine}>
+                                            <BlueSmallBtn
+                                                classAdd="mb-1"
+                                                onClick={this.addProductLine}>
                                                 Product Lines
                                             </BlueSmallBtn>
                                         </CustomPopover>
@@ -1300,8 +1312,11 @@ class ProductsNew extends Component {
 
                     <div className="form-col-left col-12">
                         {this.state.showProductEdit &&
-                            <ProductForm hideUpload edit
-                                         triggerCallback={(action) => this.callBackSubmit(action)}
+                            <ProductForm
+                                hideUpload edit
+
+                                         triggerCallback={(action) => this.showProductEditPopUp()}
+
                                          heading={"Edit Product"}
                                          item={this.state.editItemSelected}
                             />
@@ -1330,7 +1345,8 @@ const mapStateToProps = (state) => {
         productWithoutParentList: state.productWithoutParentList,
         productPageOffset: state.productPageOffset,
         pageSize: state.pageSize,
-        refresh: state.refresh,
+        refreshState: state.refreshState,
+
     };
 };
 
@@ -1350,7 +1366,9 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actionCreator.loadProductsWithoutParent(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
-        refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+        refreshPageWithSavedState: (data) => dispatch(actionCreator.refreshPageWithSavedState(data)),
+
+
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProductsNew);

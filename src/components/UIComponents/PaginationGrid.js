@@ -97,8 +97,10 @@ class PaginationGrid extends Component {
             <>
                 {!this.props.hideSearch && (
                     <div className="row  justify-content-center search-container d-flex align-items-center  pt-3 pb-3">
-                        <div className="col-md-12 col-12 position-relative ">
+                        <div className="col-md-6 col-12 position-relative ">
                             {children}
+                        </div>
+                            <div className="col-md-6 col-12 position-relative ">
                             <SearchBox
                                 initialFilter={this.props.initialFilter}
                                 onSearch={this.handleSearch}
@@ -107,11 +109,12 @@ class PaginationGrid extends Component {
                                 dropDown
                                 dropDownValues={this.props.data.headers}
                             />
-                        </div>
+                            </div>
 
                     </div>
                 )}
-
+                <div className="row  ">
+                    <div className="col-md-12 col-12 position-relative pe-0 ">
                 <CustomDataGridTable
                     loadMore={(reset,sortData,newPage) => this.loadMore(reset,sortData,newPage)}
                     // headers={this.props.headers}
@@ -128,7 +131,8 @@ class PaginationGrid extends Component {
                     setMultipleSelectFlag={this.props.setMultipleSelectFlag}
                     data={this.props.data}
                 />
-
+                    </div>
+                </div>
 
             </>
         );

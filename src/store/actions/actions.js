@@ -55,7 +55,7 @@ import {
     TOGGLE_GLOBAL_DIALOG,
     USER_CONTEXT,
     ORG_CACHE,
-    REFRESH_PAGE, EMPTY_CURRENT, CURRENT_PRODUCT_LOADING, USER_CACHE
+    REFRESH_PAGE, EMPTY_CURRENT, CURRENT_PRODUCT_LOADING, USER_CACHE, REFRESH_PAGE_SAVE_STATE
 } from "../types";
 
 // Added by Chandan For Google Analytics
@@ -95,6 +95,14 @@ export const toggleGlobalDialog = () => {
 };
 
 
+
+export const refreshPageWithSavedState = (data) => {
+
+    return {
+        type: REFRESH_PAGE_SAVE_STATE,
+        value: data,
+    };
+};
 
 export const refreshPage = (data) => {
 

@@ -29,6 +29,7 @@ import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import ReactPlayer from "react-player/lazy";
 import ArtifactProductsTab from "../Products/ArtifactProductsTab";
 import ArtifactManager from "../FormsUI/ArtifactManager";
+import {refreshPageWithSavedState} from "../../store/actions/actions";
 
 
 let slugify = require('slugify')
@@ -593,16 +594,7 @@ let slugify = require('slugify')
                         site_id: site,
                         parent_product_id: this.state.parentProductId ? this.state.parentProductId : null,
                     };
-                    // } else {
-                    //     completeData = {
-                    //         product: productData,
-                    //         sub_products: [],
-                    //         // "sub_product_ids": [],
-                    //         artifact_ids: this.state.images,
-                    //         parent_product_id: null,
-                    //         site_id: site,
-                    //     };
-                    // }
+
 
                     this.setState({isSubmitButtonPressed: true})
 
@@ -625,21 +617,15 @@ let slugify = require('slugify')
                                     });
                                 }
 
-                                this.props.refreshPage(true)
+                                this.props.refreshPageWithSavedState( {refresh:true,reset: true})
+
+
                                 this.props.showSnackbar({
                                     show: true,
                                     severity: "success",
                                     message: name + " created successfully. Thanks"
                                 })
                                 this.showProductSelection();
-
-                                // this.props.loadProducts(this.props.userDetail.token);
-                                // this.props.loadProductsWithoutParent();
-
-
-                                // this.setState({
-                                //     parentProductId:res.data.data.product._key
-                                // })
 
                                 this.setState({loading: false,})
 
@@ -929,9 +915,11 @@ let slugify = require('slugify')
                     )
                     .then((res) => {
 
-                        // this.updateSite(site);
-                        // this.updateImages();
-                        this.props.loadCurrentProduct(this.props.item.product._key)
+
+                        this.props.refreshPageWithSavedState(
+                            {refresh:true,reset: false}
+                        )
+
                         this.props.showSnackbar({
                             show: true,
                             severity: "success",
@@ -939,9 +927,12 @@ let slugify = require('slugify')
                         })
                         this.props.triggerCallback("edit")
 
+                        if (this.props.loadCurrentProduct)
+                        this.props.loadCurrentProduct(this.props.item.product._key)
 
                     })
                     .catch((error) => {
+                        // console.log("*****************",error)
 
                         this.setState({
                             btnLoading: false,
@@ -2207,6 +2198,7 @@ let slugify = require('slugify')
                 dispatch(actionCreator.loadProductsWithoutParentPagination(data)),
             showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
             refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+            refreshPageWithSavedState: (data) => dispatch(actionCreator.refreshPageWithSavedState(data)),
             setCurrentProduct: (data) => dispatch(actionCreator.setCurrentProduct(data)),
 
 

@@ -21,6 +21,10 @@ import {capitalize, getSite, getTimeFormat} from "../../Util/GlobalFunctions";
 import {Link} from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
 import Stack from '@mui/material/Stack';
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
+import {Avatar} from "@mui/material";
+import placeholderImg from "../../img/place-holder-lc.png";
 
 const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
                                linkField,dataKey,loading,loadMore,checkboxSelection,
@@ -113,13 +117,18 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
 
                                 params.field === data.linkField ? <span className="text-blue">
                                      <Link
-                                         to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>{params.value}</Link>
+                                         to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>
+                                     <span className="d-flex align-items-center flex-row"> <GetProductImageThumbnail productKey={params.row.id} />    {params.value}</span>
+                                     </Link>
                     </span> :
                                     params.field === "year_of_making" ? <span>
                             {(params.value === 0 ? "" : params.value)}
                     </span> :
 
                                         params.field === "category" ? <GetCatBox item={params.row}/> :
+                                            params.field === "site" ? <span>{params.value}
+                                                 <ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>
+                                            </span>:
                                             params.value}
                         </>
                     ),
@@ -182,34 +191,29 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
                         .forEach((item)=>   {
                             try {
 
-
                                 if (item.subField) {
                                     itemTmp[`${item.subField}`] = Product[`${item.field}`][`${item.subField}`]
                                 } else {
 
-                                    itemTmp[`${item.field}`] = Product[`${item.field == "id" ? "_key" : item.field}`]
-                                }
+                                    if (item.field==="site"){
+                                        itemTmp[`${item.field}`] = getSite(listItem).name
 
+                                    }else{
+                                        itemTmp[`${item.field}`] = Product[`${item.field == "id" ? "_key" : item.field}`]
+                                    }
+                                }
                             }catch(e){
                                 console.log(e)
-
                             }
                         })
-
-
                     listTmp.push(itemTmp)
                 }
-
             })
-
             // console.log(" set data","new data")
             setList(listTmp)
 
         },100)
         let listTmp=[]
-
-
-
     }, [items])
 
     const handleChange=(dataTmp)=>{
@@ -408,6 +412,50 @@ function CustomNoRowsOverlay() {
 
 
 
+const GetProductImageThumbnail=({productKey})=>{
+
+    const [artifacts, setArtifacts] = useState(null);
+
+    useEffect(() => {
+        getArtifacts(productKey);
+    }, []);
+    const getArtifacts = (productId) => {
+        axios
+            .get(`${baseUrl}product/${productId}/artifact`)
+            .then((res) => {
+                const data = res.data.data;
+                if (data.length > 0) {
+                    setArtifacts(data);
+                }
+            })
+            .catch((error) => {
+                console.debug("get artifact error ", error);
+            });
+    };
+
+    return(
+        <>
+        {artifacts && artifacts.length > 0 ? (
+            <div className={"me-1"}>
+                <Avatar
+                    variant="rounded"
+                    sx={{ height: 30, width: 30 }}
+                    src={artifacts[0].blob_url}
+                />
+            </div>
+        ) : (
+            <div className={"me-1"}>
+                <Avatar
+                    variant="rounded"
+                    sx={{ height: 30, width: 30 }}
+                    src={placeholderImg}
+                />
+            </div>
+        )}
+
+        </>)
+
+}
 
 
 

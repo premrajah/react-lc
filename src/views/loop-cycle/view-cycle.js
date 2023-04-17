@@ -896,12 +896,14 @@ class ViewCycle extends Component {
                                                                     {this.state.item.from_site.geo_codes && this.state.item.from_site.geo_codes[0] &&
 
                                                                     <div className={"bg-white rad-8 p-2"}>
-                                                                        <GoogleMap siteId={this.state.item.from_site._key} width={"100%"}
-                                                                                   height={"300px"} locations={[{
+                                                                        <GoogleMap
+                                                                            searchLocation
+                                                                            siteId={this.state.item.from_site._key} width={"100%"}
+                                                                                   height={"300px"} location={{
                                                                             name: this.state.item.from_site.name,
                                                                             location: this.state.item.from_site.geo_codes[0].address_info.geometry.location,
                                                                             isCenter: true
-                                                                        }]}/>
+                                                                        }}/>
                                                                     </div>
 
                                                                     }
@@ -918,12 +920,14 @@ class ViewCycle extends Component {
                                                                     {this.state.item.to_site.geo_codes && this.state.item.to_site.geo_codes[0] &&
 
                                                                     <div className={"bg-white rad-8 p-2"}>
-                                                                        <GoogleMap siteId={this.state.item.to_site._key} width={"100%"}
-                                                                                   height={"300px"} locations={[{
+                                                                        <GoogleMap
+                                                                            searchLocation
+                                                                            siteId={this.state.item.to_site._key} width={"100%"}
+                                                                                   height={"300px"} location={{
                                                                             name: this.state.item.to_site.name,
                                                                             location: this.state.item.to_site.geo_codes[0].address_info.geometry.location,
                                                                             isCenter: true
-                                                                        }]}/>
+                                                                        }}/>
                                                                     </div>
 
                                                                     }

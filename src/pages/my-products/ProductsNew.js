@@ -248,6 +248,11 @@ class ProductsNew extends Component {
             showFieldSelection: !this.state.showFieldSelection,
         });
     };
+    selectAll= () => {
+        this.setState({
+            selectAll: !this.state.selectAll,
+        });
+    };
     downloadAll = (page=0,size=100,selectedKeys) => {
 
         if (this.state.selectedRows.length>0){
@@ -731,6 +736,7 @@ class ProductsNew extends Component {
 
     setMultipleSelectFlag=(rows)=>{
 
+        console.log(rows)
         this.setState({
             selectedRows: rows,
         });
@@ -1005,6 +1011,8 @@ class ProductsNew extends Component {
                         <ErrorBoundary>
                         <PaginationGrid
                             count={this.state.count}
+                            selectAll={this.state.selectAll}
+
                             items={this.state.items}
                             pageSize={this.state.pageSize}
                             offset={this.state.offset}
@@ -1088,7 +1096,14 @@ class ProductsNew extends Component {
                                       </>:
 
                                     <div className="col-md-12 ">
+
                                         <BlueSmallBtn
+                                            classAdd={'ms-2 '}
+                                            title={"Select All"}
+                                            onClick={()=>this.selectAll()}>
+                                        </BlueSmallBtn>
+                                        <BlueSmallBtn
+                                            classAdd={'ms-2 '}
                                             title={"Locations"}
                                             onClick={this.getSitesForProducts}
                                         >

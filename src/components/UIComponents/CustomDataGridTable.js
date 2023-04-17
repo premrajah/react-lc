@@ -26,7 +26,7 @@ import {baseUrl} from "../../Util/Constants";
 import {Avatar} from "@mui/material";
 import placeholderImg from "../../img/place-holder-lc.png";
 
-const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
+const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,selectAll,
                                linkField,dataKey,loading,loadMore,checkboxSelection,
                                setMultipleSelectFlag,actionCallback, items,element,children, ...otherProps}) =>{
 
@@ -66,6 +66,13 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
             setMultipleSelectFlag([])
         }
     },[selectedRows])
+
+    // useEffect(() => {
+    //
+    //     // console.log(selectedRows)
+    //     alert(selectAll)
+    //
+    // },[selectAll])
 
     useEffect(() => {
 
@@ -126,8 +133,8 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
                     </span> :
 
                                         params.field === "category" ? <GetCatBox item={params.row}/> :
-                                            params.field === "site" ? <span>{params.value}
-                                                 <ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>
+                                            params.field === "site" ? <span><ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>{params.value}
+
                                             </span>:
                                             params.value}
                         </>
@@ -245,12 +252,9 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
 
     return (
        <>
-           {/*<Box sx={{ height: "90vh", minWidth: '100%' }}>*/}
            <div style={{  width:"100%" ,flex:1}}>
-               {/*<div style={{  width:"100%"}}>*/}
-
-
                <DataGrid
+                   keepNonExistentRowsSelected
                    autoHeight
                    columnVisibilityModel={visibleFields}
                    disableColumnMenu={true}
@@ -293,7 +297,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
                        }
 
                    }}
-                   keepNonExistentRowsSelected
+
 
                    components={{
                        NoRowsOverlay: () => (
@@ -311,14 +315,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
 
 
                </div>
-           {/*</div>*/}
 
-           {/*    <div style={{ display: 'flex', height: '90vh' }}>*/}
-           {/*        <div style={{ flexGrow: 1 }}>*/}
-           {/*    <CustomToolbarGrid/>*/}
-           {/*</div>*/}
-           {/*    </div>*/}
-           {/*</Box>*/}
        </>
     );
 }

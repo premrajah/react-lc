@@ -246,11 +246,12 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,
     return (
        <>
            {/*<Box sx={{ height: "90vh", minWidth: '100%' }}>*/}
-           <div style={{  height: '90vh',width:"100%" ,flex:1}}>
+           <div style={{  width:"100%" ,flex:1}}>
                {/*<div style={{  width:"100%"}}>*/}
 
 
                <DataGrid
+                   autoHeight
                    columnVisibilityModel={visibleFields}
                    disableColumnMenu={true}
                    page={currentPage}

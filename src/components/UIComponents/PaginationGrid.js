@@ -121,7 +121,7 @@ class PaginationGrid extends Component {
                     items={this.props.items}
                     pageSize={this.props.pageSize}
                     count={this.props.count}
-
+                    selectAll={this.props.selectAll}
                     currentPage={this.props.currentPage}
                     loading={this.props.loading}
                     actions={this.props.actions}

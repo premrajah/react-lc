@@ -148,7 +148,7 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
                             )}
 
                             {m.message.entity_type === "Match" && (
-                                <div>
+                                <div className="w-100">
                                     <div className="d-flex">
                                         <div className="me-2 text-mute">
                                             {m.message.entity_type}

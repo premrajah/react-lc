@@ -144,7 +144,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                     </span> :
 
                                         params.field === "category" ? <GetCatBox item={params.row}/> :
-                                            params.field === "site" ? <span><ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>{params.value}
+                                            params.field === "site" ?
+                                                <span><ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>
+                                                     <Link
+                                                         to={`/ps/${params.row.siteId}?${data.linkParams}`}>{params.value}</Link>
 
                                             </span>:
                                             params.value}
@@ -215,8 +218,12 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
 
                                     if (item.field==="site"){
                                         itemTmp[`${item.field}`] = getSite(listItem).name
+                                    }
+                                   else if (item.field==="siteId"){
+                                        itemTmp[`${item.field}`] = getSite(listItem)._key
+                                    }
 
-                                    }else{
+                                    else{
                                         itemTmp[`${item.field}`] = Product[`${item.field == "id" ? "_key" : item.field}`]
                                     }
                                 }

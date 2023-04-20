@@ -144,6 +144,7 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
     {field:"condition",label:"Condition" ,visible:false,sortable:false,flex:0.5,notFilterable:"true"},
     {field:"sku",subField:"serial",label:"Serial No" ,visible:true,sortable:false,flex:0.75},
     {field:"site",label:"Site" ,visible:true,sortable:false, notFilterable:"true",flex:1.5},
+    {field:"siteId",label:"Site Id" ,visible:false,sortable:false, notFilterable:"true",flex:1.5},
     // {key:"category",label:"Category" ,visible:true,sortable:false,flex:2.5},
     // {key:"type",label:"Type" ,visible:false,sortable:false},
     // {key:"state",label:"State",visible:false,sortable:false},

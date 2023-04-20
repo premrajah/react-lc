@@ -58,6 +58,11 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
         );
     }, [count, setRowCountState]);
 
+
+    const onReset = () => {
+        setSelectionModel([]);
+    };
+
     useEffect(() => {
 
         if (selectedRows.length>0){
@@ -72,10 +77,12 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
 
     },[checkboxSelection])
 
-    // useEffect(() => {
-    //     alert("set row selection model")
-    //     setSelectionModel([]);
-    // },[resetSelection])
+    useEffect(() => {
+
+        if (resetSelection)
+        onReset()
+
+    },[resetSelection])
 
 
     useEffect(() => {
@@ -295,10 +302,12 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
 
                        setRowSelectionModel(newRowSelectionModel);
                    }}
-                   // selectionModel={selectionModel}
+                   selectionModel={selectionModel}
                    // onSelectionModelChange={setSelectionModel}
+
                    onSelectionModelChange={(ids,) => {
                        // setSelectionModel(ids.selectionModel);
+                       setSelectionModel(ids)
                        try {
                            const selectedIDs = new Set(ids);
                            const selectedRows = items.filter((row) =>

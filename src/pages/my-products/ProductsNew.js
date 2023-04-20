@@ -133,6 +133,8 @@ class ProductsNew extends Component {
 
     setQueryData=(queryData,filterReset)=>{
 
+        this.resetSelection()
+
         try{
 
         // console.log("new queryData,reset")
@@ -253,13 +255,31 @@ class ProductsNew extends Component {
     selectAll= () => {
         this.setState({
             selectAll: !this.state.selectAll,
-            resetSelection:!this.state.resetSelection
         });
 
+        this.resetSelection()
 
 
     };
 
+
+    resetSelection=()=>{
+
+        if (this.state.selectAll){
+            this.setState({
+                selectAll: false,
+            });
+        }
+        setTimeout(()=>{
+            this.setState({
+                resetSelection: !this.state.resetSelection,
+            });
+        },100)
+        this.setState({
+            resetSelection: !this.state.resetSelection,
+        });
+
+    }
 
 
     downloadAll = (page=0,size=100,selectedKeys,type="csv") => {
@@ -1029,7 +1049,6 @@ class ProductsNew extends Component {
                         <PaginationGrid
                             count={this.state.count}
                             resetSelection={this.state.resetSelection}
-
                             items={this.state.items}
                             pageSize={this.state.pageSize}
                             offset={this.state.offset}
@@ -1038,6 +1057,9 @@ class ProductsNew extends Component {
                             lastPageReached={this.state.lastPageReached}
                             currentPage={this.state.queryData.page?this.state.queryData.page:0}
                             loadMore={(data) =>{
+
+
+
                                     this.setQueryData({
                                         type: this.state.selectionMode,
                                         filter:data.searchFilter,

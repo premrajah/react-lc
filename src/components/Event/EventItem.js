@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import {getInitials, getTimeFormat} from "../../Util/GlobalFunctions";
+import {getInitials, getTimeFormat, removeDuplicates} from "../../Util/GlobalFunctions";
 import {baseUrl} from "../../Util/Constants";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {Close, Edit, FactCheck} from "@mui/icons-material";
@@ -87,21 +87,22 @@ class EventItem extends Component {
                             actions.push({label:"Release",value:"release",data:this.props.item})
                             actions.push(  {label:"Delete",value:"delete",data:this.props.item.event._key})
                         }
-                        if (data.ownership_context["is_event_for"]) {
-
-
-                            actions.push({label:"Release",value:"release",data:this.props.item})
-                        }
-                        if (data.ownership_context["is_action_for"]) {
-
+                        if (data.ownership_context["is_event_for"]&&(!actions.find(item=>item.label==="Release"))) {
 
                             actions.push({label:"Release",value:"release",data:this.props.item})
                         }
+                        if (data.ownership_context["is_action_for"]&&(!actions.find(item=>item.label==="Release"))) {
+
+                            actions.push({label:"Release",value:"release",data:this.props.item})
+                        }
+
+
+
                     }
 
 
                     this.setState({
-                        actions:actions
+                        actions:removeDuplicates(actions)
                     })
                 }
             })

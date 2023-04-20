@@ -26,7 +26,7 @@ import {baseUrl} from "../../Util/Constants";
 import {Avatar} from "@mui/material";
 import placeholderImg from "../../img/place-holder-lc.png";
 
-const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,selectAll,
+const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,resetSelection,
                                linkField,dataKey,loading,loadMore,checkboxSelection,
                                setMultipleSelectFlag,actionCallback, items,element,children, ...otherProps}) =>{
 
@@ -40,8 +40,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
     const [visibleFields, setVisibleFields] = React.useState({});
     const [currentData, setCurrentData] = React.useState({});
     const [selectedRows, setSelectedRows] = React.useState([]);
-
+    const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
+    const [allowSelection, setAllowSelection] = React.useState([]);
     const [initialHeaderState, setInitialHeaderState] = React.useState(false);
+    const [selectionModel, setSelectionModel] = React.useState([]);
 
     const [sortModel, setSortModel] = React.useState();
     const [paginationModel, setPaginationModel] = React.useState({
@@ -56,9 +58,12 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
         );
     }, [count, setRowCountState]);
 
-    useEffect(() => {
 
-        // console.log(selectedRows)
+    const onReset = () => {
+        setSelectionModel([]);
+    };
+
+    useEffect(() => {
 
         if (selectedRows.length>0){
             setMultipleSelectFlag(selectedRows)
@@ -67,12 +72,18 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
         }
     },[selectedRows])
 
-    // useEffect(() => {
-    //
-    //     // console.log(selectedRows)
-    //     alert(selectAll)
-    //
-    // },[selectAll])
+    useEffect(() => {
+      setAllowSelection(checkboxSelection)
+
+    },[checkboxSelection])
+
+    useEffect(() => {
+
+        if (resetSelection)
+        onReset()
+
+    },[resetSelection])
+
 
     useEffect(() => {
 
@@ -133,7 +144,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
                     </span> :
 
                                         params.field === "category" ? <GetCatBox item={params.row}/> :
-                                            params.field === "site" ? <span><ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>{params.value}
+                                            params.field === "site" ?
+                                                <span><ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>
+                                                     <Link
+                                                         to={`/ps/${params.row.siteId}?${data.linkParams}`}>{params.value}</Link>
 
                                             </span>:
                                             params.value}
@@ -204,8 +218,12 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
 
                                     if (item.field==="site"){
                                         itemTmp[`${item.field}`] = getSite(listItem).name
+                                    }
+                                   else if (item.field==="siteId"){
+                                        itemTmp[`${item.field}`] = getSite(listItem)._key
+                                    }
 
-                                    }else{
+                                    else{
                                         itemTmp[`${item.field}`] = Product[`${item.field == "id" ? "_key" : item.field}`]
                                     }
                                 }
@@ -254,6 +272,8 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
        <>
            <div style={{  width:"100%" ,flex:1}}>
                <DataGrid
+                   className={`${allowSelection?"":"hide-page"}`}
+                   checkboxSelection={allowSelection}
                    keepNonExistentRowsSelected
                    autoHeight
                    columnVisibilityModel={visibleFields}
@@ -261,12 +281,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
                    page={currentPage}
                    onPageChange={(newPage) => {
                        setPage(newPage)
-
                        loadMore(false,sortData,newPage)
                    }}
                    onPageSizeChange={(newPageSize) => {
                        // alert("page size "+newPageSize)
-
                         }}
                    // autoPageSize
                    sortModel={sortModel}
@@ -279,13 +297,24 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
                    pageSize={pageSize}
                    loading={listLoading}
                    rowsPerPageOptions={[pageSize]}
-                   checkboxSelection={checkboxSelection}
+
                    disableSelectionOnClick
                    experimentalFeatures={{ newEditingApi: true }}
                    paginationMode="server"
                    paginationModel={paginationModel}
                    onPaginationModelChange={setPaginationModel}
-                   onSelectionModelChange={(ids) => {
+                   rowSelectionModel={rowSelectionModel}
+
+                   onRowSelectionModelChange={(newRowSelectionModel) => {
+
+                       setRowSelectionModel(newRowSelectionModel);
+                   }}
+                   selectionModel={selectionModel}
+                   // onSelectionModelChange={setSelectionModel}
+
+                   onSelectionModelChange={(ids,) => {
+                       // setSelectionModel(ids.selectionModel);
+                       setSelectionModel(ids)
                        try {
                            const selectedIDs = new Set(ids);
                            const selectedRows = items.filter((row) =>
@@ -295,9 +324,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
                        }catch (e){
                            console.log(e)
                        }
-
                    }}
-
 
                    components={{
                        NoRowsOverlay: () => (

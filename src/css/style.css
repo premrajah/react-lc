@@ -4942,3 +4942,9 @@ ul,ol {
     display: flex;
     align-items: center;
 }
+.hide-page .MuiDataGrid-footerContainer{
+    display: none;
+}
+.hide-page .MuiDataGrid-row {
+    background: rgba(39, 36, 92, 0.08)!important;
+}

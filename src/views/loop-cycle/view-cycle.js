@@ -33,6 +33,9 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import AutocompleteCustom from "../../components/AutocompleteSearch/AutocompleteCustom";
+import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+import ResourceItem from "../item/ResourceItem";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 class ViewCycle extends Component {
     slug;
@@ -402,6 +405,9 @@ class ViewCycle extends Component {
                 //     showPopUp: true,
                 //     loopError: error.response.data.content.message
                 // })
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
+
+                this.togglePopUpAction();
             });
     }
 
@@ -884,8 +890,29 @@ class ViewCycle extends Component {
                                                             </TabPanel>}
 
                                                             <TabPanel value="2">
+
+                                                                {/*{this.state.item&&  <ErrorBoundary >*/}
+                                                                {/*    <div id={this.state.item.listing._key} key={this.state.item.listing._key}>*/}
+                                                                {/*        <ResourceItem*/}
+                                                                {/*            Edit*/}
+                                                                {/*            // triggerCallback={() => this.callBackResult()}*/}
+                                                                {/*            history={this.props.history}*/}
+                                                                {/*            link={"/" + this.state.item.listing._key}*/}
+                                                                {/*            item={{listing:this.state.item.listing}}*/}
+                                                                {/*            product={this.state.item.product?this.state.item.product.product:null}*/}
+
+                                                                {/*            // org={item.ListingToOrg[0]?item.ListingToOrg[0].entries[0]*/}
+                                                                {/*            //     ?item.ListingToOrg[0].entries[0].Org:null:null}*/}
+                                                                {/*            // org={item.Org}*/}
+
+                                                                {/*        />*/}
+
+
+                                                                {/*    </div>*/}
+                                                                {/*</ErrorBoundary>}*/}
                                                             </TabPanel>
                                                             <TabPanel value="3">
+
                                                             </TabPanel>
 
                                                             {this.state.item.from_site &&
@@ -1754,6 +1781,7 @@ const mapDispachToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ViewCycle);

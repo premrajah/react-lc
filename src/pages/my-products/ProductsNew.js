@@ -82,7 +82,9 @@ class ProductsNew extends Component {
                 Archive:{url:"name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["view"]},
                 Issues:{url:"name=Issue",actions:[]}
             },
-            defaultSort:{key: "_ts_epoch_ms",sort: "desc"}
+            defaultSort:{key: "_ts_epoch_ms",sort: "desc"},
+            selectAll:false,
+            resetSelection:false
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -130,6 +132,8 @@ class ProductsNew extends Component {
 
 
     setQueryData=(queryData,filterReset)=>{
+
+        this.resetSelection()
 
         try{
 
@@ -252,15 +256,35 @@ class ProductsNew extends Component {
         this.setState({
             selectAll: !this.state.selectAll,
         });
+
+        this.resetSelection()
+
+
     };
-    downloadAll = (page=0,size=100,selectedKeys) => {
 
-        if (this.state.selectedRows.length>0){
 
-            this.formatData(selectedKeys,true)
+    resetSelection=()=>{
 
+        if (this.state.selectAll){
+            this.setState({
+                selectAll: false,
+            });
         }
-        else {
+        setTimeout(()=>{
+            this.setState({
+                resetSelection: !this.state.resetSelection,
+                selectedRows:[]
+            });
+        },100)
+        this.setState({
+            resetSelection: !this.state.resetSelection,
+        });
+
+    }
+
+
+    downloadAll = (page=0,size=100,selectedKeys,type="csv") => {
+
             if (page === 0)
                 this.setState({
                     allDownloadItems: []
@@ -281,7 +305,11 @@ class ProductsNew extends Component {
                             downloadAllLoading: false,
                         });
 
-                        this.formatData(selectedKeys)
+                        if (type==="csv") {
+                            this.formatData(selectedKeys)
+                        }else{
+                            this.getSitesForProducts()
+                        }
 
                     } else {
 
@@ -289,7 +317,8 @@ class ProductsNew extends Component {
                         this.setState({
                             allDownloadItems: list
                         })
-                        this.downloadAll(page + size, 100, selectedKeys)
+                            this.downloadAll(page + size, 100, selectedKeys, type)
+
                     }
                 },
                 (error) => {
@@ -299,7 +328,7 @@ class ProductsNew extends Component {
                     });
                 }
             );
-        }
+        // }
 
     };
 
@@ -469,15 +498,33 @@ class ProductsNew extends Component {
 
     }
 
+    cancelTokenSeek
     seekCount = async (data,filters) => {
-        this.controllerSeek.abort()
+
         let url = `${baseUrl}seek?${data.dataUrl}&count=true`;
 
         filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
         });
 
-        let result = await seekAxiosGet(url,null,this.controllerSeek);
+        if (typeof this.cancelTokenSeek != typeof undefined) {
+            this.cancelTokenSeek.cancel()
+        }
+
+        this.cancelToken = axios.CancelToken.source()
+
+
+        let result=  await axios
+            .get(encodeURI(url),
+                { cancelToken: this.cancelToken.token }
+            )
+            .catch((error) => {
+
+                console.error(error);
+
+            });
+
+
 
         this.setState({
             count: result.data ? result.data.data : 0,
@@ -510,8 +557,9 @@ class ProductsNew extends Component {
             }
         }
     }
-     controller = new AbortController();
-    controllerSeek = new AbortController();
+
+     cancelToken
+
     loadProductsWithoutParentPageWise = async (data,filters) => {
 
         // console.log("data,selection,filters")
@@ -528,9 +576,12 @@ class ProductsNew extends Component {
                 });
         }
 
-        this.controller.abort()
+            //Check if there are any previous pending requests
+            if (typeof this.cancelToken != typeof undefined) {
+                this.cancelToken.cancel()
+            }
 
-        // if (data) this.setFilters(data,selection?selection:this.state.selectionMode);
+
         this.seekCount(data,filters);
 
         this.setState({
@@ -554,7 +605,21 @@ class ProductsNew extends Component {
             url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
         }
 
-        let result = await seekAxiosGet(url,null,this.controller);
+
+            this.cancelToken = axios.CancelToken.source()
+
+
+         let result=  await axios
+                .get(encodeURI(url),
+            { cancelToken: this.cancelToken.token }
+                )
+                .catch((error) => {
+
+                    console.error(error);
+                });
+
+
+            // let result = await seekAxiosGet(url,null,this.controller);
 
         if (result && result.data && result.data.data) {
 
@@ -751,9 +816,13 @@ class ProductsNew extends Component {
     getSitesForProducts = () => {
 
         try {
+            let mapData=[]
+            if (!this.state.selectAll){
+                 mapData=this.mapProductToSite(this.state.selectedRows)
+            }else{
+                mapData=this.mapProductToSite(this.state.allDownloadItems)
+            }
 
-
-            let mapData=this.mapProductToSite(this.state.selectedRows)
 
             this.setState({
                 mapData: mapData,
@@ -853,7 +922,12 @@ class ProductsNew extends Component {
 
         const selectedKeys = new FormData(event.target);
 
-        this.downloadAll(0,100,selectedKeys)
+        if (this.state.selectAll){
+            this.downloadAll(0,100,selectedKeys,"csv")
+        }else{
+            this.formatData(selectedKeys,true)
+        }
+
 
 
     };
@@ -1011,8 +1085,7 @@ class ProductsNew extends Component {
                         <ErrorBoundary>
                         <PaginationGrid
                             count={this.state.count}
-                            selectAll={this.state.selectAll}
-
+                            resetSelection={this.state.resetSelection}
                             items={this.state.items}
                             pageSize={this.state.pageSize}
                             offset={this.state.offset}
@@ -1021,6 +1094,9 @@ class ProductsNew extends Component {
                             lastPageReached={this.state.lastPageReached}
                             currentPage={this.state.queryData.page?this.state.queryData.page:0}
                             loadMore={(data) =>{
+
+
+
                                     this.setQueryData({
                                         type: this.state.selectionMode,
                                         filter:data.searchFilter,
@@ -1032,7 +1108,7 @@ class ProductsNew extends Component {
                             }}
                             actions={this.state.selectionMode&&this.state.menuOptions[this.state.selectionMode].actions?
                                 this.state.menuOptions[this.state.selectionMode].actions:["edit","view"]}
-                            checkboxSelection={this.state.selectionMode!=="Issues"}
+                            checkboxSelection={(this.state.selectionMode!=="Issues")&&!this.state.selectAll}
                             setMultipleSelectFlag={this.setMultipleSelectFlag}
                             actionCallback={this.actionCallback}
                             data={this.state.queryData}
@@ -1095,19 +1171,34 @@ class ProductsNew extends Component {
                                 </div>
                                       </>:
 
-                                    <div className="col-md-12 ">
-
-                                        <BlueSmallBtn
+                                    <div className="col-md-12 d-flex ">
+                                        {this.state.selectAll?
+                                            <>{this.state.count} selected
+                                                <span onClick={()=>this.selectAll()} className="ms-1 text-bold text-underline">Clear Selection</span>
+                                                </>:<></>}
+                                        {this.state.selectedRows.length>0 &&
+                                            <BlueSmallBtn
                                             classAdd={'ms-2 '}
-                                            title={"Select All"}
-                                            onClick={()=>this.selectAll()}>
-                                        </BlueSmallBtn>
-                                        <BlueSmallBtn
-                                            classAdd={'ms-2 '}
-                                            title={"Locations"}
-                                            onClick={this.getSitesForProducts}
+                                            title={`${!this.state.selectAll?"Select All ("+this.state.count+")":"Unselect All ("+this.state.count+")"}`}
+                                            onClick={()=>this.selectAll()}
                                         >
-                                            <MapIcon style={{fontSize:"20px"}} />
+                                        </BlueSmallBtn>}
+
+
+                                         <BlueSmallBtn
+                                            classAdd={'ms-2 '}
+                                            onClick={()=>
+                                            {
+                                                if ( this.state.selectAll){
+                                                    this.downloadAll(0,100,[],"location")
+                                                }else{
+                                                    this.getSitesForProducts()
+                                                }
+
+                                            }}
+                                            title={this.state.downloadAllLoading?"Loading.. ":" Locations"}
+                                        >
+                                             {!this.state.downloadAllLoading? <MapIcon style={{fontSize:"20px"}} />:<><CircularProgressWithLabel textSize={10} size={24} value={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0} /></>}
                                         </BlueSmallBtn>
 
                                     <BlueSmallBtn
@@ -1143,7 +1234,6 @@ class ProductsNew extends Component {
                         )}
                     </>
                 </GlobalDialog>
-
                 <GlobalDialog
                     allowScroll
                     size={"md"}

@@ -137,6 +137,9 @@ export const seekAxiosGet = (url, doNotEncode, controller) => {
             signal: controller ? controller.signal : null,
         })
         .catch((error) => {
+            if (controller.isAborted(),error){
+                console.log("prev call cancelled", error)
+            }
             console.error(error);
             return "Unknown error occurred.";
         });
@@ -440,4 +443,8 @@ export const getParameterByName=(name, url = window.location.href) =>{
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+export const removeDuplicates=(arr)=> {
+    return [...new Set(arr)];
 }

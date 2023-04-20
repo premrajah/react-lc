@@ -274,6 +274,7 @@ class ProductsNew extends Component {
             this.setState({
                 resetSelection: !this.state.resetSelection,
                 selectedRows:[]
+
             });
         },100)
         this.setState({
@@ -1115,7 +1116,7 @@ class ProductsNew extends Component {
                             initialFilter={this.state.initialFilter}
                         >
                             <div className="row  d-flex align-items-center">
-                                {this.state.selectedRows.length===0? <>
+                                {this.state.selectedRows.length===0&&!this.state.selectAll? <>
                                 <div className="col-md-2 btn-rows">
                                     <MenuDropdown
                                         initialValue={this.state.initialFilter.type?this.state.initialFilter.type:null}
@@ -1176,7 +1177,7 @@ class ProductsNew extends Component {
                                             <>{this.state.count} selected
                                                 <span onClick={()=>this.selectAll()} className="ms-1 text-bold text-underline">Clear Selection</span>
                                                 </>:<></>}
-                                        {this.state.selectedRows.length>0 &&
+                                        {!this.state.selectAll &&
                                             <BlueSmallBtn
                                             classAdd={'ms-2 '}
                                             title={`${!this.state.selectAll?"Select All ("+this.state.count+")":"Unselect All ("+this.state.count+")"}`}

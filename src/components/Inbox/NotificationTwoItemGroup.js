@@ -7,6 +7,7 @@ import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import NotificationTwoTextDisplay from "./NotificationTwoTextDisplay";
 
 
 const NotificationTwoItemGroup = ({ items }) => {
@@ -43,7 +44,16 @@ const NotificationTwoItemGroup = ({ items }) => {
             .then(
                 (res) => {
                     if (res.status === 200) {
-                        setRead(true);
+                        console.log(res.data.data);
+                        const {is_tracked, is_owned} = res.data.data.options;
+                        // setRead(true);
+                        // console.log('mr ', is_tracked, is_owned)
+                        // return <>
+                        //     {is_tracked && <div>T</div>}
+                        //     {is_owned && <div>O</div>}
+                        // </>
+                        // return [is_tracked, is_owned];
+
                     }
                 },
                 (error) => {}
@@ -58,7 +68,8 @@ const NotificationTwoItemGroup = ({ items }) => {
         axios
             .get(`${baseUrl}product/${entityKey}/tracked`)
             .then((res) => {
-                setTracked(res.data.data);
+                console.log(res.data.data)
+                // setTracked(res.data.data);
             })
             .catch((error) => {
                 console.log(`tracked error ${error.message}`);
@@ -114,29 +125,32 @@ const NotificationTwoItemGroup = ({ items }) => {
             {items.length > 0 &&
                 items.map((itemGroup, index) => {
                     return (
-                        <div className="row g-1">
+                        <div className="row g-1" key={itemGroup[0].Message._key}
+                             id={itemGroup[0].Message._key} >
                             <div className="col-10">
                                 <Accordion
                                     className="mb-1"
-                                    key={itemGroup[0].Message._key}
-                                    id={itemGroup[0].Message._key} expanded={accordionExpand === itemGroup[0].Message._key}
+                                    expanded={accordionExpand === itemGroup[0].Message._key}
                                     onChange={itemGroup.length > 1 ? handleChange(itemGroup[0].Message._key) : undefined}
                                     // disabled={itemGroup.length === 1}
+
                                 >
                                     <AccordionSummary  expandIcon={itemGroup.length > 1 && <ExpandMoreIcon />}>
                                         <div className="">{itemGroup[0].Message.text}</div>
                                     </AccordionSummary>
                                     {itemGroup.length > 1 &&
                                         itemGroup.map((ig, i) => {
-                                            return <div key={ig.Message._key}>
-                                                <AccordionDetails>{ig.Message.text}</AccordionDetails>
-                                            </div>;
+                                            return <NotificationTwoTextDisplay key={ig.Message._key} text={ig.Message.text} />
                                         })}
                                 </Accordion>
                             </div>
                             <div className="col-2">
-                                <div className="">
-                                    extra
+                                <div className="d-flex justify-content-end align-items-center h-100 pe-3" >
+                                    <div className="me-2"><small className="text-gray-light">{moment(itemGroup[0].Message._ts_epoch_ms).fromNow()}</small></div>
+                                    {/*<div className="me-2">T</div>*/}
+                                    {/*<div className="me-2">M</div>*/}
+                                    <div>hi {messageRead(itemGroup[0].Message._key)}</div>
+
                                 </div>
                             </div>
                         </div>

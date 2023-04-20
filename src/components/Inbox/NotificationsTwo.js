@@ -20,8 +20,6 @@ const NotificationsTwo = () => {
                 const data = res.data.data;
                 const groupedByEntityType = _.groupBy(data, "Message.entity_as_json._key");
                 const toArray = _.values(groupedByEntityType);
-
-                console.log("all data ", toArray);
                 setAllNotifications(toArray);
             })
             .catch((error) => {

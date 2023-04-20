@@ -1147,7 +1147,6 @@ class ListFormNew extends Component {
                                                     triggerCallback={(productId) => {
                                                         this.productSelected(productId)
                                                         this.handleChange(productId,"product")
-
                                                     }
                                                     }
                                                     className={"mb-4"}

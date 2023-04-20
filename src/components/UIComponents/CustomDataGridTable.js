@@ -26,7 +26,7 @@ import {baseUrl} from "../../Util/Constants";
 import {Avatar} from "@mui/material";
 import placeholderImg from "../../img/place-holder-lc.png";
 
-const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,selectAll,
+const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,resetSelection,
                                linkField,dataKey,loading,loadMore,checkboxSelection,
                                setMultipleSelectFlag,actionCallback, items,element,children, ...otherProps}) =>{
 
@@ -40,8 +40,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
     const [visibleFields, setVisibleFields] = React.useState({});
     const [currentData, setCurrentData] = React.useState({});
     const [selectedRows, setSelectedRows] = React.useState([]);
-
+    const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
+    const [allowSelection, setAllowSelection] = React.useState([]);
     const [initialHeaderState, setInitialHeaderState] = React.useState(false);
+    const [selectionModel, setSelectionModel] = React.useState([]);
 
     const [sortModel, setSortModel] = React.useState();
     const [paginationModel, setPaginationModel] = React.useState({
@@ -58,8 +60,6 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
 
     useEffect(() => {
 
-        // console.log(selectedRows)
-
         if (selectedRows.length>0){
             setMultipleSelectFlag(selectedRows)
         }else{
@@ -67,12 +67,16 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
         }
     },[selectedRows])
 
+    useEffect(() => {
+      setAllowSelection(checkboxSelection)
+
+    },[checkboxSelection])
+
     // useEffect(() => {
-    //
-    //     // console.log(selectedRows)
-    //     alert(selectAll)
-    //
-    // },[selectAll])
+    //     alert("set row selection model")
+    //     setSelectionModel([]);
+    // },[resetSelection])
+
 
     useEffect(() => {
 
@@ -254,6 +258,8 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
        <>
            <div style={{  width:"100%" ,flex:1}}>
                <DataGrid
+                   className={`${allowSelection?"":"hide-page"}`}
+                   checkboxSelection={allowSelection}
                    keepNonExistentRowsSelected
                    autoHeight
                    columnVisibilityModel={visibleFields}
@@ -261,12 +267,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
                    page={currentPage}
                    onPageChange={(newPage) => {
                        setPage(newPage)
-
                        loadMore(false,sortData,newPage)
                    }}
                    onPageSizeChange={(newPageSize) => {
                        // alert("page size "+newPageSize)
-
                         }}
                    // autoPageSize
                    sortModel={sortModel}
@@ -279,13 +283,22 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
                    pageSize={pageSize}
                    loading={listLoading}
                    rowsPerPageOptions={[pageSize]}
-                   checkboxSelection={checkboxSelection}
+
                    disableSelectionOnClick
                    experimentalFeatures={{ newEditingApi: true }}
                    paginationMode="server"
                    paginationModel={paginationModel}
                    onPaginationModelChange={setPaginationModel}
-                   onSelectionModelChange={(ids) => {
+                   rowSelectionModel={rowSelectionModel}
+
+                   onRowSelectionModelChange={(newRowSelectionModel) => {
+
+                       setRowSelectionModel(newRowSelectionModel);
+                   }}
+                   // selectionModel={selectionModel}
+                   // onSelectionModelChange={setSelectionModel}
+                   onSelectionModelChange={(ids,) => {
+                       // setSelectionModel(ids.selectionModel);
                        try {
                            const selectedIDs = new Set(ids);
                            const selectedRows = items.filter((row) =>
@@ -295,9 +308,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,sele
                        }catch (e){
                            console.log(e)
                        }
-
                    }}
-
 
                    components={{
                        NoRowsOverlay: () => (

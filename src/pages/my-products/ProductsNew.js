@@ -137,8 +137,6 @@ class ProductsNew extends Component {
 
         try{
 
-        // console.log("new queryData,reset")
-        // console.log(queryData)
         removeEmptyValuesObj(queryData)
 
         if (!queryData.reset){
@@ -558,7 +556,6 @@ class ProductsNew extends Component {
 
         this.controller.abort()
 
-        // if (data) this.setFilters(data,selection?selection:this.state.selectionMode);
         this.seekCount(data,filters);
 
         this.setState({

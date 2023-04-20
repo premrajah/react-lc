@@ -89,12 +89,9 @@ class EventItem extends Component {
                         }
                         if (data.ownership_context["is_event_for"]&&(!actions.find(item=>item.label==="Release"))) {
 
-
                             actions.push({label:"Release",value:"release",data:this.props.item})
                         }
                         if (data.ownership_context["is_action_for"]&&(!actions.find(item=>item.label==="Release"))) {
-
-
 
                             actions.push({label:"Release",value:"release",data:this.props.item})
                         }

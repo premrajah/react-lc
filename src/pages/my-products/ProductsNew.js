@@ -137,6 +137,8 @@ class ProductsNew extends Component {
 
         try{
 
+        // console.log("new queryData,reset")
+        // console.log(queryData)
         removeEmptyValuesObj(queryData)
 
         if (!queryData.reset){
@@ -271,6 +273,7 @@ class ProductsNew extends Component {
         setTimeout(()=>{
             this.setState({
                 resetSelection: !this.state.resetSelection,
+                selectedRows:[]
             });
         },100)
         this.setState({
@@ -495,15 +498,33 @@ class ProductsNew extends Component {
 
     }
 
+    cancelTokenSeek
     seekCount = async (data,filters) => {
-        this.controllerSeek.abort()
+
         let url = `${baseUrl}seek?${data.dataUrl}&count=true`;
 
         filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;
         });
 
-        let result = await seekAxiosGet(url,null,this.controllerSeek);
+        if (typeof this.cancelTokenSeek != typeof undefined) {
+            this.cancelTokenSeek.cancel()
+        }
+
+        this.cancelToken = axios.CancelToken.source()
+
+
+        let result=  await axios
+            .get(encodeURI(url),
+                { cancelToken: this.cancelToken.token }
+            )
+            .catch((error) => {
+
+                console.error(error);
+
+            });
+
+
 
         this.setState({
             count: result.data ? result.data.data : 0,
@@ -536,8 +557,9 @@ class ProductsNew extends Component {
             }
         }
     }
-     controller = new AbortController();
-    controllerSeek = new AbortController();
+
+     cancelToken
+
     loadProductsWithoutParentPageWise = async (data,filters) => {
 
         // console.log("data,selection,filters")
@@ -554,7 +576,11 @@ class ProductsNew extends Component {
                 });
         }
 
-        this.controller.abort()
+            //Check if there are any previous pending requests
+            if (typeof this.cancelToken != typeof undefined) {
+                this.cancelToken.cancel()
+            }
+
 
         this.seekCount(data,filters);
 
@@ -579,7 +605,21 @@ class ProductsNew extends Component {
             url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
         }
 
-        let result = await seekAxiosGet(url,null,this.controller);
+
+            this.cancelToken = axios.CancelToken.source()
+
+
+         let result=  await axios
+                .get(encodeURI(url),
+            { cancelToken: this.cancelToken.token }
+                )
+                .catch((error) => {
+
+                    console.error(error);
+                });
+
+
+            // let result = await seekAxiosGet(url,null,this.controller);
 
         if (result && result.data && result.data.data) {
 
@@ -1136,7 +1176,7 @@ class ProductsNew extends Component {
                                             <>{this.state.count} selected
                                                 <span onClick={()=>this.selectAll()} className="ms-1 text-bold text-underline">Clear Selection</span>
                                                 </>:<></>}
-                                        {!this.state.selectAll &&
+                                        {this.state.selectedRows.length>0 &&
                                             <BlueSmallBtn
                                             classAdd={'ms-2 '}
                                             title={`${!this.state.selectAll?"Select All ("+this.state.count+")":"Unselect All ("+this.state.count+")"}`}

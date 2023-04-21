@@ -79,8 +79,11 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
 
     useEffect(() => {
 
-        if (resetSelection)
-        onReset()
+        if (resetSelection){
+            setMultipleSelectFlag([])
+            onReset()
+        }
+
 
     },[resetSelection])
 

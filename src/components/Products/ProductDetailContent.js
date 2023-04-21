@@ -923,11 +923,7 @@ class ProductDetailContent extends Component {
                                 <div className="row stick-left-box">
                                     {/*<div className="col-12 ">*/}
                                     {/*    <div className="   ">*/}
-
-
                                             <ImageHeader images={this.state.item.artifacts} />
-
-
                                             {this.state.isLoggedIn &&
                                             !this.state.hideRegister &&
                                             this.state.userDetail.orgId !== this.state.item.org._id && (

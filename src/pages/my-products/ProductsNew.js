@@ -273,7 +273,6 @@ class ProductsNew extends Component {
         setTimeout(()=>{
             this.setState({
                 resetSelection: !this.state.resetSelection,
-                selectedRows:[]
             });
         },100)
         this.setState({
@@ -546,7 +545,14 @@ class ProductsNew extends Component {
                     });
                     this.initializeData()
                 }else{
-                    this.setQueryData(this.state.queryData)
+
+                    let queryData=this.state.queryData
+
+                    if (queryData.type===undefined||!queryData.type){
+                        queryData.type="Products"
+                    }
+
+                    this.setQueryData(queryData)
                 }
 
                 this.props.refreshPageWithSavedState({});
@@ -801,7 +807,7 @@ class ProductsNew extends Component {
 
     setMultipleSelectFlag=(rows)=>{
 
-        console.log(rows)
+        // console.log("rows selected",rows)
         this.setState({
             selectedRows: rows,
         });
@@ -941,9 +947,13 @@ class ProductsNew extends Component {
 
         if (params){
 
-            const type=new URLSearchParams(params).get("type");
+            let type=new URLSearchParams(params).get("type");
             const filter=new URLSearchParams(params).get("filter");
             const keyword=new URLSearchParams(params).get("keyword");
+
+            if (type===undefined||type==="undefined"){
+                type="Products"
+            }
 
             let iniValues={
                 filter:filter,
@@ -959,8 +969,10 @@ class ProductsNew extends Component {
             }
 
 
+
+
             this.setQueryData({
-                type:type?type:"Products",
+                type:type,
                 reset:false,
                 filter:filter,
                 keyword:keyword
@@ -1115,7 +1127,7 @@ class ProductsNew extends Component {
                             initialFilter={this.state.initialFilter}
                         >
                             <div className="row  d-flex align-items-center">
-                                {this.state.selectedRows.length===0? <>
+                                {this.state.selectedRows.length===0&&!this.state.selectAll? <>
                                 <div className="col-md-2 btn-rows">
                                     <MenuDropdown
                                         initialValue={this.state.initialFilter.type?this.state.initialFilter.type:null}
@@ -1133,31 +1145,27 @@ class ProductsNew extends Component {
                                         <BlueSmallBtn
                                             classAdd="mb-1"
                                             title={"Download Open Cyclecodes"}
-                                            // disabled={this.state.downloadAllLoading}
-                                            // progressLoading={this.state.downloadAllLoading}
-                                            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
-                                            // onClick={()=>this.downloadAll(0,100)}
                                             onClick={() => this.toggleDownloadQrCodes()}
                                         >
 
                                         </BlueSmallBtn>
                                     </CustomPopover>
                                     </div>
-                                    <div className="me-2">
-                                        <CustomPopover text={"Export all products to csv."}>
-                                            <BlueSmallBtn
-                                                classAdd="mb-1"
-                                                title={"Export To CSV"}
-                                                // disabled={this.state.downloadAllLoading}
-                                                // progressLoading={this.state.downloadAllLoading}
-                                                // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
-                                                // onClick={()=>this.downloadAll(0,100)}
-                                                onClick={this.fieldSelection}
-                                            >
+                                    {/*<div className="me-2">*/}
+                                    {/*    <CustomPopover text={"Export all products to csv."}>*/}
+                                    {/*        <BlueSmallBtn*/}
+                                    {/*            classAdd="mb-1"*/}
+                                    {/*            title={"Export To CSV"}*/}
+                                    {/*            // disabled={this.state.downloadAllLoading}*/}
+                                    {/*            // progressLoading={this.state.downloadAllLoading}*/}
+                                    {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
+                                    {/*            // onClick={()=>this.downloadAll(0,100)}*/}
+                                    {/*            onClick={this.fieldSelection}*/}
+                                    {/*        >*/}
 
-                                            </BlueSmallBtn>
-                                        </CustomPopover>
-                                    </div>
+                                    {/*        </BlueSmallBtn>*/}
+                                    {/*    </CustomPopover>*/}
+                                    {/*</div>*/}
                                     <div className="me-2">
                                         <CustomPopover text={"Add Product Lines"}>
                                             <BlueSmallBtn
@@ -1174,11 +1182,11 @@ class ProductsNew extends Component {
                                     <div className="col-md-12 d-flex ">
                                         {this.state.selectAll?
                                             <>{this.state.count} selected
-                                                <span onClick={()=>this.selectAll()} className="ms-1 text-bold text-underline">Clear Selection</span>
+                                                <span onClick={()=>this.selectAll()} className="ms-1 click-item text-bold text-underline">Clear Selection</span>
                                                 </>:<></>}
-                                        {this.state.selectedRows.length>0 &&
+                                        {!this.state.selectAll &&
                                             <BlueSmallBtn
-                                            classAdd={'ms-2 '}
+                                            classAdd={'ms-2  '}
                                             title={`${!this.state.selectAll?"Select All ("+this.state.count+")":"Unselect All ("+this.state.count+")"}`}
                                             onClick={()=>this.selectAll()}
                                         >
@@ -1186,15 +1194,12 @@ class ProductsNew extends Component {
 
 
                                          <BlueSmallBtn
-                                            classAdd={'ms-2 '}
+                                            classAdd={'ms-2 align-items-center d-flex'}
                                             onClick={()=>
-                                            {
-                                                if ( this.state.selectAll){
+                                            {if ( this.state.selectAll){
                                                     this.downloadAll(0,100,[],"location")
                                                 }else{
-                                                    this.getSitesForProducts()
-                                                }
-
+                                                    this.getSitesForProducts()}
                                             }}
                                             title={this.state.downloadAllLoading?"Loading.. ":" Locations"}
                                         >
@@ -1203,7 +1208,7 @@ class ProductsNew extends Component {
 
                                     <BlueSmallBtn
                                         classAdd={'ms-2'}
-                                    title={"CSV"}
+                                    title={"Export To CSV"}
                                     onClick={()=>this.fieldSelection()}>
                                     <DownloadIcon style={{ fontSize: "20px" }} />
                                     </BlueSmallBtn>

@@ -442,7 +442,14 @@ export const getParameterByName=(name, url = window.location.href) =>{
         results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+
+    let result=decodeURIComponent(results[2].replace(/\+/g, ' '))
+
+    if (result==="undefined"){
+        return "Products"
+    }
+
+    return result ;
 }
 
 export const removeDuplicates=(arr)=> {

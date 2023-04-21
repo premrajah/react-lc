@@ -950,7 +950,7 @@ class CompanyDetails extends Component {
 
                 {this.state.org &&
                 <div className="row company-box no-gutters bg-light border-box rad-8 align-items-center">
-                    <div style={{ display: "flex", position: "relative" }} className="col-md-12 align-items-center  ">
+                    <div style={{ display: "flex", position: "relative" }} className="col-md-12 align-items-center p-0 ">
                         <div className={"img-box"} style={{ position: "relative" }}>
                             {this.state.orgImage || this.state.file ? (
                                 <img

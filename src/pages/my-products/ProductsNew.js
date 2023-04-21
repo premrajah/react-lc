@@ -273,8 +273,6 @@ class ProductsNew extends Component {
         setTimeout(()=>{
             this.setState({
                 resetSelection: !this.state.resetSelection,
-                selectedRows:[]
-
             });
         },100)
         this.setState({
@@ -802,7 +800,7 @@ class ProductsNew extends Component {
 
     setMultipleSelectFlag=(rows)=>{
 
-        console.log(rows)
+        // console.log("rows selected",rows)
         this.setState({
             selectedRows: rows,
         });
@@ -1134,31 +1132,27 @@ class ProductsNew extends Component {
                                         <BlueSmallBtn
                                             classAdd="mb-1"
                                             title={"Download Open Cyclecodes"}
-                                            // disabled={this.state.downloadAllLoading}
-                                            // progressLoading={this.state.downloadAllLoading}
-                                            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
-                                            // onClick={()=>this.downloadAll(0,100)}
                                             onClick={() => this.toggleDownloadQrCodes()}
                                         >
 
                                         </BlueSmallBtn>
                                     </CustomPopover>
                                     </div>
-                                    <div className="me-2">
-                                        <CustomPopover text={"Export all products to csv."}>
-                                            <BlueSmallBtn
-                                                classAdd="mb-1"
-                                                title={"Export To CSV"}
-                                                // disabled={this.state.downloadAllLoading}
-                                                // progressLoading={this.state.downloadAllLoading}
-                                                // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}
-                                                // onClick={()=>this.downloadAll(0,100)}
-                                                onClick={this.fieldSelection}
-                                            >
+                                    {/*<div className="me-2">*/}
+                                    {/*    <CustomPopover text={"Export all products to csv."}>*/}
+                                    {/*        <BlueSmallBtn*/}
+                                    {/*            classAdd="mb-1"*/}
+                                    {/*            title={"Export To CSV"}*/}
+                                    {/*            // disabled={this.state.downloadAllLoading}*/}
+                                    {/*            // progressLoading={this.state.downloadAllLoading}*/}
+                                    {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
+                                    {/*            // onClick={()=>this.downloadAll(0,100)}*/}
+                                    {/*            onClick={this.fieldSelection}*/}
+                                    {/*        >*/}
 
-                                            </BlueSmallBtn>
-                                        </CustomPopover>
-                                    </div>
+                                    {/*        </BlueSmallBtn>*/}
+                                    {/*    </CustomPopover>*/}
+                                    {/*</div>*/}
                                     <div className="me-2">
                                         <CustomPopover text={"Add Product Lines"}>
                                             <BlueSmallBtn
@@ -1175,11 +1169,11 @@ class ProductsNew extends Component {
                                     <div className="col-md-12 d-flex ">
                                         {this.state.selectAll?
                                             <>{this.state.count} selected
-                                                <span onClick={()=>this.selectAll()} className="ms-1 text-bold text-underline">Clear Selection</span>
+                                                <span onClick={()=>this.selectAll()} className="ms-1 click-item text-bold text-underline">Clear Selection</span>
                                                 </>:<></>}
                                         {!this.state.selectAll &&
                                             <BlueSmallBtn
-                                            classAdd={'ms-2 '}
+                                            classAdd={'ms-2  '}
                                             title={`${!this.state.selectAll?"Select All ("+this.state.count+")":"Unselect All ("+this.state.count+")"}`}
                                             onClick={()=>this.selectAll()}
                                         >
@@ -1187,15 +1181,12 @@ class ProductsNew extends Component {
 
 
                                          <BlueSmallBtn
-                                            classAdd={'ms-2 '}
+                                            classAdd={'ms-2 align-items-center d-flex'}
                                             onClick={()=>
-                                            {
-                                                if ( this.state.selectAll){
+                                            {if ( this.state.selectAll){
                                                     this.downloadAll(0,100,[],"location")
                                                 }else{
-                                                    this.getSitesForProducts()
-                                                }
-
+                                                    this.getSitesForProducts()}
                                             }}
                                             title={this.state.downloadAllLoading?"Loading.. ":" Locations"}
                                         >
@@ -1204,7 +1195,7 @@ class ProductsNew extends Component {
 
                                     <BlueSmallBtn
                                         classAdd={'ms-2'}
-                                    title={"CSV"}
+                                    title={"Export To CSV"}
                                     onClick={()=>this.fieldSelection()}>
                                     <DownloadIcon style={{ fontSize: "20px" }} />
                                     </BlueSmallBtn>

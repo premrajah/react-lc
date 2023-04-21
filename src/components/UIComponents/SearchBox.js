@@ -23,7 +23,7 @@ class SearchBox extends Component {
     }
 
     handleSearch = (type,value) => {
-
+console.log("change search box",type,value)
         let filterVal=this.state.filterValue
         let searchVal=this.state.searchValue
 
@@ -32,36 +32,19 @@ class SearchBox extends Component {
             this.setState({
                 searchValue:value
             })
+            return this.props.onSearch(filterVal,searchVal);
         }
         if (type==="filter"){
             filterVal=value
             this.setState({
                 filterValue:value
             })
-        }
 
-
-
-        if (searchVal){
-
+            if (searchVal&&searchVal!==undefined)
             return this.props.onSearch(filterVal,searchVal);
         }
 
 
-        // if (value)
-        // this.setState({
-        //     searchQueryChanged:true
-        // })
-        // else{
-        //     this.setState({
-        //         searchQueryChanged:false
-        //     })
-        // }
-        //
-        // this.setState({
-        //     searchValue:value
-        // })
-        // return this.props.onSearch(value);
     };
 
     handleSearchFilter = (value) => {

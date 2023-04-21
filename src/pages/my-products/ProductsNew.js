@@ -545,7 +545,14 @@ class ProductsNew extends Component {
                     });
                     this.initializeData()
                 }else{
-                    this.setQueryData(this.state.queryData)
+
+                    let queryData=this.state.queryData
+
+                    if (queryData.type===undefined||!queryData.type){
+                        queryData.type="Products"
+                    }
+
+                    this.setQueryData(queryData)
                 }
 
                 this.props.refreshPageWithSavedState({});
@@ -940,9 +947,13 @@ class ProductsNew extends Component {
 
         if (params){
 
-            const type=new URLSearchParams(params).get("type");
+            let type=new URLSearchParams(params).get("type");
             const filter=new URLSearchParams(params).get("filter");
             const keyword=new URLSearchParams(params).get("keyword");
+
+            if (type===undefined||type==="undefined"){
+                type="Products"
+            }
 
             let iniValues={
                 filter:filter,
@@ -958,8 +969,10 @@ class ProductsNew extends Component {
             }
 
 
+
+
             this.setQueryData({
-                type:type?type:"Products",
+                type:type,
                 reset:false,
                 filter:filter,
                 keyword:keyword

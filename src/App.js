@@ -93,6 +93,7 @@ import PromptLoginRoute from "./Util/PromptLoginRoute";
 import ProductsCondensedView from "./pages/my-products/ProductsCondensedView";
 import TestRoute from "./components/TestRoute";
 import ProductView from "./pages/product-detail/Product";
+import VerifyEmail from "./pages/account/VerifyEmail";
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -146,6 +147,7 @@ class App extends Component {
                         <Route exact path="/cookie" component={Cookie} />
                         <Route exact path="/privacy" component={Privacy} />
                         <Route exact path="/acceptable" component={AcceptableUse} />
+                        <Route exact path="/verify" component={VerifyEmail} />
                         <LoggedInRoute exact path="/notifications" component={NotificationPage} />
                         <LoggedInRoute exact path="/messages" component={MessagePage} />
                         <LoggedInRoute exact path="/messages-new" component={Messeges} />

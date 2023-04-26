@@ -22,9 +22,10 @@ import {Link} from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
 import Stack from '@mui/material/Stack';
 import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
+import {baseUrl, googleApisBaseURL} from "../../Util/Constants";
 import {Avatar} from "@mui/material";
 import placeholderImg from "../../img/place-holder-lc.png";
+import PlaceholderImg from "../../img/place-holder-lc.png";
 
 const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,resetSelection,
                                linkField,dataKey,loading,loadMore,checkboxSelection,
@@ -485,6 +486,21 @@ const GetProductImageThumbnail=({productKey})=>{
 
 }
 
+const GetSiteImageThumbnail=(props)=>{
+
+
+
+    return(
+        <>
+            {props.item.geo_codes && props.item.geo_codes[0] ?
+                <img className={`${props.smallItem?"small-image":""} img-fluid img-list rad-4`} src={`${googleApisBaseURL}staticmap?center=${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
+                            &markers=color:0x212529%7Clabel:C%7C${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
+                            &zoom=12&size=${props.smallItem?"110x110":"185x185"}&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
+                :<img className={ `${props.smallItem?"small-image":""}  img-fluid img-list`} src={PlaceholderImg} alt="" />}
+
+        </>)
+
+}
 
 
 

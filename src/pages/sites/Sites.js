@@ -146,32 +146,6 @@ class Sites extends Component {
 
 
 
-    getTotalCount=()=>{
-
-
-        axios
-            // .get(`${baseUrl}product/no-parent/no-links`)
-            .get(`${baseUrl}site/no-parent/count`)
-            .then(
-                (response) => {
-                    if(response.status === 200) {
-
-                        this.setState({
-                            count:(response.data.data),
-
-                        })
-                    }
-
-                },
-                (error) => {
-                }
-            )
-            .catch(error => {}).finally(()=>{
-
-        });
-
-    }
-
 
 
     loadSitesWithoutParentPageWise= async (data) => {

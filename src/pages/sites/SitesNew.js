@@ -9,7 +9,7 @@ import {
     baseUrl,
     ISSUES_FILTER_VALUES_KEY,
     PRODUCTS_FIELD_SELECTION,
-    PRODUCTS_FILTER_VALUES_KEY
+    PRODUCTS_FILTER_VALUES_KEY, SITE_FILTER_VALUES_KEY
 } from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
 import {Modal, ModalBody} from "react-bootstrap";
@@ -37,8 +37,9 @@ import {GoogleMap} from "../../components/Map/MapsContainer";
 import MenuDropdown from "../../components/FormsUI/MenuDropdown";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import MapIcon from "@mui/icons-material/Place";
+import SiteFormNew from "../../components/Sites/SiteFormNew";
 
-class ProductsNew extends Component {
+class SitesNew extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -66,7 +67,7 @@ class ProductsNew extends Component {
             allDownloadItems:[],
             showFieldSelection:false,
             productDisplayView: "large",
-            showProductEdit:false,
+            showSiteEdit:false,
             showQuickView:false,
             selectedRows:[],
             selectionMode:null,
@@ -75,12 +76,9 @@ class ProductsNew extends Component {
             queryData:{},
             initialFilter:{},
             menuOptions:{
-                Products:{url:"name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at"},
-                Service:{url:"name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["view"]},
-                Records:{url:"name=Product&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at",actions:["view"]},
-                Track:{url:"name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["view"]},
-                Archive:{url:"name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at",actions:["view"]},
-                Issues:{url:"name=Issue",actions:[]}
+                Sites:{url:"name=Site&no_parent=true"},
+                Records:{url:"name=Site&no_parent=true&relation=past_owner"},
+
             },
             defaultSort:{key: "_ts_epoch_ms",sort: "desc"},
             selectAll:false,
@@ -105,7 +103,7 @@ class ProductsNew extends Component {
 
     actionCallback=(key,action)=>{
         if (action=="edit"){
-            this.showProductEditPopUp(key)
+            this.showSiteEditPopUp(key)
         }
         else if (action=="view"){
             this.showQuickViewPopUp(key)
@@ -137,68 +135,68 @@ class ProductsNew extends Component {
 
         try{
 
-        // console.log("new queryData,reset")
-        // console.log(queryData)
-        removeEmptyValuesObj(queryData)
+            // console.log("new queryData,reset")
+            // console.log(queryData)
+            removeEmptyValuesObj(queryData)
 
-        if (!queryData.reset){
-            queryData={...this.state.queryData, ...queryData}
-        }else{
-            queryData.page=0
+            if (!queryData.reset){
+                queryData={...this.state.queryData, ...queryData}
+            }else{
+                queryData.page=0
 
-        }
+            }
 
-        if (filterReset){
+            if (filterReset){
 
-            queryData.filter=null
-            queryData.keyword=null
+                queryData.filter=null
+                queryData.keyword=null
 
-        }
+            }
 
-        // console.log("merged queryData,reset")
-        // console.log(queryData)
+            // console.log("merged queryData,reset")
+            // console.log(queryData)
 
-        this.setState({
-            selectionMode:queryData.type
-        })
-        let linkUrl=queryData.type==="Issues"?`issue`:queryData.type===`Records`?`p`:`product`
-        let linkParams=`type=${queryData.type}`
-        // if (!queryData.reset){
-                if (queryData.filter){
-                    linkParams=`${linkParams}&filter=${queryData.filter}`
-                }
-                if (queryData.keyword){
-                    linkParams=`${linkParams}&keyword=${queryData.keyword}`
-                }
-        // }
+            this.setState({
+                selectionMode:queryData.type
+            })
+            let linkUrl=`ps`
+            let linkParams=`type=${queryData.type}`
+            // if (!queryData.reset){
+            if (queryData.filter){
+                linkParams=`${linkParams}&filter=${queryData.filter}`
+            }
+            if (queryData.keyword){
+                linkParams=`${linkParams}&keyword=${queryData.keyword}`
+            }
+            // }
 
 
-        let data={
-            dataUrl:this.state.menuOptions[queryData.type?queryData.type:"Products"].url,
-            linkUrl:linkUrl,
-            linkField:queryData.type==="Issues"?"title":"name",
-            objKey:queryData.type==="Issues"?"Issue":"Product",
-            linkParams:linkParams,
-            headers:queryData.type==="Issues"?ISSUES_FILTER_VALUES_KEY:PRODUCTS_FILTER_VALUES_KEY,
-            keyword: queryData.keyword,
-            filter: queryData.filter,
-            reset: queryData.reset,
-            sort:queryData.sort,
-            page:queryData.page
-        }
+            let data={
+                dataUrl:this.state.menuOptions[queryData.type?queryData.type:"Sites"].url,
+                linkUrl:linkUrl,
+                linkField:"name",
+                objKey:"Site",
+                linkParams:linkParams,
+                headers:SITE_FILTER_VALUES_KEY,
+                keyword: queryData.keyword,
+                filter: queryData.filter,
+                reset: queryData.reset,
+                sort:queryData.sort,
+                page:queryData.page
+            }
 
-        if (!data.sort&&this.state.defaultSort){
+            if (!data.sort&&this.state.defaultSort){
                 data.sort=this.state.defaultSort
-        }
+            }
 
-        this.setState({
-            queryData:data
-        })
+            this.setState({
+                queryData:data
+            })
 
             // console.log("final queryData,reset")
             // console.log(data)
 
-        this.setFilters(data,data.type)
+            this.setFilters(data,data.type)
 
         }catch (e){
             console.log(e)
@@ -284,49 +282,49 @@ class ProductsNew extends Component {
 
     downloadAll = (page=0,size=100,selectedKeys,type="csv") => {
 
-            if (page === 0)
-                this.setState({
-                    allDownloadItems: []
-                })
+        if (page === 0)
             this.setState({
-                downloadAllLoading: true,
-            });
+                allDownloadItems: []
+            })
+        this.setState({
+            downloadAllLoading: true,
+        });
 
 
-            let url = `${this.state.activeQueryUrl}&offset=${page}&size=${size}`;
+        let url = `${this.state.activeQueryUrl}&offset=${page}&size=${size}`;
 
-            axios.get(encodeURI(url)).then(
-                (response) => {
-                    let responseAll = response.data.data;
+        axios.get(encodeURI(url)).then(
+            (response) => {
+                let responseAll = response.data.data;
 
-                    if (responseAll.length === 0) {
-                        this.setState({
-                            downloadAllLoading: false,
-                        });
-
-                        if (type==="csv") {
-                            this.formatData(selectedKeys)
-                        }else{
-                            this.getSitesForProducts()
-                        }
-
-                    } else {
-
-                        let list = this.state.allDownloadItems.length > 0?this.state.allDownloadItems.concat(responseAll) : responseAll
-                        this.setState({
-                            allDownloadItems: list
-                        })
-                            this.downloadAll(page + size, 100, selectedKeys, type)
-
-                    }
-                },
-                (error) => {
-
+                if (responseAll.length === 0) {
                     this.setState({
                         downloadAllLoading: false,
                     });
+
+                    if (type==="csv") {
+                        this.formatData(selectedKeys)
+                    }else{
+                        this.getSitesForProducts()
+                    }
+
+                } else {
+
+                    let list = this.state.allDownloadItems.length > 0?this.state.allDownloadItems.concat(responseAll) : responseAll
+                    this.setState({
+                        allDownloadItems: list
+                    })
+                    this.downloadAll(page + size, 100, selectedKeys, type)
+
                 }
-            );
+            },
+            (error) => {
+
+                this.setState({
+                    downloadAllLoading: false,
+                });
+            }
+        );
         // }
 
     };
@@ -356,8 +354,8 @@ class ProductsNew extends Component {
             }else{
                 productList=this.state.allDownloadItems
             }
-        let csvDataNew = [];
-        productList.forEach(item => {
+            let csvDataNew = [];
+            productList.forEach(item => {
 
                 const {Product, event, service_agent} = item;
                 let itemTmp=[]
@@ -380,8 +378,8 @@ class ProductsNew extends Component {
                 csvDataNew.push(itemTmp)
 
 
-        })
-        this.exportToCSV(csvDataNew,selectedKeys,selected)
+            })
+            this.exportToCSV(csvDataNew,selectedKeys,selected)
 
         }catch (e){
             // console.log(e)
@@ -436,15 +434,15 @@ class ProductsNew extends Component {
 
     }
 
-    showProductEditPopUp=(key)=> {
+    showSiteEditPopUp=(key)=> {
 
         if (key)
-            axios.get(baseUrl + "product/" + key+"/expand")
+            axios.get(baseUrl + "site/code/" + key+"/expand")
                 .then(
                     (response) => {
 
                         this.setState({
-                            showProductEdit: !this.state.showProductEdit,
+                            showSiteEdit: !this.state.showSiteEdit,
                             editItemSelected: response.data.data,
                         });
 
@@ -457,7 +455,7 @@ class ProductsNew extends Component {
 
         else{
             this.setState({
-                showProductEdit: !this.state.showProductEdit,
+                showSiteEdit: !this.state.showSiteEdit,
                 editItemSelected: null,
             });
         }
@@ -564,7 +562,7 @@ class ProductsNew extends Component {
         }
     }
 
-     cancelToken
+    cancelToken
 
     loadProductsWithoutParentPageWise = async (data,filters) => {
 
@@ -572,15 +570,15 @@ class ProductsNew extends Component {
         // console.log(data)
         // console.log(filters)
         try {
-        if (data && data.reset){
-         // await   this.clearList();
-            this.setState({
+            if (data && data.reset){
+                // await   this.clearList();
+                this.setState({
                     offset: 0,
                     items: [],
                     lastPageReached: false,
                     loadingResults: false,
                 });
-        }
+            }
 
             //Check if there are any previous pending requests
             if (typeof this.cancelToken != typeof undefined) {
@@ -588,36 +586,36 @@ class ProductsNew extends Component {
             }
 
 
-        this.seekCount(data,filters);
+            this.seekCount(data,filters);
 
-        this.setState({
-            loadingResults: true,
-        });
+            this.setState({
+                loadingResults: true,
+            });
 
-        let newOffset = data.page*this.state.pageSize;
-        let url = `${baseUrl}seek?${data.dataUrl}`;
+            let newOffset = data.page*this.state.pageSize;
+            let url = `${baseUrl}seek?${data.dataUrl}`;
 
-        filters.forEach((item) => {
-            url = url + `&or=${item.key}~%${item.value}%`;
-        });
+            filters.forEach((item) => {
+                url = url + `&or=${item.key}~%${item.value}%`;
+            });
 
-        this.setState({
-            activeQueryUrl:url
-        })
+            this.setState({
+                activeQueryUrl:url
+            })
 
-        url = `${url}&count=false&offset=${newOffset?newOffset:0}&size=${this.state.pageSize}`;
+            url = `${url}&count=false&offset=${newOffset?newOffset:0}&size=${this.state.pageSize}`;
 
-        if (data.sort){
-            url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
-        }
+            if (data.sort){
+                url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
+            }
 
 
             this.cancelToken = axios.CancelToken.source()
 
 
-         let result=  await axios
+            let result=  await axios
                 .get(encodeURI(url),
-            { cancelToken: this.cancelToken.token }
+                    { cancelToken: this.cancelToken.token }
                 )
                 .catch((error) => {
 
@@ -627,37 +625,37 @@ class ProductsNew extends Component {
 
             // let result = await seekAxiosGet(url,null,this.controller);
 
-        if (result && result.data && result.data.data) {
-
-            this.setState({
-                // items: this.state.items.concat(result.data ? result.data.data : []),
-                items: result.data ? result.data.data : [],
-                loadingResults: false,
-                lastPageReached: result.data
-                    ? result.data.data.length === 0
-                        ? true
-                        : false
-                    : true,
-                offset: newOffset,
-            });
-        } else {
-            if (result) {
-                this.props.showSnackbar({
-                    show: true,
-                    severity: "warning",
-                    message: "Error: " + result,
-                });
+            if (result && result.data && result.data.data) {
 
                 this.setState({
+                    // items: this.state.items.concat(result.data ? result.data.data : []),
+                    items: result.data ? result.data.data : [],
                     loadingResults: false,
-                    lastPageReached: true,
+                    lastPageReached: result.data
+                        ? result.data.data.length === 0
+                            ? true
+                            : false
+                        : true,
+                    offset: newOffset,
                 });
-            }
-        }
+            } else {
+                if (result) {
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "warning",
+                        message: "Error: " + result,
+                    });
 
-}catch (e){
-    console.log(e)
-}
+                    this.setState({
+                        loadingResults: false,
+                        lastPageReached: true,
+                    });
+                }
+            }
+
+        }catch (e){
+            console.log(e)
+        }
     };
 
     detectChange = () => {
@@ -685,12 +683,26 @@ class ProductsNew extends Component {
     };
 
 
+    editSite=(refresh,siteItem) =>{
+
+
+        if (refresh){
+
+            this.loadSitesWithoutParentPageWise({reset:true})
+        }
+
+        this.setState({
+            editSiteItem:siteItem,
+            showCreateSite: !this.state.showCreateSite,
+        });
+    }
+
 
     componentDidMount() {
         // this.detectChange()
 
 
-      // this.setQueryData(this.state.selectionMode)
+        // this.setQueryData(this.state.selectionMode)
 
 
     }
@@ -700,9 +712,9 @@ class ProductsNew extends Component {
         // console.log(returnedItem)
 
         let filteredProduct = this.state.selectedProducts.filter(
-                    (product) => product.Product._key !== returnedItem.Product._key
-                );
-                this.setState({ selectedProducts: [...filteredProduct, returnedItem] });
+            (product) => product.Product._key !== returnedItem.Product._key
+        );
+        this.setState({ selectedProducts: [...filteredProduct, returnedItem] });
 
 
         // axios.get(baseUrl + "product/" + returnedItem._key + "/expand").then(
@@ -824,7 +836,7 @@ class ProductsNew extends Component {
         try {
             let mapData=[]
             if (!this.state.selectAll){
-                 mapData=this.mapProductToSite(this.state.selectedRows)
+                mapData=this.mapProductToSite(this.state.selectedRows)
             }else{
                 mapData=this.mapProductToSite(this.state.allDownloadItems)
             }
@@ -858,12 +870,12 @@ class ProductsNew extends Component {
                 data.find(item=>item.site._key===site._key).products.push(productTmp)
             }
             else{
-             data.push({
-                 site:site,
-                 products:[productTmp]
-             })
+                data.push({
+                    site:site,
+                    products:[productTmp]
+                })
             }
-    })
+        })
 
 
 
@@ -952,7 +964,7 @@ class ProductsNew extends Component {
             const keyword=new URLSearchParams(params).get("keyword");
 
             if (type===undefined||type==="undefined"){
-                type="Products"
+                type="Sites"
             }
 
             let iniValues={
@@ -980,7 +992,7 @@ class ProductsNew extends Component {
         }else{
 
             this.setQueryData({
-                type:"Products",reset:true
+                type:"Sites",reset:true
             })
 
         }
@@ -1038,9 +1050,9 @@ class ProductsNew extends Component {
 
 
                                         <BlueSmallBtn
-                                        title={"CSV"}
+                                            title={"CSV"}
 
-                                        onClick={()=>this.fieldSelection()}
+                                            onClick={()=>this.fieldSelection()}
 
                                         >
                                             <DownloadIcon style={{ fontSize: "20px" }} />
@@ -1095,19 +1107,17 @@ class ProductsNew extends Component {
                         />
 
                         <ErrorBoundary>
-                        <PaginationGrid
-                            count={this.state.count}
-                            resetSelection={this.state.resetSelection}
-                            items={this.state.items}
-                            pageSize={this.state.pageSize}
-                            offset={this.state.offset}
-                            visibleCount={this.state.items.length}
-                            loading={this.state.loadingResults}
-                            lastPageReached={this.state.lastPageReached}
-                            currentPage={this.state.queryData.page?this.state.queryData.page:0}
-                            loadMore={(data) =>{
-
-
+                            <PaginationGrid
+                                count={this.state.count}
+                                resetSelection={this.state.resetSelection}
+                                items={this.state.items}
+                                pageSize={this.state.pageSize}
+                                offset={this.state.offset}
+                                visibleCount={this.state.items.length}
+                                loading={this.state.loadingResults}
+                                lastPageReached={this.state.lastPageReached}
+                                currentPage={this.state.queryData.page?this.state.queryData.page:0}
+                                loadMore={(data) =>{
 
                                     this.setQueryData({
                                         type: this.state.selectionMode,
@@ -1117,108 +1127,108 @@ class ProductsNew extends Component {
                                         page:data.newPage,
                                         reset:data.reset
                                     })
-                            }}
-                            actions={this.state.selectionMode&&this.state.menuOptions[this.state.selectionMode].actions?
-                                this.state.menuOptions[this.state.selectionMode].actions:["edit","view"]}
-                            checkboxSelection={(this.state.selectionMode!=="Issues")&&!this.state.selectAll}
-                            setMultipleSelectFlag={this.setMultipleSelectFlag}
-                            actionCallback={this.actionCallback}
-                            data={this.state.queryData}
-                            initialFilter={this.state.initialFilter}
-                        >
-                            <div className="row  d-flex align-items-center">
-                                {this.state.selectedRows.length===0&&!this.state.selectAll? <>
-                                <div className="col-md-2 btn-rows">
-                                    <MenuDropdown
-                                        initialValue={this.state.initialFilter.type?this.state.initialFilter.type:null}
-                                        setSelection={this.setSelection}
-                                        options={["Products","Service","Records","Track","Issues","Archive"]}
-                                    />
-                                </div>
-                                <div className="col-md-10 col-12 d-flex " style={{flexFlow:"wrap"}}>
+                                }}
+                                actions={this.state.selectionMode&&this.state.menuOptions[this.state.selectionMode].actions?
+                                    this.state.menuOptions[this.state.selectionMode].actions:["edit","view"]}
+                                checkboxSelection={!this.state.selectAll}
+                                setMultipleSelectFlag={this.setMultipleSelectFlag}
+                                actionCallback={this.actionCallback}
+                                data={this.state.queryData}
+                                initialFilter={this.state.initialFilter}
+                            >
+                                <div className="row  d-flex align-items-center">
+                                    {this.state.selectedRows.length===0&&!this.state.selectAll? <>
+                                            <div className="col-md-2 btn-rows">
+                                                <MenuDropdown
+                                                    initialValue={this.state.initialFilter.type?this.state.initialFilter.type:null}
+                                                    setSelection={this.setSelection}
+                                                    options={Object.keys(this.state.menuOptions)}
+                                                />
+                                            </div>
+                                            <div className="col-md-10 col-12 d-flex " style={{flexFlow:"wrap"}}>
 
-                                    {this.state.selectionMode!=="Issues"&&
-                                        <>
-                                        <div className="me-2">
-                                    <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
+                                                {this.state.selectionMode!=="Issues"&&
+                                                    <>
+                                                        <div className="me-2">
+                                                            <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
 
-                                        <BlueSmallBtn
-                                            classAdd="mb-1"
-                                            title={"Download Open Cyclecodes"}
-                                            onClick={() => this.toggleDownloadQrCodes()}
-                                        >
+                                                                <BlueSmallBtn
+                                                                    classAdd="mb-1"
+                                                                    title={"Download Open Cyclecodes"}
+                                                                    onClick={() => this.toggleDownloadQrCodes()}
+                                                                >
 
-                                        </BlueSmallBtn>
-                                    </CustomPopover>
-                                    </div>
-                                    {/*<div className="me-2">*/}
-                                    {/*    <CustomPopover text={"Export all products to csv."}>*/}
-                                    {/*        <BlueSmallBtn*/}
-                                    {/*            classAdd="mb-1"*/}
-                                    {/*            title={"Export To CSV"}*/}
-                                    {/*            // disabled={this.state.downloadAllLoading}*/}
-                                    {/*            // progressLoading={this.state.downloadAllLoading}*/}
-                                    {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
-                                    {/*            // onClick={()=>this.downloadAll(0,100)}*/}
-                                    {/*            onClick={this.fieldSelection}*/}
-                                    {/*        >*/}
+                                                                </BlueSmallBtn>
+                                                            </CustomPopover>
+                                                        </div>
+                                                        {/*<div className="me-2">*/}
+                                                        {/*    <CustomPopover text={"Export all products to csv."}>*/}
+                                                        {/*        <BlueSmallBtn*/}
+                                                        {/*            classAdd="mb-1"*/}
+                                                        {/*            title={"Export To CSV"}*/}
+                                                        {/*            // disabled={this.state.downloadAllLoading}*/}
+                                                        {/*            // progressLoading={this.state.downloadAllLoading}*/}
+                                                        {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
+                                                        {/*            // onClick={()=>this.downloadAll(0,100)}*/}
+                                                        {/*            onClick={this.fieldSelection}*/}
+                                                        {/*        >*/}
 
-                                    {/*        </BlueSmallBtn>*/}
-                                    {/*    </CustomPopover>*/}
-                                    {/*</div>*/}
-                                    <div className="me-2">
-                                        <CustomPopover text={"Add Product Lines"}>
-                                            <BlueSmallBtn
-                                                classAdd="mb-1"
-                                                onClick={this.addProductLine}>
-                                                Product Lines
-                                            </BlueSmallBtn>
-                                        </CustomPopover>
-                                    </div>
-                                </>}
-                                </div>
-                                      </>:
+                                                        {/*        </BlueSmallBtn>*/}
+                                                        {/*    </CustomPopover>*/}
+                                                        {/*</div>*/}
+                                                        <div className="me-2">
+                                                            <CustomPopover text={"Add Product Lines"}>
+                                                                <BlueSmallBtn
+                                                                    classAdd="mb-1"
+                                                                    onClick={this.addProductLine}>
+                                                                    Product Lines
+                                                                </BlueSmallBtn>
+                                                            </CustomPopover>
+                                                        </div>
+                                                    </>}
+                                            </div>
+                                        </>:
 
-                                    <div className="col-md-12 d-flex ">
-                                        {this.state.selectAll?
-                                            <>{this.state.count} selected
-                                                <span onClick={()=>this.selectAll()} className="ms-1 click-item text-bold text-underline">Clear Selection</span>
+                                        <div className="col-md-12 d-flex ">
+                                            {this.state.selectAll?
+                                                <>{this.state.count} selected
+                                                    <span onClick={()=>this.selectAll()} className="ms-1 click-item text-bold text-underline">Clear Selection</span>
                                                 </>:<></>}
-                                        {!this.state.selectAll &&
+                                            {!this.state.selectAll &&
+                                                <BlueSmallBtn
+                                                    classAdd={'ms-2  '}
+                                                    title={`${!this.state.selectAll?"Select All ("+this.state.count+")":"Unselect All ("+this.state.count+")"}`}
+                                                    onClick={()=>this.selectAll()}
+                                                >
+                                                </BlueSmallBtn>}
+
+
                                             <BlueSmallBtn
-                                            classAdd={'ms-2  '}
-                                            title={`${!this.state.selectAll?"Select All ("+this.state.count+")":"Unselect All ("+this.state.count+")"}`}
-                                            onClick={()=>this.selectAll()}
-                                        >
-                                        </BlueSmallBtn>}
-
-
-                                         <BlueSmallBtn
-                                            classAdd={'ms-2 align-items-center d-flex'}
-                                            onClick={()=>
-                                            {if ( this.state.selectAll){
+                                                classAdd={'ms-2 align-items-center d-flex'}
+                                                onClick={()=>
+                                                {if ( this.state.selectAll){
                                                     this.downloadAll(0,100,[],"location")
                                                 }else{
                                                     this.getSitesForProducts()}
-                                            }}
-                                            title={this.state.downloadAllLoading?"Loading.. ":" Locations"}
-                                        >
-                                             {!this.state.downloadAllLoading? <MapIcon style={{fontSize:"20px"}} />:<><CircularProgressWithLabel textSize={10} size={24} value={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0} /></>}
-                                        </BlueSmallBtn>
+                                                }}
+                                                title={this.state.downloadAllLoading?"Loading.. ":" Locations"}
+                                            >
+                                                {!this.state.downloadAllLoading? <MapIcon style={{fontSize:"20px"}} />:<><CircularProgressWithLabel textSize={10} size={24} value={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0} /></>}
+                                            </BlueSmallBtn>
 
-                                    <BlueSmallBtn
-                                        classAdd={'ms-2'}
-                                    title={"Export To CSV"}
-                                    onClick={()=>this.fieldSelection()}>
-                                    <DownloadIcon style={{ fontSize: "20px" }} />
-                                    </BlueSmallBtn>
+                                            <BlueSmallBtn
+                                                classAdd={'ms-2'}
+                                                title={"Export To CSV"}
+                                                onClick={()=>this.fieldSelection()}>
+                                                <DownloadIcon style={{ fontSize: "20px" }} />
+                                            </BlueSmallBtn>
 
-                                    </div>
-                                }
+                                        </div>
+                                    }
 
-                            </div>
+                                </div>
 
-                        </PaginationGrid>
+                            </PaginationGrid>
                         </ErrorBoundary>
 
                     </div>
@@ -1250,28 +1260,28 @@ class ProductsNew extends Component {
                             <>
                                 <div className="col-12 ">
                                     <form id={"product-field-form"} onSubmit={this.handleSubmit}>
-                                    <div className="row  mt-2">
-                                        {PRODUCTS_FIELD_SELECTION.map((item)=>
-                                            <div className="col-md-3 col-sm-6  justify-content-start align-items-center">
-                                                <CheckboxWrapper
-                                                    id={`${item.key}`}
-                                                    // details="When listed, product will appear in the marketplace searches"
-                                                    initialValue={item.checked}
-                                                    // onChange={(checked)=>this.checkListable(checked)}
-                                                    color="primary"
-                                                    name={`${item.key}`}
-                                                    title={`${item.value}`} />
-                                            </div>
-                                        )}
-                                    </div>
+                                        <div className="row  mt-2">
+                                            {PRODUCTS_FIELD_SELECTION.map((item)=>
+                                                <div className="col-md-3 col-sm-6  justify-content-start align-items-center">
+                                                    <CheckboxWrapper
+                                                        id={`${item.key}`}
+                                                        // details="When listed, product will appear in the marketplace searches"
+                                                        initialValue={item.checked}
+                                                        // onChange={(checked)=>this.checkListable(checked)}
+                                                        color="primary"
+                                                        name={`${item.key}`}
+                                                        title={`${item.value}`} />
+                                                </div>
+                                            )}
+                                        </div>
                                         <div className="row  mt-2">
                                             <div className="col-12 d-flex justify-content-center">
                                                 {!this.state.downloadAllLoading?
-                                                <BlueSmallBtn
-                                                type={"submit"}
-                                                title={this.state.downloadAllLoading?"":" Download"}
-                                                disabled={this.state.downloadAllLoading}>
-                                                </BlueSmallBtn>:<CircularProgressWithLabel value={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0} />}
+                                                    <BlueSmallBtn
+                                                        type={"submit"}
+                                                        title={this.state.downloadAllLoading?"":" Download"}
+                                                        disabled={this.state.downloadAllLoading}>
+                                                    </BlueSmallBtn>:<CircularProgressWithLabel value={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0} />}
                                             </div>
                                         </div>
                                     </form>
@@ -1298,11 +1308,11 @@ class ProductsNew extends Component {
 
                         <div className={"row justify-content-center"}>
                             {this.state.mapData.length>0 &&
-                            <ProductsGoogleMap
-                                mapData={this.state.mapData}
-                                width="700px"
-                                height="400px"
-                            />}
+                                <ProductsGoogleMap
+                                    mapData={this.state.mapData}
+                                    width="700px"
+                                    height="400px"
+                                />}
                         </div>
                     </ModalBody>
                 </Modal>
@@ -1411,28 +1421,26 @@ class ProductsNew extends Component {
                     </div>
 
                 </GlobalDialog>
-
-
                 <GlobalDialog
                     size="md"
-                    heading={"Add Product"}
-                    hideHeading
-                    show={this.state.showProductEdit}
+                    heading={this.state.editItemSelected?"Edit Site":"Add site"}
+                    show={this.state.showSiteEdit}
                     hide={()=> {
-                        this.showProductEditPopUp();
+                        this.showSiteEditPopUp();
                     }} >
 
                     <div className="form-col-left col-12">
-                        {this.state.showProductEdit &&
-                            <ProductForm
-                                hideUpload edit
+                        {this.state.showSiteEdit &&
+                             <div className="col-12 ">
 
-                                         triggerCallback={(action) => this.showProductEditPopUp()}
+                                    <SiteFormNew
 
-                                         heading={"Edit Product"}
-                                         item={this.state.editItemSelected}
-                            />
-                        }
+                                        edit={this.state.editItemSelected?true:null}
+                                        hide={()=>this.toggleSite(true,null)}
+                                        item={this.state.editItemSelected.site}
+                                        refresh={()=>this.toggleSite(true)} />
+                                </div>}
+
                     </div>
 
                 </GlobalDialog>
@@ -1483,4 +1491,4 @@ const mapDispatchToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ProductsNew);
+export default connect(mapStateToProps, mapDispatchToProps)(SitesNew);

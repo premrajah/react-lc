@@ -147,8 +147,8 @@ const NotificationTwoItemGroup = ({ items }) => {
                             </div>
                             <div className="col-2">
                                 <div className="d-flex justify-content-end align-items-center h-100 pe-3" >
-                                    <NotificationsTwoReadAndTracking item={itemGroup[0]} />
                                     <div className="me-2"><small className="text-gray-light">{moment(itemGroup[0].Message._ts_epoch_ms).fromNow()}</small></div>
+                                    <NotificationsTwoReadAndTracking item={itemGroup[0]} />
                                 </div>
                             </div>
                         </div>

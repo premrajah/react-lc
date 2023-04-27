@@ -4,32 +4,20 @@ import axios from "axios";
 import { baseUrl, ENTITY_TYPES } from "../../Util/Constants";
 import trackIcon from "../../img/track.png";
 import unTrackIcon from "../../img/un_track.png";
-import { Icon, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 import CustomPopover from "../FormsUI/CustomPopover";
 
-function NotificationsTwoReadAndTracking({ item, userDetail }) {
-    // console.log('item ', item);
+function NotificationsTwoReadAndTracking({ item }) {
+    const { _key, entity_type, entity_key } = item?.Message;
 
-    const [read, setRead] = useState(null);
+    const [isRead, setIsRead] = useState(null);
     const [isOwned, setIsOwned] = useState(null);
     const [isTracked, setIsTracked] = useState(null);
     const [isProduct, setIsProduct] = useState(null);
 
     useEffect(() => {
-        item && getMessage(item.Message._key);
-        // console.log("-> ",userDetail.orgId)
-        //     const {orgId} = userDetail;
-        //     item.MessageToOrg.map((org, index) => {
-        //         if(org.id === orgId) {
-        //             // console.log("o ", org)
-        //             org.entries.map((entry, index) => {
-        //                 // console.log("e ", entry)
-        //                 if(entry.MessageToOrg._to === orgId) {
-        //                     console.log('rf ', entry.MessageToOrg?.read_flag?.flag);
-        //                 }
-        //             })
-        //         }
-        //     })
+        item && getMessage(_key);
     }, []);
 
     const getMessage = async (key) => {
@@ -38,18 +26,21 @@ function NotificationsTwoReadAndTracking({ item, userDetail }) {
 
             const data = result.data.data;
             const { is_tracked, is_owned } = data.options;
-            const { entity_type } = data?.message?.entity_type;
 
             if (result) {
-                // console.log(result.data.data);
-                // console.log(result.data.data.options);
-                console.log("item ", item);
-                console.log("P ", isProduct, "T ", is_tracked, "O ", is_owned);
-                if (item.Message.entity_type === ENTITY_TYPES.PRODUCT) {
+                if (entity_type === ENTITY_TYPES.PRODUCT) {
                     setIsProduct(true);
                     setIsTracked(is_tracked);
                     setIsOwned(is_owned);
                 }
+
+                data.orgs.map((org, index) => {
+                    if (org.actor === "message_to") {
+                        if (org.read_flag?.flag) {
+                            setIsRead(org.read_flag.flag);
+                        }
+                    }
+                });
             }
         } catch (e) {
             console.log("get message error ", e);
@@ -88,19 +79,65 @@ function NotificationsTwoReadAndTracking({ item, userDetail }) {
             });
     };
 
+    const markMessageRead = (key) => {
+        if (!key) return;
+
+        const payload = {
+            msg_id: key,
+        };
+
+        axios
+            .post(`${baseUrl}message/read`, payload)
+            .then(
+                (res) => {
+                    if (res.status === 200) {
+                        //     TODO Notification to user
+                    }
+                },
+                (error) => {
+                    console.log("mark read internal error ", error);
+                }
+            )
+            .catch((error) => {
+                console.log("mark read external error ", error);
+            });
+    };
+
     return (
-        <div className="me-2">
-            {isProduct && isOwned ? <>
-                {isTracked ? (
-                    <IconButton onClick={() => console.log("untrack")}>
-                        <img src={unTrackIcon} alt="ut" height={20} width={20} />
-                    </IconButton>
+        <div className="me-2 d-flex justify-content-center align-items-center">
+            <div style={{ width: "36px" }}>
+                {isProduct && isOwned ? (
+                    <>
+                        {isTracked ? (
+                            <CustomPopover text="Un-Track">
+                                <IconButton onClick={() => unTrackProduct(entity_key)}>
+                                    <img src={unTrackIcon} alt="ut" height={20} width={20} />
+                                </IconButton>
+                            </CustomPopover>
+                        ) : (
+                            <CustomPopover text="Track">
+                                <IconButton onClick={() => trackProduct(entity_key)}>
+                                    <img src={trackIcon} alt="t" height={20} width={20} />
+                                </IconButton>
+                            </CustomPopover>
+                        )}
+                    </>
                 ) : (
-                    <IconButton onClick={() => console.log("track")}>
-                        <img src={trackIcon} alt="t" height={20} width={20} />
-                    </IconButton>
+                    <div style={{ width: "36px" }} />
                 )}
-            </>: <div style={{width: "36px"}} />}
+            </div>
+
+            <div style={{ width: "36px" }}>
+                {!isRead ? (
+                    <CustomPopover text="Mark as read">
+                        <IconButton onClick={() => markMessageRead(_key)}>
+                            <CheckIcon size="small" sx={{ color: "var(--lc-green)" }} />
+                        </IconButton>
+                    </CustomPopover>
+                ) : (
+                    <div style={{ width: "36px" }} />
+                )}
+            </div>
         </div>
     );
 }

@@ -27,7 +27,7 @@ import {Avatar} from "@mui/material";
 import placeholderImg from "../../img/place-holder-lc.png";
 import PlaceholderImg from "../../img/place-holder-lc.png";
 
-const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,resetSelection,
+const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,resetSelection,entityType,
                                linkField,dataKey,loading,loadMore,checkboxSelection,
                                setMultipleSelectFlag,actionCallback, items,element,children, ...otherProps}) =>{
 
@@ -99,9 +99,6 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
     useEffect(() => {
 
         if (data&&(JSON.stringify(data)!==JSON.stringify(currentData))) {
-            console.log("use effect data")
-
-            console.log(data)
 
             setPaginationModel({
                 pageSize: pageSize,
@@ -111,11 +108,13 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
             setPage(data.page)
             setCurrentData(data)
             let headersTmp = []
-            let fields = {}
+            let visibleFields = {}
             data.headers.forEach((item) => {
 
-                if (!item.visible)
-                    fields[item.field] = item.visible
+                if (!item.visible){
+                    visibleFields[item.field] = item.visible
+                }
+
 
                 headersTmp.push({
                     field: item.subField ? item.subField : item.field,
@@ -133,35 +132,28 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                     // maxWidth:"unset",
                     renderCell: (params) => (
                         <>
+
                             {params.field == "_ts_epoch_ms" ? <span>
                             {getTimeFormat(params.value)}
-                    </span> :
-
-                                params.field === data.linkField ? <span className="text-blue">
-                                     <Link
-                                         to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>
-                                     <span className="d-flex align-items-center flex-row"> <GetProductImageThumbnail productKey={params.row.id} />    {params.value}</span>
-                                     </Link>
-                    </span> :
-                                    params.field === "year_of_making" ? <span>
-                            {(params.value === 0 ? "" : params.value)}
-                    </span> :
-
-                                        params.field === "category" ? <GetCatBox item={params.row}/> :
-                                            params.field === "site" ?
-                                                <span><ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>
-                                                     <Link
-                                                         to={`/ps/${params.row.siteId}?${data.linkParams}`}>{params.value}</Link>
-
-                                            </span>:
-                                            params.value}
+                    </span> : params.field === data.linkField ? <span className="text-blue">
+                     <Link to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>
+                                     <><span className="text-capitalize d-flex align-items-center flex-row">
+                                         {entityType==="Product"&&<GetProductImageThumbnail productKey={params.row.id} />}
+                                         {entityType==="Site"&&<GetSiteImageThumbnail geo_codes={params.row.geo_codes} />}
+                                         {params.value}{params.row.is_head_office&&<span className="text-pink ms-2 text-12 text-bold">(Head Office)</span>}</span></>
+                    </Link>
+                    </span> : params.field === "year_of_making" ? <span>{(params.value === 0 ? "" : params.value)}</span> :
+                                    params.field === "category" ? <GetCatBox item={params.row}/>:params.field === "site" ?
+                                    <span><ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>
+                                    <Link to={`/ps/${params.row.siteId}?${data.linkParams}`}>{params.value}</Link>
+                                    </span>: params.value}
                         </>
                     ),
 
                 })
 
             })
-            setVisibleFields(fields)
+            setVisibleFields(visibleFields)
 
             if (actions && actions.length > 0) {
 
@@ -322,7 +314,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                        try {
                            const selectedIDs = new Set(ids);
                            const selectedRows = items.filter((row) =>
-                               selectedIDs.has(row.Product._key)
+                               selectedIDs.has(row[entityType]["_key"])
                        );
                            setSelectedRows(selectedRows);
                        }catch (e){
@@ -488,15 +480,29 @@ const GetProductImageThumbnail=({productKey})=>{
 
 const GetSiteImageThumbnail=(props)=>{
 
-
-
     return(
         <>
-            {props.item.geo_codes && props.item.geo_codes[0] ?
-                <img className={`${props.smallItem?"small-image":""} img-fluid img-list rad-4`} src={`${googleApisBaseURL}staticmap?center=${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
-                            &markers=color:0x212529%7Clabel:C%7C${props.item.geo_codes[0].address_info.geometry.location.lat},${props.item.geo_codes[0].address_info.geometry.location.lng}
-                            &zoom=12&size=${props.smallItem?"110x110":"185x185"}&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`} alt="" />
-                :<img className={ `${props.smallItem?"small-image":""}  img-fluid img-list`} src={PlaceholderImg} alt="" />}
+            {props.geo_codes && props.geo_codes[0] ?
+
+                <div className={"me-1"}>
+                    <Avatar
+                        variant="rounded"
+                        sx={{ height: 30, width: 30 }}
+                        src={`${googleApisBaseURL}staticmap?center=${props.geo_codes[0].address_info.geometry.location.lat},${props.geo_codes[0].address_info.geometry.location.lng}
+                            &markers=color:0x212529%7Clabel:C%7C${props.geo_codes[0].address_info.geometry.location.lat},${props.geo_codes[0].address_info.geometry.location.lng}
+                            &zoom=12&size=${props.smallItem?"110x110":"185x185"}&scale=2&key=AIzaSyAFkR_za01EmlP4uvp4mhC4eDDte6rpTyM`}
+                    />
+                </div>
+
+                :
+                <div className={"me-1"}>
+                    <Avatar
+                        variant="rounded"
+                        sx={{ height: 30, width: 30 }}
+                        src={placeholderImg}
+                    />
+                </div>
+            }
 
         </>)
 

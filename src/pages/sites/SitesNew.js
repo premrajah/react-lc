@@ -6,10 +6,7 @@ import {Link} from "react-router-dom";
 import {withStyles} from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import {
-    baseUrl,
-    ISSUES_FILTER_VALUES_KEY,
-    PRODUCTS_FIELD_SELECTION,
-    PRODUCTS_FILTER_VALUES_KEY, SITE_FILTER_VALUES_KEY
+    baseUrl, SITE_FILTER_VALUES_KEY, SITES_FIELD_SELECTION
 } from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
 import {Modal, ModalBody} from "react-bootstrap";
@@ -22,7 +19,7 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
-import {getSite, removeEmptyValuesObj, seekAxiosGet} from "../../Util/GlobalFunctions";
+import {getSite, PreProcessCSVData, removeEmptyValuesObj, seekAxiosGet} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
@@ -76,8 +73,8 @@ class SitesNew extends Component {
             queryData:{},
             initialFilter:{},
             menuOptions:{
-                Sites:{url:"name=Site&no_parent=true"},
-                Records:{url:"name=Site&no_parent=true&relation=past_owner"},
+                Sites:{url:"name=Site&no_parent=true",actions:["edit","map"]},
+                Records:{url:"name=Site&no_parent=true&relation=past_owner",actions:["map"]},
 
             },
             defaultSort:{key: "_ts_epoch_ms",sort: "desc"},
@@ -168,8 +165,6 @@ class SitesNew extends Component {
             if (queryData.keyword){
                 linkParams=`${linkParams}&keyword=${queryData.keyword}`
             }
-            // }
-
 
             let data={
                 dataUrl:this.state.menuOptions[queryData.type?queryData.type:"Sites"].url,
@@ -221,7 +216,7 @@ class SitesNew extends Component {
                 if (activeFilter) {
                     subFilter.push({key: activeFilter, value: searchValue});
                 } else {
-                    PRODUCTS_FILTER_VALUES_KEY.forEach((item) =>
+                    SITE_FILTER_VALUES_KEY.forEach((item) =>
                         subFilter.push({key: item.field, value: searchValue})
                     );
                 }
@@ -230,7 +225,7 @@ class SitesNew extends Component {
             this.filters = subFilter;
 
             setTimeout(() => {
-                this.loadProductsWithoutParentPageWise(data, subFilter)
+                this.loadItemsPageWise(data, subFilter)
             }, 100)
 
         }catch (e){
@@ -357,20 +352,20 @@ class SitesNew extends Component {
             let csvDataNew = [];
             productList.forEach(item => {
 
-                const {Product, event, service_agent} = item;
+                const {Site, event, service_agent} = item;
                 let itemTmp=[]
                 for (const key of selectedKeys.keys()) {
                     let keys=key.toString().split(".")
                     if (keys&&keys.length>1){
 
-                        itemTmp.push(Product[keys[0]][keys[1]])
+                        itemTmp.push(PreProcessCSVData( Site[keys[0]][keys[1]]))
                     }else{
 
-                        if (key==="site"){
-                            itemTmp.push(getSite(item).name)
-                        }else{
-                            itemTmp.push(Product[key])
-                        }
+                        // if (key==="site"){
+                        //     itemTmp.push(getSite(item).name)
+                        // }else{
+                            itemTmp.push(PreProcessCSVData(Site[key]))
+                        // }
 
                     }
 
@@ -402,7 +397,7 @@ class SitesNew extends Component {
 
         let itemTmp=[]
         for (const key of selectedKeys.keys()) {
-            itemTmp.push(PRODUCTS_FIELD_SELECTION.
+            itemTmp.push(SITES_FIELD_SELECTION.
             find((itemTmp)=> itemTmp.key===key).value)
         }
 
@@ -436,29 +431,28 @@ class SitesNew extends Component {
 
     showSiteEditPopUp=(key)=> {
 
-        if (key)
+
+        if (key){
             axios.get(baseUrl + "site/code/" + key+"/expand")
                 .then(
                     (response) => {
 
                         this.setState({
-                            showSiteEdit: !this.state.showSiteEdit,
                             editItemSelected: response.data.data,
+                            showSiteEdit: !this.state.showSiteEdit
                         });
 
                     },
                     (error) => {
-
-
                     }
                 );
-
-        else{
+        }else{
             this.setState({
-                showSiteEdit: !this.state.showSiteEdit,
                 editItemSelected: null,
+                showSiteEdit: !this.state.showSiteEdit
             });
         }
+
 
     }
 
@@ -466,10 +460,12 @@ class SitesNew extends Component {
 
     showSiteViewPopUp=(key)=> {
 
+        console.log()
+
         if (key){
             this.setState({
                 showSiteView: !this.state.showSiteView,
-                viewSiteSelected: getSite(this.state.items.find(item=>item.Product._key==key)),
+                viewSiteSelected: this.state.items.find(item=>item.Site._key==key).Site?this.state.items.find(item=>item.Site._key==key).Site:null,
             });
         } else{
             this.setState({
@@ -547,7 +543,7 @@ class SitesNew extends Component {
                     let queryData=this.state.queryData
 
                     if (queryData.type===undefined||!queryData.type){
-                        queryData.type="Products"
+                        queryData.type="Sites"
                     }
 
                     this.setQueryData(queryData)
@@ -562,9 +558,13 @@ class SitesNew extends Component {
         }
     }
 
+
+
+
+
     cancelToken
 
-    loadProductsWithoutParentPageWise = async (data,filters) => {
+    loadItemsPageWise = async (data,filters) => {
 
         // console.log("data,selection,filters")
         // console.log(data)
@@ -791,12 +791,14 @@ class SitesNew extends Component {
         return csvData;
     };
 
+
+
     toggleMultiSite = () => {
-        this.setState({ showMultiUpload: !this.state.showMultiUpload });
 
-        this.props.setMultiplePopUp(true);
-    };
+        // this.setState({showMultiUpload: !this.state.showMultiUpload});
 
+        this.props.setMultiplePopUp({show:true,type:"isSite"})
+    }
     handleMultiUploadCallback = () => {
         this.props.dispatchLoadProductsWithoutParent();
     };
@@ -819,7 +821,7 @@ class SitesNew extends Component {
 
     setMultipleSelectFlag=(rows)=>{
 
-        // console.log("rows selected",rows)
+        console.log("rows selected",rows)
         this.setState({
             selectedRows: rows,
         });
@@ -836,9 +838,9 @@ class SitesNew extends Component {
         try {
             let mapData=[]
             if (!this.state.selectAll){
-                mapData=this.mapProductToSite(this.state.selectedRows)
+                mapData=this.formatSiteToMapData(this.state.selectedRows)
             }else{
-                mapData=this.mapProductToSite(this.state.allDownloadItems)
+                mapData=this.formatSiteToMapData(this.state.allDownloadItems)
             }
 
 
@@ -856,14 +858,14 @@ class SitesNew extends Component {
 
 
 
-    mapProductToSite=(selectedData)=>{
+    formatSiteToMapData=(selectedData)=>{
 
-        let products=selectedData
+        let sites=selectedData
         let data=[]
-        products.forEach(product=>{
+        sites.forEach(item=>{
 
-            let site=getSite(product)
-            let productTmp=product.Product
+            let site=item.Site
+            let productTmp=[]
 
             if (data.length>0&&data.find(item=>item.site._key===site._key)){
 
@@ -872,7 +874,7 @@ class SitesNew extends Component {
             else{
                 data.push({
                     site:site,
-                    products:[productTmp]
+                    products:[]
                 })
             }
         })
@@ -940,6 +942,7 @@ class SitesNew extends Component {
 
         const selectedKeys = new FormData(event.target);
 
+        console.log(selectedKeys)
         if (this.state.selectAll){
             this.downloadAll(0,100,selectedKeys,"csv")
         }else{
@@ -1108,6 +1111,7 @@ class SitesNew extends Component {
 
                         <ErrorBoundary>
                             <PaginationGrid
+                                entityType={"Site"}
                                 count={this.state.count}
                                 resetSelection={this.state.resetSelection}
                                 items={this.state.items}
@@ -1147,45 +1151,25 @@ class SitesNew extends Component {
                                             </div>
                                             <div className="col-md-10 col-12 d-flex " style={{flexFlow:"wrap"}}>
 
-                                                {this.state.selectionMode!=="Issues"&&
+
                                                     <>
+
                                                         <div className="me-2">
-                                                            <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
+                                                        <BlueSmallBtn onClick={()=> {
+                                                            this.showSiteEditPopUp()
+                                                        }}  title={"Add Site / Address"}>
 
-                                                                <BlueSmallBtn
-                                                                    classAdd="mb-1"
-                                                                    title={"Download Open Cyclecodes"}
-                                                                    onClick={() => this.toggleDownloadQrCodes()}
-                                                                >
-
-                                                                </BlueSmallBtn>
-                                                            </CustomPopover>
+                                                        </BlueSmallBtn>
                                                         </div>
-                                                        {/*<div className="me-2">*/}
-                                                        {/*    <CustomPopover text={"Export all products to csv."}>*/}
-                                                        {/*        <BlueSmallBtn*/}
-                                                        {/*            classAdd="mb-1"*/}
-                                                        {/*            title={"Export To CSV"}*/}
-                                                        {/*            // disabled={this.state.downloadAllLoading}*/}
-                                                        {/*            // progressLoading={this.state.downloadAllLoading}*/}
-                                                        {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
-                                                        {/*            // onClick={()=>this.downloadAll(0,100)}*/}
-                                                        {/*            onClick={this.fieldSelection}*/}
-                                                        {/*        >*/}
-
-                                                        {/*        </BlueSmallBtn>*/}
-                                                        {/*    </CustomPopover>*/}
-                                                        {/*</div>*/}
                                                         <div className="me-2">
-                                                            <CustomPopover text={"Add Product Lines"}>
-                                                                <BlueSmallBtn
-                                                                    classAdd="mb-1"
-                                                                    onClick={this.addProductLine}>
-                                                                    Product Lines
-                                                                </BlueSmallBtn>
-                                                            </CustomPopover>
+                                                        <BlueSmallBtn
+                                                            title={" Upload Multiple Sites (CSV)"}
+                                                            onClick={this.toggleMultiSite} className="btn-gray-border    me-2 click-item">
+
+                                                        </BlueSmallBtn>
                                                         </div>
-                                                    </>}
+
+                                                    </>
                                             </div>
                                         </>:
 
@@ -1254,14 +1238,14 @@ class SitesNew extends Component {
                     size={"md"}
                     hide={this.fieldSelection}
                     show={this.state.showFieldSelection}
-                    heading={"Download Products"}>
+                    heading={"Download Sites"}>
                     <>
                         {this.state.showFieldSelection && (
                             <>
                                 <div className="col-12 ">
                                     <form id={"product-field-form"} onSubmit={this.handleSubmit}>
                                         <div className="row  mt-2">
-                                            {PRODUCTS_FIELD_SELECTION.map((item)=>
+                                            {SITES_FIELD_SELECTION.map((item)=>
                                                 <div className="col-md-3 col-sm-6  justify-content-start align-items-center">
                                                     <CheckboxWrapper
                                                         id={`${item.key}`}
@@ -1407,7 +1391,7 @@ class SitesNew extends Component {
                     <div className="form-col-left col-12">
                         {this.state.showSiteView &&
                             <div className="col-12">
-                                {this.state.viewSiteSelected  && this.state.viewSiteSelected.geo_codes && this.state.viewSiteSelected.geo_codes.length>0&&
+                                {this.state.viewSiteSelected  && this.state.viewSiteSelected.geo_codes && this.state.viewSiteSelected.geo_codes.length>0?
                                     <GoogleMap searchLocation
                                                siteId={this.state.viewSiteSelected._key}
                                                width={"100%"} height={"300px"}
@@ -1415,7 +1399,9 @@ class SitesNew extends Component {
                                                    name: `${this.state.viewSiteSelected.name}`,
                                                    location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
                                                    isCenter: true
-                                               }}/>}
+                                               }}/>
+                                :<p className="text-center title-bold">Sorry, no linked geo codes found for this site.</p>
+                                }
                             </div>
                         }
                     </div>
@@ -1436,9 +1422,9 @@ class SitesNew extends Component {
                                     <SiteFormNew
 
                                         edit={this.state.editItemSelected?true:null}
-                                        hide={()=>this.toggleSite(true,null)}
-                                        item={this.state.editItemSelected.site}
-                                        refresh={()=>this.toggleSite(true)} />
+                                        hide={()=>this.showSiteEditPopUp()}
+                                        item={this.state.editItemSelected?this.state.editItemSelected.site:null}
+                                        refresh={()=>this.showSiteEditPopUp(null)} />
                                 </div>}
 
                     </div>

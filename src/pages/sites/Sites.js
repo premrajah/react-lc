@@ -389,8 +389,6 @@ class Sites extends Component {
                         {this.state.showCreateSite && <div className="col-12 ">
 
                             <SiteFormNew
-
-
                                 edit={this.state.editSiteItem?true:null}
                                 hide={()=>this.toggleSite(true,null)}
                                  item={this.state.editSiteItem}

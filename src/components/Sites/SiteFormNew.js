@@ -334,8 +334,8 @@ class SiteFormNew extends Component {
                     loading:false
                 })
 
-                if (this.props.refresh)
-                this.props.refresh(res.data.data)
+                this.props.refreshPageWithSavedState( {refresh:true,reset: true})
+
 
 
                 if (this.props.setSite)
@@ -434,6 +434,10 @@ class SiteFormNew extends Component {
                     }
 
                     this.props.showSnackbar({show: true, severity: "success", message: "Site updated successfully. Thanks"})
+
+                    this.props.refreshPageWithSavedState(
+                        {refresh:true,reset: false}
+                    )
 
                     if (this.props.hide)
                         this.props.hide()
@@ -552,17 +556,14 @@ class SiteFormNew extends Component {
 
 
         if(!this.props.link){
+
             this.setState({
                 addNew:true,
                 addExisting:false,
                 showMapSelection: this.props.edit?false:true,
                 showAddressField: this.props.edit?true:false,
-
             })
-
            this.loadInitialLocaiton()
-
-
         }
 
 
@@ -1111,7 +1112,7 @@ const mapDispachToProps = (dispatch) => {
         loadParentSites: (data) => dispatch(actionCreator.loadParentSites(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
 
-        refreshPage: (data) => dispatch(actionCreator.refreshPage(data)),
+        refreshPageWithSavedState: (data) => dispatch(actionCreator.refreshPageWithSavedState(data)),
 
 
 

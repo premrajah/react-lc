@@ -232,7 +232,7 @@ class ProductsNew extends Component {
             this.filters = subFilter;
 
             setTimeout(() => {
-                this.loadProductsWithoutParentPageWise(data, subFilter)
+                this.loadItemsPageWise(data, subFilter)
             }, 100)
 
         }catch (e){
@@ -566,7 +566,7 @@ class ProductsNew extends Component {
 
      cancelToken
 
-    loadProductsWithoutParentPageWise = async (data,filters) => {
+    loadItemsPageWise = async (data,filters) => {
 
         // console.log("data,selection,filters")
         // console.log(data)
@@ -1096,6 +1096,7 @@ class ProductsNew extends Component {
 
                         <ErrorBoundary>
                         <PaginationGrid
+                            entityType={"Product"}
                             count={this.state.count}
                             resetSelection={this.state.resetSelection}
                             items={this.state.items}
@@ -1106,9 +1107,6 @@ class ProductsNew extends Component {
                             lastPageReached={this.state.lastPageReached}
                             currentPage={this.state.queryData.page?this.state.queryData.page:0}
                             loadMore={(data) =>{
-
-
-
                                     this.setQueryData({
                                         type: this.state.selectionMode,
                                         filter:data.searchFilter,

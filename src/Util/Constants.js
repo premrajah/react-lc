@@ -145,14 +145,26 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
     {field:"sku",subField:"serial",label:"Serial No" ,visible:true,sortable:false,flex:0.75},
     {field:"site",label:"Site" ,visible:true,sortable:false, notFilterable:"true",flex:1.5},
     {field:"siteId",label:"Site Id" ,visible:false,sortable:false, notFilterable:"true",flex:1.5},
-    // {key:"category",label:"Category" ,visible:true,sortable:false,flex:2.5},
-    // {key:"type",label:"Type" ,visible:false,sortable:false},
-    // {key:"state",label:"State",visible:false,sortable:false},
     {field:"_ts_epoch_ms",label:"Added on",visible:true,sortable:true, sort: 'desc',sortingOrder:['desc', 'asc', null] ,notFilterable:"true"},
-    // {key:"year_of_making",label:"Manufactured",visible:false,sortable:false,flex:0.7},
-    // {key:"sku.model",label:"Model",visible:false,sortable:false},
-    // {key:"sku.serial",label:"Serial No.",visible:false,sortable:false},
    
+];
+
+export const SITE_FILTER_VALUES_KEY = [
+    {field:"id",label:"ID" , visible:false,sortable:false,notFilterable:"true"},
+    // {key:"_id",label:"ID" ,visible:true,sortable:true},
+    {field:"name",label:"Name" ,visible:true,sortable:true,flex:1.25},
+    {field:"address",label:"Address" ,visible:true,sortable:false,flex:2},
+    {field:"is_head_office",label:"Head Office" ,visible:false,sortable:false,notFilterable:"true"},
+    {field:"geo_codes",label:"Geo Codes" ,visible:false,sortable:false,notFilterable:"true"},
+
+
+    // {field:"description",label:"Description",visible:false ,sortable:false,notFilterable:"true"},
+    // {field:"condition",label:"Condition" ,visible:false,sortable:false,flex:0.5,notFilterable:"true"},
+    // {field:"sku",subField:"serial",label:"Serial No" ,visible:true,sortable:false,flex:0.75},
+    // {field:"site",label:"Site" ,visible:true,sortable:false, notFilterable:"true",flex:1.5},
+    // {field:"siteId",label:"Site Id" ,visible:false,sortable:false, notFilterable:"true",flex:1.5},
+    {field:"_ts_epoch_ms",label:"Added on",visible:true,sortable:true, sort: 'desc',sortingOrder:['desc', 'asc', null] ,notFilterable:"true"},
+
 ];
 
 export const ISSUES_FILTER_VALUES_KEY = [
@@ -170,6 +182,17 @@ export const ISSUES_FILTER_VALUES_KEY = [
     // {key:"year_of_making",label:"Manufactured",visible:false,sortable:false,flex:0.7},
     // {key:"sku.model",label:"Model",visible:false,sortable:false},
     // {key:"sku.serial",label:"Serial No.",visible:false,sortable:false},
+];
+
+
+export const SITES_FIELD_SELECTION = [
+    { key: "name", value: "Name", checked: true },
+    { key: "description", value: "Description", checked: true },
+    { key: "address", value: "Address", checked: true },
+    { key: "contact", value: "Contact", checked: true },
+    { key: "phone", value: "Phone" },
+    { key: "email", value: "Email" },
+    { key: "external_reference", value: "External Reference" },
 ];
 
 export const PRODUCTS_FIELD_SELECTION = [

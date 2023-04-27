@@ -12,6 +12,7 @@ import ItemDetail from "./pages/listings/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
 import ProductsNew from "./pages/my-products/ProductsNew";
 import Product from "./pages/product-detail/Product";
+import ProductView from "./pages/product-detail/Product";
 import ProductsService from "./pages/my-products/ProductsService";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
@@ -67,7 +68,6 @@ import SignUpPage from "./pages/sign-up/SignUpPage";
 import LoginPage from "./pages/login/LoginPage";
 import LoggedOutRoute from "./Util/LoggedOutRoute";
 import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
-import Sites from "./pages/sites/Sites";
 import Site from "./pages/site-detail/Site";
 import SiteForm from "./components/Sites/SiteForm";
 import CyclesRecords from "./pages/cycles/CyclesRecords";
@@ -92,8 +92,9 @@ import RentalReleaseRecords from "./pages/approvals/RentalReleaseRecords";
 import PromptLoginRoute from "./Util/PromptLoginRoute";
 import ProductsCondensedView from "./pages/my-products/ProductsCondensedView";
 import TestRoute from "./components/TestRoute";
-import ProductView from "./pages/product-detail/Product";
+import SitesNew from "./pages/sites/SitesNew";
 import VerifyEmail from "./pages/account/VerifyEmail";
+
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -162,7 +163,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/my-products" component={ProductsNew} />
                         <LoggedInRoute exact path="/my-products/:id" component={ProductsNew} />
                         <LoggedInRoute exact path="/my-products-condensed" component={ProductsCondensedView} />
-                        <LoggedInRoute exact path="/sites" component={Sites} />
+                        {/*<LoggedInRoute exact path="/sites" component={Sites} />*/}
+                        <LoggedInRoute exact path="/sites" component={SitesNew} />
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/approved" component={ApprovedReleases} />

@@ -354,3 +354,21 @@ export const getMimeTypeAndIcon=(mime,classes,style)=>{
     }
 
 }
+
+// REGEX for notifications
+export const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
+export const ORG_REGEX = /(Org\/[\w\d\-\.@]+)/g;
+export const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
+export const CYCLE_REGEX = /Cycle\/([\w\d]+)/g;
+export const MATCH_REGEX = /Match\/([\w\d]+)/g;
+export const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
+export const PRODUCT_REGISTRATION = /ProductRegistration\/([\w\d]+)/g;
+export const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
+export const SITE_RELEASE_REGEX = /Site\/([\w\d]+)/g;
+export const EVENTS_STATUS_REGEX = /Event\/([\w\d]+)/g;
+export const BRACKETS_REGEX = /[(\[)(\])]/g;
+export const A_TAG_REGEX = /\<a(.*)\<\/a\>"/g;
+export const LISTING_REGEX = /Listing\/([\w\d]+)/g;
+export const SEARCH_REGEX = /Search\/([\w\d]+)/g;
+export const ISSUE_REGEX = /Issue\/([\w\d]+)/g;
+

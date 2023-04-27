@@ -414,7 +414,7 @@ class SitesNew extends Component {
         data += tableDataNew.join("\n");
         const a = document.createElement("a");
         a.href = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
-        a.setAttribute("download", `product_list_${new Date().getDate()}.csv`);
+        a.setAttribute("download", `site_list_${new Date().getDate()}.csv`);
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

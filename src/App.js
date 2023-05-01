@@ -104,9 +104,6 @@ ReactGA.pageview(window.location.pathname + window.location.search );
 const theme = createTheme({
     palette: {
 
-
-
-
         primary: {
             // light: will be calculated from palette.primary.main,
             main: '#27245C',

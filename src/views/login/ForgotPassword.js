@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import axios from "axios/index";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
 import GreenBorderButton from "../../components/FormsUI/Buttons/GreenBorderButton";
+import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -151,10 +152,11 @@ class ForgotPassword extends Component {
                     <div className="row justify-content-center ">
                         <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
                     <div className="row no-gutters">
-                        <div className="col-12">
+                        <div className="col-12 position-relative mt-2">
                             <h4 className={"blue-text text-heading "}>
                                 Forgot your password?
                             </h4>
+                            <div className="top-right  me-3 "><CloseButtonPopUp onClick={this.props.hideLoginPopUp}/></div>
                         </div>
                     </div>
 

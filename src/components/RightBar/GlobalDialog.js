@@ -30,7 +30,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
             <Dialog
-
                 open={props.show}
                 TransitionComponent={Transition}
                 keepMounted
@@ -38,9 +37,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                 onClose={handleClose}
                 fullWidth={true}
                 maxWidth={props.size?props.size:"sm"}
-                    className={`${props.allowOverflow?" allow-overflow":""} custom-modal  ${props.allowScroll?" allow-scroll":""}`}
-
-
+                className={`${props.allowOverflow?" allow-overflow":""} custom-modal  ${props.allowScroll?" allow-scroll":""}`}
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogContent>
@@ -48,12 +45,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                     {!props.hideHeader &&!props.hideHeading ?
                         <div className=" row  justify-content-center align-items-center">
                          <div className="col-10">
-
                         <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>{props.heading}</h4>
                         {props.subHeading&&<p className={"ellipsis-end mb-0 text-capitalize"}>{props.subHeading}</p>}
                     </div>
                     <div className="col-2 d-flex  justify-content-end">
-                        {!props.hideClose && <CloseButtonPopUp onClick={handleClose}/>}
+                        {!props.hideClose && <CloseButtonPopUp  onClick={handleClose}/>}
                     </div>
                 </div>:
                         <div className="top-right mt-3 me-3 "><CloseButtonPopUp onClick={handleClose}/></div>

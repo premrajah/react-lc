@@ -18,6 +18,7 @@ import GreenButton from "../FormsUI/Buttons/GreenButton";
 import PasswordStrength from "../FormsUI/PasswordStrength";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css'
+import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 
 
 class SignUp extends Component {
@@ -321,8 +322,9 @@ class SignUp extends Component {
                     <div className="row justify-content-center ">
                         <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
                     <div className="row no-gutters">
-                        <div className="col-12">
-                            <h4 className={"blue-text text-heading"}>Sign Up</h4>
+                        <div className="col-12 position-relative mt-2">
+                            <h4 className="blue-text text-heading  ">Sign Up</h4>
+                            <div className="top-right  me-3 "><CloseButtonPopUp onClick={this.props.hideLoginPopUp}/></div>
                         </div>
                     </div>
                       <div className="row justify-content-center no-gutters">

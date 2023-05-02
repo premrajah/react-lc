@@ -6,6 +6,7 @@ import history from "../../History/history";
 import { makeStyles } from "@mui/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import {Link} from "react-router-dom";
+import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -174,8 +175,9 @@ class RecoverPassword extends Component {
                         <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
                     <div className="row no-gutters">
 
-                        <div className="col-12">
+                        <div className="col-12 mt-2 position-relative">
                             <h3 className={"green-text text-heading text-center"}>Success!</h3>
+                            <div className="top-right  me-3 "><CloseButtonPopUp onClick={this.props.hideLoginPopUp}/></div>
                         </div>
                     </div>
                     <div className="row no-gutters justify-content-center p-5">
@@ -199,14 +201,14 @@ class RecoverPassword extends Component {
                                 <Link
                                     to={"/login"}
                                     className={
-                                        "btn btn-default btn-lg btn-rounded shadow btn-block btn-green"
+                                        " btn-lg btn-rounded shadow btn-block btn-green"
                                     }>
                                     Log In <NavigateNextIcon />
                                 </Link>
                                 : <button
                                 onClick={this.goToSignIn}
                                 className={
-                                    "btn btn-default btn-lg btn-rounded shadow btn-block btn-green"
+                                    " btn-lg btn-rounded shadow btn-block btn-green"
                                 }>
                                 Log In <NavigateNextIcon />
                             </button>}

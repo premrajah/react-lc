@@ -472,6 +472,7 @@ try{
             break;
         case LOADING:
 
+
             newState.loading = action.value?action.value:false
 
 

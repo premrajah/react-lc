@@ -551,7 +551,7 @@ export function loadProductsSync2(data) {
 
 export const logIn = (data) => {
     return (dispatch) => {
-        dispatch(loading());
+        dispatch(loading(true));
         dispatch(logInSync(data));
     };
 };
@@ -561,7 +561,7 @@ export const logInSync = (data) => (dispatch) => {
         .post(baseUrl + "user/login", { email: data.email, password: data.password })
         .then((res) => {
 
-            document.body.classList.add("search-body");
+            // document.body.classList.add("search-body");
 
             if (res.status === 200) {
 
@@ -689,17 +689,12 @@ export const orgCacheSync = (data) => (dispatch) => {
 
 export const signUp = (data) => {
     return (dispatch) => {
-        dispatch(loading());
+        dispatch(loading(true));
         dispatch(signUpSync(data));
     };
 };
 
-export const signUpHost = (data) => {
-    return (dispatch) => {
-        dispatch(loading());
-        dispatch(signUpHostSync(data));
-    };
-};
+
 
 export const signUpHostSync = (data) => (dispatch) => {
     axios

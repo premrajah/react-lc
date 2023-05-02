@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import history from "../../History/history";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
+import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -169,10 +170,11 @@ class RecoverPassword extends Component {
             <>
                 <div className="container  ">
                     <div className="row no-gutters">
-                        <div className="col-12">
+                        <div className="col-12 position-relative mt-2">
                             <h3 className={"blue-text text-heading text-center"}>
                                 Account Recovery
                             </h3>
+                            <div className="top-right  me-3 "><CloseButtonPopUp onClick={this.props.hideLoginPopUp}/></div>
                         </div>
                     </div>
                     <div className="row no-gutters justify-content-center">

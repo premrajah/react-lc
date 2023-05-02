@@ -9,6 +9,7 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
 import GreenBorderButton from "../../components/FormsUI/Buttons/GreenBorderButton";
 import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
+import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -189,10 +190,12 @@ class Login extends Component {
                                     ? this.props.parentClass + " pt-5 mt-5"
                                     : "col-12"
                             }>
-                            <div className="row no-gutters ">
-                                <div className="col-12">
+                            <div className="row no-gutters  ">
+                                <div className="col-12 position-relative mt-2">
                                     <h4 className={"blue-text text-heading"}>Log In</h4>
+                                    <div className="top-right  me-3 "><CloseButtonPopUp onClick={this.props.hideLoginPopUp}/></div>
                                 </div>
+
                             </div>
 
                             <div className="row justify-content-center no-gutters mb-4">
@@ -269,10 +272,13 @@ class Login extends Component {
 
                                             <div className="col-12 text-center mt-2">
                                                 <GreenButton
+                                                    loading={this.props.loading}
+                                                    disabled={this.props.loading||!this.state.formValid}
                                                     id={"login-btn"}
                                                     title={"Log In"}
                                                     type={"submit"}
-                                                    disabled={!this.state.formValid}></GreenButton>
+                                                    // disabled={!this.state.formValid}
+                                                ></GreenButton>
                                             </div>
                                             {!this.props.hideSignUp&&
                                                 <>

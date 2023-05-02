@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import NotificationTwoTextDisplay from "./NotificationTwoTextDisplay";
 import NotificationsTwoReadAndTracking from "./NotificationsTwoReadAndTracking";
+import ReactStringReplaceWithRegex from "../Messages/ReactStringReplaceWithRegex";
 
 const NotificationTwoItemGroup = ({ items }) => {
     const [accordionExpand, setAccordionExpand] = useState(false);
@@ -29,17 +30,21 @@ const NotificationTwoItemGroup = ({ items }) => {
                             <div className="col-9">
                                 <Accordion
                                     className="mb-1"
-                                    expanded={accordionExpand === itemGroup[0].Message._key}
+                                    expanded={accordionExpand === itemGroup[0].Message?._key}
                                     onChange={
                                         itemGroup.length > 1
-                                            ? handleChange(itemGroup[0].Message._key)
+                                            ? handleChange(itemGroup[0].Message?._key)
                                             : undefined
                                     }
                                     // disabled={itemGroup.length === 1}
                                 >
                                     <AccordionSummary
                                         expandIcon={itemGroup.length > 1 && <ExpandMoreIcon />}>
-                                        <div className="">{itemGroup[0].Message.text}</div>
+                                        <ReactStringReplaceWithRegex
+                                            text={itemGroup[0].Message?.text}
+                                            entityKey={itemGroup[0].Message?.entity_key}
+                                            messageKey={itemGroup[0].Message?._key}
+                                        />
                                     </AccordionSummary>
                                     {itemGroup.length > 1 &&
                                         itemGroup.map((ig, i) => {
@@ -47,6 +52,8 @@ const NotificationTwoItemGroup = ({ items }) => {
                                                 <NotificationTwoTextDisplay
                                                     key={ig.Message._key}
                                                     text={ig.Message.text}
+                                                    entityKey={itemGroup[i].Message?.entity_key}
+                                                    messageKey={itemGroup[i].Message?._key}
                                                 />
                                             );
                                         })}

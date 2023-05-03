@@ -247,7 +247,7 @@ class MyListings extends Component {
                                 <div id={item.Listing._key} key={item.Listing._key}>
                                     <ResourceItem
 
-                                     Edit   triggerCallback={() => this.callBackResult()}
+                                        Edit   triggerCallback={() => this.callBackResult()}
                                         history={this.props.history}
                                         link={"/" + item.Listing._key}
                                         item={{listing:item.Listing}}

@@ -204,7 +204,7 @@ class Issues extends Component {
 
     render() {
         return (
-            <Layout>
+            <Layout >
 
                     <div className="container  pb-4 pt-4">
                         <PageHeader pageTitle="Issues" subTitle="Find product related issues here" />
@@ -250,7 +250,6 @@ class Issues extends Component {
                         </div>
                         <PaginationLayout
                             hideSearch
-
                             dropDownValues={[]}
                             count={this.state.items.length}
                             visibleCount={this.state.items.length}

@@ -131,7 +131,7 @@ const KeywordChip = (props) => {
                     <>
                         <Chip
                             size="small"
-                            className="mr-1"
+                            className="me-1 mb-1"
                             label={keyword.name}
                             style={{
                             color: "white",

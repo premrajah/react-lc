@@ -10,8 +10,9 @@ import MySearch from "./pages/search/MySearch";
 import MyListings from "./pages/listings/MyListings";
 import ItemDetail from "./pages/listings/ItemDetail";
 import ItemCycleDetail from "./views/browse-resources/ItemCycleDetail";
-import ProductsNew from "./pages/my-products/Products";
+import ProductsNew from "./pages/my-products/ProductsNew";
 import Product from "./pages/product-detail/Product";
+import ProductView from "./pages/product-detail/Product";
 import ProductsService from "./pages/my-products/ProductsService";
 import MyDeliveries from "./views/loop-cycle/MyDeliveries";
 import Statistics from "./views/loop-cycle/Statistics";
@@ -67,7 +68,6 @@ import SignUpPage from "./pages/sign-up/SignUpPage";
 import LoginPage from "./pages/login/LoginPage";
 import LoggedOutRoute from "./Util/LoggedOutRoute";
 import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
-import Sites from "./pages/sites/Sites";
 import Site from "./pages/site-detail/Site";
 import SiteForm from "./components/Sites/SiteForm";
 import CyclesRecords from "./pages/cycles/CyclesRecords";
@@ -91,7 +91,10 @@ import MyDiary from "./pages/diary/MyDiary";
 import RentalReleaseRecords from "./pages/approvals/RentalReleaseRecords";
 import PromptLoginRoute from "./Util/PromptLoginRoute";
 import ProductsCondensedView from "./pages/my-products/ProductsCondensedView";
-import ProductRecords from "./pages/my-products/ProductRecords";
+import TestRoute from "./components/TestRoute";
+import SitesNew from "./pages/sites/SitesNew";
+import VerifyEmail from "./pages/account/VerifyEmail";
+
 
 ReactGA.initialize(gaTID);
 ReactGA.ga('set', 'appName', "loop-react-ui-" + REACT_APP_BRANCH_ENV);
@@ -100,9 +103,6 @@ ReactGA.pageview(window.location.pathname + window.location.search );
 
 const theme = createTheme({
     palette: {
-
-
-
 
         primary: {
             // light: will be calculated from palette.primary.main,
@@ -139,11 +139,13 @@ class App extends Component {
                     {/*<Header />*/}
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
+                        <Route exact path="/test-route" component={TestRoute} />
                         <Route exact path="/terms" component={TermsAndConditions} />
                         <Route exact path="/service" component={TermsAndService} />
                         <Route exact path="/cookie" component={Cookie} />
                         <Route exact path="/privacy" component={Privacy} />
                         <Route exact path="/acceptable" component={AcceptableUse} />
+                        <Route exact path="/verify" component={VerifyEmail} />
                         <LoggedInRoute exact path="/notifications" component={NotificationPage} />
                         <LoggedInRoute exact path="/messages" component={MessagePage} />
                         <LoggedInRoute exact path="/messages-new" component={Messeges} />
@@ -158,7 +160,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/my-products" component={ProductsNew} />
                         <LoggedInRoute exact path="/my-products/:id" component={ProductsNew} />
                         <LoggedInRoute exact path="/my-products-condensed" component={ProductsCondensedView} />
-                        <LoggedInRoute exact path="/sites" component={Sites} />
+                        {/*<LoggedInRoute exact path="/sites" component={Sites} />*/}
+                        <LoggedInRoute exact path="/sites" component={SitesNew} />
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         <LoggedInRoute exact path="/approved" component={ApprovedReleases} />
@@ -168,8 +171,6 @@ class App extends Component {
                         <LoggedInRoute exact path="/issues" component={Issues} />
                         <LoggedInRoute exact path="/issue/:issueKey" component={IssueDetail} />
                         <LoggedInRoute exact path="/product-archive" component={ProductArchive} />
-                        <LoggedInRoute exact path="/product-records" component={ProductRecords} />
-
                         <LoggedInRoute exact path="/product-tracked" component={TrackedProducts} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         <LoggedInRoute exact path="/my-cycles" component={MyCycles} />
@@ -198,7 +199,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
-                        <LoggedInRoute exact path="/product/:slug" component={Product} />
+                        <LoggedInRoute exact path="/product/:slug" component={ProductView} />
                         <LoggedInRoute exact path="/product/preview/:slug" component={Product} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <Route exact path="/ps/:slug" component={Site} />

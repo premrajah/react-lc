@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useEffect, useState} from "react";
 import axios from "axios";
 import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
@@ -252,12 +252,15 @@ class Notifications extends Component {
         ));
 
         text = reactStringReplace(text, MATCH_REGEX, (match, i) => (
-            <Link
-                key={`${i}_${match}`}
-                to={`matched/${match}`}
-                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
-                Match
-            </Link>
+            <>
+            {/*<Link*/}
+            {/*    key={`${i}_${match}`}*/}
+            {/*    to={`matched/${match}`}*/}
+            {/*    onClick={!flags ? () => this.messageRead(messageId) : undefined}>*/}
+            {/*    Match*/}
+            {/*</Link>*/}
+                <GetMatch userDetail={this.props.userDetail} i={i} match={match}   />
+                </>
         ));
 
         text = reactStringReplace(text, PRODUCT_RELEASE_REGEX, (match, i) => (
@@ -507,6 +510,48 @@ class Notifications extends Component {
         );
     }
 }
+
+
+const GetMatch = (props) => {
+
+  const [data,setData]=useState(null)
+    const [listing,setListing]=useState(null)
+    const [search,setSearch]=useState(null)
+    useEffect(() => {
+
+
+        axios
+        .get(`${baseUrl}match/${props.match}`)
+        .then((res) => {
+
+            setData(res.data.data)
+
+
+            if (props.userDetail.orgId===res.data.data.listing.org._id){
+                setListing(res.data.data.listing.listing)
+            }
+            else if (props.userDetail.orgId===res.data.data.search.org._id){
+                setSearch(res.data.data.search.search)
+            }
+
+
+        })
+        .catch((error) => {
+
+        });
+},[])
+
+
+    return <>
+
+        {data? <Link
+            key={`${props.i}_${props.match}`}
+            to={`/${listing?listing._key:search?"search/"+search._key:""}`}
+            >
+            Match
+        </Link>:""}
+    </>
+};
 
 const mapStateToProps = (state) => {
     return {

@@ -3852,7 +3852,7 @@ a.page-link:hover {
 }
 
 .search-box {
-    height: 60px;
+    height: 50px;
     border: 2px solid #eaeaef;
     position: relative;
     padding: 2px;
@@ -3860,10 +3860,12 @@ a.page-link:hover {
 }
 
 #searchBar {
-    height: 52px;
+    height: 44px;
     width: 100%;
     border: 2px solid transparent;
 }
+
+
 .search-icon {
     position: absolute;
     right: 1%;
@@ -3873,7 +3875,7 @@ a.page-link:hover {
 
 .filter-box {
     border: none;
-    height: 48px;
+    /*height: 48px;*/
     background: #eaeaef !important;
     /*margin: auto;*/
     margin: 2px auto;
@@ -4904,7 +4906,7 @@ select option {
 }
 .selected-green-item{
     background: #05ad88;
-    color: #fff;
+    /*color: #fff;*/
     width: 100%;
 
 }
@@ -4939,4 +4941,10 @@ ul,ol {
     overflow: hidden;
     display: flex;
     align-items: center;
+}
+.hide-page .MuiDataGrid-footerContainer{
+    display: none;
+}
+.hide-page .MuiDataGrid-row {
+    background: rgba(39, 36, 92, 0.08)!important;
 }

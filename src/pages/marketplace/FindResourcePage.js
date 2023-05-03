@@ -40,8 +40,8 @@ class FindResourcePage extends Component {
             pageSize:50,
             loadingResults:false,
             count:0,
-            url:baseUrl+"seek/entity/no-auth?name=Listing&relation=belongs_to&include-to=Product:listing_of&include-to=Org:any",
-            searchUrl:baseUrl+"seek/entity/no-auth?name=Listing&relation=belongs_to&include-to=Product:listing_of&include-to=Org:any"
+            url:baseUrl+"seek/entity?name=Listing&relation=belongs_to&include-to=Product:listing_of&include-to=Org:any",
+            searchUrl:baseUrl+"seek/entity?name=Listing&relation=belongs_to&include-to=Product:listing_of&include-to=Org:any"
 
 
         }

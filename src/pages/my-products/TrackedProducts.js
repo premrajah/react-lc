@@ -211,7 +211,7 @@ class TrackedProducts extends Component {
 
         // let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
 
-        let url = `${baseUrl}seek?name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&count=false&include-to=Site:located_at`;
+        let url = `${baseUrl}seek?name=Product&relation=tracked_by&no_parent=true&count=false&include-to=Site:located_at`;
 
         this.filters.forEach((item) => {
             url = url + `&or=${item.key}~%${item.value}%`;

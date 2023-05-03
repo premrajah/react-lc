@@ -16,7 +16,6 @@ import ImageHeader from "../UIComponents/ImageHeader";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";
 import SubProductsTab from "./SubProductsTab";
-import ArtifactProductsTab from "./ArtifactProductsTab";
 import ProductForm from "../ProductPopUp/ProductForm";
 import {GoogleMap} from "../Map/MapsContainer";
 import AggregatesTab from "./AggregatesTab";
@@ -33,10 +32,9 @@ import BlueButton from "../FormsUI/Buttons/BlueButton";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
-import {fetchErrorMessage, getTimeFormat} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, getParameterByName, getTimeFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
-import SiteFormNew from "../Sites/SiteFormNew";
 import ArtifactManager from "../FormsUI/ArtifactManager";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
@@ -915,7 +913,7 @@ class ProductDetailContent extends Component {
                         </div>}
                         <div className="row  pt-4 pb-4  justify-content-start">
                             <div className="text-left ps-0   col-sm-12 col-xs-12 breadcrumb-row">
-                                <Link to={"/my-products"}>My Products</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
+                                <Link to={`/my-products${this.props.paramsString?this.props.paramsString:""}`}>{getParameterByName("type",this.props.paramsString?this.props.paramsString:"Products")} List</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
 
                             </div>
                         </div>
@@ -925,11 +923,7 @@ class ProductDetailContent extends Component {
                                 <div className="row stick-left-box">
                                     {/*<div className="col-12 ">*/}
                                     {/*    <div className="   ">*/}
-
-
                                             <ImageHeader images={this.state.item.artifacts} />
-
-
                                             {this.state.isLoggedIn &&
                                             !this.state.hideRegister &&
                                             this.state.userDetail.orgId !== this.state.item.org._id && (

@@ -33,11 +33,6 @@ const LinkExistingList=(props)=>{
 const DynamicAutoCompleteBox=(props)=> {
 
 
-    useEffect(()=>{
-console.log(props.filters)
-
-    },[])
-
     return (
         <>
 

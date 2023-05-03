@@ -308,6 +308,7 @@ class SignUp extends Component {
                     <div className="row no-gutters">
                         <div className="col-12">
                             <h4 className={"blue-text text-heading"}>Sign Up</h4>
+
                         </div>
                     </div>
                       <div className="row justify-content-center no-gutters">
@@ -565,7 +566,9 @@ class SignUp extends Component {
                                 <BlueButton
                                     title={this.props.loading ? "Wait.." : "Create Account"}
                                     type={"submit"}
+
                                     loading={this.props.loading}
+                                    disabled={this.props.loading||!this.state.formValid}
 
                                     fullWidth
                                 >

@@ -7,7 +7,7 @@ function CircularProgressWithLabel(
 ) {
     return (
         <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-            <CircularProgress size={42} variant="determinate" {...props} />
+            <CircularProgress size={props.size?props.size:42} variant="determinate" {...props} />
             <Box
                 sx={{
                     top: 0,
@@ -26,7 +26,7 @@ function CircularProgressWithLabel(
                     component="div"
                     color="text.secondary"
 
-                ><span className="text-14">{`${Math.round(props.value)}%`}</span></Typography>
+                ><span style={{fontSize:props.textSize?props.textSize:14}}>{`${Math.round(props.value)}%`}</span></Typography>
             </Box>
         </Box>
     );

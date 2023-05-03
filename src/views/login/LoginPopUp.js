@@ -65,20 +65,20 @@ class LoginPopUp extends Component {
             <>
                 <div className={"body-overlay"}>
                     <div className={"modal-popup full-screen-mobile-pop-up"}>
-                        <div className="row   justify-content-end">
-                            <div className="col-auto mr-2 mt-2">
-                            <CloseButtonPopUp onClick={this.hideLoginPopUp} />
-                            </div>
+                        {/*<div className="row   justify-content-end">*/}
+                        {/*    <div className="col-auto me-2 mt-2">*/}
+                        {/*    <CloseButtonPopUp onClick={this.hideLoginPopUp} />*/}
+                        {/*    </div>*/}
 
-                        </div>
+                        {/*</div>*/}
 
-                        {this.props.loginPopUpStatus === 0 && <Login  />}
-                        {this.props.loginPopUpStatus === 1 && <SignUp />}
-                        {this.props.loginPopUpStatus === 2 && <ForgotPassword />}
+                        {this.props.loginPopUpStatus === 0 && <Login hideLoginPopUp={this.hideLoginPopUp}  />}
+                        {this.props.loginPopUpStatus === 1 && <SignUp hideLoginPopUp={this.hideLoginPopUp}  />}
+                        {this.props.loginPopUpStatus === 2 && <ForgotPassword hideLoginPopUp={this.hideLoginPopUp}  />}
 
-                        {this.props.loginPopUpStatus === 3 && <RecoverPassword />}
-                        {this.props.loginPopUpStatus === 4 && <ResetPassword />}
-                        {this.props.loginPopUpStatus === 5 && <SuccessSignUp />}
+                        {this.props.loginPopUpStatus === 3 && <RecoverPassword  hideLoginPopUp={this.hideLoginPopUp}  />}
+                        {this.props.loginPopUpStatus === 4 && <ResetPassword hideLoginPopUp={this.hideLoginPopUp}  />}
+                        {this.props.loginPopUpStatus === 5 && <SuccessSignUp hideLoginPopUp={this.hideLoginPopUp}  />}
                     </div>
                 </div>
             </>

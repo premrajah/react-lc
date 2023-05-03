@@ -17,7 +17,8 @@ const BlueSmallBtn = ({onClick,title,fullWidth,disabled,loading,classAdd,progres
             />
         )}
         {progressLoading &&  <CircularProgressWithLabel  value={progressValue?progressValue:0} />}
-        {children} {title}
+        {title}
+        {children}
     </button>
 
 

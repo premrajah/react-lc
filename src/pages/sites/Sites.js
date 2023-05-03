@@ -146,32 +146,6 @@ class Sites extends Component {
 
 
 
-    getTotalCount=()=>{
-
-
-        axios
-            // .get(`${baseUrl}product/no-parent/no-links`)
-            .get(`${baseUrl}site/no-parent/count`)
-            .then(
-                (response) => {
-                    if(response.status === 200) {
-
-                        this.setState({
-                            count:(response.data.data),
-
-                        })
-                    }
-
-                },
-                (error) => {
-                }
-            )
-            .catch(error => {}).finally(()=>{
-
-        });
-
-    }
-
 
 
     loadSitesWithoutParentPageWise= async (data) => {
@@ -415,8 +389,6 @@ class Sites extends Component {
                         {this.state.showCreateSite && <div className="col-12 ">
 
                             <SiteFormNew
-
-
                                 edit={this.state.editSiteItem?true:null}
                                 hide={()=>this.toggleSite(true,null)}
                                  item={this.state.editSiteItem}

@@ -239,8 +239,7 @@ class ProductExpandItem extends Component {
             });
 
         }catch (e){
-            console.log("error link submit product")
-            console.log(e)
+            console.log("error link submit product", e);
         }
     }
 

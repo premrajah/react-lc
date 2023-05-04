@@ -1,5 +1,5 @@
 import reactStringReplace from "react-string-replace";
-import { baseUrl, PRODUCT_REGEX } from "../../Util/Constants";
+import {baseUrl, ORG_REGEX, PRODUCT_REGEX} from "../../Util/Constants";
 import axios from "axios";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import { useState } from "react";

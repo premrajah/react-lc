@@ -4948,3 +4948,13 @@ ul,ol {
 .hide-page .MuiDataGrid-row {
     background: rgba(39, 36, 92, 0.08)!important;
 }
+.btn-link-custom{
+    color: #07ab88!important;
+    text-decoration: none !important;
+    text-align: center!important;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}

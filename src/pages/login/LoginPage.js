@@ -16,7 +16,7 @@ class LoginPage extends Component {
             <Layout>
 
 
-               <Login isPage={true} parentClass={"col-8"} />
+               <Login hideClose isPage={true} parentClass={"col-lg-6 col-12"} />
 
             </Layout>
         );

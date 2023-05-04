@@ -304,24 +304,26 @@ try {
         )
         .then((res) => {
 
-            // this.setState({
-            //     showPopUp: false,
-            //     matchExist: true,
-            // });
-            //
-            // this.checkMatch();
+
+            this.setState({
+                btnLoading: false,
+            });
 
             this.toggleRequestMatch()
 
             this.loadMatches()
 
-            // this.getResources()
+            this.props.showSnackbar({
+                show: true,
+                severity: "success",
+                message:  "Match request submitted successfully. Thanks"
+            })
         })
         .catch((error) => {
-            //
-
+            this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
             this.setState({
                 showPopUp: true,
+                btnLoading: false,
                 // loopError: error.response.data.data.message
             });
         });
@@ -928,7 +930,9 @@ try {
                                                                         <>
                                                                             <div className="row mt-3">
                                                                                 <div className="col-12 ">
-
+                                                                                    {this.state.matches.length===0&&
+                                                                                        <p className="mb-1 text-gray-light">No
+                                                                                            Matches Found.</p>}
                                                                             {this.state.matches
                                                                                 // .filter((item)=> item.match.stage!="created")
                                                                                 .map((item,index) => (
@@ -1119,7 +1123,8 @@ try {
                                                       textAlign: "center",
                                                   }}>
                                                 <GreenButton
-
+                                                    loading={this.state.btnLoading}
+                                                    disabled={this.state.btnLoading}
                                                     title={"Submit"}
                                                     type={"submit"}>
 
@@ -1131,6 +1136,8 @@ try {
                                                     textAlign: "center",
                                                 }}>
                                                 <BlueBorderButton
+
+
                                                     type="button"
 
                                                     title={"Cancel"}

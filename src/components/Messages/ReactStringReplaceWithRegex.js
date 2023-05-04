@@ -1,10 +1,10 @@
 import reactStringReplace from "react-string-replace";
-import { Link } from "react-router-dom";
 import { baseUrl, PRODUCT_REGEX } from "../../Util/Constants";
 import axios from "axios";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import { useState } from "react";
 import SubproductItem from "../Products/Item/SubproductItem";
+import OrgComponent from "../Org/OrgComponent";
 
 const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
     const [productDialog, setProductDialog] = useState(false);
@@ -25,10 +25,15 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
     };
 
     const handleReactStringReplace = (textToReplace) => {
-        let text;
+        let replacedText;
 
-        text = reactStringReplace(textToReplace, PRODUCT_REGEX, (match, i) => (
+        replacedText = reactStringReplace(textToReplace, ORG_REGEX, (match, i) => (
+            <OrgComponent key={`${i}_${match}`} orgId={match.replace("Org/","")} />
+        ));
+
+        replacedText = reactStringReplace(textToReplace, PRODUCT_REGEX, (match, i) => (
             <span
+                key={`${i}_${match}`}
                 style={{borderBottom: "1px solid var(--lc-green)"}}
                 onClick={() => {
                     setProductDialog(true);
@@ -38,7 +43,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
             </span>
         ));
 
-        return <div>{text}</div>;
+        return <div>{replacedText}</div>;
     };
 
     return (

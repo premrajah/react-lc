@@ -10,6 +10,7 @@ import { validateFormatCreate, validateInputs, Validators } from "../../Util/Val
 import GreenBorderButton from "../../components/FormsUI/Buttons/GreenBorderButton";
 import GreenButton from "../../components/FormsUI/Buttons/GreenButton";
 import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
+import GreenBorderLink from "../../components/FormsUI/Buttons/GreenBorderLink";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -176,6 +177,7 @@ class Login extends Component {
     }
 
     goToSignUp() {
+
         this.props.setLoginPopUpStatus(1);
     }
 
@@ -193,7 +195,7 @@ class Login extends Component {
                             <div className="row no-gutters  ">
                                 <div className="col-12 position-relative mt-2">
                                     <h4 className={"blue-text text-heading"}>Log In</h4>
-                                    <div className="top-right  me-3 "><CloseButtonPopUp onClick={this.props.hideLoginPopUp}/></div>
+                                    {!this.props.hideClose &&  <div className="top-right  me-3 "><CloseButtonPopUp onClick={this.props.hideLoginPopUp}/></div>}
                                 </div>
 
                             </div>
@@ -287,17 +289,20 @@ class Login extends Component {
                                                     <span>or</span>
                                                 </p>
                                             </div>
-                                            <div className="col-auto mt-4  justify-content-center">
+                                            <div className="col-auto mt-2  justify-content-center">
                                                 {this.props.isPage ? (
-                                                    <Link
+                                                    <GreenBorderLink
                                                         style={{ padding: ".375rem .75rem" }}
                                                         to={"/sign-up"}
                                                         type="button"
-                                                        className="mt-1 mb-4 btn topBtn  sign-up-btn">
-                                                        Sign Up
-                                                    </Link>
+                                                        title={"Sign Up"}
+
+                                                    >
+
+                                                    </GreenBorderLink>
                                                 ) : (
                                                     <GreenBorderButton
+                                                        type={'button'}
                                                         title={"Sign Up"}
                                                         onClick={
                                                             this.goToSignUp

@@ -1483,7 +1483,7 @@ if ((this.state.activeStep-1)==0){
                     <>
                         <div className="col-12 ">
 
-                            <SiteFormNew refresh={()=>this.toggleSite(true)} />
+                            {this.state.showCreateSite&&<SiteFormNew refresh={()=>this.toggleSite(true)} />}
                         </div>
                     </>
                 </GlobalDialog>

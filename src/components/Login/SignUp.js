@@ -19,6 +19,7 @@ import PasswordStrength from "../FormsUI/PasswordStrength";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css'
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
+import GreenBorderLink from "../FormsUI/Buttons/GreenBorderLink";
 
 
 class SignUp extends Component {
@@ -320,11 +321,11 @@ class SignUp extends Component {
             <>
                 <div className="container  ">
                     <div className="row justify-content-center ">
-                        <div className={this.props.parentClass?this.props.parentClass+" pt-5 mt-5":"col-12"}>
+                        <div className={this.props.parentClass?this.props.parentClass+" bg-white p-2 ":"col-12"}>
                     <div className="row no-gutters">
                         <div className="col-12 position-relative mt-2">
                             <h4 className="blue-text text-heading  ">Sign Up</h4>
-                            <div className="top-right  me-3 "><CloseButtonPopUp onClick={this.props.hideLoginPopUp}/></div>
+                            {!this.props.hideClose && <div className="top-right  me-3 "><CloseButtonPopUp onClick={this.props.hideLoginPopUp}/></div>}
                         </div>
                     </div>
                       <div className="row justify-content-center no-gutters">
@@ -523,16 +524,17 @@ class SignUp extends Component {
                                         <span>or</span>
                                     </p>
                                 </div>
-                            <div className="col-12 mt-2   justify-content-center text-center">
+                            <div className="col-auto mt-2   justify-content-center text-center">
 
                                 {this.props.isPage?
-                                    <Link
-                                        style={{padding: ".375rem .75rem"}}
+                                    <GreenBorderLink
+
                                        to={"/login"}
-                                        type="button"
-                                        className="mt-1 mb-4 btn topBtn  sign-up-btn">
-                                     Log In
-                                    </Link>
+                                        title={"Log In"}
+
+                                        >
+
+                                    </GreenBorderLink>
 
                                     :
                                     <GreenBorderButton

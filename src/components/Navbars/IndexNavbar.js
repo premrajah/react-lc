@@ -432,7 +432,10 @@ class ComponentsNavbar extends React.Component {
                                         {/*    Help*/}
                                         {/*</Link>*/}
 
-                                        <span className={"dropdown-item click-item"} onClick={this.logOut}>
+                                        <span className={"dropdown-item click-item"} onClick={()=> {
+                                            this.handleCloseMenu();
+                                            this.logOut();
+                                        }}>
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Log Out
                                         </span>

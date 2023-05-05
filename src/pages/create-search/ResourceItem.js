@@ -34,33 +34,21 @@ class ResourceItem extends Component {
     }
 
     componentDidMount() {
-
-
         if (this.props.item.artifacts) {
             this.setState({
                 artifacts:this.props.item.artifacts
             })
-
-
-
         }
        else if (this.props.artifacts) {
-
             this.setState({
                 artifacts:this.props.artifacts
             })
-
         }
-
         else{
-
             if (this.props.product){
                 this.getArtifacts(this.props.product._key)
             }
-
-
         }
-
     }
 
     getArtifacts=(id) =>{
@@ -126,11 +114,7 @@ class ResourceItem extends Component {
     render() {
         return (
             <>
-
                     <>
-
-
-
                         <Link
                             // to={`${"/"+!this.props.disableLink?this.props.item.listing._key:null}`}
                             to={this.props.disableLink?"#":`/${this.props.item.listing._key}`}
@@ -184,24 +168,13 @@ class ResourceItem extends Component {
                                 <div className={"text-gray-light mt-1 mb-1 width-75 text-14"}>
                                     <span>{getTimeFormat(this.props.item.listing.available_from_epoch_ms)}</span> - <span>{getTimeFormat(this.props.item.listing.expire_after_epoch_ms)}</span>
                                 </div>
-                                {/*{this.props.item.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>*/}
-                                {/*    <OrgComponent org={this.props.item.org }/>*/}
-                                {/*</div>}*/}
-
-                                {/*{this.props.org && <div className={"text-gray-light mt-1 mb-1 width-75"}>*/}
-                                {/*    <OrgComponent org={this.props.org }/>*/}
-                                {/*</div>}*/}
-
 
                                 {(this.props.fromSearch ||this.props.matchedItem) &&
                                 <div className={"bottom-btn-box-1 mt-2  "}>
-
                                     <GrayBorderBtn title={"View Details"} onClick={()=> this.props.showDetails(this.props.item.listing._key)} />
-
                                     {!this.props.matchedItem && <GreenSmallBtn classAdd="ms-2"
                                                                                onClick={()=> this.props.requestMatch(this.props.item.listing)}
                                                                                title={"Request a match"}/>}
-
                                     {this.props.matchedItem&&
                                     <span className={"text-capitalize ms-2 text-gray-light"}>Stage: <span className={"title-bold"}>{this.props.stage}</span></span>
                                     }
@@ -218,15 +191,10 @@ class ResourceItem extends Component {
         )}
     </p>
                                 <p className={"status text-right"}>
-
-
-                                    <span className={this.props.item.listing.stage!=="inactive"&&this.props.item.listing.stage!=="expired"?" active text-capitlize":"text-capitlize waiting "}>
+                                 <span className={this.props.item.listing.stage!=="inactive"&&this.props.item.listing.stage!=="expired"?" active text-capitlize":"text-capitlize waiting "}>
                                     {this.props.item.listing.stage}
                                 </span>
                                 </p>
-
-
-
                                 <p  className={" text-gray-light text-14 text-right"}>
                                     {!this.props.hideMoreMenu&&  <MoreMenu
                                     triggerCallback={(action) => this.callBackResult(action)}
@@ -240,11 +208,7 @@ class ResourceItem extends Component {
                                 <p className={" text-gray-light text-14 date-bottom text-right"}>
                                     {moment(this.props.item.listing._ts_epoch_ms).format("DD MMM YYYY")}
                                 </p>
-
-
                             </div>
-
-
                             {this.props.matchedItem&&
                             // <div className={"col-md-12 col-xs-12 col-sm-12"}>
 

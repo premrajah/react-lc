@@ -241,13 +241,18 @@ class ViewSearch extends Component {
             };
         }
 
+        this.setState({
+            btnLoading: true,
+        });
         axios
             .post(
                 baseUrl + "offer/stage",
                 data,
             )
             .then((res) => {
-
+                this.setState({
+                    btnLoading: false,
+                });
                this.toggleActionOffer()
 
                 this.props.showSnackbar({show:true,severity:"success",message:"Offer updated successfully. Thanks"})
@@ -260,6 +265,9 @@ class ViewSearch extends Component {
                 //     showPopUp: true,
                 //     loopError: error.response.data.content.message
                 // })
+                this.setState({
+                    btnLoading: false,
+                });
                 this.toggleActionOffer()
                 this.props.showSnackbar({show:true,severity:"warning",message:fetchErrorMessage(error)})
 
@@ -369,6 +377,9 @@ try {
                 this.props.showSnackbar({show:true,severity:"success",message:this.state.acceptOffer?"Offer accepted successfully.":"Offer created successfully. Thanks"})
 
                 this.toggleMakeOffer()
+                this.setState({
+                    btnLoading: false,
+                });
 
 
 
@@ -379,6 +390,10 @@ try {
                 //     showPopUp: true,
                 //     loopError: error.response.data.content.message
                 // })
+                this.setState({
+                    btnLoading: false,
+                });
+
                 this.toggleMakeOffer()
 
                 this.props.showSnackbar({show:true,severity:"warning",message:fetchErrorMessage(error)})
@@ -878,28 +893,6 @@ try {
                                                                         <InfoTabContent item={this.state.createSearchData.search}/>
                                                                     </TabPanel>
 
-                                                                    {/*{this.state.createSearchData.product &&  <TabPanel value="1">*/}
-
-                                                                    {/*    <>*/}
-
-                                                                    {/*        <div className={"mt-4"}></div>*/}
-
-
-                                                                    {/*            {this.state.createSearchData && (*/}
-                                                                    {/*                <ProductExpandItem*/}
-                                                                    {/*                    hideMoreMenu={true}*/}
-                                                                    {/*                    hideAddAll={true}*/}
-                                                                    {/*                    productId={this.state.createSearchData.product._id.replace(*/}
-                                                                    {/*                        "Product/",*/}
-                                                                    {/*                        ""*/}
-                                                                    {/*                    )}*/}
-                                                                    {/*                />*/}
-                                                                    {/*            )}*/}
-                                                                    {/*        </>*/}
-
-                                                                    {/*</TabPanel>}*/}
-
-
                                                                     {this.state.createSearchData.site &&
                                                                     <TabPanel value="2">
                                                                         <>
@@ -982,20 +975,7 @@ try {
                                     </div>
                                 </div>
 
-                                {/*<Modal*/}
-                                {/*    size="lg"*/}
-                                {/*    show={this.state.showEdit}*/}
-                                {/*    onHide={this.showEdit}*/}
-                                {/*    className={"custom-modal-popup popup-form mb-5"}>*/}
-                                {/*    <div className="">*/}
-                                {/*        <button*/}
-                                {/*            onClick={this.showEdit}*/}
-                                {/*            className="btn-close close"*/}
-                                {/*            data-dismiss="modal"*/}
-                                {/*            aria-label="Close">*/}
-                                {/*            <i className="fas fa-times"></i>*/}
-                                {/*        </button>*/}
-                                {/*    </div>*/}
+
                                 <GlobalDialog
 
                                     aria-labelledby="contained-modal-title-vcenter"
@@ -1011,7 +991,7 @@ try {
                                         item={this.state.createSearchData}
                                     />
                                 </GlobalDialog>
-                                {/*</Modal>*/}
+
                             </>
                         )}
 
@@ -1054,7 +1034,8 @@ try {
                             </React.Fragment>
                         )}
 
-                        <RightSidebar heading={"Matches"}
+                        <RightSidebar
+                            heading={"Matches"}
                                       subTitle={"Your search matches"}
                                       toggleOpen={this.toggleMatches}
                                       open={this.state.showMatches} width={"70%"}>
@@ -1079,7 +1060,6 @@ try {
                                 {this.state.listingId &&
                                 <>
                                         <ListingDetail
-
                                             hideRequestMatch
                                             hideMatchesTab
                                             requestMatch={this.toggleRequestMatch}
@@ -1104,12 +1084,10 @@ try {
 
                                         <div className="row no-gutters">
                                             <div className="col-12 ">
-
                                                 <TextFieldWrapper
                                                     onChange={(value)=>this.handleChange(value,"message")}
                                                     error={this.state.errors["message"]}
                                                     name="message" title="Message(Optional)" />
-
                                             </div>
                                         </div>
 
@@ -1136,15 +1114,10 @@ try {
                                                     textAlign: "center",
                                                 }}>
                                                 <BlueBorderButton
-
-
                                                     type="button"
-
                                                     title={"Cancel"}
-
                                                     onClick={()=>
-                                                        this
-                                                            .toggleRequestMatch()
+                                                        this.toggleRequestMatch()
                                                     }
                                                 >
 
@@ -1172,6 +1145,7 @@ try {
                                             <div className="col-12 ">
 
                                                 <TextFieldWrapper
+                                                    startAdornment={"GBP"}
                                                     onChange={(value) => this.handleChange(value, "price")}
                                                     error={this.state.errors["price"]}
                                                     name="price" title="Price"/>
@@ -1189,7 +1163,8 @@ try {
                                                       textAlign: "center",
                                                   }}>
                                                 <GreenButton
-
+                                                    loading={this.state.btnLoading}
+                                                    disabled={this.state.btnLoading}
                                                     title={"Submit"}
                                                     type={"submit"}>
 
@@ -1255,7 +1230,8 @@ try {
                                                       textAlign: "center",
                                                   }}>
                                                 <GreenButton
-
+                                                    loading={this.state.btnLoading}
+                                                    disabled={this.state.btnLoading}
                                                     title={"Submit"}
                                                     type={"submit"}>
 

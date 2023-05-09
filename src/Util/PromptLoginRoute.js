@@ -1,16 +1,18 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Route, Redirect } from "react-router-dom";
 
 import * as actionCreator from "../store/actions/actions";
 import { connect } from "react-redux";
 
-const PromptLoginRoute = ({ component: Component, isLoggedIn, ...rest }) =>
+const PromptLoginRoute = ({ component: Component, isLoggedIn, ...rest }) => {
+        useEffect(()=>{
 
-    {
- if(!isLoggedIn){
-     rest.setLoginPopUpStatus(0);
-     rest.showLoginPopUp(true);
- }
+            if(!isLoggedIn){
+                rest.setLoginPopUpStatus(0);
+                rest.showLoginPopUp(true);
+            }
+        },[isLoggedIn])
+
 
 
   return  <Route

@@ -10,7 +10,7 @@ import GreenButton from "./FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "./RightBar/GlobalDialog";
 import GrayBorderBtn from "./FormsUI/Buttons/GrayBorderBtn";
-import {getActionName, getTimeFormat} from "../Util/GlobalFunctions";
+import {fetchErrorMessage, getActionName, getTimeFormat} from "../Util/GlobalFunctions";
 import GreenSmallBtn from "./FormsUI/Buttons/GreenSmallBtn";
 
 class MatchItemSeller extends Component {
@@ -29,7 +29,8 @@ class MatchItemSeller extends Component {
             initiateAction: null,
             initiateActionId: null,
             cycle: null,
-            messages:[]
+            messages:[],
+            loading:false
         };
 
         this.acceptMatch = this.acceptMatch.bind(this);
@@ -110,6 +111,9 @@ class MatchItemSeller extends Component {
     }
 
     acceptMatch() {
+        this.setState({
+            loading:true
+        })
         axios
             .post(
                 baseUrl + "match/stage/accept",
@@ -122,16 +126,37 @@ class MatchItemSeller extends Component {
                         Authorization: "Bearer " + this.props.userDetail.token,
                     },
                 }
+
+
             )
             .then((res) => {
 
                 this.setState({
                     showPopUpInitiateAction: false,
                 });
+                this.setState({
+                    loading:false
+                })
 
-
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Match request accepted successfully. Thanks"
+                })
             })
-            .catch((error) => {});
+            .catch((error) => {
+
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "error",
+                    message:  fetchErrorMessage(error)
+                })
+
+                this.setState({
+                    loading:false
+                })
+
+            });
     }
 
     acceptOffer(event) {
@@ -169,6 +194,10 @@ class MatchItemSeller extends Component {
 
         var data;
 
+        this.setState({
+            loading:true
+        })
+
         if (this.state.action !== "counter") {
             data = {
                 offer_id: this.state.editOfferKey,
@@ -193,15 +222,24 @@ class MatchItemSeller extends Component {
             .then((res) => {
 
                 this.editPopUp()
-
-
+                this.setState({
+                    loading:false
+                })
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message:  "Request submitted successfully"
+                })
             })
             .catch((error) => {
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "error",
+                    message:  fetchErrorMessage(error)
+                })
+                this.setState({
+                    loading:false
+                })
             });
     }
 
@@ -328,6 +366,9 @@ class MatchItemSeller extends Component {
     };
 
     rejectMatch() {
+        this.setState({
+            loading:true
+        })
         axios
             .post(
                 baseUrl + "match/stage/decline",
@@ -345,13 +386,20 @@ class MatchItemSeller extends Component {
                 this.setState({
                     showPopUpInitiateAction: false,
                 });
+                this.setState({
+                    loading:true
+                })
             })
             .catch((error) => {
-                // this.setState({
-                //
-                //     showPopUp: true,
-                //     loopError: error.response.data.content.message
-                // })
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "error",
+                    message:  fetchErrorMessage(error)
+                })
+
+                this.setState({
+                    loading:false
+                })
             });
     }
 
@@ -625,7 +673,8 @@ class MatchItemSeller extends Component {
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-6"} style={{ textAlign: "center" }}>
                                             <GreenButton
-
+                                                loading={this.state.loading}
+                                                disabled={this.state.loading}
                                                 title={"Submit"}
                                                 type={"submit"}>
 
@@ -648,9 +697,6 @@ class MatchItemSeller extends Component {
 
                                 </>
                         </GlobalDialog>
-
-
-
                         <GlobalDialog size={"xs"}
                                       hide={this.showPopUp}
                                       show={this.state.showPopUp}
@@ -704,24 +750,19 @@ class MatchItemSeller extends Component {
                         </>
                         </GlobalDialog>
 
-
-
-
-
                         <GlobalDialog size={"xs"}
                                       hide={this.showPopUpInitiateAction}
                                       show={this.state.showPopUpInitiateAction}
-                                      heading={`Match Request: ${this.state.initiateAction}`} >
+                                      heading={`Match Request : ${this.state.initiateAction}`} >
                             <>
-
-
-
                             <div className={"col-12 text-center mt-2"}>
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
                                         <GreenButton
 
-                                            title={"Submit"}
+                                            loading={this.state.loading}
+                                            disabled={this.state.loading}
+                                            title={this.state.loading?"Wait...":"Submit"}
                                             onClick={
                                                 this.state.initiateAction === "accept"
                                                     ? this.acceptMatch
@@ -773,6 +814,8 @@ const mapDispachToProps = (dispatch) => {
         signUp: (data) => dispatch(actionCreator.signUp(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(MatchItemSeller);

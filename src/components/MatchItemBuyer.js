@@ -171,6 +171,9 @@ class MatchItemBuyer extends Component {
             };
         }
 
+        this.setState({
+            loading:true
+        })
         axios
             .post(
                 baseUrl + "offer/stage",
@@ -186,6 +189,9 @@ class MatchItemBuyer extends Component {
                 this.setState({
                     editPopUp: false,
                 });
+                this.setState({
+                    loading:false
+                })
             })
             .catch((error) => {
                 // this.setState({
@@ -193,6 +199,10 @@ class MatchItemBuyer extends Component {
                 //     showPopUp: true,
                 //     loopError: error.response.data.content.message
                 // })
+
+                this.setState({
+                    loading:false
+                })
             });
     }
 
@@ -200,11 +210,14 @@ class MatchItemBuyer extends Component {
 
         event.preventDefault();
 
-        const form = event.currentTarget;
 
         const data = new FormData(event.target);
 
         const price = data.get("price");
+
+        this.setState({
+            loading:true
+        })
 
         axios
             .put(
@@ -229,6 +242,9 @@ class MatchItemBuyer extends Component {
                 this.setState({
                     showPopUp: false,
                 });
+                this.setState({
+                    loading:false
+                })
             })
             .catch((error) => {
                 // this.setState({
@@ -236,6 +252,10 @@ class MatchItemBuyer extends Component {
                 //     showPopUp: true,
                 //     loopError: error.response.data.content.message
                 // })
+
+                this.setState({
+                    loading:false
+                })
             });
     };
 
@@ -412,14 +432,15 @@ class MatchItemBuyer extends Component {
 
     render() {
         return (
-            <div className="row no-gutters justify-content-center mt-4  ">
+            <div className="col-12 ">
+
+            <div className="row no-gutters justify-content-center mt-4 ">
                 <div style={{ textAlign: "center" }} className={"col-12"}>
                     {!this.props.hideStage && <p>
                         Match Stage: <span className={"text-blue img-list text-bold text-caps"}>
                             {this.props.item.match.stage}
                         </span>
                     </p>}
-
                     {this.state.cycle && (
                         <p>
                             <Link
@@ -431,19 +452,13 @@ class MatchItemBuyer extends Component {
                         </p>
                     )}
                 </div>
-
                 <div style={{ textAlign: "right" }} className={"col-12 d-flex mb-4"}>
-
-
                     {(this.props.item.match.stage === "accepted" ||
                         this.props.item.match.stage === "offered") &&
                     this.props.item.listing.org._id !== this.props.userDetail.orgId && (
                         // <div className={"row justify-content-center"}>
                             <span className="me-2 ">
                                 <GreenButton
-
-
-
                                     onClick={()=>this.props.makeOffer(this.props.item.match._key,true,"Accept Listed Price")}
                                     title={"Accept Seller's Offer"}
                                     // onClick={()=> this.showPopUp(true)}
@@ -454,20 +469,13 @@ class MatchItemBuyer extends Component {
                              </span>
                         // </div>
                     )}
-                {/*</div>*/}
-                {/*<div style={{ textAlign: "right" }} className={"col-12"}>*/}
-
 
                     {(this.props.item.match.stage === "accepted" ||
                         this.props.item.match.stage === "offered") &&
                         this.props.item.listing.org._id !== this.props.userDetail.orgId && (
-                            // <div className={"row justify-content-center"}>
-                            //     <div className="col-auto ">
+
                                     <BlueBorderButton
-                                        // onClick={()=> this.showPopUp(false)}
-
                                         onClick={()=>this.props.makeOffer(this.props.item.match._key,false,"Make an offer")}
-
                                         type="button"
                                         title={"Make an Offer"}
                                         >
@@ -526,33 +534,13 @@ class MatchItemBuyer extends Component {
                                                         <>
                                                            <span className={"me-1"}>
                                                                <GrayBorderBtn
+                                                                   loading={this.state.loading}
+                                                                   disabled={this.state.loading}
                                                                 title={getActionName(actionName)}
                                                                 data-id={item.offer._key}
                                                                 data-action={actionName}
-                                                                // onClick={this.editPopUp.bind(this)}
-
                                                                 onClick={()=>this.props.actionOffer(item.offer._key,actionName)}
-
-
                                                                 type="button"
-
-                                                                // className={
-                                                                //     actionName === "accepted"
-                                                                //         ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                //         : actionName === "cancelled"
-                                                                //         ? "shadow-sm me-2 btn btn-link  ms-1 mt-2 mb-2 orange-btn-border"
-                                                                //         : actionName === "rejected"
-                                                                //         ? "shadow-sm me-2 btn btn-link mt-2 mb-2 orange-btn-border"
-                                                                //         : actionName === "declined"
-                                                                //         ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 orange-btn-border"
-                                                                //         : actionName === "progress"
-                                                                //         ? "shadow-sm me-2 btn btn-link mt-2 mb-2 green-btn-border"
-                                                                //         : actionName === "completed"
-                                                                //         ? "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                //         : actionName === "counter"
-                                                                //         ? "shadow-sm me-2 btn btn-link ms-1  mt-2 mb-2 blue-btn-border"
-                                                                //         : "shadow-sm me-2 btn btn-link  mt-2 mb-2 green-btn-border"
-                                                                // }
                                                             >
                                                                 {actionName === "accepted" &&
                                                                     "Accept"}
@@ -574,11 +562,6 @@ class MatchItemBuyer extends Component {
                                                                     "Counter Offer"}
                                                             </GrayBorderBtn>
                                                                </span>
-
-                                                            {/*<button data-id={item.offer._key} data-action={actionItem} onClick={this.editPopUp.bind(this)} type="button"*/}
-                                                            {/*className=" text-caps ms-3  btn btn-link green-border-btn mt-2 mb-2 btn-blue">*/}
-                                                            {/*{actionItem}*/}
-                                                            {/*</button>*/}
                                                         </>
                                                     )
                                                 )}
@@ -594,24 +577,7 @@ class MatchItemBuyer extends Component {
                             </div>
                         ))}
                     </>
-                {/*)}*/}
 
-                {/*{this.props.item.match.stage === "converted" && (*/}
-                {/*    <div className={"row"}>*/}
-                {/*        {this.state.offers.map((item, index) => (*/}
-                {/*            <div className="col-12">*/}
-                {/*                {index + 1}.*/}
-                {/*                <span*/}
-                {/*                    style={{ fontSize: "18px" }}*/}
-                {/*                    className=" mb-1 list-title text-bold text-blue">*/}
-                {/*                    GBP {item.offer.amount.value}*/}
-                {/*                </span>*/}
-                {/*                , Offer Stage:*/}
-                {/*                <span className={"text-caps"}>{item.offer.stage}</span>*/}
-                {/*            </div>*/}
-                {/*        ))}*/}
-                {/*    </div>*/}
-                {/*)}*/}
 
                 <Modal
                     className={"loop-popup"}
@@ -659,7 +625,8 @@ class MatchItemBuyer extends Component {
                                     <div className={"row justify-content-center"}>
                                         <div className={"col-6"} style={{ textAlign: "center" }}>
                                             <GreenButton
-
+                                                loading={this.state.loading}
+                                                disabled={this.state.loading}
                                                 title="Submit"
                                                 type={"submit"}>
 
@@ -724,6 +691,8 @@ class MatchItemBuyer extends Component {
                                             <GreenButton
                                                title={"Submit"}
                                                 type={"submit"}
+                                               loading={this.state.loading}
+                                               disabled={this.state.loading}
                                             >
 
                                             </GreenButton>
@@ -747,6 +716,7 @@ class MatchItemBuyer extends Component {
                         {/*}*/}
                     </ModalBody>
                 </Modal>
+            </div>
             </div>
         );
     }

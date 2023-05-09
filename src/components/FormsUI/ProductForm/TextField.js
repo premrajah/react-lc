@@ -3,6 +3,7 @@ import {makeStyles} from "@mui/styles";
 import CustomizedInput from "./CustomizedInput";
 import CustomPopover from "../CustomPopover";
 import InfoIcon from "./InfoIcon";
+import {InputAdornment} from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -33,6 +34,7 @@ const TextFieldWrapper = ({
     customReadOnly,reset,noMargin,
                               editMode,
                               numberInput,
+                              startAdornment,endAdornment,
     ...otherProps
 }) => {
     // const [field, mata] = useField(name)
@@ -134,7 +136,8 @@ const TextFieldWrapper = ({
                     onChange={handleChange}
                     name={name}
                     {...configTextField}
-
+                    startAdornment={startAdornment?<InputAdornment position="start">{startAdornment}</InputAdornment>:""}
+                    endAdornment={endAdornment?<InputAdornment position="start">{endAdornment}</InputAdornment>:""}
 
 
                 />

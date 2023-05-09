@@ -8,7 +8,6 @@ import {makeStyles} from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
-import {withStyles} from "@mui/styles/index";
 import Select from "@mui/material/Select";
 import AddIcon from "@mui/icons-material/Add";
 import NotFound from "../NotFound/index";
@@ -348,6 +347,10 @@ class ViewCycle extends Component {
             new_stage: action,
         };
 
+        this.setState({
+            loading:true
+        })
+
         axios
             .post(baseUrl + "step/stage", data, {
                 headers: {
@@ -356,10 +359,17 @@ class ViewCycle extends Component {
             })
             .then((res) => {
                 this.getResources();
-
+                this.setState({
+                    loading:false
+                })
                 this.showPopUpStepAction();
             })
             .catch((error) => {
+
+                this.setState({
+                    loading:false
+                })
+
                 //
                 // this.setState({
                 //
@@ -387,6 +397,9 @@ class ViewCycle extends Component {
             new_stage: action,
         };
 
+        this.setState({
+            loading:true
+        })
         axios
             .post(baseUrl + "cycle/stage", data, {
                 headers: {
@@ -397,8 +410,15 @@ class ViewCycle extends Component {
                 this.togglePopUpAction();
 
                 this.getResources();
+                this.setState({
+                    loading:false
+                })
             })
             .catch((error) => {
+                this.setState({
+                    loading:false
+                })
+
                 //
                 // this.setState({
                 //
@@ -709,8 +729,6 @@ class ViewCycle extends Component {
     }
 
     render() {
-        const classes = withStyles();
-        const classesBottom = withStyles();
 
         return (
             <Layout>
@@ -743,22 +761,6 @@ class ViewCycle extends Component {
                                                     />
                                                 </div>
 
-                                                {/*<div className="col-12 mt-2">*/}
-                                                {/*    <p>*/}
-                                                {/*        <span>*/}
-                                                {/*            Product:*/}
-                                                {/*            {this.state.item.product.product.name}*/}
-                                                {/*        </span>*/}
-                                                {/*    </p>*/}
-                                                {/*    <p className="text-caps d-none">*/}
-                                                {/*        Stage:*/}
-                                                {/*        <span*/}
-                                                {/*            className={*/}
-                                                {/*                "green-text text-heading text-caps"*/}
-                                                {/*            }> {this.state.item.cycle.stage}*/}
-                                                {/*        </span>*/}
-                                                {/*    </p>*/}
-                                                {/*</div>*/}
                                             </div>
                                         </div>
 
@@ -991,6 +993,7 @@ class ViewCycle extends Component {
                                                                             .orgId) && (
                                                                     <div className=" col-12 d-flex justify-content-end text-right">
                                                                         <BlueSmallBtn
+
                                                                             title={this.state.item.receiver._id===this.props.userDetail.orgId?"Request a Step":"Add Step"}
                                                                             onClick={this.showStep}
                                                                             type="button"
@@ -1648,6 +1651,8 @@ class ViewCycle extends Component {
                                 <div className={"row justify-content-center"}>
                                     <div className={"col-6"} style={{ textAlign: "center" }}>
                                         <GreenButton
+
+                                            loading={this.state.loading}
                                             onClick={this.updateStep.bind(this)}
                                             title={"Yes"}
                                             type={"submit"}>
@@ -1710,7 +1715,7 @@ class ViewCycle extends Component {
                                     <GreenButton
                                         title={"Submit"}
                                         onClick={this.deliverCycle.bind(this)}
-
+                                    loading={this.state.loading}
                                         type={"submit"}>
                                         Yes
                                     </GreenButton>

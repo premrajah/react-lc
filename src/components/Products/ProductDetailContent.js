@@ -4,8 +4,7 @@ import {connect} from "react-redux";
 import {baseUrl, ENTITY_TYPES} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody} from "react-bootstrap";
-import {withStyles} from "@mui/styles/index";
+import {Alert, Modal, ModalBody, Spinner} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import SearchItem from "../Searches/search-item";
 import ResourceItem from "../../pages/create-search/ResourceItem";
@@ -50,7 +49,7 @@ class ProductDetailContent extends Component {
             timerEnd: false,
             count: 0,
             nextIntervalFlag: false,
-            item: this.props.item,
+            item: null,
             showPopUp: false,
             subProducts: [],
             listingLinked: null,
@@ -86,7 +85,8 @@ class ProductDetailContent extends Component {
             events:[],
             isOwner:false,
             isArchiver:false,
-            isServiceAgent:false
+            isServiceAgent:false,
+            eventsLoading:false
 
         };
 
@@ -107,7 +107,7 @@ class ProductDetailContent extends Component {
         this.showServiceAgent = this.showServiceAgent.bind(this);
         this.showOrgForm = this.showOrgForm.bind(this);
         this.handleSubmitOrg = this.handleSubmitOrg.bind(this);
-        this.getOrgs = this.getOrgs.bind(this);
+        // this.getOrgs = this.getOrgs.bind(this);
         this.loadInfo = this.loadInfo.bind(this);
         this.loadProduct = this.loadProduct.bind(this);
 
@@ -153,7 +153,7 @@ class ProductDetailContent extends Component {
                 .then((res) => {
 
 
-                    this.fetchReleases()
+                    this.fetchReleases(this.state.item.product._key)
 
                     this.props.showSnackbar({show:true,severity:"success",message:"Release request cancelled successfully. Thanks"})
 
@@ -237,18 +237,18 @@ class ProductDetailContent extends Component {
         });
     }
 
-    getOrgs() {
-        axios.get(baseUrl + "org/all").then(
-            (response) => {
-                var response = response.data;
-
-                this.setState({
-                    orgs: response.data,
-                });
-            },
-            (error) => {}
-        );
-    }
+    // getOrgs() {
+    //     // axios.get(baseUrl + "org/all").then(
+    //     //     (response) => {
+    //     //         var response = response.data;
+    //     //
+    //     //         this.setState({
+    //     //             orgs: response.data,
+    //     //         });
+    //     //     },
+    //     //     (error) => {}
+    //     // );
+    // }
 
     handleSubmitOrg() {
         var email = this.state.email;
@@ -261,7 +261,7 @@ class ProductDetailContent extends Component {
                 })
                 .then((res) => {
                     this.showOrgForm();
-                    this.getOrgs();
+                    // this.getOrgs();
                 })
                 .catch((error) => {});
     }
@@ -312,22 +312,25 @@ class ProductDetailContent extends Component {
     componentDidMount() {
         if (!this.props.item) {
             this.loadProduct(this.props.productId);
+
         } else {
             this.setState({
                 item: this.props.item,
             });
 
-            this.loadInfo();
+            this.loadInfo(this.props.item);
+
+            this.setActiveKey(null,"1")
+
+
+            this.fetchReleases(this.props.item.product._key)
+
+            this.getEvents(this.props.item.product._key)
+
+            this.ocVCProduct(this.props.item.product._key)
         }
 
-        this.setActiveKey(null,"1")
 
-
-        this.fetchReleases()
-
-        this.getEvents(this.state.item.product._key)
-
-        this.ocVCProduct()
 
     }
 
@@ -342,14 +345,14 @@ class ProductDetailContent extends Component {
                     item: this.props.item,
                 });
 
-                this.loadInfo();
+                this.loadInfo(this.props.item);
             }
             // this.setActiveKey(null,"1")
         }
     }
 
     showProductSelection(event) {
-        this.props.setProduct(this.props.item);
+        this.props.setProduct(this.state.item);
         // this.props.setParentProduct(this.state.parentProduct)
 
         this.props.showProductPopUp({ type: "sub_product_view", show: true });
@@ -364,9 +367,9 @@ class ProductDetailContent extends Component {
             });
 
 
-            this.getSubProducts();
+            this.getSubProducts(newProps.item);
 
-            this.loadInfo();
+            this.loadInfo(newProps.item);
         }
     }
 
@@ -380,9 +383,9 @@ class ProductDetailContent extends Component {
         }
     }
 
-    ocVCProduct = () => {
+    ocVCProduct = (productKey) => {
 
-        axios.get(baseUrl + "product/"+this.props.item.product._key+"/oc-vc" ).then(
+        axios.get(baseUrl + "product/"+productKey+"/oc-vc" ).then(
             (response) => {
 
 
@@ -439,7 +442,7 @@ class ProductDetailContent extends Component {
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product has moved to archive successfully. Thanks"})
 
-                this.ocVCProduct()
+                this.ocVCProduct(this.state.item.prduct._key)
             })
             .catch((error) => {
                 // this.setState({
@@ -459,7 +462,7 @@ class ProductDetailContent extends Component {
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product unarchived successfully. Thanks"})
 
-                this.ocVCProduct()
+                this.ocVCProduct(this.state.item.product._key)
             })
             .catch((error) => {
 
@@ -536,7 +539,7 @@ class ProductDetailContent extends Component {
 
                 {
                     org_id: site,
-                    product_id: this.props.item.product._key,
+                    product_id: this.state.item.product._key,
                 }
             )
             .then((res) => {
@@ -545,7 +548,7 @@ class ProductDetailContent extends Component {
                     showReleaseSuccess: true,
                 });
 
-                this.fetchReleases()
+                this.fetchReleases(this.state.item.product._key)
 
 
             })
@@ -579,7 +582,7 @@ class ProductDetailContent extends Component {
 
                 {
                     org_id: site,
-                    product_id: this.props.item.product._key,
+                    product_id: this.state.item.product._key,
                     rental_stage:"start_rental"
                 }
             )
@@ -625,7 +628,7 @@ class ProductDetailContent extends Component {
                 baseUrl + "product/site",
 
                 {
-                    product_id: this.props.item.product._key,
+                    product_id: this.state.item.product._key,
                     site_id: site,
                 },
             )
@@ -633,8 +636,8 @@ class ProductDetailContent extends Component {
 
 
                 this.showReleaseProductPopUp()
-                this.props.loadCurrentProduct(this.props.item.product._key)
-                this.props.showSnackbar({show:true,severity:"success",message:"Request to release "+this.props.item.product.name+" internally to new site is completed successfully. Thanks"})
+                this.props.loadCurrentProduct(this.state.item.product._key)
+                this.props.showSnackbar({show:true,severity:"success",message:"Request to release "+this.state.item.product.name+" internally to new site is completed successfully. Thanks"})
 
 
             })
@@ -670,7 +673,7 @@ class ProductDetailContent extends Component {
 
                 {
                     org_id: site,
-                    product_id: this.props.item.product._key,
+                    product_id: this.state.item.product._key,
                 }
             )
             .then((res) => {
@@ -709,10 +712,10 @@ class ProductDetailContent extends Component {
 
 
 
-    getListing() {
-        // var siteKey = (this.props.item.site_id).replace("Site/","")
+    getListing(listing) {
+        // var siteKey = (this.state.item.site_id).replace("Site/","")
 
-        axios.get(baseUrl + "listing/" + this.state.item.listing.replace("Listing/", "")).then(
+        axios.get(baseUrl + "listing/" + listing.replace("Listing/", "")).then(
             (response) => {
                 var responseData = response.data.data;
 
@@ -726,8 +729,8 @@ class ProductDetailContent extends Component {
         );
     }
 
-    getSearches() {
-        var searches = this.state.item.searches;
+    getSearches(searches) {
+
 
         for (var i = 0; i < searches.length; i++) {
             axios.get(baseUrl + "search/" + searches[i].replace("Search/", "")).then(
@@ -749,20 +752,20 @@ class ProductDetailContent extends Component {
         }
     }
 
-    getSubProducts() {
+    getSubProducts(productItem) {
         if (
-            this.state.item.sub_products &&
-            this.state.item.sub_products.length > 0 &&
+            productItem.sub_products &&
+            productItem.sub_products.length > 0 &&
             this.props.isLoggedIn
         ) {
-            var subProductIds = this.state.item.sub_products;
+            let subProductIds = productItem.sub_products;
 
-            for (var i = 0; i < subProductIds.length; i++) {
+            for (let i = 0; i < subProductIds.length; i++) {
                 axios.get(baseUrl + "product/" + subProductIds[i]._key).then(
                     (response) => {
-                        var responseAll = response.data;
+                        let responseAll = response.data;
 
-                        var subProducts = this.state.subProducts;
+                        let subProducts = this.state.subProducts;
 
                         subProducts.push(responseAll.data);
 
@@ -814,7 +817,18 @@ class ProductDetailContent extends Component {
                         item: responseAll.data,
                     });
 
-                    this.loadInfo();
+                    this.loadInfo(responseAll.data);
+
+                    this.setActiveKey(null,"1")
+
+
+                    this.fetchReleases(productKey)
+
+                    this.getEvents(responseAll.data.product._key)
+
+                    this.ocVCProduct(responseAll.data.product._key)
+
+                    this.loadInfo(responseAll.data.product._key);
                 },
                 (error) => {}
             );
@@ -822,9 +836,10 @@ class ProductDetailContent extends Component {
 
 
 
-    fetchReleases=()=> {
+
+    fetchReleases=(productKey)=> {
         axios
-            .get(baseUrl + "release/product/"+this.state.item.product._key)
+            .get(baseUrl + "release/product/"+productKey)
             .then(
                 (response) => {
 
@@ -842,10 +857,11 @@ class ProductDetailContent extends Component {
 
      getEvents = (productId) => {
 
+        this.setState({
+            eventsLoading:true
+        })
 
         let url = `${baseUrl}product/${productId}/event`
-
-
 
 
         axios.get(url).then(
@@ -853,31 +869,37 @@ class ProductDetailContent extends Component {
                 var responseAll = response.data.data;
 
                 this.setState({
-                    events:responseAll
+                    events:responseAll,
+                    eventsLoading:false
                 })
             },
             (error) => {
+                this.setState({
+                    eventsLoading:false
+                })
+
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
 
             }
         );
     };
 
 
-    loadInfo() {
-        if (this.state.item) {
-            this.getOrgs();
+    loadInfo(productItem) {
 
-            if (this.state.item.listing && this.props.isLoggedIn) {
-                this.getListing();
+            // this.getOrgs();
+
+            if (productItem.listing && this.props.isLoggedIn) {
+                this.getListing(productItem.listing);
             }
 
-            if (this.state.item && this.state.item.searches.length > 0) {
-                this.getSearches();
+            if (productItem && productItem.searches.length > 0) {
+                this.getSearches(productItem.searches);
             }
 
             if (this.state.showRegister && this.state.isLoggedIn && this.state.userDetail)
                 this.getSites();
-        }
+
     }
 
 
@@ -893,8 +915,7 @@ class ProductDetailContent extends Component {
     }
 
     render() {
-        const classes = withStyles();
-        const classesBottom = withStyles();
+
 
         return (
             <>
@@ -903,10 +924,10 @@ class ProductDetailContent extends Component {
 
                         {this.state.zoomQrCode&&
                         <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
-                            {this.props.item&&this.props.item.qr_artifact && (
+                            {this.state.item&&this.state.item.qr_artifact && (
                                 <img
                                     className="img-fluid qr-code-zoom"
-                                    src={this.props.item.qr_artifact.blob_url}
+                                    src={this.state.item.qr_artifact.blob_url}
 
                                 />
                             )}
@@ -1033,7 +1054,7 @@ class ProductDetailContent extends Component {
                                 <div className={"listing-row-border "}></div>
 
 
-                                {this.props.item &&
+                                {this.state.item &&
                                 <div className="row justify-content-start pb-3  tabs-detail">
                                     <div className="col-12 ">
 
@@ -1057,7 +1078,7 @@ class ProductDetailContent extends Component {
                                                         aria-label="lab API tabs example">
 
                                                         <Tab label="Product Info" value="1" />
-                                                        {(this.props.item.product.purpose === "aggregate") &&
+                                                        {(this.state.item.product.purpose === "aggregate") &&
                                                         <Tab label="Aggregation" value="2"/>
                                                         }
                                                         <Tab label="Sub Products" value="3" />
@@ -1072,40 +1093,50 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
-                                                        {this.state.events.length>0 &&  <Tab label="Calendar" value="8" />}
+                                                          <Tab
+                                                              label={<span>Calendar {this.state.eventsLoading? <Spinner
+                                                                  className="mr-2"
+                                                                  as="span"
+                                                                  animation="border"
+                                                                  size="sm"
+                                                                  role="status"
+                                                                  aria-hidden="true"
+                                                              />:""}</span>}
+                                                              // label="Calendar"
+                                                              value="8" />
 
                                                     </TabList>
                                                 </Box>
 
                                                 <TabPanel value="1">
 
-                                                    <InfoTabContent item={this.props.item}/>
+                                                    <InfoTabContent item={this.state.item}/>
 
                                                 </TabPanel>
 
-                                                {(this.props.item.product.purpose === "aggregate") &&
+                                                {(this.state.item.product.purpose === "aggregate") &&
                                                 <TabPanel value="2">
 
-                                                    <AggregatesTab item={this.props.item}/>
+                                                    <AggregatesTab item={this.state.item}/>
                                                 </TabPanel>}
                                                 <TabPanel value="3">
                                                     <SubProductsTab
                                                         isOwner={this.state.isOwner}
-                                                        item={this.props.item}/>
+                                                        item={this.state.item}/>
                                                 </TabPanel>
                                                 <TabPanel value="4">
                                                     <>
 
-                                                        <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.props.item.site._key}>{this.props.item.site.name}</Link></span></p>
-                                                        {this.props.item.site.geo_codes && this.props.item.site.geo_codes[0] &&
+                                                        <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.state.item.site._key}>{this.state.item.site.name}</Link></span></p>
+                                                        {this.state.item.site.geo_codes && this.state.item.site.geo_codes[0] &&
 
                                                         <div className={"bg-white rad-8 p-2"}>
                                                             <GoogleMap
                                                                 searchLocation
-                                                                siteId={this.props.item.site._key} width={"100%"}
+                                                                siteId={this.state.item.site._key} width={"100%"}
                                                                        height={"300px"} location={{
-                                                                name: this.props.item.site.name,
-                                                                location: this.props.item.site.geo_codes[0].address_info.geometry.location,
+                                                                name: this.state.item.site.name,
+                                                                location: this.state.item.site.geo_codes[0].address_info.geometry.location,
                                                                 isCenter: true
                                                             }}/>
                                                         </div>
@@ -1149,15 +1180,15 @@ class ProductDetailContent extends Component {
                                                 <TabPanel value="7">
                                                     {/*<ArtifactProductsTab*/}
                                                     {/*    entityType={ENTITY_TYPES.Product}*/}
-                                                    {/*    item={this.props.item}*/}
+                                                    {/*    item={this.state.item}*/}
                                                     {/*    type={"edit"}*/}
                                                     {/*/>*/}
                                                     <div className=" bg-white rad-8 mt-4 p-3">
                                                     <ArtifactManager
                                                         entityType={ENTITY_TYPES.Product}
-                                                        item={this.props.item}
-                                                        entityId={this.props.item.product._key}
-                                                        artifacts={this.props.item.artifacts}
+                                                        item={this.state.item}
+                                                        entityId={this.state.item.product._key}
+                                                        artifacts={this.state.item.artifacts}
                                                         type={"edit"}
                                                         isArchiver={this.state.isArchiver}
                                                     />
@@ -1166,9 +1197,11 @@ class ProductDetailContent extends Component {
 
                                                   <TabPanel value="8">
                                                     <BigCalenderEvents
-                                                       events={this.state.events}
+                                                        eventsLoading={this.state.eventsLoading}
+                                                        events={this.state.events}
                                                         productId={this.state.item.product._key}
-                                                       smallView  />
+                                                        smallView
+                                                    />
                                                 </TabPanel>
 
 
@@ -1225,7 +1258,7 @@ class ProductDetailContent extends Component {
                                             hideUpload
                                             edit
                                             triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"}
-                                            item={this.props.item} />
+                                            item={this.state.item} />
                                         }
                                     </div>
 

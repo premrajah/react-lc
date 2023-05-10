@@ -66,7 +66,7 @@ class PaginationLayout extends Component {
         });
     };
 
-    timeout = 0;
+
 
     loadMore = (reset) => {
         this.props.loadMore({
@@ -75,6 +75,8 @@ class PaginationLayout extends Component {
             reset: reset,
         });
     };
+
+    timeout = 0;
     timeoutSearch() {
         if (this.timeout) {
             // console.debug("clear prev search ")

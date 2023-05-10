@@ -711,10 +711,10 @@ class ProductDetailContent extends Component {
 
 
 
-    getListing() {
+    getListing(listing) {
         // var siteKey = (this.state.item.site_id).replace("Site/","")
 
-        axios.get(baseUrl + "listing/" + this.state.item.listing.replace("Listing/", "")).then(
+        axios.get(baseUrl + "listing/" + listing.replace("Listing/", "")).then(
             (response) => {
                 var responseData = response.data.data;
 
@@ -728,8 +728,8 @@ class ProductDetailContent extends Component {
         );
     }
 
-    getSearches() {
-        var searches = this.state.item.searches;
+    getSearches(searches) {
+
 
         for (var i = 0; i < searches.length; i++) {
             axios.get(baseUrl + "search/" + searches[i].replace("Search/", "")).then(
@@ -882,11 +882,11 @@ class ProductDetailContent extends Component {
             // this.getOrgs();
 
             if (productItem.listing && this.props.isLoggedIn) {
-                this.getListing();
+                this.getListing(productItem.listing);
             }
 
             if (productItem && productItem.searches.length > 0) {
-                this.getSearches();
+                this.getSearches(productItem.searches);
             }
 
             if (this.state.showRegister && this.state.isLoggedIn && this.state.userDetail)

@@ -175,7 +175,7 @@ marteplace
             .get(baseUrl + "listing/" + encodeUrl(this.slug)+"/expand", )
             .then(
                 (response) => {
-                    var responseData = response.data;
+                    let responseData = response.data;
 
                     this.setState({
                         item: responseData.data,
@@ -183,6 +183,7 @@ marteplace
 
                     // this.getSite(responseData.data);
 
+                    if (responseData.data&&responseData.data.product)
                     this.getPreviewImage(responseData.data.product._key);
                 },
                 (error) => {

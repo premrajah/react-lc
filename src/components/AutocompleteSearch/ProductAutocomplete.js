@@ -118,7 +118,7 @@ class ProductAutocomplete extends Component {
         this.setState({
             loading:true
         })
-            axios.get(encodeURI(`${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&or=name~${key}%&sort_by=name:ASC`))
+            axios.get(encodeURI(`${baseUrl}seek?name=Product&offset=0&size=20&relation=belongs_to&no_parent=true&count=false&or=name~${key}%&sort_by=name:ASC`))
                 .then((response) => {
 
                 this.setState({
@@ -138,9 +138,16 @@ class ProductAutocomplete extends Component {
                 //     orgNames: companies,
                 // });
 
-                this.setState({
-                    filteredSuggestions: products.filter(product=> !this.props.filterData.find(item=>product._key===item)),
-                });
+                    if (this.props.filterData){
+                        this.setState({
+                            filteredSuggestions: products.filter(product=> !this.props.filterData.find(item=>product._key===item)),
+                        });
+                    }else{
+                        this.setState({
+                            filteredSuggestions: products
+                        });
+                    }
+
                 this.setState({
                     activeSuggestion: 0,
                     showSuggestions: true,

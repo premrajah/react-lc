@@ -90,6 +90,7 @@ export default function
     localizer = mLocalizer,
     showDemoLink = true,
     smallView,
+                          eventsLoading,
     ...props
 }) {
     const [events, setEvents] = useState([]);

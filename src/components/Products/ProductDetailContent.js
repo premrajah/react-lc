@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {baseUrl, ENTITY_TYPES} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody} from "react-bootstrap";
+import {Alert, Modal, ModalBody, Spinner} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import SearchItem from "../Searches/search-item";
 import ResourceItem from "../../pages/create-search/ResourceItem";
@@ -85,7 +85,8 @@ class ProductDetailContent extends Component {
             events:[],
             isOwner:false,
             isArchiver:false,
-            isServiceAgent:false
+            isServiceAgent:false,
+            eventsLoading:false
 
         };
 
@@ -856,10 +857,11 @@ class ProductDetailContent extends Component {
 
      getEvents = (productId) => {
 
+        this.setState({
+            eventsLoading:true
+        })
 
         let url = `${baseUrl}product/${productId}/event`
-
-
 
 
         axios.get(url).then(
@@ -867,10 +869,16 @@ class ProductDetailContent extends Component {
                 var responseAll = response.data.data;
 
                 this.setState({
-                    events:responseAll
+                    events:responseAll,
+                    eventsLoading:false
                 })
             },
             (error) => {
+                this.setState({
+                    eventsLoading:false
+                })
+
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
 
             }
         );
@@ -1085,7 +1093,17 @@ class ProductDetailContent extends Component {
                                                         }
 
                                                         <Tab label="Attachments" value="7" />
-                                                        {this.state.events.length>0 &&  <Tab label="Calendar" value="8" />}
+                                                          <Tab
+                                                              label={<span>Calendar {this.state.eventsLoading? <Spinner
+                                                                  className="mr-2"
+                                                                  as="span"
+                                                                  animation="border"
+                                                                  size="sm"
+                                                                  role="status"
+                                                                  aria-hidden="true"
+                                                              />:""}</span>}
+                                                              // label="Calendar"
+                                                              value="8" />
 
                                                     </TabList>
                                                 </Box>
@@ -1179,9 +1197,11 @@ class ProductDetailContent extends Component {
 
                                                   <TabPanel value="8">
                                                     <BigCalenderEvents
-                                                       events={this.state.events}
+                                                        eventsLoading={this.state.eventsLoading}
+                                                        events={this.state.events}
                                                         productId={this.state.item.product._key}
-                                                       smallView  />
+                                                        smallView
+                                                    />
                                                 </TabPanel>
 
 

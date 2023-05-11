@@ -426,6 +426,7 @@ class AutocompleteCustom extends Component {
                         {filteredSuggestions.map((suggestion, index) => {
                             let className;
 
+                            console.log(suggestion)
                             // Flag the active suggestion with a class
                             if (index === activeSuggestion) {
                                 className = "suggestion-active";

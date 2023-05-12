@@ -36,6 +36,7 @@ import EventForm from "../Event/EventForm";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
 import ArtifactManager from "../FormsUI/ArtifactManager";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 
 class ProductDetailContent extends Component {
@@ -82,6 +83,7 @@ class ProductDetailContent extends Component {
             activeReleaseTabKey:"1",
             zoomQrCode:false,
             releases:[],
+            serviceAgentRequests:[],
             events:[],
             isOwner:false,
             isArchiver:false,
@@ -137,6 +139,33 @@ class ProductDetailContent extends Component {
 
     }
 
+    cancelChangeServiceAgentRequest = () => {
+
+        if (this.state.serviceAgentRequests&&this.state.serviceAgentRequests.length>0) {
+            var data = {
+                id: this.state.serviceAgentRequests[0].Release._key,
+                new_stage: "cancelled",
+                // "site_id": this.state.site
+            };
+
+            axios
+                .post(baseUrl + "service-agent/stage", data)
+                .then((res) => {
+
+
+                    this.fetchExistingAgentRequests(this.state.item.product._key)
+
+                    this.props.showSnackbar({show:true,severity:"success",message:"Change service agent request cancelled successfully. Thanks"})
+
+
+                })
+                .catch((error) => {
+                    this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
+
+                });
+
+        }
+    };
 
 
     actionSubmit = () => {
@@ -321,7 +350,7 @@ class ProductDetailContent extends Component {
             this.loadInfo(this.props.item);
 
             this.setActiveKey(null,"1")
-
+            this.fetchExistingAgentRequests(this.props.item.product._key)
 
             this.fetchReleases(this.props.item.product._key)
 
@@ -679,12 +708,20 @@ class ProductDetailContent extends Component {
             .then((res) => {
                 this.setState({
                     showServiceAgentSuccess: true,
+                    btnLoading: false,
                 });
+
+                this.props.showSnackbar({show:true,severity:"success",message:"Change Service Agent request submitted successfully"})
+                this.fetchExistingAgentRequests(this.state.item.product._key)
+
             })
             .catch((error) => {
                 this.setState({
                     errorServiceAgent: error.response.data.errors[0].message,
+                    btnLoading: false,
                 });
+                this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
+
             });
     };
 
@@ -821,7 +858,7 @@ class ProductDetailContent extends Component {
 
                     this.setActiveKey(null,"1")
 
-
+                    this.fetchExistingAgentRequests(productKey)
                     this.fetchReleases(productKey)
 
                     this.getEvents(responseAll.data.product._key)
@@ -854,6 +891,23 @@ class ProductDetailContent extends Component {
             );
     }
 
+    fetchExistingAgentRequests=(productKey)=> {
+        axios
+            .get(baseUrl + "service-agent/product/"+productKey)
+            .then(
+                (response) => {
+
+                    this.setState({
+                        serviceAgentRequests: response.data.data,
+
+                    });
+
+                },
+                (error) => {
+                    // var status = error.response.status
+                }
+            );
+    }
 
      getEvents = (productId) => {
 
@@ -1960,26 +2014,20 @@ class ProductDetailContent extends Component {
 
                         </GlobalDialog>
 
-                        <Modal
-                            className={"loop-popup"}
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered
-                            show={this.state.showServiceAgent}
-                            onHide={this.showServiceAgent}
-                            animation={false}>
-                            <ModalBody>
-                                <div className={"row justify-content-center"}>
-                                    <div className={"col-10 text-center"}>
-                                        <p
-                                            style={{ textTransform: "Capitalize" }}
-                                            className={"text-bold text-blue "}>
-                                            Change Service Agent For: {this.state.item.product.name}
-                                        </p>
-                                    </div>
-                                </div>
+                        {/*change service agents*/}
 
-                                {!this.state.showServiceAgentSuccess ? (
-                                    <>
+                        <GlobalDialog
+                            size="sm"
+                            heading={"Change Service Agent"}
+                            show={this.state.showServiceAgent}
+                            hide={()=> {this.showServiceAgent();}}
+                        >
+                            {!(this.state.serviceAgentRequests&&
+                                this.state.serviceAgentRequests.length&&
+                                this.state.serviceAgentRequests.filter(item=>item.Release.stage!=="cancelled").length>0)&&
+                                <div className="col-12">
+                                        <div className="row m-2">
+                                            <div className="col-12">
                                         <AutocompleteCustom
                                             filterOrgs={[{_id:this.props.userDetail.orgId}]}
                                             orgs={true}
@@ -1990,7 +2038,7 @@ class ProductDetailContent extends Component {
                                             }
                                         />
                                         <form onSubmit={this.submitServiceAgentProduct}>
-                                            <div className={"row justify-content-center p-2 mt-4"}>
+                                            <div className={"row justify-content-center  mt-2"}>
                                                 <div className={"col-12 text-center mt-2"}>
                                                     <div className={"row justify-content-center"}>
                                                         <div className={"col-12 text-center mb-4"}>
@@ -2000,93 +2048,7 @@ class ProductDetailContent extends Component {
                                                                 name={"org"}
                                                             />
 
-                                                            <p>
-                                                                If the company you are looking for
-                                                                doesn't exist?
-                                                                <span
-                                                                    className={"forgot-password-link "}
-                                                                    onClick={this.showOrgForm}>
-                                                                    {this.state.showOrgForm
-                                                                        ? "Hide "
-                                                                        : "Add Company"}
-                                                                </span>
-                                                            </p>
 
-                                                            {this.state.showOrgForm && (
-                                                                <>
-                                                                    <div
-                                                                        className={
-                                                                            "row m-2 container-gray"
-                                                                        }>
-                                                                        <div
-                                                                            className={
-                                                                                "col-12 text-left mt-2 "
-                                                                            }>
-                                                                            <p
-                                                                                className={
-                                                                                    "text-bold text-blue"
-                                                                                }>
-                                                                                Add Company's Email
-                                                                            </p>
-                                                                        </div>
-                                                                        <div
-                                                                            className={
-                                                                                "col-12 text-center "
-                                                                            }>
-                                                                            <>
-                                                                                <div
-                                                                                    className={
-                                                                                        "row justify-content-center"
-                                                                                    }>
-                                                                                    <div
-                                                                                        className={
-                                                                                            "col-12 text-center mb-2"
-                                                                                        }>
-                                                                                        <TextField
-                                                                                            id="outlined-basic"
-                                                                                            onChange={this.handleChangeEmail.bind(
-                                                                                                this,
-                                                                                                "email"
-                                                                                            )}
-                                                                                            variant="outlined"
-                                                                                            fullWidth={
-                                                                                                true
-                                                                                            }
-                                                                                            name={
-                                                                                                "email"
-                                                                                            }
-                                                                                            type={
-                                                                                                "text"
-                                                                                            }
-                                                                                            value={
-                                                                                                this
-                                                                                                    .state
-                                                                                                    .email
-                                                                                            }
-                                                                                        />
-                                                                                    </div>
-
-                                                                                    <div
-                                                                                        className={
-                                                                                            "col-12 text-center mb-2"
-                                                                                        }>
-                                                                                        <button
-                                                                                            onClick={
-                                                                                                this
-                                                                                                    .handleSubmitOrg
-                                                                                            }
-                                                                                            className={
-                                                                                                "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                                                            }>
-                                                                                            Submit
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </>
-                                                                        </div>
-                                                                    </div>
-                                                                </>
-                                                            )}
                                                         </div>
 
                                                         {this.state.errorRelease && (
@@ -2117,49 +2079,51 @@ class ProductDetailContent extends Component {
                                                                 <div
                                                                     className={"col-6"}
                                                                     style={{ textAlign: "center" }}>
-                                                                    <button
-                                                                        style={{
-                                                                            minWidth: "120px",
-                                                                        }}
-                                                                        className={
-                                                                            "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-blue"
-                                                                        }
-                                                                        type={"submit"}>
-                                                                        Yes
-                                                                    </button>
+                                                                    <BlueButton
+                                                                        disabled={this.state.btnLoading}
+                                                                        loading={this.state.btnLoading}
+                                                                       fullWidth
+                                                                       title={"Submit"}
+                                                                       type={"submit"}>
+                                                                    </BlueButton>
                                                                 </div>
-                                                                <div
-                                                                    className={"col-6"}
-                                                                    style={{ textAlign: "center" }}>
-                                                                    <p
-                                                                        onClick={
-                                                                            this.showServiceAgent
-                                                                        }
-                                                                        className={
-                                                                            "shadow-sm mr-2 btn btn-link green-btn-border mt-2 mb-2 btn-blue"
-                                                                        }>
-                                                                        Cancel
-                                                                    </p>
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
-                                    </>
-                                ) : (
-                                    <div className={"row justify-content-center"}>
-                                        <div className={"col-10 text-center"}>
-                                            <Alert key={"alert"} variant={"success"}>
-                                                Your change service agent request has been submitted
-                                                successfully. Thanks
-                                            </Alert>
+                                    </div>
                                         </div>
                                     </div>
+                            }
+
+                            {this.state.serviceAgentRequests&&this.state.serviceAgentRequests.length>0
+                                && this.state.serviceAgentRequests.filter(item=>item.Release.stage!=="cancelled").map((release)=>
+
+                                    <div className={"col-12 mt-3 "}>
+
+                                        <div className="row mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
+                                            <div className={"col-11 text-blue "}>
+                                                Product Change service agent request to  <b>{release.responder.name}</b> <br/>
+                                                Status: <span className="text-pink text-capitlize">{release.Release.stage}</span>
+                                                <br/><small className="text-gray-light mr-2">{getTimeFormat(release.Release._ts_epoch_ms)}</small>
+                                            </div>
+
+                                            <div className={"col-1 text-right "}>
+                                                <CloseButtonPopUp
+                                                    onClick={this.cancelChangeServiceAgentRequest}
+                                                />
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
                                 )}
-                            </ModalBody>
-                        </Modal>
+
+                        </GlobalDialog>
 
 
                     </>

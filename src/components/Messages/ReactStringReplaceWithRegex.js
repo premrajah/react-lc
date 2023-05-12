@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { connect } from "react-redux";
 import reactStringReplace from "react-string-replace";
 import { baseUrl, ORG_REGEX, SEARCH_REGEX, PRODUCT_REGEX, EVENTS_STATUS_REGEX, SITE_RELEASE_REGEX, ISSUE_REGEX, CYCLE_REGEX, MATCH_REGEX, PRODUCT_RELEASE_REGEX, SERVICE_AGENT_CHANGE_REGEX, PRODUCT_REGISTRATION, A_TAG_REGEX, LISTING_REGEX } from "../../Util/Constants";
 import { Link } from 'react-router-dom';
@@ -11,7 +12,7 @@ const CTA_Style = {
     borderBottom: "1px solid var(--lc-green)"
 }
 
-const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
+const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey, userDetail }) => {
     const [productDialog, setProductDialog] = useState(false);
 
     const markMessageRead = async (key) => {
@@ -62,17 +63,16 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
             </Link>
         ));
 
-        // replacedText = reactStringReplace(replacedText, MATCH_REGEX, (match, i) => (
-        //     <GetMatch userDetail={this.props.userDetail} i={i} match={match} />
+        replacedText = reactStringReplace(replacedText, MATCH_REGEX, (match, i) => (
+            <GetMatch userDetail={userDetail} i={i} match={match} />
 
-        // ));
+        ));
 
         replacedText = reactStringReplace(replacedText, PRODUCT_RELEASE_REGEX, (match, i) => (
             <Link
                 style={CTA_Style}
                 key={`${i}_${match}`}
                 to="/approve?tab=0"
-
             >
                 To Approvals Page
             </Link>
@@ -83,7 +83,6 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
                 style={CTA_Style}
                 key={`${i}_${match}`}
                 to="/approve?tab=2"
-
             >
                 To Approvals Page
             </Link>
@@ -94,7 +93,6 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
                 style={CTA_Style}
                 key={`${i}_${match}`}
                 to="/approve?tab=1"
-
             >
                 To Approvals Page
             </Link>
@@ -105,7 +103,6 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
                 style={CTA_Style}
                 key={`${i}_${match}`}
                 to="/account?page=system-users"
-
             >
                 User Approvals
             </Link>
@@ -126,7 +123,6 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
                 style={CTA_Style}
                 key={`${i}_${match}`}
                 to={`/search/${match}`}
-
             >
                 Search
             </Link>
@@ -186,22 +182,35 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
     );
 };
 
-export default ReactStringReplaceWithRegex;
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn,
+        userDetail: state.userDetail,
+        notifications: state.notifications,
+    };
+};
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        // getNotifications: (data) => dispatch(actionCreator.getNotifications(data)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReactStringReplaceWithRegex);
+
+
+
+// for get match
 const GetMatch = (props) => {
 
     const [data, setData] = useState(null)
     const [listing, setListing] = useState(null)
     const [search, setSearch] = useState(null)
     useEffect(() => {
-
-
         axios
             .get(`${baseUrl}match/${props.match}`)
             .then((res) => {
-
                 setData(res.data.data)
-
 
                 if (props.userDetail.orgId === res.data.data.listing.org._id) {
                     setListing(res.data.data.listing.listing)
@@ -209,7 +218,6 @@ const GetMatch = (props) => {
                 else if (props.userDetail.orgId === res.data.data.search.org._id) {
                     setSearch(res.data.data.search.search)
                 }
-
 
             })
             .catch((error) => {
@@ -221,6 +229,7 @@ const GetMatch = (props) => {
     return <>
 
         {data ? <Link
+            style={CTA_Style}
             key={`${props.i}_${props.match}`}
             to={`/${listing ? listing._key : search ? "search/" + search._key : ""}`}
         >

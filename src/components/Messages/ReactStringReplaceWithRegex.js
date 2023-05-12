@@ -7,6 +7,10 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import SubproductItem from "../Products/Item/SubproductItem";
 import OrgComponent from "../Org/OrgComponent";
 
+const CTA_Style = {
+    borderBottom: "1px solid var(--lc-green)"
+}
+
 const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
     const [productDialog, setProductDialog] = useState(false);
 
@@ -38,7 +42,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
         replacedText = reactStringReplace(replacedText, PRODUCT_REGEX, (match, i) => (
             <span
                 key={`${i}_${match}`}
-                style={{ borderBottom: "1px solid var(--lc-green)" }}
+                style={CTA_Style}
                 onClick={() => {
                     setProductDialog(true);
                     markMessageRead(messageKey);
@@ -49,7 +53,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
 
         replacedText = reactStringReplace(replacedText, CYCLE_REGEX, (match, i) => (
             <Link
-                style={{ borderBottom: "1px solid var(--lc-green)" }}
+                style={CTA_Style}
                 key={`${i}_${match}`}
                 to={`cycle/${match}`}
             // onClick={markMessageRead(messageKey)}
@@ -65,6 +69,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
 
         replacedText = reactStringReplace(replacedText, PRODUCT_RELEASE_REGEX, (match, i) => (
             <Link
+                style={CTA_Style}
                 key={`${i}_${match}`}
                 to="/approve?tab=0"
 
@@ -75,6 +80,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
 
         replacedText = reactStringReplace(replacedText, SERVICE_AGENT_CHANGE_REGEX, (match, i) => (
             <Link
+                style={CTA_Style}
                 key={`${i}_${match}`}
                 to="/approve?tab=2"
 
@@ -85,6 +91,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
 
         replacedText = reactStringReplace(replacedText, PRODUCT_REGISTRATION, (match, i) => (
             <Link
+                style={CTA_Style}
                 key={`${i}_${match}`}
                 to="/approve?tab=1"
 
@@ -95,6 +102,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
 
         replacedText = reactStringReplace(replacedText, A_TAG_REGEX, (match, i) => (
             <Link
+                style={CTA_Style}
                 key={`${i}_${match}`}
                 to="/account?page=system-users"
 
@@ -105,6 +113,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
 
         replacedText = reactStringReplace(replacedText, LISTING_REGEX, (match, i) => (
             <Link
+                style={CTA_Style}
                 key={`${i}_${match}`}
                 to={`/${match}`}
             >
@@ -114,6 +123,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
 
         replacedText = reactStringReplace(replacedText, SEARCH_REGEX, (match, i) => (
             <Link
+                style={CTA_Style}
                 key={`${i}_${match}`}
                 to={`/search/${match}`}
 
@@ -124,7 +134,9 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
 
         replacedText = reactStringReplace(replacedText, EVENTS_STATUS_REGEX, (match, i) => (
             <Link
+                style={CTA_Style}
                 key={`${i}_${match}`}
+            // TODO
             // onClick={() => { this.showStageEventPopup(match) }}
             >
                 View Event
@@ -133,6 +145,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
 
         replacedText = reactStringReplace(replacedText, ISSUE_REGEX, (match, i) => (
             <Link
+                style={CTA_Style}
                 key={`${i}_${match}`}
                 to={`/issue/${match}`}
             >
@@ -142,6 +155,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey }) => {
 
         replacedText = reactStringReplace(replacedText, SITE_RELEASE_REGEX, (match, i) => (
             <Link
+                style={CTA_Style}
                 key={`${i}_${match}`}
                 to={"/approve?tab=3"}
             >

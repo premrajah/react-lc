@@ -19,6 +19,8 @@ import { validateFormatCreate, validateInputs, Validators } from "../../Util/Val
 import {ArrowDropUp, ArrowDropDown} from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomPopover from "./CustomPopover";
+import BlueBorderButton from "./Buttons/BlueBorderButton";
+import BlueSmallBtn from "./Buttons/BlueSmallBtn";
 
 const ArtifactManager = ({
     entityId,
@@ -360,16 +362,18 @@ const ArtifactManager = ({
 
     return (
         <>
-            <div className="row d-flex align-items-end mt-3 mb-2">
+            <div className="row d-flex align-items-end mt-2 mb-2">
                 <div className="col-md-10">
                     <>
                         {!props.isArchiver &&
                             <div className="row d-flex align-items-end">
-                            <div className="col-12 d-flex mb-2">
+                                {!isLoading?<>
+                                        <div className="col-12 d-flex mb-2">
                                 <CustomPopover text="Accepted files: JPG, JPEG, PNG, DOC, DOCX, PDF, XLS, XLSX, TXT, MP4, MOV">
                                 <div className="me-3">
-                                    {!isLoading ? (
-                                            <Button style={{height:"61px"}} className="" variant="outlined" component="label">
+
+
+                                            <Button  className="" variant="outlined" component="label">
                                                 Upload Files
                                                 <input
                                                     type="file"
@@ -379,18 +383,18 @@ const ArtifactManager = ({
                                                     accept={MIME_TYPES_ACCEPT}
                                                 />
                                             </Button>
-                                    ) : (
-                                        <LoaderAnimated />
-                                    )}
                                 </div>
                                 </CustomPopover>
-
-                                <div className="">
-                                    <Button  style={{height:"61px"}} variant="outlined" onClick={() => setIsLinksVisible(prev => !prev)}>
+                            {/*</div>*/}
+                            {/*    <div className="col-6 d-flex mb-2">*/}
+                                    <Button   variant="outlined" onClick={() => setIsLinksVisible(prev => !prev)}>
                                         Add Video Links {isLinksVisible ? <ArrowDropUp /> : <ArrowDropDown/> }
                                     </Button>
                                 </div>
-                            </div>
+                                    </>
+                                    :
+                                <LoaderAnimated loadingText={"Uploading..."}/>
+                                }
                         </div>}
                     </>
 
@@ -431,8 +435,8 @@ const ArtifactManager = ({
                 </div>
             </div>
 
-            <div className="row">
-                <div className="col">
+            <div className="row justify-content-center d-flex align-items-center">
+                <div className="col-6 ">
                     {uploadProgress && <>
                         <small>{uploadProgress}% Uploaded</small>
                         <progress id="progressBar" value={uploadProgress ? uploadProgress : 0} max="100"

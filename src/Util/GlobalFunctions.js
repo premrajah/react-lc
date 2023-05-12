@@ -177,7 +177,7 @@ export const getActionName = (actionName) => {
     }
 };
 
-export const LoaderAnimated = () => {
+export const LoaderAnimated = ({loadingText}) => {
     return (
         <div className="wrapper-loader justify-content-center text-center">
             <svg
@@ -195,7 +195,7 @@ export const LoaderAnimated = () => {
                 />
             </svg>
 
-            <span className={"m-1"}>Loading ...</span>
+            <span className={"m-1"}>{loadingText?loadingText:"Loading ..."}</span>
         </div>
     );
 };

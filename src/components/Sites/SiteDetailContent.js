@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {baseUrl} from "../../Util/Constants";
+import {baseUrl, ENTITY_TYPES} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 import {withStyles} from "@mui/styles/index";
@@ -21,6 +21,7 @@ import SiteReleaseDialog from "./SiteReleaseDialog";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import SiteFormNew from "./SiteFormNew";
 import ArtifactSiteTab from "./ArtifactSiteTab";
+import ArtifactManager from "../FormsUI/ArtifactManager";
 
 
 class SiteDetailContent extends Component {
@@ -622,7 +623,18 @@ class SiteDetailContent extends Component {
                                                 <SubProductsTab item={this.props.item.site} />
                                                 </TabPanel>}
                                                 <TabPanel value="4">
-                                                    <ArtifactSiteTab item={this.props.item}/>
+                                                    {/*<ArtifactSiteTab item={this.props.item}/>*/}
+
+                                                    <div className=" bg-white rad-8 mt-4 p-3">
+                                                        <ArtifactManager
+                                                            entityType={ENTITY_TYPES.Site}
+                                                            item={this.props.item}
+                                                            entityId={this.props.item.site._key}
+                                                            artifacts={this.props.item.artifacts}
+                                                            type={"edit"}
+
+                                                        />
+                                                    </div>
                                                 </TabPanel>
 
                                             </TabContext>

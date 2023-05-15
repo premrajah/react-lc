@@ -35,7 +35,7 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey, userDetail }
 
     const showStageEventPopup = (stageEventId) => {
         setStageEventId(stageEventId);
-        setShowStagePopup(prevState => !showStagePopup);
+        setShowStagePopup(prevState => !prevState);
     }
 
     const handleReactStringReplace = (textToReplace) => {

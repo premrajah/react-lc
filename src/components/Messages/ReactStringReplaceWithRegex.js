@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import GlobalDialog from "../RightBar/GlobalDialog";
 import SubproductItem from "../Products/Item/SubproductItem";
 import OrgComponent from "../Org/OrgComponent";
+import EventStatus from "../Event/EventStatus";
 
 const CTA_Style = {
     borderBottom: "1px solid var(--lc-green)"
@@ -14,6 +15,8 @@ const CTA_Style = {
 
 const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey, userDetail }) => {
     const [productDialog, setProductDialog] = useState(false);
+    const [stageEventId, setStageEventId] = useState(null);
+    const [showStagePopup, setShowStagePopup] = useState(false);
 
     const markMessageRead = async (key) => {
         if (!key) return;
@@ -29,6 +32,11 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey, userDetail }
             console.log("markMessageRead error ", e);
         }
     };
+
+    const showStageEventPopup = (stageEventId) => {
+        setStageEventId(stageEventId);
+        setShowStagePopup(prevState => !showStagePopup);
+    }
 
     const handleReactStringReplace = (textToReplace) => {
 
@@ -46,7 +54,6 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey, userDetail }
                 style={CTA_Style}
                 onClick={() => {
                     setProductDialog(true);
-                    markMessageRead(messageKey);
                 }}>
                 View Product
             </span>
@@ -57,7 +64,6 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey, userDetail }
                 style={CTA_Style}
                 key={`${i}_${match}`}
                 to={`cycle/${match}`}
-            // onClick={markMessageRead(messageKey)}
             >
                 Cycle
             </Link>
@@ -132,8 +138,8 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey, userDetail }
             <Link
                 style={CTA_Style}
                 key={`${i}_${match}`}
-            // TODO
-            // onClick={() => { this.showStageEventPopup(match) }}
+                // TODO
+                onClick={() => { showStageEventPopup(match) }}
             >
                 View Event
             </Link>
@@ -177,6 +183,17 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey, userDetail }
                 </div>
             </GlobalDialog>
 
+            <GlobalDialog
+                heading="View Event"
+                show={showStagePopup}
+                hide={showStageEventPopup}
+            ><div className="col-12">
+                    {console.log(">> ", stageEventId)}
+                    {stageEventId && <EventStatus
+                        hide={showStageEventPopup} eventId={stageEventId}
+                    />}
+                </div>
+            </GlobalDialog>
 
         </>
     );

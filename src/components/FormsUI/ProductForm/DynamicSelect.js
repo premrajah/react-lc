@@ -95,7 +95,8 @@ const DynamicSelectArrayWrapper = (props) => {
                 let items=res.data.data
                 if (filterData&&filterData.length>0){
                     try{
-                       items= items.reverse().filter((item)=>
+                       // items= items.reverse().filter((item)=>
+                        items= items.filter((item)=>
                             typeof item === 'string'
                                 ? !(filterData.find(item))
                                 : subValueKey

@@ -1,26 +1,17 @@
-import { Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import {
-    baseUrl,
-    ENTITY_TYPES,
-    getImageAsBytes,
-    MIME_TYPES,
-    MIME_TYPES_ACCEPT,
-} from "../../Util/Constants";
+import {Button} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {baseUrl, ENTITY_TYPES, getImageAsBytes, MIME_TYPES, MIME_TYPES_ACCEPT,} from "../../Util/Constants";
 import axios from "axios";
 import {checkIfMimeTypeAllowed, cleanFilename, isValidUrl, LoaderAnimated} from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import ArtifactIconDisplayBasedOnMimeType from "../UploadImages/ArtifactIconDisplayBasedOnMimeType";
 import MoreMenu from "../MoreMenu";
-import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import TextFieldWrapper from "./ProductForm/TextField";
-import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
-import {ArrowDropUp, ArrowDropDown} from "@mui/icons-material";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import {ArrowDropDown, ArrowDropUp} from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomPopover from "./CustomPopover";
-import BlueBorderButton from "./Buttons/BlueBorderButton";
-import BlueSmallBtn from "./Buttons/BlueSmallBtn";
 
 const ArtifactManager = ({
     entityId,

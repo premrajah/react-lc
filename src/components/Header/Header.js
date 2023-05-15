@@ -81,7 +81,9 @@ class Header extends React.Component {
 
                 </div>
 
-                {this.props.isLoggedIn&&getKey("assumedRole") && <AssumeRoleFloatingActionBtn logOut={()=>this.props.logOut()}/>}
+                {this.props.isLoggedIn&&getKey("assumedRole") &&
+                    <AssumeRoleFloatingActionBtn logOut={()=>this.props.logOut()}/>
+                }
 
                 </>
         );

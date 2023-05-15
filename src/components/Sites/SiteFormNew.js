@@ -597,7 +597,7 @@ class SiteFormNew extends Component {
 
         axios
             // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
-            .get(baseUrl + "seek?name=Site&relation=&count=false&include-to=Site:any")
+            .get(baseUrl + "seek?name=Site&relation=&count=false&include-to=Site:any&sort_by=_ts_epoch_ms:DESC")
             .then(
                 (response) => {
 

@@ -134,6 +134,8 @@ typings/
 
 # Added Ignore for package-lock.json
 package-lock.json
+.vscode
+.vscode/*
 
 .vscode
 .vscode/*

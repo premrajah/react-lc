@@ -338,6 +338,12 @@ class SiteFormNew extends Component {
 
 
 
+                //for product form add new site refresh
+                // if (this.props.refresh){
+                //     this.props.refresh(res.data.data)
+                // }
+
+
                 if (this.props.setSite)
                 this.props.setSite( res.data.data._key)
 
@@ -377,7 +383,10 @@ class SiteFormNew extends Component {
         if (!this.handleValidation()) {
             return
         }
+        this.setState({
 
+            loading:true
+        })
 
         this.setState({
             btnLoading: true,
@@ -445,6 +454,10 @@ class SiteFormNew extends Component {
                     if (this.props.item&&this.props.item)
                         this.props.loadCurrentSite(this.props.item._key)
 
+                    this.setState({
+
+                        loading:false
+                    })
                 }
 
 
@@ -590,7 +603,7 @@ class SiteFormNew extends Component {
 
         axios
             // .get(baseUrl + "site/" + encodeUrl(data) + "/expand"
-            .get(baseUrl + "seek?name=Site&relation=&count=false&include-to=Site:any")
+            .get(baseUrl + "seek?name=Site&relation=&count=false&include-to=Site:any&sort_by=_ts_epoch_ms:DESC")
             .then(
                 (response) => {
 
@@ -1043,8 +1056,9 @@ class SiteFormNew extends Component {
                                             title={this.props.item&&this.props.item ? "Update Site" : "Add Site"}
                                             type={"submit"}
 
-                                            disabled={this.state.isSubmitButtonPressed}
                                             fullWidth
+                                            loading={this.state.loading}
+                                            disabled={this.state.loading||this.state.isSubmitButtonPressed}
                                         >
                                         </BlueButton>
 

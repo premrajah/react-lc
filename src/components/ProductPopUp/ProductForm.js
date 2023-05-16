@@ -147,6 +147,9 @@ let slugify = require('slugify')
 
         showSubmitSite=(data)=> {
 
+            try {
+
+            console.log("submited data from new site", data)
             window.scrollTo(0, 0);
 
             this.setState({
@@ -171,6 +174,10 @@ let slugify = require('slugify')
                 })
             }
             this.props.loadSites(this.props.userDetail.token);
+
+            }catch (e){
+                console.log(e)
+            }
         }
 
 
@@ -1457,7 +1464,7 @@ let slugify = require('slugify')
                                                 <p style={{ marginTop: "10px" }}>
                                                     <span className="mr-1 text-gray-light">or </span>
                                                     <span
-                                                        onClick={this.showSubmitSite}
+                                                        onClick={()=>this.showSubmitSite()}
                                                         className={
                                                             " forgot-password-link ellipsis-end"
                                                         }>
@@ -2123,7 +2130,7 @@ let slugify = require('slugify')
 
                             <div className="col-md-12 col-sm-12 col-xs-12 ">
                                 <div
-                                    onClick={this.showSubmitSite}
+                                    onClick={()=>this.showSubmitSite()}
                                     className={
                                         "custom-label text-bold text-blue  pb-2 click-item"
                                     }>

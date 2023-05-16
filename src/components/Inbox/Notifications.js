@@ -1,12 +1,12 @@
-import React, {Component, useEffect, useState} from "react";
+import React, { Component, useEffect, useState } from "react";
 import axios from "axios";
-import {connect} from "react-redux";
-import {baseUrl} from "../../Util/Constants";
+import { connect } from "react-redux";
+import { baseUrl } from "../../Util/Constants";
 import reactStringReplace from "react-string-replace";
-import {Card, CardContent, Snackbar} from "@mui/material";
+import { Card, CardContent, Snackbar } from "@mui/material";
 import NotIcon from "@mui/icons-material/HdrWeak";
 import moment from "moment/moment";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import _ from "lodash";
 import PaginationLayout from "../IntersectionOserver/PaginationLayout";
@@ -17,7 +17,7 @@ import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 import CustomPopover from "../FormsUI/CustomPopover";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import {CheckCircle} from "@mui/icons-material";
+import { CheckCircle } from "@mui/icons-material";
 import EventStatus from "../Event/EventStatus";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import OrgComponent from "../Org/OrgComponent";
@@ -37,7 +37,7 @@ const SITE_RELEASE_REGEX = /Site\/([\w\d]+)/g;
 const EVENTS_STATUS_REGEX = /Event\/([\w\d]+)/g;
 
 const BRACKETS_REGEX = /[(\[)(\])]/g;
-const A_TAG_REGEX = /\<a(.*)\<\/a\>"/g;
+const A_TAG_REGEX = /\<a(.*)\<\/a\>/g;
 const LISTING_REGEX = /Listing\/([\w\d]+)/g;
 const SEARCH_REGEX = /Search\/([\w\d]+)/g;
 const ISSUE_REGEX = /Issue\/([\w\d]+)/g;
@@ -52,10 +52,10 @@ class Notifications extends Component {
         productPageSize: 20,
         loadingResults: false,
         count: 0,
-        activeReleaseTabKey:"1",
-        stageEventId:null,
-        stageEvent:null,
-        showStagePopup:false,
+        activeReleaseTabKey: "1",
+        stageEventId: null,
+        stageEvent: null,
+        showStagePopup: false,
     };
 
     getAllNotificationsCount = () => {
@@ -95,11 +95,11 @@ class Notifications extends Component {
             currentOffset: newOffset + this.state.productPageSize,
         });
     };
-    setActiveReleaseTabKey=(event,key)=>{
+    setActiveReleaseTabKey = (event, key) => {
 
 
         this.setState({
-            activeReleaseTabKey:key
+            activeReleaseTabKey: key
         })
 
 
@@ -120,7 +120,7 @@ class Notifications extends Component {
                         this.setState({ readNotificationAlert: true });
                     }
                 },
-                (error) => {}
+                (error) => { }
             )
             .catch((error) => {
                 this.setState({ readNotificationAlert: false });
@@ -190,10 +190,10 @@ class Notifications extends Component {
         }
     };
 
-    showStageEventPopup=(stageEventId)=>{
+    showStageEventPopup = (stageEventId) => {
         this.setState({
-            stageEventId:stageEventId,
-            showStagePopup:!this.state.showStagePopup
+            stageEventId: stageEventId,
+            showStagePopup: !this.state.showStagePopup
         })
     }
 
@@ -205,10 +205,10 @@ class Notifications extends Component {
 
         let flags;
         orgs.forEach((e, i) => {
-            if(e.actor === "message_to") {
-                if(e.org.org._id === this.props.userDetail.orgId) {
-                    if(e.read_flag && e.read_flag !== null) {
-                        if(e.read_flag.flag && e.read_flag.flag !== null) {
+            if (e.actor === "message_to") {
+                if (e.org.org._id === this.props.userDetail.orgId) {
+                    if (e.read_flag && e.read_flag !== null) {
+                        if (e.read_flag.flag && e.read_flag.flag !== null) {
                             flags = e.read_flag.flag;
                         }
                     }
@@ -226,7 +226,7 @@ class Notifications extends Component {
 
 
         text = reactStringReplace(message.text, ORG_REGEX, (match, i) => (
-            <OrgComponent key={`${i}_${match}`} orgId={match.replace("Org/","")} />
+            <OrgComponent key={`${i}_${match}`} orgId={match.replace("Org/", "")} />
         ));
 
 
@@ -253,14 +253,14 @@ class Notifications extends Component {
 
         text = reactStringReplace(text, MATCH_REGEX, (match, i) => (
             <>
-            {/*<Link*/}
-            {/*    key={`${i}_${match}`}*/}
-            {/*    to={`matched/${match}`}*/}
-            {/*    onClick={!flags ? () => this.messageRead(messageId) : undefined}>*/}
-            {/*    Match*/}
-            {/*</Link>*/}
-                <GetMatch userDetail={this.props.userDetail} i={i} match={match}   />
-                </>
+                {/*<Link*/}
+                {/*    key={`${i}_${match}`}*/}
+                {/*    to={`matched/${match}`}*/}
+                {/*    onClick={!flags ? () => this.messageRead(messageId) : undefined}>*/}
+                {/*    Match*/}
+                {/*</Link>*/}
+                <GetMatch userDetail={this.props.userDetail} i={i} match={match} />
+            </>
         ));
 
         text = reactStringReplace(text, PRODUCT_RELEASE_REGEX, (match, i) => (
@@ -312,7 +312,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to={`/search/${match}`}
-                onClick={!flags ?  () => this.messageRead(messageId) : undefined}>
+                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                 Search
             </Link>
         ));
@@ -321,7 +321,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 // to={`/event/${match}`}
-                onClick={() => {this.showStageEventPopup(match); !flags && this.messageRead(messageId);  }}>
+                onClick={() => { this.showStageEventPopup(match); !flags && this.messageRead(messageId); }}>
                 View Event
             </Link>
         ));
@@ -339,7 +339,7 @@ class Notifications extends Component {
             <Link
                 key={`${i}_${match}`}
                 to={"/approve?tab=3"}
-                onClick={!flags ? () =>  this.messageRead(messageId) : undefined}>
+                onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                 Site Approvals
             </Link>
         ));
@@ -370,39 +370,39 @@ class Notifications extends Component {
 
 
                                 <span className="text-gray-light time-text">
-                                <span className="mr-4">
-                                    {moment(message._ts_epoch_ms).fromNow()}
-                                </span>
+                                    <span className="mr-4">
+                                        {moment(message._ts_epoch_ms).fromNow()}
+                                    </span>
                                     {item.options && !item.options.is_owned && (
                                         <React.Fragment>
                                             {message.text.match(PRODUCT_REGEX) &&
-                                            !item.options.is_tracked ? (
+                                                !item.options.is_tracked ? (
                                                 <span
                                                     className="ms-4 blue-text"
                                                     style={{ cursor: "pointer" }}
                                                     onClick={() => this.handleTrackProduct(message)}>
-                                                <b>Track</b>
-                                            </span>
+                                                    <b>Track</b>
+                                                </span>
                                             ) : (
                                                 item.options.is_tracked && <span
                                                     className="ms-4 text-danger"
                                                     style={{ cursor: "pointer" }}
                                                     onClick={() => this.handleUnTrackProduct(message)}>
-                                                <b>Un-track</b>
-                                            </span>
+                                                    <b>Un-track</b>
+                                                </span>
                                             )}
                                         </React.Fragment>
                                     )}
-                            </span>
+                                </span>
                             </div>
 
-                            {!flags &&  <div className="col-1 text-right">
+                            {!flags && <div className="col-1 text-right">
                                 <CustomPopover text={"Mark as read"}>
 
                                     <ActionIconBtn
                                         className="ms-4"
-                                        onClick={()=>this.messageRead(messageId)}>
-                                        <CheckCircle style={{color:"#07AD89"}} />
+                                        onClick={() => this.messageRead(messageId)}>
+                                        <CheckCircle style={{ color: "#07AD89" }} />
                                     </ActionIconBtn>
                                 </CustomPopover>
                             </div>}
@@ -501,10 +501,10 @@ class Notifications extends Component {
                     show={this.state.showStagePopup}
                     hide={this.showStageEventPopup}
                 ><div className="col-12">
-                    {this.state.stageEventId && <EventStatus
-                        hide={this.showStageEventPopup} eventId={this.state.stageEventId}
-                    />}
-                </div>
+                        {this.state.stageEventId && <EventStatus
+                            hide={this.showStageEventPopup} eventId={this.state.stageEventId}
+                        />}
+                    </div>
                 </GlobalDialog>
             </div>
         );
@@ -514,42 +514,42 @@ class Notifications extends Component {
 
 const GetMatch = (props) => {
 
-  const [data,setData]=useState(null)
-    const [listing,setListing]=useState(null)
-    const [search,setSearch]=useState(null)
+    const [data, setData] = useState(null)
+    const [listing, setListing] = useState(null)
+    const [search, setSearch] = useState(null)
     useEffect(() => {
 
 
         axios
-        .get(`${baseUrl}match/${props.match}`)
-        .then((res) => {
+            .get(`${baseUrl}match/${props.match}`)
+            .then((res) => {
 
-            setData(res.data.data)
-
-
-            if (props.userDetail.orgId===res.data.data.listing.org._id){
-                setListing(res.data.data.listing.listing)
-            }
-            else if (props.userDetail.orgId===res.data.data.search.org._id){
-                setSearch(res.data.data.search.search)
-            }
+                setData(res.data.data)
 
 
-        })
-        .catch((error) => {
+                if (props.userDetail.orgId === res.data.data.listing.org._id) {
+                    setListing(res.data.data.listing.listing)
+                }
+                else if (props.userDetail.orgId === res.data.data.search.org._id) {
+                    setSearch(res.data.data.search.search)
+                }
 
-        });
-},[])
+
+            })
+            .catch((error) => {
+
+            });
+    }, [])
 
 
     return <>
 
-        {data? <Link
+        {data ? <Link
             key={`${props.i}_${props.match}`}
-            to={`/${listing?listing._key:search?"search/"+search._key:""}`}
-            >
+            to={`/${listing ? listing._key : search ? "search/" + search._key : ""}`}
+        >
             Match
-        </Link>:""}
+        </Link> : ""}
     </>
 };
 

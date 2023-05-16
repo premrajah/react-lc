@@ -12,46 +12,46 @@ export const dashboardUrl =
     REACT_APP_BRANCH_ENV === "master"
         ? "https://dash.makealoop.io/"
         : REACT_APP_BRANCH_ENV === "stage"
-        ? "https://dash-stage.makealoop.io/"
-        : REACT_APP_BRANCH_ENV === "local"
-        ? "https://dash-dev.makealoop.io/"
-        : "https://dash-dev.makealoop.io/";
+            ? "https://dash-stage.makealoop.io/"
+            : REACT_APP_BRANCH_ENV === "local"
+                ? "https://dash-dev.makealoop.io/"
+                : "https://dash-dev.makealoop.io/";
 
 export const baseUrl =
     REACT_APP_BRANCH_ENV === "master"
         ? "https://graph.makealoop.io/api/2/"
         : REACT_APP_BRANCH_ENV === "stage"
-        ? "https://graph-stage.makealoop.io/api/2/"
-        : REACT_APP_BRANCH_ENV === "local"
-        ? "http://127.0.0.1/api/2/"
-        : "https://graph-dev.makealoop.io/api/2/";
+            ? "https://graph-stage.makealoop.io/api/2/"
+            : REACT_APP_BRANCH_ENV === "local"
+                ? "http://127.0.0.1/api/2/"
+                : "https://graph-dev.makealoop.io/api/2/";
 
 export const baseImgUrl =
     REACT_APP_BRANCH_ENV === "master"
         ? "https://graph.makealoop.io"
         : REACT_APP_BRANCH_ENV === "stage"
-        ? "https://graph-stage.makealoop.io"
-        : REACT_APP_BRANCH_ENV === "local"
-        ? "http://127.0.0.1"
-        : "https://graph-dev.makealoop.io";
+            ? "https://graph-stage.makealoop.io"
+            : REACT_APP_BRANCH_ENV === "local"
+                ? "http://127.0.0.1"
+                : "https://graph-dev.makealoop.io";
 
 export const frontEndUrl =
     REACT_APP_BRANCH_ENV === "master"
         ? "http://u.lpcy.uk/"
         : REACT_APP_BRANCH_ENV === "stage"
-        ? "http://s.lpcy.uk/"
-        : REACT_APP_BRANCH_ENV === "local"
-        ? "http://127.0.0.1/"
-        : "http://d.lpcy.uk/";
+            ? "http://s.lpcy.uk/"
+            : REACT_APP_BRANCH_ENV === "local"
+                ? "http://127.0.0.1/"
+                : "http://d.lpcy.uk/";
 
 export const gaTID =
     REACT_APP_BRANCH_ENV === "master"
         ? "UA-216464174-1"
         : REACT_APP_BRANCH_ENV === "stage"
-        ? "UA-216464174-2"
-        : REACT_APP_BRANCH_ENV === "local"
-        ? "UA-216464174-3"
-        : "UA-216464174-3";
+            ? "UA-216464174-2"
+            : REACT_APP_BRANCH_ENV === "local"
+                ? "UA-216464174-3"
+                : "UA-216464174-3";
 
 console.log(`REACT_APP_BRANCH_ENV ${REACT_APP_BRANCH_ENV}`);
 console.log(`baseUrl ${baseUrl}, dashboardUrl ${dashboardUrl}`);
@@ -81,7 +81,7 @@ export const MIME_TYPES = {
     XLSX: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 };
 
-export const MIME_TYPES_ARRAY = Object.keys(MIME_TYPES).map((key)=>MIME_TYPES[key])
+export const MIME_TYPES_ARRAY = Object.keys(MIME_TYPES).map((key) => MIME_TYPES[key])
 
 export const MIME_TYPES_ACCEPT =
     "image/jpeg,image/jpg,image/png,video/mp4," +
@@ -124,38 +124,38 @@ export const TRANSPORT_MODES = [
 ];
 
 export const PRODUCTS_FILTER_VALUES = [
-    {key:"name",label:"Name" },
-    {key:"description",label:"Description" },
-    {key:"condition",label:"Condition" },
-    {key:"sku.brand",label:"Brand" },
-    {key:"category",label:"Category" },
-    {key:"type",label:"Type" },
-    {key:"state",label:"State" },
+    { key: "name", label: "Name" },
+    { key: "description", label: "Description" },
+    { key: "condition", label: "Condition" },
+    { key: "sku.brand", label: "Brand" },
+    { key: "category", label: "Category" },
+    { key: "type", label: "Type" },
+    { key: "state", label: "State" },
     // {key:"year_of_making",label:"Year Of Manufacture" },
-    {key:"model",label:"Model" },
-    {key:"serial",label:"Serial No." },
-   ];
+    { key: "model", label: "Model" },
+    { key: "serial", label: "Serial No." },
+];
 
 export const PRODUCTS_FILTER_VALUES_KEY = [
-    {field:"id",label:"ID" , visible:false,sortable:false,notFilterable:"true"},
+    { field: "id", label: "ID", visible: false, sortable: false, notFilterable: "true" },
     // {key:"_id",label:"ID" ,visible:true,sortable:true},
-    {field:"name",label:"Name" ,visible:true,sortable:true,flex:2},
-    {field:"description",label:"Description",visible:false ,sortable:false,notFilterable:"true"},
-    {field:"condition",label:"Condition" ,visible:false,sortable:false,flex:0.5,notFilterable:"true"},
-    {field:"sku",subField:"serial",label:"Serial No" ,visible:true,sortable:false,flex:0.75},
-    {field:"site",label:"Site" ,visible:true,sortable:false, notFilterable:"true",flex:1.5},
-    {field:"siteId",label:"Site Id" ,visible:false,sortable:false, notFilterable:"true",flex:1.5},
-    {field:"_ts_epoch_ms",label:"Added on",visible:true,sortable:true, sort: 'desc',sortingOrder:['desc', 'asc', null] ,notFilterable:"true"},
-   
+    { field: "name", label: "Name", visible: true, sortable: true, flex: 2 },
+    { field: "description", label: "Description", visible: false, sortable: false, notFilterable: "true" },
+    { field: "condition", label: "Condition", visible: false, sortable: false, flex: 0.5, notFilterable: "true" },
+    { field: "sku", subField: "serial", label: "Serial No", visible: true, sortable: false, flex: 0.75 },
+    { field: "site", label: "Site", visible: true, sortable: false, notFilterable: "true", flex: 1.5 },
+    { field: "siteId", label: "Site Id", visible: false, sortable: false, notFilterable: "true", flex: 1.5 },
+    { field: "_ts_epoch_ms", label: "Added on", visible: true, sortable: true, sort: 'desc', sortingOrder: ['desc', 'asc', null], notFilterable: "true" },
+
 ];
 
 export const SITE_FILTER_VALUES_KEY = [
-    {field:"id",label:"ID" , visible:false,sortable:false,notFilterable:"true"},
+    { field: "id", label: "ID", visible: false, sortable: false, notFilterable: "true" },
     // {key:"_id",label:"ID" ,visible:true,sortable:true},
-    {field:"name",label:"Name" ,visible:true,sortable:true,flex:1},
-    {field:"address",label:"Address" ,visible:true,sortable:false,flex:2},
-    {field:"is_head_office",label:"Head Office" ,visible:false,sortable:false,notFilterable:"true"},
-    {field:"geo_codes",label:"Geo Codes" ,visible:false,sortable:false,notFilterable:"true"},
+    { field: "name", label: "Name", visible: true, sortable: true, flex: 1 },
+    { field: "address", label: "Address", visible: true, sortable: false, flex: 2 },
+    { field: "is_head_office", label: "Head Office", visible: false, sortable: false, notFilterable: "true" },
+    { field: "geo_codes", label: "Geo Codes", visible: false, sortable: false, notFilterable: "true" },
 
 
     // {field:"description",label:"Description",visible:false ,sortable:false,notFilterable:"true"},
@@ -163,22 +163,22 @@ export const SITE_FILTER_VALUES_KEY = [
     // {field:"sku",subField:"serial",label:"Serial No" ,visible:true,sortable:false,flex:0.75},
     // {field:"site",label:"Site" ,visible:true,sortable:false, notFilterable:"true",flex:1.5},
     // {field:"siteId",label:"Site Id" ,visible:false,sortable:false, notFilterable:"true",flex:1.5},
-    {field:"_ts_epoch_ms",label:"Added on",visible:true,sortable:true, sort: 'desc',sortingOrder:['desc', 'asc', null] ,notFilterable:"true"},
+    { field: "_ts_epoch_ms", label: "Added on", visible: true, sortable: true, sort: 'desc', sortingOrder: ['desc', 'asc', null], notFilterable: "true" },
 
 ];
 
 export const ISSUES_FILTER_VALUES_KEY = [
-    {field:"id",label:"ID" , visible:false,sortable:true,notFilterable:"true"},
+    { field: "id", label: "ID", visible: false, sortable: true, notFilterable: "true" },
     // {key:"_id",label:"ID" ,visible:true,sortable:true},
-    {field:"title",label:"Title" ,visible:true,sortable:true,flex:2},
-    {field:"description",label:"Description",visible:false ,sortable:false},
-    {field:"priority",label:"Priority" ,visible:true,sortable:false,flex:0.5},
+    { field: "title", label: "Title", visible: true, sortable: true, flex: 2 },
+    { field: "description", label: "Description", visible: false, sortable: false },
+    { field: "priority", label: "Priority", visible: true, sortable: false, flex: 0.5 },
     // {field:"sku",subField:"serial",label:"Serial No" ,visible:true,sortable:false},
     // {field:"site",label:"Site" ,visible:true,sortable:false, notFilterable:"true"},
     // {key:"category",label:"Category" ,visible:true,sortable:false,flex:2.5},
     // {key:"type",label:"Type" ,visible:false,sortable:false},
     // {key:"state",label:"State",visible:false,sortable:false},
-    {field:"_ts_epoch_ms",label:"Added on",visible:true,sortable:true, sort: 'desc',sortingOrder:['desc', 'asc', null],notFilterable:"true" },
+    { field: "_ts_epoch_ms", label: "Added on", visible: true, sortable: true, sort: 'desc', sortingOrder: ['desc', 'asc', null], notFilterable: "true" },
     // {key:"year_of_making",label:"Manufactured",visible:false,sortable:false,flex:0.7},
     // {key:"sku.model",label:"Model",visible:false,sortable:false},
     // {key:"sku.serial",label:"Serial No.",visible:false,sortable:false},
@@ -315,7 +315,7 @@ export const randomRGBAGen = () => {
 };
 
 
-export const getMimeTypeAndIcon=(mime,classes,style)=>{
+export const getMimeTypeAndIcon = (mime, classes, style) => {
 
     switch (mime) {
         // Images
@@ -323,16 +323,16 @@ export const getMimeTypeAndIcon=(mime,classes,style)=>{
         case MIME_TYPES.JPEG:
         case MIME_TYPES.PNG:
             return ({
-                icon:<ImageIcon className={classes} style={style}/>,
-                type:"image"
+                icon: <ImageIcon className={classes} style={style} />,
+                type: "image"
             });
 
         // Videos
         case MIME_TYPES.MOV:
         case MIME_TYPES.MP4:
             return ({
-                icon:<OndemandVideoIcon className={classes} style={style} />,
-                type:"video"
+                icon: <OndemandVideoIcon className={classes} style={style} />,
+                type: "video"
             });
         // Documents
         case MIME_TYPES.XLSX:
@@ -342,15 +342,35 @@ export const getMimeTypeAndIcon=(mime,classes,style)=>{
         case MIME_TYPES.DOCX:
         case MIME_TYPES.DOC:
         case MIME_TYPES.PDF:
-               return ({
-            icon:<DescriptionIcon className={classes} style={style} />,
-            type:"document"
-        });
+            return ({
+                icon: <DescriptionIcon className={classes} style={style} />,
+                type: "document"
+            });
         default:
             return ({
-                icon:<DescriptionIcon className={classes} style={style} />,
-                type:"document"
+                icon: <DescriptionIcon className={classes} style={style} />,
+                type: "document"
             });
     }
 
 }
+
+// REGEX for notifications
+export const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
+export const ORG_REGEX = /(Org\/[\w\d\-\.@]+)/g;
+export const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
+export const CYCLE_REGEX = /Cycle\/([\w\d]+)/g;
+export const CYCLE_STEP_REGEX = /CycleStep\/([\w\d]+)/g;
+export const MATCH_REGEX = /Match\/([\w\d]+)/g;
+export const PRODUCT_RELEASE_REGEX = /ProductRelease\/([\w\d]+)/g;
+export const PRODUCT_REGISTRATION = /ProductRegistration\/([\w\d]+)/g;
+export const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
+export const SITE_RELEASE_REGEX = /SiteRelease\/([\w\d]+)/g;
+export const EVENTS_STATUS_REGEX = /Event\/([\w\d]+)/g;
+export const BRACKETS_REGEX = /[(\[)(\])]/g;
+export const A_TAG_REGEX = /\<a(.*)\<\/a\>/g;
+export const LISTING_REGEX = /Listing\/([\w\d]+)/g;
+export const SEARCH_REGEX = /Search\/([\w\d]+)/g;
+export const ISSUE_REGEX = /Issue\/([\w\d]+)/g;
+export const OFFER_REGEX = /Offer\/([\w\d]+)/g;
+

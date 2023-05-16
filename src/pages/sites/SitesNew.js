@@ -431,6 +431,7 @@ class SitesNew extends Component {
 
     showSiteEditPopUp=(key)=> {
 
+        console.log("showSiteEditPopUp")
 
         if (key){
             axios.get(baseUrl + "site/code/" + key+"/expand")

@@ -1,22 +1,15 @@
-import { Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import {
-    baseUrl,
-    ENTITY_TYPES,
-    getImageAsBytes,
-    MIME_TYPES,
-    MIME_TYPES_ACCEPT,
-} from "../../Util/Constants";
+import {Button} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {baseUrl, ENTITY_TYPES, getImageAsBytes, MIME_TYPES, MIME_TYPES_ACCEPT,} from "../../Util/Constants";
 import axios from "axios";
 import {checkIfMimeTypeAllowed, cleanFilename, isValidUrl, LoaderAnimated} from "../../Util/GlobalFunctions";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import ArtifactIconDisplayBasedOnMimeType from "../UploadImages/ArtifactIconDisplayBasedOnMimeType";
 import MoreMenu from "../MoreMenu";
-import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import TextFieldWrapper from "./ProductForm/TextField";
-import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
-import {ArrowDropUp, ArrowDropDown} from "@mui/icons-material";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import {ArrowDropDown, ArrowDropUp} from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomPopover from "./CustomPopover";
 
@@ -24,6 +17,7 @@ const ArtifactManager = ({
     entityId,
     entityType,
     loadCurrentProduct,
+   loadCurrentSite,
     showSnackbar,
     refresh,
     type,
@@ -129,6 +123,44 @@ const ArtifactManager = ({
                 });
             }
         } catch (error) {
+            console.log("addArtifactTo error ", error);
+            setIsLoading(false);
+            showSnackbar({
+                show: true,
+                severity: "warning",
+                message: "Unable to add Artifacts to the product at this time.",
+            });
+        }
+    };
+    const addArtifactToSite = async (key, type) => {
+        try {
+            const payload = {
+                site_id: entityId,
+                artifact_ids: [key],
+            };
+
+            const uploadToServer = await axios.post(`${baseUrl}site/artifact`, payload);
+
+            if (uploadToServer.status === 200) {
+                setIsLoading(false);
+
+                setUploadedFiles([]); // reset uploaded files
+
+                if (
+                    type === MIME_TYPES.PNG ||
+                    type === MIME_TYPES.JPEG ||
+                    type === MIME_TYPES.JPG
+                ) {
+                    loadCurrentSite(entityId);
+                }
+
+                showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Artifacts added successfully to product. Thanks",
+                });
+            }
+        } catch (error) {
             console.log("addArtifactToProduct error ", error);
             setIsLoading(false);
             showSnackbar({
@@ -175,6 +207,17 @@ const ArtifactManager = ({
                             const a = uploadedFile.data.data;
                             setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
                         }
+                        else if (entityType === ENTITY_TYPES.Site) {
+                            // add to product
+                            if (type !== "add") {
+                                await addArtifactToSite(uploadedToCloudDataKey, file.type);
+                            }
+
+                            const a = uploadedFile.data.data;
+                            setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
+                        }
+
+
                     }
                 } catch (error) {
                     console.log("handleUploadFileToProduct try/catch error ", error);
@@ -258,10 +301,17 @@ const ArtifactManager = ({
                     if (entityType === ENTITY_TYPES.Product) {
                         if (type !== "add") await addArtifactToProduct(videoLinksUploadedKey);
                         const a = videoLinksUploaded.data.data;
-
                         setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
                         resetForm("link");
                     }
+                   else if (entityType === ENTITY_TYPES.Site) {
+                        if (type !== "add") await addArtifactToSite(videoLinksUploadedKey);
+                        const a = videoLinksUploaded.data.data;
+                        setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
+                        resetForm("link");
+                    }
+
+
                 }
             } catch (error) {
                 console.log("handleUploadVideoLinks error ", error);
@@ -303,15 +353,18 @@ const ArtifactManager = ({
 
     return (
         <>
-            <div className="row d-flex align-items-end mt-3 mb-2">
+            <div className="row d-flex align-items-end mt-2 mb-2">
                 <div className="col-md-10">
                     <>
-                        {!props.isArchiver &&  <div className="row d-flex align-items-end">
-                            <div className="col-12 d-flex mb-2">
+                        {!props.isArchiver &&
+                            <div className="row d-flex align-items-end">
+                                {!isLoading?<>
+                                        <div className="col-12 d-flex mb-2">
                                 <CustomPopover text="Accepted files: JPG, JPEG, PNG, DOC, DOCX, PDF, XLS, XLSX, TXT, MP4, MOV">
                                 <div className="me-3">
-                                    {!isLoading ? (
-                                            <Button style={{height:"61px"}} className="" variant="outlined" component="label">
+
+
+                                            <Button  className="" variant="outlined" component="label">
                                                 Upload Files
                                                 <input
                                                     type="file"
@@ -321,18 +374,18 @@ const ArtifactManager = ({
                                                     accept={MIME_TYPES_ACCEPT}
                                                 />
                                             </Button>
-                                    ) : (
-                                        <LoaderAnimated />
-                                    )}
                                 </div>
                                 </CustomPopover>
-
-                                <div className="">
-                                    <Button  style={{height:"61px"}} variant="outlined" onClick={() => setIsLinksVisible(prev => !prev)}>
+                            {/*</div>*/}
+                            {/*    <div className="col-6 d-flex mb-2">*/}
+                                    <Button   variant="outlined" onClick={() => setIsLinksVisible(prev => !prev)}>
                                         Add Video Links {isLinksVisible ? <ArrowDropUp /> : <ArrowDropDown/> }
                                     </Button>
                                 </div>
-                            </div>
+                                    </>
+                                    :
+                                <LoaderAnimated loadingText={"Uploading..."}/>
+                                }
                         </div>}
                     </>
 
@@ -373,8 +426,8 @@ const ArtifactManager = ({
                 </div>
             </div>
 
-            <div className="row">
-                <div className="col">
+            <div className="row justify-content-center d-flex align-items-center">
+                <div className="col-6 ">
                     {uploadProgress && <>
                         <small>{uploadProgress}% Uploaded</small>
                         <progress id="progressBar" value={uploadProgress ? uploadProgress : 0} max="100"
@@ -447,6 +500,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
+        loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
         loadCurrentProduct: (data) => dispatch(actionCreator.loadCurrentProduct(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),

@@ -51,9 +51,9 @@ const Layout=(props)=>{
             <div  className='layout layout-main'>
                 <Header />
                 <div className="main-content-area">
-                    {/*<ErrorBoundary parent>*/}
+                    <ErrorBoundary parent>
                 {children}
-                    {/*</ErrorBoundary>*/}
+                    </ErrorBoundary>
                 </div>
                 {!props.hideFooter&&<Footer/>}
                 <BackToTop/>

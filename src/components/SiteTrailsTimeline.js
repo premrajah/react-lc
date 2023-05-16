@@ -304,7 +304,7 @@ const DistanceTrailOnlyPopOver = (props) => {
 
                 text={<>
                     <span>{`Gross Weight : ${trail.gross_weight_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgs`}</span><br></br>
-                    {trail.carbon.carbon_kgs > 0 && <>
+                    {trail.carbon&&trail.carbon.carbon_kgs > 0 && <>
                         <span>{`Distance : ${(trail.distance.value / 1000).toLocaleString(undefined, {maximumFractionDigits: 2})} kms`}</span><br></br>
                         <span>{`Transport Mode: ${getMode(trail.transport_mode, trail.carbon?.carbon_kgs_per_kg_km)}`}</span>
                         <span
@@ -314,14 +314,15 @@ const DistanceTrailOnlyPopOver = (props) => {
                 </>}
 
             >
-                <span className={"text-caps  sub-title-text-pink"}>{props.symbol}&nbsp;</span>
+                {trail.carbon && <>
+                      <span className={"text-caps  sub-title-text-pink"}>{props.symbol}&nbsp;</span>
                 <span className="text-blue">
                     {trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgCO<sub>2</sub>e</span>
                 <br></br>
                 <span
                     className="text-12"> {(trail.distance.value / 1000).toLocaleString(undefined, {maximumFractionDigits: 2})} kms&nbsp;
                     {trail.carbon.carbon_kgs > 0 && <>via {getMode(trail.transport_mode, trail.carbon?.carbon_kgs_per_kg_km)}</>}</span>
-
+                </>}
             </CustomPopover>
 
 

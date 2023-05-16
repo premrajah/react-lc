@@ -309,7 +309,7 @@ const DistanceTrailOnlyPopOver = (props) => {
                         <span>{`Transport Mode: ${getMode(trail.transport_mode, trail.carbon?.carbon_kgs_per_kg_km)}`}</span>
                         <span
                             className="d-none">{`Emissions : ${(trail.carbon.carbon_tons).toLocaleString(undefined, {maximumFractionDigits: 6})} tonCO`}<sub>2</sub>e</span><br></br>
-                        <span>{`Multiplier : ${(trail.carbon?.carbon_kgs_per_kg_km).toExponential(4)} tons/kg/km`}</span><br></br>
+                        <span>{`Multiplier : ${(trail.carbon?.carbon_kgs_per_kg_km?trail.carbon.carbon_kgs_per_kg_km:0).toExponential(4)} tons/kg/km`}</span><br></br>
                     </>}
                 </>}
 

@@ -339,10 +339,9 @@ class SiteFormNew extends Component {
 
 
                 //for product form add new site refresh
-
-                if (this.props.refresh){
-                    this.props.refresh(res.data.data)
-                }
+                // if (this.props.refresh){
+                //     this.props.refresh(res.data.data)
+                // }
 
 
                 if (this.props.setSite)

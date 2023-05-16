@@ -444,7 +444,7 @@ marteplace
                         <NotFound />
                     ) : (
                         <>
-                            {this.state.item && (
+                            {this.state.item &&this.state.item.listing&& (
                                 <>
                                     <div className="container " >
 
@@ -484,7 +484,7 @@ marteplace
                                                                     }>
                                                                     {this.state.item.listing.name}
                                                                 </h4>
-                                                                { this.props.isLoggedIn&&this.props.userDetail&&(this.state.item.org._id ===
+                                                                { this.props.isLoggedIn&&this.props.userDetail&&this.state.item.org&&(this.state.item.org._id ===
                                                                     this.props.userDetail.orgId) &&    <div className="top-right text-right">
                                                                     <MoreMenu
                                                                         triggerCallback={(action) =>
@@ -509,7 +509,7 @@ marteplace
                                                                 <div>
                                                                     <OrgComponent
                                                                         org={
-                                                                            this.state.item.org
+                                                                            this.state.item.org?this.state.item.org:""
                                                                         }
                                                                     />
                                                                 </div>
@@ -759,7 +759,7 @@ marteplace
                     )}
 
 
-                {!this.props.hideRequestMatch&&this.state.item&&(this.state.item.org._id !== this.props.userDetail.orgId) && (
+                {!this.props.hideRequestMatch&&this.state.item&&this.state.item.org&&(this.state.item.org._id !== this.props.userDetail.orgId) && (
                     <React.Fragment>
 
 

@@ -36,7 +36,7 @@ const UnableToLoad = (props) => {
 
 svg {
   position: relative;
-  width: 240px;
+  width: 120px;
   height: 120px;
   margin: auto;
 }

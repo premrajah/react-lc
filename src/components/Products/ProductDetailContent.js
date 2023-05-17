@@ -947,7 +947,7 @@ class ProductDetailContent extends Component {
                 this.getListing(productItem.listing);
             }
 
-            if (productItem && productItem.searches.length > 0) {
+            if (productItem &&productItem.searches&& productItem.searches.length > 0) {
                 this.getSearches(productItem.searches);
             }
 

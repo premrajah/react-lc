@@ -1061,7 +1061,7 @@ class ProductDetailCycle extends Component {
 
                         {this.state.timelineDisplay === "site" ? (
                             <div className="row g-0">
-                                <div className="col-12 rad-8  p-3 bg-white">
+                                <div className="col-12 rad-8  p-md-3  bg-white">
                                     {this.state.siteTrails && (
                                         <SiteTrailsTimeline
                                             product={this.props.item.product}

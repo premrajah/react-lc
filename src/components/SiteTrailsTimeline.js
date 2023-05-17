@@ -204,10 +204,11 @@ const SiteTrailsTimeline=(props)=> {
 
                                 {
                                     local_trail ? <TimelineOppositeContent
-                                        sx={{mt: 7, mr: 2}}
+                                        sx={{mt: 7, mr: 2,p:0}}
                                     >
                                         <DistanceTrailOnlyPopOver index={index} trail={local_trail} symbol="+"/>
-                                    </TimelineOppositeContent> : <TimelineOppositeContent sx={{mt: 7, mr: 2}}><span></span></TimelineOppositeContent>
+                                    </TimelineOppositeContent> :
+                                        <TimelineOppositeContent sx={{mt: 7, mr: 2,p:0}}><span></span></TimelineOppositeContent>
                                 }
                                 <TimelineSeparator>
                                     {item._relation === "located_at" ?
@@ -234,10 +235,10 @@ const SiteTrailsTimeline=(props)=> {
                                 </TimelineSeparator>
 
                                 <TimelineContent
-
+                                    sx={{mt: 7, mr: 2,p:0}}
                                 >
                                     <Typography
-                                        className={"mt-1 me-2"}
+                                        // className={"mt-1 me-2"}
                                     >
                                         <p className={"text-blue text-14"}>
                                             {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes && item.site.site.geo_codes.length > 0 &&
@@ -251,7 +252,7 @@ const SiteTrailsTimeline=(props)=> {
 
                                     <Typography
 
-                                        className="blue-text mt-1"
+                                        className="blue-text "
                                         variant="subtitle1"
                                         component="div">
                                         <Typography variant="caption" component="div">

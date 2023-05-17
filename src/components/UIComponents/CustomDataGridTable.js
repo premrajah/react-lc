@@ -22,7 +22,7 @@ import {Link} from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
 import Stack from '@mui/material/Stack';
 import axios from "axios";
-import {baseUrl, googleApisBaseURL} from "../../Util/Constants";
+import {baseUrl, googleApisBaseURL, MIME_TYPES} from "../../Util/Constants";
 import {Avatar} from "@mui/material";
 import placeholderImg from "../../img/place-holder-lc.png";
 import PlaceholderImg from "../../img/place-holder-lc.png";
@@ -444,8 +444,14 @@ const GetProductImageThumbnail=({productKey})=>{
         axios
             .get(`${baseUrl}product/${productId}/artifact`)
             .then((res) => {
-                const data = res.data.data;
+                let data = res.data.data;
+
+
                 if (data.length > 0) {
+
+                    data=data.filter((image)=>  image.mime_type === MIME_TYPES.JPEG ||
+                        image.mime_type === MIME_TYPES.JPG ||
+                        image.mime_type === MIME_TYPES.PNG)
                     setArtifacts(data);
                 }
             })

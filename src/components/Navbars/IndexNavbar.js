@@ -104,14 +104,15 @@ class ComponentsNavbar extends React.Component {
 
         // window.removeEventListener("scroll", this.changeColor);
         // window.addEventListener("scroll", this.changeColor);
-        this.dispatchMessagesAndNotifications();
-        this.timer = setTimeout(() => {
-            this.dispatchMessagesAndNotifications();
-        }, 10000)
+
 
 
         if (this.props.isLoggedIn) {
             this.getArtifactForOrg();
+            this.dispatchMessagesAndNotifications();
+            this.timer = setTimeout(() => {
+                this.dispatchMessagesAndNotifications();
+            }, 10000)
         }
     }
 

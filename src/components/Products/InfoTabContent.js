@@ -296,7 +296,6 @@ class InfoTabContent extends Component {
                                 Transport Emissions (kgCO<sub>2</sub>e)
                             </p>
                             <p
-
                                 className=" text-gray-light mb-1 text-capitalize">
                                 {this.props.item && this.props.item.total_logistic_carbon
                                     && this.props.item.total_logistic_carbon.carbon &&

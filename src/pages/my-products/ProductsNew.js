@@ -1,9 +1,8 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
-import {Link} from "react-router-dom";
-import {withStyles} from "@mui/styles/index";
+import { withStyles } from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import {
     baseUrl,
@@ -12,28 +11,25 @@ import {
     PRODUCTS_FILTER_VALUES_KEY
 } from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
-import {Modal, ModalBody} from "react-bootstrap";
+import { Modal, ModalBody } from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import {UploadMultiplePopUp} from "../../components/Products/UploadMultiplePopUp";
-import {ProductsGoogleMap} from "../../components/Map/ProductsMapContainer";
+import { ProductsGoogleMap } from "../../components/Map/ProductsMapContainer";
 import Close from "@mui/icons-material/Close";
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
-import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
-import {getSite, removeEmptyValuesObj, seekAxiosGet} from "../../Util/GlobalFunctions";
+import { getSite, removeEmptyValuesObj } from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
 import CheckboxWrapper from "../../components/FormsUI/ProductForm/Checkbox";
 import CircularProgressWithLabel from "../../components/FormsUI/Buttons/CircularProgressWithLabel";
-import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
-import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import PaginationGrid from "../../components/UIComponents/PaginationGrid";
 import ProductForm from "../../components/ProductPopUp/ProductForm";
 import SubproductItem from "../../components/Products/Item/SubproductItem";
-import {GoogleMap} from "../../components/Map/MapsContainer";
+import { GoogleMap } from "../../components/Map/MapsContainer";
 import MenuDropdown from "../../components/FormsUI/MenuDropdown";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import MapIcon from "@mui/icons-material/Place";

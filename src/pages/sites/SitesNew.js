@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import CubeBlue from "../../img/icons/product-icon-big.png";
-import { withStyles } from "@mui/styles/index";
 import PageHeader from "../../components/PageHeader";
 import {
     baseUrl, SITE_FILTER_VALUES_KEY, SITES_FIELD_SELECTION
@@ -93,13 +92,13 @@ class SitesNew extends Component {
     }
 
     actionCallback = (key, action) => {
-        if (action == "edit") {
+        if (action === "edit") {
             this.showSiteEditPopUp(key)
         }
-        else if (action == "view") {
+        else if (action === "view") {
             this.showQuickViewPopUp(key)
         }
-        else if (action == "map") {
+        else if (action === "map") {
             this.showSiteViewPopUp(key)
         }
     }
@@ -346,7 +345,7 @@ class SitesNew extends Component {
             let csvDataNew = [];
             productList.forEach(item => {
 
-                const { Site, event, service_agent } = item;
+                const { Site } = item;
                 let itemTmp = []
                 for (const key of selectedKeys.keys()) {
                     let keys = key.toString().split(".")
@@ -391,8 +390,7 @@ class SitesNew extends Component {
 
         let itemTmp = []
         for (const key of selectedKeys.keys()) {
-            itemTmp.push(SITES_FIELD_SELECTION.
-                find((itemTmp) => itemTmp.key === key).value)
+            itemTmp.push(SITES_FIELD_SELECTION.find((itemTmp) => itemTmp.key === key).value)
         }
 
         rows.unshift(itemTmp)
@@ -460,7 +458,7 @@ class SitesNew extends Component {
         if (key) {
             this.setState({
                 showSiteView: !this.state.showSiteView,
-                viewSiteSelected: this.state.items.find(item => item.Site._key == key).Site ? this.state.items.find(item => item.Site._key == key).Site : null,
+                viewSiteSelected: this.state.items.find(item => item.Site._key === key).Site ? this.state.items.find(item => item.Site._key === key).Site : null,
             });
         } else {
             this.setState({
@@ -909,8 +907,6 @@ class SitesNew extends Component {
             loading: true,
         });
 
-        const form = event.currentTarget;
-
         this.setState({
             btnLoading: true,
         });
@@ -999,21 +995,6 @@ class SitesNew extends Component {
     }
 
     render() {
-        const classesBottom = withStyles();
-        const headers = [
-            "Name",
-            "Description",
-            "Category",
-            "Condition",
-            "Purpose",
-            "Units",
-            "Volume",
-            "Site Name",
-            "Site Address",
-            "Service Agent",
-            "QRCode Name",
-            "QRCode Link",
-        ];
 
         return (
             <Layout

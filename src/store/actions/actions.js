@@ -1,4 +1,4 @@
-import { getKey, saveKey, saveUserData, saveUserToken } from "../../LocalStorage/user";
+import { getKey, saveKey, saveUserData } from "../../LocalStorage/user";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 
@@ -63,7 +63,6 @@ import {
 // --- START
 import ReactGA from "react-ga";
 import { baseUrl, gaTID, REACT_APP_BRANCH_ENV } from "../../Util/Constants";
-import { getUserToken } from "../../LocalStorage/user-session";
 // -- END
 
 export const loadingSpinner = () => {
@@ -721,8 +720,6 @@ export const signUpSync = (data) => (dispatch) => {
     if (data.type) {
         type = data.type
         delete data.type
-
-
     }
 
 

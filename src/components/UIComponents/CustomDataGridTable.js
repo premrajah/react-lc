@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
     DataGrid,
@@ -10,22 +10,21 @@ import {
     useGridApiContext,
     useGridSelector
 } from '@mui/x-data-grid';
-import {styled} from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import {Delete} from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {capitalize, getSite, getTimeFormat} from "../../Util/GlobalFunctions";
-import {Link} from "react-router-dom";
+import { capitalize, getSite, getTimeFormat } from "../../Util/GlobalFunctions";
+import { Link } from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
 import Stack from '@mui/material/Stack';
 import axios from "axios";
-import {baseUrl, googleApisBaseURL, MIME_TYPES} from "../../Util/Constants";
-import {Avatar} from "@mui/material";
+import { baseUrl, googleApisBaseURL, MIME_TYPES } from "../../Util/Constants";
+import { Avatar } from "@mui/material";
 import placeholderImg from "../../img/place-holder-lc.png";
-import PlaceholderImg from "../../img/place-holder-lc.png";
 
 const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,resetSelection,entityType,
                                linkField,dataKey,loading,loadMore,checkboxSelection,

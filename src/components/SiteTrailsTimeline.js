@@ -46,6 +46,7 @@ const SiteTrailsTimeline=(props)=> {
 
     useEffect(() => {
         updateDistLookup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

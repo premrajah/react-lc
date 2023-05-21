@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
@@ -873,7 +874,7 @@ let slugify = require('slugify')
             }
 
 
-            if (Object.keys(fields).length == 0) {
+            if (Object.keys(fields).length === 0) {
                 this.props.triggerCallback("edit")
                 return;
             }

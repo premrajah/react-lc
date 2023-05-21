@@ -70,7 +70,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
         }else{
             setMultipleSelectFlag([])
         }
-    },[selectedRows])
+    },[selectedRows, setMultipleSelectFlag])
 
     useEffect(() => {
       setAllowSelection(checkboxSelection)
@@ -85,7 +85,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
         }
 
 
-    },[resetSelection])
+    },[resetSelection, setMultipleSelectFlag])
 
 
     useEffect(() => {
@@ -187,7 +187,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
             setTableHeader(headersTmp)
             setSortModel(data.headers.filter(item => item.sort))
         }
-    }, [data])
+    }, [actionCallback, actions, currentData, data, entityType, pageSize])
 
     useEffect(() => {
 
@@ -234,7 +234,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
 
         },100)
         let listTmp=[]
-    }, [items])
+    }, [data.headers, data.objKey, items])
 
     const handleChange=(dataTmp)=>{
         setSortModel(dataTmp)

@@ -57,6 +57,7 @@ class ProductView extends Component {
 
      loadCurrentProduct = (data) =>  {
 
+         console.log("load curre prodc")
          this.props.loading(true)
          this.setState({
              loading:true
@@ -96,6 +97,9 @@ class ProductView extends Component {
 
 
     componentDidMount() {
+
+
+
 
         if (this.props.location.search.includes("r=true")&&this.props.userDetail.is_org_admin ){
 

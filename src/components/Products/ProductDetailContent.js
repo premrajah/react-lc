@@ -347,16 +347,16 @@ class ProductDetailContent extends Component {
                 item: this.props.item,
             });
 
-            this.loadInfo(this.props.item);
-
             this.setActiveKey(null,"1")
-            this.fetchExistingAgentRequests(this.props.item.product._key)
 
-            this.fetchReleases(this.props.item.product._key)
+            if (this.props.item.product){
+                this.loadInfo(this.props.item);
+                this.fetchExistingAgentRequests(this.props.item.product._key)
+                this.fetchReleases(this.props.item.product._key)
+                this.getEvents(this.props.item.product._key)
+                this.ocVCProduct(this.props.item.product._key)
+            }
 
-            this.getEvents(this.props.item.product._key)
-
-            this.ocVCProduct(this.props.item.product._key)
         }
 
 

@@ -16,7 +16,10 @@ const UnableToLoad = (props) => {
                             moved, name changed or is temporarily unavailable, we are trying to fix it.
                         </p>
 
-                        {REACT_APP_BRANCH_ENV!=="master" &&  <p><span className="text-bold border-red-error">Error: </span>{props.error.toString()} </p>}
+                        {/*{REACT_APP_BRANCH_ENV!=="master" &&*/}
+                            <p><span className="text-bold border-red-error">Error:
+                        </span>{props.error.message} </p>
+                        {/*}*/}
                         <a href={`${window.location.pathname}`} className="mt-1 btn-link blue-btn"
                                         title={"Reload"}>
                             Reload

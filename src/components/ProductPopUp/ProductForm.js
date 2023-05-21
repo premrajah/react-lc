@@ -146,7 +146,6 @@ let slugify = require('slugify')
 
             try {
 
-            console.log("submited data from new site", data)
             window.scrollTo(0, 0);
 
             this.setState({

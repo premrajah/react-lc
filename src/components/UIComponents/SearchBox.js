@@ -23,7 +23,6 @@ class SearchBox extends Component {
     }
 
     handleSearch = (type,value) => {
-console.log("change search box",type,value)
         let filterVal=this.state.filterValue
         let searchVal=this.state.searchValue
 

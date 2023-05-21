@@ -26,7 +26,6 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey, userDetail }
 
             if (result.status === 200) {
                 //     TODO let use know message marked read
-                console.log("message read");
             }
         } catch (e) {
             console.log("markMessageRead error ", e);
@@ -188,7 +187,6 @@ const ReactStringReplaceWithRegex = ({ text, entityKey, messageKey, userDetail }
                 show={showStagePopup}
                 hide={showStageEventPopup}
             ><div className="col-12">
-                    {console.log(">> ", stageEventId)}
                     {stageEventId && <EventStatus
                         hide={showStageEventPopup} eventId={stageEventId}
                     />}

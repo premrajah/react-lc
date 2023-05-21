@@ -423,7 +423,6 @@ class SitesNew extends Component {
 
     showSiteEditPopUp = (key) => {
 
-        console.log("showSiteEditPopUp")
 
         if (key) {
             axios.get(baseUrl + "site/code/" + key + "/expand")
@@ -452,8 +451,6 @@ class SitesNew extends Component {
 
 
     showSiteViewPopUp = (key) => {
-
-        console.log()
 
         if (key) {
             this.setState({
@@ -814,7 +811,6 @@ class SitesNew extends Component {
 
     setMultipleSelectFlag = (rows) => {
 
-        console.log("rows selected", rows)
         this.setState({
             selectedRows: rows,
         });
@@ -933,7 +929,6 @@ class SitesNew extends Component {
 
         const selectedKeys = new FormData(event.target);
 
-        console.log(selectedKeys)
         if (this.state.selectAll) {
             this.downloadAll(0, 100, selectedKeys, "csv")
         } else {

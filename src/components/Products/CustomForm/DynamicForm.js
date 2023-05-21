@@ -76,14 +76,7 @@ class DynamicForm extends React.Component {
 
 
         const form = event.currentTarget;
-
-
         const data = new FormData(event.target);
-        console.log(data.get("name"))
-
-        console.log(data)
-
-        console.log(this.state.fieldDetails)
 
     }
     deteteRow = index => {

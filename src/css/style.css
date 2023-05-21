@@ -4330,7 +4330,7 @@ select option {
     font-weight: bold;
     border-right-width: 2px;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     height: 22px;
 
@@ -4346,7 +4346,7 @@ select option {
     font-weight: bold;
     border-right-width: 2px;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     height: 22px;
 
@@ -4362,7 +4362,7 @@ select option {
     font-weight: bold;
     border-right-width: 2px;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     height: 22px;
 }
@@ -4378,7 +4378,7 @@ select option {
     font-weight: bold;
     border-right-width: 2px;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     height: 22px;
 }
@@ -4395,7 +4395,7 @@ select option {
     font-weight: bold;
     border-right-width: 2px;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     height: 22px;
 }
@@ -4705,7 +4705,7 @@ select option {
     font-weight: bold;
     border-right-width: 2px;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     height: 22px;
 }

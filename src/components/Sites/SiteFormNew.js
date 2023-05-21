@@ -1,26 +1,22 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
-import Select from "@mui/material/Select";
+import { connect } from "react-redux";
 import "../../Util/upload-file.css";
-import {withStyles} from "@mui/styles/index";
 import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
-import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
 import AddIcon from "@mui/icons-material/Add";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
-import {fetchErrorMessage} from "../../Util/GlobalFunctions";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { fetchErrorMessage } from "../../Util/GlobalFunctions";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
-import {v4 as uuid} from "uuid";
+import { v4 as uuid } from "uuid";
 import LinkExistingList from "../Products/LinkExistingList";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 
@@ -260,8 +256,6 @@ class SiteFormNew extends Component {
         event.preventDefault();
         event.stopPropagation();
 
-        let parentId;
-
         if (!this.handleValidation()) {
             return
         }
@@ -474,7 +468,7 @@ class SiteFormNew extends Component {
                 if (this.props.hide)
                     this.props.hide()
 
-            }) .finally(()=>
+            }).finally(()=>
         {
 
 
@@ -768,10 +762,7 @@ class SiteFormNew extends Component {
     }
 
     render() {
-        const classes = withStyles();
-        const classesBottom = withStyles();
-
-
+        
         return (
             <>
 

@@ -132,7 +132,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                     renderCell: (params) => (
                         <>
 
-                            {params.field == "_ts_epoch_ms" ? <span>
+                            {params.field === "_ts_epoch_ms" ? <span>
                             {getTimeFormat(params.value)}
                     </span> : params.field === data.linkField ? <span className="text-blue">
                      <Link to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>
@@ -173,8 +173,8 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                                 <ActionIconBtn
                                     onClick={() => actionCallback(params.row.id, action)}
                                 >
-                                    {action == "edit" ? <EditIcon/> : action == "view" ?
-                                        <VisibilityIcon/> : action == "delete" ? <Delete/> : action == "map" ?
+                                    {action === "edit" ? <EditIcon/> : action === "view" ?
+                                        <VisibilityIcon/> : action === "delete" ? <Delete/> : action === "map" ?
                                             <MapIcon/> : action}
                                 </ActionIconBtn>
                             )}
@@ -219,7 +219,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                                     }
 
                                     else{
-                                        itemTmp[`${item.field}`] = Product[`${item.field == "id" ? "_key" : item.field}`]
+                                        itemTmp[`${item.field}`] = Product[`${item.field === "id" ? "_key" : item.field}`]
                                     }
                                 }
                             }catch(e){
@@ -242,7 +242,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
         if (loadMore&&dataTmp.length>0){
 
             let filter={
-                key:dataTmp[0].field=="id"?"_key":dataTmp[0].field,
+                key:dataTmp[0].field==="id"?"_key":dataTmp[0].field,
                 sort:dataTmp[0].sort
             }
             loadMore(true,filter)
@@ -438,7 +438,7 @@ const GetProductImageThumbnail=({productKey})=>{
 
     useEffect(() => {
         getArtifacts(productKey);
-    }, []);
+    }, [productKey]);
     const getArtifacts = (productId) => {
         axios
             .get(`${baseUrl}product/${productId}/artifact`)

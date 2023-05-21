@@ -37,7 +37,7 @@ function NotificationsTwoReadAndTracking({ item }) {
                 data.orgs.map((org, index) => {
                     if (org.actor === "message_to") {
                         if (org.read_flag?.flag) {
-                            setIsRead(org.read_flag.flag);
+                            return setIsRead(org.read_flag.flag);
                         }
                     }
                 });

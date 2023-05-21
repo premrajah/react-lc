@@ -7,11 +7,6 @@ class InfoTabContent extends Component {
     slug;
     search;
 
-    constructor(props) {
-        super(props);
-
-    }
-
     render() {
 
 

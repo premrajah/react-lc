@@ -1,7 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import BlueBorderLink from "./FormsUI/Buttons/BlueBorderLink";
 
 const UnableToLoad = (props) => {
+
+    useEffect(()=>{
+
+        console.log(props.error)
+    },[props.error])
     return (
         <section className="not-found ">
             <div className="container ">

@@ -26,6 +26,8 @@ class ErrorBoundary extends Component {
 
             })
             .catch((error) => {
+
+
                 // this.setState({
                 //
                 //     errorRegister:error.response.data.errors[0].message

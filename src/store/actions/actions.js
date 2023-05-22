@@ -1,4 +1,4 @@
-import { getKey, saveKey, saveUserData, saveUserToken } from "../../LocalStorage/user";
+import { getKey, saveKey, saveUserData } from "../../LocalStorage/user";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
 
@@ -62,8 +62,7 @@ import {
 // Refer: https://github.com/react-ga/react-ga for usage details
 // --- START
 import ReactGA from "react-ga";
-import {baseUrl, gaTID, REACT_APP_BRANCH_ENV} from "../../Util/Constants";
-import {getUserToken} from "../../LocalStorage/user-session";
+import { baseUrl, gaTID, REACT_APP_BRANCH_ENV } from "../../Util/Constants";
 // -- END
 
 export const loadingSpinner = () => {
@@ -272,7 +271,7 @@ export const loadSitesSync = (data) => (dispatch) => {
             // dispatch({ type: "PRODUCT_LIST", value: [] })
         }
     )
-        .catch(error => {});
+        .catch(error => { });
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
@@ -291,12 +290,12 @@ export const loadParentSitesSync = (data) => (dispatch) => {
             // dispatch({ type: "PRODUCT_LIST", value: [] })
         }
     )
-        .catch(error => {});
+        .catch(error => { });
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
 
-export const loadCurrentProduct = (data,refresh) => {
+export const loadCurrentProduct = (data, refresh) => {
     return (dispatch) => {
 
         if (refresh) {
@@ -326,7 +325,7 @@ export const emptyCurrent = (data) => {
     };
 
 };
-export const setCurrentProduct = (data)  => {
+export const setCurrentProduct = (data) => {
 
     return {
         type: CURRENT_PRODUCT,
@@ -336,7 +335,7 @@ export const setCurrentProduct = (data)  => {
 
 };
 
-export const setCurrentSite = (data)  => {
+export const setCurrentSite = (data) => {
 
     return {
         type: CURRENT_SITE,
@@ -349,7 +348,7 @@ export const setCurrentSite = (data)  => {
 
 export const loadCurrentProductSync = (data) => (dispatch) => {
 
-    try{
+    try {
         axios
             .get(baseUrl + "product/" + encodeUrl(data) + "/expand?agg")
             .then(
@@ -366,12 +365,12 @@ export const loadCurrentProductSync = (data) => (dispatch) => {
                     //     notFound: true,
                     // });
 
-                    dispatch({ type: PRODUCT_NOT_FOUND , value:true});
+                    dispatch({ type: PRODUCT_NOT_FOUND, value: true });
 
                 }
             );
 
-    } catch(e) {
+    } catch (e) {
         console.log(e)
 
 
@@ -383,12 +382,12 @@ export const resetProductPageOffset = () => {
     return { type: PRODUCT_PAGE_RESET };
 };
 
-export const loadCurrentSite = (data,refresh) => {
+export const loadCurrentSite = (data, refresh) => {
     return (dispatch) => {
 
 
         if (refresh)
-       dispatch(emptyCurrent());
+            dispatch(emptyCurrent());
 
         dispatch(loadCurrentSiteSync(data));
     };
@@ -433,19 +432,19 @@ export const loadProductsSync = (data) => (dispatch) => {
                 (response) => {
                     let responseAll = response.data.data;
 
-                    dispatch({type: PRODUCT_LIST, value: responseAll});
+                    dispatch({ type: PRODUCT_LIST, value: responseAll });
                     // dispatch()
                 },
                 (error) => {
                     // let status = error.response.status
 
-                    dispatch({type: PRODUCT_LIST, value: []});
+                    dispatch({ type: PRODUCT_LIST, value: [] });
                 }
             )
             .catch(error => {
             });
 
-    } catch(e) {
+    } catch (e) {
         console.log(e)
 
 
@@ -462,17 +461,17 @@ export const loadProductsWithoutParentPaginationSync = (data) => (dispatch) => {
         .get(`${baseUrl}product/no-parent/no-links?offset=${data.offset}&size=${data.size}`)
         .then(
             (response) => {
-                if(response.status === 200) {
+                if (response.status === 200) {
                     dispatch(loading(false));
                 }
 
-                dispatch({ type: PRODUCT_NPARENT_LIST_PAGE, value: {val:response.data.data,offset:data.offset, size:data.size, refresh:data.refresh}});
+                dispatch({ type: PRODUCT_NPARENT_LIST_PAGE, value: { val: response.data.data, offset: data.offset, size: data.size, refresh: data.refresh } });
             },
             (error) => {
                 dispatch({ type: PRODUCT_NPARENT_LIST_PAGE, value: [] });
             }
         )
-        .catch(error => {});
+        .catch(error => { });
 
 };
 
@@ -484,16 +483,16 @@ export const loadProductsWithoutParentNoListingSync = (data) => (dispatch) => {
         // .get(`${baseUrl}product/no-parent/no-links?offset=${data.offset}&size=${data.size}`)
         .then(
             (response) => {
-                if(response.status === 200) {
+                if (response.status === 200) {
                     dispatch(loading(false));
                 }
-                dispatch({ type: PRODUCT_NPARENT_NO_LIST, value: {val:response.data.data}});
+                dispatch({ type: PRODUCT_NPARENT_NO_LIST, value: { val: response.data.data } });
             },
             (error) => {
                 dispatch({ type: PRODUCT_NPARENT_NO_LIST, value: [] });
             }
         )
-        .catch(error => {});
+        .catch(error => { });
 
 };
 
@@ -505,16 +504,16 @@ export const loadProductsWithoutParentSync = (data) => (dispatch) => {
         // .get(`${baseUrl}product/no-parent/no-links?offset=${data.offset}&size=${data.size}`)
         .then(
             (response) => {
-                if(response.status === 200) {
+                if (response.status === 200) {
                     dispatch(loading(false));
                 }
-                dispatch({ type: PRODUCT_NPARENT_LIST, value: {val:response.data.data,offset:data.offset, size:data.size}});
+                dispatch({ type: PRODUCT_NPARENT_LIST, value: { val: response.data.data, offset: data.offset, size: data.size } });
             },
             (error) => {
                 dispatch({ type: PRODUCT_NPARENT_LIST, value: [] });
             }
         )
-        .catch(error => {});
+        .catch(error => { });
 
 };
 
@@ -543,7 +542,7 @@ export function loadProductsSync2(data) {
                     dispatch({ type: PRODUCT_LIST, value: [] });
                 }
             )
-            .catch(error => {});
+            .catch(error => { });
 
         dispatch({ type: PRODUCT_LIST, value: [] });
     };
@@ -565,7 +564,7 @@ export const logInSync = (data) => (dispatch) => {
 
             if (res.status === 200) {
 
-                saveKey("token",res.data.data.token);
+                saveKey("token", res.data.data.token);
                 saveKey("user", res.data.data);
 
 
@@ -594,7 +593,7 @@ export const logInSync = (data) => (dispatch) => {
 
             if (error.response)
                 dispatch((
-                    { type: LOGIN_ERROR, value: error.response&&error.response.data?error.response.data.errors[0].message:error.response.status+": "+error.response.statusText}
+                    { type: LOGIN_ERROR, value: error.response && error.response.data ? error.response.data.errors[0].message : error.response.status + ": " + error.response.statusText }
                 ));
         });
 };
@@ -717,12 +716,10 @@ export const signUpHostSync = (data) => (dispatch) => {
 
 export const signUpSync = (data) => (dispatch) => {
 
-    let type=null
-    if (data.type){
-        type=data.type
+    let type = null
+    if (data.type) {
+        type = data.type
         delete data.type
-
-
     }
 
 
@@ -762,7 +759,7 @@ export const loadUserDetail = (data) => {
 
 
 
-    return { type: LOAD_USER_DETAIL, value: {userDetials:userDetials,token:token }};
+    return { type: LOAD_USER_DETAIL, value: { userDetials: userDetials, token: token } };
 };
 
 
@@ -779,7 +776,7 @@ export const getListings = (data) => {
 export const getListingsSync = (data) => (dispatch) => {
     axios.get(`${baseUrl}listing?m=a`)
         .then(res => {
-            dispatch({type: GET_LISTINGS, value: res.data.data})
+            dispatch({ type: GET_LISTINGS, value: res.data.data })
             dispatch(loading(false));
         })
         .catch(error => {
@@ -845,12 +842,12 @@ export const getMessagesSync = (data) => dispatch => {
         .then(response => {
             let data = response.data.data;
 
-            if(data.length > 0) {
+            if (data.length > 0) {
                 let timeFromLocalStorage = sessionStorage.getItem(LOCAL_STORAGE_MESSAGE_TIMESTAMP);
 
-                if(timeFromLocalStorage !== null) {
+                if (timeFromLocalStorage !== null) {
 
-                    if(data[0].message._ts_epoch_ms > timeFromLocalStorage) {
+                    if (data[0].message._ts_epoch_ms > timeFromLocalStorage) {
                         dispatch(unreadMessages(true));
                         dispatch(messageAlert(true));
                         dispatch(getMessages());
@@ -863,7 +860,7 @@ export const getMessagesSync = (data) => dispatch => {
                     sessionStorage.setItem(LOCAL_STORAGE_MESSAGE_TIMESTAMP, data[0].message._ts_epoch_ms);
                 }
 
-                dispatch({type: GET_MESSAGES, value: response.data.data})
+                dispatch({ type: GET_MESSAGES, value: response.data.data })
 
             }
 
@@ -887,12 +884,12 @@ export const getNotificationsSync = data => dispatch => {
 
             let data = response.data.data;
 
-            if(data.length > 0) {
+            if (data.length > 0) {
                 let timeFromLocalStorage = sessionStorage.getItem(LOCAL_STORAGE_NOTIFICATION_TIMESTAMP);
 
-                if(timeFromLocalStorage !== null) {
+                if (timeFromLocalStorage !== null) {
 
-                    if(data[0].message._ts_epoch_ms > timeFromLocalStorage) {
+                    if (data[0].message._ts_epoch_ms > timeFromLocalStorage) {
                         dispatch(unreadNotifications(true));
                         dispatch(notificationAlert(true));
                         dispatch(getNotifications())
@@ -905,7 +902,7 @@ export const getNotificationsSync = data => dispatch => {
                     sessionStorage.setItem(LOCAL_STORAGE_NOTIFICATION_TIMESTAMP, data[0].message._ts_epoch_ms);
                 }
 
-                dispatch({type: GET_NOTIFICATIONS, value: response.data.data})
+                dispatch({ type: GET_NOTIFICATIONS, value: response.data.data })
 
             }
 
@@ -915,20 +912,20 @@ export const getNotificationsSync = data => dispatch => {
         })
 }
 
-export const messageAlert = val =>  {
-    return {type: MESSAGE_ALERT, value: val}
+export const messageAlert = val => {
+    return { type: MESSAGE_ALERT, value: val }
 }
 
 export const notificationAlert = val => {
-    return {type: NOTIFICATION_ALERT, value: val}
+    return { type: NOTIFICATION_ALERT, value: val }
 }
 
 export const unreadMessages = val => {
-    return {type: UNREAD_MESSAGES, value: val}
+    return { type: UNREAD_MESSAGES, value: val }
 }
 
 export const unreadNotifications = val => {
-    return { type: UNREAD_NOTIFICATIONS, value: val}
+    return { type: UNREAD_NOTIFICATIONS, value: val }
 }
 
 export const fetchReleaseRequest = () => {
@@ -953,7 +950,7 @@ export const fetchReleaseRequestSync = () => (dispatch) => {
             // dispatch({ type: "PRODUCT_LIST", value: [] })
         }
     )
-        .catch(error => {});
+        .catch(error => { });
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
@@ -981,7 +978,7 @@ export const fetchServiceAgentRequestSync = () => (dispatch) => {
             // dispatch({ type: "PRODUCT_LIST", value: [] })
         }
     )
-        .catch(error => {});
+        .catch(error => { });
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };
@@ -1003,14 +1000,14 @@ export const fetchRegisterRequestSync = () => (dispatch) => {
 
             let responseAll = response.data.data;
 
-            dispatch({ type: PRODUCT_REGISTER , value: responseAll });
+            dispatch({ type: PRODUCT_REGISTER, value: responseAll });
 
         },
         (error) => {
 
         }
     )
-        .catch(error => {});
+        .catch(error => { });
 
     // dispatch({ type: "PRODUCT_LIST", value: [] })
 };

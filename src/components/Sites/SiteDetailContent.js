@@ -1,15 +1,14 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
-import {baseUrl, ENTITY_TYPES} from "../../Util/Constants";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { baseUrl, ENTITY_TYPES } from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {withStyles} from "@mui/styles/index";
 import MoreMenu from "../MoreMenu";
 import QrCode from "./QrCode";
 import InfoTabContent from "./InfoTabContent";
-import {GoogleMap} from "../Map/MapsContainer";
+import { GoogleMap } from "../Map/MapsContainer";
 import SubSitesTab from "./SubSitesTab";
 import SubProductsTab from "./SubProductsTab";
 import Tab from '@mui/material/Tab';
@@ -20,7 +19,6 @@ import TabPanel from '@mui/lab/TabPanel';
 import SiteReleaseDialog from "./SiteReleaseDialog";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import SiteFormNew from "./SiteFormNew";
-import ArtifactSiteTab from "./ArtifactSiteTab";
 import ArtifactManager from "../FormsUI/ArtifactManager";
 
 
@@ -412,8 +410,7 @@ class SiteDetailContent extends Component {
     getMatches() {
         axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug)).then(
             (response) => {
-                var response = response.data;
-
+                
                 this.setState({
                     matches: response.data,
                 });
@@ -489,8 +486,7 @@ class SiteDetailContent extends Component {
 
 
     render() {
-        const classes = withStyles();
-        const classesBottom = withStyles();
+    
 
         return (
             <>
@@ -500,8 +496,8 @@ class SiteDetailContent extends Component {
                         {this.state.zoomQrCode&&
                         <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
                             <img className="img-fluid qr-code-zoom"
-
                                  src={this.state.siteQrCode.blob_url}
+                                 alt=''
                                 />
                         </div>}
 

@@ -1,19 +1,19 @@
-import React, {Component} from "react";
+/* eslint-disable no-mixed-operators */
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
-import Select from "@mui/material/Select";
+import { connect } from "react-redux";
 import "../../Util/upload-file.css";
-import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
+import { Cancel, Check, Error, Info, Publish } from "@mui/icons-material";
 import axios from "axios/index";
-import {baseUrl, ENTITY_TYPES, getMimeTypeAndIcon, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import { baseUrl, ENTITY_TYPES, getMimeTypeAndIcon, MIME_TYPES_ACCEPT } from "../../Util/Constants";
 import _ from "lodash";
-import {Spinner} from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
-import {createProductUrl} from "../../Util/Api";
-import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {cleanFilename, compareProductEditFields, fetchErrorMessage, removeKeyFromObj} from "../../Util/GlobalFunctions";
+import { createProductUrl } from "../../Util/Api";
+import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
+import { cleanFilename, fetchErrorMessage, removeKeyFromObj } from "../../Util/GlobalFunctions";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
@@ -23,13 +23,10 @@ import Slider from '@mui/material/Slider';
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import ProductExpandItemNew from "../Products/ProductExpandItemNew";
-import docs from '../../img/icons/docs.png';
 import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import ReactPlayer from "react-player/lazy";
-import ArtifactProductsTab from "../Products/ArtifactProductsTab";
 import ArtifactManager from "../FormsUI/ArtifactManager";
-import {refreshPageWithSavedState} from "../../store/actions/actions";
 
 
 let slugify = require('slugify')
@@ -149,7 +146,6 @@ let slugify = require('slugify')
 
             try {
 
-            console.log("submited data from new site", data)
             window.scrollTo(0, 0);
 
             this.setState({
@@ -877,7 +873,7 @@ let slugify = require('slugify')
             }
 
 
-            if (Object.keys(fields).length == 0) {
+            if (Object.keys(fields).length === 0) {
                 this.props.triggerCallback("edit")
                 return;
             }

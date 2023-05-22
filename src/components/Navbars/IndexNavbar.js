@@ -1,18 +1,18 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import {Nav, Navbar, NavbarBrand, NavItem, Container} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Nav, Navbar, NavbarBrand, NavItem, Container } from "react-bootstrap";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOutline from "@mui/icons-material/MailOutline";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import LogoSymbol from "../../img/Symbol-white.svg";
 import HeaderLogoSvg from '../../img/Logo-white.svg';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from "axios/index";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import LinearProgress from "@mui/material/LinearProgress";
-import {makeStyles, withStyles} from "@mui/styles";
-import {Badge, Snackbar, Tooltip} from "@mui/material";
+import { makeStyles, withStyles } from "@mui/styles";
+import { Badge, Snackbar, Tooltip } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Menu from '@mui/material/Menu';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -40,8 +40,8 @@ class ComponentsNavbar extends React.Component {
             count: 0,
             nextIntervalFlag: false,
             orgImage: "",
-            anchorEl:null,
-            menuOpen:false
+            anchorEl: null,
+            menuOpen: false
         };
 
         this.toggleMenu = this.toggleMenu.bind(this);
@@ -53,23 +53,23 @@ class ComponentsNavbar extends React.Component {
     }
 
 
-     handleClickMenu = (event) => {
+    handleClickMenu = (event) => {
         this.setState({
-            anchorEl:event.currentTarget,
-            menuOpen:true
+            anchorEl: event.currentTarget,
+            menuOpen: true
         });
 
 
     };
-     handleCloseMenu = () => {
-         this.setState({
-             anchorEl:null,
-             menuOpen:false
-         });
+    handleCloseMenu = () => {
+        this.setState({
+            anchorEl: null,
+            menuOpen: false
+        });
     };
 
     showProductSelection() {
-        this.props.showProductPopUp({ type: "new", show: true ,parentProductId:null});
+        this.props.showProductPopUp({ type: "new", show: true, parentProductId: null });
     }
 
     toggleMenu = (event) => {
@@ -104,14 +104,15 @@ class ComponentsNavbar extends React.Component {
 
         // window.removeEventListener("scroll", this.changeColor);
         // window.addEventListener("scroll", this.changeColor);
-        this.dispatchMessagesAndNotifications();
-        this.timer = setTimeout(() => {
-            this.dispatchMessagesAndNotifications();
-        }, 10000)
+
 
 
         if (this.props.isLoggedIn) {
             this.getArtifactForOrg();
+            this.dispatchMessagesAndNotifications();
+            this.timer = setTimeout(() => {
+                this.dispatchMessagesAndNotifications();
+            }, 10000)
         }
     }
 
@@ -121,7 +122,7 @@ class ComponentsNavbar extends React.Component {
 
 
 
-    dispatchMessagesAndNotifications =  () => {
+    dispatchMessagesAndNotifications = () => {
         this.props.getMessages()
         this.props.getNotifications();
     }
@@ -176,149 +177,149 @@ class ComponentsNavbar extends React.Component {
                     }
                 }
             })
-            .catch((error) => {});
+            .catch((error) => { });
     };
 
     render() {
         return (
             <>
-                <Snackbar open={this.props.messageAlert} autoHideDuration={6000}  onClick={() => this.props.dispatchMessageAlert(false)} onClose={() => this.props.dispatchMessageAlert(false)}>
-                    <Alert  severity="success">You have new messages.</Alert>
+                <Snackbar open={this.props.messageAlert} autoHideDuration={6000} onClick={() => this.props.dispatchMessageAlert(false)} onClose={() => this.props.dispatchMessageAlert(false)}>
+                    <Alert severity="success">You have new messages.</Alert>
                 </Snackbar>
-                <Snackbar open={this.props.notificationAlert} autoHideDuration={6000}  onClick={() => this.props.dispatchNotificationAlert(false)} onClose={() => this.props.dispatchNotificationAlert(false)}>
-                    <Alert  severity="success">You have new notifications.</Alert>
+                <Snackbar open={this.props.notificationAlert} autoHideDuration={6000} onClick={() => this.props.dispatchNotificationAlert(false)} onClose={() => this.props.dispatchNotificationAlert(false)}>
+                    <Alert severity="success">You have new notifications.</Alert>
                 </Snackbar>
 
 
-                {(baseUrl && this.props.isLoggedIn && baseUrl  === "https://graph-dev.makealoop.io/api/2/") && <DevelopmentUserInfoDisplay userDetail={this.props.userDetail} /> }
+                {(baseUrl && this.props.isLoggedIn && baseUrl === "https://graph-dev.makealoop.io/api/2/") && <DevelopmentUserInfoDisplay userDetail={this.props.userDetail} />}
 
                 <Navbar className={"container-blue "} color-on-scroll="100" expand="lg">
                     <Container fluid>
-                    <Nav className={"  justify-content-start "}>
-                        <NavbarBrand to="/" tag={Link} id="navbar-brand">
-                            <div className="row ">
-                                <div className="col-auto">
-                                    <Link className={"logo-link"} to={"/"}>
-                                        <div className="d-flex justify-content-center align-content-center">
-                                            <img className="header-logo mobile-only" src={LogoSymbol} alt=""/>
-                                            <img
-                                                className="text-logo-home web-only"
-                                                src={HeaderLogoSvg}
-                                                alt=""
-                                            />
-                                        </div>
-                                    </Link>
+                        <Nav className={"  justify-content-start "}>
+                            <NavbarBrand to="/" tag={Link} id="navbar-brand">
+                                <div className="row ">
+                                    <div className="col-auto">
+                                        <Link className={"logo-link"} to={"/"}>
+                                            <div className="d-flex justify-content-center align-content-center">
+                                                <img className="header-logo mobile-only" src={LogoSymbol} alt="" />
+                                                <img
+                                                    className="text-logo-home web-only"
+                                                    src={HeaderLogoSvg}
+                                                    alt=""
+                                                />
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                        </NavbarBrand>
-                    </Nav>
+                            </NavbarBrand>
+                        </Nav>
 
-                    <Nav className={" justify-content-end menu-align-right"}>
-                        {this.props.isLoggedIn && (
-                            <>
-                                <NavItem className={"web-only mr-3"}>
-                                    <Link
+                        <Nav className={" justify-content-end menu-align-right"}>
+                            {this.props.isLoggedIn && (
+                                <>
+                                    <NavItem className={"web-only mr-3"}>
+                                        <Link
 
-                                        to={"/sites?add-site=true"}
-                                        className="nav-link d-none d-lg-block wl-link-white"
-                                        color="default">
-                                        Add Site
-                                    </Link>
-                                </NavItem>
+                                            to={"/sites?add-site=true"}
+                                            className="nav-link d-none d-lg-block wl-link-white"
+                                            color="default">
+                                            Add Site
+                                        </Link>
+                                    </NavItem>
+                                    <NavItem className={"web-only mr-3"}>
+                                        <Link
+                                            onClick={this.showProductSelection}
+                                            to={"/my-products"}
+                                            className="nav-link d-none d-lg-block wl-link-white"
+                                            color="default">
+                                            Add Product
+                                        </Link>
+                                    </NavItem>
+
+                                </>
+                            )}
                             <NavItem className={"web-only mr-3"}>
                                 <Link
-                                    onClick={this.showProductSelection}
-                                    to={"/my-products"}
-                                    className="nav-link d-none d-lg-block wl-link-white"
-                                    color="default">
-                                    Add Product
+                                    className="nav-link d-none d-lg-block wl-link-white "
+                                    color="default"
+                                    to={"/find-resources"}>
+                                    Marketplace
                                 </Link>
                             </NavItem>
 
-                            </>
-                            )}
-                        <NavItem className={"web-only mr-3"}>
-                            <Link
-                                className="nav-link d-none d-lg-block wl-link-white "
-                                color="default"
-                                to={"/find-resources"}>
-                                Marketplace
-                            </Link>
-                        </NavItem>
+                            {/*{this.props.isLoggedIn && (*/}
+                            {/*    <>*/}
 
-                        {/*{this.props.isLoggedIn && (*/}
-                        {/*    <>*/}
+                            {/*        <NavItem className={"web-only mr-3"}>*/}
+                            {/*            <Link*/}
+                            {/*                to={"/search-form"}*/}
+                            {/*                className="nav-link d-none d-lg-block wl-link-white"*/}
+                            {/*                color="default">*/}
+                            {/*                New Search*/}
+                            {/*            </Link>*/}
+                            {/*        </NavItem>*/}
 
-                        {/*        <NavItem className={"web-only mr-3"}>*/}
-                        {/*            <Link*/}
-                        {/*                to={"/search-form"}*/}
-                        {/*                className="nav-link d-none d-lg-block wl-link-white"*/}
-                        {/*                color="default">*/}
-                        {/*                New Search*/}
-                        {/*            </Link>*/}
-                        {/*        </NavItem>*/}
-
-                        {/*        <NavItem className={"web-only mr-3"}>*/}
-                        {/*            <Link*/}
-                        {/*                to={"/list-form"}*/}
-                        {/*                className="nav-link d-none d-lg-block wl-link-white  "*/}
-                        {/*                color="default">*/}
-                        {/*                New Listing*/}
-                        {/*            </Link>*/}
-                        {/*        </NavItem>*/}
-                        {/*    </>*/}
-                        {/*)}*/}
+                            {/*        <NavItem className={"web-only mr-3"}>*/}
+                            {/*            <Link*/}
+                            {/*                to={"/list-form"}*/}
+                            {/*                className="nav-link d-none d-lg-block wl-link-white  "*/}
+                            {/*                color="default">*/}
+                            {/*                New Listing*/}
+                            {/*            </Link>*/}
+                            {/*        </NavItem>*/}
+                            {/*    </>*/}
+                            {/*)}*/}
 
 
-                        {!this.props.isLoggedIn && (
-                            <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
-                                <span className="nav-link mr-3  d-lg-block  green-text click-item" color="default">
-                                    Sign Up
-                                </span>
-                            </NavItem>
-                        )}
-
-                        <NavItem>
                             {!this.props.isLoggedIn && (
-                                <button
-                                    onClick={this.showLoginPopUp}
-                                    type="button"
-                                    className=" btn topBtn ">
-                                    <span>Log In</span>
-                                </button>
+                                <NavItem onClick={this.showSignUpPopUp} className={"web-only"}>
+                                    <span className="nav-link mr-3  d-lg-block  green-text click-item" color="default">
+                                        Sign Up
+                                    </span>
+                                </NavItem>
                             )}
-                        </NavItem>
 
-                        {this.props.isLoggedIn && (
-                            <>
-                                <NavItem>
-                                    <button className="btn btn-link text-dark btn-inbox">
-                                        <Link to="/messages" onClick={() => this.props.dispatchUnreadMessages(false)}>
-                                            <Badge color={this.props.unreadMessages ? "secondary" : "default"} variant="dot" >
-                                                <MenuOutline className="white-text" style={{ fontSize: 24 }} />
-                                            </Badge>
-                                        </Link>
+                            <NavItem>
+                                {!this.props.isLoggedIn && (
+                                    <button
+                                        onClick={this.showLoginPopUp}
+                                        type="button"
+                                        className=" btn topBtn ">
+                                        <span>Log In</span>
                                     </button>
-                                </NavItem>
+                                )}
+                            </NavItem>
 
-                                <NavItem>
-                                    <button className="btn btn-link text-dark btn-inbox">
-                                        <Link to="/notifications" onClick={() => this.props.dispatchUnreadNotifications(false)}>
-                                            <Badge color={this.props.unreadNotifications ? "secondary" : "default"} variant="dot" >
-                                                <NotificationsNoneIcon className="white-text" style={{ fontSize: 24 }} />
-                                            </Badge>
-                                        </Link>
-                                    </button>
-                                </NavItem>
-                            </>
-                        )}
+                            {this.props.isLoggedIn && (
+                                <>
+                                    <NavItem>
+                                        <button className="btn btn-link text-dark btn-inbox">
+                                            <Link to="/messages" onClick={() => this.props.dispatchUnreadMessages(false)}>
+                                                <Badge color={this.props.unreadMessages ? "secondary" : "default"} variant="dot" >
+                                                    <MenuOutline className="white-text" style={{ fontSize: 24 }} />
+                                                </Badge>
+                                            </Link>
+                                        </button>
+                                    </NavItem>
+
+                                    <NavItem>
+                                        <button className="btn btn-link text-dark btn-inbox">
+                                            <Link to="/notifications" onClick={() => this.props.dispatchUnreadNotifications(false)}>
+                                                <Badge color={this.props.unreadNotifications ? "secondary" : "default"} variant="dot" >
+                                                    <NotificationsNoneIcon className="white-text" style={{ fontSize: 24 }} />
+                                                </Badge>
+                                            </Link>
+                                        </button>
+                                    </NavItem>
+                                </>
+                            )}
 
 
-                        {/*<BasicMenu orgImage={this.props.orgImage} isLoggedIn={this.props.isLoggedIn} userDetail={this.props.userDetail}/>*/}
+                            {/*<BasicMenu orgImage={this.props.orgImage} isLoggedIn={this.props.isLoggedIn} userDetail={this.props.userDetail}/>*/}
 
 
-                        {this.props.isLoggedIn && (
-                            <NavItem className={"web-only "}>
+                            {this.props.isLoggedIn && (
+                                <NavItem className={"web-only "}>
 
                                     <div
                                         onClick={this.handleClickMenu}
@@ -366,7 +367,7 @@ class ComponentsNavbar extends React.Component {
 
                                     <Menu
                                         // className={"p-0"}
-                                        style={{padding:"10px!important"}}
+                                        style={{ padding: "10px!important" }}
                                         id="basic-menu"
                                         anchorEl={this.state.anchorEl}
                                         open={this.state.menuOpen}
@@ -376,10 +377,10 @@ class ComponentsNavbar extends React.Component {
                                         }}
                                         className="custom-dropdown-menu"
                                     >
-                                    {/*<DropdownMenu className="dropdown-with-icons">*/}
+                                        {/*<DropdownMenu className="dropdown-with-icons">*/}
                                         <Link className={"dropdown-item"} to="/account">
                                             <i className="tim-icons icon-bullet-list-67" />
-                                           Account
+                                            Account
                                         </Link>
 
                                         <Link className={"dropdown-item"} to="/sites">
@@ -432,38 +433,38 @@ class ComponentsNavbar extends React.Component {
                                         {/*    Help*/}
                                         {/*</Link>*/}
 
-                                        <span className={"dropdown-item click-item"} onClick={()=> {
+                                        <span className={"dropdown-item click-item"} onClick={() => {
                                             this.handleCloseMenu();
                                             this.logOut();
                                         }}>
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Log Out
                                         </span>
-                                    {/*</DropdownMenu>*/}
+                                        {/*</DropdownMenu>*/}
                                     </Menu>
 
+                                </NavItem>
+                            )}
+
+                            {this.props.isLoggedIn && <NavItem className="mobile-only">
+                                <Link
+                                    onClick={this.showProductSelection}
+                                    to={"/my-products"}
+                                    className="btn btn-link text-dark menu-btn"
+                                    color="default">
+                                    <AddBoxIcon className="white-text" style={{ fontSize: 24 }} />
+                                </Link>
+                            </NavItem>}
+
+                            <NavItem className={"mobile-only"}>
+                                <button
+                                    onClick={this.toggleMenu}
+                                    className="btn btn-link text-dark menu-btn">
+                                    <MenuIcon className="white-text" style={{ fontSize: 32 }} />
+                                </button>
                             </NavItem>
-                        )}
-
-                        {this.props.isLoggedIn && <NavItem className="mobile-only">
-                            <Link
-                                onClick={this.showProductSelection}
-                                to={"/my-products"}
-                                className="btn btn-link text-dark menu-btn"
-                                color="default">
-                                <AddBoxIcon className="white-text" style={{fontSize: 24}}/>
-                            </Link>
-                        </NavItem>}
-
-                        <NavItem className={"mobile-only"}>
-                            <button
-                                onClick={this.toggleMenu}
-                                className="btn btn-link text-dark menu-btn">
-                                <MenuIcon className="white-text" style={{ fontSize: 32 }} />
-                            </button>
-                        </NavItem>
-                    </Nav>
-                    {this.props.loading && <LinearIndeterminate />}
+                        </Nav>
+                        {this.props.loading && <LinearIndeterminate />}
                     </Container>
                 </Navbar>
             </>
@@ -480,7 +481,7 @@ function LinearIndeterminate() {
     return (
         <div className={classes.root}>
             <LinearProgress
-                // style={{ backgroundColor: "#212529" }}
+            // style={{ backgroundColor: "#212529" }}
             />
         </div>
     );

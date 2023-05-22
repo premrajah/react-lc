@@ -5,7 +5,6 @@ import { v4 as uuid } from "uuid";
 import OndemandVideoIcon from "@mui/icons-material/YouTube";
 import ImageIcon from "@mui/icons-material/Image";
 import DescriptionIcon from "@mui/icons-material/Description";
-import BrowserNotSupportedIcon from "@mui/icons-material/BrowserNotSupported";
 export const { REACT_APP_BRANCH_ENV } = process.env;
 
 export const dashboardUrl =
@@ -368,7 +367,7 @@ export const SERVICE_AGENT_CHANGE_REGEX = /ServiceAgentChange\/([\w\d]+)/g;
 export const SITE_RELEASE_REGEX = /SiteRelease\/([\w\d]+)/g;
 export const EVENTS_STATUS_REGEX = /Event\/([\w\d]+)/g;
 export const BRACKETS_REGEX = /[(\[)(\])]/g;
-export const A_TAG_REGEX = /\<a(.*)\<\/a\>/g;
+export const A_TAG_REGEX = /<a(.*)\<\/a\>/g;
 export const LISTING_REGEX = /Listing\/([\w\d]+)/g;
 export const SEARCH_REGEX = /Search\/([\w\d]+)/g;
 export const ISSUE_REGEX = /Issue\/([\w\d]+)/g;

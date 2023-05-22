@@ -6,18 +6,17 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import moment from "moment";
-import React, {useEffect, useState} from "react";
-import {makeStyles} from "@mui/styles";
+import React, { useEffect, useState } from "react";
 import MapIcon from '@mui/icons-material/Place';
-import {GoogleMap} from "./Map/MapsContainer";
-import {ArrowCircleUp} from "@mui/icons-material";
+import { GoogleMap } from "./Map/MapsContainer";
+import { ArrowCircleUp } from "@mui/icons-material";
 import CustomPopover from "./FormsUI/CustomPopover";
-import {TRANSPORT_MODES} from "../Util/Constants";
+import { TRANSPORT_MODES } from "../Util/Constants";
 import OrgComponent from "./Org/OrgComponent";
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import GlobalDialog from "./RightBar/GlobalDialog";
 import BlueSmallBtn from "./FormsUI/Buttons/BlueSmallBtn";
-import {getTimeFormat, PreProcessCSVData} from "../Util/GlobalFunctions";
+import { getTimeFormat, PreProcessCSVData } from "../Util/GlobalFunctions";
 
 
 
@@ -47,6 +46,7 @@ const SiteTrailsTimeline=(props)=> {
 
     useEffect(() => {
         updateDistLookup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

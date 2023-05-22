@@ -56,12 +56,24 @@ const ArtifactManager = ({
         afterRemoveDoc.forEach((item) => artifactIds.push(item._key));
 
         setArtifactsTmp(afterRemoveDoc);
-        const payload = {
-            product_id: entityId,
-            artifact_ids: artifactIds,
-        };
 
-        if (entityId) handleReplaceArtifacts(payload);
+        if (entityType === ENTITY_TYPES.Site){
+            const payload = {
+                site_id: entityId,
+                artifact_ids: artifactIds,
+            };
+
+            if (entityId) handleReplaceArtifacts(payload);
+        }
+        if (entityType === ENTITY_TYPES.Product){
+            const payload = {
+                product_id: entityId,
+                artifact_ids: artifactIds,
+            };
+
+            if (entityId) handleReplaceArtifacts(payload);
+        }
+
     };
 
     const onUploadProgress = event => {
@@ -71,8 +83,18 @@ const ArtifactManager = ({
 
     const handleReplaceArtifacts = (payload) => {
 
+        let url=""
+
+        if (entityType === ENTITY_TYPES.Site){
+            url=`${baseUrl}site/artifact/replace`
+        }
+
+       else if (entityType === ENTITY_TYPES.Product){
+            url=`${baseUrl}product/artifact/replace`
+        }
+
         axios
-            .post(`${baseUrl}product/artifact/replace`, payload)
+            .post(url, payload)
             .then((response) => {
                 if (response.status === 200) {
 
@@ -80,7 +102,7 @@ const ArtifactManager = ({
                     showSnackbar({
                         show: true,
                         severity: "success",
-                        message: "Artifact removed successfully from product. Thanks",
+                        message: "Artifact removed successfully. Thanks",
                     });
                 }
             })
@@ -236,6 +258,18 @@ const ArtifactManager = ({
             .finally(() => {
                 setUploadProgress(null);
             });
+    };
+
+
+    const handleDocActions = ( action, key, blob_url) => {
+
+
+        if (action==="download")
+            window.location.href = blob_url;
+        else{
+            handleDeleteDocument(key)
+        }
+
     };
     const handleValidationFile = (type) => {
         let validations = [];
@@ -456,8 +490,10 @@ const ArtifactManager = ({
                                         <div className="col-2 d-flex justify-content-end">
                                             {!props.hideMenu && (
                                                 <MoreMenu
-                                                    triggerCallback={() => {
-                                                        handleDeleteDocument(artifact._key);
+                                                    triggerCallback={(action) => {
+                                                        handleDocActions( action,
+                                                            artifact._key,
+                                                            artifact.blob_url);
                                                     }}
                                                     download={true}
                                                     delete={props.isLoggedIn&&!props.isArchiver}

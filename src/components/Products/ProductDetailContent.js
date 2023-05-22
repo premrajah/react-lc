@@ -470,7 +470,7 @@ class ProductDetailContent extends Component {
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product has moved to archive successfully. Thanks"})
 
-                this.ocVCProduct(this.state.item.prduct._key)
+                this.ocVCProduct(this.state.item.product._key)
             })
             .catch((error) => {
                 // this.setState({

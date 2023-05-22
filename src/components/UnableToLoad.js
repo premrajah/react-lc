@@ -8,6 +8,7 @@ const UnableToLoad = (props) => {
 
         console.log(props.error)
     },[props.error])
+
     return (
         <section className="not-found ">
             <div className="container ">

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
     DataGrid,
@@ -10,22 +10,21 @@ import {
     useGridApiContext,
     useGridSelector
 } from '@mui/x-data-grid';
-import {styled} from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import {Delete} from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {capitalize, getSite, getTimeFormat} from "../../Util/GlobalFunctions";
-import {Link} from "react-router-dom";
+import { capitalize, getSite, getTimeFormat } from "../../Util/GlobalFunctions";
+import { Link } from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
 import Stack from '@mui/material/Stack';
 import axios from "axios";
-import {baseUrl, googleApisBaseURL} from "../../Util/Constants";
-import {Avatar} from "@mui/material";
+import { baseUrl, googleApisBaseURL, MIME_TYPES } from "../../Util/Constants";
+import { Avatar } from "@mui/material";
 import placeholderImg from "../../img/place-holder-lc.png";
-import PlaceholderImg from "../../img/place-holder-lc.png";
 
 const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,resetSelection,entityType,
                                linkField,dataKey,loading,loadMore,checkboxSelection,
@@ -71,7 +70,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
         }else{
             setMultipleSelectFlag([])
         }
-    },[selectedRows])
+    },[selectedRows, setMultipleSelectFlag])
 
     useEffect(() => {
       setAllowSelection(checkboxSelection)
@@ -86,7 +85,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
         }
 
 
-    },[resetSelection])
+    },[resetSelection, setMultipleSelectFlag])
 
 
     useEffect(() => {
@@ -133,7 +132,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                     renderCell: (params) => (
                         <>
 
-                            {params.field == "_ts_epoch_ms" ? <span>
+                            {params.field === "_ts_epoch_ms" ? <span>
                             {getTimeFormat(params.value)}
                     </span> : params.field === data.linkField ? <span className="text-blue">
                      <Link to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>
@@ -174,8 +173,8 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                                 <ActionIconBtn
                                     onClick={() => actionCallback(params.row.id, action)}
                                 >
-                                    {action == "edit" ? <EditIcon/> : action == "view" ?
-                                        <VisibilityIcon/> : action == "delete" ? <Delete/> : action == "map" ?
+                                    {action === "edit" ? <EditIcon/> : action === "view" ?
+                                        <VisibilityIcon/> : action === "delete" ? <Delete/> : action === "map" ?
                                             <MapIcon/> : action}
                                 </ActionIconBtn>
                             )}
@@ -188,7 +187,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
             setTableHeader(headersTmp)
             setSortModel(data.headers.filter(item => item.sort))
         }
-    }, [data])
+    }, [actionCallback, actions, currentData, data, entityType, pageSize])
 
     useEffect(() => {
 
@@ -220,7 +219,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                                     }
 
                                     else{
-                                        itemTmp[`${item.field}`] = Product[`${item.field == "id" ? "_key" : item.field}`]
+                                        itemTmp[`${item.field}`] = Product[`${item.field === "id" ? "_key" : item.field}`]
                                     }
                                 }
                             }catch(e){
@@ -235,7 +234,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
 
         },100)
         let listTmp=[]
-    }, [items])
+    }, [data.headers, data.objKey, items])
 
     const handleChange=(dataTmp)=>{
         setSortModel(dataTmp)
@@ -243,7 +242,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
         if (loadMore&&dataTmp.length>0){
 
             let filter={
-                key:dataTmp[0].field=="id"?"_key":dataTmp[0].field,
+                key:dataTmp[0].field==="id"?"_key":dataTmp[0].field,
                 sort:dataTmp[0].sort
             }
             loadMore(true,filter)
@@ -439,13 +438,19 @@ const GetProductImageThumbnail=({productKey})=>{
 
     useEffect(() => {
         getArtifacts(productKey);
-    }, []);
+    }, [productKey]);
     const getArtifacts = (productId) => {
         axios
             .get(`${baseUrl}product/${productId}/artifact`)
             .then((res) => {
-                const data = res.data.data;
+                let data = res.data.data;
+
+
                 if (data.length > 0) {
+
+                    data=data.filter((image)=>  image.mime_type === MIME_TYPES.JPEG ||
+                        image.mime_type === MIME_TYPES.JPG ||
+                        image.mime_type === MIME_TYPES.PNG)
                     setArtifacts(data);
                 }
             })

@@ -89,10 +89,9 @@ const AddArtifactToEntity = ({
 
     useEffect(()=>{
         setIsLoading(false);
-        console.log(artifactsTmp)
         setArtifacts(artifactsTmp)
 
-    },[artifactsTmp])
+    },[artifactsTmp, setArtifacts])
 
     const handleUploadFiles = async (file) => {
         setIsLoading(true);
@@ -117,7 +116,6 @@ const AddArtifactToEntity = ({
 
                             else{
 
-                                console.log(uploadedFile.data.data)
 
 
                                 const a = uploadedFile.data.data;
@@ -185,7 +183,6 @@ const AddArtifactToEntity = ({
                     else{
                         let files=uploadedFiles
 
-                        console.log(youtubeIdsUpload)
                         setUploadedFiles(files => [...files, youtubeIdsUpload]);
 
                         setArtifacts(files => [...files, youtubeIdsUpload])
@@ -225,8 +222,6 @@ const AddArtifactToEntity = ({
                     else{
                         let files=uploadedFiles
 
-
-                        console.log(videoLinksUploaded)
 
                         setUploadedFiles(files => [...files, videoLinksUploaded]);
 

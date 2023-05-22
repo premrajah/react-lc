@@ -1,11 +1,11 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
-import {baseUrl, ENTITY_TYPES} from "../../Util/Constants";
+import { connect } from "react-redux";
+import { baseUrl, ENTITY_TYPES } from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody, Spinner} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import { Alert, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import SearchItem from "../Searches/search-item";
 import ResourceItem from "../../pages/create-search/ResourceItem";
 import TextField from "@mui/material/TextField";
@@ -13,10 +13,10 @@ import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import ImageHeader from "../UIComponents/ImageHeader";
 import QrCode from "./QrCode";
-import InfoTabContent from "./InfoTabContent";
+import InfoTabContent from "./InfoTabContent"
 import SubProductsTab from "./SubProductsTab";
 import ProductForm from "../ProductPopUp/ProductForm";
-import {GoogleMap} from "../Map/MapsContainer";
+import { GoogleMap } from "../Map/MapsContainer";
 import AggregatesTab from "./AggregatesTab";
 import OrgComponent from "../Org/OrgComponent";
 import Tab from '@mui/material/Tab';
@@ -31,12 +31,11 @@ import BlueButton from "../FormsUI/Buttons/BlueButton";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
-import {fetchErrorMessage, getParameterByName, getTimeFormat} from "../../Util/GlobalFunctions";
+import { fetchErrorMessage, getParameterByName, getTimeFormat } from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
 import ArtifactManager from "../FormsUI/ArtifactManager";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 
 class ProductDetailContent extends Component {
@@ -347,16 +346,16 @@ class ProductDetailContent extends Component {
                 item: this.props.item,
             });
 
-            this.loadInfo(this.props.item);
-
             this.setActiveKey(null,"1")
-            this.fetchExistingAgentRequests(this.props.item.product._key)
 
-            this.fetchReleases(this.props.item.product._key)
+            if (this.props.item.product){
+                this.loadInfo(this.props.item);
+                this.fetchExistingAgentRequests(this.props.item.product._key)
+                this.fetchReleases(this.props.item.product._key)
+                this.getEvents(this.props.item.product._key)
+                this.ocVCProduct(this.props.item.product._key)
+            }
 
-            this.getEvents(this.props.item.product._key)
-
-            this.ocVCProduct(this.props.item.product._key)
         }
 
 
@@ -823,8 +822,7 @@ class ProductDetailContent extends Component {
     getMatches() {
         axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug)).then(
             (response) => {
-                var response = response.data;
-
+            
                 this.setState({
                     matches: response.data,
                 });
@@ -982,7 +980,7 @@ class ProductDetailContent extends Component {
                                 <img
                                     className="img-fluid qr-code-zoom"
                                     src={this.state.item.qr_artifact.blob_url}
-
+                                alt=''
                                 />
                             )}
                         </div>}

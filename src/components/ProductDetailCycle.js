@@ -1,14 +1,14 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../store/actions/actions";
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PlaceholderImg from "../img/place-holder-lc.png";
-import {baseUrl, ENTITY_TYPES, frontEndUrl, RECUR_UNITS} from "../Util/Constants";
+import { baseUrl, ENTITY_TYPES, frontEndUrl } from "../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./ImagesSlider/ImagesSlider";
 import encodeUrl from "encodeurl";
-import {Alert, Modal, ModalBody, Spinner} from "react-bootstrap";
-import {withStyles} from "@mui/styles/index";
+import { Alert, Modal, ModalBody, Spinner } from "react-bootstrap";
+import { withStyles } from "@mui/styles/index";
 import jspdf from "jspdf";
 import QrCodeBg from "../img/qr-code-bg.png";
 import SearchItem from "./Searches/search-item";
@@ -22,12 +22,11 @@ import IssueSubmitForm from "./IssueSubmitForm";
 import AutocompleteCustom from "./AutocompleteSearch/AutocompleteCustom";
 import OrgTrailsTimeline from "./OrgTrailsTimeline";
 import SiteTrailsTimeline from "./SiteTrailsTimeline";
-import {FormControlLabel, Radio, RadioGroup} from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import ReportIcon from '@mui/icons-material/Report';
 import InfoTabContent from "./Products/InfoTabContent";
 import SubProductsTab from "./Products/SubProductsTab";
-import ArtifactProductsTab from "./Products/ArtifactProductsTab";
-import {GoogleMap} from "./Map/MapsContainer";
+import { GoogleMap } from "./Map/MapsContainer";
 import AggregatesTab from "./Products/AggregatesTab";
 import PageHeader from "./PageHeader";
 import CubeBlue from "../img/icons/product-icon-big.png";
@@ -44,7 +43,6 @@ import GreenButton from "./FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 import ImageHeader from "./UIComponents/ImageHeader";
 import ArtifactManager from "./FormsUI/ArtifactManager";
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 
 class ProductDetailCycle extends Component {
@@ -589,8 +587,6 @@ class ProductDetailCycle extends Component {
     getMatches() {
         axios.get(baseUrl + "match/listing/" + encodeUrl(this.slug)).then(
             (response) => {
-                var response = response.data;
-
                 this.setState({
                     matches: response.data,
                 });
@@ -679,7 +675,7 @@ class ProductDetailCycle extends Component {
                             <img
                                 className="img-fluid qr-code-zoom"
                                 src={this.props.item.qr_artifact.blob_url}
-
+alt=''
                             />
                         )}
                     </div>}

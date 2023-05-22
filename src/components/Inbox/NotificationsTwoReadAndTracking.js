@@ -37,7 +37,7 @@ function NotificationsTwoReadAndTracking({ item }) {
                 data.orgs.map((org, index) => {
                     if (org.actor === "message_to") {
                         if (org.read_flag?.flag) {
-                            setIsRead(org.read_flag.flag);
+                            return setIsRead(org.read_flag.flag);
                         }
                     }
                 });
@@ -58,7 +58,6 @@ function NotificationsTwoReadAndTracking({ item }) {
             .then((res) => {
                 if (res.status === 200) {
                     // TODO display message that product is tracked
-                    console.log("tracked");
                     setIsTracked(true);
                 }
             })
@@ -76,7 +75,6 @@ function NotificationsTwoReadAndTracking({ item }) {
                 if (res.status === 200) {
                     // TODO display message that product is untracked
                     setIsTracked(false);
-                    console.log("untracked");
                 }
             })
             .catch((error) => {

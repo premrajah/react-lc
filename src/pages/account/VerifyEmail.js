@@ -7,7 +7,6 @@ import Home from "../home/Home";
 const VerifyEmail = () => {
 
     const {search} = useLocation();
-    console.log(search)
 
     useEffect(() => {
         const getVerify = async () => {

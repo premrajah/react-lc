@@ -57,7 +57,6 @@ import IssueDetail from "./pages/issues/IssueDetail";
 import ApprovedReleases from "./pages/approvals/ApprovedReleases";
 import NotificationPage from "./components/Inbox/NotificationPage";
 import MessagePage from "./pages/message/MessagePage";
-import Messeges from "./pages/message/MessagePage";
 import TrackedProducts from "./pages/my-products/TrackedProducts";
 import CustomSnackbar from "./components/UIComponents/CustomSnackbar";
 import ResourceItem from "./components/Resources/ResourceItem";
@@ -148,7 +147,6 @@ class App extends Component {
                         <Route exact path="/verify" component={VerifyEmail} />
                         <LoggedInRoute exact path="/notifications" component={NotificationPage} />
                         <LoggedInRoute exact path="/messages" component={MessagePage} />
-                        <LoggedInRoute exact path="/messages-new" component={Messeges} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         <LoggedInRoute exact path="/my-search" component={MySearch} />
                         <LoggedInRoute exact path="/search-records" component={SearchRecords} />
@@ -192,7 +190,7 @@ class App extends Component {
                         <PromptLoginRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/help" component={Help} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
-                        <LoggedInRoute exaedit-accountct path="/edit-account" component={EditAccount} />
+                        <LoggedInRoute exact path="/edit-account" component={EditAccount} />
                         <LoggedInRoute exact path="/company-info" component={CompanyInfo} />
                         <LoggedInRoute exact path="/transfer-scaling" component={TransferScaling} />
                         <LoggedInRoute exact path="/search/:slug" component={ViewSearchNew} />

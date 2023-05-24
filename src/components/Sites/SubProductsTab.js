@@ -283,7 +283,7 @@ class SubProductsTab extends Component {
                                                                         id: "outlined-age-native-simple",
                                                                     }}>
                                                                     <option value={null}>Select</option>
-                                                                    {this.props.productWithoutParentList
+                                                                    {this.props.productWithoutParentList&&this.props.productWithoutParentList
                                                                         .filter(
                                                                             (item) =>
                                                                                 !this.state.products.filter(

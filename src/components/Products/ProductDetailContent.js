@@ -1044,7 +1044,7 @@ class ProductDetailContent extends Component {
                                             <div className="col-12 position-relative">
                                                 {this.state.isArchiver && <small className="text-danger d-flex justify-content-start align-items-center "><PriorityHighIcon style={{fontSize:"16px"}} />Archived product.</small>}
                                                 <h4 className="text-capitalize product-title width-90">
-                                                    {this.state.item.product.name}
+                                                    {this.state.item.product?.name}
                                                 </h4>
                                                 <div className="top-right text-right">
                                                     <div className="d-flex flex-row align-items-center justify-content-center ">

@@ -9,7 +9,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import MapIcon from '@mui/icons-material/Place';
 import { GoogleMap } from "./Map/MapsContainer";
-import { ArrowCircleUp } from "@mui/icons-material";
+import {ArrowCircleUp, Circle} from "@mui/icons-material";
 import CustomPopover from "./FormsUI/CustomPopover";
 import { TRANSPORT_MODES } from "../Util/Constants";
 import OrgComponent from "./Org/OrgComponent";
@@ -204,21 +204,22 @@ const SiteTrailsTimeline=(props)=> {
 
                                 {
                                     local_trail ? <TimelineOppositeContent
-                                        sx={{mt: 7, mr: 0,ml:0,p:0}}
+                                        sx={{mt: 0, mr: 1,ml:0,p:0}}
                                     >
                                         <DistanceTrailOnlyPopOver index={index} trail={local_trail} symbol="+"/>
                                     </TimelineOppositeContent> :
-                                        <TimelineOppositeContent sx={{mt: 7, mr: 0,p:0}}><span></span></TimelineOppositeContent>
+                                        <TimelineOppositeContent sx={{mt: 0, ml:0,mr: 1,p:0}}><span></span></TimelineOppositeContent>
                                 }
                                 <TimelineSeparator>
                                     {item._relation === "located_at" ?
-                                        <TimelineDot
+                                        <Circle
                                             style={{
-                                                backgroundColor: `${item._relation === "located_at" ? "#27245C" : "#05AD88"}`,
+                                                color: `${item._relation === "located_at" ? "#27245C" : "#05AD88"}`,
                                                 width: "25px",
                                                 height: "25px",
-                                            }}>
-                                        </TimelineDot> :
+                                            }}
+                                        />
+                                        :
 
                                         <ArrowCircleUp
                                             style={{
@@ -235,12 +236,12 @@ const SiteTrailsTimeline=(props)=> {
                                 </TimelineSeparator>
 
                                 <TimelineContent
-                                    sx={{mt: 7, mr: 0,ml:0,p:0}}
+                                    sx={{mt: 0, mr: 0,ml:1,p:0}}
                                 >
                                     <Typography
                                         // className={"mt-1 me-2"}
                                     >
-                                        <p className={"text-blue text-14"}>
+                                        <p className="text-blue text-14 text-capitalize">
                                             {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes && item.site.site.geo_codes.length > 0 &&
                                             <MapIcon
                                                 style={{color:`${item._relation === "located_at" ? "#27245C" : "#05AD88"}`}}

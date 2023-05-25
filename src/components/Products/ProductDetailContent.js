@@ -2034,7 +2034,7 @@ class ProductDetailContent extends Component {
                                 this.state.serviceAgentRequests.length&&
                                 this.state.serviceAgentRequests.filter(item=>item.Release.stage!=="cancelled").length>0)&&
                                 <div className="col-12">
-                                        <div className="row m-2">
+                                        <div className="row mt-2">
                                             <div className="col-12">
                                         <AutocompleteCustom
                                             filterOrgs={[{_id:this.props.userDetail.orgId}]}

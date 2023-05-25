@@ -158,9 +158,9 @@ class ProductDetailContent extends Component {
                     this.fetchExistingAgentRequests(this.state.item.product._key)
 
                     this.props.showSnackbar({show:true,severity:"success",message:"Change service agent request cancelled successfully. Thanks"})
-                    this.setState({
-                        btnLoading: false,
-                    });
+                    // this.setState({
+                    //     btnLoading: false,
+                    // });
 
                 })
                 .catch((error) => {
@@ -714,7 +714,7 @@ class ProductDetailContent extends Component {
             .then((res) => {
                 this.setState({
                     showServiceAgentSuccess: true,
-                    btnLoading: false,
+                    // btnLoading: false,
                 });
 
                 this.props.showSnackbar({show:true,severity:"success",message:"Change Service Agent request submitted successfully"})
@@ -904,8 +904,11 @@ class ProductDetailContent extends Component {
 
                     this.setState({
                         serviceAgentRequests: response.data.data,
+                        btnLoading:false
 
                     });
+
+
 
                 },
                 (error) => {

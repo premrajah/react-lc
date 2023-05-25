@@ -70,6 +70,7 @@ class ProductsNew extends Component {
             selectedSearch: null,
             queryData: {},
             initialFilter: {},
+            loadingMore:false,
             menuOptions: {
                 Products: { url: "name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at" },
                 Service: { url: "name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
@@ -565,12 +566,12 @@ class ProductsNew extends Component {
         console.log(data)
         console.log(filters)
         console.log(tempOffset,iteration)
+
         try {
             if (data && data.reset) {
                 // await   this.clearList();
                 this.setState({
                     offset: 0,
-                    items: [],
                     lastPageReached: false,
 
                 });
@@ -581,14 +582,7 @@ class ProductsNew extends Component {
             if (typeof this.cancelToken != typeof undefined) {
                 this.cancelToken.cancel()
             }
-
-
-
-
             let url = `${baseUrl}seek?${data.dataUrl}`;
-
-
-
 
             filters.forEach((item) => {
                 url = url + `&or=${item.key}~%${item.value}%`;
@@ -608,21 +602,26 @@ class ProductsNew extends Component {
             }
             let newSize = this.state.pageSize/this.state.pageSizeDivide;
 
-
-            if (iteration===0){
-
+            this.setState({
+                loadingMore: true,
+            });
+            if (iteration===1){
                 tempOffset=data.page * this.state.pageSize
+
+                    this.setState({
+                        items: [],
+                    })
+            } else{
             }
 
             url = `${url}&count=false&offset=${tempOffset?tempOffset:0}&size=${newSize}`;
+            console.log(tempOffset,iteration,url)
 
             if (data.sort) {
                 url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
             }
 
-
             this.cancelToken = axios.CancelToken.source()
-
 
             let result = await axios
                 .get(encodeURI(url),
@@ -631,6 +630,9 @@ class ProductsNew extends Component {
                 .catch((error) => {
 
                     console.error(error);
+                    this.setState({
+                        loadingMore: false,
+                    });
                 });
 
 
@@ -638,13 +640,9 @@ class ProductsNew extends Component {
 
             if (result && result.data && result.data.data) {
 
-
-                // this.setState({
-                //     // items: this.state.items.concat(result.data ? result.data.data : []),
-                //     items: result.data ? result.data.data : []
-                // })
-
-
+                this.setState({
+                    loadingMore: false,
+                });
 
                 this.setState({
                     // items: this.state.items.concat(result.data ? result.data.data : []),
@@ -674,14 +672,13 @@ class ProductsNew extends Component {
 
 
 
-                }else{
-                    this.setState({
-                        // items: this.state.items.concat(result.data ? result.data.data : []),
-                        items: result.data ? result.data.data : []
-                    })
                 }
 
+
             } else {
+                this.setState({
+                    loadingMore: false,
+                });
                 if (result) {
                     this.props.showSnackbar({
                         show: true,
@@ -1118,7 +1115,7 @@ class ProductsNew extends Component {
                                 pageSize={this.state.pageSize}
                                 offset={this.state.offset}
                                 visibleCount={this.state.items.length}
-                                loading={this.state.loadingResults}
+                                // loading={this.state.loadingResults}
                                 lastPageReached={this.state.lastPageReached}
                                 currentPage={this.state.queryData.page ? this.state.queryData.page : 0}
                                 loadMore={(data) => {
@@ -1138,6 +1135,7 @@ class ProductsNew extends Component {
                                 actionCallback={this.actionCallback}
                                 data={this.state.queryData}
                                 initialFilter={this.state.initialFilter}
+                                loadingMore={this.state.loadingMore}
 
                             >
                                 <div className="row  d-flex align-items-center">

@@ -4,6 +4,7 @@ import {PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
 import MenuDropdown from "../FormsUI/MenuDropdown";
 import SearchBox from "./SearchBox";
 import {removeEmptyValuesObj} from "../../Util/GlobalFunctions";
+import {Spinner} from "react-bootstrap";
 
 class PaginationGrid extends Component {
     constructor(props) {
@@ -132,6 +133,18 @@ class PaginationGrid extends Component {
                     setMultipleSelectFlag={this.props.setMultipleSelectFlag}
                     data={this.props.data}
                 />
+                        {this.props.loadingMore&&
+                            <div className="loadingMore-spinner w-100 justify-content-center  align-items-center d-flex flex-row">
+                            <Spinner
+                            className={`mr-2 `}
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                            />
+                            </div>
+                        }
                     </div>
                 </div>
 

@@ -141,12 +141,15 @@ class ProductDetailContent extends Component {
     cancelChangeServiceAgentRequest = () => {
 
         if (this.state.serviceAgentRequests&&this.state.serviceAgentRequests.length>0) {
-            var data = {
+            let data = {
                 id: this.state.serviceAgentRequests[0].Release._key,
                 new_stage: "cancelled",
                 // "site_id": this.state.site
             };
 
+            this.setState({
+                btnLoading: true,
+            });
             axios
                 .post(baseUrl + "service-agent/stage", data)
                 .then((res) => {
@@ -155,12 +158,16 @@ class ProductDetailContent extends Component {
                     this.fetchExistingAgentRequests(this.state.item.product._key)
 
                     this.props.showSnackbar({show:true,severity:"success",message:"Change service agent request cancelled successfully. Thanks"})
-
+                    this.setState({
+                        btnLoading: false,
+                    });
 
                 })
                 .catch((error) => {
                     this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
-
+                    this.setState({
+                        btnLoading: false,
+                    });
                 });
 
         }
@@ -2111,6 +2118,8 @@ class ProductDetailContent extends Component {
 
                                             <div className={"col-1 text-right "}>
                                                 <CloseButtonPopUp
+                                                    loading={this.state.btnLoading}
+                                                    disabled={this.state.btnLoading}
                                                     onClick={this.cancelChangeServiceAgentRequest}
                                                 />
                                             </div>

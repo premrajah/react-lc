@@ -52,7 +52,8 @@ class ProductsNew extends Component {
             lastPageReached: false,
             offset: 0,
             pageSize: 15,
-            loadingResults: false,
+            pageSizeDivide:3,
+            loadingResults: true,
             count: 0,
             showProductPopUp: false,
             productId: null,
@@ -133,7 +134,7 @@ class ProductsNew extends Component {
         try {
 
             // console.log("new queryData,reset")
-            // console.log(queryData)
+            console.log("queryData",queryData)
             removeEmptyValuesObj(queryData)
 
             if (!queryData.reset) {
@@ -150,8 +151,8 @@ class ProductsNew extends Component {
 
             }
 
-            // console.log("merged queryData,reset")
-            // console.log(queryData)
+            console.log("merged queryData,reset")
+            console.log(queryData)
 
             this.setState({
                 selectionMode: queryData.type
@@ -179,7 +180,7 @@ class ProductsNew extends Component {
                 filter: queryData.filter,
                 reset: queryData.reset,
                 sort: queryData.sort,
-                page: queryData.page
+                page: queryData.page?queryData.page:0
             }
 
             if (!data.sort && this.state.defaultSort) {
@@ -492,13 +493,11 @@ class ProductsNew extends Component {
     }
 
     cancelTokenSeek
-    seekCount = async (data, filters) => {
+    seekCount = async (url) => {
 
-        let url = `${baseUrl}seek?${data.dataUrl}&count=true`;
+         url = `${url}&count=true`;
 
-        filters.forEach((item) => {
-            url = url + `&or=${item.key}~%${item.value}%`;
-        });
+
 
         if (typeof this.cancelTokenSeek != typeof undefined) {
             this.cancelTokenSeek.cancel()
@@ -560,11 +559,12 @@ class ProductsNew extends Component {
 
     cancelToken
 
-    loadItemsPageWise = async (data, filters) => {
+    loadItemsPageWise = async (data, filters,tempOffset=0,iteration=1) => {
 
-        // console.log("data,selection,filters")
-        // console.log(data)
-        // console.log(filters)
+        console.log("data,selection,filters")
+        console.log(data)
+        console.log(filters)
+        console.log(tempOffset,iteration)
         try {
             if (data && data.reset) {
                 // await   this.clearList();
@@ -572,8 +572,9 @@ class ProductsNew extends Component {
                     offset: 0,
                     items: [],
                     lastPageReached: false,
-                    loadingResults: false,
+
                 });
+
             }
 
             //Check if there are any previous pending requests
@@ -582,14 +583,12 @@ class ProductsNew extends Component {
             }
 
 
-            this.seekCount(data, filters);
 
-            this.setState({
-                loadingResults: true,
-            });
 
-            let newOffset = data.page * this.state.pageSize;
             let url = `${baseUrl}seek?${data.dataUrl}`;
+
+
+
 
             filters.forEach((item) => {
                 url = url + `&or=${item.key}~%${item.value}%`;
@@ -599,7 +598,23 @@ class ProductsNew extends Component {
                 activeQueryUrl: url
             })
 
-            url = `${url}&count=false&offset=${newOffset ? newOffset : 0}&size=${this.state.pageSize}`;
+
+            if (data && data.reset) {
+
+                this.seekCount(url);
+                this.setState({
+                    loadingResults: true,
+                });
+            }
+            let newSize = this.state.pageSize/this.state.pageSizeDivide;
+
+
+            if (iteration===0){
+
+                tempOffset=data.page * this.state.pageSize
+            }
+
+            url = `${url}&count=false&offset=${tempOffset?tempOffset:0}&size=${newSize}`;
 
             if (data.sort) {
                 url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
@@ -623,17 +638,49 @@ class ProductsNew extends Component {
 
             if (result && result.data && result.data.data) {
 
+
+                // this.setState({
+                //     // items: this.state.items.concat(result.data ? result.data.data : []),
+                //     items: result.data ? result.data.data : []
+                // })
+
+
+
                 this.setState({
                     // items: this.state.items.concat(result.data ? result.data.data : []),
-                    items: result.data ? result.data.data : [],
                     loadingResults: false,
                     lastPageReached: result.data
                         ? result.data.data.length === 0
                             ? true
                             : false
                         : true,
-                    offset: newOffset,
+                    offset: tempOffset,
                 });
+
+                if (result.data.data.length !== 0){
+
+                        tempOffset=newSize+tempOffset
+
+                    this.setState({
+                        items: this.state.items.concat(result.data ? result.data.data : []),
+                    })
+
+                    if (iteration<this.state.pageSizeDivide){
+
+                        let dataTemp=data
+                        dataTemp.reset=false
+                        this.loadItemsPageWise(dataTemp,filters,tempOffset,iteration+1)
+                    }
+
+
+
+                }else{
+                    this.setState({
+                        // items: this.state.items.concat(result.data ? result.data.data : []),
+                        items: result.data ? result.data.data : []
+                    })
+                }
+
             } else {
                 if (result) {
                     this.props.showSnackbar({
@@ -773,19 +820,13 @@ class ProductsNew extends Component {
         return csvData;
     };
 
-    toggleMultiSite = () => {
-        this.setState({ showMultiUpload: !this.state.showMultiUpload });
 
-        this.props.setMultiplePopUp(true);
-    };
-
-    handleMultiUploadCallback = () => {
-        this.props.dispatchLoadProductsWithoutParent();
-    };
 
     UNSAFE_componentWillMount() {
         window.scrollTo(0, 0);
     }
+
+
 
     toggleMap = () => {
         this.setState({
@@ -960,12 +1001,9 @@ class ProductsNew extends Component {
                 })
             }
 
-
-
-
             this.setQueryData({
                 type: type,
-                reset: false,
+                reset: true,
                 filter: filter,
                 keyword: keyword
             })
@@ -1100,6 +1138,7 @@ class ProductsNew extends Component {
                                 actionCallback={this.actionCallback}
                                 data={this.state.queryData}
                                 initialFilter={this.state.initialFilter}
+
                             >
                                 <div className="row  d-flex align-items-center">
                                     {this.state.selectedRows.length === 0 && !this.state.selectAll ? <>

@@ -268,7 +268,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
            <div style={{  width:"100%" ,flex:1}}>
                <DataGrid
                    className={`${allowSelection?"":"hide-page"}`}
-                   checkboxSelection={allowSelection}
+                   checkboxSelection={allowSelection||false}
                    keepNonExistentRowsSelected
                    autoHeight
                    columnVisibilityModel={visibleFields}

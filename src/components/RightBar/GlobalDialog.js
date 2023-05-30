@@ -33,7 +33,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                 open={props.show}
                 TransitionComponent={Transition}
                 keepMounted
-                centerHeader
                 onClose={handleClose}
                 fullWidth={true}
                 maxWidth={props.size?props.size:"sm"}

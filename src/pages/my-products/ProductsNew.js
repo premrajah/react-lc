@@ -562,11 +562,6 @@ class ProductsNew extends Component {
 
     loadItemsPageWise = async (data, filters,tempOffset=0,iteration=1) => {
 
-        console.log("data,selection,filters")
-        console.log(data)
-        console.log(filters)
-        console.log(tempOffset,iteration)
-
         try {
             if (data && data.reset) {
                 // await   this.clearList();

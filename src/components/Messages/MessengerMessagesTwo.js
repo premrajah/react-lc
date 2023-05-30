@@ -758,7 +758,7 @@ try{
                 <div className="col-md-8 msg-conversation-box position-relative">
                     <div className="row">
                         <div className="col position-relative" style={{ height: `${activeTab===0?"500px":"575px"})`, minHeight: `${activeTab===0?"500px":"625px"})` }}>
-                            {loading && <div className="loader-absolute">{LoaderAnimated()}</div>}
+                            {loading && <LoaderAnimated />}
 
                                 <div
 

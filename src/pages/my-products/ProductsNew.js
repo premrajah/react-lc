@@ -134,8 +134,6 @@ class ProductsNew extends Component {
 
         try {
 
-            // console.log("new queryData,reset")
-            console.log("queryData",queryData)
             removeEmptyValuesObj(queryData)
 
             if (!queryData.reset) {
@@ -152,8 +150,6 @@ class ProductsNew extends Component {
 
             }
 
-            console.log("merged queryData,reset")
-            console.log(queryData)
 
             this.setState({
                 selectionMode: queryData.type
@@ -192,8 +188,6 @@ class ProductsNew extends Component {
                 queryData: data
             })
 
-            // console.log("final queryData,reset")
-            // console.log(data)
 
             this.setFilters(data, data.type)
 
@@ -344,7 +338,6 @@ class ProductsNew extends Component {
 
     formatData = (selectedKeys, selected = false) => {
 
-        // console.log(selectedKeys)
         try {
 
             let productList = []
@@ -388,8 +381,6 @@ class ProductsNew extends Component {
 
     exportToCSV = (csvData, selectedKeys, selected) => {
 
-        // console.log(csvData)
-        // return
         let data = "";
         let tableDataNew = [];
 
@@ -528,7 +519,6 @@ class ProductsNew extends Component {
         if (prevProps !== this.props) {
             this.detectChange();
 
-            // console.log(this.props.refreshState)
             if (Object.keys(this.props.refreshState).length !== 0 && this.props.refreshState.refresh) {
 
                 if (this.props.refreshState.reset) {
@@ -610,7 +600,6 @@ class ProductsNew extends Component {
             }
 
             url = `${url}&count=false&offset=${tempOffset?tempOffset:0}&size=${newSize}`;
-            console.log(tempOffset,iteration,url)
 
             if (data.sort) {
                 url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
@@ -730,7 +719,6 @@ class ProductsNew extends Component {
 
     handleAddToProductsExportList = (returnedItem) => {
 
-        // console.log(returnedItem)
 
         let filteredProduct = this.state.selectedProducts.filter(
             (product) => product.Product._key !== returnedItem.Product._key
@@ -770,7 +758,6 @@ class ProductsNew extends Component {
 
         if (allData) {
 
-            // console.log("all csv data",this.state.allDownloadItems)
             this.state.allDownloadItems.forEach((item) => {
                 const { Product } = item;
                 return csvData.push([
@@ -834,7 +821,6 @@ class ProductsNew extends Component {
 
     setMultipleSelectFlag = (rows) => {
 
-        // console.log("rows selected",rows)
         this.setState({
             selectedRows: rows,
         });
@@ -968,7 +954,6 @@ class ProductsNew extends Component {
         this.setState({
             paramsString: params
         })
-        // console.log("params from layout",params)
 
         if (params) {
 
@@ -985,7 +970,6 @@ class ProductsNew extends Component {
                 keyword: keyword,
                 type: type
             }
-            // console.log("inivalues",iniValues)
 
             if (type) {
                 this.setState({

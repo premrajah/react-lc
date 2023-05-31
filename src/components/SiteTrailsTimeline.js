@@ -308,10 +308,10 @@ const DistanceTrailOnlyPopOver = (props) => {
                     <span>{`Gross Weight : ${trail.gross_weight_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgs`}</span><br></br>
                     {trail.carbon&&trail.carbon.carbon_kgs > 0 && <>
                         <span>{`Distance : ${(trail.distance.value / 1000).toLocaleString(undefined, {maximumFractionDigits: 2})} kms`}</span><br></br>
-                        <span>{`Transport Mode: ${getMode(trail.transport_mode, trail.carbon?.carbon_kgs_per_kg_km)}`}</span>
+                        <span>{`Transport Mode: ${getMode(trail.transport_mode, getCarbonE(trail.carbon))}`}</span>
                         <span
                             className="d-none">{`Emissions : ${(trail.carbon.carbon_tons).toLocaleString(undefined, {maximumFractionDigits: 6})} tonCO`}<sub>2</sub>e</span><br></br>
-                        <span>{`Multiplier : ${(trail.carbon?.carbon_kgs_per_kg_km?trail.carbon.carbon_kgs_per_kg_km:0).toExponential(4)} tons/kg/km`}</span><br></br>
+                        <span>{`Multiplier : ${(getCarbonE(trail.carbon)).toExponential(4)} tons/kg/km`}</span><br></br>
                     </>}
                 </>}
 
@@ -323,7 +323,7 @@ const DistanceTrailOnlyPopOver = (props) => {
                 <br></br>
                 <span
                     className="text-12"> {(trail.distance.value / 1000).toLocaleString(undefined, {maximumFractionDigits: 2})} kms&nbsp;
-                    {trail.carbon.carbon_kgs > 0 && <>via {getMode(trail.transport_mode, trail.carbon?.carbon_kgs_per_kg_km)}</>}</span>
+                    {trail.carbon.carbon_kgs > 0 && <>via {getMode(trail.transport_mode, getCarbonE(trail.carbon))}</>}</span>
                 </>}
             </CustomPopover>
 
@@ -331,6 +331,31 @@ const DistanceTrailOnlyPopOver = (props) => {
         </Typography>
     )
 }
+
+
+const getCarbonE = ( carbonData) => {
+
+    let value=0
+    try {
+        if (carbonData.carbon_kgs_per_kg_km&&carbonData.carbon_kgs_per_kg_km>0){
+
+            value= carbonData.carbon_kgs_per_kg_km
+        }else
+            if (carbonData.carbon_tons_per_kg_km&&carbonData.carbon_tons_per_kg_km>0){
+
+
+            value= Number(carbonData.carbon_tons_per_kg_km)*1000
+        }else{
+            value= 0
+        }
+    }catch (e){
+        console.log(e)
+        // value= 0
+    }
+console.log(value)
+return value
+}
+
 
 const getMode = (text, carbon) => {
 

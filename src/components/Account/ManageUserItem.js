@@ -367,8 +367,9 @@ class ManageUserItem extends Component {
                                             {this.state.role?this.state.role.name:this.props.item.role_id?this.props.item.user.role_id:""}
                                                 {this.state.role &&
                                                 <CustomPopover heading={this.state.role.name}
-                                                               text={this.state.role.perms.length>0?(this.state.role.perms.map((role)=> role+", ")):""}>
+                                                               text={this.state.role.perms.length>0?(this.state.role.perms.map((role, index)=> role+", ")):""}>
                                                     <Info
+                                                    key={index}
                                                         style={{ cursor: "pointer", color: "#EAEAEF" }}
                                                         fontSize={"small"}
                                                     />
@@ -450,8 +451,9 @@ class ManageUserItem extends Component {
                           <span className={"text-gray-light text-right"}>
                                             {this.state.role?this.state.role.name:this.props.item.role_id?this.props.item.user.role_id:""}
                               {this.state.role &&
-                              <CustomPopover heading={this.state.role.name} text={this.state.role.perms.length>0?(this.state.role.perms.map((role)=> role+", ")):""}>
+                              <CustomPopover heading={this.state.role.name} text={this.state.role.perms.length>0?(this.state.role.perms.map((role, index)=> role+", ")):""}>
                                   <Info
+                                  key={index}
                                       style={{ cursor: "pointer", color: "#EAEAEF" }}
                                       fontSize={"small"}
                                   />

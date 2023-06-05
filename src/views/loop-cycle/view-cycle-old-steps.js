@@ -729,8 +729,8 @@ class ViewCycle extends Component {
                                         {this.state.item.next_action.is_mine && (
                                             <div className="col-auto">
                                                 {this.state.item.next_action.possible_actions.map(
-                                                    (item) => (
-                                                        <>
+                                                    (item, index) => (
+                                                        <React.Fragment key={index}>
                                                             <button
                                                                 data-action={item}
                                                                 onClick={this.deliverCycle.bind(
@@ -740,7 +740,7 @@ class ViewCycle extends Component {
                                                                 className="shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2 btn-green">
                                                                 {item}
                                                             </button>
-                                                        </>
+                                                        </React.Fragment>
                                                     )
                                                 )}
                                             </div>

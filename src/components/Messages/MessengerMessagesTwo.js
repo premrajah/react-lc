@@ -835,25 +835,29 @@ try{
 
                                 <div>
                                     <Tooltip title="Send" placement="right-end" arrow>
-                                        <IconButton
-                                            className={classes.customHoverFocus}
-                                            disabled={!(messageText || uploadedImages.length > 0)}
-                                            onClick={() => handleSendMessage()}>
-                                            <SendIcon fontSize="small" />
-                                        </IconButton>
+                                        <>
+                                            <IconButton
+                                                className={classes.customHoverFocus}
+                                                disabled={!(messageText || uploadedImages.length > 0)}
+                                                onClick={() => handleSendMessage()}>
+                                                <SendIcon fontSize="small" />
+                                            </IconButton>
+                                        </>
                                     </Tooltip>
                                 </div>
                                 <div style={{  }}>
                                     {(messageText || uploadedImages.length > 0) && (
                                         <Tooltip title="Clear" placement="right-start" arrow>
-                                            <IconButton
-                                                className={`${classes.customHoverFocusClearText}`}
-                                                disabled={
-                                                    !(messageText || uploadedImages.length > 0)
-                                                }
-                                                onClick={() => handleResetWysiwygEditor()}>
-                                                <ClearIcon fontSize="small" />
-                                            </IconButton>
+                                            <>
+                                                <IconButton
+                                                    className={`${classes.customHoverFocusClearText}`}
+                                                    disabled={
+                                                        !(messageText || uploadedImages.length > 0)
+                                                    }
+                                                    onClick={() => handleResetWysiwygEditor()}>
+                                                    <ClearIcon fontSize="small" />
+                                                </IconButton>
+                                            </>
                                         </Tooltip>
                                     )}
                                 </div>

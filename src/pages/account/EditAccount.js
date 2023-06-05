@@ -47,8 +47,8 @@ class EditAccount extends Component {
         axios
             .get(baseUrl + "user")
             .then(
-                (response) => {
-                    var response = response.data;
+                (res) => {
+                    let response = res.data;
 
                     this.setState({
                         user: response.data,
@@ -229,7 +229,7 @@ class EditAccount extends Component {
 
 
             <div className="container ">
-                <ErrorBoundary skip>
+                <ErrorBoundary >
                         <PageHeader
                             pageTitle="Personal Info"
                             subTitle="Add and change your personal details here"
@@ -304,9 +304,6 @@ class EditAccount extends Component {
                                                     inputClass={this.state.phoneNumberInValid ? "is-invalid" : ""}
                                                     inputProps={{
                                                         name: 'phone',
-                                                        // required: true,
-                                                        defaultErrorMessage: "Invalid",
-                                                        // minLength:9,
                                                     }}
                                                     country={'gb'}
                                                 />

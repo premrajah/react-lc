@@ -848,11 +848,12 @@ class ViewCycle extends Component {
                                                                 <TabList
                                                                     variant="scrollable"
                                                                     scrollButtons="auto"
-                                                                    textColor={"#27245C"}
+
                                                                     TabIndicatorProps={{
                                                                         style: {
                                                                             backgroundColor: "#27245C",
                                                                             padding: '2px',
+                                                                            color:"#27245C"
                                                                         }
                                                                     }}
                                                                     onChange={this.setActiveKey}

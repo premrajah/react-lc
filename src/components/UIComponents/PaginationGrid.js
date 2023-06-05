@@ -125,7 +125,7 @@ class PaginationGrid extends Component {
                     count={this.props.count}
                     resetSelection={this.props.resetSelection}
                     currentPage={this.props.currentPage}
-                    loading={this.props.loading}
+                    loading={this.props.loadingMore}
                     actions={this.props.actions}
                     checkboxSelection={this.props.checkboxSelection}
                     actionCallback={this.props.actionCallback}

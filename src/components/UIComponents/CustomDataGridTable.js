@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import {
     DataGrid,
     gridPageCountSelector,
@@ -292,22 +293,21 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                    columns={tableHeader}
                    pageSize={pageSize}
                    loading={listLoading}
+                   // slots={{
+                   //
+                   // }}
                    rowsPerPageOptions={[pageSize]}
-
                    disableSelectionOnClick
-                   experimentalFeatures={{ newEditingApi: true }}
+                   // experimentalFeatures={{ newEditingApi: true }}
                    paginationMode="server"
                    paginationModel={paginationModel}
                    onPaginationModelChange={setPaginationModel}
                    rowSelectionModel={rowSelectionModel}
-
                    onRowSelectionModelChange={(newRowSelectionModel) => {
-
                        setRowSelectionModel(newRowSelectionModel);
                    }}
                    selectionModel={selectionModel}
                    // onSelectionModelChange={setSelectionModel}
-
                    onSelectionModelChange={(ids,) => {
                        // setSelectionModel(ids.selectionModel);
                        setSelectionModel(ids)
@@ -323,9 +323,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                    }}
 
                    components={{
+                       LoadingOverlay: LinearProgress,
                        NoRowsOverlay: () => (
                            <Stack height="100%" alignItems="center" justifyContent="center">
-                               No results found.
+                               No rows found.
                            </Stack>
                        ),
                        NoResultsOverlay: () => (

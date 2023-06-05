@@ -41,7 +41,8 @@ class ManageOrgSettings extends Component {
             showAddPopUp: false,
             roleBy:"Email",
             assumeRoles:[],
-            orgId:null
+            orgId:null,
+            activeKey:"1"
 
         };
 
@@ -475,8 +476,6 @@ class ManageOrgSettings extends Component {
                                     </div>
 
                                 </TabPanel>
-
-
                             </TabContext>
                         </Box>
 

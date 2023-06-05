@@ -54,7 +54,7 @@ class MyCampaigns extends Component {
             loadingResults:false,
             count:0,
             selectedItem:null,
-            activeKey:1,
+            activeKey:"1",
             editType:null
 
         }

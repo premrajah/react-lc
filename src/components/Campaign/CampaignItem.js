@@ -73,9 +73,9 @@ class CampaignItem extends Component {
         const {index} = this.props
 
         return (
-            <ErrorBoundary skip>
+            <ErrorBoundary key={`${index}-error-b`} skip>
                 {this.state.item &&
-                <tr className="" role="alert">
+                <tr className="" key={`${index}-row-b`}  role="alert">
 
                     <td>{index + 1}</td>
 
@@ -97,7 +97,7 @@ class CampaignItem extends Component {
                         <ul className="persons  align-items-start d-flex">
 
                             {this.state.item.artifacts && this.state.item.artifacts.map((artifact, i) =>
-                                <li key={i}>
+                                <li key={`${index}-attach-b`}>
                                     <>
                                     <div className="d-flex justify-content-center "
                                          style={{width: "40px", height: "40px"}}>

@@ -1114,12 +1114,13 @@ class CompanyDetails extends Component {
                                        allowScrollButtonsMobile
                                        variant="scrollable"
                                        scrollButtons="auto"
-                                       textColor={"#27245C"}
+
                                        TabIndicatorProps={{
                                            style: {
                                                backgroundColor: "#27245C",
                                                padding: '2px',
-                                               borderRadius:"2px"
+                                               borderRadius:"2px",
+                                               color:"#27245C"
                                            }
                                        }}
                                        onChange={this.setActiveKey}

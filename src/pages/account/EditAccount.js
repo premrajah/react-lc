@@ -244,11 +244,11 @@ class EditAccount extends Component {
 
                         <div className="row d-none">
                             <div className="col-12">
-                                <span className={"text-bold"}>
-                                    <h4 className="text-capitalize product-title">
+                                {/*<span className={""}>*/}
+                                    <h4 className="text-bold text-capitalize product-title">
                                         Welcome {this.state.firstName} {this.state.lastName}
                                     </h4>
-                                </span>
+                                {/*</span>*/}
                             </div>
                         </div>
 

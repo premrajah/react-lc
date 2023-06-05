@@ -107,7 +107,8 @@ class ViewSearch extends Component {
             showActionOffer:false,
             headingOffer:"",
             offerSelected:null,
-            offerAction:null
+            offerAction:null,
+            activeKey:"0"
         };
 
         this.getPreviewImage = this.getPreviewImage.bind(this);

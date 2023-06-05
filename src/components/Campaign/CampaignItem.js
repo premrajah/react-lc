@@ -97,7 +97,7 @@ class CampaignItem extends Component {
                         <ul className="persons  align-items-start d-flex">
 
                             {this.state.item.artifacts && this.state.item.artifacts.map((artifact, i) =>
-                                <li key={`${index}-attach-b`}>
+                                <li key={`${index}-${artifact._key}`}>
                                     <>
                                     <div className="d-flex justify-content-center "
                                          style={{width: "40px", height: "40px"}}>

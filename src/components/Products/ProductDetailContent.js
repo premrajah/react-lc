@@ -1026,7 +1026,7 @@ class ProductDetailContent extends Component {
                                                 <div className="top-right text-right">
                                                     <div className="d-flex flex-row align-items-center justify-content-center ">
 
-                                                    { (this.state.item.org._id ===
+                                                    { (this.state.item.org?._id ===
                                                         this.props.userDetail.orgId) &&
                                                     <MoreMenu
                                                         triggerCallback={(action) =>

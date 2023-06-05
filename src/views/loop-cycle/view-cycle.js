@@ -1170,8 +1170,8 @@ class ViewCycle extends Component {
 
                                                                 <div className="col-auto text-center">
                                                                     {this.state.item.next_action.possible_actions.map(
-                                                                        (item) => (
-                                                                            <>
+                                                                        (item, index) => (
+                                                                            <React.Fragment key={index}>
                                                                                 {!(
                                                                                     item ===
                                                                                         "progress" &&
@@ -1207,7 +1207,7 @@ class ViewCycle extends Component {
 
                                                                                         </span>
                                                                                 )}
-                                                                            </>
+                                                                            </React.Fragment>
                                                                         )
                                                                     )}
                                                                 </div>

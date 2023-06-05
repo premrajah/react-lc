@@ -112,7 +112,7 @@ function OrgTrailsTimeline(props) {
                 {props.orgTrails
                     .filter((item) => item._relation === "past_owner")
                     .map((item, index) => (
-                        <TimelineItem>
+                        <TimelineItem key={index}>
                             <TimelineOppositeContent>
                                 {/*<Paper elevation={0} className={classes.paper}>*/}
                                     <Typography

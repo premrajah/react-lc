@@ -377,7 +377,7 @@ class RentalRequestItem extends Component {
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
-                                                    <>
+                                                    <React.Fragment key={index}>
                                                         <button
                                                             data-id={this.state.item.registration._key}
                                                             data-action={actionName}
@@ -409,7 +409,7 @@ class RentalRequestItem extends Component {
                                                             {actionName === "complete" &&
                                                                 "Complete"}
                                                         </button>
-                                                    </>
+                                                    </React.Fragment>
                                                 )
                                             )}
                                     </div>

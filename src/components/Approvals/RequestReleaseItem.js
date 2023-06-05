@@ -383,7 +383,7 @@ class RequestReleaseItem extends Component {
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
-                                                    <>
+                                                    <React.Fragment key={index}>
                                                         <button
                                                             data-id={this.state.item.Release_key}
                                                             data-action={actionName}
@@ -415,7 +415,7 @@ class RequestReleaseItem extends Component {
                                                             {actionName === "complete" &&
                                                                 "Complete"}
                                                         </button>
-                                                    </>
+                                                    </React.Fragment>
                                                 )
                                             )}
                                     </div>
@@ -469,8 +469,8 @@ class RequestReleaseItem extends Component {
                                                     id: "outlined-age-native-simple",
                                                 }}>
                                                 <option value={null}>Select</option>
-                                                {this.props.productWithoutParentList.map((item) => (
-                                                        <option value={item._key}>
+                                                {this.props.productWithoutParentList.map((item, index) => (
+                                                        <option value={item._key} key={index}>
                                                             {item.name}
                                                         </option>
                                                     ))}

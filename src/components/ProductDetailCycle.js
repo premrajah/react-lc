@@ -965,8 +965,8 @@ alt=''
 
                                         {this.state.searches.length > 0 && (
                                             <TabPanel value="5">
-                                                {this.state.searches.map((item) => (
-                                                    <SearchItem item={item}/>
+                                                {this.state.searches.map((item, index) => (
+                                                    <SearchItem item={item} key={index}/>
                                                 ))}
                                             </TabPanel>
                                         )}

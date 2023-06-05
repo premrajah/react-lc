@@ -423,7 +423,7 @@ class RequestServiceAgentItem extends Component {
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
-                                                    <>
+                                                    <React.Fragment key={index}>
                                                         <button
                                                             data-id={this.state.item.Release}
                                                             data-action={actionName}
@@ -456,7 +456,7 @@ class RequestServiceAgentItem extends Component {
                                                                 "Complete"}
                                                         </button>
                                                         {/*}*/}
-                                                    </>
+                                                    </ React.Fragment>
                                                 )
                                             )}
                                     </div>

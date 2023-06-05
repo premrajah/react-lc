@@ -508,6 +508,7 @@ class MatchItemBuyer extends Component {
 
                         {this.state.offers.map((item, index) => (
                             <div
+                                key={index}
                                 className={
 
                                         "col-12"
@@ -530,8 +531,8 @@ class MatchItemBuyer extends Component {
                                         {item.next_action.is_mine && (
                                             <>
                                                 {item.next_action.possible_actions.map(
-                                                    (actionName) => (
-                                                        <>
+                                                    (actionName, index) => (
+                                                        <React.Fragment key={index}>
                                                            <span className={"me-1"}>
                                                                <GrayBorderBtn
                                                                    loading={this.state.loading}
@@ -562,7 +563,7 @@ class MatchItemBuyer extends Component {
                                                                     "Counter Offer"}
                                                             </GrayBorderBtn>
                                                                </span>
-                                                        </>
+                                                        </React.Fragment>
                                                     )
                                                 )}
                                             </>

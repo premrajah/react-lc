@@ -70,7 +70,7 @@ class ProductsNew extends Component {
             selectedSearch: null,
             queryData: {},
             initialFilter: {},
-            loadingMore:false,
+            loadingMore:true,
             menuOptions: {
                 Products: { url: "name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at" },
                 Service: { url: "name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },

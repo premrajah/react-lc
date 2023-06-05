@@ -39,11 +39,12 @@ const TextFieldWrapper = ({
 }) => {
     // const [field, mata] = useField(name)
     const classes = useStyles();
-    const [field, setField] = useState(null);
+    const [field, setField] = useState("");
 
     useEffect(() => {
 
             if (onChange) {
+
                 setField(initialValue)
                 if (!editMode){
                     onChange(initialValue);

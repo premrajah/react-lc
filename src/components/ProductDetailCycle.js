@@ -1418,11 +1418,6 @@ alt=''
                                                             select={"Select site"}
                                                             option={"name"}
                                                             valueKey={"_key"}
-                                                            // error={this.state.errors["recurUnit"]}
-                                                            // onChange={(value)=> {
-                                                            //     this.handleChangeProduct(value,"recurUnit")
-                                                            // }}
-
                                                             options={this.state.sites} name={"site"}
                                                         />
 

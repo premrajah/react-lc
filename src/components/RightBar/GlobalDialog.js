@@ -30,7 +30,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
             <Dialog
-                open={props.show}
+                open={Boolean(props?.show)}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}

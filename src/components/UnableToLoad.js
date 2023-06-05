@@ -5,7 +5,6 @@ import { REACT_APP_BRANCH_ENV} from "../Util/Constants";
 const UnableToLoad = (props) => {
 
     useEffect(()=>{
-
         console.log(props.error)
     },[props.error])
 

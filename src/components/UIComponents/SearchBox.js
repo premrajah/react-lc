@@ -128,7 +128,7 @@ componentDidMount() {
         const { title, searchType, onSearch, dropDown, dropDownValues } = this.props;
         return (
             <div className="row  " style={{right:0,top:0,bottom:0}}>
-                <div className="col-12 d-flex justify-content-end align-items-center position-relative">
+                <div className="col-12 d-flex justify-content-end align-items-center position-relative p-0">
 
                     <div
                         // onMouseEnter={()=>this.showSearchFilter(true)}
@@ -147,7 +147,8 @@ componentDidMount() {
                                         Filter By
                                     </option>
                                     {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.filter(item=> !item.notFilterable).map((drop, index) => {
-                                        return <option selected={drop.field===this.state.filterValue}
+                                        return <option
+                                            // selected={drop.field===this.state.filterValue}
                                             key={index} value={drop.field}>{drop.label}</option>
                                     }) : null}
                                 </select>}

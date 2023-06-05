@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react'
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import {fetchServiceAgentRequest} from "../../store/actions/actions";
 import Sidebar from "../menu/Sidebar";
 import HeaderDark from "../header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import {Link} from "react-router-dom";
-import RequestRegisterItem from "../../components/Approvals/RequestRegisterItem";
 import RequestServiceAgentItem from "../../components/Approvals/RequestServiceAgentItem";
 import ErrorBoundary from "../../components/ErrorBoundary";
 

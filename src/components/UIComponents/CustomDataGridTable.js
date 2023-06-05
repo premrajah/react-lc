@@ -121,9 +121,9 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                     editable: false,
                     sortable: item.sortable,
                     sortingOrder: item.sortingOrder ? item.sortingOrder : ['asc', 'desc', null],
+                    flex: item.flex ? item.flex : 1,
                     // hide:!item.visible,
                     // hideable: !item.visible,
-                    flex: item.flex ? item.flex : 1,
                     // colSpan: `${item.field==="category"?3:1}`,
                     // minWidth:`${item.field==="category"?300:50}`,
                     // flex:`${item.field==="category"?1:0.5}`,
@@ -166,10 +166,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                     flex: 1,
                     //       minWidth: 60,
                     // flex:1,
-                    renderCell: (params) => (
-                        <>
-                            {actions.map((action) =>
-
+                    renderCell: (params,index) => (
+                        <React.Fragment key={index}>
+                            {actions.map((action,ind) =>
+                                <React.Fragment key={ind}>
                                 <ActionIconBtn
                                     onClick={() => actionCallback(params.row.id, action)}
                                 >
@@ -177,9 +177,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                                         <VisibilityIcon/> : action === "delete" ? <Delete/> : action === "map" ?
                                             <MapIcon/> : action}
                                 </ActionIconBtn>
+                                </React.Fragment>
                             )}
 
-                        </>
+                        </React.Fragment>
                     ),
                 })
 
@@ -268,7 +269,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
            <div style={{  width:"100%" ,flex:1}}>
                <DataGrid
                    className={`${allowSelection?"":"hide-page"}`}
-                   checkboxSelection={allowSelection||false}
+                   checkboxSelection={Boolean(allowSelection)}
                    keepNonExistentRowsSelected
                    autoHeight
                    columnVisibilityModel={visibleFields}

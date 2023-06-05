@@ -272,19 +272,6 @@ class ProductDetailContent extends Component {
         });
     }
 
-    // getOrgs() {
-    //     // axios.get(baseUrl + "org/all").then(
-    //     //     (response) => {
-    //     //         var response = response.data;
-    //     //
-    //     //         this.setState({
-    //     //             orgs: response.data,
-    //     //         });
-    //     //     },
-    //     //     (error) => {}
-    //     // );
-    // }
-
     handleSubmitOrg() {
         var email = this.state.email;
 
@@ -838,17 +825,7 @@ class ProductDetailContent extends Component {
         );
     }
 
-    // toggleSite=(refresh)=> {
-    //     this.setState({
-    //         showCreateSite: !this.state.showCreateSite,
-    //     });
-    //
-    //
-    //     if (refresh){
-    //         this.props.loadSites();
-    //
-    //     }
-    // }
+
     loadProduct(productKey) {
         if (productKey)
             axios.get(baseUrl + "product/" + productKey + "/expand").then(
@@ -1327,21 +1304,6 @@ class ProductDetailContent extends Component {
                         </GlobalDialog>
 
 
-                        {/*<GlobalDialog*/}
-
-                        {/*    size={"sm"}*/}
-                        {/*    hide={this.toggleSite}*/}
-                        {/*    show={this.state.showCreateSite}*/}
-                        {/*    heading={"Add new site"}*/}
-
-                        {/*>*/}
-                        {/*    <>*/}
-                        {/*        <div className="col-12 ">*/}
-
-                        {/*            <SiteFormNew refresh={()=>this.toggleSite(true)} />*/}
-                        {/*        </div>*/}
-                        {/*    </>*/}
-                        {/*</GlobalDialog>*/}
 
                         <GlobalDialog
                             allowOverflow

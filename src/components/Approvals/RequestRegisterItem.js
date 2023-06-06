@@ -276,7 +276,7 @@ class RequestRegisterItem extends Component {
                                         {this.state.item.next_action.is_mine &&
                                             this.state.item.next_action.possible_actions.map(
                                                 (actionName, index) => (
-                                                    <>
+                                                    <React.Fragment key={index}>
                                                         <button
 
                                                             data-id={
@@ -312,7 +312,7 @@ class RequestRegisterItem extends Component {
                                                                 "Complete"}
                                                         </button>
                                                         {/*}*/}
-                                                    </>
+                                                    </ React.Fragment>
                                                 )
                                             )}
 

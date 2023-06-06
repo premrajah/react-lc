@@ -848,11 +848,12 @@ class ViewCycle extends Component {
                                                                 <TabList
                                                                     variant="scrollable"
                                                                     scrollButtons="auto"
-                                                                    textColor={"#27245C"}
+
                                                                     TabIndicatorProps={{
                                                                         style: {
                                                                             backgroundColor: "#27245C",
                                                                             padding: '2px',
+                                                                            color:"#27245C"
                                                                         }
                                                                     }}
                                                                     onChange={this.setActiveKey}
@@ -1169,8 +1170,8 @@ class ViewCycle extends Component {
 
                                                                 <div className="col-auto text-center">
                                                                     {this.state.item.next_action.possible_actions.map(
-                                                                        (item) => (
-                                                                            <>
+                                                                        (item, index) => (
+                                                                            <React.Fragment key={index}>
                                                                                 {!(
                                                                                     item ===
                                                                                         "progress" &&
@@ -1206,7 +1207,7 @@ class ViewCycle extends Component {
 
                                                                                         </span>
                                                                                 )}
-                                                                            </>
+                                                                            </React.Fragment>
                                                                         )
                                                                     )}
                                                                 </div>

@@ -2,14 +2,13 @@ import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
 import Typography from "@mui/material/Typography";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
-import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import MapIcon from '@mui/icons-material/Place';
 import { GoogleMap } from "./Map/MapsContainer";
-import { ArrowCircleUp } from "@mui/icons-material";
+import { ArrowCircleUp, Circle } from "@mui/icons-material";
 import CustomPopover from "./FormsUI/CustomPopover";
 import { TRANSPORT_MODES } from "../Util/Constants";
 import OrgComponent from "./Org/OrgComponent";
@@ -204,21 +203,22 @@ const SiteTrailsTimeline=(props)=> {
 
                                 {
                                     local_trail ? <TimelineOppositeContent
-                                        sx={{mt: 7, mr: 0,ml:0,p:0}}
+                                        sx={{mt: 0, mr: 1,ml:0,p:0}}
                                     >
                                         <DistanceTrailOnlyPopOver index={index} trail={local_trail} symbol="+"/>
                                     </TimelineOppositeContent> :
-                                        <TimelineOppositeContent sx={{mt: 7, mr: 0,p:0}}><span></span></TimelineOppositeContent>
+                                        <TimelineOppositeContent sx={{mt: 0, ml:0,mr: 1,p:0}}><span></span></TimelineOppositeContent>
                                 }
                                 <TimelineSeparator>
                                     {item._relation === "located_at" ?
-                                        <TimelineDot
+                                        <Circle
                                             style={{
-                                                backgroundColor: `${item._relation === "located_at" ? "#27245C" : "#05AD88"}`,
+                                                color: `${item._relation === "located_at" ? "#27245C" : "#05AD88"}`,
                                                 width: "25px",
                                                 height: "25px",
-                                            }}>
-                                        </TimelineDot> :
+                                            }}
+                                        />
+                                        :
 
                                         <ArrowCircleUp
                                             style={{
@@ -235,12 +235,12 @@ const SiteTrailsTimeline=(props)=> {
                                 </TimelineSeparator>
 
                                 <TimelineContent
-                                    sx={{mt: 7, mr: 0,ml:0,p:0}}
+                                    sx={{mt: 0, mr: 0,ml:1,p:0}}
                                 >
                                     <Typography
                                         // className={"mt-1 me-2"}
                                     >
-                                        <p className={"text-blue text-14"}>
+                                        <p className="text-blue text-14 text-capitalize">
                                             {item.site.site.name}, {item.site.site.address} {item.site.site.geo_codes && item.site.site.geo_codes.length > 0 &&
                                             <MapIcon
                                                 style={{color:`${item._relation === "located_at" ? "#27245C" : "#05AD88"}`}}
@@ -307,10 +307,10 @@ const DistanceTrailOnlyPopOver = (props) => {
                     <span>{`Gross Weight : ${trail.gross_weight_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgs`}</span><br></br>
                     {trail.carbon&&trail.carbon.carbon_kgs > 0 && <>
                         <span>{`Distance : ${(trail.distance.value / 1000).toLocaleString(undefined, {maximumFractionDigits: 2})} kms`}</span><br></br>
-                        <span>{`Transport Mode: ${getMode(trail.transport_mode, trail.carbon?.carbon_kgs_per_kg_km)}`}</span>
+                        <span>{`Transport Mode: ${getMode(trail.transport_mode, getCarbonE(trail.carbon))}`}</span>
                         <span
                             className="d-none">{`Emissions : ${(trail.carbon.carbon_tons).toLocaleString(undefined, {maximumFractionDigits: 6})} tonCO`}<sub>2</sub>e</span><br></br>
-                        <span>{`Multiplier : ${(trail.carbon?.carbon_kgs_per_kg_km?trail.carbon.carbon_kgs_per_kg_km:0).toExponential(4)} tons/kg/km`}</span><br></br>
+                        <span>{`Multiplier : ${(getCarbonE(trail.carbon)).toExponential(4)} tons/kg/km`}</span><br></br>
                     </>}
                 </>}
 
@@ -322,7 +322,7 @@ const DistanceTrailOnlyPopOver = (props) => {
                 <br></br>
                 <span
                     className="text-12"> {(trail.distance.value / 1000).toLocaleString(undefined, {maximumFractionDigits: 2})} kms&nbsp;
-                    {trail.carbon.carbon_kgs > 0 && <>via {getMode(trail.transport_mode, trail.carbon?.carbon_kgs_per_kg_km)}</>}</span>
+                    {trail.carbon.carbon_kgs > 0 && <>via {getMode(trail.transport_mode, getCarbonE(trail.carbon))}</>}</span>
                 </>}
             </CustomPopover>
 
@@ -330,6 +330,31 @@ const DistanceTrailOnlyPopOver = (props) => {
         </Typography>
     )
 }
+
+
+const getCarbonE = ( carbonData) => {
+
+    let value=0
+    try {
+        if (carbonData.carbon_kgs_per_kg_km&&carbonData.carbon_kgs_per_kg_km>0){
+
+            value= carbonData.carbon_kgs_per_kg_km
+        }else
+            if (carbonData.carbon_tons_per_kg_km&&carbonData.carbon_tons_per_kg_km>0){
+
+
+            value= Number(carbonData.carbon_tons_per_kg_km)*1000
+        }else{
+            value= 0
+        }
+    }catch (e){
+        console.log(e)
+        // value= 0
+    }
+console.log(value)
+return value
+}
+
 
 const getMode = (text, carbon) => {
 

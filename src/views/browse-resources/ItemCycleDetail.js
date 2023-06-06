@@ -2,18 +2,13 @@ import React, {Component} from "react";
 
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
-import HeaderDark from "../header/HeaderDark";
-import Sidebar from "../menu/Sidebar";
 
 import {makeStyles} from "@mui/styles";
 
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import ProductDetailCycle from "../../components/ProductDetailCycle";
-import PageHeader from "../../components/PageHeader";
-import NotFound from "../NotFound";
 import Layout from "../../components/Layout/Layout";
-import ProductDetailContent from "../../components/Products/ProductDetailContent";
 import ProductNotFound from "../NotFound/ProductNotFound";
 
 class ItemCycleDetail extends Component {

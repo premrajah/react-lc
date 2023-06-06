@@ -41,7 +41,8 @@ class ManageOrgSettings extends Component {
             showAddPopUp: false,
             roleBy:"Email",
             assumeRoles:[],
-            orgId:null
+            orgId:null,
+            activeKey:"1"
 
         };
 
@@ -299,9 +300,10 @@ class ManageOrgSettings extends Component {
                                         allowScrollButtonsMobile
                                         variant="scrollable"
                                         scrollButtons="auto"
-                                        textColor={"#27245C"}
+
                                         TabIndicatorProps={{
                                             style: {
+                                                color:"#27245C",
                                                 backgroundColor: "#27245C",
                                                 padding: '2px',
                                                 borderRadius:"2px"
@@ -474,8 +476,6 @@ class ManageOrgSettings extends Component {
                                     </div>
 
                                 </TabPanel>
-
-
                             </TabContext>
                         </Box>
 

@@ -16,6 +16,17 @@ class ErrorBoundary extends Component {
             error:error
         };
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.error){
+            console.log("EB error")
+                console.log(this.state.error)
+        }
+    }
+
+    // compon() {
+    //     console.log("EB error")
+    //     console.log(this.state.error)
+    // }
 
     logError=() =>{
 

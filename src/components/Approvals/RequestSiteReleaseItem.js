@@ -350,7 +350,7 @@ class RequestSiteReleaseItem extends Component {
                                         {this.props.item.next_action.is_mine &&
                                             this.props.item.next_action.possible_actions.map(
                                                 (actionName, index) =>
-                                                    <>
+                                                    <React.Fragment key={index}>
 
                                                         <button
                                                             data-id={this.props.item.Release._key}
@@ -386,7 +386,7 @@ class RequestSiteReleaseItem extends Component {
                                                             {actionName === "complete" &&
                                                                 "Complete"}
                                                         </button>
-                                                    </>
+                                                    </React.Fragment>
 
                                             )}
                                     </div>

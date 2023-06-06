@@ -264,8 +264,9 @@ timeout=0
                             </div>
                               <div className="row mb-1">
                                           <div className="col">
-                                              {this.state.keywords.map((item)=>
+                                              {this.state.keywords.map((item, index)=>
                                                   <KeywordChip
+                                                        key={index}
                                                       onChange={(keyword,add)=>
                                                       this.addToKeywords(keyword,add)}
                                                       selected={(this.props.issue&&this.props.issue.keywords

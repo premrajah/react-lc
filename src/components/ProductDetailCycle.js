@@ -900,11 +900,12 @@ alt=''
                                                 allowScrollButtonsMobile
                                                 variant="scrollable"
                                                 scrollButtons="auto"
-                                                textColor={"#27245C"}
+
                                                 TabIndicatorProps={{
                                                     style: {
                                                         backgroundColor: "#27245C",
                                                         padding: '2px',
+                                                        color:"#27245C"
                                                     }
                                                 }}
                                                 onChange={this.setActiveKey}
@@ -964,8 +965,8 @@ alt=''
 
                                         {this.state.searches.length > 0 && (
                                             <TabPanel value="5">
-                                                {this.state.searches.map((item) => (
-                                                    <SearchItem item={item}/>
+                                                {this.state.searches.map((item, index) => (
+                                                    <SearchItem item={item} key={index}/>
                                                 ))}
                                             </TabPanel>
                                         )}
@@ -1418,11 +1419,6 @@ alt=''
                                                             select={"Select site"}
                                                             option={"name"}
                                                             valueKey={"_key"}
-                                                            // error={this.state.errors["recurUnit"]}
-                                                            // onChange={(value)=> {
-                                                            //     this.handleChangeProduct(value,"recurUnit")
-                                                            // }}
-
                                                             options={this.state.sites} name={"site"}
                                                         />
 

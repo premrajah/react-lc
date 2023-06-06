@@ -1,11 +1,8 @@
 import React, {Component} from 'react'
-import Sidebar from "../../views/menu/Sidebar";
-import HeaderDark from "../../views/header/HeaderDark";
 import PageHeader from "../../components/PageHeader";
 import ArchiveIcon from "../../img/icons/archive-128px.svg";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import RequestReleaseItem from "../../components/Approvals/RequestReleaseItem";
 import * as actionCreator from "../../store/actions/actions";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";

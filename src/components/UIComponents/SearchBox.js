@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 // import SearchGray from "@mui/icons-material/Search";
 
@@ -14,33 +14,33 @@ class SearchBox extends Component {
             intersectionRatio: 0,
             searchValue: "",
             filterValue: "",
-            displayFields:false,
-            filterChanged:false,
-            searchQueryChanged:false,
+            displayFields: false,
+            filterChanged: false,
+            searchQueryChanged: false,
             filterOldValue: {},
 
         };
     }
 
-    handleSearch = (type,value) => {
-        let filterVal=this.state.filterValue
-        let searchVal=this.state.searchValue
+    handleSearch = (type, value) => {
+        let filterVal = this.state.filterValue
+        let searchVal = this.state.searchValue
 
-        if (type==="keyword"){
-            searchVal=value
+        if (type === "keyword") {
+            searchVal = value
             this.setState({
-                searchValue:value
+                searchValue: value
             })
-            return this.props.onSearch(filterVal,searchVal);
+            return this.props.onSearch(filterVal, searchVal);
         }
-        if (type==="filter"){
-            filterVal=value
+        if (type === "filter") {
+            filterVal = value
             this.setState({
-                filterValue:value
+                filterValue: value
             })
 
-            if (searchVal&&searchVal!==undefined)
-            return this.props.onSearch(filterVal,searchVal);
+            if (searchVal && searchVal !== undefined)
+                return this.props.onSearch(filterVal, searchVal);
         }
 
 
@@ -49,15 +49,15 @@ class SearchBox extends Component {
     handleSearchFilter = (value) => {
 
 
-        this.setState({filterValue: value});
+        this.setState({ filterValue: value });
 
         if (value)
-        this.setState({
-            filterChanged:true
-        })
+            this.setState({
+                filterChanged: true
+            })
         else
             this.setState({
-                filterChanged:false
+                filterChanged: false
             })
 
 
@@ -65,16 +65,16 @@ class SearchBox extends Component {
 
     }
 
-    showSearchFilter=(show)=>{
+    showSearchFilter = (show) => {
 
 
-        if (this.state.searchQueryChanged||this.state.filterChanged){
+        if (this.state.searchQueryChanged || this.state.filterChanged) {
             this.setState({
-                displayFields:true
+                displayFields: true
             })
-        }else{
+        } else {
             this.setState({
-                displayFields:show
+                displayFields: show
             })
         }
 
@@ -82,37 +82,37 @@ class SearchBox extends Component {
 
     }
 
-componentDidMount() {
-    // this.setState({
-    //     searchValue: this.props.initialFilter.keyword,
-    //     filterValue: this.props.initialFilter.filter,
-    // })
+    componentDidMount() {
+        // this.setState({
+        //     searchValue: this.props.initialFilter.keyword,
+        //     filterValue: this.props.initialFilter.filter,
+        // })
 
-}
+    }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        if (prevProps!==this.props){
+        if (prevProps !== this.props) {
 
 
-            if ((JSON.stringify(this.props.initialFilter)!==JSON.stringify(this.state.filterOldValue))){
+            if ((JSON.stringify(this.props.initialFilter) !== JSON.stringify(this.state.filterOldValue))) {
                 this.setState({
-                    filterOldValue:this.props.initialFilter
+                    filterOldValue: this.props.initialFilter
                 })
-                if (this.props.initialFilter.keyword){
+                if (this.props.initialFilter.keyword) {
                     this.setState({
                         searchValue: this.props.initialFilter.keyword,
                     })
-                }else{
+                } else {
                     this.setState({
                         searchValue: "",
                     })
                 }
-                if (this.props.initialFilter.filter){
+                if (this.props.initialFilter.filter) {
                     this.setState({
                         filterValue: this.props.initialFilter.filter,
                     })
-                }else {
+                } else {
                     this.setState({
                         filterValue: "",
                     })
@@ -127,47 +127,48 @@ componentDidMount() {
     render() {
         const { title, searchType, onSearch, dropDown, dropDownValues } = this.props;
         return (
-            <div className="row  " style={{right:0,top:0,bottom:0}}>
-                <div className="col-12 d-flex justify-content-end align-items-center position-relative">
+            <div className="row  " style={{ right: 0, top: 0, bottom: 0 }}>
+                <div className="col-12 d-flex justify-content-end align-items-center position-relative p-0">
 
                     <div
                         // onMouseEnter={()=>this.showSearchFilter(true)}
 
-                         // onMouseLeave={()=>this.showSearchFilter(false)}
-                         className={`search-box-new w-100 ${this.state.displayFields||true?"search-box-hover":""} `} >
+                        // onMouseLeave={()=>this.showSearchFilter(false)}
+                        className={`search-box-new w-100 ${this.state.displayFields || true ? "search-box-hover" : ""} `} >
 
-                            {dropDownValues&&dropDownValues.length > 0 &&
-                                <select className="search-select text-capitlize "
-                                        // onBlur={()=>{ this.showSearchFilter(false)}}
-                                        // style={{width:  'auto'}}
-                                        label="Filter"
-                                        value={this.state.filterValue}
-                                        onChange={(e) => this.handleSearch("filter",e.target.value)} >
-                                    <option value="" >
-                                        Filter By
-                                    </option>
-                                    {dropDownValues&&dropDownValues.length > 0 ? dropDownValues.filter(item=> !item.notFilterable).map((drop, index) => {
-                                        return <option selected={drop.field===this.state.filterValue}
-                                            key={index} value={drop.field}>{drop.label}</option>
-                                    }) : null}
-                                </select>}
+                        {dropDownValues && dropDownValues.length > 0 &&
+                            <select className="search-select text-capitlize "
+                                // onBlur={()=>{ this.showSearchFilter(false)}}
+                                // style={{width:  'auto'}}
+                                label="Filter"
+                                value={this.state.filterValue}
+                                onChange={(e) => this.handleSearch("filter", e.target.value)} >
+                                <option value="" >
+                                    Filter By
+                                </option>
+                                {dropDownValues && dropDownValues.length > 0 ? dropDownValues.filter(item => !item.notFilterable).map((drop, index) => {
+                                    return <option
+                                        // selected={drop.field===this.state.filterValue}
+                                        key={index} value={drop.field}>{drop.label}</option>
+                                }) : null}
+                            </select>}
                         <input
                             autoFocus
                             type="text"
                             className="search-input-new "
-                                // id="searchBar"
-                                label={title ? title : ""}
-                                variant="outlined"
-                                // onBlur={()=>{ this.showSearchFilter(false)}}
-                               value={this.state.searchValue}
-                                placeholder={searchType ? searchType : "Search"}
-                                onChange={(e) => this.handleSearch("keyword",e.target.value)}
+                            // id="searchBar"
+                            label={title ? title : ""}
+                            variant="outlined"
+                            // onBlur={()=>{ this.showSearchFilter(false)}}
+                            value={this.state.searchValue}
+                            placeholder={searchType ? searchType : "Search"}
+                            onChange={(e) => this.handleSearch("keyword", e.target.value)}
 
                         />
-                            <a  className="search-btn" href="#">
+                        <a className="search-btn" href="#">
 
-                                <i className="fas fa-search"></i>
-                            </a>
+                            <i className="fas fa-search"></i>
+                        </a>
                     </div>
 
                     {/*<div style={{width:  '100%'}} className={"" +*/}
@@ -208,7 +209,7 @@ componentDidMount() {
                     {/*</div>*/}
                 </div>
 
-                <style jsx>{`
+                <style jsx="true">{`
 
 .search-box-new{
 height: 40px;

@@ -534,7 +534,7 @@ class MatchItemSeller extends Component {
                             }
 
                             {this.state.offers.map((item, index) => (
-                                <>
+                                <React.Fragment key={index}>
                                 <hr/>
                         <div className={"row  "}>
 
@@ -557,8 +557,8 @@ class MatchItemSeller extends Component {
 
                                     {item.next_action.is_mine && (
                                         <>
-                                            {item.next_action.possible_actions.map((actionName) => (
-                                                <span className={"me-1"}>
+                                            {item.next_action.possible_actions.map((actionName, index) => (
+                                                <span className={"me-1"} key={index}>
                                                     <GrayBorderBtn
                                                         title={getActionName(actionName)}
                                                         data-id={item.offer._key}
@@ -617,7 +617,7 @@ class MatchItemSeller extends Component {
 
 
                         </div>
-                                </>
+                                </React.Fragment>
                             ))}
 
                         </>
@@ -629,8 +629,8 @@ class MatchItemSeller extends Component {
                     <div className="col-12">
 
 
-                            {this.state.messages.filter(item=> item.message.type==="message").map((message)=>
-                                <>
+                            {this.state.messages.filter(item=> item.message.type==="message").map((message, index)=>
+                                <React.Fragment key={index}>
                                     <hr/>
                                 <div className="row d-flex align-items-center">
                                     <div className="col-9">
@@ -640,7 +640,7 @@ class MatchItemSeller extends Component {
                                         <span className="text-gray-light "><span className="me-4"> {getTimeFormat(message.message._ts_epoch_ms)}</span></span>
                                     </div>
                                 </div>
-                                </>
+                                </React.Fragment>
 
                         )}
 

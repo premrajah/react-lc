@@ -26,6 +26,7 @@ import {createEvents} from "ics";
 import EventReleaseDialog from "./EventReleaseDialog";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 import EventItem from "./EventItem";
+import ErrorBoundary from "../ErrorBoundary";
 
 class EventList extends Component {
         constructor(props) {
@@ -543,22 +544,24 @@ class EventList extends Component {
             {this.props.events.filter(item=> item.event.stage!=="resolved").map(item=>
 
                 <>
+                    <ErrorBoundary skip >
                     <EventItem
                         item={item}
                         smallView={this.props.smallView}
                         showEventPopup={()=>this.showEventPopup(item)}
                         triggerCallback={(action,dateChange) => this.menuAction(action,dateChange)}
                     />
+                    </ErrorBoundary>
 
                 </>
             )}
             {this.props.events.filter(item=> item.event.stage==="resolved").map(item=>
 
-                <>
+                <ErrorBoundary skip>
 <EventItem
     item={item}
     smallView={this.props.smallView}
-    showEventPopup={this.showEventPopup(item)}
+    showEventPopup={()=>this.showEventPopup(item)}
 
 
     showEditEventPopup={(dateChange)=>
@@ -654,7 +657,7 @@ class EventList extends Component {
                     {/*    />*/}
                     {/*</ListItem>*/}
 
-                </>
+                </ErrorBoundary>
             )}
 
         </List>

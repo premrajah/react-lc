@@ -4958,3 +4958,8 @@ ul,ol {
     justify-content: center;
 
 }
+
+.loadingMore-spinner{
+    position: absolute;
+    bottom: 20px;
+}

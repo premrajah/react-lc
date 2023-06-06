@@ -52,7 +52,8 @@ class ProductsNew extends Component {
             lastPageReached: false,
             offset: 0,
             pageSize: 15,
-            loadingResults: false,
+            pageSizeDivide:3,
+            loadingResults: true,
             count: 0,
             showProductPopUp: false,
             productId: null,
@@ -69,6 +70,7 @@ class ProductsNew extends Component {
             selectedSearch: null,
             queryData: {},
             initialFilter: {},
+            loadingMore:true,
             menuOptions: {
                 Products: { url: "name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at" },
                 Service: { url: "name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
@@ -132,8 +134,6 @@ class ProductsNew extends Component {
 
         try {
 
-            // console.log("new queryData,reset")
-            // console.log(queryData)
             removeEmptyValuesObj(queryData)
 
             if (!queryData.reset) {
@@ -150,8 +150,6 @@ class ProductsNew extends Component {
 
             }
 
-            // console.log("merged queryData,reset")
-            // console.log(queryData)
 
             this.setState({
                 selectionMode: queryData.type
@@ -179,7 +177,7 @@ class ProductsNew extends Component {
                 filter: queryData.filter,
                 reset: queryData.reset,
                 sort: queryData.sort,
-                page: queryData.page
+                page: queryData.page?queryData.page:0
             }
 
             if (!data.sort && this.state.defaultSort) {
@@ -190,8 +188,6 @@ class ProductsNew extends Component {
                 queryData: data
             })
 
-            // console.log("final queryData,reset")
-            // console.log(data)
 
             this.setFilters(data, data.type)
 
@@ -342,7 +338,6 @@ class ProductsNew extends Component {
 
     formatData = (selectedKeys, selected = false) => {
 
-        // console.log(selectedKeys)
         try {
 
             let productList = []
@@ -386,8 +381,6 @@ class ProductsNew extends Component {
 
     exportToCSV = (csvData, selectedKeys, selected) => {
 
-        // console.log(csvData)
-        // return
         let data = "";
         let tableDataNew = [];
 
@@ -492,13 +485,11 @@ class ProductsNew extends Component {
     }
 
     cancelTokenSeek
-    seekCount = async (data, filters) => {
+    seekCount = async (url) => {
 
-        let url = `${baseUrl}seek?${data.dataUrl}&count=true`;
+         url = `${url}&count=true`;
 
-        filters.forEach((item) => {
-            url = url + `&or=${item.key}~%${item.value}%`;
-        });
+
 
         if (typeof this.cancelTokenSeek != typeof undefined) {
             this.cancelTokenSeek.cancel()
@@ -528,7 +519,6 @@ class ProductsNew extends Component {
         if (prevProps !== this.props) {
             this.detectChange();
 
-            // console.log(this.props.refreshState)
             if (Object.keys(this.props.refreshState).length !== 0 && this.props.refreshState.refresh) {
 
                 if (this.props.refreshState.reset) {
@@ -560,35 +550,23 @@ class ProductsNew extends Component {
 
     cancelToken
 
-    loadItemsPageWise = async (data, filters) => {
+    loadItemsPageWise = async (data, filters,tempOffset=0,iteration=1) => {
 
-        // console.log("data,selection,filters")
-        // console.log(data)
-        // console.log(filters)
         try {
             if (data && data.reset) {
                 // await   this.clearList();
                 this.setState({
                     offset: 0,
-                    items: [],
                     lastPageReached: false,
-                    loadingResults: false,
+
                 });
+
             }
 
             //Check if there are any previous pending requests
             if (typeof this.cancelToken != typeof undefined) {
                 this.cancelToken.cancel()
             }
-
-
-            this.seekCount(data, filters);
-
-            this.setState({
-                loadingResults: true,
-            });
-
-            let newOffset = data.page * this.state.pageSize;
             let url = `${baseUrl}seek?${data.dataUrl}`;
 
             filters.forEach((item) => {
@@ -599,15 +577,35 @@ class ProductsNew extends Component {
                 activeQueryUrl: url
             })
 
-            url = `${url}&count=false&offset=${newOffset ? newOffset : 0}&size=${this.state.pageSize}`;
+
+            if (data && data.reset) {
+
+                this.seekCount(url);
+                this.setState({
+                    loadingResults: true,
+                });
+            }
+            let newSize = this.state.pageSize/this.state.pageSizeDivide;
+
+            this.setState({
+                loadingMore: true,
+            });
+            if (iteration===1){
+                tempOffset=data.page * this.state.pageSize
+
+                    this.setState({
+                        items: [],
+                    })
+            } else{
+            }
+
+            url = `${url}&count=false&offset=${tempOffset?tempOffset:0}&size=${newSize}`;
 
             if (data.sort) {
                 url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
             }
 
-
             this.cancelToken = axios.CancelToken.source()
-
 
             let result = await axios
                 .get(encodeURI(url),
@@ -616,6 +614,9 @@ class ProductsNew extends Component {
                 .catch((error) => {
 
                     console.error(error);
+                    this.setState({
+                        loadingMore: false,
+                    });
                 });
 
 
@@ -624,17 +625,44 @@ class ProductsNew extends Component {
             if (result && result.data && result.data.data) {
 
                 this.setState({
+                    loadingMore: false,
+                });
+
+                this.setState({
                     // items: this.state.items.concat(result.data ? result.data.data : []),
-                    items: result.data ? result.data.data : [],
                     loadingResults: false,
                     lastPageReached: result.data
                         ? result.data.data.length === 0
                             ? true
                             : false
                         : true,
-                    offset: newOffset,
+                    offset: tempOffset,
                 });
+
+                if (result.data.data.length !== 0){
+
+                        tempOffset=newSize+tempOffset
+
+                    this.setState({
+                        items: this.state.items.concat(result.data ? result.data.data : []),
+                    })
+
+                    if (iteration<this.state.pageSizeDivide){
+
+                        let dataTemp=data
+                        dataTemp.reset=false
+                        this.loadItemsPageWise(dataTemp,filters,tempOffset,iteration+1)
+                    }
+
+
+
+                }
+
+
             } else {
+                this.setState({
+                    loadingMore: false,
+                });
                 if (result) {
                     this.props.showSnackbar({
                         show: true,
@@ -691,7 +719,6 @@ class ProductsNew extends Component {
 
     handleAddToProductsExportList = (returnedItem) => {
 
-        // console.log(returnedItem)
 
         let filteredProduct = this.state.selectedProducts.filter(
             (product) => product.Product._key !== returnedItem.Product._key
@@ -731,7 +758,6 @@ class ProductsNew extends Component {
 
         if (allData) {
 
-            // console.log("all csv data",this.state.allDownloadItems)
             this.state.allDownloadItems.forEach((item) => {
                 const { Product } = item;
                 return csvData.push([
@@ -773,19 +799,13 @@ class ProductsNew extends Component {
         return csvData;
     };
 
-    toggleMultiSite = () => {
-        this.setState({ showMultiUpload: !this.state.showMultiUpload });
 
-        this.props.setMultiplePopUp(true);
-    };
-
-    handleMultiUploadCallback = () => {
-        this.props.dispatchLoadProductsWithoutParent();
-    };
 
     UNSAFE_componentWillMount() {
         window.scrollTo(0, 0);
     }
+
+
 
     toggleMap = () => {
         this.setState({
@@ -801,7 +821,6 @@ class ProductsNew extends Component {
 
     setMultipleSelectFlag = (rows) => {
 
-        // console.log("rows selected",rows)
         this.setState({
             selectedRows: rows,
         });
@@ -935,7 +954,6 @@ class ProductsNew extends Component {
         this.setState({
             paramsString: params
         })
-        // console.log("params from layout",params)
 
         if (params) {
 
@@ -952,7 +970,6 @@ class ProductsNew extends Component {
                 keyword: keyword,
                 type: type
             }
-            // console.log("inivalues",iniValues)
 
             if (type) {
                 this.setState({
@@ -960,12 +977,9 @@ class ProductsNew extends Component {
                 })
             }
 
-
-
-
             this.setQueryData({
                 type: type,
-                reset: false,
+                reset: true,
                 filter: filter,
                 keyword: keyword
             })
@@ -1080,7 +1094,7 @@ class ProductsNew extends Component {
                                 pageSize={this.state.pageSize}
                                 offset={this.state.offset}
                                 visibleCount={this.state.items.length}
-                                loading={this.state.loadingResults}
+                                // loading={this.state.loadingResults}
                                 lastPageReached={this.state.lastPageReached}
                                 currentPage={this.state.queryData.page ? this.state.queryData.page : 0}
                                 loadMore={(data) => {
@@ -1100,6 +1114,8 @@ class ProductsNew extends Component {
                                 actionCallback={this.actionCallback}
                                 data={this.state.queryData}
                                 initialFilter={this.state.initialFilter}
+                                loadingMore={this.state.loadingMore}
+
                             >
                                 <div className="row  d-flex align-items-center">
                                     {this.state.selectedRows.length === 0 && !this.state.selectAll ? <>

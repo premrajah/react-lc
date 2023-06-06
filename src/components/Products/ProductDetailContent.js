@@ -141,12 +141,15 @@ class ProductDetailContent extends Component {
     cancelChangeServiceAgentRequest = () => {
 
         if (this.state.serviceAgentRequests&&this.state.serviceAgentRequests.length>0) {
-            var data = {
+            let data = {
                 id: this.state.serviceAgentRequests[0].Release._key,
                 new_stage: "cancelled",
                 // "site_id": this.state.site
             };
 
+            this.setState({
+                btnLoading: true,
+            });
             axios
                 .post(baseUrl + "service-agent/stage", data)
                 .then((res) => {
@@ -155,12 +158,16 @@ class ProductDetailContent extends Component {
                     this.fetchExistingAgentRequests(this.state.item.product._key)
 
                     this.props.showSnackbar({show:true,severity:"success",message:"Change service agent request cancelled successfully. Thanks"})
-
+                    // this.setState({
+                    //     btnLoading: false,
+                    // });
 
                 })
                 .catch((error) => {
                     this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
-
+                    this.setState({
+                        btnLoading: false,
+                    });
                 });
 
         }
@@ -264,19 +271,6 @@ class ProductDetailContent extends Component {
             emailError: error,
         });
     }
-
-    // getOrgs() {
-    //     // axios.get(baseUrl + "org/all").then(
-    //     //     (response) => {
-    //     //         var response = response.data;
-    //     //
-    //     //         this.setState({
-    //     //             orgs: response.data,
-    //     //         });
-    //     //     },
-    //     //     (error) => {}
-    //     // );
-    // }
 
     handleSubmitOrg() {
         var email = this.state.email;
@@ -707,7 +701,7 @@ class ProductDetailContent extends Component {
             .then((res) => {
                 this.setState({
                     showServiceAgentSuccess: true,
-                    btnLoading: false,
+                    // btnLoading: false,
                 });
 
                 this.props.showSnackbar({show:true,severity:"success",message:"Change Service Agent request submitted successfully"})
@@ -831,17 +825,7 @@ class ProductDetailContent extends Component {
         );
     }
 
-    // toggleSite=(refresh)=> {
-    //     this.setState({
-    //         showCreateSite: !this.state.showCreateSite,
-    //     });
-    //
-    //
-    //     if (refresh){
-    //         this.props.loadSites();
-    //
-    //     }
-    // }
+
     loadProduct(productKey) {
         if (productKey)
             axios.get(baseUrl + "product/" + productKey + "/expand").then(
@@ -897,8 +881,11 @@ class ProductDetailContent extends Component {
 
                     this.setState({
                         serviceAgentRequests: response.data.data,
+                        btnLoading:false
 
                     });
+
+
 
                 },
                 (error) => {
@@ -986,7 +973,7 @@ class ProductDetailContent extends Component {
                         </div>}
                         <div className="row  pt-4 pb-4  justify-content-start">
                             <div className="text-left ps-0   col-sm-12 col-xs-12 breadcrumb-row">
-                                <Link to={`/my-products${this.props.paramsString?this.props.paramsString:""}`}>{getParameterByName("type",this.props.paramsString?this.props.paramsString:"Products")} List</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product.name}</span>
+                                <Link to={`/my-products${this.props.paramsString?this.props.paramsString:""}`}>{getParameterByName("type",this.props.paramsString?this.props.paramsString:"Products")} List</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product?.name}</span>
 
                             </div>
                         </div>
@@ -1034,12 +1021,12 @@ class ProductDetailContent extends Component {
                                             <div className="col-12 position-relative">
                                                 {this.state.isArchiver && <small className="text-danger d-flex justify-content-start align-items-center "><PriorityHighIcon style={{fontSize:"16px"}} />Archived product.</small>}
                                                 <h4 className="text-capitalize product-title width-90">
-                                                    {this.state.item.product.name}
+                                                    {this.state.item.product?.name}
                                                 </h4>
                                                 <div className="top-right text-right">
                                                     <div className="d-flex flex-row align-items-center justify-content-center ">
 
-                                                    { (this.state.item.org._id ===
+                                                    { (this.state.item.org?._id ===
                                                         this.props.userDetail.orgId) &&
                                                     <MoreMenu
                                                         triggerCallback={(action) =>
@@ -1117,12 +1104,13 @@ class ProductDetailContent extends Component {
                                                         allowScrollButtonsMobile
                                                         variant="scrollable"
                                                         scrollButtons="auto"
-                                                        textColor={"#27245C"}
+
                                                         TabIndicatorProps={{
                                                             style: {
                                                                 backgroundColor: "#27245C",
                                                                 padding: '2px',
-                                                                borderRadius:"2px"
+                                                                borderRadius:"2px",
+                                                                color:"#27245C"
                                                             }
                                                         }}
                                                         onChange={this.setActiveKey}
@@ -1317,21 +1305,6 @@ class ProductDetailContent extends Component {
                         </GlobalDialog>
 
 
-                        {/*<GlobalDialog*/}
-
-                        {/*    size={"sm"}*/}
-                        {/*    hide={this.toggleSite}*/}
-                        {/*    show={this.state.showCreateSite}*/}
-                        {/*    heading={"Add new site"}*/}
-
-                        {/*>*/}
-                        {/*    <>*/}
-                        {/*        <div className="col-12 ">*/}
-
-                        {/*            <SiteFormNew refresh={()=>this.toggleSite(true)} />*/}
-                        {/*        </div>*/}
-                        {/*    </>*/}
-                        {/*</GlobalDialog>*/}
 
                         <GlobalDialog
                             allowOverflow
@@ -1370,11 +1343,12 @@ class ProductDetailContent extends Component {
                                                     variant="centered"
 
                                                     scrollButtons="auto"
-                                                    textColor={"#27245C"}
+
                                                     TabIndicatorProps={{
                                                         style: {
                                                             backgroundColor: "#27245C",
                                                             padding: '2px',
+                                                            color:"#27245C"
                                                         }
                                                     }}
                                                     onChange={this.setActiveReleaseTabKey}
@@ -2024,7 +1998,7 @@ class ProductDetailContent extends Component {
                                 this.state.serviceAgentRequests.length&&
                                 this.state.serviceAgentRequests.filter(item=>item.Release.stage!=="cancelled").length>0)&&
                                 <div className="col-12">
-                                        <div className="row m-2">
+                                        <div className="row mt-2">
                                             <div className="col-12">
                                         <AutocompleteCustom
                                             filterOrgs={[{_id:this.props.userDetail.orgId}]}
@@ -2111,6 +2085,8 @@ class ProductDetailContent extends Component {
 
                                             <div className={"col-1 text-right "}>
                                                 <CloseButtonPopUp
+                                                    loading={this.state.btnLoading}
+                                                    disabled={this.state.btnLoading}
                                                     onClick={this.cancelChangeServiceAgentRequest}
                                                 />
                                             </div>

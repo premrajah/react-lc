@@ -1,11 +1,6 @@
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent } from "@mui/material";
-import NotIcon from "@mui/icons-material/HdrWeak";
+import { Accordion, AccordionSummary } from "@mui/material";
 import moment from "moment/moment";
-import { CheckCircle } from "@mui/icons-material";
-import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import axios from "axios";
-import { baseUrl } from "../../Util/Constants";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import NotificationTwoTextDisplay from "./NotificationTwoTextDisplay";
 import NotificationsTwoReadAndTracking from "./NotificationsTwoReadAndTracking";

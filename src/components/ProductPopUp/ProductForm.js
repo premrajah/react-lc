@@ -1140,7 +1140,6 @@ let slugify = require('slugify')
                                 //     {/*        ></button>*/}
                                     <BlueSmallBtn
 
-                                        sleek
                                         onClick={() => this.showMultipleUpload()}
                                         title={"Upload Multiple Products"}
 

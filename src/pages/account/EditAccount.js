@@ -47,8 +47,8 @@ class EditAccount extends Component {
         axios
             .get(baseUrl + "user")
             .then(
-                (response) => {
-                    var response = response.data;
+                (res) => {
+                    let response = res.data;
 
                     this.setState({
                         user: response.data,
@@ -229,7 +229,7 @@ class EditAccount extends Component {
 
 
             <div className="container ">
-                <ErrorBoundary skip>
+                <ErrorBoundary >
                         <PageHeader
                             pageTitle="Personal Info"
                             subTitle="Add and change your personal details here"
@@ -244,11 +244,11 @@ class EditAccount extends Component {
 
                         <div className="row d-none">
                             <div className="col-12">
-                                <span className={"text-bold"}>
-                                    <h4 className="text-capitalize product-title">
+                                {/*<span className={""}>*/}
+                                    <h4 className="text-bold text-capitalize product-title">
                                         Welcome {this.state.firstName} {this.state.lastName}
                                     </h4>
-                                </span>
+                                {/*</span>*/}
                             </div>
                         </div>
 
@@ -304,9 +304,6 @@ class EditAccount extends Component {
                                                     inputClass={this.state.phoneNumberInValid ? "is-invalid" : ""}
                                                     inputProps={{
                                                         name: 'phone',
-                                                        // required: true,
-                                                        defaultErrorMessage: "Invalid",
-                                                        // minLength:9,
                                                     }}
                                                     country={'gb'}
                                                 />

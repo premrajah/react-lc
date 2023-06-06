@@ -256,8 +256,8 @@ class ProductTreeItemView extends Component {
                         </span>
                     </p>
                     {this.state.open &&
-                        this.state.tree.map((item) => (
-                            <>
+                        this.state.tree.map((item,index) => (
+                            <React.Fragment key={index}>
 
                                 <div
                                     style={{
@@ -274,7 +274,7 @@ class ProductTreeItemView extends Component {
                                         token={this.props.token}
                                     />
                                 </div>
-                            </>
+                            </React.Fragment>
                         ))}
                 </div>
             </>

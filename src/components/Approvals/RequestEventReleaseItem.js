@@ -382,7 +382,7 @@ class RequestEventReleaseItem extends Component {
                                         {this.state.nextAction&&this.state.nextAction.is_mine &&
                                             this.state.nextAction.possible_actions.map(
                                                 (actionName, index) =>
-                                                    <>
+                                                    <React.Fragment key={index}>
 
                                                         <button
                                                             data-id={this.props.item.EventRelease._key}
@@ -418,7 +418,7 @@ class RequestEventReleaseItem extends Component {
                                                             {actionName === "complete" &&
                                                                 "Complete"}
                                                         </button>
-                                                    </>
+                                                    </React.Fragment>
 
                                             )}
                                     </div>

@@ -107,7 +107,8 @@ class ViewSearch extends Component {
             showActionOffer:false,
             headingOffer:"",
             offerSelected:null,
-            offerAction:null
+            offerAction:null,
+            activeKey:"0"
         };
 
         this.getPreviewImage = this.getPreviewImage.bind(this);
@@ -866,11 +867,11 @@ try {
                                                                         <TabList
                                                                             variant="scrollable"
                                                                             scrollButtons="auto"
-                                                                            textColor={"#27245C"}
                                                                             TabIndicatorProps={{
                                                                                 style: {
                                                                                     backgroundColor: "#27245C",
                                                                                     padding: '2px',
+                                                                                    color:"#27245C"
                                                                                 }
                                                                             }}
                                                                             onChange={this.setActiveKey}

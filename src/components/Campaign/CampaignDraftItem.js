@@ -103,9 +103,9 @@ class CampaignDraftItem extends Component {
         const {index} = this.props
 
         return (
-            <>
+            <React.Fragment key={`draft-c-${this.state.item?.key}`}>
                 {this.state.item &&
-                <tr className="" role="alert" id={`draft-c-${this.state.item.key}`}  key={`draft-c-${this.state.item.key}`}>
+                <tr className="" role="alert" id={`draft-c-${this.state.item.key}`}  >
 
                     <td>{index + 1}</td>
 
@@ -180,7 +180,7 @@ class CampaignDraftItem extends Component {
                        </CustomPopover>
                    </td>
                 </tr>}
-            </>
+            </React.Fragment>
         );
 
 

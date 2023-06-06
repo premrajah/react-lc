@@ -373,9 +373,7 @@ class SignUp extends Component {
                                     inputClass={this.state.phoneNumberInValid ? "is-invalid" : ""}
                                     inputProps={{
                                         name: 'phone',
-                                        // required: true,
-                                        defaultErrorMessage: "Invalid",
-                                        // minLength:9,
+
                                     }}
                                     country={'gb'}
                                 />

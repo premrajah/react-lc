@@ -5,6 +5,11 @@ import { REACT_APP_BRANCH_ENV} from "../Util/Constants";
 const UnableToLoad = (props) => {
 
 
+<<<<<<< HEAD
+=======
+        console.log(props.error)
+    },[props.error])
+>>>>>>> master
 
     return (
         <section className="not-found ">

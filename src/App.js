@@ -275,8 +275,6 @@ const mapDispatchToProps = (dispatch) => {
         logOut: (data) => dispatch(actionCreator.logOut(data)),
         setMultiplePopUp: (data) => dispatch(actionCreator.setMultiplePopUp(data)),
         userContext: (data) => dispatch(actionCreator.userContext(data)),
-
-
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(App);

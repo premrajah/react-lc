@@ -195,14 +195,14 @@ class ResourceItem extends Component {
                                     {this.props.item.listing.stage}
                                 </span>
                                 </p>
-                                <p  className={" text-gray-light text-14 text-right"}>
+                                <div  className={" text-gray-light text-14 text-right"}>
                                     {!this.props.hideMoreMenu&&  <MoreMenu
                                     triggerCallback={(action) => this.callBackResult(action)}
                                     delete={true}
                                     edit={false}
                                     remove={false}
                                     duplicate={false}
-                                />}</p>
+                                />}</div>
 </div>
 
                                 <p className={" text-gray-light text-14 date-bottom text-right"}>

@@ -117,70 +117,65 @@ class EventItem extends Component {
           const {item}=this.props
 
             return <ErrorBoundary skip>
-                    <ListItem className={`mb-2 bg-white ${item.event.stage !=="resolved"?"new-event":"past-event"}`}
+                    <ListItem
+                        component="div"
+                        className={`mb-2 bg-white ${item.event.stage !=="resolved"?"new-event":"past-event"}`}
                               onClick={this.props.showEventPopup} alignItems="flex-start">
                         {!this.props.smallView &&
                         <ListItemAvatar>
                             <Avatar className={`${item.event.stage==='resolved'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />
                         </ListItemAvatar>}
-                        <ListItemText
-                            className="title-bold"
-                            primary={
-                                item.event.stage==="resolved"?<del>{item.event.title}</del>:
-                                        item.event.title
-                                }
+                        <div
+                            >
+                            <p  className="title-bold m-0">{item.event.stage==="resolved"?<del>{item.event.title}</del>: item.event.title}</p>
 
-                            secondary={
-                                <React.Fragment>
-                                    <Typography
-                                        sx={{ display: 'inline' }}
-                                        component="span"
-                                        variant="body2"
-                                        color="text.primary"
-                                    >
-                                       <span className="text-capitalize"> {item.event.process}, {item.event.stage}</span>
-                                    </Typography>
-                                    <div className="mb-0">
+
+
+                                        <p style={{lineHeight:"20px"}} className="text-capitalize m-0 text-16 p-0"> {item.event.process}, {item.event.stage}</p>
+
+                                    <p style={{lineHeight:"18px"}}  className="m-0 text-14 p-0">
                                         {item.event.description}
 
-                                    </div>
-                                    <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>
+                                    </p>
+                                    <p style={{lineHeight:"12px"}} className="text-gray-light m-0 text-12 p-0 ">{getTimeFormat(item.event.resolution_epoch_ms)}</p>
+
                                     <div className="d-flex  flex-column right-btn-auto">
-                                        {this.state.actions.length>0&&<CustomMoreMenu
-                                        actions={this.state.actions}
-                                        triggerCallback={(action)=>this.props.triggerCallback(action,this.state.allowDateChange)}
-                                    />}
+                                        {this.state.actions.length>0&&
+                                            <CustomMoreMenu
+                                                actions={this.state.actions}
+                                                triggerCallback={(action)=>this.props.triggerCallback(action,this.state.allowDateChange)}
+                                            />}
                                     </div>
                                     {item.event.stage!=='resolved'   &&
-                                    <div className="d-flex d-none flex-column right-btn-auto">
+                                        <div className="d-flex d-none flex-column right-btn-auto">
                                             {/*{item.event.resolution_epoch_ms > Date.now() &&*/}
                                             <CustomPopover text={"Edit"}>
                                                 <ActionIconBtn
-                                        size="small"
+                                                    size="small"
 
-                                        onClick={()=>{  this.props.showEditEventPopup(this.state.allowDateChange)}}><Edit /></ActionIconBtn>
+                                                    onClick={()=>{  this.props.showEditEventPopup(this.state.allowDateChange)}}><Edit /></ActionIconBtn>
                                             </CustomPopover>
-                                                {/*}*/}
+                                            {/*}*/}
                                             <CustomPopover text={"Update Stage"}>
-                                    <ActionIconBtn
-                                        size="small"
+                                                <ActionIconBtn
+                                                    size="small"
 
-                                    onClick={this.props.showStageEventPopup}><FactCheck/>
-                                </ActionIconBtn>
+                                                    onClick={this.props.showStageEventPopup}><FactCheck/>
+                                                </ActionIconBtn>
                                             </CustomPopover>
                                             <CustomPopover text={"Delete"}>
-                                            <ActionIconBtn
-                                                size="small"
-                                                onClick={
-                                                    this.props.toggleDelete
-                                                }><Close/>
-                                            </ActionIconBtn>
+                                                <ActionIconBtn
+                                                    size="small"
+                                                    onClick={
+                                                        this.props.toggleDelete
+                                                    }><Close/>
+                                                </ActionIconBtn>
                                             </CustomPopover>
                                         </div>}
 
-                                </React.Fragment>
-                            }
-                        />
+
+
+                        </div>
                     </ListItem>
 
                 </ErrorBoundary>

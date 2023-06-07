@@ -665,7 +665,6 @@ export default function
                                 startAccessor="start"
                                 endAccessor="end"
                                 onSelectSlot={handleSelectSlot}
-                                // onNavigate={handleNavigation}
                                 dateCallback={(d) => handleDateCallback(d)}
                             />
                         </div>

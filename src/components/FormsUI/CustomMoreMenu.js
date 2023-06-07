@@ -103,8 +103,8 @@ class CustomMoreMenu extends Component {
                             keepMounted
                             open={this.state.open}
                             onClose={this.setOpen}>
-                            {this.props.actions.map(action=>
-                                <MenuItem data-action={action.value} onClick={(event)=>this.handleClose(event,action)}>
+                            {this.props.actions.map((action,index)=>
+                                <MenuItem key={index} data-action={action.value} onClick={(event)=>this.handleClose(event,action)}>
                                     {action.label}
                                 </MenuItem>
                             )}

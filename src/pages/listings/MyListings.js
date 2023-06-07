@@ -242,9 +242,9 @@ class MyListings extends Component {
                             loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)} >
 
                             {this.state.items.map((item, index) => (
-                                <>
+                                <React.Fragment key={item.Listing._key}>
                                 <ErrorBoundary skip>
-                                <div id={item.Listing._key} key={item.Listing._key}>
+                                <div id={item.Listing._key} >
                                     <ResourceItem
 
                                         Edit   triggerCallback={() => this.callBackResult()}
@@ -263,7 +263,7 @@ class MyListings extends Component {
 
                                 </div>
                                 </ErrorBoundary>
-                                </>
+                                </React.Fragment>
                             ))}
 
                         </PaginationLayout>

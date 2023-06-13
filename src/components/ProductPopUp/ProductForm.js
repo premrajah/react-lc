@@ -772,8 +772,11 @@ let slugify = require('slugify')
                                 "formatted_address":data.get("address"),
                                 "geometry": {
                                     "location": {
-                                        "lat": existingItemsOutboundTransport[i].fields?.geo_location.latitude,
-                                        "lng": existingItemsOutboundTransport[i].fields?.geo_location.longitude
+                                        // "lat": existingItemsOutboundTransport[i].fields?.geo_location.latitude,
+                                        // "lng": existingItemsOutboundTransport[i].fields?.geo_location.longitude
+
+                                        "lat":"40.99489459999999",
+                                        "lng":"17.22261"
                                     },
                                     "location_type": "APPROXIMATE",
 

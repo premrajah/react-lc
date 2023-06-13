@@ -67,9 +67,10 @@ const DynamicAutoCompleteBox=(props)=> {
                             // initialValue={this.props.edit&&this.props.item&&this.props.item}
                             onChange={(value,valueText) => {
 
+                                console.log(value)
                                 try {
 
-                                    if (value && value.latitude && value.longitude && value.address) {
+                                    if ( value.latitude && value.longitude ) {
 
                                         props.handleChange({ latitude: value.latitude,
                                             longitude: value.longitude,}, valueText,`geo_location`,props.uId,props.index);
@@ -77,8 +78,8 @@ const DynamicAutoCompleteBox=(props)=> {
                                     }
 
                                 }catch (e){
-                                    // console.log("map error")
-                                    //         console.log(e)
+                                    console.log("map error")
+                                            console.log(e)
                                 }
 
 

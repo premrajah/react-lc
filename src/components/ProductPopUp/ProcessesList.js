@@ -143,7 +143,7 @@ const DynamicAutoCompleteBox=(props)=> {
 
                         <SelectArrayWrapper
                             option={"name"}
-                            valueKey={"_key"}
+                            valueKey={"_id"}
                             editMode
                             disableAutoLoadingIcon
                             initialValue={props.item.fields?.energySource}

@@ -19,7 +19,7 @@ const LinkExistingList=(props)=>{
             <>
 <DynamicAutoCompleteBox
     {...props}
-    val={val} h
+    val={val}
     uId={val.index}
     index={index}
 />

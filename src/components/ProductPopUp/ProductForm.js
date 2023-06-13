@@ -27,6 +27,10 @@ import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import ReactPlayer from "react-player/lazy";
 import ArtifactManager from "../FormsUI/ArtifactManager";
+import LinkExistingList from "../Products/LinkExistingList";
+import AddIcon from "@mui/icons-material/Add";
+import {v4 as uuid} from "uuid";
+import PartsList from "./PartsList";
 
 
 let slugify = require('slugify')
@@ -61,6 +65,7 @@ let slugify = require('slugify')
                 nextIntervalFlag: false,
                 activePage: 0, //0 logon. 1- sign up , 3 -search,
                 categories: [],
+                resourceCategories: [],
                 subCategories: [],
                 catSelected: {},
                 subCatSelected: {},
@@ -128,7 +133,9 @@ let slugify = require('slugify')
                 is_manufacturer:true,
                 prevImages:[],
                 errorPending:false,
-                selectedSite:null
+                selectedSite:null,
+                showAddParts:false,
+                existingItemsParts:[]
 
             };
 
@@ -139,7 +146,7 @@ let slugify = require('slugify')
             this.uploadImage = this.uploadImage.bind(this);
 
             this.checkListable = this.checkListable.bind(this);
-            this.showMoreDetails = this.showMoreDetails.bind(this);
+
         }
 
         showSubmitSite=(data)=> {
@@ -209,6 +216,97 @@ let slugify = require('slugify')
         }
 
 
+        getResourceCarbon=()=> {
+            axios.get(baseUrl + "resource-carbon")
+                .then(
+                    (response) => {
+                        let   responseAll=[]
+                        responseAll = _.sortBy(response.data.data, ["name"]);
+
+                        this.setState({
+                            resourceCategories: responseAll,
+                        });
+
+                        // if (responseAll.length>0&&this.props.item){
+                        //
+                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        //     let subCategories=cat.length>0?cat[0].types:[]
+                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                        //
+                        //     this.setState({
+                        //         subCategories:subCategories,
+                        //         states : states,
+                        //         units : units
+                        //     })
+                        //
+                        // }
+
+                    },
+                    (error) => {}
+                );
+        }
+
+        getTransportMode=()=> {
+            axios.get(baseUrl + "transport-mode")
+                .then(
+                    (response) => {
+                        let   responseAll=[]
+                        responseAll = _.sortBy(response.data.data, ["name"]);
+
+                        // this.setState({
+                        //     categories: responseAll,
+                        // });
+
+                        // if (responseAll.length>0&&this.props.item){
+                        //
+                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        //     let subCategories=cat.length>0?cat[0].types:[]
+                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                        //
+                        //     this.setState({
+                        //         subCategories:subCategories,
+                        //         states : states,
+                        //         units : units
+                        //     })
+                        //
+                        // }
+
+                    },
+                    (error) => {}
+                );
+        }
+        getEnergyProcess=()=> {
+            axios.get(baseUrl + "energy-source")
+                .then(
+                    (response) => {
+                        let   responseAll=[]
+                        responseAll = _.sortBy(response.data.data, ["name"]);
+
+                        // this.setState({
+                        //     categories: responseAll,
+                        // });
+
+                        // if (responseAll.length>0&&this.props.item){
+                        //
+                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        //     let subCategories=cat.length>0?cat[0].types:[]
+                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                        //
+                        //     this.setState({
+                        //         subCategories:subCategories,
+                        //         states : states,
+                        //         units : units
+                        //     })
+                        //
+                        // }
+
+                    },
+                    (error) => {}
+                );
+        }
 
 
         handleChangeFile(event) {
@@ -379,11 +477,45 @@ let slugify = require('slugify')
             });
         }
 
-        showMoreDetails() {
+        showMoreDetails=()=> {
             this.setState({
                 moreDetail: !this.state.moreDetail,
             });
         }
+
+        addParts=()=> {
+
+            this.setState({
+                showAddParts: !this.state.showAddParts,
+            });
+        }
+
+
+        addItemParts=()=> {
+
+
+            this.setState(prevState => ({
+                existingItemsParts: [
+                    ...prevState.existingItemsParts,
+                    {
+                        index:uuid(),
+                        name: "",
+
+                    }
+                ]
+            }));
+
+        }
+
+        deleteItemParts=(record)=> {
+
+            this.setState({
+                existingItemsParts: this.state.existingItemsParts.filter(r => r !== record)
+            });
+
+
+        }
+
 
         setUpYearList() {
             let years = [];
@@ -1030,6 +1162,10 @@ let slugify = require('slugify')
         componentDidMount() {
 
             window.scrollTo(0, 0);
+            this.getResourceCarbon()
+            this.getEnergyProcess()
+            this.getTransportMode()
+
 
             this.setState({
                 parentProductId:null
@@ -1078,6 +1214,22 @@ let slugify = require('slugify')
 
         }
 
+
+        handleChangePartsList=( value,valueText,field,uId,index) =>{
+
+            let existingItems = [...this.state.existingItemsParts];
+            existingItems[index] = {
+                value:value,valueText:valueText,
+                index:uId,
+                field:field,
+                error:false
+            };
+            this.setState({
+                existingItemsParts:existingItems
+            })
+
+            console.log(existingItems)
+        }
 
         handleView=(productId,type)=>{
 
@@ -1598,6 +1750,7 @@ let slugify = require('slugify')
                                         </span>
                                     </div>
                                 </div>
+
                                 <div className={`row  ${this.state.moreDetail?"mt-2":"d-none"}`}>
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <SelectArrayWrapper
@@ -1709,16 +1862,59 @@ let slugify = require('slugify')
                                             </div>
 
 
+                                  <div className="row  mt-2">
+                                      <div className="col-12 text-left">
+                                        <span style={{ float: "left" }}>
+                                            <span
+                                                onClick={this.addParts}
+                                                className={
+                                                    " forgot-password-link"
+                                                }>
 
-                                  {/*<ArtifactProductsTab*/}
-                                  {/*    hideMenu*/}
-                                  {/*    setArtifacts={(artifacts)=>this.loadImages(artifacts)}*/}
-                                  {/*    showCancel*/}
-                                  {/*    item={this.props.item?this.props.item:null}*/}
-                                  {/*    type={this.props.item?"edit":"add"}*/}
-                                  {/*    entityType={ENTITY_TYPES.Product}*/}
-                                  {/*    setFiles={(files)=>this.setState({files:files})}*/}
-                                  {/*/>*/}
+                                                      {this.state.showAddParts
+                                                          ? "Hide Add Parts"
+                                                          : "Add Parts"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                            </span>
+                                        </span>
+                                      </div>
+                                  </div>
+
+                                  <div className={`row border-box bg-light ${this.state.showAddParts?"mt-2":"d-none"}`}>
+                                      <div className="col-md-12 col-sm-6 col-xs-6">
+
+                                          <PartsList
+
+                                              option={"Product"}
+                                              subOption={"name"}
+                                              searchKey={"name"}
+                                              valueKey={"Product"}
+                                              subValueKey={"_key"}
+                                              list={this.state.resourceCategories}
+                                              field={"product"}
+                                              apiUrl={baseUrl + "seek?name=Product&no_parent=true&count=false"}
+                                              filters={[]}
+                                              deleteItem={this.deleteItemParts}
+                                              handleChange={this.handleChangePartsList}
+                                              existingItems={this.state.existingItemsParts}
+                                          />
+
+                                      </div>
+                                      <div className="row   ">
+                                          <div className="col-12 mt-2  ">
+                                              <div className="">
+                                                  <BlueSmallBtn
+                                                      onClick={this.addItemParts}
+                                                      title={"Add"}
+                                                      type="button"
+                                                  >
+                                                      <AddIcon/>
+                                                  </BlueSmallBtn>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                  </div>
+
                        <div className={"row "}>
                                 <div className="    col-12 mt-2">
                                     <div className={"custom-label text-bold text-blue mb-3"}>

@@ -9,7 +9,7 @@ import {Spinner} from "react-bootstrap";
 const SelectArrayWrapper = (props) => {
 
     const {label,title,option,notNative,initialValue,detailsHeading,details,noBorder,textAlignRight,
-        subOption,subValueKey,
+        subOption,subValueKey,valueText,
         placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect,
         defaultValue,options,multiple,error,editMode,noMargin,disableAutoLoadingIcon, ...rest} = props;
 
@@ -17,9 +17,11 @@ const SelectArrayWrapper = (props) => {
     const [loading, setLoading] = React.useState(false);
 
     const handleChange = (event) => {
+
+        console.log(event.target.value)
         setValue(event.target.value);
            if (onChange)
-            onChange(event.target.value)
+            onChange(event.target.value,event.target.textContent.toLowerCase())
     };
 
     useEffect(()=>{
@@ -67,10 +69,8 @@ const SelectArrayWrapper = (props) => {
                     )}
 
             <CustomizedSelect
-
                 multiple={multiple}
                 native={notNative?false:true}
-
                 variant="standard"
                 label={label}
                 value={defaultValue}

@@ -399,7 +399,8 @@ class ProductExpandItem extends Component {
                                                 </BlueSmallBtn>
                                             </div>
                                         </div>
-                                    </div>}
+                                    </div>
+                                }
 
                                 <div className="col-12 mt-4 mobile-menu">
                                     <div className="row text-center ">

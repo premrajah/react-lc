@@ -385,6 +385,7 @@ class ProductExpandItem extends Component {
                                                 <CustomizedInput
                                                     required={true}
                                                     type={"number"}
+
                                                     onChange={this.handleChange.bind(
                                                         this,
                                                         "volume"

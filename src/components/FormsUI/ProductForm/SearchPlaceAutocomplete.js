@@ -5,7 +5,7 @@ import LocationSearchAutocomplete from "./LocationSearchAutocomplete";
 
 const SearchPlaceAutocomplete = (props) => {
 
-    const {label,title,option,initialValue,detailsHeading,details,placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error, ...rest} = props;
+    const {label,title,option,initialValue,detailsHeading,details,placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect, defaultValue,options,error,hideMap, ...rest} = props;
     const [latitude, setLatitude] = React.useState();
     const [longitude, setLongitude] = React.useState();
     const [address, setAddress] = React.useState()
@@ -82,12 +82,15 @@ const SearchPlaceAutocomplete = (props) => {
             <div className={"field-box "}>
 
 
+                {title?
+                    <div className="custom-label text-bold ellipsis-end text-blue mb-0">{title}</div>
+                :
                  <div className={"text-gray-light  mb-0 ellipsis-end"}>
                     Search for your location by name or postal code.<br/> (Min of 4 characters required.)
-                </div>
+                </div>}
                 <LocationSearchAutocomplete setLocation={handleChange} />
 
-                {latitude &&longitude &&
+                {!hideMap&&latitude &&longitude &&
                 <div className="mt-2">
 
                 <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>

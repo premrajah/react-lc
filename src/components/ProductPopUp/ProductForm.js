@@ -31,6 +31,8 @@ import LinkExistingList from "../Products/LinkExistingList";
 import AddIcon from "@mui/icons-material/Add";
 import {v4 as uuid} from "uuid";
 import PartsList from "./PartsList";
+import ProcessesList from "./ProcessesList";
+import OutboundTransportList from "./OutboundTransportList";
 
 
 let slugify = require('slugify')
@@ -135,7 +137,13 @@ let slugify = require('slugify')
                 errorPending:false,
                 selectedSite:null,
                 showAddParts:false,
-                existingItemsParts:[]
+                showAddProcesses:false,
+                showAddOutboundTransport:false,
+                existingItemsParts:[],
+                existingItemsProcesses:[],
+                existingItemsOutboundTransport:[],
+                energySources:[],
+                transportModes:[]
 
             };
 
@@ -254,9 +262,9 @@ let slugify = require('slugify')
                         let   responseAll=[]
                         responseAll = _.sortBy(response.data.data, ["name"]);
 
-                        // this.setState({
-                        //     categories: responseAll,
-                        // });
+                        this.setState({
+                            transportModes: responseAll,
+                        });
 
                         // if (responseAll.length>0&&this.props.item){
                         //
@@ -284,9 +292,10 @@ let slugify = require('slugify')
                         let   responseAll=[]
                         responseAll = _.sortBy(response.data.data, ["name"]);
 
-                        // this.setState({
-                        //     categories: responseAll,
-                        // });
+
+                        this.setState({
+                            energySources: responseAll,
+                        });
 
                         // if (responseAll.length>0&&this.props.item){
                         //
@@ -489,31 +498,80 @@ let slugify = require('slugify')
                 showAddParts: !this.state.showAddParts,
             });
         }
+        addProcesses=()=> {
+
+            this.setState({
+                showAddProcesses: !this.state.showAddProcesses,
+            });
+        }
+        addOutboundTransports=()=> {
+
+            this.setState({
+                showAddOutboundTransport: !this.state.showAddOutboundTransport,
+            });
+        }
 
 
-        addItemParts=()=> {
 
+        addItemParts=(type)=> {
 
-            this.setState(prevState => ({
-                existingItemsParts: [
-                    ...prevState.existingItemsParts,
-                    {
-                        index:uuid(),
-                        name: "",
+            if (type===1){
+                this.setState(prevState => ({
+                    existingItemsParts: [
+                        ...prevState.existingItemsParts,
+                        {
+                            index:uuid(),
+                            name: "",
 
-                    }
-                ]
-            }));
+                        }
+                    ]
+                }));
+            }
+          else if (type===2){
+                this.setState(prevState => ({
+                    existingItemsProcesses: [
+                        ...prevState.existingItemsProcesses,
+                        {
+                            index:uuid(),
+                            name: "",
+
+                        }
+                    ]
+                }));
+            }
+            else if (type===3){
+                this.setState(prevState => ({
+                    existingItemsOutboundTransport: [
+                        ...prevState.existingItemsOutboundTransport,
+                        {
+                            index:uuid(),
+                            name: "",
+
+                        }
+                    ]
+                }));
+            }
+
 
         }
 
-        deleteItemParts=(record)=> {
+        deleteItemParts=(record,type)=> {
 
+            // console.log(record)
+
+            if (type===1)
             this.setState({
                 existingItemsParts: this.state.existingItemsParts.filter(r => r !== record)
             });
 
-
+          else  if (type===2)
+                this.setState({
+                    existingItemsProcesses: this.state.existingItemsProcesses.filter(r => r !== record)
+                });
+          else  if (type===3)
+                this.setState({
+                    existingItemsOutboundTransport: this.state.existingItemsOutboundTransport.filter(r => r !== record)
+                });
         }
 
 
@@ -639,6 +697,8 @@ let slugify = require('slugify')
 
         handleSubmit = (event) => {
 
+            try {
+
 
             event.preventDefault();
             event.stopPropagation()
@@ -649,10 +709,7 @@ let slugify = require('slugify')
 
                 const form = event.currentTarget;
 
-                this.setState({
-                    btnLoading: true,
-                    loading:true
-                });
+
 
                 const data = new FormData(event.target);
 
@@ -683,7 +740,59 @@ let slugify = require('slugify')
                     const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
                     const gross_weight_kgs = data.get("gross_weight_kgs");
 
+                    let composition=[]
+                let processes=[]
+                let outboundTransports=[]
+                console.log(this.state.existingItemsParts)
+                let existingItemsParts=this.state.existingItemsParts
+                let existingItemsProcesses=this.state.existingItemsProcesses
+                let existingItemsOutboundTransport=this.state.existingItemsOutboundTransport
 
+                for (let i=0;i<existingItemsParts.length;i++){
+                composition.push({
+                    carbon_resource: existingItemsParts[i].fields?.unit,
+                    percentage:parseInt(existingItemsParts[i].fields?.composition)
+                })
+
+            }
+                for (let i=0;i<existingItemsProcesses.length;i++){
+                    processes.push({
+                        name: existingItemsProcesses[i].fields?.name,
+                        kwh: parseFloat(existingItemsProcesses[i].fields?.kwh),
+                        source_id:existingItemsProcesses[i].fields?.energySource
+                    })
+
+                }
+                for (let i=0;i<existingItemsOutboundTransport.length;i++){
+
+
+                    let geoLocation=
+                        {
+                            "address_info": {
+                                "formatted_address":data.get("address"),
+                                "geometry": {
+                                    "location": {
+                                        "lat": existingItemsOutboundTransport[i].fields?.geo_location.latitude,
+                                        "lng": existingItemsOutboundTransport[i].fields?.geo_location.longitude
+                                    },
+                                    "location_type": "APPROXIMATE",
+
+                                },
+                                "place_id": "",
+                                "types": [],
+                                "plus_code": null
+                            },
+                            "is_verified": true
+                        }
+
+
+                    outboundTransports.push({
+                        geo_location: geoLocation,
+                        transport_mode:existingItemsOutboundTransport[i].fields?.transportMode
+                    })
+
+                }
+                console.log(composition)
                     let productData = {
                         purpose: purpose.toLowerCase(),
                         condition: condition.toLowerCase(),
@@ -710,6 +819,17 @@ let slugify = require('slugify')
                         year_of_making: year_of_making,
                     };
 
+
+                if (composition.length>0){
+                    productData.composition=composition
+                }
+                if (outboundTransports.length>0){
+                    productData.outbound_transport=outboundTransports
+                }
+                if (processes.length>0){
+                    productData.processes=processes
+                }
+
                     if (power_supply){
                         productData.sku.power_supply=  power_supply.toLowerCase()
                     }
@@ -731,6 +851,15 @@ let slugify = require('slugify')
                     };
 
 
+
+
+                    console.log(completeData)
+                    // return;
+
+                this.setState({
+                    btnLoading: true,
+                    loading:true
+                });
                     this.setState({isSubmitButtonPressed: true})
 
                     if (this.props.productLines) {
@@ -789,6 +918,10 @@ let slugify = require('slugify')
                             });
 
                 }
+            }catch (e){
+                console.log(e)
+            }
+
         };
 
         saveProductLines=(name,completeData)=>{
@@ -1215,20 +1348,110 @@ let slugify = require('slugify')
         }
 
 
-        handleChangePartsList=( value,valueText,field,uId,index) =>{
+        handleChangePartsList=( value,valueText,field,uId,index,type) =>{
 
-            let existingItems = [...this.state.existingItemsParts];
-            existingItems[index] = {
-                value:value,valueText:valueText,
-                index:uId,
-                field:field,
-                error:false
-            };
-            this.setState({
-                existingItemsParts:existingItems
-            })
+            try {
 
-            console.log(existingItems)
+                if (type===1){
+                    let existingItems = [...this.state.existingItemsParts];
+                    if (existingItems[index]){
+
+                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
+                        fields[field]=value
+
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            // error:false,
+                            fields:fields
+                        };
+                    }else {
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            error:false,
+                            fields:{field:value}
+                        };
+
+                    }
+                    this.setState({
+                        existingItemsParts:existingItems
+                    })
+                    console.log(uId)
+                    console.log(existingItems)
+
+                }
+
+             else   if (type===2){
+                    let existingItems = [...this.state.existingItemsProcesses];
+                    if (existingItems[index]){
+
+                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
+                        fields[field]=value
+
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            // error:false,
+                            fields:fields
+                        };
+                    }else {
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            error:false,
+                            fields:{field:value}
+                        };
+
+                    }
+                    this.setState({
+                        existingItemsProcesses:existingItems
+                    })
+                    console.log(uId)
+                    console.log(existingItems)
+
+                }
+
+             else  if (type===3){
+                    let existingItems = [...this.state.existingItemsOutboundTransport];
+                    if (existingItems[index]){
+
+                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
+                        fields[field]=value
+
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            // error:false,
+                            fields:fields
+                        };
+                    }else {
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            error:false,
+                            fields:{field:value}
+                        };
+
+                    }
+                    this.setState({
+                        existingItemsOutboundTransport:existingItems
+                    })
+                    console.log(uId)
+                    console.log(existingItems)
+
+                }
+
+            }catch (e){
+                console.log(e)
+            }
+
         }
 
         handleView=(productId,type)=>{
@@ -1884,17 +2107,10 @@ let slugify = require('slugify')
 
                                           <PartsList
 
-                                              option={"Product"}
-                                              subOption={"name"}
-                                              searchKey={"name"}
-                                              valueKey={"Product"}
-                                              subValueKey={"_key"}
                                               list={this.state.resourceCategories}
-                                              field={"product"}
-                                              apiUrl={baseUrl + "seek?name=Product&no_parent=true&count=false"}
                                               filters={[]}
-                                              deleteItem={this.deleteItemParts}
-                                              handleChange={this.handleChangePartsList}
+                                              deleteItem={(data)=>this.deleteItemParts(data,1)}
+                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,1)}
                                               existingItems={this.state.existingItemsParts}
                                           />
 
@@ -1903,7 +2119,7 @@ let slugify = require('slugify')
                                           <div className="col-12 mt-2  ">
                                               <div className="">
                                                   <BlueSmallBtn
-                                                      onClick={this.addItemParts}
+                                                      onClick={()=>this.addItemParts(1)}
                                                       title={"Add"}
                                                       type="button"
                                                   >
@@ -1915,6 +2131,99 @@ let slugify = require('slugify')
 
                                   </div>
 
+                                  <div className="row  mt-2">
+                                      <div className="col-12 text-left">
+                                        <span style={{ float: "left" }}>
+                                            <span
+                                                onClick={this.addProcesses}
+                                                className={
+                                                    " forgot-password-link"
+                                                }>
+
+                                                      {this.state.showAddProcesses
+                                                          ? "Hide processes"
+                                                          : "Add processes"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                            </span>
+                                        </span>
+                                      </div>
+                                  </div>
+
+                                  <div className={`row border-box bg-light ${this.state.showAddProcesses?"mt-2":"d-none"}`}>
+                                      <div className="col-md-12 col-sm-6 col-xs-6">
+
+                                          <ProcessesList
+
+                                              list={this.state.energySources}
+                                              filters={[]}
+                                              deleteItem={(data)=>this.deleteItemParts(data,2)}
+                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,2)}
+                                              existingItems={this.state.existingItemsProcesses}
+                                          />
+
+                                      </div>
+                                      <div className="row   ">
+                                          <div className="col-12 mt-2  ">
+                                              <div className="">
+                                                  <BlueSmallBtn
+                                                      onClick={()=>this.addItemParts(2)}
+                                                      title={"Add"}
+                                                      type="button"
+                                                  >
+                                                      <AddIcon/>
+                                                  </BlueSmallBtn>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                  </div>
+
+
+
+                                  <div className="row  mt-2">
+                                      <div className="col-12 text-left">
+                                        <span style={{ float: "left" }}>
+                                            <span
+                                                onClick={this.addOutboundTransports}
+                                                className={
+                                                    " forgot-password-link"
+                                                }>
+
+                                                      {this.state.showAddParts
+                                                          ? "Hide Outbound Transport"
+                                                          : "Add Outbound Transport"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                            </span>
+                                        </span>
+                                      </div>
+                                  </div>
+
+                                  <div className={`row border-box bg-light ${this.state.showAddOutboundTransport?"mt-2":"d-none"}`}>
+                                      <div className="col-md-12 col-sm-6 col-xs-6">
+
+                                          <OutboundTransportList
+
+                                              list={this.state.transportModes}
+                                              filters={[]}
+                                              deleteItem={(data)=>this.deleteItemParts(data,3)}
+                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,3)}
+                                              existingItems={this.state.existingItemsOutboundTransport}
+                                          />
+
+                                      </div>
+                                      <div className="row   ">
+                                          <div className="col-12 mt-2  ">
+                                              <div className="">
+                                                  <BlueSmallBtn
+                                                      onClick={()=>this.addItemParts(3)}
+                                                      title={"Add"}
+                                                      type="button"
+                                                  >
+                                                      <AddIcon/>
+                                                  </BlueSmallBtn>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                  </div>
                        <div className={"row "}>
                                 <div className="    col-12 mt-2">
                                     <div className={"custom-label text-bold text-blue mb-3"}>

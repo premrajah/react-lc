@@ -6,20 +6,19 @@ import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 const PartsList=(props)=>{
 
 
-    const [items,setItems]=useState([])
     const [list,setList]=useState([])
     useEffect(()=>{
        setList(props.list)
     },[props.list])
 
-    return props.existingItems.map((val, index) => {
+    return props.existingItems.map((item, index) => {
 
         return (
             <>
 <DynamicAutoCompleteBox
     {...props}
-    val={val}
-    uId={val.index}
+    item={item}
+    uId={item.index}
     index={index}
     list={list}
 
@@ -63,7 +62,7 @@ const DynamicAutoCompleteBox=(props)=> {
     return (
         <>
 
-                <div id={props.val.index} key={props.val.index} className="row g-0 mt-2">
+                <div id={props.item.index} key={props.item.index} className="row g-0 mt-2">
 
                 <div className="col-11 ">
                     <div className={"row g-0"}>
@@ -72,9 +71,7 @@ const DynamicAutoCompleteBox=(props)=> {
                         <SelectArrayWrapper
                             editMode
                             details="Materials or category a product belongs to Type"
-                            // initialValue={this.props.item?this.props.item.product.category:""
-                            //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.category:"")
-                            // }
+                            initialValue={props.item.fields?.category}
                             option={"category"}
                             valueKey={"category"}
                             select={"Select"}
@@ -95,7 +92,7 @@ const DynamicAutoCompleteBox=(props)=> {
                                 console.log(typeValues)
                                 setTypes(typeValues)
 
-                                props.handleChange(value, valueText,`category[${props.index}]`,props.uId,props.index);
+                                props.handleChange(value, valueText,`category`,props.uId,props.index);
                             }}
                             options={props.list} name={"category"}
                             title="Resource Category"
@@ -104,9 +101,7 @@ const DynamicAutoCompleteBox=(props)=> {
 
                         <SelectArrayWrapper
                             editMode
-                            // initialValue={this.props.item?this.props.item.product.type:""
-                            //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.type:"")
-                            // }
+                            initialValue={props.item.fields?.type}
                             disableAutoLoadingIcon
                             option={"type"}
                             valueKey={"type"}
@@ -134,7 +129,7 @@ const DynamicAutoCompleteBox=(props)=> {
                                     }
                                 },500)
 
-                                props.handleChange(value, valueText,`value[${props.index}]`,props.uId,props.index);
+                                props.handleChange(value, valueText,`type`,props.uId,props.index);
 
                             }}
 
@@ -154,6 +149,7 @@ const DynamicAutoCompleteBox=(props)=> {
                             valueKey={"state"}
                             editMode
                             disableAutoLoadingIcon
+                            initialValue={props.item.fields?.state}
                             // initialValue={this.props.item?this.props.item.product.state:""
                             //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
                             onChange={(value,valueText)=> {
@@ -171,7 +167,7 @@ const DynamicAutoCompleteBox=(props)=> {
                                         setStateSelected(subCatSelected ? subCatSelected : null)
                                     }
                                 },500)
-                                props.handleChange(value, valueText,`state[${props.index}]`,props.uId,props.index);
+                                props.handleChange(value, valueText,`state`,props.uId,props.index);
 
                             }}
                             // error={this.state.errors["state"]}
@@ -191,9 +187,11 @@ const DynamicAutoCompleteBox=(props)=> {
                             disableAutoLoadingIcon
                             // initialValue={this.props.item?this.props.item.product.state:""
                             //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
-
+                            initialValue={props.item.fields?.unit}
                             onChange={(value,valueText) => {
-                                props.handleChange(value, valueText,`unit[${props.index}]`,props.uId,props.index);
+                                // props.handleChange(value, valueText,`unit[${props.index}]`,props.uId,props.index);
+                                props.handleChange(value, valueText,`unit`,props.uId,props.index);
+
 
                             }}
                             // error={this.state.errors["state"]}
@@ -209,13 +207,17 @@ const DynamicAutoCompleteBox=(props)=> {
                                  noMargin
                                 numberInput
                                 editMode
+                                 initialValue={props.item.fields?.composition}
                                 details="Percentage Composition"
                                 placeholder={""}
                                 // readonly ={this.state.disableVolume}
                                 // initialValue={this.props.item&&this.props.item.product.volume+""}
                                 // value={this.state.disableVolume?"0":""}
-                                onChange={(value)=>
-                                    props.handleChange(value, value,`unit[${props.index}]`,props.uId,props.index)
+                                onChange={(value,valueText)=>
+                                    // props.handleChange(value, value,`unit[${props.index}]`,props.uId,props.index)
+
+                                    props.handleChange(value, valueText,`composition`,props.uId,props.index)
+
                                 }
 
                                 // error={this.state.errors["percentage"]}
@@ -247,7 +249,7 @@ const DynamicAutoCompleteBox=(props)=> {
 
                             onClick={()=>{
                                 // setVisible(false);
-                                props.deleteItem(props.val)
+                                props.deleteItem(props.item)
                             }}
                             // onClick={() => }
                         />

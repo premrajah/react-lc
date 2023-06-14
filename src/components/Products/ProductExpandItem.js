@@ -254,7 +254,7 @@ class ProductExpandItem extends Component {
                                                                         {item.name}
 
                                                                         <IndeterminateCheckBoxIcon
-                                                                            classname={
+                                                                            className={
                                                                                 "click-item ms-3 text-blue"
                                                                             }
                                                                             data-id={item._key}
@@ -412,7 +412,7 @@ class ProductExpandItem extends Component {
                                                     <>
 
                                                         <DeleteIcon
-                                                            classname={"click-item"}
+                                                            className={"click-item"}
                                                             style={{
                                                                 color: "#ccc",
                                                                 margin: "auto",

@@ -181,8 +181,7 @@ const DynamicAutoCompleteBox=(props)=> {
 
                         <SelectArrayWrapper
                             option={"unit"}
-                            subOption={"name"}
-                            valueKey={"_id"}
+                            valueKey={"first_id"}
                             editMode
                             disableAutoLoadingIcon
                             // initialValue={this.props.item?this.props.item.product.state:""

@@ -1218,7 +1218,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                         {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
                                                         <DeleteIcon
-                                                            classname={"click-item"}
+                                                            className={"click-item"}
                                                             style={{
                                                                 color: "#ccc",
                                                                 margin: "auto",
@@ -1346,7 +1346,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                                                                     {/*<div className={"custom-label text-bold text-blue mb-1"}>Delete</div>*/}
 
                                                                     <DeleteIcon
-                                                                        classname={"click-item"}
+                                                                        className={"click-item"}
                                                                         style={{
                                                                             color: "#ccc",
                                                                             margin: "auto",

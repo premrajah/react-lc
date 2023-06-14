@@ -240,7 +240,7 @@ const DynamicAutoCompleteBox=(props)=> {
                     {/*{item > 1 && (*/}
                     <>
                         <DeleteIcon
-                            classname={"click-item"}
+                            className="click-item"
                             style={{
                                 color: "#ccc",
                                 margin: "auto",

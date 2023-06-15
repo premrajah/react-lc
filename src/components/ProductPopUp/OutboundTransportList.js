@@ -47,24 +47,25 @@ const DynamicAutoCompleteBox=(props)=> {
                         <SelectArrayWrapper
                             editMode
                             details="Materials or category a product belongs to Type"
-                            initialValue={props.item.fields?.transportMode}
+                            initialValue={props.item.fields?.transport_mode}
 
                             select={"Select"}
                             // error={this.state.errors["category"]}
                             onChange={(value,valueText)=> {
 
-                                props.handleChange(value, valueText,`transportMode`,props.uId,props.index);
+                                props.handleChange(value, valueText,`transport_mode`,props.uId,props.index);
                             }}
                             options={props.list}
-                            name={"transportMode"}
-                            title="Resource Category"
+                            name={"transport_mode"}
+                            title="Transport Mode"
                         /></div>
                     <div className={"col-md-8 col-sm-12 col-xs-12"}>
 
                         <SearchPlaceAutocomplete
+                            fromOutboundTransport
                             title={"Select Location"}
-                            hideMap
-                            // initialValue={this.props.edit&&this.props.item&&this.props.item}
+                            // hideMap
+                            initialValue={props.item.fields?.geo_location}
                             onChange={(value,valueText) => {
 
                                 console.log(value)

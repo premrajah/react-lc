@@ -553,6 +553,7 @@ let slugify = require('slugify')
             }
 
 
+
         }
 
         deleteItemParts=(record,type)=> {
@@ -759,7 +760,7 @@ let slugify = require('slugify')
                     processes.push({
                         name: existingItemsProcesses[i].fields?.name,
                         kwh: parseFloat(existingItemsProcesses[i].fields?.kwh),
-                        source_id:existingItemsProcesses[i].fields?.energySource
+                        source_id:existingItemsProcesses[i].fields?.source_id
                     })
 
                 }
@@ -769,7 +770,7 @@ let slugify = require('slugify')
                     let geoLocation=
                         {
                             "address_info": {
-                                "formatted_address":data.get("address"),
+                                "formatted_address":"some dummy address",
                                 "geometry": {
                                     "location": {
                                         // "lat": existingItemsOutboundTransport[i].fields?.geo_location.latitude,
@@ -791,7 +792,7 @@ let slugify = require('slugify')
 
                     outboundTransports.push({
                         geo_location: geoLocation,
-                        transport_mode:existingItemsOutboundTransport[i].fields?.transportMode
+                        transport_mode:existingItemsOutboundTransport[i].fields?.transport_mode
                     })
 
                 }
@@ -1306,42 +1307,60 @@ let slugify = require('slugify')
             this.setState({
                 parentProductId:null
             }, ()=>{
-
                 this.handleView(this.props.productId,this.props.type)
-
             })
-
-
             if (this.props.item){
-
                 this.loadImages(this.props.item.artifacts)
                 this.setState({
                     isEditProduct:true,
                 })
                 this.isManufacturer()
+
+                this.loadInitialCarbonData(this.props.item)
+
             }
-
-
             this.setUpYearList();
-
             this.props.loadSites(this.props.userDetail.token);
-
-            // if (this.props.productId){
-            //     this.setState({
-            //         productId:this.props.productId,
-            //         showForm:false
-            //     })
-            // }else{
-            //     this.setState({
-            //         productId:null,
-            //         showForm:true
-            //     })
-            // }
-
             this.fetchCache()
 
         }
 
+        loadInitialCarbonData=(item)=>{
+
+
+            let existingParts=[]
+            let existingProcesses=[]
+            let existingOutboundTransport=[]
+
+            if (item.product.composition)
+            item.product.composition.forEach((item)=>{
+                existingParts.push({
+                    index:uuid(),
+                    fields: item
+                })
+            })
+
+            if(item.product.processes)
+            item.product.processes.forEach((item)=>{
+                existingProcesses.push({
+                    index:uuid(),
+                    fields: item
+                })
+            })
+            if(item.product.outbound_transport)
+            item.product.outbound_transport.forEach((item)=>{
+                existingOutboundTransport.push({
+                    index:uuid(),
+                    fields: item
+                })
+            })
+
+            this.setState({
+                existingItemsParts:existingParts ,
+                existingItemsProcesses:existingProcesses  ,
+                existingItemsOutboundTransport:existingOutboundTransport ,
+            })
+        }
 
         showMultipleUpload=()=>{
 
@@ -1352,9 +1371,7 @@ let slugify = require('slugify')
 
 
         handleChangePartsList=( value,valueText,field,uId,index,type) =>{
-
             try {
-
                 if (type===1){
                     let existingItems = [...this.state.existingItemsParts];
                     if (existingItems[index]){
@@ -1582,9 +1599,7 @@ let slugify = require('slugify')
                                     {this.props.productLines &&
                                     <div className="col-12 mt-2">
                                     <TextFieldWrapper
-
                                         details="The name of  template"
-
                                         initialValue={(this.props.item?this.props.item.name:"")}
                                         hidden={this.props.item?true:false}
                                             onChange={(value)=>this.handleChangeProduct(value,"templateName")}

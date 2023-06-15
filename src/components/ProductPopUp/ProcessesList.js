@@ -146,18 +146,18 @@ const DynamicAutoCompleteBox=(props)=> {
                             valueKey={"_id"}
                             editMode
                             disableAutoLoadingIcon
-                            initialValue={props.item.fields?.energySource}
+                            initialValue={props.item.fields?.source_id}
                             // initialValue={this.props.item?this.props.item.product.state:""
                             //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
                             onChange={(value,valueText)=> {
 
-                                props.handleChange(value, valueText,`energySource`,props.uId,props.index);
+                                props.handleChange(value, valueText,`source_id`,props.uId,props.index);
 
                             }}
                             // error={this.state.errors["state"]}
                             select={"Select"}
                             disabled={ (props.list.length > 0 )? false : true}
-                            options={props.list?props.list:[]} name={"energySource"}
+                            options={props.list?props.list:[]} name={"source_id"}
                             title="Energy Source"
 
                         />

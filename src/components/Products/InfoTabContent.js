@@ -275,10 +275,10 @@ class InfoTabContent extends Component {
                             </p>
                             <p className=" text-gray-light mb-1 text-capitalize">
                                 {this.props.item && this.props.item.product.sku && this.props.item.product.sku.embodied_carbon_kgs > 0 &&
-                                    this.props.item.product.sku.embodied_carbon_kgs}
+                                    this.props.item.product.sku.embodied_carbon_kgs.toFixed(2)}
 
                                 <CustomPopover
-                                    heading={` Emissions: ${this.props.item.product.sku.embodied_carbon_kgs} kgCO<sub>2</sub>e`}
+                                    heading={` Emissions: ${this.props.item.product.sku.embodied_carbon_kgs.toFixed(2)} kgCO<sub>2</sub>e`}
 
                                     text={<>
                                         {this.props.item.product.computed_carbon.A123_compositional_carbon&&<span> {`Compositional Carbon : ${this.props.item.product.computed_carbon.A123_compositional_carbon.toLocaleString(undefined, {maximumFractionDigits: 2})} kgs`}</span>}
@@ -294,7 +294,7 @@ class InfoTabContent extends Component {
                         </div>
                     </div>
                 ) : <></>}
-                {(this.props?.item?.total_logistic_carbon?.carbon?.carbon_kgs) ? (
+                {(this.props?.item?.total_logistic_carbon?.carbon?.carbon_kgs.toFixed(2)) ? (
                     <div className="row  justify-content-start search-container  pb-2 ">
                         <div className={"col-auto"}>
                             <p className=" text-label text-blue mb-1 text-label">

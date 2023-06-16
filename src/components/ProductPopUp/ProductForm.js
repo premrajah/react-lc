@@ -767,31 +767,8 @@ let slugify = require('slugify')
                 for (let i=0;i<existingItemsOutboundTransport.length;i++){
 
 
-                    let geoLocation=
-                        {
-                            "address_info": {
-                                "formatted_address":"some dummy address",
-                                "geometry": {
-                                    "location": {
-                                        // "lat": existingItemsOutboundTransport[i].fields?.geo_location.latitude,
-                                        // "lng": existingItemsOutboundTransport[i].fields?.geo_location.longitude
-
-                                        "lat":"40.99489459999999",
-                                        "lng":"17.22261"
-                                    },
-                                    "location_type": "APPROXIMATE",
-
-                                },
-                                "place_id": "",
-                                "types": [],
-                                "plus_code": null
-                            },
-                            "is_verified": true
-                        }
-
-
                     outboundTransports.push({
-                        geo_location: geoLocation,
+                        geo_location: existingItemsOutboundTransport[i].fields?.geo_location,
                         transport_mode:existingItemsOutboundTransport[i].fields?.transport_mode
                     })
 
@@ -1371,6 +1348,8 @@ let slugify = require('slugify')
 
 
         handleChangePartsList=( value,valueText,field,uId,index,type) =>{
+
+            if (value)
             try {
                 if (type===1){
                     let existingItems = [...this.state.existingItemsParts];
@@ -1441,13 +1420,37 @@ let slugify = require('slugify')
                     if (existingItems[index]){
 
                         let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
-                        fields[field]=value
+
+
+                        if (field!=="geo_location"){
+                            fields[field]=value
+                        }else {
+                            fields[field]={
+                                "address_info": {
+                                    "formatted_address":value.address,
+                                    "geometry": {
+                                        "location": {
+                                            "lat": value.latitude,
+                                            "lng": value.longitude
+
+                                            // "lat":"40.99489459999999",
+                                            // "lng":"17.22261"
+                                        },
+                                        "location_type": "APPROXIMATE",
+
+                                    },
+                                    "place_id": "",
+                                    "types": [],
+                                    "plus_code": null
+                                },
+                                "is_verified": true
+                            }
+
+
+                        }
 
                         existingItems[index] = {
-                            // value:value,
-                            // valueText:valueText,
                             index:uId,
-                            // error:false,
                             fields:fields
                         };
                     }else {

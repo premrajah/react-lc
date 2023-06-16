@@ -73,10 +73,13 @@ const SearchPlaceAutocomplete = (props) => {
                     if (initialValue){
                         // setAddress(initialValue.address)
 
+                        console.log("init value gogle map",initialValue.address_info.formatted_address)
+                        console.log(initialValue)
+                        setInitialValueFlag(true)
                         setLongitude(initialValue.address_info.geometry.location.lng)
                         setLatitude(initialValue.address_info.geometry.location.lat)
                         setAddress(initialValue.address_info.formatted_address)
-                        setInitialValueFlag(true)
+
                     }
                     onChange(initialValue)
                 }catch (e){
@@ -115,10 +118,11 @@ const SearchPlaceAutocomplete = (props) => {
                 </>:
                     <TextFieldWrapper
                         initialValue={address?address:""}
-                        // onChange={(value) => this.handleChange(value, "address")}
+                        onChange={(value)=>{}}
                         // error={this.state.errors["address"]}
                         name="address"
-                        title={ "Address"}
+                        title={ "Selected Location"}
+
 
                     />
                 }

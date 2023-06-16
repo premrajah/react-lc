@@ -64,17 +64,17 @@ const DynamicAutoCompleteBox=(props)=> {
                         <SearchPlaceAutocomplete
                             fromOutboundTransport
                             title={"Select Location"}
-                            // hideMap
+                            hideMap
                             initialValue={props.item.fields?.geo_location}
                             onChange={(value,valueText) => {
-
+                                console.log("from search google")
                                 console.log(value)
                                 try {
 
-                                    if ( value.latitude && value.longitude ) {
+                                    if (value&&value.latitude && value.longitude ) {
 
                                         props.handleChange({ latitude: value.latitude,
-                                            longitude: value.longitude,}, valueText,`geo_location`,props.uId,props.index);
+                                            longitude: value.longitude,address:value.address}, valueText,`geo_location`,props.uId,props.index);
 
                                     }
 
@@ -83,10 +83,6 @@ const DynamicAutoCompleteBox=(props)=> {
                                             console.log(e)
                                 }
 
-
-                                props.handleChange({
-
-                                }, valueText,`geo_location`,props.uId,props.index);
 
                             }
                             }

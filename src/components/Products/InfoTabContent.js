@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { capitalizeFirstLetter } from "../../Util/Constants";
 import { capitalize } from "../../Util/GlobalFunctions";
 import OrgComponent from "../Org/OrgComponent";
+import CustomPopover from "../FormsUI/CustomPopover";
+import {Info, InfoOutlined} from "@mui/icons-material";
 
 class InfoTabContent extends Component {
     slug;
@@ -267,21 +269,32 @@ class InfoTabContent extends Component {
                     this.props.item.product.sku.embodied_carbon_kgs && this.props.item.product.sku.embodied_carbon_kgs > 0) ? (
                     <div className="row  justify-content-start search-container  pb-2 ">
                         <div className={"col-auto"}>
-                            <p
-
-                                className=" text-label text-blue mb-1 text-label">
+                            <p className=" text-label text-blue mb-1 text-label">
                                 Embodied Carbon (kgCO<sub>2</sub>e)
-                            </p>
-                            <p
 
-                                className=" text-gray-light mb-1 text-capitalize">
+                            </p>
+                            <p className=" text-gray-light mb-1 text-capitalize">
                                 {this.props.item && this.props.item.product.sku && this.props.item.product.sku.embodied_carbon_kgs > 0 &&
-                                    this.props.item.product.sku.embodied_carbon_kgs}
+                                    this.props.item.product.sku.embodied_carbon_kgs.toFixed(2)}
+
+                                <CustomPopover
+                                    heading={` Emissions: ${this.props.item.product.sku.embodied_carbon_kgs.toFixed(2)} kgCO<sub>2</sub>e`}
+
+                                    text={<>
+                                        {this.props.item.product.computed_carbon.A123_compositional_carbon&&<span> {`Compositional Carbon : ${this.props.item.product.computed_carbon.A123_compositional_carbon.toLocaleString(undefined, {maximumFractionDigits: 2})} kgs`}</span>}
+                                        {this.props.item.product.computed_carbon.A5_process_carbon_kgs&&<span><br></br>{`Process Carbon : ${this.props.item.product.computed_carbon.A5_process_carbon_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgs`}</span>}
+                                        {this.props.item.product.computed_carbon.A4_outbound_carbon_kgs&&<span><br></br>{`Outbound Carbon : ${this.props.item.product.computed_carbon.A4_outbound_carbon_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgs`}</span>}
+                                        {this.props.item.product.computed_carbon.C2_transport_carbon_kgs && <span><br></br>{`Transport Carbon : ${this.props.item.product.computed_carbon.C2_transport_carbon_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgs`}</span>}
+
+                                    </>}
+
+                                > <Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"small"} />
+                                </CustomPopover>
                             </p>
                         </div>
                     </div>
                 ) : <></>}
-                {(this.props?.item?.total_logistic_carbon?.carbon?.carbon_kgs) ? (
+                {(this.props?.item?.total_logistic_carbon?.carbon?.carbon_kgs.toFixed(2)) ? (
                     <div className="row  justify-content-start search-container  pb-2 ">
                         <div className={"col-auto"}>
                             <p className=" text-label text-blue mb-1 text-label">

@@ -27,6 +27,12 @@ import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import ReactPlayer from "react-player/lazy";
 import ArtifactManager from "../FormsUI/ArtifactManager";
+import LinkExistingList from "../Products/LinkExistingList";
+import AddIcon from "@mui/icons-material/Add";
+import {v4 as uuid} from "uuid";
+import PartsList from "./PartsList";
+import ProcessesList from "./ProcessesList";
+import OutboundTransportList from "./OutboundTransportList";
 
 
 let slugify = require('slugify')
@@ -61,6 +67,7 @@ let slugify = require('slugify')
                 nextIntervalFlag: false,
                 activePage: 0, //0 logon. 1- sign up , 3 -search,
                 categories: [],
+                resourceCategories: [],
                 subCategories: [],
                 catSelected: {},
                 subCatSelected: {},
@@ -128,7 +135,15 @@ let slugify = require('slugify')
                 is_manufacturer:true,
                 prevImages:[],
                 errorPending:false,
-                selectedSite:null
+                selectedSite:null,
+                showAddParts:false,
+                showAddProcesses:false,
+                showAddOutboundTransport:false,
+                existingItemsParts:[],
+                existingItemsProcesses:[],
+                existingItemsOutboundTransport:[],
+                energySources:[],
+                transportModes:[]
 
             };
 
@@ -139,7 +154,7 @@ let slugify = require('slugify')
             this.uploadImage = this.uploadImage.bind(this);
 
             this.checkListable = this.checkListable.bind(this);
-            this.showMoreDetails = this.showMoreDetails.bind(this);
+
         }
 
         showSubmitSite=(data)=> {
@@ -209,6 +224,86 @@ let slugify = require('slugify')
         }
 
 
+        getResourceCarbon=(item)=> {
+            axios.get(baseUrl + "resource-carbon")
+                .then(
+                    (response) => {
+                        let   responseAll=[]
+                        responseAll = _.sortBy(response.data.data, ["name"]);
+
+                        this.setState({
+                            resourceCategories: responseAll,
+                        });
+
+                        if (this.props.item)
+                        this.loadInitialCarbonData(this.props.item)
+
+                    },
+                    (error) => {}
+                );
+        }
+
+        getTransportMode=()=> {
+            axios.get(baseUrl + "transport-mode")
+                .then(
+                    (response) => {
+                        let   responseAll=[]
+                        responseAll = _.sortBy(response.data.data, ["name"]);
+
+                        this.setState({
+                            transportModes: responseAll,
+                        });
+
+                        // if (responseAll.length>0&&this.props.item){
+                        //
+                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        //     let subCategories=cat.length>0?cat[0].types:[]
+                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                        //
+                        //     this.setState({
+                        //         subCategories:subCategories,
+                        //         states : states,
+                        //         units : units
+                        //     })
+                        //
+                        // }
+
+                    },
+                    (error) => {}
+                );
+        }
+        getEnergyProcess=()=> {
+            axios.get(baseUrl + "energy-source")
+                .then(
+                    (response) => {
+                        let   responseAll=[]
+                        responseAll = _.sortBy(response.data.data, ["name"]);
+
+
+                        this.setState({
+                            energySources: responseAll,
+                        });
+
+                        // if (responseAll.length>0&&this.props.item){
+                        //
+                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        //     let subCategories=cat.length>0?cat[0].types:[]
+                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                        //
+                        //     this.setState({
+                        //         subCategories:subCategories,
+                        //         states : states,
+                        //         units : units
+                        //     })
+                        //
+                        // }
+
+                    },
+                    (error) => {}
+                );
+        }
 
 
         handleChangeFile(event) {
@@ -379,11 +474,95 @@ let slugify = require('slugify')
             });
         }
 
-        showMoreDetails() {
+        showMoreDetails=()=> {
             this.setState({
                 moreDetail: !this.state.moreDetail,
             });
         }
+
+        addParts=()=> {
+
+            this.setState({
+                showAddParts: !this.state.showAddParts,
+            });
+        }
+        addProcesses=()=> {
+
+            this.setState({
+                showAddProcesses: !this.state.showAddProcesses,
+            });
+        }
+        addOutboundTransports=()=> {
+
+            this.setState({
+                showAddOutboundTransport: !this.state.showAddOutboundTransport,
+            });
+        }
+
+
+
+        addItemParts=(type)=> {
+
+            if (type===1){
+                this.setState(prevState => ({
+                    existingItemsParts: [
+                        ...prevState.existingItemsParts,
+                        {
+                            index:uuid(),
+                            name: "",
+
+                        }
+                    ]
+                }));
+            }
+          else if (type===2){
+                this.setState(prevState => ({
+                    existingItemsProcesses: [
+                        ...prevState.existingItemsProcesses,
+                        {
+                            index:uuid(),
+                            name: "",
+
+                        }
+                    ]
+                }));
+            }
+            else if (type===3){
+                this.setState(prevState => ({
+                    existingItemsOutboundTransport: [
+                        ...prevState.existingItemsOutboundTransport,
+                        {
+                            index:uuid(),
+                            name: "",
+
+                        }
+                    ]
+                }));
+            }
+
+
+
+        }
+
+        deleteItemParts=(record,type)=> {
+
+            // console.log(record)
+
+            if (type===1)
+            this.setState({
+                existingItemsParts: this.state.existingItemsParts.filter(r => r !== record)
+            });
+
+          else  if (type===2)
+                this.setState({
+                    existingItemsProcesses: this.state.existingItemsProcesses.filter(r => r !== record)
+                });
+          else  if (type===3)
+                this.setState({
+                    existingItemsOutboundTransport: this.state.existingItemsOutboundTransport.filter(r => r !== record)
+                });
+        }
+
 
         setUpYearList() {
             let years = [];
@@ -505,7 +684,55 @@ let slugify = require('slugify')
 
         }
 
+
+        configureCarbonValues=(existingItemsParts,existingItemsProcesses,existingItemsOutboundTransport,productData)=>{
+            let composition=[]
+            let processes=[]
+            let outboundTransports=[]
+
+            // console.log(this.state.existingItemsParts)
+
+            for (let i=0;i<existingItemsParts.length;i++){
+                composition.push({
+                    carbon_resource: existingItemsParts[i].fields?.unit,
+                    percentage:parseInt(existingItemsParts[i].fields?.percentage)
+                })
+
+            }
+            for (let i=0;i<existingItemsProcesses.length;i++){
+                processes.push({
+                    name: existingItemsProcesses[i].fields?.name,
+                    kwh: parseFloat(existingItemsProcesses[i].fields?.kwh),
+                    source_id:existingItemsProcesses[i].fields?.source_id
+                })
+
+            }
+            for (let i=0;i<existingItemsOutboundTransport.length;i++){
+
+
+                outboundTransports.push({
+                    geo_location: existingItemsOutboundTransport[i].fields?.geo_location,
+                    transport_mode:existingItemsOutboundTransport[i].fields?.transport_mode
+                })
+
+            }
+
+            if (composition.length>0){
+                productData.composition=composition
+            }
+            if (outboundTransports.length>0){
+                productData.outbound_transport=outboundTransports
+            }
+            if (processes.length>0){
+                productData.processes=processes
+            }
+
+
+            return productData
+        }
         handleSubmit = (event) => {
+
+            try {
 
 
             event.preventDefault();
@@ -517,10 +744,7 @@ let slugify = require('slugify')
 
                 const form = event.currentTarget;
 
-                this.setState({
-                    btnLoading: true,
-                    loading:true
-                });
+
 
                 const data = new FormData(event.target);
 
@@ -578,6 +802,12 @@ let slugify = require('slugify')
                         year_of_making: year_of_making,
                     };
 
+
+                productData= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
+                    this.state.existingItemsOutboundTransport,productData)
+
+
+
                     if (power_supply){
                         productData.sku.power_supply=  power_supply.toLowerCase()
                     }
@@ -599,6 +829,15 @@ let slugify = require('slugify')
                     };
 
 
+
+
+                    console.log(completeData)
+                    // return;
+
+                this.setState({
+                    btnLoading: true,
+                    loading:true
+                });
                     this.setState({isSubmitButtonPressed: true})
 
                     if (this.props.productLines) {
@@ -657,6 +896,10 @@ let slugify = require('slugify')
                             });
 
                 }
+            }catch (e){
+                console.log(e)
+            }
+
         };
 
         saveProductLines=(name,completeData)=>{
@@ -910,6 +1153,9 @@ let slugify = require('slugify')
                     fields
                 };
 
+                productData= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
+                    this.state.existingItemsOutboundTransport,productData)
+
                 axios
                     .post(
                         baseUrl + "product",
@@ -1030,46 +1276,88 @@ let slugify = require('slugify')
         componentDidMount() {
 
             window.scrollTo(0, 0);
+            this.getResourceCarbon()
+            this.getEnergyProcess()
+            this.getTransportMode()
+
 
             this.setState({
                 parentProductId:null
             }, ()=>{
-
                 this.handleView(this.props.productId,this.props.type)
-
             })
-
-
             if (this.props.item){
-
                 this.loadImages(this.props.item.artifacts)
                 this.setState({
                     isEditProduct:true,
                 })
                 this.isManufacturer()
+
+
+
             }
-
-
             this.setUpYearList();
-
             this.props.loadSites(this.props.userDetail.token);
-
-            // if (this.props.productId){
-            //     this.setState({
-            //         productId:this.props.productId,
-            //         showForm:false
-            //     })
-            // }else{
-            //     this.setState({
-            //         productId:null,
-            //         showForm:true
-            //     })
-            // }
-
             this.fetchCache()
 
         }
 
+        loadInitialCarbonData=(item)=>{
+
+
+            let existingParts=[]
+            let existingProcesses=[]
+            let existingOutboundTransport=[]
+
+            if (item.product.composition)
+            item.product.composition.forEach((compositionItem)=>{
+
+
+                axios.get(baseUrl + "resource-carbon/"+compositionItem.carbon_resource.split("/")[1])
+                    .then(
+                        (response) => {
+                            let   responseAll=response.data.data
+
+                            existingParts.push({
+                                index:uuid(),
+                                fields: {
+                                    category: responseAll.category.name,
+                                    type: responseAll.type.name,
+                                    state: responseAll.state.name,
+                                    unit: responseAll.unit.name,
+                                    percentage: compositionItem.percentage,
+                                }
+                            })
+
+
+                        },
+                        (error) => {}
+                    );
+
+
+            })
+
+            if(item.product.processes)
+            item.product.processes.forEach((item)=>{
+                existingProcesses.push({
+                    index:uuid(),
+                    fields: item
+                })
+            })
+            if(item.product.outbound_transport)
+            item.product.outbound_transport.forEach((item)=>{
+                existingOutboundTransport.push({
+                    index:uuid(),
+                    fields: item
+                })
+            })
+
+            this.setState({
+                existingItemsParts:existingParts ,
+                existingItemsProcesses:existingProcesses  ,
+                existingItemsOutboundTransport:existingOutboundTransport ,
+            })
+        }
 
         showMultipleUpload=()=>{
 
@@ -1078,6 +1366,136 @@ let slugify = require('slugify')
 
         }
 
+
+        handleChangePartsList=( value,valueText,field,uId,index,type) =>{
+
+            if (value)
+            try {
+                if (type===1){
+                    let existingItems = [...this.state.existingItemsParts];
+                    if (existingItems[index]){
+
+                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
+                        fields[field]=value
+
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            // error:false,
+                            fields:fields
+                        };
+                    }else {
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            error:false,
+                            fields:{field:value}
+                        };
+
+                    }
+                    this.setState({
+                        existingItemsParts:existingItems
+                    })
+                    console.log(uId)
+                    console.log(existingItems)
+
+                }
+
+             else   if (type===2){
+                    let existingItems = [...this.state.existingItemsProcesses];
+                    if (existingItems[index]){
+
+                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
+                        fields[field]=value
+
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            // error:false,
+                            fields:fields
+                        };
+                    }else {
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            error:false,
+                            fields:{field:value}
+                        };
+
+                    }
+                    this.setState({
+                        existingItemsProcesses:existingItems
+                    })
+                    console.log(uId)
+                    console.log(existingItems)
+
+                }
+
+             else  if (type===3){
+                    let existingItems = [...this.state.existingItemsOutboundTransport];
+                    if (existingItems[index]){
+
+                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
+
+
+                        if (field!=="geo_location"){
+                            fields[field]=value
+                        }else {
+                            fields[field]={
+                                "address_info": {
+                                    "formatted_address":value.address,
+                                    "geometry": {
+                                        "location": {
+                                            "lat": value.latitude,
+                                            "lng": value.longitude
+
+                                            // "lat":"40.99489459999999",
+                                            // "lng":"17.22261"
+                                        },
+                                        "location_type": "APPROXIMATE",
+
+                                    },
+                                    "place_id": "",
+                                    "types": [],
+                                    "plus_code": null
+                                },
+                                "is_verified": true
+                            }
+
+
+                        }
+
+                        existingItems[index] = {
+                            index:uId,
+                            fields:fields
+                        };
+                    }else {
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            error:false,
+                            fields:{field:value}
+                        };
+
+                    }
+                    this.setState({
+                        existingItemsOutboundTransport:existingItems
+                    })
+                    console.log(uId)
+                    console.log(existingItems)
+
+                }
+
+            }catch (e){
+                console.log(e)
+            }
+
+        }
 
         handleView=(productId,type)=>{
 
@@ -1204,9 +1622,7 @@ let slugify = require('slugify')
                                     {this.props.productLines &&
                                     <div className="col-12 mt-2">
                                     <TextFieldWrapper
-
                                         details="The name of  template"
-
                                         initialValue={(this.props.item?this.props.item.name:"")}
                                         hidden={this.props.item?true:false}
                                             onChange={(value)=>this.handleChangeProduct(value,"templateName")}
@@ -1598,6 +2014,7 @@ let slugify = require('slugify')
                                         </span>
                                     </div>
                                 </div>
+
                                 <div className={`row  ${this.state.moreDetail?"mt-2":"d-none"}`}>
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <SelectArrayWrapper
@@ -1709,16 +2126,145 @@ let slugify = require('slugify')
                                             </div>
 
 
+                                  <div className="row  mt-2">
+                                      <div className="col-12 text-left">
+                                        <span style={{ float: "left" }}>
+                                            <span
+                                                onClick={this.addParts}
+                                                className={
+                                                    " forgot-password-link"
+                                                }>
 
-                                  {/*<ArtifactProductsTab*/}
-                                  {/*    hideMenu*/}
-                                  {/*    setArtifacts={(artifacts)=>this.loadImages(artifacts)}*/}
-                                  {/*    showCancel*/}
-                                  {/*    item={this.props.item?this.props.item:null}*/}
-                                  {/*    type={this.props.item?"edit":"add"}*/}
-                                  {/*    entityType={ENTITY_TYPES.Product}*/}
-                                  {/*    setFiles={(files)=>this.setState({files:files})}*/}
-                                  {/*/>*/}
+                                                      {this.state.showAddParts
+                                                          ? "Hide Add Parts"
+                                                          : "Add Parts"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                            </span>
+                                        </span>
+                                      </div>
+                                  </div>
+
+                                  <div className={`row border-box bg-light ${this.state.showAddParts?"mt-2":"d-none"}`}>
+                                      <div className="col-md-12 col-sm-6 col-xs-6">
+
+                                          <PartsList
+
+                                              list={this.state.resourceCategories}
+                                              filters={[]}
+                                              deleteItem={(data)=>this.deleteItemParts(data,1)}
+                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,1)}
+                                              existingItems={this.state.existingItemsParts}
+                                          />
+
+                                      </div>
+                                      <div className="row   ">
+                                          <div className="col-12 mt-2  ">
+                                              <div className="">
+                                                  <BlueSmallBtn
+                                                      onClick={()=>this.addItemParts(1)}
+                                                      title={"Add"}
+                                                      type="button"
+                                                  >
+                                                      <AddIcon/>
+                                                  </BlueSmallBtn>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                  </div>
+
+                                  <div className="row  mt-2">
+                                      <div className="col-12 text-left">
+                                        <span style={{ float: "left" }}>
+                                            <span
+                                                onClick={this.addProcesses}
+                                                className={
+                                                    " forgot-password-link"
+                                                }>
+
+                                                      {this.state.showAddProcesses
+                                                          ? "Hide processes"
+                                                          : "Add processes"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                            </span>
+                                        </span>
+                                      </div>
+                                  </div>
+
+                                  <div className={`row border-box bg-light ${this.state.showAddProcesses?"mt-2":"d-none"}`}>
+                                      <div className="col-md-12 col-sm-6 col-xs-6">
+
+                                          <ProcessesList
+
+                                              list={this.state.energySources}
+                                              filters={[]}
+                                              deleteItem={(data)=>this.deleteItemParts(data,2)}
+                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,2)}
+                                              existingItems={this.state.existingItemsProcesses}
+                                          />
+
+                                      </div>
+                                      <div className="row   ">
+                                          <div className="col-12 mt-2  ">
+                                              <div className="">
+                                                  <BlueSmallBtn
+                                                      onClick={()=>this.addItemParts(2)}
+                                                      title={"Add"}
+                                                      type="button"
+                                                  >
+                                                      <AddIcon/>
+                                                  </BlueSmallBtn>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                  </div>
+
+
+
+                                  <div className="row  mt-2">
+                                      <div className="col-12 text-left">
+                                        <span style={{ float: "left" }}>
+                                            <span
+                                                onClick={this.addOutboundTransports}
+                                                className={
+                                                    " forgot-password-link"
+                                                }>
+
+                                                      {this.state.showAddOutboundTransport
+                                                          ? "Hide Outbound Transport"
+                                                          : "Add Outbound Transport"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                            </span>
+                                        </span>
+                                      </div>
+                                  </div>
+
+                                  <div className={`row border-box bg-light ${this.state.showAddOutboundTransport?"mt-2":"d-none"}`}>
+                                      <div className="col-md-12 col-sm-6 col-xs-6">
+
+                                          <OutboundTransportList
+
+                                              list={this.state.transportModes}
+                                              filters={[]}
+                                              deleteItem={(data)=>this.deleteItemParts(data,3)}
+                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,3)}
+                                              existingItems={this.state.existingItemsOutboundTransport}
+                                          />
+
+                                      </div>
+                                      <div className="row   ">
+                                          <div className="col-12 mt-2  ">
+                                              <div className="">
+                                                  <BlueSmallBtn
+                                                      onClick={()=>this.addItemParts(3)}
+                                                      title={"Add"}
+                                                      type="button"
+                                                  >
+                                                      <AddIcon/>
+                                                  </BlueSmallBtn>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                  </div>
                        <div className={"row "}>
                                 <div className="    col-12 mt-2">
                                     <div className={"custom-label text-bold text-blue mb-3"}>

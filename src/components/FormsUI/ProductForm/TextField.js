@@ -10,6 +10,7 @@ const TextFieldWrapper = ({
     title,
     explanation,
     details,
+
     detailsHeading,
     validators,
     label,
@@ -106,9 +107,7 @@ const TextFieldWrapper = ({
                     )}
                 </div>
             )}
-            {explanation && (
-                <div className={"text-gray-light  mb-0 ellipsis-end"}>{explanation}</div>
-            )}
+
 
             <div className={`${type !== "hidden" ? "field-box " : "d-none"} ${noMargin ? "" : "mb-2"}`}>
                 <CustomizedInput
@@ -130,7 +129,11 @@ const TextFieldWrapper = ({
 
 
                 />
+                {explanation && (
+                    <span className={"text-gray-light text-12 m-0 ellipsis-end"}>{explanation}</span>
+                )}
             </div>
+            {}
             {error && (
                 <span
                     style={{ color: "#f44336", fontSize: "12px!important" }}

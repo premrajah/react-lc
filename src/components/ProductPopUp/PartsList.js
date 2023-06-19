@@ -2,6 +2,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import React, {useEffect, useState} from "react";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
 
 const PartsList=(props)=>{
 
@@ -38,6 +40,8 @@ const DynamicAutoCompleteBox=(props)=> {
     const [types,setTypes]=useState([])
     const [states,setStates]=useState([])
     const [units,setUnits]=useState([])
+    const [fields,setFields]=useState({})
+
 
     // const handleChange=(value,field )=>{
     //
@@ -53,10 +57,7 @@ const DynamicAutoCompleteBox=(props)=> {
 
 
 
-    // useEffect(()=>{
-    //
-    //  console.log(types)
-    // },[types])
+
 
 
     return (
@@ -77,7 +78,6 @@ const DynamicAutoCompleteBox=(props)=> {
                             select={"Select"}
                             // error={this.state.errors["category"]}
                             onChange={(value,valueText)=> {
-
 
                                 setCategory(props.list.length>0? props.list.filter(
                                     (item) => item.category === value
@@ -206,8 +206,8 @@ const DynamicAutoCompleteBox=(props)=> {
                                  noMargin
                                 numberInput
                                 editMode
-                                 initialValue={props.item.fields?.composition}
-                                details="Percentage Composition"
+                                 initialValue={props.item.fields?.percentage}
+                                details="Percentage"
                                 placeholder={""}
                                 // readonly ={this.state.disableVolume}
                                 // initialValue={this.props.item&&this.props.item.product.volume+""}
@@ -215,7 +215,7 @@ const DynamicAutoCompleteBox=(props)=> {
                                 onChange={(value,valueText)=>
                                     // props.handleChange(value, value,`unit[${props.index}]`,props.uId,props.index)
 
-                                    props.handleChange(value, valueText,`composition`,props.uId,props.index)
+                                    props.handleChange(value, valueText,`percentage`,props.uId,props.index)
 
                                 }
 

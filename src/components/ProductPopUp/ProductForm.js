@@ -224,7 +224,7 @@ let slugify = require('slugify')
         }
 
 
-        getResourceCarbon=()=> {
+        getResourceCarbon=(item)=> {
             axios.get(baseUrl + "resource-carbon")
                 .then(
                     (response) => {
@@ -235,20 +235,8 @@ let slugify = require('slugify')
                             resourceCategories: responseAll,
                         });
 
-                        // if (responseAll.length>0&&this.props.item){
-                        //
-                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
-                        //     let subCategories=cat.length>0?cat[0].types:[]
-                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
-                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
-                        //
-                        //     this.setState({
-                        //         subCategories:subCategories,
-                        //         states : states,
-                        //         units : units
-                        //     })
-                        //
-                        // }
+                        if (this.props.item)
+                        this.loadInitialCarbonData(this.props.item)
 
                     },
                     (error) => {}
@@ -696,6 +684,52 @@ let slugify = require('slugify')
 
         }
 
+
+        configureCarbonValues=(existingItemsParts,existingItemsProcesses,existingItemsOutboundTransport,productData)=>{
+            let composition=[]
+            let processes=[]
+            let outboundTransports=[]
+
+            // console.log(this.state.existingItemsParts)
+
+            for (let i=0;i<existingItemsParts.length;i++){
+                composition.push({
+                    carbon_resource: existingItemsParts[i].fields?.unit,
+                    percentage:parseInt(existingItemsParts[i].fields?.percentage)
+                })
+
+            }
+            for (let i=0;i<existingItemsProcesses.length;i++){
+                processes.push({
+                    name: existingItemsProcesses[i].fields?.name,
+                    kwh: parseFloat(existingItemsProcesses[i].fields?.kwh),
+                    source_id:existingItemsProcesses[i].fields?.source_id
+                })
+
+            }
+            for (let i=0;i<existingItemsOutboundTransport.length;i++){
+
+
+                outboundTransports.push({
+                    geo_location: existingItemsOutboundTransport[i].fields?.geo_location,
+                    transport_mode:existingItemsOutboundTransport[i].fields?.transport_mode
+                })
+
+            }
+
+            if (composition.length>0){
+                productData.composition=composition
+            }
+            if (outboundTransports.length>0){
+                productData.outbound_transport=outboundTransports
+            }
+            if (processes.length>0){
+                productData.processes=processes
+            }
+
+
+            return productData
+        }
         handleSubmit = (event) => {
 
             try {
@@ -741,39 +775,7 @@ let slugify = require('slugify')
                     const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
                     const gross_weight_kgs = data.get("gross_weight_kgs");
 
-                    let composition=[]
-                let processes=[]
-                let outboundTransports=[]
-                console.log(this.state.existingItemsParts)
-                let existingItemsParts=this.state.existingItemsParts
-                let existingItemsProcesses=this.state.existingItemsProcesses
-                let existingItemsOutboundTransport=this.state.existingItemsOutboundTransport
 
-                for (let i=0;i<existingItemsParts.length;i++){
-                composition.push({
-                    carbon_resource: existingItemsParts[i].fields?.unit,
-                    percentage:parseInt(existingItemsParts[i].fields?.composition)
-                })
-
-            }
-                for (let i=0;i<existingItemsProcesses.length;i++){
-                    processes.push({
-                        name: existingItemsProcesses[i].fields?.name,
-                        kwh: parseFloat(existingItemsProcesses[i].fields?.kwh),
-                        source_id:existingItemsProcesses[i].fields?.source_id
-                    })
-
-                }
-                for (let i=0;i<existingItemsOutboundTransport.length;i++){
-
-
-                    outboundTransports.push({
-                        geo_location: existingItemsOutboundTransport[i].fields?.geo_location,
-                        transport_mode:existingItemsOutboundTransport[i].fields?.transport_mode
-                    })
-
-                }
-                console.log(composition)
                     let productData = {
                         purpose: purpose.toLowerCase(),
                         condition: condition.toLowerCase(),
@@ -801,15 +803,10 @@ let slugify = require('slugify')
                     };
 
 
-                if (composition.length>0){
-                    productData.composition=composition
-                }
-                if (outboundTransports.length>0){
-                    productData.outbound_transport=outboundTransports
-                }
-                if (processes.length>0){
-                    productData.processes=processes
-                }
+                productData= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
+                    this.state.existingItemsOutboundTransport,productData)
+
+
 
                     if (power_supply){
                         productData.sku.power_supply=  power_supply.toLowerCase()
@@ -1156,6 +1153,9 @@ let slugify = require('slugify')
                     fields
                 };
 
+                productData= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
+                    this.state.existingItemsOutboundTransport,productData)
+
                 axios
                     .post(
                         baseUrl + "product",
@@ -1293,7 +1293,7 @@ let slugify = require('slugify')
                 })
                 this.isManufacturer()
 
-                this.loadInitialCarbonData(this.props.item)
+
 
             }
             this.setUpYearList();
@@ -1310,11 +1310,31 @@ let slugify = require('slugify')
             let existingOutboundTransport=[]
 
             if (item.product.composition)
-            item.product.composition.forEach((item)=>{
-                existingParts.push({
-                    index:uuid(),
-                    fields: item
-                })
+            item.product.composition.forEach((compositionItem)=>{
+
+
+                axios.get(baseUrl + "resource-carbon/"+compositionItem.carbon_resource.split("/")[1])
+                    .then(
+                        (response) => {
+                            let   responseAll=response.data.data
+
+                            existingParts.push({
+                                index:uuid(),
+                                fields: {
+                                    category: responseAll.category.name,
+                                    type: responseAll.type.name,
+                                    state: responseAll.state.name,
+                                    unit: responseAll.unit.name,
+                                    percentage: compositionItem.percentage,
+                                }
+                            })
+
+
+                        },
+                        (error) => {}
+                    );
+
+
             })
 
             if(item.product.processes)
@@ -2209,7 +2229,7 @@ let slugify = require('slugify')
                                                     " forgot-password-link"
                                                 }>
 
-                                                      {this.state.showAddParts
+                                                      {this.state.showAddOutboundTransport
                                                           ? "Hide Outbound Transport"
                                                           : "Add Outbound Transport"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>

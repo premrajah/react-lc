@@ -18,6 +18,7 @@ const OutboundTransportList=(props)=>{
             <>
 <DynamicAutoCompleteBox
     {...props}
+    errors={props.errors[item.index]}
     item={item}
     uId={item.index}
     index={index}
@@ -46,6 +47,7 @@ const DynamicAutoCompleteBox=(props)=> {
 
                         <SelectArrayWrapper
                             editMode
+                            error={props.errors?.transport_mode}
                             details="Materials or category a product belongs to Type"
                             initialValue={props.item.fields?.transport_mode}
 
@@ -62,6 +64,7 @@ const DynamicAutoCompleteBox=(props)=> {
                     <div className={"col-md-8 col-sm-12 col-xs-12"}>
 
                         <SearchPlaceAutocomplete
+                            error={props.errors?.geo_location}
                             fromOutboundTransport
                             title={"Select Location"}
                             hideMap

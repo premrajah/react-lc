@@ -9,26 +9,38 @@ const PartsList=(props)=>{
 
 
     const [list,setList]=useState([])
+    const [error,setError]=useState(false)
+
     useEffect(()=>{
        setList(props.list)
     },[props.list])
+    useEffect(()=>{
+        setError(props.totalPercentError)
+    },[props.totalPercentError])
 
-    return props.existingItems.map((item, index) => {
-
-        return (
+    return (
+        <>
+            {props.existingItems.map((item, index) =>
             <>
 <DynamicAutoCompleteBox
     {...props}
     item={item}
     uId={item.index}
+    errors={props.errors[item.index]}
     index={index}
     list={list}
 
 />
-            </>)
 
 
-    } )
+            </>)}
+              {error?<span className="border-red-error d-flex justify-content-end ">Total not equal to 100</span>:""}
+    </>
+
+    )
+
+
+
 }
 
 
@@ -41,23 +53,46 @@ const DynamicAutoCompleteBox=(props)=> {
     const [states,setStates]=useState([])
     const [units,setUnits]=useState([])
     const [fields,setFields]=useState({})
-
-
-    // const handleChange=(value,field )=>{
+    // const [errors,setErrors]=useState([])
     //
-    //     // let fields = this.state.fields;
-    //     // fields[field] = value;
-    //     //
-    //     //
-    //     //
-    //     //
-    //     // this.setState({ fields });
+    // useEffect(()=>{
+    //     console.log("setting errors",errors)
+    //     setErrors(props.errors)
     //
-    // }
+    // },[props.errors])
 
 
+    useEffect(()=>{
 
 
+        if (props.item.fields?.category){
+            let typeValues=props.list.length>0?props.list.filter(
+                (item) => props.item.fields.category === item.category
+            )[0]&&props.list.filter(
+                (item) => props.item.fields.category === item.category
+            )[0].types:[]
+            setTypes(typeValues)
+
+
+            if(props.item.fields?.type&&typeValues.length>0){
+
+                let stateValues=typeValues.filter(
+                    (item) => props.item.fields.type === item.type
+                )[0].states
+                setStates(stateValues)
+
+                if(props.item.fields?.state&&stateValues.length>0){
+
+                    let unitValues=stateValues.filter(
+                        (item) => props.item.fields.state === item.state
+                    )[0].units
+                    setUnits(unitValues)
+                }
+            }
+        }
+
+
+    },[props.item.list])
 
 
     return (
@@ -76,14 +111,11 @@ const DynamicAutoCompleteBox=(props)=> {
                             option={"category"}
                             valueKey={"category"}
                             select={"Select"}
-                            // error={this.state.errors["category"]}
+                            error={props.errors?.category}
                             onChange={(value,valueText)=> {
-
                                 setCategory(props.list.length>0? props.list.filter(
                                     (item) => item.category === value
                                 )[0]:null)
-
-
                                 let typeValues=props.list.length>0?props.list.filter(
                                     (item) => item.category === value
                                 )[0]&&props.list.filter(
@@ -91,7 +123,6 @@ const DynamicAutoCompleteBox=(props)=> {
                                 )[0].types:[]
                                 console.log(typeValues)
                                 setTypes(typeValues)
-
                                 props.handleChange(value, valueText,`category`,props.uId,props.index);
                             }}
                             options={props.list} name={"category"}
@@ -107,6 +138,7 @@ const DynamicAutoCompleteBox=(props)=> {
                             valueKey={"type"}
                             select={"Select"}
                             // error={this.state.errors["type"]}
+                            error={props.errors?.type}
                             onChange={(value,valueText)=> {
                                 setStates([])
                                 setUnits([])
@@ -148,6 +180,7 @@ const DynamicAutoCompleteBox=(props)=> {
                             option={"state"}
                             valueKey={"state"}
                             editMode
+                            error={props.errors?.state}
                             disableAutoLoadingIcon
                             initialValue={props.item.fields?.state}
                             // initialValue={this.props.item?this.props.item.product.state:""
@@ -183,15 +216,13 @@ const DynamicAutoCompleteBox=(props)=> {
                             option={"unit"}
                             valueKey={"first_id"}
                             editMode
+                            error={props.errors?.unit}
                             disableAutoLoadingIcon
                             // initialValue={this.props.item?this.props.item.product.state:""
                             //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
                             initialValue={props.item.fields?.unit}
                             onChange={(value,valueText) => {
-                                // props.handleChange(value, valueText,`unit[${props.index}]`,props.uId,props.index);
                                 props.handleChange(value, valueText,`unit`,props.uId,props.index);
-
-
                             }}
                             // error={this.state.errors["state"]}
                             select={"Select"}
@@ -206,6 +237,7 @@ const DynamicAutoCompleteBox=(props)=> {
                                  noMargin
                                 numberInput
                                 editMode
+                                 error={props.errors?.percentage}
                                  initialValue={props.item.fields?.percentage}
                                 details="Percentage"
                                 placeholder={""}
@@ -219,12 +251,12 @@ const DynamicAutoCompleteBox=(props)=> {
 
                                 }
 
-                                // error={this.state.errors["percentage"]}
-
 
                                 name="percentage" title="Percentage"
                                 explanation={"Percentage value e.g 20"}
                              />
+
+
                         </div>
 
                     {/*<div className={"col-md-4 col-sm-12 col-xs-12"}>*/}

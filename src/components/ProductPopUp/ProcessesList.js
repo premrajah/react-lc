@@ -21,6 +21,8 @@ const ProcessesList=(props)=>{
     uId={item.index}
     index={index}
     list={list}
+    errors={props.errors[item.index]}
+
 
 />
             </>)
@@ -32,31 +34,7 @@ const ProcessesList=(props)=>{
 
 const DynamicAutoCompleteBox=(props)=> {
 
-    const [category,setCategory]=useState(null)
-    const [typeSelected,setTypeSelected]=useState(null)
-    const [stateSelected,setStateSelected]=useState(null)
-    const [types,setTypes]=useState([])
-    const [states,setStates]=useState([])
-    const [units,setUnits]=useState([])
 
-    // const handleChange=(value,field )=>{
-    //
-    //     // let fields = this.state.fields;
-    //     // fields[field] = value;
-    //     //
-    //     //
-    //     //
-    //     //
-    //     // this.setState({ fields });
-    //
-    // }
-
-
-
-    // useEffect(()=>{
-    //
-    //  console.log(types)
-    // },[types])
 
 
     return (
@@ -70,7 +48,7 @@ const DynamicAutoCompleteBox=(props)=> {
 
                             <TextFieldWrapper
                                 noMargin
-
+                                error={props.errors?.name}
                                 editMode
                                 initialValue={props.item.fields?.name}
                                 details="Name"
@@ -93,48 +71,23 @@ const DynamicAutoCompleteBox=(props)=> {
                             />
 
                      </div>
-                        {/*<div className={"col-md-2 col-sm-12 col-xs-12"}>*/}
-                        {/*    <TextFieldWrapper*/}
-                        {/*        noMargin*/}
-                        {/*        numberInput*/}
-                        {/*        editMode*/}
-                        {/*        initialValue={props.item.fields?.description}*/}
-                        {/*        details="Description"*/}
-                        {/*        placeholder={""}*/}
-                        {/*        // readonly ={this.state.disableVolume}*/}
-                        {/*        // initialValue={this.props.item&&this.props.item.product.volume+""}*/}
-                        {/*        // value={this.state.disableVolume?"0":""}*/}
-                        {/*        onChange={(value,valueText)=>*/}
-                        {/*            // props.handleChange(value, value,`unit[${props.index}]`,props.uId,props.index)*/}
 
-                        {/*            props.handleChange(value, valueText,`description`,props.uId,props.index)*/}
-
-                        {/*        }*/}
-
-                        {/*        // error={this.state.errors["percentage"]}*/}
-
-
-                        {/*        name="description" title="Description"*/}
-
-                        {/*    />*/}
-                        {/*</div>*/}
 
                         <div className={"col-md-2 col-sm-12 col-xs-12"}>
                             <TextFieldWrapper
+                                error={props.errors?.kwh}
                                 noMargin
                                 numberInput
                                 editMode
                                 initialValue={props.item.fields?.kwh}
                                 details=""
                                 placeholder={""}
-                                // readonly ={this.state.disableVolume}
-                                // initialValue={this.props.item&&this.props.item.product.volume+""}
-                                // value={this.state.disableVolume?"0":""}
+
                                 onChange={(value,valueText)=>
                                     // props.handleChange(value, value,`unit[${props.index}]`,props.uId,props.index)
                                     props.handleChange(value, valueText,`kwh`,props.uId,props.index)
                                 }
-                                // error={this.state.errors["percentage"]}
+
                                 name="kwh" title="Kwh"
                             />
                         </div>
@@ -142,6 +95,7 @@ const DynamicAutoCompleteBox=(props)=> {
                     <div className={"col-md-2 col-sm-12 col-xs-12"}>
 
                         <SelectArrayWrapper
+                            error={props.errors?.source_id}
                             option={"name"}
                             valueKey={"_id"}
                             editMode
@@ -154,7 +108,6 @@ const DynamicAutoCompleteBox=(props)=> {
                                 props.handleChange(value, valueText,`source_id`,props.uId,props.index);
 
                             }}
-                            // error={this.state.errors["state"]}
                             select={"Select"}
                             disabled={ (props.list.length > 0 )? false : true}
                             options={props.list?props.list:[]} name={"source_id"}

@@ -2,6 +2,8 @@ import React, {useEffect} from 'react';
 import {GoogleMap} from "../../Map/MapsContainer";
 import LocationSearchAutocomplete from "./LocationSearchAutocomplete";
 import TextFieldWrapper from "./TextField";
+import {InputAdornment} from "@mui/material";
+import CloseButtonPopUp from "../Buttons/CloseButtonPopUp";
 
 
 const SearchPlaceAutocomplete = (props) => {
@@ -12,6 +14,7 @@ const SearchPlaceAutocomplete = (props) => {
     const [longitude, setLongitude] = React.useState();
     const [address, setAddress] = React.useState()
     const [initialValueFlag, setInitialValueFlag] = React.useState(false)
+    const [showSelection, setShowSelection] = React.useState(false);
 
     const handleChange = (data) => {
 
@@ -122,6 +125,14 @@ const SearchPlaceAutocomplete = (props) => {
                         // error={this.state.errors["address"]}
                         name="address"
                         title={ "Selected Location"}
+
+                            endAdornment={  <CloseButtonPopUp
+                                aria-label="toggle password visibility"
+                                onClick={()=>setInitialValueFlag(false)}
+                                // onMouseDown={handleMouseDownPassword}
+                            >
+                            </CloseButtonPopUp>
+                        }
 
 
                     />

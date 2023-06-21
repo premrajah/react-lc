@@ -77,6 +77,7 @@ let slugify = require('slugify')
                 page: 1,
                 fields: {},
                 errors: {},
+                carbonErrors: [],
                 fieldsSite: {},
                 errorsSite: {},
                 fieldsProduct: {},
@@ -143,7 +144,8 @@ let slugify = require('slugify')
                 existingItemsProcesses:[],
                 existingItemsOutboundTransport:[],
                 energySources:[],
-                transportModes:[]
+                transportModes:[],
+                totalPercentError:false
 
             };
 
@@ -614,7 +616,17 @@ let slugify = require('slugify')
 
 
 
+
+
             let {formIsValid,errors}= validateInputs(validations,fields,editMode)
+
+            console.log(formIsValid,errors)
+
+
+
+
+            formIsValid= !this.validationsCarbonData()
+
 
             this.setState({ errors: errors });
 
@@ -630,6 +642,116 @@ let slugify = require('slugify')
 
             return formIsValid;
         }
+
+
+        validationsCarbonData=()=>{
+
+            let carbonErrors=[]
+            let errorFlag=false
+            let totalPercent=0
+            let fieldsParts=["category","unit","type","state","percentage"]
+            let fieldsProcesses=["name","kwh","source_id"]
+            let fieldsOutbound=["transport_mode","geo_location"]
+            console.log("errors in valid carb data")
+            this.state.existingItemsParts.forEach((existingPart)=>{
+
+
+
+
+                fieldsParts.forEach((fieldsPart)=>{
+
+                    if (existingPart.fields&&fieldsPart==="percentage"&&existingPart.fields[fieldsPart]){
+                        totalPercent=totalPercent+parseInt(existingPart.fields[fieldsPart])
+                    }
+                    if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
+                        errorFlag=true
+
+                        let error=carbonErrors[existingPart.index]
+
+                        if (error){
+                            error[fieldsPart]={error:true, message:"Required"}
+                            carbonErrors[existingPart.index]=error
+                        }else{
+                            carbonErrors[[existingPart.index]]= {[fieldsPart]:{error:true, message:"Required"}}
+
+                        }
+
+                    }
+
+                })
+
+            })
+
+            this.state.existingItemsProcesses.forEach((existingPart)=>{
+                console.log(existingPart, "processes")
+                fieldsProcesses.forEach((fieldsPart)=>{
+
+                    if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
+                        errorFlag=true
+
+                        let error=carbonErrors[existingPart.index]
+
+                        if (error){
+                            error[fieldsPart]={error:true, message:"Required"}
+                            carbonErrors[existingPart.index]=error
+                        }else{
+                            carbonErrors[[existingPart.index]]= {[fieldsPart]:{error:true, message:"Required"}}
+
+                        }
+
+                    }
+
+                })
+
+            })
+
+            this.state.existingItemsOutboundTransport.forEach((existingPart)=>{
+                console.log(existingPart)
+                fieldsOutbound.forEach((fieldsPart)=>{
+
+
+                    if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
+                        errorFlag=true
+
+                        let error=carbonErrors[existingPart.index]
+
+                        if (error){
+                            error[fieldsPart]={error:true, message:"Required"}
+                            carbonErrors[existingPart.index]=error
+                        }else{
+                            carbonErrors[[existingPart.index]]= {[fieldsPart]:{error:true, message:"Required"}}
+
+                        }
+
+                    }
+
+                })
+
+            })
+
+
+            if (totalPercent!==100){
+                errorFlag=true
+                this.setState({
+                    totalPercentError:true
+                })
+            }else{
+                this.setState({
+                    totalPercentError:false
+                })
+            }
+
+            console.log("percentate",totalPercent)
+            console.log(carbonErrors)
+
+            this.setState({
+                carbonErrors:carbonErrors,
+            })
+
+
+            return errorFlag
+        }
+
 
         handleChangeProduct(value,field ) {
 
@@ -741,10 +863,7 @@ let slugify = require('slugify')
                 return
             }
 
-
                 const form = event.currentTarget;
-
-
 
                 const data = new FormData(event.target);
 
@@ -1324,7 +1443,7 @@ let slugify = require('slugify')
                                     category: responseAll.category.name,
                                     type: responseAll.type.name,
                                     state: responseAll.state.name,
-                                    unit: responseAll.unit.name,
+                                    unit: compositionItem?.carbon_resource,
                                     percentage: compositionItem.percentage,
                                 }
                             })
@@ -1379,16 +1498,11 @@ let slugify = require('slugify')
                         fields[field]=value
 
                         existingItems[index] = {
-                            // value:value,
-                            // valueText:valueText,
                             index:uId,
-                            // error:false,
                             fields:fields
                         };
                     }else {
                         existingItems[index] = {
-                            // value:value,
-                            // valueText:valueText,
                             index:uId,
                             error:false,
                             fields:{field:value}
@@ -1974,6 +2088,15 @@ let slugify = require('slugify')
                                                         name="volume" title="(Volume)" />}
 
                                                 </div>
+                                                <div className="col-md-4 col-xs-12 ">
+                                                <TextFieldWrapper
+                                                    editMode
+                                                    onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
+                                                    // details="A unique number used by external systems"
+                                                    initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""
+                                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")
+                                                    } name="gross_weight_kgs" title="Gross Weight (Kg)" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>}
@@ -2112,16 +2235,16 @@ let slugify = require('slugify')
                                             } name="embodied_carbon_kgs" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
 
                                     </div>
-                                    <div className="col-md-4 col-sm-6 col-xs-6">
-                                        <TextFieldWrapper
-                                            editMode
-                                            onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
-                                            // details="A unique number used by external systems"
-                                            initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""
-                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")
-                                            } name="gross_weight_kgs" title="Gross Weight (Kg)" />
+                                    {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}
+                                    {/*    <TextFieldWrapper*/}
+                                    {/*        editMode*/}
+                                    {/*        onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}*/}
+                                    {/*        // details="A unique number used by external systems"*/}
+                                    {/*        initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""*/}
+                                    {/*            ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")*/}
+                                    {/*        } name="gross_weight_kgs" title="Gross Weight (Kg)" />*/}
 
-                                    </div>
+                                    {/*</div>*/}
 
                                             </div>
 
@@ -2147,7 +2270,9 @@ let slugify = require('slugify')
                                       <div className="col-md-12 col-sm-6 col-xs-6">
 
                                           <PartsList
+                                              totalPercentError={this.state.totalPercentError}
 
+                                              errors={this.state.carbonErrors}
                                               list={this.state.resourceCategories}
                                               filters={[]}
                                               deleteItem={(data)=>this.deleteItemParts(data,1)}
@@ -2193,7 +2318,7 @@ let slugify = require('slugify')
                                       <div className="col-md-12 col-sm-6 col-xs-6">
 
                                           <ProcessesList
-
+                                              errors={this.state.carbonErrors}
                                               list={this.state.energySources}
                                               filters={[]}
                                               deleteItem={(data)=>this.deleteItemParts(data,2)}
@@ -2241,7 +2366,7 @@ let slugify = require('slugify')
                                       <div className="col-md-12 col-sm-6 col-xs-6">
 
                                           <OutboundTransportList
-
+                                              errors={this.state.carbonErrors}
                                               list={this.state.transportModes}
                                               filters={[]}
                                               deleteItem={(data)=>this.deleteItemParts(data,3)}

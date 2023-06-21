@@ -34,7 +34,7 @@ const PartsList=(props)=>{
 
 
             </>)}
-              {error?<span className="border-red-error d-flex justify-content-end ">Total not equal to 100</span>:""}
+              {list.length>0 && error?<span className="border-red-error d-flex justify-content-end ">Total not equal to 100</span>:""}
     </>
 
     )

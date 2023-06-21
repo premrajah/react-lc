@@ -609,12 +609,13 @@ let slugify = require('slugify')
 
             }
 
-                if (!this.state.disableVolume&&!this.props.productLines){
+            if (!this.state.disableVolume&&!this.props.productLines){
                 validations.push( validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields),
                 )
             }
 
             if(this.state.existingItemsParts.length>0){
+
 
                 validations.push(validateFormatCreate("gross_weight_kgs", [{check: Validators.required, message: 'Required'}],fields))
 
@@ -767,10 +768,7 @@ let slugify = require('slugify')
                  fields[field]= Number(value)
              }
 
-
             this.setState({ fields });
-
-
 
             if (field==="purpose"&&value==="Aggregate"){
 
@@ -2095,6 +2093,7 @@ let slugify = require('slugify')
                                                 <div className="col-md-4 col-xs-12 ">
                                                 <TextFieldWrapper
                                                     editMode
+                                                    error={this.state.errors["gross_weight_kgs"]}
                                                     onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
                                                     // details="A unique number used by external systems"
                                                     initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""

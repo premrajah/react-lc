@@ -614,7 +614,11 @@ let slugify = require('slugify')
                 )
             }
 
+            if(this.state.existingItemsParts.length>0){
 
+                validations.push(validateFormatCreate("gross_weight_kgs", [{check: Validators.required, message: 'Required'}],fields))
+
+            }
 
 
 

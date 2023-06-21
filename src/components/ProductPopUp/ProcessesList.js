@@ -16,12 +16,13 @@ const ProcessesList=(props)=>{
         return (
             <>
 <DynamicAutoCompleteBox
-    errors={props.errors[item.index]}
     {...props}
     item={item}
     uId={item.index}
     index={index}
     list={list}
+    errors={props.errors[item.index]}
+
 
 />
             </>)

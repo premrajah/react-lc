@@ -77,7 +77,7 @@ let slugify = require('slugify')
                 page: 1,
                 fields: {},
                 errors: {},
-                carbonErrors: {},
+                carbonErrors: [],
                 fieldsSite: {},
                 errorsSite: {},
                 fieldsProduct: {},
@@ -660,8 +660,7 @@ let slugify = require('slugify')
 
                 fieldsParts.forEach((fieldsPart)=>{
 
-                    if (fieldsPart==="percentage"){
-                        console.log(fieldsPart,existingPart,parseInt(existingPart.fields[fieldsPart]))
+                    if (existingPart.fields&&fieldsPart==="percentage"&&existingPart.fields[fieldsPart]){
                         totalPercent=totalPercent+parseInt(existingPart.fields[fieldsPart])
                     }
                     if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
@@ -684,7 +683,7 @@ let slugify = require('slugify')
             })
 
             this.state.existingItemsProcesses.forEach((existingPart)=>{
-                console.log(existingPart)
+                console.log(existingPart, "processes")
                 fieldsProcesses.forEach((fieldsPart)=>{
 
                     if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
@@ -710,6 +709,7 @@ let slugify = require('slugify')
                 console.log(existingPart)
                 fieldsOutbound.forEach((fieldsPart)=>{
 
+
                     if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
                         errorFlag=true
 
@@ -731,6 +731,7 @@ let slugify = require('slugify')
 
 
             if (totalPercent!==100){
+                errorFlag=true
                 this.setState({
                     totalPercentError:true
                 })

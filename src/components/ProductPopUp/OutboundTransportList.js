@@ -44,7 +44,6 @@ const DynamicAutoCompleteBox=(props)=> {
                 <div className="col-11 ">
                     <div className={"row g-0"}>
                     <div className="col-md-4 col-sm-12">
-
                         <SelectArrayWrapper
                             editMode
                             error={props.errors?.transport_mode}
@@ -85,12 +84,11 @@ const DynamicAutoCompleteBox=(props)=> {
                                     console.log("map error")
                                             console.log(e)
                                 }
-
-
                             }
                             }
 
                         />
+                        {props.errors?.geo_location && <span  className="text-danger"> Required</span>}
                 </div>
                     </div>
 

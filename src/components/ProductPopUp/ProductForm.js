@@ -2451,9 +2451,8 @@ let slugify = require('slugify')
                                                                 {this.state.files &&
                                                                 this.state.files.map(
                                                                     (item, index) => (
-                                                                        <>
+                                                                        <React.Fragment key={index}>
                                                                         {getMimeTypeAndIcon(item.file.mime_type).type==="image"&&<div
-                                                                            key={index}
                                                                             className={"file-uploader-thumbnail-container"}>
                                                                             <div
                                                                                 data-index={
@@ -2739,7 +2738,7 @@ let slugify = require('slugify')
                                                                                 </div>
                                                                             </div>}
 
-                                                                        </>
+                                                                        </React.Fragment>
                                                                     )
 
                                                                 )}

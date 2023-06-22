@@ -735,7 +735,7 @@ let slugify = require('slugify')
             })
 
 
-            if (totalPercent!==100){
+            if (this.state.existingItemsParts.length>0&&totalPercent!==100){
                 errorFlag=true
                 this.setState({
                     totalPercentError:true

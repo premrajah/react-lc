@@ -125,7 +125,7 @@ const TextFieldWrapper = ({
                     name={name}
                     {...configTextField}
                     startAdornment={startAdornment ? <InputAdornment position="start">{startAdornment}</InputAdornment> : ""}
-                    endAdornment={endAdornment ? <InputAdornment position="start">{endAdornment}</InputAdornment> : ""}
+                    endAdornment={endAdornment ? <InputAdornment position="end ">{endAdornment}</InputAdornment> : ""}
 
 
                 />

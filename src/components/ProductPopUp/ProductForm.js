@@ -1247,13 +1247,17 @@ let slugify = require('slugify')
 
                 let sku = {}
 
-                let skuFields = ["sku", "serial", "model", "upc", "part_no",
+                let skuFields = [ "serial", "model", "upc", "part_no",
                     "embodied_carbon_kgs", "gross_weight_kgs", "brand","external_reference"]
 
                 skuFields.forEach(item => {
                     if (!(fields[item] === undefined)) {
+                        if (fields[item]===""){
+                            sku[item] = null
+                        }else{
+                            sku[item] = fields[item]
+                        }
 
-                        sku[item] = fields[item]
                     }
                 })
 

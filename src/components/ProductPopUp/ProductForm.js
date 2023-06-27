@@ -1237,10 +1237,10 @@ let slugify = require('slugify')
             }
 
 
-            if (Object.keys(fields).length === 0) {
-                this.props.triggerCallback("edit")
-                return;
-            }
+            // if (Object.keys(fields).length === 0) {
+            //     this.props.triggerCallback("edit")
+            //     return;
+            // }
 
             if (fields["serial"] !== undefined || fields["model"] !== undefined || fields["brand"] !== undefined ||
                 fields["sku"] !== undefined || fields["upc"] !== undefined || fields["gross_weight_kgs"] !== undefined || fields["embodied_carbon_kgs"] !== undefined) {
@@ -1270,13 +1270,15 @@ let slugify = require('slugify')
                 let productData = {
                     id: this.props.item.product._key,
                     is_manufacturer: this.state.is_manufacturer ? true : false,
-                    update:
-                    fields
+                    update: fields
                 };
 
-                productData= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
-                    this.state.existingItemsOutboundTransport,productData)
+                productData["update"]= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
+                    this.state.existingItemsOutboundTransport,productData["update"])
 
+                // productData.update
+
+                console.log(productData)
                 axios
                     .post(
                         baseUrl + "product",

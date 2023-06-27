@@ -59,7 +59,7 @@ const OrgComponent = (props) => {
     return (
         <>
             {org && (
-                <div
+                    <div
                     style={{
                         display: "inline-flex",
                         justifyContent: "center",

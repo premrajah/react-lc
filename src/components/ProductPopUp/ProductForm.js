@@ -2235,8 +2235,8 @@ let slugify = require('slugify')
                                             editMode
                                             onChange={(value)=>this.handleChangeProduct(value,"embodied_carbon_kgs")}
                                             // details="A unique number used by external systems"
-                                            initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_kgs:""
-                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_kgs:"")
+                                            initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_kgs:null
+                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_kgs:null)
                                             } name="embodied_carbon_kgs" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
 
                                     </div>

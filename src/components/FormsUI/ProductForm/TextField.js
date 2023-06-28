@@ -10,7 +10,6 @@ const TextFieldWrapper = ({
     title,
     explanation,
     details,
-
     detailsHeading,
     validators,
     label,
@@ -24,7 +23,7 @@ const TextFieldWrapper = ({
     customReadOnly, reset, noMargin,
     editMode,
     numberInput,
-    startAdornment, endAdornment,
+    startAdornment, endAdornment,classAdd,
     ...otherProps
 }) => {
 
@@ -109,7 +108,7 @@ const TextFieldWrapper = ({
             )}
 
 
-            <div className={`${type !== "hidden" ? "field-box " : "d-none"} ${noMargin ? "" : "mb-2"}`}>
+            <div  className={`${classAdd}  ${type !== "hidden" ? "field-box " : "d-none"} ${noMargin ? "" : "mb-2"}`} >
                 <CustomizedInput
                     // defaultValue={"name"}
 

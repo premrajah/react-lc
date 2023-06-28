@@ -120,6 +120,8 @@ const SearchPlaceAutocomplete = (props) => {
                 <LocationSearchAutocomplete setLocation={handleChange} />
                 </>:
                     <TextFieldWrapper
+                        classAdd={"custom-selectedLocation"}
+                        disabled={true}
                         initialValue={address?address:""}
                         onChange={(value)=>{}}
                         // error={this.state.errors["address"]}

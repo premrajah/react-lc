@@ -159,7 +159,8 @@ let slugify = require('slugify')
 
         }
 
-        showSubmitSite=(data)=> {
+        showSubmitSiteForm=(data)=> {
+
 
             try {
 
@@ -176,6 +177,7 @@ let slugify = require('slugify')
             if (data){
                 let fields=this.state.fields
                 fields["deliver"]=data._key
+
 
                 this.setState({
                     selectedSite: data,
@@ -625,7 +627,6 @@ let slugify = require('slugify')
 
             let {formIsValid,errors}= validateInputs(validations,fields,editMode)
 
-            console.log(formIsValid,errors)
 
 
 
@@ -657,7 +658,7 @@ let slugify = require('slugify')
             let fieldsParts=["category","unit","type","state","percentage"]
             let fieldsProcesses=["name","kwh","source_id"]
             let fieldsOutbound=["transport_mode","geo_location"]
-            console.log("errors in valid carb data")
+
             this.state.existingItemsParts.forEach((existingPart)=>{
 
 
@@ -688,7 +689,8 @@ let slugify = require('slugify')
             })
 
             this.state.existingItemsProcesses.forEach((existingPart)=>{
-                console.log(existingPart, "processes")
+
+
                 fieldsProcesses.forEach((fieldsPart)=>{
 
                     if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
@@ -711,7 +713,7 @@ let slugify = require('slugify')
             })
 
             this.state.existingItemsOutboundTransport.forEach((existingPart)=>{
-                console.log(existingPart)
+
                 fieldsOutbound.forEach((fieldsPart)=>{
 
 
@@ -746,8 +748,7 @@ let slugify = require('slugify')
                 })
             }
 
-            console.log("percentate",totalPercent)
-            console.log(carbonErrors)
+
 
             this.setState({
                 carbonErrors:carbonErrors,
@@ -857,18 +858,14 @@ let slugify = require('slugify')
         handleSubmit = (event) => {
 
             try {
-
-
             event.preventDefault();
             event.stopPropagation()
             if (!this.handleValidationProduct()){
                 return
             }
 
-                const form = event.currentTarget;
 
-                const data = new FormData(event.target);
-
+                    const data = new FormData(event.target);
                     const name = data.get("name");
                     const purpose = data.get("purpose");
                     const condition = data.get("condition");
@@ -917,7 +914,7 @@ let slugify = require('slugify')
                             sku: sku,
                             upc: upc,
                             part_no: part_no,
-                            embodied_carbon_kgs: embodied_carbon_kgs?embodied_carbon_kgs:null,
+                            embodied_carbon_kgs: embodied_carbon_kgs?parseInt(embodied_carbon_kgs):null,
                             gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:null
                         },
                         year_of_making: year_of_making,
@@ -926,8 +923,6 @@ let slugify = require('slugify')
 
                 productData= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
                     this.state.existingItemsOutboundTransport,productData)
-
-
 
                     if (power_supply){
                         productData.sku.power_supply=  power_supply.toLowerCase()
@@ -952,7 +947,6 @@ let slugify = require('slugify')
 
 
 
-                    console.log(completeData)
                     // return;
 
                 this.setState({
@@ -1271,9 +1265,10 @@ let slugify = require('slugify')
             });
 
             try {
+
                 let productData = {
                     id: this.props.item.product._key,
-                    is_manufacturer: this.state.is_manufacturer ? true : false,
+                    // is_manufacturer: this.state.is_manufacturer ? true : false,
                     update: fields
                 };
 
@@ -1282,42 +1277,46 @@ let slugify = require('slugify')
 
                 // productData.update
 
-                console.log(productData)
-                axios
-                    .post(
-                        baseUrl + "product",
-
-                        productData
-                    )
-                    .then((res) => {
 
 
-                        this.props.refreshPageWithSavedState(
-                            {refresh:true,reset: false}
+
+                    axios
+                        .post(
+                            baseUrl + "product",
+
+                            productData
                         )
+                        .then((res) => {
 
-                        this.props.showSnackbar({
-                            show: true,
-                            severity: "success",
-                            message: this.props.item.product.name + " updated successfully. Thanks"
+
+                            this.props.refreshPageWithSavedState(
+                                {refresh: true, reset: false}
+                            )
+
+                            this.props.showSnackbar({
+                                show: true,
+                                severity: "success",
+                                message: this.props.item.product.name + " updated successfully. Thanks"
+                            })
+                            this.props.triggerCallback("edit")
+
+                            if (this.props.loadCurrentProduct)
+                                this.props.loadCurrentProduct(this.props.item.product._key)
+
                         })
-                        this.props.triggerCallback("edit")
+                        .catch((error) => {
+                            // console.log("*****************",error)
 
-                        if (this.props.loadCurrentProduct)
-                        this.props.loadCurrentProduct(this.props.item.product._key)
+                            this.setState({
+                                btnLoading: false,
+                                loading: false,
+                                isSubmitButtonPressed: false
+                            });
+                            this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
 
-                    })
-                    .catch((error) => {
-                        // console.log("*****************",error)
-
-                        this.setState({
-                            btnLoading: false,
-                            loading: false,
-                            isSubmitButtonPressed: false
                         });
-                        this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
 
-                    });
+
 
             } catch (e) {
                 console.log(e)
@@ -1407,7 +1406,6 @@ let slugify = require('slugify')
             this.getEnergyProcess()
             this.getTransportMode()
 
-
             this.setState({
                 parentProductId:null
             }, ()=>{
@@ -1419,19 +1417,22 @@ let slugify = require('slugify')
                     isEditProduct:true,
                 })
                 this.isManufacturer()
-
-
-
             }
             this.setUpYearList();
             this.props.loadSites(this.props.userDetail.token);
             this.fetchCache()
-
         }
 
-        loadInitialCarbonData=(item)=>{
+        loadInitialCarbonData=(itemObj)=>{
+
+            try {
 
 
+          let item=itemObj
+            if(this.props.productLines){
+
+                item=this.props.item
+            }
             let existingParts=[]
             let existingProcesses=[]
             let existingOutboundTransport=[]
@@ -1460,8 +1461,6 @@ let slugify = require('slugify')
                         },
                         (error) => {}
                     );
-
-
             })
 
             if(item.product.processes)
@@ -1484,6 +1483,11 @@ let slugify = require('slugify')
                 existingItemsProcesses:existingProcesses  ,
                 existingItemsOutboundTransport:existingOutboundTransport ,
             })
+
+
+            }catch (e){
+                console.log(e)
+            }
         }
 
         showMultipleUpload=()=>{
@@ -1491,6 +1495,39 @@ let slugify = require('slugify')
             this.props.setMultiplePopUp({show:true,type:"isProduct"})
                 this.props.showProductPopUp({ action: "hide_all", show: false });
 
+        }
+
+        fillTemplateValues=(itemTemplate)=>{
+
+
+            let cat= this.state.categories.length>0? this.state.categories.filter(
+                (item) => item.name === itemTemplate.value.product.category
+            )[0]:null
+
+
+            let subCategories=cat?cat.types:[]
+            let states = subCategories.length>0?this.state.categories.filter((item) => item.name === itemTemplate.value.product.category)[0].types.filter((item) => item.name === itemTemplate.value.product.type)[0].state:[]
+            let  units = states.length>0?this.state.categories.filter((item) => item.name === itemTemplate.value.product.category)[0].types.filter((item) => item.name === itemTemplate.value.product.type)[0].units:[]
+
+
+            this.setState({
+                subCategories:subCategories,
+                states : states,
+                units : units
+            })
+
+
+            setTimeout(()=>{
+
+                this.setState({
+                    selectedTemplate:itemTemplate
+                })
+            },500)
+
+
+            this.loadInitialCarbonData(itemTemplate.value)
+
+            this.loadImages(itemTemplate.value.artifacts)
         }
 
 
@@ -1520,8 +1557,7 @@ let slugify = require('slugify')
                     this.setState({
                         existingItemsParts:existingItems
                     })
-                    console.log(uId)
-                    console.log(existingItems)
+
 
                 }
 
@@ -1552,8 +1588,7 @@ let slugify = require('slugify')
                     this.setState({
                         existingItemsProcesses:existingItems
                     })
-                    console.log(uId)
-                    console.log(existingItems)
+
 
                 }
 
@@ -1608,8 +1643,6 @@ let slugify = require('slugify')
                     this.setState({
                         existingItemsOutboundTransport:existingItems
                     })
-                    console.log(uId)
-                    console.log(existingItems)
 
                 }
 
@@ -1705,24 +1738,14 @@ let slugify = require('slugify')
                                         fontSize: 16,
                                         border: '1px solid #ced4da',}}
                                     variant="standard"
-                                    // details=""
-                                    // initialValue={this.props.item&&this.props.item.site._key}
-                                    // option={"name"}
-                                    // valueKey={"key"}
-                                    // subValueKey={"name"}
+
                                     onChange={(value)=> {
 
-
-                                        this.setState({
-                                            selectedTemplate:this.state.templates.find(item=>item.key===value.currentTarget.value )
-                                        })
-
-                                        this.loadImages(this.state.templates.find(item=>item.key===value.currentTarget.value).value.artifacts)
-
+                                        let template=this.state.templates.find(item=>item.key===value.currentTarget.value )
+                                        this.fillTemplateValues(template)
 
                                     }}
-                                    // select={"Select"}
-                                    // options={this.state.templates}
+
                                     name={"template"}
                                     title="Select Product Line..">
                                     <option value={""}>Select Product Line</option>
@@ -1739,7 +1762,8 @@ let slugify = require('slugify')
 
                     <div className={"row justify-content-center create-product-row"}>
                         <div className={"col-12"}>
-                              <form  onChange={this.handleChangeForm} onSubmit={this.props.item?this.updateSubmitProduct:this.handleSubmit}>
+                              <form  onChange={this.handleChangeForm}
+                                     onSubmit={(!this.props.item||this.props.productLines)?this.handleSubmit:this.updateSubmitProduct}>
                                 <div className="row ">
                                     {this.props.productLines &&
                                     <div className="col-12 mt-2">
@@ -1758,9 +1782,7 @@ let slugify = require('slugify')
                                        <TextFieldWrapper
                                            editMode
                                            details="The name of a product"
-                                         // initialValue={(this.props.item&&this.props.item.product.name)
-                                         // ||(this.state.selectedTemplate&&this.state.selectedTemplate.value.product.name)
-                                         // }
+
 
                                            initialValue={this.props.item&&this.props.item.product.name
                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.name:"")
@@ -1785,7 +1807,8 @@ let slugify = require('slugify')
                                             name={"is_listable"} title="List for sale" />
 
                                     </div>}
-                                    {!this.props.productLines &&    <div className="col-md-4 d-none col-sm-12  justify-content-start align-items-center">
+                                    {!this.props.productLines &&
+                                        <div className="col-md-4 d-none col-sm-12  justify-content-start align-items-center">
 
                                         <CheckboxWrapper
 
@@ -1873,7 +1896,7 @@ let slugify = require('slugify')
                                                             units: units
                                                         })
                                                     }
-                                                },500)
+                                                },100)
 
 
                                                 this.handleChangeProduct(value,"type")
@@ -1997,7 +2020,7 @@ let slugify = require('slugify')
                                                 <p style={{ marginTop: "10px" }}>
                                                     <span className="mr-1 text-gray-light">or </span>
                                                     <span
-                                                        onClick={()=>this.showSubmitSite()}
+                                                        onClick={()=>this.showSubmitSiteForm()}
                                                         className={
                                                             " forgot-password-link ellipsis-end"
                                                         }>
@@ -2236,6 +2259,7 @@ let slugify = require('slugify')
 
                                     <div className="col-md-4 col-sm-6 col-xs-6">
                                         <TextFieldWrapper
+                                            numberInput
                                             editMode
                                             onChange={(value)=>this.handleChangeProduct(value,"embodied_carbon_kgs")}
                                             // details="A unique number used by external systems"
@@ -2272,6 +2296,7 @@ let slugify = require('slugify')
                                                           : "Add Parts"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>
                                         </span>
+                                          <span className="text-12 blue-text">{this.state.existingItemsParts.length>0?`(${this.state.existingItemsParts.length} entries exist)`:""}</span>
                                       </div>
                                   </div>
 
@@ -2317,8 +2342,9 @@ let slugify = require('slugify')
 
                                                       {this.state.showAddProcesses
                                                           ? "Hide processes"
-                                                          : "Add processes"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                                          : "Add processes"} <CustomPopover text="Add processes involved in the manufacturing of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>
+                                            <span className="text-12 blue-text"> {this.state.existingItemsProcesses.length>0?`(${this.state.existingItemsProcesses.length} entries exist)`:""}</span>
                                         </span>
                                       </div>
                                   </div>
@@ -2365,8 +2391,9 @@ let slugify = require('slugify')
 
                                                       {this.state.showAddOutboundTransport
                                                           ? "Hide Outbound Transport"
-                                                          : "Add Outbound Transport"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                                          : "Add Outbound Transport"} <CustomPopover text="Add outbound transport details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>
+                                            <span className="text-12 blue-text">{this.state.existingItemsOutboundTransport.length>0?`(${this.state.existingItemsOutboundTransport.length} entries exist)`:""}</span>
                                         </span>
                                       </div>
                                   </div>
@@ -2804,7 +2831,7 @@ let slugify = require('slugify')
 
                             <div className="col-md-12 col-sm-12 col-xs-12 ">
                                 <div
-                                    onClick={()=>this.showSubmitSite()}
+                                    onClick={()=>this.showSubmitSiteForm()}
                                     className={
                                         "custom-label text-bold text-blue  pb-2 click-item"
                                     }>
@@ -2821,7 +2848,7 @@ let slugify = require('slugify')
                                 </div>
                                 <div className={"row"}>
                                     <div className={"col-12"}>
-                                        {this.state.showSubmitSite && <SiteFormNew dontCallUpdate showHeader={false}  refresh={(data) => this.showSubmitSite(data)}   />}
+                                        {this.state.showSubmitSite && <SiteFormNew dontCallUpdate showHeader={false}  refresh={(data) => this.showSubmitSiteForm(data)}   />}
                                     </div>
                                 </div>
                             </div>

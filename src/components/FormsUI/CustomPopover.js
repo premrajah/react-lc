@@ -6,12 +6,45 @@ class CustomPopover extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+
+            heading: null,
+            text:null
+        }
     }
     // HtmlText
 
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        if (prevProps!==this.props) {
+
+            if (this.props.heading){
+                this.setState({
+                    heading:this.props.heading
+                })
+            }
+            if (this.props.text){
+                this.setState({
+                    text:this.props.text
+                })
+            }
+        }
+    }
     componentDidMount() {
         // this.HtmlText=this.props.HtmlText
 
+        if (this.props.heading){
+           this.setState({
+               heading:this.props.heading
+           })
+        }
+        if (this.props.text){
+            this.setState({
+                text:this.props.text
+            })
+        }
     }
 
     orgPopover = (
@@ -19,15 +52,15 @@ class CustomPopover extends React.Component {
         <Popover id="">
             <div className={"p-2 text-sentence "}>
 
-                {this.props.heading &&  <div
-                    dangerouslySetInnerHTML={{__html:this.props.heading}}
+                {this.state.heading &&  <div
+                    dangerouslySetInnerHTML={{__html:this.state.heading}}
                     className={"title-bold"} style={{ textTransform: "capitalize" }} />}
-                {this.props.text && (
+                {this.state.text && (
                     <>
 
                         <span className={"text-gray-light  "}>
 
-                                {this.props.text}
+                                {this.state.text}
                        </span>
 
                     </>

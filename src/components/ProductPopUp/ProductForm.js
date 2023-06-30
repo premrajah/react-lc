@@ -842,15 +842,15 @@ let slugify = require('slugify')
 
             }
 
-            if (composition.length>0){
+            // if (composition.length>0){
                 productData.composition=composition
-            }
-            if (outboundTransports.length>0){
+            // }
+            // if (outboundTransports.length>0){
                 productData.outbound_transport=outboundTransports
-            }
-            if (processes.length>0){
+            // }
+            // if (processes.length>0){
                 productData.processes=processes
-            }
+            // }
 
 
             return productData
@@ -1231,6 +1231,7 @@ let slugify = require('slugify')
             }
 
 
+
             // if (Object.keys(fields).length === 0) {
             //     this.props.triggerCallback("edit")
             //     return;
@@ -1274,9 +1275,6 @@ let slugify = require('slugify')
 
                 productData["update"]= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
                     this.state.existingItemsOutboundTransport,productData["update"])
-
-                // productData.update
-
 
 
 

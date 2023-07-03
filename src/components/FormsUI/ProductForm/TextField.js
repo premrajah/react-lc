@@ -34,9 +34,10 @@ const TextFieldWrapper = ({
         if (onChange) {
 
             setField(initialValue ?? '')
-            if (!editMode) {
+            // if (!editMode) {
+
                 onChange(initialValue);
-            }
+            // }
 
         }
         // }

@@ -28,9 +28,9 @@ const SelectArrayWrapper = (props) => {
         if (onChange) {
               setValue(initialValue)
 
-            if (!editMode) {
+            // if (!editMode) {
                 onChange(initialValue)
-            }
+            // }
         }
     },[initialValue])
 

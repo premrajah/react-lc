@@ -628,10 +628,16 @@ let slugify = require('slugify')
             let {formIsValid,errors}= validateInputs(validations,fields,editMode)
 
 
+            console.log("form valud",formIsValid,errors)
+
+            console.log("process valud",this.validationsCarbonDataError(),)
+            if (this.validationsCarbonDataError()){
+
+                formIsValid=false
+            }
 
 
 
-            formIsValid= !this.validationsCarbonData()
 
 
             this.setState({ errors: errors });
@@ -650,7 +656,7 @@ let slugify = require('slugify')
         }
 
 
-        validationsCarbonData=()=>{
+        validationsCarbonDataError=()=>{
 
             let carbonErrors=[]
             let errorFlag=false
@@ -761,6 +767,7 @@ let slugify = require('slugify')
 
         handleChangeProduct(value,field ) {
 
+            console.log("hanle change ", value,field)
                 let fields = this.state.fields;
             fields[field] = value;
 
@@ -1780,8 +1787,6 @@ let slugify = require('slugify')
                                        <TextFieldWrapper
                                            editMode
                                            details="The name of a product"
-
-
                                            initialValue={this.props.item&&this.props.item.product.name
                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.name:"")
                                            }
@@ -2096,6 +2101,8 @@ let slugify = require('slugify')
                                                         select={"Select"}
                                                                          disableAutoLoadingIcon
                                                         initialValue={this.props.item&&this.props.item.product.units}
+
+
                                                         onChange={(value)=>this.handleChangeProduct(value,"units")}
                                                         error={this.state.errors["units"]}
 

@@ -922,7 +922,7 @@ let slugify = require('slugify')
                             upc: upc,
                             part_no: part_no,
                             embodied_carbon_kgs: embodied_carbon_kgs?parseInt(embodied_carbon_kgs):null,
-                            gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:null
+                            gross_weight_kgs:gross_weight_kgs?parseInt(gross_weight_kgs):null
                         },
                         year_of_making: year_of_making,
                     };

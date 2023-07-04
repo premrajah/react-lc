@@ -2127,6 +2127,7 @@ let slugify = require('slugify')
                                                 <div className="col-md-4 col-xs-12 ">
                                                 <TextFieldWrapper
                                                     editMode
+                                                    numberInput
                                                     error={this.state.errors["gross_weight_kgs"]}
                                                     onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
                                                     // details="A unique number used by external systems"

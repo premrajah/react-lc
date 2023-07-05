@@ -41,7 +41,6 @@ class UploadCarbonCSV extends Component {
 
         try {
 
-            console.log(e.target.files[0])
             let file = e.target.files[0];
             const formData = new FormData();
             formData.append('file', file);

@@ -74,10 +74,7 @@ const SearchPlaceAutocomplete = (props) => {
             }else{
                 try {
                     if (initialValue){
-                        // setAddress(initialValue.address)
-
-                        console.log("init value gogle map",initialValue.address_info.formatted_address)
-                        console.log(initialValue)
+                        
                         setInitialValueFlag(true)
                         setLongitude(initialValue.address_info.geometry.location.lng)
                         setLatitude(initialValue.address_info.geometry.location.lat)

@@ -69,8 +69,7 @@ const DynamicAutoCompleteBox=(props)=> {
                             hideMap
                             initialValue={props.item.fields?.geo_location}
                             onChange={(value,valueText) => {
-                                console.log("from search google")
-                                console.log(value)
+                                
                                 try {
 
                                     if (value&&value.latitude && value.longitude ) {

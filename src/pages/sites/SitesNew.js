@@ -125,8 +125,6 @@ class SitesNew extends Component {
 
         try {
 
-            // console.log("new queryData,reset")
-            // console.log(queryData)
             removeEmptyValuesObj(queryData)
 
             if (!queryData.reset) {
@@ -143,8 +141,7 @@ class SitesNew extends Component {
 
             }
 
-            // console.log("merged queryData,reset")
-            // console.log(queryData)
+          
 
             this.setState({
                 selectionMode: queryData.type
@@ -181,8 +178,6 @@ class SitesNew extends Component {
                 queryData: data
             })
 
-            // console.log("final queryData,reset")
-            // console.log(data)
 
             this.setFilters(data, data.type)
 
@@ -377,8 +372,6 @@ class SitesNew extends Component {
 
     exportToCSV = (csvData, selectedKeys, selected) => {
 
-        // console.log(csvData)
-        // return
         let data = "";
         let tableDataNew = [];
 
@@ -518,7 +511,6 @@ class SitesNew extends Component {
         if (prevProps !== this.props) {
             this.detectChange();
 
-            // console.log(this.props.refreshState)
             if (Object.keys(this.props.refreshState).length !== 0 && this.props.refreshState.refresh) {
 
                 if (this.props.refreshState.reset) {

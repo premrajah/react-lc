@@ -54,22 +54,17 @@ class PaginationGrid extends Component {
             newPage:newPage
         }
 
-        // console.log(filterData)
-        // removeEmptyValuesObj(filterData)
-
-        // console.log(filterData)
+        
 
         this.props.loadMore(filterData);
     };
     timeoutSearch() {
         if (this.timeout) {
-            // console.debug("clear prev search ")
             clearTimeout(this.timeout);
         }
 
         this.timeout = setTimeout(() => {
             this.loadMore(true);
-            // console.debug("search this ",this.searchValue)
         }, 1000);
     }
 

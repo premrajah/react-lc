@@ -549,7 +549,6 @@ let slugify = require('slugify')
 
         deleteItemParts=(record,type)=> {
 
-            // console.log(record)
 
             if (type===1)
             this.setState({
@@ -627,9 +626,7 @@ let slugify = require('slugify')
             let {formIsValid,errors}= validateInputs(validations,fields,editMode)
 
 
-            console.log("form valud",formIsValid,errors)
 
-            console.log("process valud",this.validationsCarbonDataError(),)
             if (this.validationsCarbonDataError()){
 
                 formIsValid=false
@@ -766,7 +763,6 @@ let slugify = require('slugify')
 
         handleChangeProduct(value,field ) {
 
-            console.log("hanle change ", value,field)
                 let fields = this.state.fields;
             fields[field] = value;
 
@@ -821,7 +817,6 @@ let slugify = require('slugify')
             let processes=[]
             let outboundTransports=[]
 
-            // console.log(this.state.existingItemsParts)
 
             for (let i=0;i<existingItemsParts.length;i++){
                 composition.push({
@@ -1309,7 +1304,6 @@ let slugify = require('slugify')
 
                         })
                         .catch((error) => {
-                            // console.log("*****************",error)
 
                             this.setState({
                                 btnLoading: false,

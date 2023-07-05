@@ -121,7 +121,6 @@ const DynamicAutoCompleteBox=(props)=> {
                                 )[0]&&props.list.filter(
                                     (item) => item.category === value
                                 )[0].types:[]
-                                console.log(typeValues)
                                 setTypes(typeValues)
                                 props.handleChange(value, valueText,`category`,props.uId,props.index);
                             }}

@@ -18,7 +18,6 @@ const SelectArrayWrapper = (props) => {
 
     const handleChange = (event) => {
 
-        console.log(event.target.value)
         setValue(event.target.value);
            if (onChange)
             onChange(event.target.value,event.target.textContent.toLowerCase())

@@ -2346,8 +2346,8 @@ let slugify = require('slugify')
                                                 }>
 
                                                       {this.state.showAddProcesses
-                                                          ? "Hide processes"
-                                                          : "Add processes"} <CustomPopover text="Add processes involved in the manufacturing of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                                          ? "Hide Processes"
+                                                          : "Add Processes"} <CustomPopover text="Add processes involved in the manufacturing of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>
                                             <span className="text-12 blue-text"> {this.state.existingItemsProcesses.length>0?`(${this.state.existingItemsProcesses.length} entries exist)`:""}</span>
                                         </span>

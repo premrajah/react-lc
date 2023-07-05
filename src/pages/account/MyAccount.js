@@ -116,7 +116,7 @@ function MyAccount(props) {
                                         )}
 
                                         {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
-                                            <Tab key={10} label="Upload CSV" value={10} />
+                                            <Tab key={10} label="Embodied Carbon" value={10} />
                                         )}
                                     </Tabs>
                                 </div>

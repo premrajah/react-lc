@@ -5,6 +5,7 @@ import axios from "axios/index";
 import PageHeader from "../../components/PageHeader";
 import * as actionCreator from "../../store/actions/actions";
 import {Download, UploadFile} from "@mui/icons-material";
+import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 
 class UploadCarbonCSV extends Component {
     constructor(props) {
@@ -60,12 +61,28 @@ class UploadCarbonCSV extends Component {
                 a.download = `${date}_${file.name}`;
                 a.click();
                 window.URL.revokeObjectURL(url);
+
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message:  "File downloaded successfully. Thanks"
+                })
             }).catch(error => {
                 console.log(error)
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "error",
+                    message: fetchErrorMessage(e)
+                })
             })
 
         } catch (e) {
             console.log(e)
+            this.props.showSnackbar({
+                show: true,
+                severity: "error",
+                message: e.toString()
+            })
         }
     }
 
@@ -74,19 +91,13 @@ class UploadCarbonCSV extends Component {
             <>
 
                 <div className="container ">
-
                     <PageHeader
                         pageTitle="Upload CSV"
                         subTitle="Search orgs and manage their settings"
                     />
-
-
                     <div className="row  mb-4 d-flex align-items-center justify-content-end   ">
-
-
                         <div className="col-md-12 d-flex  flex-row align-items-center   ">
                             <span className="text-underline">
-
                             <Download  style={{fontSize: "16px"}}/><a href={"/downloads/embodied_carbon_sample.csv"}
                                                                      download={'embodied_carbon_sample.csv'}>Download
                             CSV template</a></span>

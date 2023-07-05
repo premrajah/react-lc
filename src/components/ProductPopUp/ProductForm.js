@@ -658,12 +658,10 @@ let slugify = require('slugify')
             let errorFlag=false
             let totalPercent=0
             let fieldsParts=["category","unit","type","state","percentage"]
-            let fieldsProcesses=["name","kwh","source_id"]
+            let fieldsProcesses=["name","source_id"]
             let fieldsOutbound=["transport_mode","geo_location"]
 
             this.state.existingItemsParts.forEach((existingPart)=>{
-
-
 
 
                 fieldsParts.forEach((fieldsPart)=>{
@@ -819,10 +817,21 @@ let slugify = require('slugify')
 
 
             for (let i=0;i<existingItemsParts.length;i++){
-                composition.push({
+
+                let item={
                     carbon_resource: existingItemsParts[i].fields?.unit,
-                    percentage:parseInt(existingItemsParts[i].fields?.percentage)
-                })
+                    percentage:parseInt(existingItemsParts[i].fields?.percentage),
+                }
+
+
+                if (existingItemsParts[i].fields?.geo_location&&existingItemsParts[i].fields?.transport_mode){
+
+                    item.inbound_transport=  {
+                            geo_location: existingItemsParts[i].fields?.geo_location,
+                                transport_mode: existingItemsParts[i].fields?.transport_mode
+                        }
+                }
+                composition.push(item)
 
             }
             for (let i=0;i<existingItemsProcesses.length;i++){
@@ -864,8 +873,6 @@ let slugify = require('slugify')
             if (!this.handleValidationProduct()){
                 return
             }
-
-
                     const data = new FormData(event.target);
                     const name = data.get("name");
                     const purpose = data.get("purpose");
@@ -1438,13 +1445,12 @@ let slugify = require('slugify')
             if (item.product.composition)
             item.product.composition.forEach((compositionItem)=>{
 
-
                 axios.get(baseUrl + "resource-carbon/"+compositionItem.carbon_resource.split("/")[1])
                     .then(
                         (response) => {
                             let   responseAll=response.data.data
 
-                            existingParts.push({
+                            let item={
                                 index:uuid(),
                                 fields: {
                                     category: responseAll.category.name,
@@ -1452,10 +1458,15 @@ let slugify = require('slugify')
                                     state: responseAll.state.name,
                                     unit: compositionItem?.carbon_resource,
                                     percentage: compositionItem.percentage,
-                                }
-                            })
+                                }}
 
+                            if (compositionItem.inbound_transport){
+                                item.fields.geo_location= compositionItem.inbound_transport.geo_location
+                                item.fields.transport_mode= compositionItem.inbound_transport.transport_mode
+                            }
+                            existingParts.push(item)
 
+                            console.log(item)
                         },
                         (error) => {}
                     );
@@ -1539,6 +1550,33 @@ let slugify = require('slugify')
 
                         let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
                         fields[field]=value
+
+                        if (field!=="geo_location"){
+                            fields[field]=value
+                        }else {
+                            fields[field]={
+                                "address_info": {
+                                    "formatted_address":value.address,
+                                    "geometry": {
+                                        "location": {
+                                            "lat": value.latitude,
+                                            "lng": value.longitude
+
+                                            // "lat":"40.99489459999999",
+                                            // "lng":"17.22261"
+                                        },
+                                        "location_type": "APPROXIMATE",
+
+                                    },
+                                    "place_id": "",
+                                    "types": [],
+                                    "plus_code": null
+                                },
+                                "is_verified": true
+                            }
+
+
+                        }
 
                         existingItems[index] = {
                             index:uId,
@@ -1735,13 +1773,11 @@ let slugify = require('slugify')
                                         borderRadius: 4,
                                         fontSize: 16,
                                         border: '1px solid #ced4da',}}
-                                    variant="standard"
+                                        variant="standard"
 
                                     onChange={(value)=> {
-
                                         let template=this.state.templates.find(item=>item.key===value.currentTarget.value )
                                         this.fillTemplateValues(template)
-
                                     }}
 
                                     name={"template"}
@@ -2307,6 +2343,7 @@ let slugify = require('slugify')
 
                                               errors={this.state.carbonErrors}
                                               list={this.state.resourceCategories}
+                                              transportModesList={this.state.transportModes}
                                               filters={[]}
                                               deleteItem={(data)=>this.deleteItemParts(data,1)}
                                               handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,1)}

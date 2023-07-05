@@ -85,9 +85,11 @@ class UploadCarbonCSV extends Component {
 
 
                         <div className="col-md-12 d-flex  flex-row align-items-center   ">
-                            <Download style={{fontSize: "16px"}}/><a href={"/downloads/embodied_carbon_sample.csv"}
+                            <span className="text-underline">
+
+                            <Download  style={{fontSize: "16px"}}/><a href={"/downloads/embodied_carbon_sample.csv"}
                                                                      download={'embodied_carbon_sample.csv'}>Download
-                            CSV template</a>
+                            CSV template</a></span>
                         </div>
                         <div className="col-md-12 d-flex  flex-row align-items-center   ">
 
@@ -106,7 +108,7 @@ class UploadCarbonCSV extends Component {
                                         className=""
                                         htmlFor={"fileInput-c-csv-upload"}>
 
-                                        <UploadFile className="border-box text-blue" style={{fontSize: "72px"}}/>
+                                        <UploadFile className="border-box text-pink" style={{fontSize: "72px"}}/>
 
 
                                     </label>

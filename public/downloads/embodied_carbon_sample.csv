@@ -1,0 +1,5 @@
+name,external_reference,gross_weight_kgs,category,type,state,units,percentage
+Test - 07062023-1,funky chicken,100,papers material,bagasse pulp,virgin,kgs,50
+Test - 07062023-1,funky chicken,100,construction material,cement,cement cem ii/b-q - 28% calcined pozzolanic ash - portland-pozzolana cement,kgs,100
+New One,funky chicken,100,papers material,bagasse pulp,virgin,kgs,50
+New One,funky chicken,100,construction material,cement,cement cem ii/b-q - 28% calcined pozzolanic ash - portland-pozzolana cement,kgs,67

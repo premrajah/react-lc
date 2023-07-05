@@ -16,6 +16,7 @@ import SystemManageUser from "../../components/Account/SystemManageUser";
 import ManageOrgUsers from "../../components/Account/ManageOrgUsers";
 import AssumeRoles from "../../components/Account/AssumeRoles";
 import ManageOrgSettings from "../../components/Account/ManageOrgSettings";
+import UploadCarbonCSV from "../../components/Account/UploadCarbonCSV";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -113,6 +114,10 @@ function MyAccount(props) {
                                         {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
                                             <Tab key={9} label="Manage Orgs" value={9} />
                                         )}
+
+                                        {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
+                                            <Tab key={10} label="Upload CSV" value={10} />
+                                        )}
                                     </Tabs>
                                 </div>
                                 <div className="col-md-9  p-0 rad-8 bg-white">
@@ -160,7 +165,11 @@ function MyAccount(props) {
                                             <ManageOrgSettings />
                                         </TabPanel>
                                     )}
-
+                                    {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
+                                        <TabPanel value={value} index={10}>
+                                            <UploadCarbonCSV />
+                                        </TabPanel>
+                                    )}
 
                                 </div>
                             </div>

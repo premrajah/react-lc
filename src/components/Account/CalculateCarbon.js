@@ -130,7 +130,8 @@ class CalculateCarbon extends Component {
             existingItemsOutboundTransport: [],
             energySources: [],
             transportModes: [],
-            totalPercentError: false
+            totalPercentError: false,
+            responseData:{}
 
         };
 
@@ -652,6 +653,10 @@ class CalculateCarbon extends Component {
                 )
                 .then((res) => {
 
+                    console.log(res.data.data)
+                    this.setState({
+                        responseData:res.data.data
+                    })
 
 
 
@@ -660,7 +665,6 @@ class CalculateCarbon extends Component {
                         severity: "success",
                         message: "Data received successfully. Thanks"
                     })
-                    this.showProductSelection();
 
                     this.setState({ loading: false, })
 
@@ -1135,6 +1139,27 @@ class CalculateCarbon extends Component {
                                             )}
                                         </div>
 
+                                    </div>
+
+
+                                    <div className="row  mt-2">
+                                        <div className="col-12 text-left">
+                                            {Object.keys(this.state.responseData).length>0 &&<h5 className="title-bold">Embodied Carbon Results</h5>}
+                                            <table className="table">
+                                                <tbody>
+
+
+                                                    {Object.keys(this.state.responseData).map((item, i)=>
+                                                        <tr>
+
+
+                                                    <td>{item}:{this.state.responseData[item]} </td>
+                                                        </tr>
+                                                    )}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </form>
                             </div>

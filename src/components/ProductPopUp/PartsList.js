@@ -5,6 +5,8 @@ import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
+import CustomPopover from "../FormsUI/CustomPopover";
+import {Info} from "@mui/icons-material";
 
 const PartsList=(props)=>{
 
@@ -60,6 +62,7 @@ const DynamicAutoCompleteBox=(props)=> {
     const [typeSelected,setTypeSelected]=useState(null)
     const [stateSelected,setStateSelected]=useState(null)
     const [types,setTypes]=useState([])
+    const [showInbound,setShowInbound]=useState(false)
     const [states,setStates]=useState([])
     const [units,setUnits]=useState([])
     const [fields,setFields]=useState({})
@@ -275,7 +278,7 @@ const DynamicAutoCompleteBox=(props)=> {
                 </div>
 
 
-                <div
+                      <div
                     className="col-1 text-center"
                     style={{display: "flex"}}>
                     {/*{item > 1 && (*/}
@@ -297,7 +300,25 @@ const DynamicAutoCompleteBox=(props)=> {
                     {/*)}*/}
                 </div>
 
-                    <div className={"row g-0"}>
+
+                    <div className="row  mt-2">
+                        <div className="col-12 text-left">
+                                        <span style={{ float: "left" }}>
+                                            <span
+                                                onClick={()=>setShowInbound(!showInbound)}
+                                                className={
+                                                    " forgot-password-link"
+                                                }>
+
+                                                      {showInbound
+                                                          ? "Hide Add Inbound Transport"
+                                                          : "Add Inbound Transport"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                            </span>
+                                        </span>
+
+                        </div>
+                    </div>
+                    {showInbound &&<div className={"row g-0"}>
                         <div className="col-md-4 col-sm-12">
                             <SelectArrayWrapper
                                 editMode
@@ -344,7 +365,8 @@ const DynamicAutoCompleteBox=(props)=> {
                             />
                             {props.errors?.geo_location && <span  className="text-danger"> Required</span>}
                         </div>
-                    </div>
+                    </div>}
+
             </div>
 
         </>

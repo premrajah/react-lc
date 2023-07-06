@@ -153,10 +153,7 @@ class CalculateCarbon extends Component {
 
         // this.resetPasswordSuccessLogin=this.resetPasswordSuccessLogin.bind(this)
 
-        this.handleChangeFile = this.handleChangeFile.bind(this);
-        this.uploadImage = this.uploadImage.bind(this);
 
-        this.checkListable = this.checkListable.bind(this);
 
     }
 

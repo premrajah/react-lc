@@ -1,4 +1,3 @@
-/* eslint-disable no-mixed-operators */
 import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
@@ -22,10 +21,6 @@ import PartsList from "../ProductPopUp/PartsList";
 import ProcessesList from "../ProductPopUp/ProcessesList";
 import OutboundTransportList from "../ProductPopUp/OutboundTransportList";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
-;
-
-
-let slugify = require('slugify')
 
 
 function ValueLabelComponent(props) {
@@ -964,8 +959,7 @@ class CalculateCarbon extends Component {
 
                                                         }
                                                     } catch (e) {
-                                                        console.log("map error")
-                                                        console.log(e)
+                                                        console.log("map error ", e)
                                                     }
                                                 }
                                                 }

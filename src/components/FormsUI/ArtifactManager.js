@@ -130,13 +130,15 @@ const ArtifactManager = ({
 
                 setUploadedFiles([]); // reset uploaded files
 
-                if (
-                    type === MIME_TYPES.PNG ||
-                    type === MIME_TYPES.JPEG ||
-                    type === MIME_TYPES.JPG
-                ) {
+                // if (
+                //     type === MIME_TYPES.PNG ||
+                //     type === MIME_TYPES.JPEG ||
+                //     type === MIME_TYPES.JPG
+                // ) {
+
+
                     loadCurrentProduct(entityId);
-                }
+                // }
 
                 showSnackbar({
                     show: true,

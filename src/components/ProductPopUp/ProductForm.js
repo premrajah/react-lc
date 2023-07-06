@@ -1343,7 +1343,6 @@ let slugify = require('slugify')
                     this.loadImages(this.props.item.artifacts)
                     this.checkListable(this.props.item.product.is_listable)
 
-
                 }
 
             }

@@ -341,7 +341,7 @@ const DynamicAutoCompleteBox=(props)=> {
                             <SearchPlaceAutocomplete
                                 error={props.errors?.geo_location}
                                 fromOutboundTransport
-                                title={"Select Location"}
+                                title={"Material Origin Location"}
                                 hideMap
                                 initialValue={props.item.fields?.geo_location}
                                 onChange={(value,valueText) => {

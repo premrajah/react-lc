@@ -131,7 +131,8 @@ class CalculateCarbon extends Component {
             energySources: [],
             transportModes: [],
             totalPercentError: false,
-            responseData:{}
+            responseData:{},
+            minimumError:false
 
         };
 
@@ -494,6 +495,14 @@ class CalculateCarbon extends Component {
 
         if ((!this.state.existingItemsOutboundTransport.length) && (!this.state.existingItemsProcesses.length) && (!this.state.existingItemsParts.length)) {
             errorFlag = true
+
+            this.setState({
+                minimumError:true
+            })
+        }else{
+            this.setState({
+                minimumError:false
+            })
         }
 
 
@@ -937,7 +946,7 @@ class CalculateCarbon extends Component {
                                             <SearchPlaceAutocomplete
                                                 error={this.state.errors["geo_location"]}
                                                 fromOutboundTransport
-                                                title={"Select Location"}
+                                                title={"Factory Location"}
                                                 hideMap
                                                 onChange={(value, valueText) => {
                                                     try {
@@ -1106,7 +1115,13 @@ class CalculateCarbon extends Component {
 
                                     </div>
 
-                                    <div className={"row"}>
+                                    <div className={"row mt-4"}>
+
+
+                                        {this.state.minimumError&&
+
+                                            <div className="col-12 text-center text-danger">Minimum of one entiry (Parts,Process or Outbound Transport) is required</div>
+                                        }
                                         {this.state.errorPending && <div className="col-12 text-center text-danger">Required fields are missing.</div>}
                                         <div className="col-12 text-center  mb-2">
                                             {this.state.files.length > 0 ? (
@@ -1145,17 +1160,22 @@ class CalculateCarbon extends Component {
                                     <div className="row  mt-2">
                                         <div className="col-12 text-left">
                                             {Object.keys(this.state.responseData).length>0 &&<h5 className="title-bold">Embodied Carbon Results</h5>}
-                                            <table className="table">
+                                            <table className="table table-striped">
                                                 <tbody>
 
-
                                                     {Object.keys(this.state.responseData).map((item, i)=>
-                                                        <tr>
-
-
-                                                    <td>{item}:{this.state.responseData[item]} </td>
-                                                        </tr>
+                                                        <>
+                                                            {this.state.responseData[item]?<tr>
+                                                                <td className="text-blue text-capitlize">{item.replaceAll("_"," ")}</td><td>{this.state.responseData[item]} </td>
+                                                        </tr>:""}
+                                                            </>
                                                     )}
+                                                     {Object.keys(this.state.responseData).length>0&&
+                                                         <tr>
+                                                                <td className={"text-label"}>Total</td><td className={"text-label"}>{Object.values(this.state.responseData).reduce((partialSum, a) => partialSum + a, 0)} </td>
+                                                            </tr>}
+
+
 
                                                 </tbody>
                                             </table>

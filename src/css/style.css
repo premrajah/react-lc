@@ -4968,3 +4968,7 @@ ul,ol {
     right: 10px;
     margin: auto;
 }
+
+.autocomplete-dropdown-container{
+    position: absolute;
+}

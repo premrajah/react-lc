@@ -840,8 +840,6 @@ class CalculateCarbon extends Component {
                         };
                     } else {
                         existingItems[index] = {
-                            // value:value,
-                            // valueText:valueText,
                             index: uId,
                             error: false,
                             fields: { field: value }
@@ -884,10 +882,6 @@ class CalculateCarbon extends Component {
             })
         }
 
-
-        // this.props.setMultiplePopUp({show:true,type:"isProduct"})
-        // this.props.showProductPopUp({ action: "hide_all", show: false });
-
     }
 
 
@@ -911,15 +905,8 @@ class CalculateCarbon extends Component {
                             <div className="col-md-12 d-flex mb-2  col-xs-12">
                                 <h4 className={"blue-text text-heading me-2 "}>
                                     Calculate embodied carbon
-
                                 </h4>
-
-
-
                             </div>
-
-
-
                         </div>
 
 

@@ -382,7 +382,7 @@ class CalculateCarbon extends Component {
 
         this.setState({ errors: errors });
 
-        console.log(errors)
+        console.log("errors ", errors)
         if (!formIsValid) {
             this.setState({
                 errorPending: true
@@ -1119,14 +1119,14 @@ class CalculateCarbon extends Component {
 
                                                 ) : (
                                                     <GreenButton
-                                                        title={this.props.productLines ? "Submit" : this.props.item ? "Update Product" : "Add Product"}
+                                                        title={this.props.productLines ? "Submit" : this.props.item ? "Update Product" : "Calculate"}
                                                         type={"submit"}
                                                         loading={this.state.loading}
                                                         disabled={this.state.loading || this.state.isSubmitButtonPressed}>
                                                     </GreenButton>)
                                             ) : (
                                                 <GreenButton
-                                                    title={this.props.productLines ? "Submit" : this.props.item ? "Update Product" : "Add Product"}
+                                                    title={this.props.productLines ? "Submit" : this.props.item ? "Update Product" : "Calculate"}
                                                     type={"submit"}
                                                     loading={this.state.loading}
                                                     disabled={this.state.loading || this.state.isSubmitButtonPressed}>

@@ -52,7 +52,7 @@ class CalculateCarbon extends Component {
 
         this.state = {
             timerEnd: false,
-            isEditProduct:false,
+            isEditProduct: false,
             count: 0,
             nextIntervalFlag: false,
             activePage: 0, //0 logon. 1- sign up , 3 -search,
@@ -106,7 +106,7 @@ class CalculateCarbon extends Component {
             yearsList: [],
             purpose: ["Defined", "Prototype", "Aggregate"],
             condition: ["new", "used", "salvage"],
-            powerSupply: ["gas", "electric" ],
+            powerSupply: ["gas", "electric"],
             product: null,
             parentProduct: null,
             parentProductId: null,
@@ -115,27 +115,27 @@ class CalculateCarbon extends Component {
             is_listable: true,
             moreDetail: false,
             isSubmitButtonPressed: false,
-            disableVolume:false,
-            loading:false,
-            energyRating:0,
-            productId:null,
-            showForm:true,
-            templates:[],
-            selectedTemplated:null,
-            artifacts:[],
-            is_manufacturer:true,
-            prevImages:[],
-            errorPending:false,
-            selectedSite:null,
-            showAddParts:false,
-            showAddProcesses:false,
-            showAddOutboundTransport:false,
-            existingItemsParts:[],
-            existingItemsProcesses:[],
-            existingItemsOutboundTransport:[],
-            energySources:[],
-            transportModes:[],
-            totalPercentError:false
+            disableVolume: false,
+            loading: false,
+            energyRating: 0,
+            productId: null,
+            showForm: true,
+            templates: [],
+            selectedTemplated: null,
+            artifacts: [],
+            is_manufacturer: true,
+            prevImages: [],
+            errorPending: false,
+            selectedSite: null,
+            showAddParts: false,
+            showAddProcesses: false,
+            showAddOutboundTransport: false,
+            existingItemsParts: [],
+            existingItemsProcesses: [],
+            existingItemsOutboundTransport: [],
+            energySources: [],
+            transportModes: [],
+            totalPercentError: false
 
         };
 
@@ -146,7 +146,7 @@ class CalculateCarbon extends Component {
 
     }
 
-    showSubmitSiteForm=(data)=> {
+    showSubmitSiteForm = (data) => {
 
 
         try {
@@ -161,23 +161,23 @@ class CalculateCarbon extends Component {
                 showSubmitSite: !this.state.showSubmitSite,
             });
 
-            if (data){
-                let fields=this.state.fields
-                fields["deliver"]=data._key
+            if (data) {
+                let fields = this.state.fields
+                fields["deliver"] = data._key
 
 
                 this.setState({
                     selectedSite: data,
-                    fields:fields
+                    fields: fields
                 })
-            }else{
+            } else {
                 this.setState({
                     selectedSite: null
                 })
             }
             this.props.loadSites(this.props.userDetail.token);
 
-        }catch (e){
+        } catch (e) {
             console.log(e)
         }
     }
@@ -187,39 +187,39 @@ class CalculateCarbon extends Component {
         axios.get(baseUrl + "category")
             .then(
                 (response) => {
-                    let   responseAll=[]
+                    let responseAll = []
                     responseAll = _.sortBy(response.data.data, ["name"]);
 
                     this.setState({
                         categories: responseAll,
                     });
 
-                    if (responseAll.length>0&&this.props.item){
+                    if (responseAll.length > 0 && this.props.item) {
 
-                        let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
-                        let subCategories=cat.length>0?cat[0].types:[]
-                        let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
-                        let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                        let cat = responseAll.filter((item) => item.name === this.props.item.product.category)
+                        let subCategories = cat.length > 0 ? cat[0].types : []
+                        let states = subCategories.length > 0 ? responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state : []
+                        let units = states.length > 0 ? responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units : []
 
                         this.setState({
-                            subCategories:subCategories,
-                            states : states,
-                            units : units
+                            subCategories: subCategories,
+                            states: states,
+                            units: units
                         })
 
                     }
 
                 },
-                (error) => {}
+                (error) => { }
             );
     }
 
 
-    getResourceCarbon=(item)=> {
+    getResourceCarbon = (item) => {
         axios.get(baseUrl + "resource-carbon")
             .then(
                 (response) => {
-                    let   responseAll=[]
+                    let responseAll = []
                     responseAll = _.sortBy(response.data.data, ["name"]);
 
                     this.setState({
@@ -230,15 +230,15 @@ class CalculateCarbon extends Component {
                         this.loadInitialCarbonData(this.props.item)
 
                 },
-                (error) => {}
+                (error) => { }
             );
     }
 
-    getTransportMode=()=> {
+    getTransportMode = () => {
         axios.get(baseUrl + "transport-mode")
             .then(
                 (response) => {
-                    let   responseAll=[]
+                    let responseAll = []
                     responseAll = _.sortBy(response.data.data, ["name"]);
 
                     this.setState({
@@ -248,14 +248,14 @@ class CalculateCarbon extends Component {
 
 
                 },
-                (error) => {}
+                (error) => { }
             );
     }
-    getEnergyProcess=()=> {
+    getEnergyProcess = () => {
         axios.get(baseUrl + "energy-source")
             .then(
                 (response) => {
-                    let   responseAll=[]
+                    let responseAll = []
                     responseAll = _.sortBy(response.data.data, ["name"]);
 
 
@@ -264,7 +264,7 @@ class CalculateCarbon extends Component {
                     });
 
                 },
-                (error) => {}
+                (error) => { }
             );
     }
 
@@ -279,19 +279,19 @@ class CalculateCarbon extends Component {
 
 
 
-    addParts=()=> {
+    addParts = () => {
 
         this.setState({
             showAddParts: !this.state.showAddParts,
         });
     }
-    addProcesses=()=> {
+    addProcesses = () => {
 
         this.setState({
             showAddProcesses: !this.state.showAddProcesses,
         });
     }
-    addOutboundTransports=()=> {
+    addOutboundTransports = () => {
 
         this.setState({
             showAddOutboundTransport: !this.state.showAddOutboundTransport,
@@ -300,38 +300,38 @@ class CalculateCarbon extends Component {
 
 
 
-    addItemParts=(type)=> {
+    addItemParts = (type) => {
 
-        if (type===1){
+        if (type === 1) {
             this.setState(prevState => ({
                 existingItemsParts: [
                     ...prevState.existingItemsParts,
                     {
-                        index:uuid(),
+                        index: uuid(),
                         name: "",
 
                     }
                 ]
             }));
         }
-        else if (type===2){
+        else if (type === 2) {
             this.setState(prevState => ({
                 existingItemsProcesses: [
                     ...prevState.existingItemsProcesses,
                     {
-                        index:uuid(),
+                        index: uuid(),
                         name: "",
 
                     }
                 ]
             }));
         }
-        else if (type===3){
+        else if (type === 3) {
             this.setState(prevState => ({
                 existingItemsOutboundTransport: [
                     ...prevState.existingItemsOutboundTransport,
                     {
-                        index:uuid(),
+                        index: uuid(),
                         name: "",
 
                     }
@@ -343,19 +343,19 @@ class CalculateCarbon extends Component {
 
     }
 
-    deleteItemParts=(record,type)=> {
+    deleteItemParts = (record, type) => {
 
 
-        if (type===1)
+        if (type === 1)
             this.setState({
                 existingItemsParts: this.state.existingItemsParts.filter(r => r !== record)
             });
 
-        else  if (type===2)
+        else if (type === 2)
             this.setState({
                 existingItemsProcesses: this.state.existingItemsProcesses.filter(r => r !== record)
             });
-        else  if (type===3)
+        else if (type === 3)
             this.setState({
                 existingItemsOutboundTransport: this.state.existingItemsOutboundTransport.filter(r => r !== record)
             });
@@ -370,31 +370,31 @@ class CalculateCarbon extends Component {
         let fields = this.state.fields;
 
 
-        let validations=[
-            validateFormatCreate("geo_location", [{check: Validators.required, message: 'Required'}],fields),
+        let validations = [
+            validateFormatCreate("geo_location", [{ check: Validators.required, message: 'Required' }], fields),
         ]
 
 
-        if(this.state.existingItemsParts.length>0){
-            validations.push(validateFormatCreate("gross_weight_kgs", [{check: Validators.required, message: 'Required'}],fields))
+        if (this.state.existingItemsParts.length > 0) {
+            validations.push(validateFormatCreate("gross_weight_kgs", [{ check: Validators.required, message: 'Required' }], fields))
         }
 
-        let {formIsValid,errors}= validateInputs(validations,fields,editMode)
+        let { formIsValid, errors } = validateInputs(validations, fields, editMode)
 
-        if (this.validationsCarbonDataError()){
-            formIsValid=false
+        if (this.validationsCarbonDataError()) {
+            formIsValid = false
         }
 
         this.setState({ errors: errors });
 
         console.log(errors)
-        if (!formIsValid){
+        if (!formIsValid) {
             this.setState({
-                errorPending:true
+                errorPending: true
             })
-        }else{
+        } else {
             this.setState({
-                errorPending:false
+                errorPending: false
             })
         }
 
@@ -402,31 +402,31 @@ class CalculateCarbon extends Component {
     }
 
 
-    validationsCarbonDataError=()=>{
+    validationsCarbonDataError = () => {
 
-        let carbonErrors=[]
-        let errorFlag=false
-        let totalPercent=0
-        let fieldsParts=["category","unit","type","state","percentage"]
-        let fieldsProcesses=["name","source_id"]
-        let fieldsOutbound=["transport_mode","geo_location"]
+        let carbonErrors = []
+        let errorFlag = false
+        let totalPercent = 0
+        let fieldsParts = ["category", "unit", "type", "state", "percentage"]
+        let fieldsProcesses = ["name", "source_id"]
+        let fieldsOutbound = ["transport_mode", "geo_location"]
 
-        this.state.existingItemsParts.forEach((existingPart)=>{
-            fieldsParts.forEach((fieldsPart)=>{
+        this.state.existingItemsParts.forEach((existingPart) => {
+            fieldsParts.forEach((fieldsPart) => {
 
-                if (existingPart.fields&&fieldsPart==="percentage"&&existingPart.fields[fieldsPart]){
-                    totalPercent=totalPercent+parseInt(existingPart.fields[fieldsPart])
+                if (existingPart.fields && fieldsPart === "percentage" && existingPart.fields[fieldsPart]) {
+                    totalPercent = totalPercent + parseInt(existingPart.fields[fieldsPart])
                 }
-                if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
-                    errorFlag=true
+                if ((!existingPart.fields) || (!existingPart.fields[fieldsPart])) {
+                    errorFlag = true
 
-                    let error=carbonErrors[existingPart.index]
+                    let error = carbonErrors[existingPart.index]
 
-                    if (error){
-                        error[fieldsPart]={error:true, message:"Required"}
-                        carbonErrors[existingPart.index]=error
-                    }else{
-                        carbonErrors[[existingPart.index]]= {[fieldsPart]:{error:true, message:"Required"}}
+                    if (error) {
+                        error[fieldsPart] = { error: true, message: "Required" }
+                        carbonErrors[existingPart.index] = error
+                    } else {
+                        carbonErrors[[existingPart.index]] = { [fieldsPart]: { error: true, message: "Required" } }
 
                     }
 
@@ -436,45 +436,21 @@ class CalculateCarbon extends Component {
 
         })
 
-        this.state.existingItemsProcesses.forEach((existingPart)=>{
+        this.state.existingItemsProcesses.forEach((existingPart) => {
 
 
-            fieldsProcesses.forEach((fieldsPart)=>{
+            fieldsProcesses.forEach((fieldsPart) => {
 
-                if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
-                    errorFlag=true
+                if ((!existingPart.fields) || (!existingPart.fields[fieldsPart])) {
+                    errorFlag = true
 
-                    let error=carbonErrors[existingPart.index]
+                    let error = carbonErrors[existingPart.index]
 
-                    if (error){
-                        error[fieldsPart]={error:true, message:"Required"}
-                        carbonErrors[existingPart.index]=error
-                    }else{
-                        carbonErrors[[existingPart.index]]= {[fieldsPart]:{error:true, message:"Required"}}
-
-                    }
-
-                }
-
-            })
-
-        })
-
-        this.state.existingItemsOutboundTransport.forEach((existingPart)=>{
-
-            fieldsOutbound.forEach((fieldsPart)=>{
-
-
-                if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
-                    errorFlag=true
-
-                    let error=carbonErrors[existingPart.index]
-
-                    if (error){
-                        error[fieldsPart]={error:true, message:"Required"}
-                        carbonErrors[existingPart.index]=error
-                    }else{
-                        carbonErrors[[existingPart.index]]= {[fieldsPart]:{error:true, message:"Required"}}
+                    if (error) {
+                        error[fieldsPart] = { error: true, message: "Required" }
+                        carbonErrors[existingPart.index] = error
+                    } else {
+                        carbonErrors[[existingPart.index]] = { [fieldsPart]: { error: true, message: "Required" } }
 
                     }
 
@@ -484,25 +460,49 @@ class CalculateCarbon extends Component {
 
         })
 
+        this.state.existingItemsOutboundTransport.forEach((existingPart) => {
 
-        if (this.state.existingItemsParts.length>0&&totalPercent!==100){
-            errorFlag=true
+            fieldsOutbound.forEach((fieldsPart) => {
+
+
+                if ((!existingPart.fields) || (!existingPart.fields[fieldsPart])) {
+                    errorFlag = true
+
+                    let error = carbonErrors[existingPart.index]
+
+                    if (error) {
+                        error[fieldsPart] = { error: true, message: "Required" }
+                        carbonErrors[existingPart.index] = error
+                    } else {
+                        carbonErrors[[existingPart.index]] = { [fieldsPart]: { error: true, message: "Required" } }
+
+                    }
+
+                }
+
+            })
+
+        })
+
+
+        if (this.state.existingItemsParts.length > 0 && totalPercent !== 100) {
+            errorFlag = true
             this.setState({
-                totalPercentError:true
+                totalPercentError: true
             })
-        }else{
+        } else {
             this.setState({
-                totalPercentError:false
+                totalPercentError: false
             })
         }
 
-        if ((!this.state.existingItemsOutboundTransport.length)&&(!this.state.existingItemsProcesses.length)&&(!this.state.existingItemsParts.length)){
-            errorFlag=true
+        if ((!this.state.existingItemsOutboundTransport.length) && (!this.state.existingItemsProcesses.length) && (!this.state.existingItemsParts.length)) {
+            errorFlag = true
         }
 
 
         this.setState({
-            carbonErrors:carbonErrors,
+            carbonErrors: carbonErrors,
         })
 
 
@@ -510,31 +510,31 @@ class CalculateCarbon extends Component {
     }
 
 
-    handleChangeProduct(value,field ) {
+    handleChangeProduct(value, field) {
 
         let fields = this.state.fields;
         fields[field] = value;
 
 
-        if (field==="geo_location"){
-            fields[field]= {
+        if (field === "geo_location") {
+            fields[field] = {
                 "address_info": {
-                "formatted_address":value.address,
+                    "formatted_address": value.address,
                     "geometry": {
-                    "location": {
-                        "lat": value.latitude,
+                        "location": {
+                            "lat": value.latitude,
                             "lng": value.longitude
 
-                        // "lat":"40.99489459999999",
-                        // "lng":"17.22261"
-                    },
-                    "location_type": "APPROXIMATE",
+                            // "lat":"40.99489459999999",
+                            // "lng":"17.22261"
+                        },
+                        "location_type": "APPROXIMATE",
 
-                },
-                "place_id": "",
+                    },
+                    "place_id": "",
                     "types": [],
                     "plus_code": null
-            },
+                },
                 "is_verified": true
             }
 
@@ -542,16 +542,16 @@ class CalculateCarbon extends Component {
 
         this.setState({ fields });
 
-        if (field==="purpose"&&value==="Aggregate"){
+        if (field === "purpose" && value === "Aggregate") {
 
             this.setState({
-                disableVolume:true
+                disableVolume: true
             })
         }
-        else if (field==="purpose"&&value!=="Aggregate"){
+        else if (field === "purpose" && value !== "Aggregate") {
 
             this.setState({
-                disableVolume:false
+                disableVolume: false
             })
         }
 
@@ -561,23 +561,23 @@ class CalculateCarbon extends Component {
 
 
 
-    configureCarbonValues=(existingItemsParts,existingItemsProcesses,existingItemsOutboundTransport,productData)=>{
-        let composition=[]
-        let processes=[]
-        let outboundTransports=[]
+    configureCarbonValues = (existingItemsParts, existingItemsProcesses, existingItemsOutboundTransport, productData) => {
+        let composition = []
+        let processes = []
+        let outboundTransports = []
 
 
-        for (let i=0;i<existingItemsParts.length;i++){
+        for (let i = 0; i < existingItemsParts.length; i++) {
 
-            let item={
+            let item = {
                 carbon_resource: existingItemsParts[i].fields?.unit,
-                percentage:parseInt(existingItemsParts[i].fields?.percentage),
+                percentage: parseInt(existingItemsParts[i].fields?.percentage),
             }
 
 
-            if (existingItemsParts[i].fields?.geo_location&&existingItemsParts[i].fields?.transport_mode){
+            if (existingItemsParts[i].fields?.geo_location && existingItemsParts[i].fields?.transport_mode) {
 
-                item.inbound_transport=  {
+                item.inbound_transport = {
                     geo_location: existingItemsParts[i].fields?.geo_location,
                     transport_mode: existingItemsParts[i].fields?.transport_mode
                 }
@@ -585,32 +585,32 @@ class CalculateCarbon extends Component {
             composition.push(item)
 
         }
-        for (let i=0;i<existingItemsProcesses.length;i++){
+        for (let i = 0; i < existingItemsProcesses.length; i++) {
             processes.push({
                 name: existingItemsProcesses[i].fields?.name,
                 kwh: parseFloat(existingItemsProcesses[i].fields?.kwh),
-                source_id:existingItemsProcesses[i].fields?.source_id
+                source_id: existingItemsProcesses[i].fields?.source_id
             })
 
         }
-        for (let i=0;i<existingItemsOutboundTransport.length;i++){
+        for (let i = 0; i < existingItemsOutboundTransport.length; i++) {
 
 
             outboundTransports.push({
                 geo_location: existingItemsOutboundTransport[i].fields?.geo_location,
-                transport_mode:existingItemsOutboundTransport[i].fields?.transport_mode
+                transport_mode: existingItemsOutboundTransport[i].fields?.transport_mode
             })
 
         }
 
         // if (composition.length>0){
-        productData.composition=composition
+        productData.composition = composition
         // }
         // if (outboundTransports.length>0){
-        productData.outbound_transport=outboundTransports
+        productData.outbound_transport = outboundTransports
         // }
         // if (processes.length>0){
-        productData.processes=processes
+        productData.processes = processes
         // }
 
 
@@ -621,7 +621,7 @@ class CalculateCarbon extends Component {
         try {
             event.preventDefault();
             event.stopPropagation()
-            if (!this.handleValidationProduct()){
+            if (!this.handleValidationProduct()) {
                 return
             }
 
@@ -631,13 +631,13 @@ class CalculateCarbon extends Component {
 
 
             let productData = {
-                    weight:gross_weight_kgs?parseInt(gross_weight_kgs):null,
-                    geo_location: this.state.fields["geo_location"]
+                weight: gross_weight_kgs ? parseInt(gross_weight_kgs) : null,
+                geo_location: this.state.fields["geo_location"]
             };
 
 
-            productData= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
-                this.state.existingItemsOutboundTransport,productData)
+            productData = this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
+                this.state.existingItemsOutboundTransport, productData)
 
             console.log(productData)
 
@@ -646,51 +646,51 @@ class CalculateCarbon extends Component {
 
             this.setState({
                 btnLoading: true,
-                loading:true
+                loading: true
             });
-            this.setState({isSubmitButtonPressed: true})
+            this.setState({ isSubmitButtonPressed: true })
 
-                axios
-                    .post(
-                        `${baseUrl}product/compute-carbon`,
-                        productData,
-                    )
-                    .then((res) => {
-
-
-
-
-                        this.props.showSnackbar({
-                            show: true,
-                            severity: "success",
-                            message:   "Data received successfully. Thanks"
-                        })
-                        this.showProductSelection();
-
-                        this.setState({loading: false,})
-
-
-                        this.setState({
-                            btnLoading: false,
-                            loading: false,
-                            isSubmitButtonPressed: false
-                        });
+            axios
+                .post(
+                    `${baseUrl}product/compute-carbon`,
+                    productData,
+                )
+                .then((res) => {
 
 
 
+
+                    this.props.showSnackbar({
+                        show: true,
+                        severity: "success",
+                        message: "Data received successfully. Thanks"
                     })
-                    .catch((error) => {
-                        this.setState({
-                            btnLoading: false,
-                            loading: false,
-                            isSubmitButtonPressed: false
-                        });
-                        this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+                    this.showProductSelection();
 
+                    this.setState({ loading: false, })
+
+
+                    this.setState({
+                        btnLoading: false,
+                        loading: false,
+                        isSubmitButtonPressed: false
                     });
 
 
-        }catch (e){
+
+                })
+                .catch((error) => {
+                    this.setState({
+                        btnLoading: false,
+                        loading: false,
+                        isSubmitButtonPressed: false
+                    });
+                    this.props.showSnackbar({ show: true, severity: "error", message: fetchErrorMessage(error) })
+
+                });
+
+
+        } catch (e) {
             console.log(e)
         }
 
@@ -717,23 +717,23 @@ class CalculateCarbon extends Component {
 
 
 
-    handleChangePartsList=( value,valueText,field,uId,index,type) =>{
+    handleChangePartsList = (value, valueText, field, uId, index, type) => {
 
         if (value)
             try {
-                if (type===1){
+                if (type === 1) {
                     let existingItems = [...this.state.existingItemsParts];
-                    if (existingItems[index]){
+                    if (existingItems[index]) {
 
-                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
-                        fields[field]=value
+                        let fields = existingItems[index]["fields"] ? existingItems[index]["fields"] : {}
+                        fields[field] = value
 
-                        if (field!=="geo_location"){
-                            fields[field]=value
-                        }else {
-                            fields[field]={
+                        if (field !== "geo_location") {
+                            fields[field] = value
+                        } else {
+                            fields[field] = {
                                 "address_info": {
-                                    "formatted_address":value.address,
+                                    "formatted_address": value.address,
                                     "geometry": {
                                         "location": {
                                             "lat": value.latitude,
@@ -756,68 +756,68 @@ class CalculateCarbon extends Component {
                         }
 
                         existingItems[index] = {
-                            index:uId,
-                            fields:fields
+                            index: uId,
+                            fields: fields
                         };
-                    }else {
+                    } else {
                         existingItems[index] = {
-                            index:uId,
-                            error:false,
-                            fields:{field:value}
+                            index: uId,
+                            error: false,
+                            fields: { field: value }
                         };
 
                     }
                     this.setState({
-                        existingItemsParts:existingItems
+                        existingItemsParts: existingItems
                     })
 
 
                 }
 
-                else   if (type===2){
+                else if (type === 2) {
                     let existingItems = [...this.state.existingItemsProcesses];
-                    if (existingItems[index]){
+                    if (existingItems[index]) {
 
-                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
-                        fields[field]=value
+                        let fields = existingItems[index]["fields"] ? existingItems[index]["fields"] : {}
+                        fields[field] = value
 
                         existingItems[index] = {
                             // value:value,
                             // valueText:valueText,
-                            index:uId,
+                            index: uId,
                             // error:false,
-                            fields:fields
+                            fields: fields
                         };
-                    }else {
+                    } else {
                         existingItems[index] = {
                             // value:value,
                             // valueText:valueText,
-                            index:uId,
-                            error:false,
-                            fields:{field:value}
+                            index: uId,
+                            error: false,
+                            fields: { field: value }
                         };
 
                     }
                     this.setState({
-                        existingItemsProcesses:existingItems
+                        existingItemsProcesses: existingItems
                     })
 
 
                 }
 
-                else  if (type===3){
+                else if (type === 3) {
                     let existingItems = [...this.state.existingItemsOutboundTransport];
-                    if (existingItems[index]){
+                    if (existingItems[index]) {
 
-                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
+                        let fields = existingItems[index]["fields"] ? existingItems[index]["fields"] : {}
 
 
-                        if (field!=="geo_location"){
-                            fields[field]=value
-                        }else {
-                            fields[field]={
+                        if (field !== "geo_location") {
+                            fields[field] = value
+                        } else {
+                            fields[field] = {
                                 "address_info": {
-                                    "formatted_address":value.address,
+                                    "formatted_address": value.address,
                                     "geometry": {
                                         "location": {
                                             "lat": value.latitude,
@@ -840,49 +840,49 @@ class CalculateCarbon extends Component {
                         }
 
                         existingItems[index] = {
-                            index:uId,
-                            fields:fields
+                            index: uId,
+                            fields: fields
                         };
-                    }else {
+                    } else {
                         existingItems[index] = {
                             // value:value,
                             // valueText:valueText,
-                            index:uId,
-                            error:false,
-                            fields:{field:value}
+                            index: uId,
+                            error: false,
+                            fields: { field: value }
                         };
 
                     }
                     this.setState({
-                        existingItemsOutboundTransport:existingItems
+                        existingItemsOutboundTransport: existingItems
                     })
 
                 }
 
-            }catch (e){
+            } catch (e) {
                 console.log(e)
             }
 
     }
 
-    handleView=(productId,type)=>{
+    handleView = (productId, type) => {
 
         this.setState({
-            categories:[],
-            subCategories:[],
-            states :[],
-            units : [],
-            selectedTemplate:null
+            categories: [],
+            subCategories: [],
+            states: [],
+            units: [],
+            selectedTemplate: null
         })
         this.getFiltersCategories();
 
-        if (type==='new') {
+        if (type === 'new') {
             this.setState({
-                parentProductId: productId?productId:null,
+                parentProductId: productId ? productId : null,
                 showForm: true
             })
         }
-        else if (type==='parent') {
+        else if (type === 'parent') {
             this.setState({
                 parentProductId: productId,
                 showForm: false
@@ -904,14 +904,14 @@ class CalculateCarbon extends Component {
 
         return (
             <>
-                {!this.state.showForm&&
+                {!this.state.showForm &&
                     <ProductExpandItemNew
                         createNew={this.handleView}
                         productId={this.state.parentProductId}
                     />}
 
                 {this.state.showForm &&
-                    <div className={`${!this.state.showSubmitSite?"":"d-none"} `}>
+                    <div className={`${!this.state.showSubmitSite ? "" : "d-none"} `}>
                         <div className="row">
                             <div className="col-md-12 d-flex mb-2  col-xs-12">
                                 <h4 className={"blue-text text-heading me-2 "}>
@@ -930,8 +930,8 @@ class CalculateCarbon extends Component {
 
                         <div className={"row justify-content-center create-product-row"}>
                             <div className={"col-12"}>
-                                <form  onChange={this.handleChangeForm}
-                                       onSubmit={this.handleSubmit}>
+                                <form onChange={this.handleChangeForm}
+                                    onSubmit={this.handleSubmit}>
 
                                     <div className="row  mt-2">
                                         <div className="col-md-4 col-xs-12 ">
@@ -939,10 +939,10 @@ class CalculateCarbon extends Component {
                                                 editMode
                                                 numberInput
                                                 error={this.state.errors["gross_weight_kgs"]}
-                                                onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
+                                                onChange={(value) => this.handleChangeProduct(value, "gross_weight_kgs")}
                                                 // details="A unique number used by external systems"
-                                                initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""
-                                                    ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")
+                                                initialValue={this.props.item ? this.props.item.product.sku.gross_weight_kgs : ""
+                                                    || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.sku.gross_weight_kgs : "")
                                                 } name="gross_weight_kgs" title="Gross Weight (Kg)" />
                                         </div>
 
@@ -953,15 +953,17 @@ class CalculateCarbon extends Component {
                                                 fromOutboundTransport
                                                 title={"Select Location"}
                                                 hideMap
-                                                onChange={(value,valueText) => {
+                                                onChange={(value, valueText) => {
                                                     try {
-                                                        if (value&&value.latitude && value.longitude ) {
+                                                        if (value && value.latitude && value.longitude) {
 
-                                                            this.handleChangeProduct({ latitude: value.latitude,
-                                                                longitude: value.longitude,address:value.address},`geo_location`)
+                                                            this.handleChangeProduct({
+                                                                latitude: value.latitude,
+                                                                longitude: value.longitude, address: value.address
+                                                            }, `geo_location`)
 
                                                         }
-                                                    }catch (e){
+                                                    } catch (e) {
                                                         console.log("map error")
                                                         console.log(e)
                                                     }
@@ -969,29 +971,29 @@ class CalculateCarbon extends Component {
                                                 }
 
                                             />
-                                            {this.state.errors["geo_location"]?.geo_location && <span  className="text-danger"> Required</span>}
+                                            {this.state.errors["geo_location"]?.geo_location && <span className="text-danger"> Required</span>}
                                         </div>
                                     </div>
 
                                     <div className="row  mt-2">
                                         <div className="col-12 text-left">
-                                        <span style={{ float: "left" }}>
-                                            <span
-                                                onClick={this.addParts}
-                                                className={
-                                                    " forgot-password-link"
-                                                }>
+                                            <span style={{ float: "left" }}>
+                                                <span
+                                                    onClick={this.addParts}
+                                                    className={
+                                                        " forgot-password-link"
+                                                    }>
 
-                                                      {this.state.showAddParts
-                                                          ? "Hide Add Parts"
-                                                          : "Add Parts"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                                    {this.state.showAddParts
+                                                        ? "Hide Add Parts"
+                                                        : "Add Parts"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"} /></CustomPopover>
+                                                </span>
                                             </span>
-                                        </span>
-                                            <span className="text-12 blue-text">{this.state.existingItemsParts.length>0?`(${this.state.existingItemsParts.length} entries exist)`:""}</span>
+                                            <span className="text-12 blue-text">{this.state.existingItemsParts.length > 0 ? `(${this.state.existingItemsParts.length} entries exist)` : ""}</span>
                                         </div>
                                     </div>
 
-                                    <div className={`row border-box bg-light ${this.state.showAddParts?"mt-2":"d-none"}`}>
+                                    <div className={`row border-box bg-light ${this.state.showAddParts ? "mt-2" : "d-none"}`}>
                                         <div className="col-md-12 col-sm-6 col-xs-6">
 
                                             <PartsList
@@ -1001,8 +1003,8 @@ class CalculateCarbon extends Component {
                                                 list={this.state.resourceCategories}
                                                 transportModesList={this.state.transportModes}
                                                 filters={[]}
-                                                deleteItem={(data)=>this.deleteItemParts(data,1)}
-                                                handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,1)}
+                                                deleteItem={(data) => this.deleteItemParts(data, 1)}
+                                                handleChange={(value, valueText, field, uId, index) => this.handleChangePartsList(value, valueText, field, uId, index, 1)}
                                                 existingItems={this.state.existingItemsParts}
                                             />
 
@@ -1011,11 +1013,11 @@ class CalculateCarbon extends Component {
                                             <div className="col-12 mt-2  ">
                                                 <div className="">
                                                     <BlueSmallBtn
-                                                        onClick={()=>this.addItemParts(1)}
+                                                        onClick={() => this.addItemParts(1)}
                                                         title={"Add"}
                                                         type="button"
                                                     >
-                                                        <AddIcon/>
+                                                        <AddIcon />
                                                     </BlueSmallBtn>
                                                 </div>
                                             </div>
@@ -1025,31 +1027,31 @@ class CalculateCarbon extends Component {
 
                                     <div className="row  mt-2">
                                         <div className="col-12 text-left">
-                                        <span style={{ float: "left" }}>
-                                            <span
-                                                onClick={this.addProcesses}
-                                                className={
-                                                    " forgot-password-link"
-                                                }>
+                                            <span style={{ float: "left" }}>
+                                                <span
+                                                    onClick={this.addProcesses}
+                                                    className={
+                                                        " forgot-password-link"
+                                                    }>
 
-                                                      {this.state.showAddProcesses
-                                                          ? "Hide Processes"
-                                                          : "Add Processes"} <CustomPopover text="Add processes involved in the manufacturing of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                                    {this.state.showAddProcesses
+                                                        ? "Hide Processes"
+                                                        : "Add Processes"} <CustomPopover text="Add processes involved in the manufacturing of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"} /></CustomPopover>
+                                                </span>
+                                                <span className="text-12 blue-text"> {this.state.existingItemsProcesses.length > 0 ? `(${this.state.existingItemsProcesses.length} entries exist)` : ""}</span>
                                             </span>
-                                            <span className="text-12 blue-text"> {this.state.existingItemsProcesses.length>0?`(${this.state.existingItemsProcesses.length} entries exist)`:""}</span>
-                                        </span>
                                         </div>
                                     </div>
 
-                                    <div className={`row border-box bg-light ${this.state.showAddProcesses?"mt-2":"d-none"}`}>
+                                    <div className={`row border-box bg-light ${this.state.showAddProcesses ? "mt-2" : "d-none"}`}>
                                         <div className="col-md-12 col-sm-6 col-xs-6">
 
                                             <ProcessesList
                                                 errors={this.state.carbonErrors}
                                                 list={this.state.energySources}
                                                 filters={[]}
-                                                deleteItem={(data)=>this.deleteItemParts(data,2)}
-                                                handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,2)}
+                                                deleteItem={(data) => this.deleteItemParts(data, 2)}
+                                                handleChange={(value, valueText, field, uId, index) => this.handleChangePartsList(value, valueText, field, uId, index, 2)}
                                                 existingItems={this.state.existingItemsProcesses}
                                             />
 
@@ -1058,11 +1060,11 @@ class CalculateCarbon extends Component {
                                             <div className="col-12 mt-2  ">
                                                 <div className="">
                                                     <BlueSmallBtn
-                                                        onClick={()=>this.addItemParts(2)}
+                                                        onClick={() => this.addItemParts(2)}
                                                         title={"Add"}
                                                         type="button"
                                                     >
-                                                        <AddIcon/>
+                                                        <AddIcon />
                                                     </BlueSmallBtn>
                                                 </div>
                                             </div>
@@ -1074,31 +1076,31 @@ class CalculateCarbon extends Component {
 
                                     <div className="row  mt-2">
                                         <div className="col-12 text-left">
-                                        <span style={{ float: "left" }}>
-                                            <span
-                                                onClick={this.addOutboundTransports}
-                                                className={
-                                                    " forgot-password-link"
-                                                }>
+                                            <span style={{ float: "left" }}>
+                                                <span
+                                                    onClick={this.addOutboundTransports}
+                                                    className={
+                                                        " forgot-password-link"
+                                                    }>
 
-                                                      {this.state.showAddOutboundTransport
-                                                          ? "Hide Outbound Transport"
-                                                          : "Add Outbound Transport"} <CustomPopover text="Add outbound transport details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                                    {this.state.showAddOutboundTransport
+                                                        ? "Hide Outbound Transport"
+                                                        : "Add Outbound Transport"} <CustomPopover text="Add outbound transport details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"} /></CustomPopover>
+                                                </span>
+                                                <span className="text-12 blue-text">{this.state.existingItemsOutboundTransport.length > 0 ? `(${this.state.existingItemsOutboundTransport.length} entries exist)` : ""}</span>
                                             </span>
-                                            <span className="text-12 blue-text">{this.state.existingItemsOutboundTransport.length>0?`(${this.state.existingItemsOutboundTransport.length} entries exist)`:""}</span>
-                                        </span>
                                         </div>
                                     </div>
 
-                                    <div className={`row border-box bg-light ${this.state.showAddOutboundTransport?"mt-2":"d-none"}`}>
+                                    <div className={`row border-box bg-light ${this.state.showAddOutboundTransport ? "mt-2" : "d-none"}`}>
                                         <div className="col-md-12 col-sm-6 col-xs-6">
 
                                             <OutboundTransportList
                                                 errors={this.state.carbonErrors}
                                                 list={this.state.transportModes}
                                                 filters={[]}
-                                                deleteItem={(data)=>this.deleteItemParts(data,3)}
-                                                handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,3)}
+                                                deleteItem={(data) => this.deleteItemParts(data, 3)}
+                                                handleChange={(value, valueText, field, uId, index) => this.handleChangePartsList(value, valueText, field, uId, index, 3)}
                                                 existingItems={this.state.existingItemsOutboundTransport}
                                             />
 
@@ -1107,11 +1109,11 @@ class CalculateCarbon extends Component {
                                             <div className="col-12 mt-2  ">
                                                 <div className="">
                                                     <BlueSmallBtn
-                                                        onClick={()=>this.addItemParts(3)}
+                                                        onClick={() => this.addItemParts(3)}
                                                         title={"Add"}
                                                         type="button"
                                                     >
-                                                        <AddIcon/>
+                                                        <AddIcon />
                                                     </BlueSmallBtn>
                                                 </div>
                                             </div>
@@ -1120,11 +1122,11 @@ class CalculateCarbon extends Component {
                                     </div>
 
                                     <div className={"row"}>
-                                        {this.state.errorPending&&<div className="col-12 text-center text-danger">Required fields are missing.</div>}
+                                        {this.state.errorPending && <div className="col-12 text-center text-danger">Required fields are missing.</div>}
                                         <div className="col-12 text-center  mb-2">
                                             {this.state.files.length > 0 ? (
                                                 this.state.files.filter((item) => item.status === 0).length >
-                                                0 ? (
+                                                    0 ? (
                                                     <GreenButton
                                                         title={"Upload in progress ...."}
                                                         type={"submit"}
@@ -1136,17 +1138,17 @@ class CalculateCarbon extends Component {
 
                                                 ) : (
                                                     <GreenButton
-                                                        title={this.props.productLines?"Submit":this.props.item?"Update Product":"Add Product"}
+                                                        title={this.props.productLines ? "Submit" : this.props.item ? "Update Product" : "Add Product"}
                                                         type={"submit"}
                                                         loading={this.state.loading}
-                                                        disabled={this.state.loading||this.state.isSubmitButtonPressed}>
+                                                        disabled={this.state.loading || this.state.isSubmitButtonPressed}>
                                                     </GreenButton>)
                                             ) : (
                                                 <GreenButton
-                                                    title={this.props.productLines?"Submit":this.props.item?"Update Product":"Add Product"}
+                                                    title={this.props.productLines ? "Submit" : this.props.item ? "Update Product" : "Add Product"}
                                                     type={"submit"}
                                                     loading={this.state.loading}
-                                                    disabled={this.state.loading||this.state.isSubmitButtonPressed}>
+                                                    disabled={this.state.loading || this.state.isSubmitButtonPressed}>
                                                 </GreenButton>
 
                                             )}
@@ -1183,4 +1185,4 @@ const mapDispatchToProps = (dispatch) => {
 
     };
 };
-export default  connect(mapStateToProps, mapDispatchToProps)(CalculateCarbon);
+export default connect(mapStateToProps, mapDispatchToProps)(CalculateCarbon);

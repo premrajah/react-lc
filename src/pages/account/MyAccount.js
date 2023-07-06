@@ -16,7 +16,7 @@ import SystemManageUser from "../../components/Account/SystemManageUser";
 import ManageOrgUsers from "../../components/Account/ManageOrgUsers";
 import AssumeRoles from "../../components/Account/AssumeRoles";
 import ManageOrgSettings from "../../components/Account/ManageOrgSettings";
-import UploadCarbonCSV from "../../components/Account/UploadCarbonCSV";
+import EmbodiedCarbon from "../../components/Account/EmbodiedCarbon";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -167,7 +167,7 @@ function MyAccount(props) {
                                     )}
                                     {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
                                         <TabPanel value={value} index={10}>
-                                            <UploadCarbonCSV />
+                                            <EmbodiedCarbon />
                                         </TabPanel>
                                     )}
 

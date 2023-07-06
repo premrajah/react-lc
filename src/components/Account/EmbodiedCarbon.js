@@ -8,8 +8,9 @@ import { Download, UploadFile } from "@mui/icons-material";
 import { fetchErrorMessage } from "../../Util/GlobalFunctions";
 import { Box, Tab, Tabs, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+import CalculateCarbon from "./CalculateCarbon";
 
-const UploadCarbonCSV = () => {
+const EmbodiedCarbon = () => {
 
     const [activeTab, setActiveTab] = useState(0);
 
@@ -72,7 +73,7 @@ const UploadCarbonCSV = () => {
             <div className="container ">
                 <PageHeader
                     pageTitle="Embodied Carbon"
-                    subTitle="Search orgs and manage their settings"
+                    subTitle=""
                 />
 
                 <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -98,7 +99,7 @@ const UploadCarbonCSV = () => {
                             <div className="col-md-12 d-flex  flex-row align-items-center   ">
                                 <span className="text-underline">
                                     <Download style={{ fontSize: "16px" }} /><a href={"/downloads/embodied_carbon_sample.csv"}
-                                        download={'embodied_carbon_sample.csv'}>Download
+                                                                                download={'embodied_carbon_sample.csv'}>Download
                                         CSV template</a></span>
                             </div>
                             <div className="col-md-12 d-flex  flex-row align-items-center   ">
@@ -110,7 +111,7 @@ const UploadCarbonCSV = () => {
                                         id="image-c-csv-upload"
                                         className="c-csv-upload"
                                         type="hidden"
-                                    // value={this.state.image}
+                                        // value={this.state.image}
                                     />
                                     <div className={"img-box"} style={{ position: "relative" }}>
                                         <label
@@ -140,7 +141,7 @@ const UploadCarbonCSV = () => {
                     <CustomTabPanel value={activeTab} index={1}>
                         <div className="row">
                             <div className="col">
-                                TODO
+                                <CalculateCarbon/>
                             </div>
                         </div>
                     </CustomTabPanel>
@@ -188,16 +189,14 @@ function CustomTabPanel(props) {
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.isLoggedIn,
-        userDetail: state.userDetail,
+
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
-        logOut: (data) => dispatch(actionCreator.logOut(data)),
 
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(UploadCarbonCSV);
+export default connect(mapStateToProps, mapDispatchToProps)(EmbodiedCarbon);

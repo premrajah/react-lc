@@ -952,7 +952,7 @@ class CalculateCarbon extends Component {
                                                 }
 
                                             />
-                                            {this.state.errors["geo_location"]?.geo_location && <span className="text-danger"> Required</span>}
+                                            {this.state.errors["geo_location"]?.error && <span className="text-danger"> Required</span>}
                                         </div>
                                     </div>
 

@@ -727,7 +727,8 @@ class CalculateCarbon extends Component {
 
     handleChangePartsList = (value, valueText, field, uId, index, type) => {
 
-        if (value)
+        console.log(value, valueText, field, uId, index, type)
+
             try {
                 if (type === 1) {
                     let existingItems = [...this.state.existingItemsParts];
@@ -810,6 +811,7 @@ class CalculateCarbon extends Component {
                         existingItemsProcesses: existingItems
                     })
 
+                    console.log(existingItems)
 
                 }
 

@@ -334,7 +334,7 @@ class ManageTemplateItem extends Component {
                     <div className=" col-9 text-left  ">
 
                             <p className={`text-blue text-capitalize mb-0`}> {this.props.item.name} </p>
-                        {this.props.item?.product&&<p className="text-gray-light text-capitalize mb-0"> {this.props.item?.product?.name}, {this.props.item?.product.category}, {this.props.item?.product.type}, {this.props.item?.product.state}, {this.props.item?.product.year_of_making} </p>}
+                        {this.props.item?.product&&<p className="text-gray-light text-capitalize mb-0"> {this.props.item?.product?.name}, {this.props.item?.product.category}, {this.props.item?.product.type}, {this.props.item?.product.state}, {this.props.item?.product.year_of_making!==0?this.props.item?.product.year_of_making:""} </p>}
                         <p>
                             <ul style={{listStyle:"none",margin: "0", padding: "0"}} className="persons  align-items-start d-flex">
 

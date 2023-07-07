@@ -727,7 +727,7 @@ class CalculateCarbon extends Component {
 
     handleChangePartsList = (value, valueText, field, uId, index, type) => {
 
-        console.log(value, valueText, field, uId, index, type)
+        // console.log(value, valueText, field, uId, index, type)
 
             try {
                 if (type === 1) {
@@ -811,7 +811,6 @@ class CalculateCarbon extends Component {
                         existingItemsProcesses: existingItems
                     })
 
-                    console.log(existingItems)
 
                 }
 
@@ -870,7 +869,6 @@ class CalculateCarbon extends Component {
             } catch (e) {
                 console.log(e)
             }
-
     }
 
     handleView = (productId, type) => {

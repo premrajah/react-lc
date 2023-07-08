@@ -1164,7 +1164,7 @@ class CalculateCarbon extends Component {
                                             <table className="table table-striped">
                                                 <tbody>
                                                     {Object.keys(this.state.responseData).map((item, i) =>
-                                                        <>
+                                                        <React.Fragment key={i}>
                                                             {this.state.responseData[item] ? <tr>
                                                                 <td className="text-blue text-capitlize">{item.replaceAll("_", " ")}</td>
                                                                 <td>{this.state.responseData[item]} </td>
@@ -1173,7 +1173,7 @@ class CalculateCarbon extends Component {
                                                                 </td>
                                                             </tr> : ""}
                                                 
-                                                        </>
+                                                        </React.Fragment>
                                                     )}
                                                     {Object.keys(this.state.responseData).length > 0 &&
                                                         <tr>

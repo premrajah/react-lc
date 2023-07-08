@@ -801,8 +801,7 @@ try{
                         <div className="col">
                             {selectedOrgs.length > 0 && (
                                 <small>
-                                    Selected:{" "}
-                                    {selectedOrgs.map((o, i) => (
+                                    Selected:{selectedOrgs.map((o, i) => (
                                         <span className="mr-1" key={i}>
                                             <span>{o.label}</span>
                                             {selectedOrgs.length > 1 && <span>, </span>}

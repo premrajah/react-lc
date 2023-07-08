@@ -21,6 +21,7 @@ import PartsList from "../ProductPopUp/PartsList";
 import ProcessesList from "../ProductPopUp/ProcessesList";
 import OutboundTransportList from "../ProductPopUp/OutboundTransportList";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 
 function ValueLabelComponent(props) {
@@ -1159,28 +1160,33 @@ class CalculateCarbon extends Component {
 
                                     <div className="row  mt-2">
                                         <div className="col-12 text-left">
-                                            {Object.keys(this.state.responseData).length>0 &&<h5 className="title-bold">Embodied Carbon Results</h5>}
+                                            {Object.keys(this.state.responseData).length > 0 && <h5 className="title-bold">Embodied Carbon Results</h5>}
                                             <table className="table table-striped">
                                                 <tbody>
-
-                                                    {Object.keys(this.state.responseData).map((item, i)=>
+                                                    {Object.keys(this.state.responseData).map((item, i) =>
                                                         <>
-                                                            {this.state.responseData[item]?<tr>
-                                                                <td className="text-blue text-capitlize">{item.replaceAll("_"," ")}</td><td>{this.state.responseData[item]} </td>
-                                                        </tr>:""}
-                                                            </>
+                                                            {this.state.responseData[item] ? <tr>
+                                                                <td className="text-blue text-capitlize">{item.replaceAll("_", " ")}</td>
+                                                                <td>{this.state.responseData[item]} </td>
+                                                                <td className="d-flex justify-content-end">
+                                                                    <ContentCopyIcon className='click-item' sx={{ "&:hover": {color: "var(--lc-green)"}, "&:active": {color: "var(--lc-purple)"} }} onClick={() => navigator.clipboard.writeText(this.state.responseData[item])} />
+                                                                </td>
+                                                            </tr> : ""}
+                                                
+                                                        </>
                                                     )}
-                                                     {Object.keys(this.state.responseData).length>0&&
-                                                         <tr>
-                                                                <td className={"text-label"}>Total</td><td className={"text-label"}>{Object.values(this.state.responseData).reduce((partialSum, a) => partialSum + a, 0)} </td>
-                                                            </tr>}
-
-
-
+                                                    {Object.keys(this.state.responseData).length > 0 &&
+                                                        <tr>
+                                                            <td className={"text-label"}>Total</td><td className={"text-label"}>{Object.values(this.state.responseData).reduce((partialSum, a) => partialSum + a, 0)} </td>
+                                                            <td className="d-flex justify-content-end">
+                                                                    <ContentCopyIcon className='click-item' sx={{ "&:hover": {color: "var(--lc-green)"}, "&:active": {color: "var(--lc-purple)"} }}  onClick={() => navigator.clipboard.writeText(Object.values(this.state.responseData).reduce((partialSum, a) => partialSum + a, 0))} />
+                                                                </td>
+                                                        </tr>}
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
+
                                 </form>
                             </div>
                         </div>

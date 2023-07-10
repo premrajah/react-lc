@@ -4981,7 +4981,7 @@ ul,ol {
     border-radius:0!important;
 }
 
-.carbon-list .field-box input:last-child {
+.carbon-list .field-box input {
     padding:  7px!important;
 
 }

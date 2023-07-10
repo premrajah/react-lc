@@ -39,7 +39,7 @@ const DynamicAutoCompleteBox=(props)=> {
     return (
         <>
 
-                <div id={props.item.index} key={props.item.index} className="row g-0 mt-2">
+                <div id={props.item.index} key={props.item.index} className="carbon-list row g-0 mt-2">
 
                 <div className="col-11 ">
                     <div className={"row g-0"}>

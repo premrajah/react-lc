@@ -4972,3 +4972,19 @@ ul,ol {
 .autocomplete-dropdown-container{
     position: absolute;
 }
+.carbon-list .field-box select {
+    padding:  7px!important;
+    border-radius:0!important;
+}
+.carbon-list .field-box input {
+
+    border-radius:0!important;
+}
+
+.carbon-list .field-box input:last-child {
+    padding:  7px!important;
+
+}
+.carbon-list .field-box{
+    margin: 0!important;
+}

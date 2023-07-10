@@ -931,7 +931,7 @@ class CalculateCarbon extends Component {
 
                         <div className={"row justify-content-center create-product-row"}>
                             <div className={"col-12"}>
-                                <form onChange={this.handleChangeForm}
+                                <form  onChange={this.handleChangeForm}
                                     onSubmit={this.handleSubmit}>
 
                                     <div className="row  mt-2">

@@ -316,6 +316,59 @@ export const exportToCSV = (csvData) => {
         loadingEventsDownload: false,
     });
 };
+
+export const exportToCSVKeyValuePair = (keyValueObj,fileName="file_",header=["Name","Value"],horizontalKeys=true) => {
+
+    try {
+
+        console.log(keyValueObj)
+        let data = "";
+        const tableData = [];
+
+
+
+        if (horizontalKeys){
+            const keyData = [];
+            for (let key of Object.keys(keyValueObj)){
+
+                keyData.push(key)
+            }
+            tableData.push(keyData.join(","));
+
+            const valData = [];
+            for (let item of Object.values(keyValueObj)){
+
+                valData.push(item)
+            }
+            tableData.push(valData.join(","));
+
+        }else{
+            tableData.push(header.join(","));
+
+            for (let key of Object.keys(keyValueObj)){
+                const rowData = [];
+                rowData.push(key)
+                rowData.push(keyValueObj[key])
+
+                tableData.push(rowData.join(","));
+            }
+        }
+
+
+
+        data += tableData.join("\n");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([data], {type: "text/csv"}));
+        a.setAttribute("download", `${fileName}${new Date().getDate()}.csv`);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }catch (e) {
+console.log(e)
+    }
+
+};
+
 export const DETECT_URL_REGEX = /^http:\/\/([^\/]*)\/(.*)$/;
 const DETECT_URL_REGEX_NEW = /(https?:\/\/[^\s]+)/g;
 

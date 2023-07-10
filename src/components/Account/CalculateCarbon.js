@@ -8,7 +8,7 @@ import { baseUrl } from "../../Util/Constants";
 import _ from "lodash";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
-import { fetchErrorMessage } from "../../Util/GlobalFunctions";
+import {exportToCSVKeyValuePair, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import CustomPopover from "../FormsUI/CustomPopover";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import PropTypes from 'prop-types';
@@ -22,6 +22,7 @@ import ProcessesList from "../ProductPopUp/ProcessesList";
 import OutboundTransportList from "../ProductPopUp/OutboundTransportList";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DownloadIcon from "@mui/icons-material/GetApp";
 
 
 function ValueLabelComponent(props) {
@@ -898,7 +899,11 @@ class CalculateCarbon extends Component {
 
     }
 
+    downloadFile=(data)=>{
 
+        exportToCSVKeyValuePair(data)
+
+    }
 
 
 
@@ -1160,7 +1165,13 @@ class CalculateCarbon extends Component {
 
                                     <div className="row  mt-2">
                                         <div className="col-12 text-left">
-                                            {Object.keys(this.state.responseData).length > 0 && <h5 className="title-bold">Embodied Carbon Results</h5>}
+                                            {Object.keys(this.state.responseData).length > 0 &&
+                                                <>
+                                                <h5 className="title-bold">Embodied Carbon Results</h5>
+                                                    <br/>
+                                                    <span onClick={()=>this.downloadFile(this.state.responseData)} className="d-flex mb-2 click-item justify-content-end"><DownloadIcon/> Download CSV</span>
+                                                </>
+                                            }
                                             <table className="table table-striped">
                                                 <tbody>
                                                     {Object.keys(this.state.responseData).map((item, i) =>

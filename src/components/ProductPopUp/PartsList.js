@@ -31,7 +31,7 @@ const PartsList=(props)=>{
     return (
         <>
             {props.existingItems.map((item, index) =>
-            <>
+            <React.Fragment key={item.index+"-box"}>
 <DynamicAutoCompleteBox
     {...props}
     item={item}
@@ -45,7 +45,7 @@ const PartsList=(props)=>{
 />
 
 
-            </>)}
+            </React.Fragment>)}
               {list.length>0 && error?<span className="border-red-error d-flex justify-content-end ">Total not equal to 100</span>:""}
     </>
 

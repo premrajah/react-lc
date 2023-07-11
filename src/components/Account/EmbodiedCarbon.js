@@ -13,7 +13,6 @@ import CalculateCarbon from "./CalculateCarbon";
 const EmbodiedCarbon = (props) => {
 
     const [activeTab, setActiveTab] = useState(0);
-    const [zipFile, setZipFile] = useState(null);
 
     const handleTabChange = (e, newTabState) => {
         setActiveTab(newTabState);
@@ -45,7 +44,7 @@ const EmbodiedCarbon = (props) => {
                 const url = URL.createObjectURL(blob);
 
                 a.href = url;
-                a.download = `${date}-response.csv`;
+                a.download = `${date}_response.csv`;
                 a.click();
                 window.URL.revokeObjectURL(url);
 

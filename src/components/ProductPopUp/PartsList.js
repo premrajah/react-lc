@@ -2,8 +2,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import React, {useEffect, useState} from "react";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
-import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import CustomPopover from "../FormsUI/CustomPopover";
 import {Info} from "@mui/icons-material";
@@ -262,16 +260,11 @@ const DynamicAutoCompleteBox=(props)=> {
                                     props.handleChange(value, valueText,`percentage`,props.uId,props.index)
 
                                 }
-
-
                                 name="percentage" title="Percentage"
-                                explanation={"Percentage value e.g 20"}
+                                explanation="Percentage value e.g 20"
                              />
-
-
                         </div>
 
-                    {/*<div className={"col-md-4 col-sm-12 col-xs-12"}>*/}
                         </div>
 
 

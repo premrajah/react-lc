@@ -2247,29 +2247,7 @@ let slugify = require('slugify')
 
                                                 </div>}
 
-                                                {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}
-                                                {/*    <TextFieldWrapper*/}
-                                                {/*        editMode*/}
-                                                {/*        details="Stock Keeping Unit"*/}
-                                                {/*        initialValue={this.props.item?this.props.item.product.sku.sku:""*/}
-                                                {/*        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.sku:"")*/}
-                                                {/*        }*/}
-                                                {/*        onChange={(value)=>this.handleChangeProduct(value,"sku")}*/}
-                                                {/*        name="sku"*/}
-                                                {/*        title="Sku" />*/}
 
-                                                {/*</div>*/}
-
-                                                {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}
-                                                {/*    <TextFieldWrapper*/}
-                                                {/*        editMode*/}
-                                                {/*        onChange={(value)=>this.handleChangeProduct(value,"upc")}*/}
-                                                {/*        details="Universal Product Code"*/}
-                                                {/*        initialValue={this.props.item?this.props.item.product.sku.upc:""*/}
-                                                {/*        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.upc:"")*/}
-                                                {/*        } name="upc" title="UPC" />*/}
-
-                                                {/*</div>*/}
 
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <TextFieldWrapper

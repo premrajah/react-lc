@@ -101,8 +101,7 @@ const DynamicAutoCompleteBox=(props)=> {
                             editMode
                             disableAutoLoadingIcon
                             initialValue={props.item.fields?.source_id}
-                            // initialValue={this.props.item?this.props.item.product.state:""
-                            //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
+
                             onChange={(value,valueText)=> {
 
                                 props.handleChange(value, valueText,`source_id`,props.uId,props.index);

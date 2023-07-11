@@ -23,6 +23,8 @@ import OutboundTransportList from "../ProductPopUp/OutboundTransportList";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DownloadIcon from "@mui/icons-material/GetApp";
+import { tr } from 'date-fns/locale';
+import CopyContentButton from '../Utils/CopyContentButton';
 
 
 function ValueLabelComponent(props) {
@@ -371,6 +373,8 @@ class CalculateCarbon extends Component {
 
         let validations = [
             validateFormatCreate("geo_location", [{ check: Validators.required, message: 'Required' }], fields),
+            validateFormatCreate("manufacturer", [{ check: Validators.required, message: 'Required' }], fields),
+            validateFormatCreate("model_no", [{ check: Validators.required, message: 'Required' }], fields),
         ]
 
 
@@ -639,7 +643,9 @@ class CalculateCarbon extends Component {
 
             let productData = {
                 weight: gross_weight_kgs ? parseInt(gross_weight_kgs) : null,
-                geo_location: this.state.fields["geo_location"]
+                geo_location: this.state.fields["geo_location"],
+                manufacturer: this.state.fields["manufacturer"],
+                model_no: this.state.fields["model_no"]
             };
 
 
@@ -901,7 +907,8 @@ class CalculateCarbon extends Component {
 
     downloadFile=(data)=>{
 
-        exportToCSVKeyValuePair(data)
+        let tempData = {manufacturer: this.state.fields["manufacturer"], model_no: this.state.fields["model_no"], ...data}
+        exportToCSVKeyValuePair(tempData, "calculated_embodied_carbon_");
 
     }
 
@@ -933,6 +940,30 @@ class CalculateCarbon extends Component {
                             <div className={"col-12"}>
                                 <form  onChange={this.handleChangeForm}
                                     onSubmit={this.handleSubmit}>
+
+                                        <div className="row mt-2">
+                                            <div className="col-md-6 col-xs-12">
+                                                <TextFieldWrapper 
+                                                    editMode
+                                                    error={this.state.errors["manufacturer"]}
+                                                    onChange={(value) => this.handleChangeProduct(value, "manufacturer")}
+                                                    name="manufacturer"
+                                                    title="Manufacturer"
+                                                    placeholder="Manufacturer"
+                                                />
+                                            </div>
+
+                                            <div className="col-md-6 col-xs-12">
+                                                <TextFieldWrapper 
+                                                    editMode
+                                                    error={this.state.errors["model_no"]}
+                                                    onChange={(value) => this.handleChangeProduct(value, "model_no")}
+                                                    name="model_no"
+                                                    title="Model No"
+                                                    placeholder="Model No"
+                                                />
+                                            </div>
+                                        </div>
 
                                     <div className="row  mt-2">
                                         <div className="col-md-4 col-xs-12 ">
@@ -1174,23 +1205,42 @@ class CalculateCarbon extends Component {
                                             }
                                             <table className="table table-striped">
                                                 <tbody>
+                                                    {Object.keys(this.state.responseData).length > 0 && <>
+                                                        <tr>
+                                                            <td className="text-blue text-capitlize">Manufacturer</td>
+                                                            <td >{this.state.fields["manufacturer"] ?? ""}</td>
+                                                            <td className="d-flex justify-content-end">
+                                                                <CopyContentButton value={this.state.fields["manufacturer"]} />
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td className="text-blue text-capitlize">Modal No</td>
+                                                            <td >{this.state.fields["model_no"] ?? ""}</td>
+                                                            <td className="d-flex justify-content-end">
+                                                                <CopyContentButton value={this.state.fields["model_no"]} />
+                                                            </td>
+                                                        </tr>
+                                                    </>}
+
                                                     {Object.keys(this.state.responseData).map((item, i) =>
                                                         <React.Fragment key={i}>
                                                             {this.state.responseData[item] ? <tr>
                                                                 <td className="text-blue text-capitlize">{item.replaceAll("_", " ")}</td>
                                                                 <td>{this.state.responseData[item]} </td>
                                                                 <td className="d-flex justify-content-end">
-                                                                    <ContentCopyIcon className='click-item' sx={{ "&:hover": {color: "var(--lc-green)"}, "&:active": {color: "var(--lc-purple)"} }} onClick={() => navigator.clipboard.writeText(this.state.responseData[item])} />
+                                                                    <CopyContentButton value={this.state.responseData[item]} />
                                                                 </td>
                                                             </tr> : ""}
                                                 
                                                         </React.Fragment>
                                                     )}
+
                                                     {Object.keys(this.state.responseData).length > 0 &&
                                                         <tr>
                                                             <td className={"text-label"}>Total</td><td className={"text-label"}>{Object.values(this.state.responseData).reduce((partialSum, a) => partialSum + a, 0)} </td>
                                                             <td className="d-flex justify-content-end">
-                                                                    <ContentCopyIcon className='click-item' sx={{ "&:hover": {color: "var(--lc-green)"}, "&:active": {color: "var(--lc-purple)"} }}  onClick={() => navigator.clipboard.writeText(Object.values(this.state.responseData).reduce((partialSum, a) => partialSum + a, 0))} />
+                                                                    <CopyContentButton value={Object.values(this.state.responseData).reduce((partialSum, a) => partialSum + a, 0)} />
                                                                 </td>
                                                         </tr>}
                                                 </tbody>

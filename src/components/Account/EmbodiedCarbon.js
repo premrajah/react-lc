@@ -13,13 +13,14 @@ import CalculateCarbon from "./CalculateCarbon";
 const EmbodiedCarbon = (props) => {
 
     const [activeTab, setActiveTab] = useState(0);
+    const [zipFile, setZipFile] = useState(null);
 
     const handleTabChange = (e, newTabState) => {
         setActiveTab(newTabState);
     }
 
 
-    const handleUpload = (e) => {
+    const handleUpload =   (e) => {
 
         try {
 
@@ -30,16 +31,21 @@ const EmbodiedCarbon = (props) => {
                 headers: { 'content-type': 'multipart/form-data' }
             }
 
-            axios.post(`${baseUrl}carbon/upload/zip`, formData, config).then(res => {
+            axios.post(`${baseUrl}carbon/upload/csv`, formData, config).then(async (res) =>   {
                 const a = document.createElement("a");
-                const date = new Date().toISOString()
+                const date =  Date.now()
                 document.body.appendChild(a);
                 a.style = "display: none";
 
-                const blob = new Blob([res.data], { type: "octet/stream" }),
-                    url = window.URL.createObjectURL(blob);
+                const blob = new Blob([res.data], { type: "octet/stream" })
+                // const blob = new Blob([res.data], { type: "application/zip" })
+                // const url = URL.createObjectURL(blob);
+
+                // const blob=await res.blob()
+                const url = URL.createObjectURL(blob);
+
                 a.href = url;
-                a.download = `${date}_${file.name}`;
+                a.download = `${date}-response.csv`;
                 a.click();
                 window.URL.revokeObjectURL(url);
 

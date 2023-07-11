@@ -43,7 +43,7 @@ const EmbodiedCarbon = (props) => {
                 a.click();
                 window.URL.revokeObjectURL(url);
 
-                this.props.showSnackbar({
+                props.showSnackbar({
                     show: true,
                     severity: "success",
                     message: "File downloaded successfully. Thanks"

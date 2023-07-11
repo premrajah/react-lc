@@ -124,7 +124,7 @@ const EmbodiedCarbon = (props) => {
                                             className=""
                                             htmlFor={"fileInput-c-csv-upload"}>
 
-                                            <UploadFile className="border-box text-pink" style={{ fontSize: "72px" }} />
+                                            <UploadFile className="click-item border-box text-pink" style={{ fontSize: "72px" }} />
 
                                         </label>
 

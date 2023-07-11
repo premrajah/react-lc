@@ -10,7 +10,7 @@ import { Box, Tab, Tabs, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import CalculateCarbon from "./CalculateCarbon";
 
-const EmbodiedCarbon = () => {
+const EmbodiedCarbon = (props) => {
 
     const [activeTab, setActiveTab] = useState(0);
 
@@ -30,7 +30,7 @@ const EmbodiedCarbon = () => {
                 headers: { 'content-type': 'multipart/form-data' }
             }
 
-            axios.post(`${baseUrl}carbon/upload/csv`, formData, config).then(res => {
+            axios.post(`${baseUrl}carbon/upload/zip`, formData, config).then(res => {
                 const a = document.createElement("a");
                 const date = new Date().toISOString()
                 document.body.appendChild(a);
@@ -50,16 +50,16 @@ const EmbodiedCarbon = () => {
                 })
             }).catch(error => {
                 console.log(error)
-                this.props.showSnackbar({
+                props.showSnackbar({
                     show: true,
                     severity: "error",
-                    message: fetchErrorMessage(e)
+                    message: fetchErrorMessage(error)
                 })
             })
 
         } catch (e) {
             console.log(e)
-            this.props.showSnackbar({
+            props.showSnackbar({
                 show: true,
                 severity: "error",
                 message: e.toString()

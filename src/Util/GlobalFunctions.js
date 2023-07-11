@@ -359,7 +359,7 @@ export const exportToCSVKeyValuePair = (keyValueObj,fileName="file_",header=["Na
         data += tableData.join("\n");
         const a = document.createElement("a");
         a.href = URL.createObjectURL(new Blob([data], {type: "text/csv"}));
-        a.setAttribute("download", `${fileName}${new Date().getDate()}.csv`);
+        a.setAttribute("download", `${fileName}${Date.now()}.csv`);
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

@@ -22,7 +22,6 @@ import ProcessesList from "../ProductPopUp/ProcessesList";
 import OutboundTransportList from "../ProductPopUp/OutboundTransportList";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import DownloadIcon from "@mui/icons-material/GetApp";
-import { tr } from 'date-fns/locale';
 import CopyContentButton from '../Utils/CopyContentButton';
 
 
@@ -913,6 +912,21 @@ class CalculateCarbon extends Component {
 
     }
 
+    calculateTotalCarbon = (responseItem) => {
+        const valuesToArray = Object.entries(responseItem)
+        const flatArray = valuesToArray.flat();
+
+        let sum = flatArray.reduce((sumSoFar, nextValue) => {
+            if(typeof nextValue === "number" && isFinite(nextValue)) {
+                return sumSoFar + nextValue;
+            }
+
+            return sumSoFar
+        }, 0)
+        
+        return sum.toString();
+    }
+
 
 
     render() {
@@ -1245,9 +1259,9 @@ class CalculateCarbon extends Component {
                                                     {Object.keys(this.state.responseData).length > 0 &&
                                                         <tr>
                                                             <td className={"text-label"}>Total</td>
-                                                            {/* <td className={"text-label"}>{Object.values(this.state.responseData).reduce((partialSum, a) => partialSum + a, 0)} </td> */}
+                                                            <td>{this.calculateTotalCarbon(this.state.responseData)}</td>
                                                             <td className="d-flex justify-content-end">
-                                                                <CopyContentButton value={Object.values(this.state.responseData).reduce((partialSum, a) => partialSum + a, 0)} />
+                                                                <CopyContentButton value={this.calculateTotalCarbon(this.state.responseData)} />
                                                             </td>
                                                         </tr>}
                                                 </tbody>

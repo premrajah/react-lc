@@ -21,7 +21,6 @@ import PartsList from "../ProductPopUp/PartsList";
 import ProcessesList from "../ProductPopUp/ProcessesList";
 import OutboundTransportList from "../ProductPopUp/OutboundTransportList";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DownloadIcon from "@mui/icons-material/GetApp";
 import { tr } from 'date-fns/locale';
 import CopyContentButton from '../Utils/CopyContentButton';

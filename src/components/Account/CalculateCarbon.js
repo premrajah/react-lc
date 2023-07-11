@@ -373,7 +373,7 @@ class CalculateCarbon extends Component {
         let validations = [
             validateFormatCreate("geo_location", [{ check: Validators.required, message: 'Required' }], fields),
             validateFormatCreate("manufacturer", [{ check: Validators.required, message: 'Required' }], fields),
-            validateFormatCreate("model_no", [{ check: Validators.required, message: 'Required' }], fields),
+            validateFormatCreate("model_number", [{ check: Validators.required, message: 'Required' }], fields),
         ]
 
 
@@ -644,7 +644,7 @@ class CalculateCarbon extends Component {
                 weight: gross_weight_kgs ? parseInt(gross_weight_kgs) : null,
                 geo_location: this.state.fields["geo_location"],
                 manufacturer: this.state.fields["manufacturer"],
-                model_no: this.state.fields["model_no"]
+                model_number: this.state.fields["model_number"]
             };
 
 
@@ -906,7 +906,7 @@ class CalculateCarbon extends Component {
 
     downloadFile=(data)=>{
 
-        let tempData = {manufacturer: this.state.fields["manufacturer"], model_no: this.state.fields["model_no"], ...data}
+        let tempData = {manufacturer: this.state.fields["manufacturer"], model_number: this.state.fields["model_number"], ...data}
         exportToCSVKeyValuePair(tempData, "calculated_embodied_carbon_");
 
     }
@@ -955,9 +955,9 @@ class CalculateCarbon extends Component {
                                             <div className="col-md-6 col-xs-12">
                                                 <TextFieldWrapper 
                                                     editMode
-                                                    error={this.state.errors["model_no"]}
-                                                    onChange={(value) => this.handleChangeProduct(value, "model_no")}
-                                                    name="model_no"
+                                                    error={this.state.errors["model_number"]}
+                                                    onChange={(value) => this.handleChangeProduct(value, "model_number")}
+                                                    name="model_number"
                                                     title="Model No"
                                                     placeholder="Model No"
                                                 />
@@ -1215,9 +1215,9 @@ class CalculateCarbon extends Component {
                                                         </tr>
                                                         <tr>
                                                             <td className="text-blue text-capitlize">Modal No</td>
-                                                            <td >{this.state.fields["model_no"] ?? ""}</td>
+                                                            <td >{this.state.fields["model_number"] ?? ""}</td>
                                                             <td className="d-flex justify-content-end">
-                                                                <CopyContentButton value={this.state.fields["model_no"]} />
+                                                                <CopyContentButton value={this.state.fields["model_number"]} />
                                                             </td>
                                                         </tr>
                                                     </>}

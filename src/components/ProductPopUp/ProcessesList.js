@@ -14,7 +14,7 @@ const ProcessesList=(props)=>{
     return props.existingItems.map((item, index) => {
 
         return (
-            <>
+            <React.Fragment key={item.index+"-box"}>
 <DynamicAutoCompleteBox
     {...props}
     item={item}
@@ -25,7 +25,7 @@ const ProcessesList=(props)=>{
 
 
 />
-            </>)
+            </React.Fragment>)
 
 
     } )

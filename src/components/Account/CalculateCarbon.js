@@ -1195,7 +1195,7 @@ class CalculateCarbon extends Component {
 
                                         {this.state.minimumError&&
 
-                                            <div className="col-12 text-center text-danger">Minimum of one entiry (Parts,Process or Outbound Transport) is required</div>
+                                            <div className="col-12 text-center text-danger">Minimum of one entry(Parts,Process or Outbound Transport) is required</div>
                                         }
                                         {this.state.errorPending && <div className="col-12 text-center text-danger">Required fields are missing.</div>}
                                         <div className="col-12 text-center  mb-2">

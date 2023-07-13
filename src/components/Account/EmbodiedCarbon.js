@@ -9,10 +9,12 @@ import { fetchErrorMessage } from "../../Util/GlobalFunctions";
 import { Box, Tab, Tabs, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import CalculateCarbon from "./CalculateCarbon";
+import {Spinner} from "react-bootstrap";
 
 const EmbodiedCarbon = (props) => {
 
     const [activeTab, setActiveTab] = useState(0);
+    const [loading, setLoading] = useState(0);
 
     const handleTabChange = (e, newTabState) => {
         setActiveTab(newTabState);
@@ -23,6 +25,7 @@ const EmbodiedCarbon = (props) => {
 
         try {
 
+            setLoading(true)
             let file = e.target.files[0];
             const formData = new FormData();
             formData.append('file', file);
@@ -60,14 +63,19 @@ const EmbodiedCarbon = (props) => {
                     severity: "error",
                     message: fetchErrorMessage(error)
                 })
-            })
+            }).finally(()=>[
+
+                setLoading(false)
+            ])
 
         } catch (e) {
             console.log(e)
+            setLoading(false)
             props.showSnackbar({
                 show: true,
                 severity: "error",
                 message: e.toString()
+
             })
         }
     }
@@ -126,6 +134,17 @@ const EmbodiedCarbon = (props) => {
 
                                             <UploadFile className="click-item border-box text-pink" style={{ fontSize: "72px" }} />
 
+                                            {loading ? (
+                                                <Spinner
+                                                    className="position-absolute "
+                                                    style={{margin:"auto",right:0,left:0,top:0,bottom:0}}
+                                                    as="span"
+                                                    animation="border"
+                                                    size="sm"
+                                                    role="status"
+                                                    aria-hidden="true"
+                                                />
+                                            ):<></>}
                                         </label>
 
                                         <input

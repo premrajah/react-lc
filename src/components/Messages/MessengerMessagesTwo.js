@@ -701,7 +701,7 @@ try{
                                 bgColor: "background.paper",
                             }}>
                             {filteredGroups.map((g, index) => (
-                                <React.Fragment key={index}>
+                                <React.Fragment key={`${index}-cm`}>
                                     <HandleGroupDataDisplay
                                         userOrg={userDetail.orgId}
                                         selectedMenuItemIndex={selectedMenuItemIndex}
@@ -802,7 +802,7 @@ try{
                             {selectedOrgs.length > 0 && (
                                 <small>
                                     Selected:{selectedOrgs.map((o, i) => (
-                                        <span className="mr-1" key={i}>
+                                        <span className="mr-1" key={`${i}-label-cm`}>
                                             <span>{o.label}</span>
                                             {selectedOrgs.length > 1 && <span>, </span>}
                                         </span>

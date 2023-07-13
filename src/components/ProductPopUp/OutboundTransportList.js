@@ -87,6 +87,7 @@ const DynamicAutoCompleteBox=(props)=> {
                             }
 
                         />
+                        <span className="text-gray-light text-12 m-0 ellipsis-end">(Min 4 char required to search)</span>
                         {props.errors?.geo_location && <span  className="text-danger"> Required</span>}
                 </div>
                     </div>

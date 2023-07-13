@@ -111,8 +111,9 @@ const DynamicAutoCompleteBox=(props)=> {
                             disabled={ (props.list.length > 0 )? false : true}
                             options={props.list?props.list:[]} name={"source_id"}
                             title="Energy Source"
-
+                            explanation="Select country"
                         />
+
                     </div>
 
                         </div>

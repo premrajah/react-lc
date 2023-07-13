@@ -1040,6 +1040,7 @@ class CalculateCarbon extends Component {
                                                 }
 
                                             />
+                                            <span className="text-gray-light text-12 m-0 ellipsis-end">(Min 4 char required to search)</span>
                                             {this.state.errors["geo_location"]?.error && <span className="text-danger"> Required</span>}
                                         </div>
                                     </div>

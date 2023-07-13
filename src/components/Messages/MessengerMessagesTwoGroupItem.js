@@ -25,10 +25,11 @@ const MessengerMessagesTwoGroupItem = ({
 
 
     return (
-        <>
-            <ListItem id={`group-${group._key}`} key={`group-${group._key}`}
+        <React.Fragment key={`group-${group._key}`}>
+            <ListItem id={`group-${group._key}`}
                       onClick={() => handleListItemClick(true)} component="div">
                 <ListItemText
+                    key={`group-lItem-${group._key}`}
                     className={"my-msg-class me-1"}
                     primary={
                         group.orgs.length>0&&(   group.orgs.length > 1 ?
@@ -42,7 +43,7 @@ const MessengerMessagesTwoGroupItem = ({
                 {group.unread_count_for_org>0&&<span className="new-message-bubble text-14"  >{group.unread_count_for_org}</span>}
 
             </ListItem>
-        </>
+        </React.Fragment>
     );
 };
 

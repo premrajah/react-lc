@@ -64,9 +64,9 @@ const HandleOrgDisplay = ({org, index}) => {
     return (
 
         <div id={`${index}-${orgItem._ts_epoch_ms}`}>
-            {/*<TooltipDisplay org={org}>*/}
+
             <Chip label={orgItem.name ? orgItem.name : ""} className="mr-1  " variant="outlined" />
-            {/*</TooltipDisplay>*/}
+
 
         </div>
     );

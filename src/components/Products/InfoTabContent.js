@@ -78,13 +78,13 @@ class InfoTabContent extends Component {
                         popoverHeading={` Emissions: ${this.props.item.product.sku.embodied_carbon_kgs.toFixed(2)} kgCO<sub>2</sub>e`}
                         popoverText={<>
                             {(this.props.item.product.computed_carbon.A123_compositional_carbon
-                                && (this.props.item.product.computed_carbon.A123_compositional_carbon != 0)) ? <span> {`Compositional Carbon : ${this.props.item.product.computed_carbon.A123_compositional_carbon.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
+                                && (this.props.item.product.computed_carbon.A123_compositional_carbon !== 0)) ? <span> {`Compositional Carbon : ${this.props.item.product.computed_carbon.A123_compositional_carbon.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
 
-                            {(this.props.item.product.computed_carbon.A5_process_carbon_kgs && (this.props.item.product.computed_carbon.A5_process_carbon_kgs != 0)) ? <span><br></br>{`Process Carbon : ${this.props.item.product.computed_carbon.A5_process_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
+                            {(this.props.item.product.computed_carbon.A5_process_carbon_kgs && (this.props.item.product.computed_carbon.A5_process_carbon_kgs !== 0)) ? <span><br></br>{`Process Carbon : ${this.props.item.product.computed_carbon.A5_process_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
 
-                            {(this.props.item.product.computed_carbon.A4_outbound_carbon_kgs && (this.props.item.product.computed_carbon.A4_outbound_carbon_kgs != "0")) ? <span><br></br>{`Outbound Carbon : ${this.props.item.product.computed_carbon.A4_outbound_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
+                            {(this.props.item.product.computed_carbon.A4_outbound_carbon_kgs && (this.props.item.product.computed_carbon.A4_outbound_carbon_kgs !== "0")) ? <span><br></br>{`Outbound Carbon : ${this.props.item.product.computed_carbon.A4_outbound_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
                             {(this.props.item.product.computed_carbon.C2_transport_carbon_kgs &&
-                                (this.props.item.product.computed_carbon.C2_transport_carbon_kgs != 0)) ?
+                                (this.props.item.product.computed_carbon.C2_transport_carbon_kgs !== 0)) ?
                                 <span><br></br>{`Transport Carbon : ${this.props.item.product.computed_carbon.C2_transport_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
 
                         </>}

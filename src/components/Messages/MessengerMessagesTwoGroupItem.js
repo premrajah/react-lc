@@ -27,12 +27,12 @@ const MessengerMessagesTwoGroupItem = ({
     return (
         <React.Fragment key={`group-mgm-${index}`}>
             <div id={`group-rm-${index}`} key={`group-dm-${index}`}
-                      onClick={() => handleListItemClick(true)} >
-                <div
-                    key={`group-lItem-${group._key}`}
-                    className={"my-msg-class me-1 "}
-
-                >
+                      onClick={(e) =>{
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleListItemClick(true)} }>
+                <div key={`group-lItem-${group._key}`}
+                    className={"my-msg-class me-1 d-flex"}>
                     {group.orgs.length>0&&(   group.orgs.length > 1 ?
                             group.orgs.filter(item=> item._id!==userOrg).map((org, ind) =>
                                 <React.Fragment key={`group-m-${ind}`}>
@@ -63,7 +63,7 @@ const HandleOrgDisplay = ({org, index}) => {
     },[org])
     return (
 
-        <div id={`${index}-${orgItem._ts_epoch_ms}`}>
+        <div className="m-1" id={`${index}-${orgItem._ts_epoch_ms}`}>
 
             <Chip label={orgItem.name ? orgItem.name : ""} className="mr-1  " variant="outlined" />
 

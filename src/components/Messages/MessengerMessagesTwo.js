@@ -910,14 +910,16 @@ const HandleGroupDataDisplay = ({
 
 
     return (
-        <>
+        <React.Fragment
+            key={`${index}-g-${groupListItem.message_group._key}`}
+        >
             <MenuItem
                 button
                 divider
                 dense
                 disableGutters
-                key={`${index}-${groupListItem.message_group._key}`}
-                id={`group-item-${index}-${groupListItem.message_group._key}`}
+
+                id={`group-item-g-${index}-${groupListItem.message_group._key}`}
                 selected={groupListItem.message_group._key === selectedMessageGroupKey}
                 style={{ whiteSpace: "normal" }}>
                 <MessengerMessagesTwoGroupItem
@@ -928,7 +930,7 @@ const HandleGroupDataDisplay = ({
                     handleSelectedItemCallback={handleSelectedItemCallback}
                 />
             </MenuItem>
-        </>
+        </React.Fragment>
     );
 };
 

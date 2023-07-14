@@ -25,24 +25,25 @@ const MessengerMessagesTwoGroupItem = ({
 
 
     return (
-        <React.Fragment key={`group-${group._key}`}>
-            <ListItem id={`group-${group._key}`}
+        <React.Fragment key={`group-gm-${index}`}>
+            <div id={`group-rm-${index}`} key={`group-dm-${index}`}
                       onClick={() => handleListItemClick(true)} component="div">
-                <ListItemText
+                <div
                     key={`group-lItem-${group._key}`}
-                    className={"my-msg-class me-1"}
-                    primary={
-                        group.orgs.length>0&&(   group.orgs.length > 1 ?
-                        group.orgs.filter(item=> item._id!==userOrg).map((org, index) =>
-                            <HandleOrgDisplay org={org} index={index} />):
+                    className={"my-msg-class me-1 p-1"}
+
+                >
+                    {group.orgs.length>0&&(   group.orgs.length > 1 ?
+                            group.orgs.filter(item=> item._id!==userOrg).map((org, index) =>
+                                <HandleOrgDisplay org={org} index={index} />):
                             group.orgs.map((org, index) =>
                                 <HandleOrgDisplay org={org} index={index} />))
                     }
-                />
+                </div>
 
                 {group.unread_count_for_org>0&&<span className="new-message-bubble text-14"  >{group.unread_count_for_org}</span>}
 
-            </ListItem>
+            </div>
         </React.Fragment>
     );
 };
@@ -58,8 +59,8 @@ const HandleOrgDisplay = ({org, index}) => {
     return (
         <div
 
-            id={`${index}_${orgItem._ts_epoch_ms}`}
-            key={`${index}_${orgItem._ts_epoch_ms}`}>
+            id={`${index}-${orgItem._ts_epoch_ms}`}
+            key={`${index}-${orgItem._ts_epoch_ms}-key`}>
             {/*<TooltipDisplay org={org}>*/}
             <Chip label={orgItem.name ? orgItem.name : ""} className="mr-1 mb-1 " variant="outlined" />
             {/*</TooltipDisplay>*/}

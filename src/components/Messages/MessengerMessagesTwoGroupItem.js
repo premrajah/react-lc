@@ -25,23 +25,28 @@ const MessengerMessagesTwoGroupItem = ({
 
 
     return (
-        <React.Fragment key={`group-gm-${index}`}>
+        <React.Fragment key={`group-mgm-${index}`}>
             <div id={`group-rm-${index}`} key={`group-dm-${index}`}
-                      onClick={() => handleListItemClick(true)} component="div">
+                      onClick={() => handleListItemClick(true)} >
                 <div
                     key={`group-lItem-${group._key}`}
-                    className={"my-msg-class me-1 p-1"}
+                    className={"my-msg-class me-1 "}
 
                 >
                     {group.orgs.length>0&&(   group.orgs.length > 1 ?
-                            group.orgs.filter(item=> item._id!==userOrg).map((org, index) =>
-                                <HandleOrgDisplay org={org} index={index} />):
-                            group.orgs.map((org, index) =>
-                                <HandleOrgDisplay org={org} index={index} />))
+                            group.orgs.filter(item=> item._id!==userOrg).map((org, ind) =>
+                                <React.Fragment key={`group-m-${ind}`}>
+                                    <HandleOrgDisplay org={org} index={ind} />
+                                </React.Fragment>):
+                            group.orgs.map((org, ind) =>
+                                <React.Fragment key={`group-m-${ind}`}>
+                                <HandleOrgDisplay org={org} index={ind} />)
+                                </React.Fragment>))
                     }
+
                 </div>
 
-                {group.unread_count_for_org>0&&<span className="new-message-bubble text-14"  >{group.unread_count_for_org}</span>}
+                {group.unread_count_for_org>0&&<span className=" new-message-bubble  text-14"  >{group.unread_count_for_org}</span>}
 
             </div>
         </React.Fragment>
@@ -57,12 +62,10 @@ const HandleOrgDisplay = ({org, index}) => {
         setOrgItem(org)
     },[org])
     return (
-        <div
 
-            id={`${index}-${orgItem._ts_epoch_ms}`}
-            key={`${index}-${orgItem._ts_epoch_ms}-key`}>
+        <div id={`${index}-${orgItem._ts_epoch_ms}`}>
             {/*<TooltipDisplay org={org}>*/}
-            <Chip label={orgItem.name ? orgItem.name : ""} className="mr-1 mb-1 " variant="outlined" />
+            <Chip label={orgItem.name ? orgItem.name : ""} className="mr-1  " variant="outlined" />
             {/*</TooltipDisplay>*/}
 
         </div>

@@ -4988,3 +4988,16 @@ ul,ol {
 .carbon-list .field-box{
     margin: 0!important;
 }
+.bg-selected{
+    background: rgba(39, 36, 92, 0.08)!important;
+}
+.group-list-item-df{
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-style: none none solid;
+    border-width: 0px 0px 1px;
+    margin: auto;
+    border-radius: 0px;
+    padding: 8px;
+    cursor: pointer;
+
+}

@@ -370,7 +370,7 @@ class CalculateCarbon extends Component {
 
 
         let validations = [
-            validateFormatCreate("geo_location", [{ check: Validators.required, message: 'Required' }], fields),
+            validateFormatCreate("factory_geo_location", [{ check: Validators.required, message: 'Required' }], fields),
             validateFormatCreate("manufacturer", [{ check: Validators.required, message: 'Required' }], fields),
             validateFormatCreate("model_number", [{ check: Validators.required, message: 'Required' }], fields),
         ]
@@ -643,7 +643,7 @@ class CalculateCarbon extends Component {
                 weight: gross_weight_kgs ? parseInt(gross_weight_kgs) : null,
                 name: this.state.fields["name"],
                 description: this.state.fields["description"],
-                geo_location: this.state.fields["geo_location"],
+                factory_geo_location: this.state.fields["factory_geo_location"],
                 manufacturer: this.state.fields["manufacturer"],
                 model_number: this.state.fields["model_number"]
             };

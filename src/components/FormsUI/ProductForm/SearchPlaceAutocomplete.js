@@ -123,7 +123,7 @@ const SearchPlaceAutocomplete = (props) => {
                         onChange={(value)=>{}}
                         // error={this.state.errors["address"]}
                         name="address"
-                        title={ "Selected Location"}
+                        title={title}
 
                             endAdornment={  <CloseButtonPopUp
                                 aria-label="toggle password visibility"

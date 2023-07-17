@@ -64,9 +64,10 @@ const DynamicAutoCompleteBox=(props)=> {
 
                         <SearchPlaceAutocomplete
                             error={props.errors?.geo_location}
-                            fromOutboundTransport
+
                             title={`Site ${props.index+1}`}
                             hideMap
+                            fromOutboundTransport
                             initialValue={props.item.fields?.geo_location}
                             onChange={(value,valueText) => {
                                 

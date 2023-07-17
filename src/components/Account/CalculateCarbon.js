@@ -525,7 +525,7 @@ class CalculateCarbon extends Component {
         fields[field] = value;
 
 
-        if (field === "geo_location") {
+        if (field === "factory_geo_location"||field === "geo_location") {
             fields[field] = {
                 "address_info": {
                     "formatted_address": value.address,
@@ -606,7 +606,7 @@ class CalculateCarbon extends Component {
 
 
             outboundTransports.push({
-                geo_location: existingItemsOutboundTransport[i].fields?.geo_location,
+                factory_geo_location: existingItemsOutboundTransport[i].fields?.factory_geo_location,
                 transport_mode: existingItemsOutboundTransport[i].fields?.transport_mode
             })
 
@@ -1019,7 +1019,7 @@ class CalculateCarbon extends Component {
                                         <div className={"col-md-8 col-sm-12 col-xs-12"}>
 
                                             <SearchPlaceAutocomplete
-                                                error={this.state.errors["geo_location"]}
+                                                error={this.state.errors["factory_geo_location"]}
                                                 fromOutboundTransport
                                                 title={"Factory Location"}
                                                 hideMap
@@ -1030,7 +1030,7 @@ class CalculateCarbon extends Component {
                                                             this.handleChangeProduct({
                                                                 latitude: value.latitude,
                                                                 longitude: value.longitude, address: value.address
-                                                            }, `geo_location`)
+                                                            }, `factory_geo_location`)
 
                                                         }
                                                     } catch (e) {
@@ -1041,7 +1041,7 @@ class CalculateCarbon extends Component {
 
                                             />
                                             <span className="text-gray-light text-12 m-0 ellipsis-end">(Min 4 char required to search)</span>
-                                            {this.state.errors["geo_location"]?.error && <span className="text-danger"> Required</span>}
+                                            {this.state.errors["factory_geo_location"]?.error && <span className="text-danger"> Required</span>}
                                         </div>
                                     </div>
 

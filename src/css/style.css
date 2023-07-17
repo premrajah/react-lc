@@ -4493,23 +4493,9 @@ select option {
     margin-left: 5px;
     background: transparent !important;
 }
-.product-preview-box {
-    /*display: none;*/
-    /*width: 100%;*/
-}
 
-/*.product-link:hover + .product-preview-box,.product-preview-box:hover{*/
-/*    display: block;*/
-/*    z-index: 100;*/
-/*}*/
 
-/*.product-preview-box{*/
-/*    position: absolute!important;*/
-/*    left: 100%!important;*/
-/*    top:0!important;*/
-/*    border-radius: 25px;*/
-/*    z-index: 100;*/
-/*}*/
+
 
 .product-item {
     position: relative;

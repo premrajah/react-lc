@@ -32,6 +32,7 @@ import {v4 as uuid} from "uuid";
 import PartsList from "./PartsList";
 import ProcessesList from "./ProcessesList";
 import OutboundTransportList from "./OutboundTransportList";
+import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 
 
 let slugify = require('slugify')
@@ -616,6 +617,7 @@ let slugify = require('slugify')
 
             if(this.state.existingItemsParts.length>0){
 
+                validations.push(validateFormatCreate("factory_geo_location", [{check: Validators.required, message: 'Required'}],fields))
 
                 validations.push(validateFormatCreate("gross_weight_kgs", [{check: Validators.required, message: 'Required'}],fields))
 
@@ -765,6 +767,29 @@ let slugify = require('slugify')
             fields[field] = value;
 
 
+            if (field === "factory_geo_location"||field === "geo_location") {
+                fields[field] = {
+                    "address_info": {
+                        "formatted_address": value.address,
+                        "geometry": {
+                            "location": {
+                                "lat": value.latitude,
+                                "lng": value.longitude
+
+                                // "lat":"40.99489459999999",
+                                // "lng":"17.22261"
+                            },
+                            "location_type": "APPROXIMATE",
+
+                        },
+                        "place_id": "",
+                        "types": [],
+                        "plus_code": null
+                    },
+                    "is_verified": true
+                }
+
+            }
              if (field==="year_of_making"){
                  fields[field]= Number(value)
              }
@@ -928,6 +953,9 @@ let slugify = require('slugify')
                         year_of_making: year_of_making,
                     };
 
+                if (this.state.fields?.['factory_geo_location']){
+                    productData['factory_geo_location']=this.state.fields?.['factory_geo_location']
+                }
 
                 productData= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
                     this.state.existingItemsOutboundTransport,productData)
@@ -955,6 +983,8 @@ let slugify = require('slugify')
 
 
 
+
+                    // console.log(completeData)
                     // return;
 
                 this.setState({
@@ -2292,7 +2322,37 @@ let slugify = require('slugify')
                                     {/*</div>*/}
 
                                             </div>
+                                  <div className="row  mt-2">
+                                  <div className={"col-md-8 col-sm-12 col-xs-12"}>
 
+                                      <SearchPlaceAutocomplete
+
+                                          initialValue={this.props.item?.product?.factory_geo_location}
+                                          error={this.state.errors["factory_geo_location"]}
+                                          fromOutboundTransport
+                                          title={"Factory Location"}
+                                          hideMap
+                                          onChange={(value, valueText) => {
+                                              try {
+                                                  if (value && value.latitude && value.longitude) {
+
+                                                      this.handleChangeProduct({
+                                                          latitude: value.latitude,
+                                                          longitude: value.longitude, address: value.address
+                                                      }, `factory_geo_location`)
+
+                                                  }
+                                              } catch (e) {
+                                                  console.log("map error ", e)
+                                              }
+                                          }
+                                          }
+
+                                      />
+                                      <span className="text-gray-light text-12 m-0 ellipsis-end">(Min 4 char required to search)</span>
+                                      {this.state.errors["factory_geo_location"]?.error && <span className="text-danger"> Required</span>}
+                                  </div>
+                                  </div>
 
                                   <div className="row  mt-2">
                                       <div className="col-12 text-left">

@@ -77,7 +77,7 @@ const DynamicAutoCompleteBox=(props)=> {
                             <TextFieldWrapper
                                 error={props.errors?.kwh}
                                 noMargin
-                                numberInput
+                                decimalInput
                                 editMode
                                 initialValue={props.item.fields?.kwh}
                                 details=""

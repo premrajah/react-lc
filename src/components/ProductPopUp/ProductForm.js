@@ -611,7 +611,7 @@ let slugify = require('slugify')
             }
 
             if (!this.state.disableVolume&&!this.props.productLines){
-                validations.push( validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields),
+                validations.push( validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a decimal number.'}],fields),
                 )
             }
 
@@ -2185,7 +2185,7 @@ let slugify = require('slugify')
                                                 <div className="col-md-4 col-xs-12 ">
                                                 <TextFieldWrapper
                                                     editMode
-                                                    numberInput
+                                                    decimalInput
                                                     error={this.state.errors["gross_weight_kgs"]}
                                                     onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
                                                     // details="A unique number used by external systems"

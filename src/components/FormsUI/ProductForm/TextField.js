@@ -23,6 +23,7 @@ const TextFieldWrapper = ({
     customReadOnly, reset, noMargin,
     editMode,
     numberInput,
+                              decimalInput,
     startAdornment, endAdornment,classAdd,
     ...otherProps
 }) => {
@@ -71,8 +72,14 @@ const TextFieldWrapper = ({
 
         if (onChange) {
             if (numberInput) {
-                putMask(value, event)
-            } else {
+                putMaskNumber(value, event)
+            }
+           else if (decimalInput) {
+
+                putMaskDecimal(value, event)
+            }
+
+            else {
                 onChange(value);
             }
 
@@ -80,15 +87,30 @@ const TextFieldWrapper = ({
     };
 
 
-    const putMask = (value, event) => {
+    const putMaskNumber = (value, event) => {
 
         let x = value.replace(/\D/g, '')
+
         value = x
 
         setField(value)
         if (onChange) {
             onChange(value)
         }
+
+    };
+    const putMaskDecimal = (value, event) => {
+
+        let x = value.replace(/[^\d\.]/g, '')
+        value = x
+        if (isNaN(value)){
+            value=value.substring(0, value.length - 1)
+        }
+        setField(value)
+        if (onChange) {
+            onChange(value)
+        }
+
 
     };
 
@@ -120,6 +142,7 @@ const TextFieldWrapper = ({
                     label={label}
                     hidden={hidden}
                     value={field}
+
                     className={error && "border-red-error"}
                     onChange={handleChange}
                     name={name}

@@ -1844,7 +1844,7 @@ let slugify = require('slugify')
                                        <TextFieldWrapper
                                            editMode
                                            details="The name of a product"
-                                           initialValue={this.props.item&&this.props.item.product.name
+                                           initialValue={this.props.item&&this.props.item?.product.name
                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.name:"")
                                            }
                                          onChange={(value)=>this.handleChangeProduct(value,"name")}
@@ -2367,7 +2367,7 @@ let slugify = require('slugify')
                                                           : "Add Parts"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>
                                         </span>
-                                          <span className="text-12 blue-text">{this.state.existingItemsParts.length>0?`(${this.state.existingItemsParts.length} entries exist)`:""}</span>
+                                          <span className="text-12 blue-text">{this.props.item?.product?.composition.length>0?`(${this.props.item.product?.composition?.length} entries exist)`:""}</span>
                                       </div>
                                   </div>
 
@@ -2416,7 +2416,7 @@ let slugify = require('slugify')
                                                           ? "Hide Processes"
                                                           : "Add Processes"} <CustomPopover text="Add processes involved in the manufacturing of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>
-                                            <span className="text-12 blue-text"> {this.state.existingItemsProcesses.length>0?`(${this.state.existingItemsProcesses.length} entries exist)`:""}</span>
+                                            <span className="text-12 blue-text"> {this.props.item?.product?.processes.length>0?`(${this.props.item?.product?.processes.length} entries exist)`:""}</span>
                                         </span>
                                       </div>
                                   </div>
@@ -2460,12 +2460,11 @@ let slugify = require('slugify')
                                                 className={
                                                     " forgot-password-link"
                                                 }>
-
                                                       {this.state.showAddOutboundTransport
                                                           ? "Hide Outbound Transport"
                                                           : "Add Outbound Transport"} <CustomPopover text="Add outbound transport details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>
-                                            <span className="text-12 blue-text">{this.state.existingItemsOutboundTransport.length>0?`(${this.state.existingItemsOutboundTransport.length} entries exist)`:""}</span>
+                                            <span className="text-12 blue-text">{this.props.item?.product?.outbound_transport.length>0?`(${this.props.item?.product?.outbound_transport.length} entries exist)`:""}</span>
                                         </span>
                                       </div>
                                   </div>

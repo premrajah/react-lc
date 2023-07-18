@@ -1,9 +1,26 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { capitalizeFirstLetter } from "../../Util/Constants";
 import { capitalize } from "../../Util/GlobalFunctions";
 import InfoTabContentItem from './InfoTabContentItem';
+import DownloadIcon from "@mui/icons-material/GetApp";
+import CopyContentButton from "../Utils/CopyContentButton";
 
 class InfoTabContent extends Component {
+
+    calculateTotalCarbon = (responseItem) => {
+        const valuesToArray = Object.entries(responseItem)
+        const flatArray = valuesToArray.flat();
+
+        let sum = flatArray.reduce((sumSoFar, nextValue) => {
+            if(typeof nextValue === "number" && isFinite(nextValue)) {
+                return sumSoFar + nextValue;
+            }
+
+            return sumSoFar
+        }, 0)
+
+        return sum.toString();
+    }
 
     render() {
         return (
@@ -75,17 +92,45 @@ class InfoTabContent extends Component {
                             this.props.item.product.sku.embodied_carbon_kgs.toFixed(2)
                         }
 
+
                         popoverHeading={` Emissions: ${this.props.item.product.sku.embodied_carbon_kgs.toFixed(2)} kgCO<sub>2</sub>e`}
                         popoverText={<>
-                            {(this.props.item.product.computed_carbon.A123_compositional_carbon
-                                && (this.props.item.product.computed_carbon.A123_compositional_carbon !== 0)) ? <span> {`Compositional Carbon : ${this.props.item.product.computed_carbon.A123_compositional_carbon.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
 
-                            {(this.props.item.product.computed_carbon.A5_process_carbon_kgs && (this.props.item.product.computed_carbon.A5_process_carbon_kgs !== 0)) ? <span><br></br>{`Process Carbon : ${this.props.item.product.computed_carbon.A5_process_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
+                            <div className="row  mt-2">
+                                <div className="col-12 text-left">
 
-                            {(this.props.item.product.computed_carbon.A4_outbound_carbon_kgs && (this.props.item.product.computed_carbon.A4_outbound_carbon_kgs !== "0")) ? <span><br></br>{`Outbound Carbon : ${this.props.item.product.computed_carbon.A4_outbound_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
-                            {(this.props.item.product.computed_carbon.C2_transport_carbon_kgs &&
-                                (this.props.item.product.computed_carbon.C2_transport_carbon_kgs !== 0)) ?
-                                <span><br></br>{`Transport Carbon : ${this.props.item.product.computed_carbon.C2_transport_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}
+                                    <table className="table table-striped text-12">
+                                        <tbody>
+                                        {Object.keys(this.props.item.product?.computed_carbon).map((item, i) =>
+                                            <React.Fragment key={i}>
+                                                {this.props.item.product.computed_carbon[item] ? <tr>
+                                                    <td className="text-blue text-capitlize">{item.replaceAll("_", " ")}</td>
+                                                    <td>{this.props.item.product.computed_carbon[item]} </td>
+
+                                                </tr> : ""}
+
+                                            </React.Fragment>
+                                        )}
+
+                                        {Object.keys(this.props.item.product.computed_carbon).length > 0 &&
+                                            <tr>
+                                                <td className={"text-label"}>Total</td>
+                                                <td>{this.calculateTotalCarbon(this.props.item.product.computed_carbon)}</td>
+
+                                            </tr>}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {/*{(this.props.item.product.computed_carbon.A123_compositional_carbon*/}
+                            {/*    && (this.props.item.product.computed_carbon.A123_compositional_carbon !== 0)) ? <span> {`Compositional Carbon : ${this.props.item.product.computed_carbon.A123_compositional_carbon.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}*/}
+
+                            {/*{(this.props.item.product.computed_carbon.A5_process_carbon_kgs && (this.props.item.product.computed_carbon.A5_process_carbon_kgs !== 0)) ? <span><br></br>{`Process Carbon : ${this.props.item.product.computed_carbon.A5_process_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}*/}
+
+                            {/*{(this.props.item.product.computed_carbon.A4_outbound_carbon_kgs && (this.props.item.product.computed_carbon.A4_outbound_carbon_kgs !== "0")) ? <span><br></br>{`Outbound Carbon : ${this.props.item.product.computed_carbon.A4_outbound_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}*/}
+                            {/*{(this.props.item.product.computed_carbon.C2_transport_carbon_kgs &&*/}
+                            {/*    (this.props.item.product.computed_carbon.C2_transport_carbon_kgs !== 0)) ?*/}
+                            {/*    <span><br></br>{`Transport Carbon : ${this.props.item.product.computed_carbon.C2_transport_carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} kgs`}</span> : ""}*/}
 
                         </>}
                     />

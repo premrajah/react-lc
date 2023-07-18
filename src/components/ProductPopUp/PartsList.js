@@ -66,11 +66,11 @@ const DynamicAutoCompleteBox=(props)=> {
     const [fields,setFields]=useState({})
     // const [errors,setErrors]=useState([])
     //
-    // useEffect(()=>{
-    //     console.log("setting errors",errors)
-    //     setErrors(props.errors)
-    //
-    // },[props.errors])
+    useEffect(()=>{
+
+        if (props.item.fields?.transport_mode)
+        setShowInbound(true)
+    },[props.item.fields])
 
 
     useEffect(()=>{

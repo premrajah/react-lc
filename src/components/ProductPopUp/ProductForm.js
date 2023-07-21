@@ -13,7 +13,12 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {cleanFilename, fetchErrorMessage, removeKeyFromObj} from "../../Util/GlobalFunctions";
+import {
+    cleanFilename,
+    fetchErrorMessage,
+    getModifiedObjectKeys, getModifiedObjectKeysLodash,
+    removeKeyFromObj, trackModifiedObjectKeys
+} from "../../Util/GlobalFunctions";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
@@ -33,6 +38,7 @@ import PartsList from "./PartsList";
 import ProcessesList from "./ProcessesList";
 import OutboundTransportList from "./OutboundTransportList";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
+import {compareObjs} from "@fullcalendar/react";
 
 
 let slugify = require('slugify')
@@ -107,7 +113,6 @@ let slugify = require('slugify')
                 free: false,
                 price: null,
                 brand: null,
-                manufacturedDate: null,
                 model: null,
                 serial: null,
                 startDate: null,
@@ -240,7 +245,7 @@ let slugify = require('slugify')
                         });
 
                         if (this.props.item)
-                        this.loadInitialCarbonData(this.props.item)
+                        this.loadInitialCarbonData({...this.props.item})
 
                     },
                     (error) => {}
@@ -840,7 +845,6 @@ let slugify = require('slugify')
             let processes=[]
             let outboundTransports=[]
 
-
             for (let i=0;i<existingItemsParts.length;i++){
 
                 let item={
@@ -862,6 +866,7 @@ let slugify = require('slugify')
             for (let i=0;i<existingItemsProcesses.length;i++){
                 processes.push({
                     name: existingItemsProcesses[i].fields?.name,
+                    description: null,
                     kwh: parseFloat(existingItemsProcesses[i].fields?.kwh),
                     source_id:existingItemsProcesses[i].fields?.source_id
                 })
@@ -890,6 +895,38 @@ let slugify = require('slugify')
 
             return productData
         }
+
+        configurePayload=(payloadObj,formData)=>{
+
+            this.productLevelOneKeys.forEach((key)=>{
+                if (formData.get(key)){
+                    if (key==="purpose"||key==="condition"){
+                        payloadObj[key]=formData.get(key).toLowerCase()
+                    }
+                    else if (key==="year_of_making"||key==="volume"){
+                        payloadObj[key]=parseInt(formData.get(key))
+                    }
+                    else {
+                        payloadObj[key]=formData.get(key)
+                    }
+                }
+            })
+
+            this.skuKeys.forEach((key)=>{
+                if (formData.get(key)){
+                    if (key==="power_supply"){
+                        payloadObj.sku[key]=formData.get(key).toLowerCase()
+                    }
+                    else if (key==="embodied_carbon_kgs"||key==="gross_weight_kgs"){
+                        payloadObj.sku[key]=parseFloat(formData.get(key))
+                    }else {
+                        payloadObj.sku[key]=formData.get(key)
+                    }
+                }
+            })
+
+            return payloadObj
+        }
         handleSubmit = (event) => {
 
             try {
@@ -899,59 +936,53 @@ let slugify = require('slugify')
                 return
             }
                     const data = new FormData(event.target);
-                    const name = data.get("name");
-                    const purpose = data.get("purpose");
-                    const condition = data.get("condition");
-                    const description = data.get("description");
-                    const category = data.get("category");
-                    const type = data.get("type");
-                    const units = data.get("units");
-                    const serial = data.get("serial");
-                    const model = data.get("model");
-                    const brand = data.get("brand");
-                    const volume = data.get("volume");
-                    const sku = data.get("sku");
-                    const upc = data.get("upc");
-                    const part_no = data.get("part_no");
-                    const state = data.get("state");
                     // const is_listable = this.state.is_listable?true:false;
                     // const is_manufacturer = this.state.is_manufacturer?true:false;
                     const is_listable = true;
                     const is_manufacturer = false;
                     const site = data.get("deliver")
-                    const year_of_making = data.get("manufacturedDate") ? data.get("manufacturedDate") : 0
-                    const external_reference = data.get("external_reference")
-                    const power_supply = data.get("power_supply");
                     const energy_rating = this.state.energyRating;
-                    const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
-                    const gross_weight_kgs = data.get("gross_weight_kgs");
+
+                let productData = {
+                    energy_rating: energy_rating,
+                    is_listable: is_listable,
+                    sku: {},
+                };
 
 
-                    let productData = {
-                        purpose: purpose.toLowerCase(),
-                        condition: condition.toLowerCase(),
-                        name: name,
-                        description: description,
-                        category: category,
-                        type: type,
-                        units: units,
-                        state: state,
-                        volume: volume,
-                        energy_rating: energy_rating,
-                        is_listable: is_listable,
-                        "external_reference": external_reference,
-                        sku: {
-                            serial: serial,
-                            model: model,
-                            brand: brand,
-                            sku: sku,
-                            upc: upc,
-                            part_no: part_no,
-                            embodied_carbon_kgs: embodied_carbon_kgs?parseInt(embodied_carbon_kgs):null,
-                            gross_weight_kgs:gross_weight_kgs?parseInt(gross_weight_kgs):null
-                        },
-                        year_of_making: year_of_making,
-                    };
+                    // let productData = {
+                    //     purpose: purpose.toLowerCase(),
+                    //     condition: condition.toLowerCase(),
+                    //     name: name,
+                    //     description: description,
+                    //     category: category,
+                    //     type: type,
+                    //     units: units,
+                    //     state: state,
+                    //     volume: volume,
+                    //     energy_rating: energy_rating,
+                    //     is_listable: is_listable,
+                    //     "external_reference": external_reference,
+                    //     sku: {
+                    //         serial: serial,
+                    //         model: model,
+                    //         brand: brand,
+                    //         sku: sku,
+                    //         upc: upc,
+                    //         part_no: part_no,
+                    //         embodied_carbon_kgs: embodied_carbon_kgs?parseInt(embodied_carbon_kgs):null,
+                    //         gross_weight_kgs:gross_weight_kgs?parseInt(gross_weight_kgs):null
+                    //     },
+                    //
+                    // };
+
+
+
+                  productData=this.configurePayload(productData,data)
+
+
+
+
 
                 if (this.state.fields?.['factory_geo_location']){
                     productData['factory_geo_location']=this.state.fields?.['factory_geo_location']
@@ -960,9 +991,7 @@ let slugify = require('slugify')
                 productData= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
                     this.state.existingItemsOutboundTransport,productData)
 
-                    if (power_supply){
-                        productData.sku.power_supply=  power_supply.toLowerCase()
-                    }
+
 
                     if (this.props.createProductId) {
                         productData._id = "Product/" + this.props.createProductId
@@ -1018,7 +1047,7 @@ let slugify = require('slugify')
                                 this.props.showSnackbar({
                                     show: true,
                                     severity: "success",
-                                    message: name + " created successfully. Thanks"
+                                    message: productData.name + " created successfully. Thanks"
                                 })
                                 this.showProductSelection();
 
@@ -1179,21 +1208,21 @@ let slugify = require('slugify')
 
         updateImages() {
 
-            let flagChange = true
+            let flagChange = false
 
+            //if deleted or added new entry
+            if (this.state.images.length!==this.props.item.artifacts.length){
 
-            // console.log(this.state.images , this.state.prevImages)
-            // if (this.state.images.length !== this.props.item.artifacts.length) {
-            //     flagChange = true
-            // } else {
-            //     this.state.images.forEach((item) => {
+                flagChange=true
+
+            }
+
+            console.log(this.state.images.filter((image)=> this.props.item.artifacts.find((artifactObj)=> artifactObj._key===image)))
+
+            // else if (this.state.images.filter((image)=> this.props.item.artifacts.find((artifactObj)=> artifactObj._key===image)  )){
             //
-            //         if (!this.props.item.artifacts.find(artifact => artifact._key === item)) {
-            //             flagChange = true
-            //         }
-            //
-            //     })
             // }
+
 
             if (flagChange)
 
@@ -1247,7 +1276,14 @@ let slugify = require('slugify')
                 });
         }
 
-        updateSubmitProduct = async (event, formData) => {
+
+         productLevelOneKeys=["name","category","condition","description", "purpose","state", "type",
+            "units","volume","external_reference","year_of_making"]
+         skuKeys=["brand","embodied_carbon_kgs",
+             "sku",
+             // "upc",
+            "gross_weight_kgs","model","part_no","power_supply","serial",]
+        updateSubmitProduct =  (event, formData) => {
 
             event.preventDefault();
             event.stopPropagation()
@@ -1259,44 +1295,111 @@ let slugify = require('slugify')
             }
 
 
-            await   this.updateImages();
-
-            if (fields["deliver"] !== undefined) {
-                this.updateSite(fields["deliver"]);
-                // this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
-                // this.props.triggerCallback("edit")
-                removeKeyFromObj(fields, ['deliver'])
-            }
 
 
 
-            // if (Object.keys(fields).length === 0) {
-            //     this.props.triggerCallback("edit")
-            //     return;
+            // await   this.updateImages();
+
+
+            // if (fields["deliver"] !== undefined) {
+            //     this.updateSite(fields["deliver"]);
+            //     // this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
+            //     // this.props.triggerCallback("edit")
+            //     removeKeyFromObj(fields, ['deliver'])
             // }
 
-            if (fields["serial"] !== undefined || fields["model"] !== undefined || fields["brand"] !== undefined ||
-                fields["sku"] !== undefined || fields["upc"] !== undefined || fields["gross_weight_kgs"] !== undefined || fields["embodied_carbon_kgs"] !== undefined) {
 
-                let sku = {}
 
-                let skuFields = [ "serial", "model", "upc", "part_no",
-                    "embodied_carbon_kgs", "gross_weight_kgs", "brand","external_reference"]
+            const data = new FormData(event.target);
 
-                skuFields.forEach(item => {
-                    if (!(fields[item] === undefined)) {
-                        if (fields[item]===""){
-                            sku[item] = null
-                        }else{
-                            sku[item] = fields[item]
-                        }
 
-                    }
-                })
+            // const is_listable = this.state.is_listable?true:false;
+            // const is_manufacturer = this.state.is_manufacturer?true:false;
+            const is_listable = true;
+            const is_manufacturer = false;
+            const site = data.get("deliver")
+            const energy_rating = this.state.energyRating;
 
-                await removeKeyFromObj(fields, skuFields)
-                fields.sku = sku
+            let productData = {
+                energy_rating: energy_rating,
+                is_listable: is_listable,
+                sku: {},
+            };
+            console.log("start")
+            console.log("configure payload")
+            productData= this.configurePayload(productData,data)
+            console.log("recieved payload", productData)
+            if (this.state.fields?.['factory_geo_location']){
+                productData['factory_geo_location']=this.state.fields?.['factory_geo_location']
+                }
+
+
+
+
+                delete this.props.item.product['sku']['sku']
+
+            console.log(this.props.item.product)
+
+
+
+            let keysChanged= getModifiedObjectKeys(productData,this.props.item.product,[...this.productLevelOneKeys,...this.skuKeys])
+            console.log("modify list ready")
+            console.log(this.props.item.product)
+            console.log("keys changed",keysChanged)
+            console.log("start configure carbonb")
+
+            // let abc= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
+            //     this.state.existingItemsOutboundTransport,keysChanged)
+            // console.log("carbon data ready")
+            //
+            // console.log(this.props.item.product)
+
+            // console.log("embodied carbon")
+            // console.log(keysChanged)
+            // console.log(keysChanged.outbound_transport)
+
+            // console.log(keysChanged.composition,this.props.item.product.composition)
+                if (JSON.stringify(keysChanged.composition)===JSON.stringify(this.props.item.product.composition)){
+
+                    delete keysChanged.composition
+                }
+            // console.log(keysChanged.processes,this.props.item.product.processes)
+
+            if (JSON.stringify(keysChanged.processes)===JSON.stringify(this.props.item.product.processes)){
+                delete keysChanged.processes
             }
+            // console.log("outbound",keysChanged.outbound_transport,this.props.item.product.outbound_transport)
+            if (JSON.stringify(keysChanged.outbound_transport)===JSON.stringify(this.props.item.product.outbound_transport)){
+                delete keysChanged.outbound_transport
+            }
+
+            // console.log("abc ",abc)
+
+            return
+
+
+            // if (fields["serial"] !== undefined || fields["model"] !== undefined || fields["brand"] !== undefined ||
+            //     fields["sku"] !== undefined || fields["upc"] !== undefined || fields["gross_weight_kgs"] !== undefined || fields["embodied_carbon_kgs"] !== undefined) {
+            //
+            //     let sku = {}
+            //
+            //     let skuFields = [ "serial", "model", "upc", "part_no",
+            //         "embodied_carbon_kgs", "gross_weight_kgs", "brand","external_reference"]
+            //
+            //     skuFields.forEach(item => {
+            //         if (!(fields[item] === undefined)) {
+            //             if (fields[item]===""){
+            //                 sku[item] = null
+            //             }else{
+            //                 sku[item] = fields[item]
+            //             }
+            //
+            //         }
+            //     })
+            //
+            //     await removeKeyFromObj(fields, skuFields)
+            //     fields.sku = sku
+            // }
 
             this.setState({
                 btnLoading: true,
@@ -1308,13 +1411,11 @@ let slugify = require('slugify')
                 let productData = {
                     id: this.props.item.product._key,
                     // is_manufacturer: this.state.is_manufacturer ? true : false,
-                    update: fields
+                    update: keysChanged
                 };
 
                 productData["update"]= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
                     this.state.existingItemsOutboundTransport,productData["update"])
-
-
 
                     axios
                         .post(
@@ -1367,6 +1468,7 @@ let slugify = require('slugify')
 
         componentDidUpdate(prevProps, prevState, snapshot) {
             if (prevProps!==this.props){
+
 
                 if (this.props.item){
                     this.isManufacturer()
@@ -1571,6 +1673,7 @@ let slugify = require('slugify')
 
         handleChangePartsList=( value,valueText,field,uId,index,type) =>{
 
+// debugger
             if (value)
             try {
                 if (type===1){
@@ -1715,6 +1818,7 @@ let slugify = require('slugify')
                 console.log(e)
             }
 
+            console.log(this.props.item.product)
         }
 
         handleView=(productId,type)=>{
@@ -2244,7 +2348,7 @@ let slugify = require('slugify')
                                                         onChange={(value)=> {
 
                                                         }}
-                                                        options={this.state.yearsList} name={"manufacturedDate"} title="Year Of Manufacture"/>
+                                                        options={this.state.yearsList} name={"year_of_making"} title="Year Of Manufacture"/>
 
                                                 </div>
 

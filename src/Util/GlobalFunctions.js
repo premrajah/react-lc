@@ -62,8 +62,7 @@ export const  trackModifiedObjectKeys=(currentObj,previousObj ,keysToDetectChang
 
 export const  getModifiedObjectKeys=(currentObj,previousObj ,keysToDetectChange=[]) =>{
 
-    console.log(currentObj,previousObj,keysToDetectChange)
-    // console.log("modifiend list")
+
     try {
         if (keysToDetectChange.length>0) {
 

@@ -30,6 +30,7 @@ const EmbodiedCarbon = (props) => {
             const formData = new FormData();
             formData.append('file', file);
             const config = {
+                responseType: 'blob', 
                 headers: { 'content-type': 'multipart/form-data' }
             }
 
@@ -39,15 +40,16 @@ const EmbodiedCarbon = (props) => {
                 document.body.appendChild(a);
                 a.style = "display: none";
 
-                const blob = new Blob([res.data], { type: "octet/stream" })
+                // const blob = new Blob([res.data], { type: "octet/stream" })
+                //const blob = res; //new Blob([res], { type: "application/vnd.ms-excel" })
                 // const blob = new Blob([res.data], { type: "application/zip" })
                 // const url = URL.createObjectURL(blob);
 
                 // const blob=await res.blob()
-                const url = URL.createObjectURL(blob);
+                const url = URL.createObjectURL(res.data);
 
                 a.href = url;
-                a.download = `${date}_response.csv`;
+                a.download = `${date}_response.xlsx`;
                 a.click();
                 window.URL.revokeObjectURL(url);
 

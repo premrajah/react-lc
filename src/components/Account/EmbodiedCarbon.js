@@ -35,7 +35,6 @@ const EmbodiedCarbon = (props) => {
             }
 
             axios.post(`${baseUrl}carbon/upload/csv`, formData, config).then(async (res) =>   {
-                console.log(">> ",res);
                 const a = document.createElement("a");
                 const date =  Date.now()
                 document.body.appendChild(a);

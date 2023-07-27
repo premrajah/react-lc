@@ -62,22 +62,37 @@ export const  trackModifiedObjectKeys=(currentObj,previousObj ,keysToDetectChang
 
 export const  getModifiedObjectKeys=(currentObj,previousObj ,keysToDetectChange=[]) =>{
 
-    // console.log(currentObj,previousObj,keysToDetectChange)
-    console.log("modifiend list")
+    console.log(currentObj,previousObj,keysToDetectChange)
+    // console.log("modifiend list")
     try {
+        if (keysToDetectChange.length>0) {
+
+            let resultObj = Object.assign(...Array.from(
+                new Set([...Object.keys(currentObj).filter(item => keysToDetectChange.includes(item)), ...Object.keys(previousObj).filter(item => keysToDetectChange.includes(item))]),
+                k => ({
+                    [k]: isObject(currentObj[k]) && isObject(previousObj[k])
+                        ? getModifiedObjectKeys(currentObj[k], previousObj[k], keysToDetectChange)
+                        : currentObj[k] !== previousObj[k] ? currentObj[k] : null
+                })
+            ));
+
+            return removeNullKeysFromNestedObject(resultObj)
+        }else{
+
+            let resultObj = Object.assign(...Array.from(
+                new Set([...Object.keys(currentObj), ...Object.keys(previousObj)]),
+                k => ({
+                    [k]: isObject(currentObj[k]) && isObject(previousObj[k])
+                        ? getModifiedObjectKeys(currentObj[k], previousObj[k], keysToDetectChange)
+                        : currentObj[k] !== previousObj[k] ? currentObj[k] : null
+                })
+            ));
+
+            return removeNullKeysFromNestedObject(resultObj)
+
+        }
 
 
-        let resultObj = Object.assign(...Array.from(
-            new Set([...Object.keys(currentObj).filter(item => keysToDetectChange.includes(item)), ...Object.keys(previousObj).filter(item => keysToDetectChange.includes(item))]),
-            k => ({
-                [k]: isObject(currentObj[k]) && isObject(previousObj[k])
-                    ? getModifiedObjectKeys(currentObj[k], previousObj[k], keysToDetectChange)
-                    : currentObj[k] !== previousObj[k] ? currentObj[k] : null
-            })
-        ));
-
-
-        return removeNullKeysFromNestedObject(resultObj)
     }catch (e) {
         console.log(e)
     }

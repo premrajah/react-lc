@@ -15,9 +15,9 @@ import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {
     cleanFilename,
-    fetchErrorMessage,
-    getModifiedObjectKeys, getModifiedObjectKeysLodash,
-    removeKeyFromObj, trackModifiedObjectKeys
+    fetchErrorMessage, getModifiedObjectKeys,
+    // getModifiedObjectKeys, getModifiedObjectKeysLodash,
+    // removeKeyFromObj, trackModifiedObjectKeys
 } from "../../Util/GlobalFunctions";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
@@ -150,7 +150,11 @@ let slugify = require('slugify')
                 existingItemsOutboundTransport:[],
                 energySources:[],
                 transportModes:[],
-                totalPercentError:false
+                totalPercentError:false,
+                previousData:null,
+                prevExistingItemsParts:[],
+                prevExistingItemsProcesses:[],
+                prevExistingItemsOutboundTransport:[],
 
             };
 
@@ -216,8 +220,8 @@ let slugify = require('slugify')
 
                             let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
                             let subCategories=cat.length>0?cat[0].types:[]
-                           let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
-                              let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                            let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                            let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
 
                             this.setState({
                                 subCategories:subCategories,
@@ -1268,12 +1272,16 @@ let slugify = require('slugify')
                 )
                 .then((res) => {
 
-                    this.props.loadCurrentProduct(this.props.item.product._key)
+                    // this.props.loadCurrentProduct(this.props.item.product._key)
+
 
                 })
                 .catch((error) => {
 
-                });
+                }).finally(()=>{
+
+                    return
+            });
         }
 
 
@@ -1283,7 +1291,7 @@ let slugify = require('slugify')
              "sku",
              // "upc",
             "gross_weight_kgs","model","part_no","power_supply","serial",]
-        updateSubmitProduct =  (event, formData) => {
+        updateSubmitProduct =  async (event, formData) => {
 
             event.preventDefault();
             event.stopPropagation()
@@ -1295,9 +1303,6 @@ let slugify = require('slugify')
             }
 
 
-
-
-
             // await   this.updateImages();
 
 
@@ -1307,6 +1312,10 @@ let slugify = require('slugify')
             //     // this.props.triggerCallback("edit")
             //     removeKeyFromObj(fields, ['deliver'])
             // }
+
+
+
+
 
 
 
@@ -1325,81 +1334,54 @@ let slugify = require('slugify')
                 is_listable: is_listable,
                 sku: {},
             };
-            console.log("start")
-            console.log("configure payload")
-            productData= this.configurePayload(productData,data)
-            console.log("recieved payload", productData)
-            if (this.state.fields?.['factory_geo_location']){
-                productData['factory_geo_location']=this.state.fields?.['factory_geo_location']
-                }
+
+            // console.log(site,pro)
+            // console.log("site", site, this.props.item.site._key)
 
 
 
 
-                delete this.props.item.product['sku']['sku']
+            productData = this.configurePayload(productData, data)
 
-            console.log(this.props.item.product)
+            if (this.state.fields?.['factory_geo_location']) {
+                productData['factory_geo_location'] = this.state.fields?.['factory_geo_location']
+            }
+
+
+            delete this.props.item.product['sku']['sku']
 
 
 
-            let keysChanged= getModifiedObjectKeys(productData,this.props.item.product,[...this.productLevelOneKeys,...this.skuKeys])
-            console.log("modify list ready")
-            console.log(this.props.item.product)
-            console.log("keys changed",keysChanged)
-            console.log("start configure carbonb")
+            let keysChanged = await getModifiedObjectKeys(productData, this.props.item.product, [...this.productLevelOneKeys, ...this.skuKeys])
 
-            // let abc= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
-            //     this.state.existingItemsOutboundTransport,keysChanged)
-            // console.log("carbon data ready")
-            //
-            // console.log(this.props.item.product)
+            keysChanged = await this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
+                this.state.existingItemsOutboundTransport, keysChanged)
 
-            // console.log("embodied carbon")
-            // console.log(keysChanged)
-            // console.log(keysChanged.outbound_transport)
+            if (JSON.stringify(keysChanged.composition) === JSON.stringify(this.state.prevExistingItemsParts)) {
+                delete keysChanged.composition
+            }
 
-            // console.log(keysChanged.composition,this.props.item.product.composition)
-                if (JSON.stringify(keysChanged.composition)===JSON.stringify(this.props.item.product.composition)){
+            let keysChangedParts = await getModifiedObjectKeys(keysChanged.composition, this.state.prevExistingItemsParts)
+            let keysChangedProcesses = await getModifiedObjectKeys(keysChanged.processes, this.state.prevExistingItemsProcesses)
+            let keysChangedOutbound = await getModifiedObjectKeys(keysChanged.outbound_transport, this.state.prevExistingItemsOutboundTransport)
 
-                    delete keysChanged.composition
-                }
-            // console.log(keysChanged.processes,this.props.item.product.processes)
 
-            if (JSON.stringify(keysChanged.processes)===JSON.stringify(this.props.item.product.processes)){
+            if (Object.keys(keysChangedParts).length===0){
+                delete keysChanged.composition
+            }
+            if (Object.keys(keysChangedProcesses).length===0){
                 delete keysChanged.processes
             }
-            // console.log("outbound",keysChanged.outbound_transport,this.props.item.product.outbound_transport)
-            if (JSON.stringify(keysChanged.outbound_transport)===JSON.stringify(this.props.item.product.outbound_transport)){
+            if (Object.keys(keysChangedOutbound).length===0){
                 delete keysChanged.outbound_transport
             }
 
-            // console.log("abc ",abc)
-
-            return
+            console.log( keysChanged)
 
 
-            // if (fields["serial"] !== undefined || fields["model"] !== undefined || fields["brand"] !== undefined ||
-            //     fields["sku"] !== undefined || fields["upc"] !== undefined || fields["gross_weight_kgs"] !== undefined || fields["embodied_carbon_kgs"] !== undefined) {
-            //
-            //     let sku = {}
-            //
-            //     let skuFields = [ "serial", "model", "upc", "part_no",
-            //         "embodied_carbon_kgs", "gross_weight_kgs", "brand","external_reference"]
-            //
-            //     skuFields.forEach(item => {
-            //         if (!(fields[item] === undefined)) {
-            //             if (fields[item]===""){
-            //                 sku[item] = null
-            //             }else{
-            //                 sku[item] = fields[item]
-            //             }
-            //
-            //         }
-            //     })
-            //
-            //     await removeKeyFromObj(fields, skuFields)
-            //     fields.sku = sku
-            // }
+            if (site !== this.props.item.site._key){
+                await this.updateSite(fields["deliver"]);
+            }
 
             this.setState({
                 btnLoading: true,
@@ -1414,44 +1396,43 @@ let slugify = require('slugify')
                     update: keysChanged
                 };
 
-                productData["update"]= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
-                    this.state.existingItemsOutboundTransport,productData["update"])
+                // productData["update"] = this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
+                //     this.state.existingItemsOutboundTransport, productData["update"])
 
-                    axios
-                        .post(
-                            baseUrl + "product",
+                axios
+                    .post(
+                        baseUrl + "product",
 
-                            productData
+                        productData
+                    )
+                    .then((res) => {
+
+
+                        this.props.refreshPageWithSavedState(
+                            {refresh: true, reset: false}
                         )
-                        .then((res) => {
 
-
-                            this.props.refreshPageWithSavedState(
-                                {refresh: true, reset: false}
-                            )
-
-                            this.props.showSnackbar({
-                                show: true,
-                                severity: "success",
-                                message: this.props.item.product.name + " updated successfully. Thanks"
-                            })
-                            this.props.triggerCallback("edit")
-
-                            if (this.props.loadCurrentProduct)
-                                this.props.loadCurrentProduct(this.props.item.product._key)
-
+                        this.props.showSnackbar({
+                            show: true,
+                            severity: "success",
+                            message: this.props.item.product.name + " updated successfully. Thanks"
                         })
-                        .catch((error) => {
+                        this.props.triggerCallback("edit")
 
-                            this.setState({
-                                btnLoading: false,
-                                loading: false,
-                                isSubmitButtonPressed: false
-                            });
-                            this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+                        if (this.props.loadCurrentProduct)
+                            this.props.loadCurrentProduct(this.props.item.product._key)
 
+                    })
+                    .catch((error) => {
+
+                        this.setState({
+                            btnLoading: false,
+                            loading: false,
+                            isSubmitButtonPressed: false
                         });
+                        this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
 
+                    });
 
 
             } catch (e) {
@@ -1537,6 +1518,7 @@ let slugify = require('slugify')
         };
         componentDidMount() {
 
+
             window.scrollTo(0, 0);
             this.getResourceCarbon()
             this.getEnergyProcess()
@@ -1557,6 +1539,15 @@ let slugify = require('slugify')
             this.setUpYearList();
             this.props.loadSites(this.props.userDetail.token);
             this.fetchCache()
+
+            if (this.props.item){
+                this.setState({
+                    prevExistingItemsParts:JSON.parse(JSON.stringify({...this.props.item.product.composition})),
+                    prevExistingItemsProcesses:JSON.parse(JSON.stringify({...this.props.item.product.processes})),
+                    prevExistingItemsOutboundTransport:JSON.parse(JSON.stringify({...this.props.item.product.outbound_transport})),
+                })
+
+            }
         }
 
         loadInitialCarbonData=(itemObj)=>{
@@ -1567,7 +1558,7 @@ let slugify = require('slugify')
           let item=itemObj
             if(this.props.productLines){
 
-                item=this.props.item
+                item={...this.props.item}
             }
             let existingParts=[]
             let existingProcesses=[]
@@ -1673,7 +1664,10 @@ let slugify = require('slugify')
 
         handleChangePartsList=( value,valueText,field,uId,index,type) =>{
 
+            console.log(value,field)
 // debugger
+
+
             if (value)
             try {
                 if (type===1){
@@ -1818,7 +1812,9 @@ let slugify = require('slugify')
                 console.log(e)
             }
 
-            console.log(this.props.item.product)
+            console.log("old pro",this.state.prevExistingItemsProcesses)
+            console.log("old parts",this.state.prevExistingItemsParts)
+            console.log("old outbound",this.state.prevExistingItemsOutboundTransport)
         }
 
         handleView=(productId,type)=>{
@@ -1844,15 +1840,10 @@ let slugify = require('slugify')
                     showForm: false
                 })
             }
-
-
             // this.props.setMultiplePopUp({show:true,type:"isProduct"})
             // this.props.showProductPopUp({ action: "hide_all", show: false });
 
         }
-
-
-
 
         render() {
 

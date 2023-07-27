@@ -605,7 +605,7 @@ class CalculateCarbon extends Component {
 
 
             outboundTransports.push({
-                factory_geo_location: existingItemsOutboundTransport[i].fields?.factory_geo_location,
+                geo_location: existingItemsOutboundTransport[i].fields?.geo_location,
                 transport_mode: existingItemsOutboundTransport[i].fields?.transport_mode
             })
 

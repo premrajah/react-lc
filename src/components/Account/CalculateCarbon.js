@@ -388,7 +388,6 @@ class CalculateCarbon extends Component {
 
         this.setState({ errors: errors });
 
-        console.log("errors ", errors)
         if (!formIsValid) {
             this.setState({
                 errorPending: true
@@ -606,7 +605,7 @@ class CalculateCarbon extends Component {
 
 
             outboundTransports.push({
-                factory_geo_location: existingItemsOutboundTransport[i].fields?.factory_geo_location,
+                geo_location: existingItemsOutboundTransport[i].fields?.geo_location,
                 transport_mode: existingItemsOutboundTransport[i].fields?.transport_mode
             })
 
@@ -652,8 +651,6 @@ class CalculateCarbon extends Component {
             productData = this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
                 this.state.existingItemsOutboundTransport, productData)
 
-            console.log(productData)
-
 
             // return;
 
@@ -670,7 +667,6 @@ class CalculateCarbon extends Component {
                 )
                 .then((res) => {
 
-                    console.log(res.data.data)
                     this.setState({
                         responseData:res.data.data
                     })
@@ -735,7 +731,6 @@ class CalculateCarbon extends Component {
 
     handleChangePartsList = (value, valueText, field, uId, index, type) => {
 
-        // console.log(value, valueText, field, uId, index, type)
 
             try {
                 if (type === 1) {

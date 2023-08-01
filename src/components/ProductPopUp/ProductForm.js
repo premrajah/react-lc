@@ -627,6 +627,7 @@ let slugify = require('slugify')
 
             let {formIsValid,errors}= validateInputs(validations,fields,editMode)
 
+            console.log(formIsValid,errors)
 
 
             if (this.validationsCarbonDataError()){
@@ -2141,9 +2142,15 @@ let slugify = require('slugify')
 
                                       </div>
                                   </div>
-                                  {!this.props.productLines && <div className="row  mt-2">
+                                  <div className="row  mt-2">
                                         <div className="col-12">
-                                            <div className="row  justify-content-start ">
+
+
+
+                                                <div className="row  justify-content-start ">
+
+                                                    {!this.props.productLines &&
+                                                        <>
                                                 <div className="col-12 ">
                                                     <div
                                                         className={"custom-label text-bold text-blue mb-1"}>
@@ -2181,6 +2188,8 @@ let slugify = require('slugify')
                                                         name="volume" title="(Volume)" />}
 
                                                 </div>
+                                                         </>
+                                                    }
                                                 <div className="col-md-4 col-xs-12 ">
                                                 <TextFieldWrapper
                                                     editMode
@@ -2194,7 +2203,7 @@ let slugify = require('slugify')
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>}
+                                    </div>
 
                                 <div className="row  mt-2">
                                     <div className="col-12">

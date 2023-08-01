@@ -2,7 +2,7 @@ import axios from "axios";
 import {baseUrl, MIME_TYPES, MIME_TYPES_ARRAY} from "./Constants";
 import React from "react";
 import moment from "moment/moment";
-
+import _ from 'lodash';
 
 
 export const capitalize = (sentence) => {
@@ -33,6 +33,133 @@ const addAndFilters = (filters) => {
 
     return url;
 };
+
+const isObject = v => v && typeof v === 'object';
+
+export const  trackModifiedObjectKeys=(currentObj,previousObj ,keysToDetectChange=[]) =>{
+
+    console.log(currentObj,previousObj,keysToDetectChange)
+    if (keysToDetectChange.length>0){
+        return  Object.assign(...Array.from(
+            new Set([...Object.keys(currentObj).filter(item=> keysToDetectChange.includes(item)), ...Object.keys(previousObj).filter(item=> keysToDetectChange.includes(item))]),
+            k => ({ [k]: isObject(currentObj[k]) && isObject(previousObj[k])
+                    ? trackModifiedObjectKeys(currentObj[k], previousObj[k],keysToDetectChange)
+                    : currentObj[k] !== previousObj[k]
+            })
+        ));
+
+    }else{
+        return  Object.assign(...Array.from(
+            new Set([...Object.keys(currentObj), ...Object.keys(previousObj)]),
+            k => ({ [k]: isObject(currentObj[k]) && isObject(previousObj[k])
+                    ? trackModifiedObjectKeys(currentObj[k], previousObj[k],keysToDetectChange)
+                    : currentObj[k] !== previousObj[k]
+            })
+        ));
+    }
+
+}
+
+export const  getModifiedObjectKeys=(currentObj,previousObj ,keysToDetectChange=[]) =>{
+
+
+    try {
+        if (keysToDetectChange.length>0) {
+
+            let resultObj = Object.assign(...Array.from(
+                new Set([...Object.keys(currentObj).filter(item => keysToDetectChange.includes(item)), ...Object.keys(previousObj).filter(item => keysToDetectChange.includes(item))]),
+                k => ({
+                    [k]: isObject(currentObj[k]) && isObject(previousObj[k])
+                        ? getModifiedObjectKeys(currentObj[k], previousObj[k], keysToDetectChange)
+                        : currentObj[k] !== previousObj[k] ? currentObj[k] : null
+                })
+            ));
+
+            return removeNullKeysFromNestedObject(resultObj)
+        }else{
+
+            let resultObj = Object.assign(...Array.from(
+                new Set([...Object.keys(currentObj), ...Object.keys(previousObj)]),
+                k => ({
+                    [k]: isObject(currentObj[k]) && isObject(previousObj[k])
+                        ? getModifiedObjectKeys(currentObj[k], previousObj[k], keysToDetectChange)
+                        : currentObj[k] !== previousObj[k] ? currentObj[k] : null
+                })
+            ));
+
+            return removeNullKeysFromNestedObject(resultObj)
+
+        }
+
+
+    }catch (e) {
+        console.log(e)
+    }
+
+}
+
+export const removeNullKeysFromNestedObject=(resultObj)=>{
+
+    Object.keys(resultObj).forEach(key => {
+
+        if (isObject(resultObj[key])){
+
+            removeNullKeysFromNestedObject(resultObj[key])
+        }else{
+            if (resultObj[key] == undefined) {
+                delete resultObj[key];
+            }
+        }
+
+    });
+
+
+
+    return removeEmptyObjectsFromNestedObects(resultObj)
+}
+
+const removeEmptyObjectsFromNestedObects=(resultObj)=>{
+  Object.keys(resultObj).forEach(key => {
+
+        if (isObject(resultObj[key])){
+            if (Object.keys(resultObj[key]).length===0){
+
+                delete resultObj[key];
+            }else{
+                removeEmptyObjectsFromNestedObects(resultObj[key])
+            }
+        }
+
+    })
+
+   return resultObj
+}
+
+export const  getModifiedObjectKeysLodash=(currentObj,previousObj ,keysToDetectChange=[]) => {
+
+    const diff =  {
+        old: _.pickBy(previousObj, (value, key) => {
+
+            if (isObject(previousObj[key])&&isObject(currentObj[key])){
+                getModifiedObjectKeys(previousObj[key],currentObj[key],keysToDetectChange)
+            }
+            return !_.isEqual(value, currentObj[key]);
+
+        }),
+        new: _.pickBy(currentObj, (value, key) => {
+
+            if (isObject(currentObj[key])&&isObject(previousObj[key])){
+                getModifiedObjectKeys(currentObj[key],previousObj[key],keysToDetectChange)
+            }
+            return !_.isEqual(previousObj[key], value);
+
+        })
+    }
+
+    console.log(diff)
+
+    return diff
+}
 
 export const fetchErrorMessage = (e) => {
     let errorString = "";

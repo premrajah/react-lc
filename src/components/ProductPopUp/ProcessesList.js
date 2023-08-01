@@ -20,6 +20,7 @@ const ProcessesList=(props)=>{
     item={item}
     uId={item.index}
     index={index}
+    handleChange={props.handleChange}
     list={list}
     errors={props.errors[item.index]}
 
@@ -103,9 +104,7 @@ const DynamicAutoCompleteBox=(props)=> {
                             initialValue={props.item.fields?.source_id}
 
                             onChange={(value,valueText)=> {
-
                                 props.handleChange(value, valueText,`source_id`,props.uId,props.index);
-
                             }}
                             select={"Select"}
                             disabled={ (props.list.length > 0 )? false : true}

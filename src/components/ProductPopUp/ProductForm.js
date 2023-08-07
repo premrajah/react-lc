@@ -14,7 +14,7 @@ import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
 import {
-    cleanFilename,
+    cleanFilename, compareDeep,
     fetchErrorMessage, getModifiedObjectKeys,
     // getModifiedObjectKeys, getModifiedObjectKeysLodash,
     // removeKeyFromObj, trackModifiedObjectKeys
@@ -955,39 +955,7 @@ let slugify = require('slugify')
                 };
 
 
-                    // let productData = {
-                    //     purpose: purpose.toLowerCase(),
-                    //     condition: condition.toLowerCase(),
-                    //     name: name,
-                    //     description: description,
-                    //     category: category,
-                    //     type: type,
-                    //     units: units,
-                    //     state: state,
-                    //     volume: volume,
-                    //     energy_rating: energy_rating,
-                    //     is_listable: is_listable,
-                    //     "external_reference": external_reference,
-                    //     sku: {
-                    //         serial: serial,
-                    //         model: model,
-                    //         brand: brand,
-                    //         sku: sku,
-                    //         upc: upc,
-                    //         part_no: part_no,
-                    //         embodied_carbon_kgs: embodied_carbon_kgs?parseInt(embodied_carbon_kgs):null,
-                    //         gross_weight_kgs:gross_weight_kgs?parseInt(gross_weight_kgs):null
-                    //     },
-                    //
-                    // };
-
-
-
                   productData=this.configurePayload(productData,data)
-
-
-
-
 
                 if (this.state.fields?.['factory_geo_location']){
                     productData['factory_geo_location']=this.state.fields?.['factory_geo_location']
@@ -1015,12 +983,6 @@ let slugify = require('slugify')
                     };
 
 
-
-
-
-                    // console.log(completeData)
-                    // return;
-
                 this.setState({
                     btnLoading: true,
                     loading:true
@@ -1036,8 +998,7 @@ let slugify = require('slugify')
                             .put(
                                 createProductUrl,
                                 completeData,
-                            )
-                            .then((res) => {
+                            ).then((res) => {
 
                                 if (!this.props.parentProduct) {
                                     this.setState({
@@ -1047,18 +1008,13 @@ let slugify = require('slugify')
                                 }
 
                                 this.props.refreshPageWithSavedState( {refresh:true,reset: true})
-
-
                                 this.props.showSnackbar({
                                     show: true,
                                     severity: "success",
                                     message: productData.name + " created successfully. Thanks"
                                 })
                                 this.showProductSelection();
-
                                 this.setState({loading: false,})
-
-
                                 this.setState({
                                     btnLoading: false,
                                     loading: false,
@@ -1303,23 +1259,6 @@ let slugify = require('slugify')
                 return
             }
 
-
-            // await   this.updateImages();
-
-
-            // if (fields["deliver"] !== undefined) {
-            //     this.updateSite(fields["deliver"]);
-            //     // this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
-            //     // this.props.triggerCallback("edit")
-            //     removeKeyFromObj(fields, ['deliver'])
-            // }
-
-
-
-
-
-
-
             const data = new FormData(event.target);
 
 
@@ -1336,24 +1275,11 @@ let slugify = require('slugify')
                 sku: {},
             };
 
-            // console.log(site,pro)
-            // console.log("site", site, this.props.item.site._key)
-
-
-
-
             productData = this.configurePayload(productData, data)
-
-            if (this.state.fields?.['factory_geo_location']) {
-                productData['factory_geo_location'] = this.state.fields?.['factory_geo_location']
-            }
-
-
             delete this.props.item.product['sku']['sku']
 
-
-
             let keysChanged = await getModifiedObjectKeys(productData, this.props.item.product, [...this.productLevelOneKeys, ...this.skuKeys])
+
 
             keysChanged = await this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
                 this.state.existingItemsOutboundTransport, keysChanged)
@@ -1366,8 +1292,8 @@ let slugify = require('slugify')
             let keysChangedProcesses = await getModifiedObjectKeys(keysChanged.processes, this.state.prevExistingItemsProcesses)
             let keysChangedOutbound = await getModifiedObjectKeys(keysChanged.outbound_transport, this.state.prevExistingItemsOutboundTransport)
 
-            console.log("udefined proceses ",keysChangedParts,)
-            console.log("udefined proceses ",keysChangedProcesses)
+
+
             if (keysChangedParts&&Object.keys(keysChangedParts).length===0){
                 delete keysChanged.composition
             }
@@ -1376,6 +1302,17 @@ let slugify = require('slugify')
             }
             if (keysChangedOutbound&&Object.keys(keysChangedOutbound).length===0){
                 delete keysChanged.outbound_transport
+            }
+
+
+            if (this.props.item.product?.['factory_geo_location']) {
+
+                let res = compareDeep(this.props.item.product?.['factory_geo_location'],this.state.fields?.['factory_geo_location'])
+
+                if (!res){
+                    keysChanged['factory_geo_location']=this.state.fields?.['factory_geo_location']
+                }
+
             }
 
             console.log( keysChanged)
@@ -1537,6 +1474,15 @@ let slugify = require('slugify')
                     isEditProduct:true,
                 })
                 this.isManufacturer()
+
+                if (this.props.item.product?.['factory_geo_location']){
+
+                   let fields=this.state.fields
+                    fields['factory_geo_location']=this.props.item.product?.['factory_geo_location']
+                    this.setState({
+                        fields:fields
+                    })
+                }
             }
             this.setUpYearList();
             this.props.loadSites(this.props.userDetail.token);

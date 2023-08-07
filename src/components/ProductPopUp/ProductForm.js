@@ -1366,14 +1366,15 @@ let slugify = require('slugify')
             let keysChangedProcesses = await getModifiedObjectKeys(keysChanged.processes, this.state.prevExistingItemsProcesses)
             let keysChangedOutbound = await getModifiedObjectKeys(keysChanged.outbound_transport, this.state.prevExistingItemsOutboundTransport)
 
-
-            if (Object.keys(keysChangedParts).length===0){
+            console.log("udefined proceses ",keysChangedParts,)
+            console.log("udefined proceses ",keysChangedProcesses)
+            if (keysChangedParts&&Object.keys(keysChangedParts).length===0){
                 delete keysChanged.composition
             }
-            if (Object.keys(keysChangedProcesses).length===0){
+            if (keysChangedProcesses&&Object.keys(keysChangedProcesses).length===0){
                 delete keysChanged.processes
             }
-            if (Object.keys(keysChangedOutbound).length===0){
+            if (keysChangedOutbound&&Object.keys(keysChangedOutbound).length===0){
                 delete keysChanged.outbound_transport
             }
 

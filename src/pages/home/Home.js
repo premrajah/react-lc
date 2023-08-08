@@ -5,13 +5,12 @@ import * as actionCreator from "../../store/actions/actions";
 import HomeScreenInfo from './HomeScreenInfo';
 import Dashboard from '../../components/Dashboard/Dashboard';
 
-const Home = () => {
+const Home = ({isLoggedIn}) => {
 
     return (
         <Layout>
             <div className="wrapper ">
-                {/* <Dashboard /> */}
-                <HomeScreenInfo />
+                {isLoggedIn ?  <Dashboard /> : <HomeScreenInfo />}
             </div>
         </Layout>
     );

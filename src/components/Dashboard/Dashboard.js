@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 
-const Dashboard = () => {
+const Dashboard = ({isLoggedIn}) => {
     return (
         <div className="container">
             Dashboard

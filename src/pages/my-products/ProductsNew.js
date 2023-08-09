@@ -1119,15 +1119,17 @@ class ProductsNew extends Component {
                             >
                                 <div className="row  d-flex align-items-center">
                                     {this.state.selectedRows.length === 0 && !this.state.selectAll ? <>
-                                        <div className="col-md-2 btn-rows">
+                                        {/*<div className="col-md-2 btn-rows">*/}
+                                        {/*   */}
+                                        {/*</div>*/}
+                                        <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
+
                                             <MenuDropdown
+                                                maxWidth={"200px"}
                                                 initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
                                                 setSelection={this.setSelection}
                                                 options={["Products", "Service", "Records", "Track", "Issues", "Archive"]}
                                             />
-                                        </div>
-                                        <div className="col-md-10 col-12 d-flex " style={{ flexFlow: "wrap" }}>
-
                                             {this.state.selectionMode !== "Issues" &&
                                                 <>
                                                     <div className="me-2">

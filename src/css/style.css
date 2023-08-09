@@ -4987,3 +4987,6 @@ ul,ol {
     cursor: pointer;
 
 }
+#lock-button{
+    background: none!important;
+}

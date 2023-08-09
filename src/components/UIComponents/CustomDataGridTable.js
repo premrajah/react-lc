@@ -213,10 +213,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                                 } else {
 
                                     if (item.field==="site"){
-                                        itemTmp[`${item.field}`] = getSite(listItem).name
+                                        itemTmp[`${item.field}`] = getSite(listItem)?.name
                                     }
                                    else if (item.field==="siteId"){
-                                        itemTmp[`${item.field}`] = getSite(listItem)._key
+                                        itemTmp[`${item.field}`] = getSite(listItem)?._key
                                     }
 
                                     else{

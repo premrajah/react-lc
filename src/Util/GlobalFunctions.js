@@ -550,11 +550,15 @@ export const cleanFilename = (string) => {
 };
 
 export const getSite = (site) => {
-    let ProductToSite = site.ProductToSite;
 
-    if (ProductToSite && ProductToSite.length > 0 && ProductToSite[0].entries.length > 0) {
-        return ProductToSite[0].entries[0].Site;
-    } else return null;
+    if (site&&site.ProductToSite){
+        let ProductToSite = site.ProductToSite;
+
+        if (ProductToSite && ProductToSite.length > 0 && ProductToSite[0].entries.length > 0) {
+            return ProductToSite[0].entries[0].Site;
+        } else return null;
+    }
+
 };
 
 export const PreProcessCSVData = (text) => {

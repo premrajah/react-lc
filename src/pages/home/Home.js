@@ -10,7 +10,7 @@ const Home = ({isLoggedIn}) => {
     return (
         <Layout>
             <div className="wrapper ">
-                {isLoggedIn ?  <Dashboard /> : <HomeScreenInfo />}
+                <HomeScreenInfo />
             </div>
         </Layout>
     );

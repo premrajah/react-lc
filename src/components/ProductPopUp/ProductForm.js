@@ -2340,7 +2340,7 @@ let slugify = require('slugify')
                                                                     width="auto"
                                                                     noMargin
                                                                     placeholder="e.g 1,2,3 .."
-                                                                    initialValue={this.state.weightOptionsShow&&(this.props.item.product.weight_per_volume_kgs?this.props.item.product.weight_per_volume_kgs:this.props.item.product.sku.gross_weight_kgs)}
+                                                                    initialValue={this.state.weightOptionsShow&&(this.props.item&&this.props.item.product.weight_per_volume_kgs?this.props.item.product.weight_per_volume_kgs:this.props.item&&this.props.item.product.sku.gross_weight_kgs)}
                                                                     onChange={(value)=>this.handleChangeProduct(value,this.state.weightFieldName)}
                                                                     error={this.state.errors[this.state.weightFieldName]}
                                                                     name={this.state.weightFieldName}

@@ -11,7 +11,6 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -24,11 +23,11 @@ import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
 import DescriptionIcon from "@mui/icons-material/Description";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
-import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 import ErrorBoundary from "../../components/ErrorBoundary";
+
 let slugify = require('slugify')
 
 class CreateCampaign extends Component {
@@ -592,27 +591,6 @@ let item=null
 
                 return
             }
-
-
-            // if (this.state.activeStep==1&&this.state.countAll===0&&this.state.countAny===0){
-            //
-            //
-            //
-            //
-            //     this.setState({
-            //
-            //         selectOptionError:true
-            //     })
-            //
-            //     return
-            // }else{
-            //
-            //     this.setState({
-            //
-            //         selectOptionError:false
-            //     })
-            // }
-
 
 
 

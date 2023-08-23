@@ -1,9 +1,6 @@
 import React, {Component} from "react";
 import CustomDataGridTable from "./CustomDataGridTable";
-import {PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
-import MenuDropdown from "../FormsUI/MenuDropdown";
 import SearchBox from "./SearchBox";
-import {removeEmptyValuesObj} from "../../Util/GlobalFunctions";
 import {Spinner} from "react-bootstrap";
 
 class PaginationGrid extends Component {

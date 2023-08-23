@@ -133,6 +133,9 @@ const DynamicAutoCompleteBox=(props)=> {
                                     (item) => item.category === value
                                 )[0].types:[]
                                 setTypes(typeValues)
+
+                                setStates([])
+                                setUnits([])
                                 props.handleChange(value, valueText,`category`,props.uId,props.index);
                             }}
                             options={props.list} name={"category"}
@@ -159,14 +162,17 @@ const DynamicAutoCompleteBox=(props)=> {
                                         )
                                         let states=[]
                                         let units=[]
-                                        if(subCatSelected) {
-                                            states = subCatSelected.states
-                                            units = subCatSelected.units
-                                        }
+                                        setStates([])
 
-                                        setUnits(units)
-                                        setStates(states)
+                                        console.log(states,units)
                                         setTypeSelected(subCatSelected ? subCatSelected : null)
+                                        states = subCatSelected.states
+                                        if(subCatSelected) {
+                                            setTimeout(()=> {
+                                                setStates(states)
+                                                setUnits([])
+                                            },2050)
+                                        }
 
                                     }
                                 },500)
@@ -187,17 +193,19 @@ const DynamicAutoCompleteBox=(props)=> {
                     <div className={"col-md-2 col-sm-12 col-xs-12"}>
 
                         <SelectArrayWrapper
+
+                            reset
                             option={"state"}
                             valueKey={"state"}
                             editMode
                             error={props.errors?.state}
-                            disableAutoLoadingIcon
+                            dibhisableAutoLoadingIcon
                             initialValue={props.item.fields?.state}
                             // initialValue={this.props.item?this.props.item.product.state:""
                             //     ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.state:"")}
                             onChange={(value,valueText)=> {
                                 setUnits([])
-                                setTimeout(()=>{
+                                // setTimeout(()=>{
                                     if ( states&&states.length>0){
                                         let subCatSelected=states.find(
                                             (item) => item.state === value
@@ -209,7 +217,7 @@ const DynamicAutoCompleteBox=(props)=> {
                                         setUnits(units)
                                         setStateSelected(subCatSelected ? subCatSelected : null)
                                     }
-                                },500)
+                                // },50)
                                 props.handleChange(value, valueText,`state`,props.uId,props.index);
 
                             }}
@@ -223,6 +231,8 @@ const DynamicAutoCompleteBox=(props)=> {
                     <div className={"col-md-2 col-sm-12 col-xs-12"}>
 
                         <SelectArrayWrapper
+
+
                             option={"unit"}
                             valueKey={"first_id"}
                             editMode

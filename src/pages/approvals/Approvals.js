@@ -102,12 +102,7 @@ class Approvals extends Component {
 
         let url=baseUrl + "seek?name=EventRelease&relation=&offset=0&size=100&count=false&include-to=Event:any&&include-to=Org:any"
 
-        // if (!this.state.eventToggle){
-        //
-        //     // url=`${url}&or=stage%3D%3Dcompleted&or=stage%3D%3Dcancelled`
-        // }else{
-        //     url=`${url}&or=stage%3D%3Dcompleted&or=stage%3D%3Dcancelled`
-        // }
+
 
         axios.get(url).then(
             (response) => {

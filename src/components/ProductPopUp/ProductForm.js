@@ -5,7 +5,14 @@ import {connect} from "react-redux";
 import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
 import axios from "axios/index";
-import {baseUrl, ENTITY_TYPES, getMimeTypeAndIcon, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import {
+    baseUrl,
+    ENTITY_TYPES,
+    getMimeTypeAndIcon,
+    MIME_TYPES_ACCEPT,
+    RECUR_UNITS,
+    WEIGHT_OPTIONS
+} from "../../Util/Constants";
 import _ from "lodash";
 import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
@@ -155,6 +162,8 @@ let slugify = require('slugify')
                 prevExistingItemsParts:[],
                 prevExistingItemsProcesses:[],
                 prevExistingItemsOutboundTransport:[],
+                weightOptionsShow:false,
+                    weightFieldName:"weight_per_volume_kgs"
 
             };
 
@@ -620,18 +629,21 @@ let slugify = require('slugify')
             }
 
             if (!this.state.disableVolume&&!this.props.productLines){
-                validations.push( validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a decimal number.'}],fields),
-                )
+                validations.push( validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a decimal number.'}],fields))
             }
 
             if(this.state.existingItemsParts.length>0){
 
                 validations.push(validateFormatCreate("factory_geo_location", [{check: Validators.required, message: 'Required'}],fields))
 
-                validations.push(validateFormatCreate("gross_weight_kgs", [{check: Validators.required, message: 'Required'}],fields))
-
             }
 
+
+            if (this.state.weightOptionsShow){
+                validations.push(validateFormatCreate("weightOptions", [{check: Validators.required, message: 'Required'}],fields))
+                validations.push( validateFormatCreate(this.state.weightFieldName, [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a decimal number.'}],fields))
+
+            }
 
 
             let {formIsValid,errors}= validateInputs(validations,fields,editMode)
@@ -955,7 +967,25 @@ let slugify = require('slugify')
                 };
 
 
+
+
                   productData=this.configurePayload(productData,data)
+
+                if (this.state.weightOptionsShow){
+
+
+
+                    if (this.state.weightFieldName==="gross_weight_kgs"){
+                        productData["weight_per_volume_kgs"]=null
+                        productData.sku[this.state.weightFieldName]=this.state.fields[this.state.weightFieldName]
+
+                    }else{
+                        productData["gross_weight_kgs"]=null
+                        productData[this.state.weightFieldName]=this.state.fields[this.state.weightFieldName]
+
+                    }
+
+                }
 
                 if (this.state.fields?.['factory_geo_location']){
                     productData['factory_geo_location']=this.state.fields?.['factory_geo_location']
@@ -971,8 +1001,6 @@ let slugify = require('slugify')
                     }
 
                     let completeData;
-
-                    // if (this.props.parentProduct) {
                     completeData = {
                         product: productData,
                         sub_products: [],
@@ -1243,7 +1271,7 @@ let slugify = require('slugify')
 
 
          productLevelOneKeys=["name","category","condition","description", "purpose","state", "type",
-            "units","volume","external_reference","year_of_making"]
+            "units","volume","external_reference","year_of_making","weight_per_volume_kgs"]
          skuKeys=["brand","embodied_carbon_kgs",
              "sku",
              // "upc",
@@ -1279,6 +1307,9 @@ let slugify = require('slugify')
             delete this.props.item.product['sku']['sku']
 
             let keysChanged = await getModifiedObjectKeys(productData, this.props.item.product, [...this.productLevelOneKeys, ...this.skuKeys])
+
+
+
 
 
             keysChanged = await this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
@@ -1327,6 +1358,19 @@ let slugify = require('slugify')
                 loading: true
             });
 
+            if (keysChanged["weight_per_volume_kgs"]){
+                if (keysChanged.sku){
+                    keysChanged.sku["gross_weight_kgs"]=null
+                }else{
+                    keysChanged.sku={
+                        "gross_weight_kgs":null
+                    }
+                }
+
+            }
+            if (keysChanged?.sku["gross_weight_kgs"]){
+                keysChanged["weight_per_volume_kgs"]=null
+            }
             try {
 
                 let productData = {
@@ -1462,6 +1506,20 @@ let slugify = require('slugify')
             this.getResourceCarbon()
             this.getEnergyProcess()
             this.getTransportMode()
+
+            if (this.props.item){
+                if (this.props.item.product.units.toLowerCase()!=="kgs"){
+                    this.setState({
+                        weightOptionsShow:true,
+                        weightFieldName:this.props.item.product.weight_per_volume_kgs?"weight_per_volume_kgs":"gross_weight_kgs"
+
+                    })
+                }else{
+                    this.setState({
+                        weightOptionsShow:false,
+                    })
+                }
+            }
 
             this.setState({
                 parentProductId:null
@@ -1867,7 +1925,9 @@ let slugify = require('slugify')
 
                     <div className={"row justify-content-center create-product-row"}>
                         <div className={"col-12"}>
-                              <form  onChange={this.handleChangeForm}
+                              <form
+                                  autoComplete={false}
+                                  onChange={this.handleChangeForm}
                                      onSubmit={(!this.props.item||this.props.productLines)?this.handleSubmit:this.updateSubmitProduct}>
                                 <div className="row ">
                                     {this.props.productLines &&
@@ -2209,7 +2269,21 @@ let slugify = require('slugify')
                                                         initialValue={this.props.item&&this.props.item.product.units}
 
 
-                                                        onChange={(value)=>this.handleChangeProduct(value,"units")}
+                                                        onChange={(value)=>{
+                                                            this.handleChangeProduct(value,"units")
+
+                                                            console.log(value)
+                                                            if (value!=="kgs"){
+                                                                this.setState({
+                                                                    weightOptionsShow:true
+                                                                })
+                                                            }else{
+                                                                this.setState({
+                                                                    weightOptionsShow:false
+                                                                })
+                                                            }
+
+                                                        }}
                                                         error={this.state.errors["units"]}
 
                                                         disabled={ (this.state.units.length > 0) ? false : true}
@@ -2232,17 +2306,65 @@ let slugify = require('slugify')
                                                 </div>
                                                          </>
                                                     }
-                                                <div className="col-md-4 col-xs-12 ">
-                                                <TextFieldWrapper
-                                                    editMode
-                                                    decimalInput
-                                                    error={this.state.errors["gross_weight_kgs"]}
-                                                    onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
-                                                    // details="A unique number used by external systems"
-                                                    initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""
-                                                        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")
-                                                    } name="gross_weight_kgs" title="Gross Weight (Kg)" />
-                                                </div>
+                                                    {this.state.weightOptionsShow &&
+                                                        <div className="col-md-4 col-xs-12 ">
+
+                                                    <div className="row  ">
+                                                        <div className="col-12 ">
+                                                            <div className="custom-label text-bold text-blue ">Select Weight Input type </div>
+                                                        </div>
+                                                        <div className="col-12 connected-fields ">
+
+                                                            <div >
+                                                                <SelectArrayWrapper
+                                                                    id={"first-input"}
+                                                                    noMargin
+                                                                    initialValue={this.state.weightFieldName}
+                                                                    select={"Select"}
+                                                                    option={"value"}
+                                                                    valueKey={"key"}
+                                                                    error={this.state.errors["weightOptions"]}
+                                                                    onChange={(value)=> {
+
+                                                                        this.handleChangeProduct(value,"weightOptions")
+                                                                        this.setState({
+                                                                            weightFieldName:value
+                                                                        })
+                                                                    }}
+                                                                    options={WEIGHT_OPTIONS} name={"weightOptions"}
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <TextFieldWrapper
+                                                                    id={"last-input"}
+                                                                    width="auto"
+                                                                    noMargin
+                                                                    placeholder="e.g 1,2,3 .."
+                                                                    initialValue={this.state.weightOptionsShow&&(this.props.item.product.weight_per_volume_kgs?this.props.item.product.weight_per_volume_kgs:this.props.item.product.sku.gross_weight_kgs)}
+                                                                    onChange={(value)=>this.handleChangeProduct(value,this.state.weightFieldName)}
+                                                                    error={this.state.errors[this.state.weightFieldName]}
+                                                                    name={this.state.weightFieldName}
+                                                                    decimalInput
+
+                                                                />
+                                                            </div>
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                {/*<TextFieldWrapper*/}
+                                                {/*    editMode*/}
+                                                {/*    decimalInput*/}
+                                                {/*    error={this.state.errors["gross_weight_kgs"]}*/}
+                                                {/*    onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}*/}
+                                                {/*    // details="A unique number used by external systems"*/}
+                                                {/*    initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""*/}
+                                                {/*        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")*/}
+                                                {/*    } name="gross_weight_kgs" title="Gross Weight (Kg)" />*/}
+                                                </div>}
                                             </div>
                                         </div>
                                     </div>

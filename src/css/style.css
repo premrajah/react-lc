@@ -4733,16 +4733,15 @@ select option {
 
 }
 .connected-fields{display: flex}
-.connected-fields .field-box>div>input{
+.connected-fields .field-box #first-input{
     border-right:  none!important;
-    border-right-width: 0;
-    border-radius:4px 0 0 4px;
+    border-right-width: 0!important;
+    border-radius:4px 0 0 4px!important;
 }
 
-.connected-fields .field-box select{
+.connected-fields .field-box #last-input{
 
-    border-radius:0px 4px  4px 0;
-
+    border-radius:0px 4px  4px 0!important;
 }
 .spinner-chat{
     text-align: center;background:transparent;

@@ -2313,10 +2313,11 @@ let slugify = require('slugify')
                                                         <div className="col-12 ">
                                                             <div className="custom-label text-bold text-blue ">Select Weight Input type </div>
                                                         </div>
-                                                        <div className="col-12 connected-fields ">
+                                                        <div className="col-12 d-flex flex-row connected-fields ">
 
-                                                            <div >
+                                                            <div  style={{flex:"66%"}}>
                                                                 <SelectArrayWrapper
+
                                                                     id={"first-input"}
                                                                     noMargin
                                                                     initialValue={this.state.weightFieldName}
@@ -2334,7 +2335,7 @@ let slugify = require('slugify')
                                                                     options={WEIGHT_OPTIONS} name={"weightOptions"}
                                                                 />
                                                             </div>
-                                                            <div>
+                                                            <div  style={{flex:"33%"}}>
                                                                 <TextFieldWrapper
                                                                     id={"last-input"}
                                                                     width="auto"

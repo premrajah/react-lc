@@ -5,19 +5,26 @@ import axios from "axios/index";
 import PageHeader from "../../components/PageHeader";
 import * as actionCreator from "../../store/actions/actions";
 import { Download, UploadFile } from "@mui/icons-material";
-import { fetchErrorMessage } from "../../Util/GlobalFunctions";
+import { cleanFilename, fetchErrorMessage } from "../../Util/GlobalFunctions";
 import { Box, Tab, Tabs, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import CalculateCarbon from "./CalculateCarbon";
 import {Spinner} from "react-bootstrap";
+import TextFieldWrapper from '../FormsUI/ProductForm/TextField';
 
 const EmbodiedCarbon = (props) => {
 
     const [activeTab, setActiveTab] = useState(0);
     const [loading, setLoading] = useState(0);
+    const [exportFileName, setExportFileName] = useState(null);
 
     const handleTabChange = (e, newTabState) => {
         setActiveTab(newTabState);
+    }
+
+    const handleExportFileName = (value) => {
+        if(!value) return;
+        setExportFileName(cleanFilename(value.trim()));
     }
 
 
@@ -49,7 +56,7 @@ const EmbodiedCarbon = (props) => {
                 const url = URL.createObjectURL(res.data);
 
                 a.href = url;
-                a.download = `${date}_response.xlsx`;
+                a.download = exportFileName ? `${exportFileName}.xlsx` : `${date}_embodied_carbon_result.xlsx`;
                 a.click();
                 window.URL.revokeObjectURL(url);
 
@@ -58,6 +65,8 @@ const EmbodiedCarbon = (props) => {
                     severity: "success",
                     message: "File downloaded successfully. Thanks"
                 })
+
+                setExportFileName(null); // reset filename
             }).catch(error => {
                 console.log(error)
                 props.showSnackbar({
@@ -162,6 +171,17 @@ const EmbodiedCarbon = (props) => {
                                 </div>
                             </div>
 
+                        </div>
+
+                        <div className="row">
+                            <div className="col">
+                            <TextFieldWrapper 
+                                name="exportFileName" 
+                                title="Enter filename (optional)"
+                                initialValue={exportFileName}
+                                onChange={(value) => handleExportFileName(value)}
+                                />
+                            </div>
                         </div>
                     </CustomTabPanel>
                     <CustomTabPanel value={activeTab} index={1}>

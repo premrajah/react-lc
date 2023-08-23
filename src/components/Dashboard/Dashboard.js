@@ -3,68 +3,32 @@ import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import axios from 'axios';
 import { baseUrl } from '../../Util/Constants';
-import { PieChart, Pie, Tooltip, ResponsiveContainer, Legend } from 'recharts'
+import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie } from 'recharts';
+
 
 
 
 const Dashboard = ({ isLoggedIn }) => {
 
-    const [orgMetrics, setOrgMetrics] = useState(null);
+    const [metrics, setMetrics] = useState(null);
 
     useEffect(() => {
         getOrgMetrics();
     }, [])
 
-    const convertApiDataToChartData = (item) => {
-        if (!item) return;
-        const orgData = [];
-        const data01 = [];
-        const data02 = [];
-
-        item.map((item) => {
-            data01.push(
-                {
-                    "name": "Number of Products",
-                    "value": Number(item.count.toFixed(2)),
-                    "fill": ""
-                },
-                {
-                    "name": "Total Weight of Products",
-                    "value": Number(item.total_weight_kgs.toFixed(2)),
-                    "fill": "#3d3a6c",
-                }
-            )
-
-            const objectEntries = Object.entries(item.total_carbon);
-
-            objectEntries.map(([key, val]) => (
-                data02.push(
-                    {
-                        "name": key,
-                        "value": Number(val.toFixed(2))
-                    }
-                )
-            ))
-        })
-
-        orgData.push({ "data01": data01, "data02": data02 });
-
-        console.log("+++ ", orgData);
-
-        return orgData;
-
-    }
 
     const getOrgMetrics = (startTime, endTime) => {
 
+        const loggedOutApi = `${baseUrl}metrics/product/carbon/charts/all`;
+        const loggedInApi = `${baseUrl}metrics/product/carbon/charts`
 
         try {
-            // const data = await axios.get(`${baseImgUrl}metrics/product/carbon?${startTime ? `start_ts=${startTime}` : null}&${endTime ? `end_ts=${endTime}` : null}`);
-            axios.get(`${baseUrl}metrics/product/carbon`)
+            axios.get(isLoggedIn ? loggedInApi : loggedOutApi)
                 .then(response => {
                     const { data } = response.data;
-                    const orgData = convertApiDataToChartData(data)
-                    setOrgMetrics(orgData);
+
+                    setMetrics(data);
+                    console.log(">>> ", data);
 
                 })
                 .catch(error => {
@@ -76,44 +40,154 @@ const Dashboard = ({ isLoggedIn }) => {
         }
     }
 
+    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#27245C', '#07AD89', '#52507D'];
+
+    const RADIAN = Math.PI / 180;
+    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+        const x = cx + radius * Math.cos(-midAngle * RADIAN);
+        const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+        return (
+            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+                {`${(percent * 100).toFixed(0)}%`}
+            </text>
+        );
+    };
+
     return (
         <div className="container-fluid">
 
-            <section className='org-dashboard'>
-                <div className="row">
+            <section>
+                <div className="row mt-3">
                     <div className="col">
-                        Dashboard
-                        {orgMetrics && <div style={{width: "100%", minHeight: "400px", height: "500px"}}>
-                            <ResponsiveContainer width="100%" height="100%">
-                            <PieChart width={1000} height={400}>
-                                <Pie
-                                    dataKey="value"
-                                    isAnimationActive={false}
-                                    data={orgMetrics[0].data01}
-                                    cx={200}
-                                    cy={200}
-                                    outerRadius={80}
-                                    fill="#27245c"
-                                    label
-                                />
-                                <Pie
-                                    dataKey="value"
-                                    data={orgMetrics[0].data02}
-                                    cx={500}
-                                    cy={200}
-                                    innerRadius={40}
-                                    outerRadius={80}
-                                    fill="#07ad89"
-                                    label
-                                />
-                                <Tooltip />
-                                <Legend />
-                            </PieChart>
-                            </ResponsiveContainer>
-                        </div>}
+                        <h3>{isLoggedIn ? "Org Metrics" : "Platform Metrics"}</h3>
                     </div>
                 </div>
             </section>
+
+            {metrics && <section className='org-dashboard'>
+                <div className="row">
+                    <div className="col-md-6">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <>
+                                <h3 className="blue-text">Life Stage</h3>
+                                <BarChart
+                                    width={600}
+                                    height={400}
+                                    data={metrics.bar_charts.lifestage.data}
+                                // margin={{
+                                //     top: 20,
+                                //     right: 30,
+                                //     left: 20,   
+                                //     bottom: 5,
+                                // }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    {/* <YAxis /> */}
+                                    <Tooltip />
+                                    {/* <Legend /> */}
+                                    <Bar dataKey="name" stackId="a" fill="#27245C" />
+                                    <Bar dataKey="materials" stackId="a" fill="#27245C" />
+                                    <Bar dataKey="manufacture" stackId="a" fill="#07AD89" />
+                                    <Bar dataKey="transport" stackId="a" fill="#D31169" />
+                                    <Bar dataKey="installation" stackId="a" fill="#D1E534" />
+                                    <Bar dataKey="inlife" stackId="a" fill="#52507D" />
+                                    <Bar dataKey="disposal" stackId="a" fill="#51C6AC" />
+                                </BarChart>
+                            </>
+                        </ResponsiveContainer>
+                    </div>
+
+                    <div className="col-md-6">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <>
+                                <h3 className="green-text">Manufacturer</h3>
+                                <PieChart width={400} height={400}>
+                                    {/* <Pie data={metrics.pie_charts.manufacturer.inner} dataKey="value" cx="50%" cy="50%" outerRadius={60} fill="#8884d8" /> */}
+                                    <Pie
+                                        data={metrics.pie_charts.manufacturer.inner}
+                                        cx="50%"
+                                        cy="50%"
+                                        labelLine={false}
+                                        label={renderCustomizedLabel}
+                                        outerRadius={65}
+                                        fill="#8884d8"
+                                        dataKey="value"
+                                    >
+                                        {metrics.pie_charts.manufacturer.inner.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                        ))}
+                                    </Pie>
+                                    <Pie data={metrics.pie_charts.manufacturer.outer} dataKey="value" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" />
+                                    <Tooltip />
+                                </PieChart>
+                            </>
+                        </ResponsiveContainer>
+                    </div>
+
+                </div>
+
+                <div className="row">
+
+                    <div className="col-md-3">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <>
+                                <h3 className="green-text">Age</h3>
+                                <PieChart width={400} height={400}>
+                                    {/* <Pie data={metrics.pie_charts.manufacturer.inner} dataKey="value" cx="50%" cy="50%" outerRadius={60} fill="#8884d8" /> */}
+                                    <Pie
+                                        data={metrics.pie_charts.manufacturer.inner}
+                                        cx="50%"
+                                        cy="50%"
+                                        labelLine={false}
+                                        label={renderCustomizedLabel}
+                                        outerRadius={65}
+                                        fill="#8884d8"
+                                        dataKey="value"
+                                    >
+                                        {metrics.pie_charts.age.inner.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                        ))}
+                                    </Pie>
+                                    <Pie data={metrics.pie_charts.age.outer} dataKey="value" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" />
+                                    <Tooltip />
+                                </PieChart>
+                            </>
+                        </ResponsiveContainer>
+                    </div>
+
+                    <div className="col-md-6">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <>
+                                <h3 className="blue-text">Asset Type</h3>
+                                <BarChart
+                                    width={300}
+                                    height={400}
+                                    data={metrics.bar_charts.asset_type.data}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    {/* <XAxis dataKey="name" /> */}
+                                    {/* <YAxis /> */}
+                                    <Tooltip />
+                                    {/* <Legend /> */}
+                                    <Bar dataKey="name" stackId="a" fill="#27245C" />
+                                    <Bar dataKey="materials" stackId="a" fill="#27245C" />
+                                    <Bar dataKey="manufacture" stackId="a" fill="#07AD89" />
+                                    <Bar dataKey="transport" stackId="a" fill="#D31169" />
+                                    <Bar dataKey="installation" stackId="a" fill="#D1E534" />
+                                    <Bar dataKey="inlife" stackId="a" fill="#52507D" />
+                                    <Bar dataKey="disposal" stackId="a" fill="#51C6AC" />
+                                </BarChart>
+                            </>
+                        </ResponsiveContainer>
+                    </div>
+
+
+                </div>
+
+            </section>}
 
         </div>
     )

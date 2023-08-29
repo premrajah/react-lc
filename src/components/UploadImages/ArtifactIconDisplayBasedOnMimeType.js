@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { MIME_TYPES } from "../../Util/Constants";
 import OndemandVideoIcon from "@mui/icons-material/YouTube";
+import LinkIcon from '@mui/icons-material/Link';
 import ImageIcon from "@mui/icons-material/Image";
 import DescriptionIcon from "@mui/icons-material/Description";
 import BrowserNotSupportedIcon from '@mui/icons-material/BrowserNotSupported';
@@ -77,7 +78,7 @@ const ArtifactIconDisplayBasedOnMimeType = ({ artifact, showSnackbar }) => {
             // Videos
             case MIME_TYPES.MOV:
             case MIME_TYPES.MP4:
-                return <OndemandVideoIcon
+                return <LinkIcon
                     style={FileIconStyle}
                     className="rad-4 click-item"
                     onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}

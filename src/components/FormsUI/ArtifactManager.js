@@ -416,7 +416,7 @@ const ArtifactManager = ({
                             {/*</div>*/}
                             {/*    <div className="col-6 d-flex mb-2">*/}
                                     <Button   variant="outlined" onClick={() => setIsLinksVisible(prev => !prev)}>
-                                        Add Video Links {isLinksVisible ? <ArrowDropUp /> : <ArrowDropDown/> }
+                                        Add Video/URL Link {isLinksVisible ? <ArrowDropUp /> : <ArrowDropDown/> }
                                     </Button>
                                 </div>
                                     </>

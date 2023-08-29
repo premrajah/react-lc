@@ -27,12 +27,26 @@ const TextFieldWrapper = ({
     startAdornment, endAdornment,classAdd,
     ...otherProps
 }) => {
+<<<<<<< HEAD
 
+=======
+    // const [field, mata] = useField(name)
+    const classes = useStyles();
+>>>>>>> master
     const [field, setField] = useState("");
 
     useEffect(() => {
 
+<<<<<<< HEAD
         if (onChange) {
+=======
+            if (onChange) {
+
+                setField(initialValue??'')
+                if (!editMode){
+                    onChange(initialValue);
+                }
+>>>>>>> master
 
             setField(initialValue ?? '')
             // if (!editMode) {

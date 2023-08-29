@@ -579,6 +579,70 @@ class EventList extends Component {
     }}
 />
 
+<<<<<<< HEAD
+=======
+                    {/*        secondary={*/}
+                    {/*            <React.Fragment>*/}
+                    {/*                <Typography*/}
+                    {/*                    sx={{ display: 'inline' }}*/}
+                    {/*                    component="span"*/}
+                    {/*                    variant="body2"*/}
+                    {/*                    color="text.primary"*/}
+                    {/*                >*/}
+                    {/*                    <span className="text-capitalize"> {item.event.process}, {item.event.stage}</span>*/}
+                    {/*                </Typography>*/}
+                    {/*                <div className="mb-0">*/}
+                    {/*                    {item.event.description}*/}
+
+                    {/*                </div>*/}
+                    {/*                <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>*/}
+
+                    {/*                {item.event.stage!=='resolved'   &&*/}
+                    {/*                <div className="d-flex flex-column  right-btn-auto">*/}
+
+
+                    {/*                    /!*{item.event.resolution_epoch_ms > Date.now() &&*!/*/}
+                    {/*                    <CustomPopover text={"Edit"}>*/}
+                    {/*                        <ActionIconBtn*/}
+                    {/*                            size="small"*/}
+
+                    {/*                            onClick={(e)=>{*/}
+                    {/*                                e.stopPropagation()*/}
+                    {/*                                e.preventDefault()*/}
+                    {/*                                this.showEditEventPopup(item)*/}
+                    {/*                            }}><Edit /></ActionIconBtn>*/}
+                    {/*                    </CustomPopover>*/}
+                    {/*                    /!*}*!/*/}
+                    {/*                    <CustomPopover text={"Update Stage"}>*/}
+                    {/*                        <ActionIconBtn*/}
+                    {/*                            size="small"*/}
+
+                    {/*                            onClick={(e)=>{*/}
+                    {/*                                e.stopPropagation()*/}
+                    {/*                                e.preventDefault()*/}
+                    {/*                                this.showStageEventPopup(item.event._key)*/}
+                    {/*                            }}*/}
+                    {/*                        ><FactCheck/>*/}
+                    {/*                        </ActionIconBtn>*/}
+                    {/*                    </CustomPopover>*/}
+                    {/*                    <CustomPopover text={"Delete"}>*/}
+                    {/*                        <ActionIconBtn*/}
+                    {/*                            size="small"*/}
+                    {/*                            onClick={(e)=>{*/}
+                    {/*                                e.stopPropagation()*/}
+                    {/*                                e.preventDefault()*/}
+                    {/*                                this.toggleDelete(item.event._key)*/}
+                    {/*                            }}><Close/>*/}
+                    {/*                        </ActionIconBtn>*/}
+                    {/*                    </CustomPopover>*/}
+                    {/*                </div>}*/}
+
+                    {/*            </React.Fragment>*/}
+                    {/*        }*/}
+                    {/*    />*/}
+                    {/*</ListItem>*/}
+
+>>>>>>> master
                 </ErrorBoundary>
             )}
 

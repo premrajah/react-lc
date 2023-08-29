@@ -18,11 +18,23 @@ class ErrorBoundary extends Component {
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.error){
+<<<<<<< HEAD
             
         }
     }
 
     
+=======
+            console.log("EB error")
+                console.log(this.state.error)
+        }
+    }
+
+    // compon() {
+    //     console.log("EB error")
+    //     console.log(this.state.error)
+    // }
+>>>>>>> master
 
     logError=() =>{
 

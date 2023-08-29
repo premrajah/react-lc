@@ -4947,6 +4947,7 @@ ul,ol {
 .loadingMore-spinner{
     position: absolute;
     bottom: 20px;
+<<<<<<< HEAD
 }
 .custom-selectedLocation .MuiInputAdornment-positionEnd{
     position: absolute;
@@ -4988,4 +4989,6 @@ ul,ol {
 }
 #lock-button{
     background: none!important;
+=======
+>>>>>>> master
 }

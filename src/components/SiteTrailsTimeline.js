@@ -351,6 +351,10 @@ const getCarbonE = ( carbonData) => {
         console.log(e)
         // value= 0
     }
+<<<<<<< HEAD
+=======
+console.log(value)
+>>>>>>> master
 return value
 }
 

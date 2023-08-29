@@ -1,6 +1,10 @@
 import React, {Component} from "react";
 import CustomDataGridTable from "./CustomDataGridTable";
 import SearchBox from "./SearchBox";
+<<<<<<< HEAD
+=======
+import {removeEmptyValuesObj} from "../../Util/GlobalFunctions";
+>>>>>>> master
 import {Spinner} from "react-bootstrap";
 
 class PaginationGrid extends Component {

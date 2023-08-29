@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { MIME_TYPES } from "../../Util/Constants";
 import OndemandVideoIcon from "@mui/icons-material/YouTube";
 import LinkIcon from '@mui/icons-material/Link';
@@ -7,7 +7,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import BrowserNotSupportedIcon from '@mui/icons-material/BrowserNotSupported';
 import GlobalDialog from "../RightBar/GlobalDialog";
 import ReactPlayer from "react-player/lazy";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 
 const FileIconStyle = {
@@ -57,6 +57,10 @@ const ArtifactIconDisplayBasedOnMimeType = ({ artifact, showSnackbar }) => {
     }
 
     const DisplayIcons = (mime) => {
+
+        const domain = new URL(artifact.blob_url);
+        const hostname = domain.hostname.toString();
+
         switch (mime) {
             // Images
             case MIME_TYPES.JPG:
@@ -72,13 +76,17 @@ const ArtifactIconDisplayBasedOnMimeType = ({ artifact, showSnackbar }) => {
                         className="rad-4 click-item"
                         onClick={() => handleArtifactImageDialogDisplayOpen(artifact.blob_url)}
                     >
-                        <img src={artifact.blob_url} alt={artifact.name} style={ImageIconStyle}/>
+                        <img src={artifact.blob_url} alt={artifact.name} style={ImageIconStyle} />
                     </span>
                 </>
             // Videos
             case MIME_TYPES.MOV:
             case MIME_TYPES.MP4:
-                return <LinkIcon
+                return hostname.includes('youtube') ? <OndemandVideoIcon
+                    style={FileIconStyle}
+                    className="rad-4 click-item"
+                    onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}
+                /> : <LinkIcon
                     style={FileIconStyle}
                     className="rad-4 click-item"
                     onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}
@@ -109,12 +117,12 @@ const ArtifactIconDisplayBasedOnMimeType = ({ artifact, showSnackbar }) => {
 
         <GlobalDialog hideHeading removePadding size="md" show={artifactImageDialogDisplay} hide={() => handleArtifactImageDialogDisplayClose()}>
             <div className="col-12">
-            {currentImageBlobUrl &&
-                <div className="d-flex justify-content-center align-items-center" >
-                <img style={{width: "100%", maxWidth: '100%', height: "auto", objectFit: "contain"}} src={currentImageBlobUrl ? currentImageBlobUrl : ""} alt={currentImageBlobUrl} width="50%" height="50%"/>
-            </div>
+                {currentImageBlobUrl &&
+                    <div className="d-flex justify-content-center align-items-center" >
+                        <img style={{ width: "100%", maxWidth: '100%', height: "auto", objectFit: "contain" }} src={currentImageBlobUrl ? currentImageBlobUrl : ""} alt={currentImageBlobUrl} width="50%" height="50%" />
+                    </div>
 
-            }
+                }
             </div>
         </GlobalDialog>
 

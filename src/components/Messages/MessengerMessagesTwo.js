@@ -701,11 +701,7 @@ try{
                                 bgColor: "background.paper",
                             }}>
                             {filteredGroups.map((g, index) => (
-<<<<<<< HEAD
                                 <React.Fragment key={`${index}-cm`}>
-=======
-                                <React.Fragment key={index}>
->>>>>>> master
                                     <HandleGroupDataDisplay
                                         userOrg={userDetail.orgId}
                                         selectedMenuItemIndex={selectedMenuItemIndex}
@@ -805,14 +801,8 @@ try{
                         <div className="col">
                             {selectedOrgs.length > 0 && (
                                 <small>
-<<<<<<< HEAD
                                     Selected:{selectedOrgs.map((o, i) => (
                                         <span className="mr-1" key={`${i}-label-cm`}>
-=======
-                                    Selected:{" "}
-                                    {selectedOrgs.map((o, i) => (
-                                        <span className="mr-1" key={i}>
->>>>>>> master
                                             <span>{o.label}</span>
                                             {selectedOrgs.length > 1 && <span>, </span>}
                                         </span>

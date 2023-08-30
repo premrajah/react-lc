@@ -83,7 +83,6 @@ class InfoTabContent extends Component {
 
                 {(this.props.item && this.props.item.product.sku &&
                     this.props.item.product.sku.embodied_carbon_kgs && this.props.item.product.sku.embodied_carbon_kgs > 0) ? (
-<<<<<<< HEAD
                     <InfoTabContentItem
                         embodiedCarbon title={<>Embodied Carbon (kgCO<sub>2</sub>e)</>}
                         value={
@@ -107,43 +106,6 @@ class InfoTabContent extends Component {
                                                 {this.props.item.product.computed_carbon[item] ? <tr>
                                                     <td className="text-blue text-capitlize">{item.replaceAll("_", " ")}</td>
                                                     <td>{this.props.item.product.computed_carbon[item]} </td>
-=======
-                    <div className="row  justify-content-start search-container  pb-2 ">
-                        <div className={"col-auto"}>
-                            <p
-
-                                className=" text-label text-blue mb-1 text-label">
-                                Embodied Carbon (kgCO<sub>2</sub>e)
-                            </p>
-                            <p
-
-                                className=" text-gray-light mb-1 text-capitalize">
-                                {this.props.item && this.props.item.product.sku && this.props.item.product.sku.embodied_carbon_kgs > 0 &&
-                                    this.props.item.product.sku.embodied_carbon_kgs}
-                            </p>
-                        </div>
-                    </div>
-                ) : <></>}
-                {(this.props?.item?.total_logistic_carbon?.carbon?.carbon_kgs) ? (
-                    <div className="row  justify-content-start search-container  pb-2 ">
-                        <div className={"col-auto"}>
-                            <p className=" text-label text-blue mb-1 text-label">
-                                Transport Emissions (kgCO<sub>2</sub>e)
-                            </p>
-                            <p
-                                className=" text-gray-light mb-1 text-capitalize">
-                                {(this.props?.item && this.props?.item?.total_logistic_carbon?.carbon) &&
-                                this.props?.item?.total_logistic_carbon?.carbon?.carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })}
-                            </p>
-                        </div>
-                    </div>
-                ) : <></>}
-
-                {this.props.item.site &&
-                    <div className="row  justify-content-start search-container  pb-2 ">
-                        <div className={"col-auto"}>
-                            <p
->>>>>>> master
 
                                                 </tr> : ""}
 

@@ -309,7 +309,7 @@ class RequestSiteReleaseItem extends Component {
             <>
                 {this.state.site && (
                     <>
-                        <div key={this.state.item.Release._id}
+                        <div key={`${this.state.item.Release._id}-in`}
                              id={this.state.item.Release._id}
                              className="row no-gutters bg-white rad-8 p-3 justify-content-center  mb-4 ">
                             <div className={"col-md-2 col-sm-12 col-xs-12 "}>

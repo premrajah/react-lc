@@ -2,7 +2,7 @@ import axios from "axios";
 import {baseUrl, MIME_TYPES, MIME_TYPES_ARRAY} from "./Constants";
 import React from "react";
 import moment from "moment/moment";
-
+import _ from 'lodash';
 
 
 export const capitalize = (sentence) => {
@@ -33,6 +33,135 @@ const addAndFilters = (filters) => {
 
     return url;
 };
+
+const isObject = v => v && typeof v === 'object';
+
+export const  trackModifiedObjectKeys=(currentObj,previousObj ,keysToDetectChange=[]) =>{
+
+    console.log(currentObj,previousObj,keysToDetectChange)
+    if (keysToDetectChange.length>0){
+        return  Object.assign(...Array.from(
+            new Set([...Object.keys(currentObj).filter(item=> keysToDetectChange.includes(item)), ...Object.keys(previousObj).filter(item=> keysToDetectChange.includes(item))]),
+            k => ({ [k]: isObject(currentObj[k]) && isObject(previousObj[k])
+                    ? trackModifiedObjectKeys(currentObj[k], previousObj[k],keysToDetectChange)
+                    : currentObj[k] !== previousObj[k]
+            })
+        ));
+
+    }else{
+        return  Object.assign(...Array.from(
+            new Set([...Object.keys(currentObj), ...Object.keys(previousObj)]),
+            k => ({ [k]: isObject(currentObj[k]) && isObject(previousObj[k])
+                    ? trackModifiedObjectKeys(currentObj[k], previousObj[k],keysToDetectChange)
+                    : currentObj[k] !== previousObj[k]
+            })
+        ));
+    }
+
+}
+
+export const  getModifiedObjectKeys=(currentObj,previousObj ,keysToDetectChange=[]) =>{
+
+
+    try {
+        if (keysToDetectChange.length>0) {
+
+            let resultObj = Object.assign(...Array.from(
+                new Set([...Object.keys(currentObj).filter(item => keysToDetectChange.includes(item)), ...Object.keys(previousObj).filter(item => keysToDetectChange.includes(item))]),
+                k => ({
+                    [k]: isObject(currentObj[k]) && isObject(previousObj[k])
+                        ? getModifiedObjectKeys(currentObj[k], previousObj[k], keysToDetectChange)
+                        : currentObj[k] !== previousObj[k] ? currentObj[k] : null
+                })
+            ));
+
+            return removeNullKeysFromNestedObject(resultObj)
+        }else{
+
+            let resultObj = Object.assign(...Array.from(
+                new Set([...Object.keys(currentObj), ...Object.keys(previousObj)]),
+                k => ({
+                    [k]: isObject(currentObj[k]) && isObject(previousObj[k])
+                        ? getModifiedObjectKeys(currentObj[k], previousObj[k], keysToDetectChange)
+                        : currentObj[k] !== previousObj[k] ? currentObj[k] : null
+                })
+            ));
+
+            return removeNullKeysFromNestedObject(resultObj)
+
+        }
+
+
+    }catch (e) {
+
+        // console.log(e)
+        // console.log(currentObj,previousObj)
+    }
+
+}
+
+export const removeNullKeysFromNestedObject=(resultObj)=>{
+
+    Object.keys(resultObj).forEach(key => {
+
+        if (isObject(resultObj[key])){
+
+            removeNullKeysFromNestedObject(resultObj[key])
+        }else{
+            if (resultObj[key] == undefined) {
+                delete resultObj[key];
+            }
+        }
+
+    });
+
+
+
+    return removeEmptyObjectsFromNestedObects(resultObj)
+}
+
+const removeEmptyObjectsFromNestedObects=(resultObj)=>{
+  Object.keys(resultObj).forEach(key => {
+
+        if (isObject(resultObj[key])){
+            if (Object.keys(resultObj[key]).length===0){
+
+                delete resultObj[key];
+            }else{
+                removeEmptyObjectsFromNestedObects(resultObj[key])
+            }
+        }
+
+    })
+
+   return resultObj
+}
+
+export const  getModifiedObjectKeysLodash=(currentObj,previousObj ,keysToDetectChange=[]) => {
+
+    const diff =  {
+        old: _.pickBy(previousObj, (value, key) => {
+
+            if (isObject(previousObj[key])&&isObject(currentObj[key])){
+                getModifiedObjectKeys(previousObj[key],currentObj[key],keysToDetectChange)
+            }
+            return !_.isEqual(value, currentObj[key]);
+
+        }),
+        new: _.pickBy(currentObj, (value, key) => {
+
+            if (isObject(currentObj[key])&&isObject(previousObj[key])){
+                getModifiedObjectKeys(currentObj[key],previousObj[key],keysToDetectChange)
+            }
+            return !_.isEqual(previousObj[key], value);
+
+        })
+    }
+
+    console.log(diff)
+
+    return diff
+}
 
 export const fetchErrorMessage = (e) => {
     let errorString = "";
@@ -195,7 +324,7 @@ export const LoaderAnimated = ({loadingText}) => {
                 />
             </svg>
 
-            <span className={"m-1"}>{loadingText?loadingText:"Loading ..."}</span>
+            <span className={"m-1 p-2"}>{loadingText?loadingText:"Loading ..."}</span>
         </div>
     );
 };
@@ -316,6 +445,59 @@ export const exportToCSV = (csvData) => {
         loadingEventsDownload: false,
     });
 };
+
+export const exportToCSVKeyValuePair = (keyValueObj,fileName="file_",header=["Name","Value"],horizontalKeys=true) => {
+
+    try {
+
+        console.log(keyValueObj)
+        let data = "";
+        const tableData = [];
+
+
+
+        if (horizontalKeys){
+            const keyData = [];
+            for (let key of Object.keys(keyValueObj)){
+
+                keyData.push(key)
+            }
+            tableData.push(keyData.join(","));
+
+            const valData = [];
+            for (let item of Object.values(keyValueObj)){
+
+                valData.push(item)
+            }
+            tableData.push(valData.join(","));
+
+        }else{
+            tableData.push(header.join(","));
+
+            for (let key of Object.keys(keyValueObj)){
+                const rowData = [];
+                rowData.push(key)
+                rowData.push(keyValueObj[key])
+
+                tableData.push(rowData.join(","));
+            }
+        }
+
+
+
+        data += tableData.join("\n");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([data], {type: "text/csv"}));
+        a.setAttribute("download", `${fileName}${Date.now()}.csv`);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }catch (e) {
+console.log(e)
+    }
+
+};
+
 export const DETECT_URL_REGEX = /^http:\/\/([^\/]*)\/(.*)$/;
 const DETECT_URL_REGEX_NEW = /(https?:\/\/[^\s]+)/g;
 
@@ -368,11 +550,15 @@ export const cleanFilename = (string) => {
 };
 
 export const getSite = (site) => {
-    let ProductToSite = site.ProductToSite;
 
-    if (ProductToSite && ProductToSite.length > 0 && ProductToSite[0].entries.length > 0) {
-        return ProductToSite[0].entries[0].Site;
-    } else return null;
+    if (site&&site.ProductToSite){
+        let ProductToSite = site.ProductToSite;
+
+        if (ProductToSite && ProductToSite.length > 0 && ProductToSite[0].entries.length > 0) {
+            return ProductToSite[0].entries[0].Site;
+        } else return null;
+    }
+
 };
 
 export const PreProcessCSVData = (text) => {
@@ -454,4 +640,11 @@ export const getParameterByName=(name, url = window.location.href) =>{
 
 export const removeDuplicates=(arr)=> {
     return [...new Set(arr)];
+}
+
+
+export const compareDeep=(Obj1,Obj2)=>{
+
+    return _.isEqual(Obj1,Obj2)
+
 }

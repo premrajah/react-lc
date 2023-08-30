@@ -255,9 +255,9 @@ class MySearch extends Component {
                             loadMore={(data)=>this.loadProductsWithoutParentPageWise(data)} >
 
                             {this.state.items.map((item, index) =>
-                                <>
+                                <React.Fragment key={item.Search._key}>
                                 <ErrorBoundary skip>
-                                <div id={item.Search._key} key={item.Search._key}>
+                                <div id={item.Search._key} >
                                     <SearchItem
                                         item={{search:item.Search}}
                                         product={item.SearchToProduct[0]?item.SearchToProduct[0].entries[0]
@@ -274,7 +274,7 @@ class MySearch extends Component {
                                 </div>
 
                                 </ErrorBoundary>
-                                </>
+                                </React.Fragment>
                             )}
 
                         </PaginationLayout>

@@ -204,7 +204,6 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
 
                     let itemTmp={}
 
-                    // console.log(headers)
                     data.headers
                         .forEach((item)=>   {
                             try {
@@ -214,10 +213,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                                 } else {
 
                                     if (item.field==="site"){
-                                        itemTmp[`${item.field}`] = getSite(listItem).name
+                                        itemTmp[`${item.field}`] = getSite(listItem)?.name
                                     }
                                    else if (item.field==="siteId"){
-                                        itemTmp[`${item.field}`] = getSite(listItem)._key
+                                        itemTmp[`${item.field}`] = getSite(listItem)?._key
                                     }
 
                                     else{
@@ -231,7 +230,6 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                     listTmp.push(itemTmp)
                 }
             })
-            // console.log(" set data","new data")
             setList(listTmp)
 
         },100)
@@ -543,7 +541,6 @@ function CustomPagination(props) {
 
 const GetCatBox=(props)=>{
 
-    // console.log(props.item)
     return(
 
         <span  className="text-capitlize mb-1 text-12 text-bold cat-box text-left p-1">

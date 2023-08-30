@@ -54,11 +54,14 @@ export default function MenuDropdown(props) {
         <>
         <ErrorBoundary skip>
             <List
+                style={{ width: "auto",backgroundColor:"none!important" }}
                 className={"p-0"}
                 component="span"
                 aria-label="Device settings"
-                sx={{ bgcolor: "background.paper" }}>
+
+            >
                 <ListItem
+                    style={{ background:"none!important" }}
                     button
                     id="lock-button"
                     aria-haspopup="listbox"
@@ -73,7 +76,7 @@ export default function MenuDropdown(props) {
                     <KeyboardArrowDownIcon />
                 </ListItem>
             </List>
-            <Paper style={{ width: 220 }}>
+
             <Menu
                 id="lock-menu"
                 anchorEl={anchorEl}
@@ -92,7 +95,7 @@ export default function MenuDropdown(props) {
                     </MenuItem>
                 ))}
             </Menu>
-            </Paper>
+
         </ErrorBoundary>
 
         </>

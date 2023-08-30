@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import CustomizedSelect from "./CustomizedSelect";
@@ -9,26 +9,29 @@ import {Spinner} from "react-bootstrap";
 const SelectArrayWrapper = (props) => {
 
     const {label,title,option,notNative,initialValue,detailsHeading,details,noBorder,textAlignRight,
-        subOption,subValueKey,
+        subOption,subValueKey,valueText,explanation,id,
+        reset,
         placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect,
         defaultValue,options,multiple,error,editMode,noMargin,disableAutoLoadingIcon, ...rest} = props;
 
     const [value, setValue] = React.useState();
+    const [resetSelect, setResetSelect] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
-
+    const selectRef = useRef()
     const handleChange = (event) => {
+
         setValue(event.target.value);
            if (onChange)
-            onChange(event.target.value)
+            onChange(event.target.value,event.target.textContent.toLowerCase())
     };
 
     useEffect(()=>{
         if (onChange) {
-              setValue(initialValue)
+              // setValue(initialValue)
 
-            if (!editMode) {
+            // if (!editMode) {
                 onChange(initialValue)
-            }
+            // }
         }
     },[initialValue])
 
@@ -39,6 +42,11 @@ const SelectArrayWrapper = (props) => {
                 setLoading(false)
             } else {
                 setLoading(true)
+
+                if (reset){
+                   // reset={}
+                }
+
             }
         }
 
@@ -67,13 +75,15 @@ const SelectArrayWrapper = (props) => {
                     )}
 
             <CustomizedSelect
+                id={id}
 
+                // ref={reset?selectRef:null}
+                selectedIndex={0}
                 multiple={multiple}
                 native={notNative?false:true}
-
                 variant="standard"
                 label={label}
-                value={defaultValue}
+                // value={defaultValue}
                 onChange={handleChange}
                 style={{width:"100%"}}
                 disabled={disabled}
@@ -106,7 +116,9 @@ const SelectArrayWrapper = (props) => {
 
             </CustomizedSelect>
                 </FormControl>
-
+                {explanation && (
+                    <span className={"text-gray-light text-12 m-0 ellipsis-end"}>{explanation}</span>
+                )}
                 {error && <span style={{color:"#f44336",fontSize: "12px!important"}} className={"text-danger"}> {error.message}</span>}
 
 

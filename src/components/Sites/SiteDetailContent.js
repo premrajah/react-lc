@@ -62,7 +62,7 @@ class SiteDetailContent extends Component {
             currentReleaseId: null,
             cancelReleaseSuccess: false,
             initialValues:{},
-            activeKey:1,
+            activeKey:"1",
             zoomQrCode:false,
             siteQrCode:null,
             releases:[]

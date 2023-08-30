@@ -496,16 +496,12 @@ class EventList extends Component {
             return (
 
                 <>
-
-
                     <div className="d-flex mt-4 justify-content-between">
                         {this.props.events.length > 0 ?
                             <>
                             <span className="">
                                     {this.props.events.length} {this.props.events.length > 1 ? "Events" : "Event"}
                                 </span>
-
-
 
                             </>
                             :
@@ -582,80 +578,6 @@ class EventList extends Component {
         this.toggleDelete(item.event._key)
     }}
 />
-                    {/*<ListItem className={`mb-2 bg-white*/}
-                    {/* ${item.event.stage !=="resolved"?"new-event":"past-event"}`}*/}
-                    {/*          onClick={()=>this.showEventPopup(item)} alignItems="flex-start">*/}
-                    {/*    {!this.props.smallView &&*/}
-                    {/*    <ListItemAvatar>*/}
-                    {/*        <Avatar className={`${item.event.stage==='resolved'?"fc-event-disabled":"fc-event-" + item.event.process}`} alt={getInitials(item.event.title)} src="/static/images/avatar/1.jpg" />*/}
-                    {/*    </ListItemAvatar>}*/}
-                    {/*    <ListItemText*/}
-                    {/*        className="title-bold"*/}
-                    {/*        primary={*/}
-                    {/*            item.event.stage==="resolved"?<del>{item.event.title}</del>:*/}
-                    {/*                item.event.title*/}
-                    {/*        }*/}
-
-                    {/*        secondary={*/}
-                    {/*            <React.Fragment>*/}
-                    {/*                <Typography*/}
-                    {/*                    sx={{ display: 'inline' }}*/}
-                    {/*                    component="span"*/}
-                    {/*                    variant="body2"*/}
-                    {/*                    color="text.primary"*/}
-                    {/*                >*/}
-                    {/*                    <span className="text-capitalize"> {item.event.process}, {item.event.stage}</span>*/}
-                    {/*                </Typography>*/}
-                    {/*                <div className="mb-0">*/}
-                    {/*                    {item.event.description}*/}
-
-                    {/*                </div>*/}
-                    {/*                <div className="text-gray-light text-12 ">{getTimeFormat(item.event.resolution_epoch_ms)}</div>*/}
-
-                    {/*                {item.event.stage!=='resolved'   &&*/}
-                    {/*                <div className="d-flex flex-column  right-btn-auto">*/}
-
-
-                    {/*                    /!*{item.event.resolution_epoch_ms > Date.now() &&*!/*/}
-                    {/*                    <CustomPopover text={"Edit"}>*/}
-                    {/*                        <ActionIconBtn*/}
-                    {/*                            size="small"*/}
-
-                    {/*                            onClick={(e)=>{*/}
-                    {/*                                e.stopPropagation()*/}
-                    {/*                                e.preventDefault()*/}
-                    {/*                                this.showEditEventPopup(item)*/}
-                    {/*                            }}><Edit /></ActionIconBtn>*/}
-                    {/*                    </CustomPopover>*/}
-                    {/*                    /!*}*!/*/}
-                    {/*                    <CustomPopover text={"Update Stage"}>*/}
-                    {/*                        <ActionIconBtn*/}
-                    {/*                            size="small"*/}
-
-                    {/*                            onClick={(e)=>{*/}
-                    {/*                                e.stopPropagation()*/}
-                    {/*                                e.preventDefault()*/}
-                    {/*                                this.showStageEventPopup(item.event._key)*/}
-                    {/*                            }}*/}
-                    {/*                        ><FactCheck/>*/}
-                    {/*                        </ActionIconBtn>*/}
-                    {/*                    </CustomPopover>*/}
-                    {/*                    <CustomPopover text={"Delete"}>*/}
-                    {/*                        <ActionIconBtn*/}
-                    {/*                            size="small"*/}
-                    {/*                            onClick={(e)=>{*/}
-                    {/*                                e.stopPropagation()*/}
-                    {/*                                e.preventDefault()*/}
-                    {/*                                this.toggleDelete(item.event._key)*/}
-                    {/*                            }}><Close/>*/}
-                    {/*                        </ActionIconBtn>*/}
-                    {/*                    </CustomPopover>*/}
-                    {/*                </div>}*/}
-
-                    {/*            </React.Fragment>*/}
-                    {/*        }*/}
-                    {/*    />*/}
-                    {/*</ListItem>*/}
 
                 </ErrorBoundary>
             )}
@@ -668,7 +590,6 @@ class EventList extends Component {
                     }
 
                     <GlobalDialog
-
                         heading={this.state.selectedEvent&&this.state.selectedEvent.event?this.state.selectedEvent.event.title:null}
                         show={this.state.showEvent}
                         hide={this.showEventPopup}

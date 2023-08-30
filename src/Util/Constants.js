@@ -102,7 +102,11 @@ export const RECUR_UNITS = [
     { key: "MONTH", value: "Month" },
     { key: "YEAR", value: "Year" },
 ];
+export const WEIGHT_OPTIONS = [
+    { key: "gross_weight_kgs", value: "Gross Weight (Kgs)" },
+    { key: "weight_per_volume_kgs", value: "Weight/Volume (kgs)" },
 
+];
 export const BYTES_TO_SIZE = (bytes) => {
     const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
     if (bytes === 0) return "n/a";

@@ -925,6 +925,7 @@ class EventForm extends Component {
 
                                                   <div>
                                                       <TextFieldWrapper
+                                                          id={"first-input"}
                                                           noMargin
                                                           placeholder="e.g 1,2,3 .."
                                                           initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.value?this.props.event.event.recur.value:""}
@@ -937,6 +938,7 @@ class EventForm extends Component {
                                                   </div>
                                                   <div style={{width:"220px"}}>
                                                       <SelectArrayWrapper
+                                                          id={"last-input"}
                                                           noMargin
                                                           initialValue={this.props.event && this.props.event.event.recur&&this.props.event.event.recur.unit?this.props.event.event.recur.unit:""}
                                                           select={"Select unit"}

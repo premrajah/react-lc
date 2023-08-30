@@ -1218,11 +1218,7 @@ class ProductDetailContent extends Component {
                                                     </>
                                                 )}
                                                 <TabPanel value="7">
-                                                    {/*<ArtifactProductsTab*/}
-                                                    {/*    entityType={ENTITY_TYPES.Product}*/}
-                                                    {/*    item={this.state.item}*/}
-                                                    {/*    type={"edit"}*/}
-                                                    {/*/>*/}
+
                                                     <div className=" bg-white rad-8 mt-4 p-3">
                                                     <ArtifactManager
                                                         entityType={ENTITY_TYPES.Product}

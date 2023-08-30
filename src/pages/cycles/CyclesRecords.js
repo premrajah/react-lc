@@ -253,9 +253,9 @@ class MyCycles extends Component {
 
                             {this.state.items.map((item, index) =>
 
-                                <>
+                                <React.Fragment key={item.Cycle._key}>
                                     <ErrorBoundary skip>
-                                        <div id={item.Cycle._key} key={item.Cycle._key}>
+                                        <div id={item.Cycle._key} >
                                             <CycleItem
                                                 item={{cycle:item.Cycle}}
                                                 // search={item.Search}
@@ -295,7 +295,7 @@ class MyCycles extends Component {
                                             />
                                         </div>
                                     </ErrorBoundary>
-                                </>
+                                </React.Fragment>
                             )}
 
                         </PaginationLayout>

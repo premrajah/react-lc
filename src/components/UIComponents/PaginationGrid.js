@@ -1,9 +1,6 @@
 import React, {Component} from "react";
 import CustomDataGridTable from "./CustomDataGridTable";
-import {PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
-import MenuDropdown from "../FormsUI/MenuDropdown";
 import SearchBox from "./SearchBox";
-import {removeEmptyValuesObj} from "../../Util/GlobalFunctions";
 import {Spinner} from "react-bootstrap";
 
 class PaginationGrid extends Component {
@@ -54,22 +51,17 @@ class PaginationGrid extends Component {
             newPage:newPage
         }
 
-        // console.log(filterData)
-        // removeEmptyValuesObj(filterData)
-
-        // console.log(filterData)
+        
 
         this.props.loadMore(filterData);
     };
     timeoutSearch() {
         if (this.timeout) {
-            // console.debug("clear prev search ")
             clearTimeout(this.timeout);
         }
 
         this.timeout = setTimeout(() => {
             this.loadMore(true);
-            // console.debug("search this ",this.searchValue)
         }, 1000);
     }
 

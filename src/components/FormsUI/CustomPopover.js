@@ -1,34 +1,23 @@
 import React from "react";
-import {OverlayTrigger, Popover} from "react-bootstrap";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 
 class CustomPopover extends React.Component {
 
 
-    constructor(props) {
-        super(props);
-    }
-    // HtmlText
-
-    componentDidMount() {
-        // this.HtmlText=this.props.HtmlText
-
-    }
-
-    orgPopover = (
+    orgPopover = (heading, text) => (
 
         <Popover id="">
             <div className={"p-2 text-sentence "}>
 
-                {this.props.heading &&  <div
-                    dangerouslySetInnerHTML={{__html:this.props.heading}}
+                {heading && <div
+                    dangerouslySetInnerHTML={{ __html: heading }}
                     className={"title-bold"} style={{ textTransform: "capitalize" }} />}
-                {this.props.text && (
+                {text && (
                     <>
-
                         <span className={"text-gray-light  "}>
 
-                                {this.props.text}
-                       </span>
+                            {text}
+                        </span>
 
                     </>
                 )}
@@ -43,12 +32,12 @@ class CustomPopover extends React.Component {
         const { children } = this.props
         return (
             <OverlayTrigger
-                trigger={ ["hover", "focus"]}
+                trigger={["hover", "focus"]}
                 placement={"bottom"}
-                overlay={this.orgPopover}
+                overlay={this.orgPopover(this.props.heading, this.props.text)}
             >
                 <span>
-                {children}
+                    {children}
                 </span>
 
             </OverlayTrigger>

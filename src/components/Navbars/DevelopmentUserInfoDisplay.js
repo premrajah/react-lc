@@ -49,8 +49,7 @@ const DevelopmentUserInfoDisplay = ({ userDetail }) => {
                         IsOrgAdmin: {userDetail && userDetail.is_org_admin ? <b>Yes</b> : "No"}
                     </div>
                     <div>
-                        IsLoopcycleAdmin:{" "}
-                        {userDetail && userDetail.is_loopcycle_admin ? <b>Yes</b> : "No"}
+                        IsLoopcycleAdmin:{userDetail && userDetail.is_loopcycle_admin ? <b>Yes</b> : "No"}
                     </div>
                 </div>
             )}

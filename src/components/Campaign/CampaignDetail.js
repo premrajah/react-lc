@@ -2,12 +2,11 @@ import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import PlaceholderImg from "../../img/place-holder-lc.png";
-import {baseUrl, frontEndUrl} from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import ImagesSlider from "./../ImagesSlider/ImagesSlider";
 import encodeUrl from "encodeurl";
 import {withStyles} from "@mui/styles/index";
-import jspdf from "jspdf";
 import MoreMenu from "./../MoreMenu";
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -17,7 +16,6 @@ import TabPanel from '@mui/lab/TabPanel';
 import InfoTabContent from "./InfoTabContent";
 import ConditionsContent from "./ConditionsContent";
 import DescriptionIcon from "@mui/icons-material/Description";
-import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import StatisticsTab from "./StatisticsTab";
 
 class CampaignDetail extends Component {

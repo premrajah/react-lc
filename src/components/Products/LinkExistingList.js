@@ -19,7 +19,7 @@ const LinkExistingList=(props)=>{
             <>
 <DynamicAutoCompleteBox
     {...props}
-    val={val} h
+    val={val}
     uId={val.index}
     index={index}
 />
@@ -73,7 +73,7 @@ const DynamicAutoCompleteBox=(props)=> {
                     {/*{item > 1 && (*/}
                     <>
                         <DeleteIcon
-                            classname={"click-item"}
+                            className={"click-item"}
                             style={{
                                 color: "#ccc",
                                 margin: "auto",

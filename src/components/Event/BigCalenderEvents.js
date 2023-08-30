@@ -453,9 +453,7 @@ export default function
                     }
                 },
                 (error) => {
-                    // this.setState({
-                    //     notFound: true,
-                    // });
+
                 }
             );
     };
@@ -665,7 +663,6 @@ export default function
                                 startAccessor="start"
                                 endAccessor="end"
                                 onSelectSlot={handleSelectSlot}
-                                // onNavigate={handleNavigation}
                                 dateCallback={(d) => handleDateCallback(d)}
                             />
                         </div>

@@ -102,12 +102,7 @@ class Approvals extends Component {
 
         let url=baseUrl + "seek?name=EventRelease&relation=&offset=0&size=100&count=false&include-to=Event:any&&include-to=Org:any"
 
-        // if (!this.state.eventToggle){
-        //
-        //     // url=`${url}&or=stage%3D%3Dcompleted&or=stage%3D%3Dcancelled`
-        // }else{
-        //     url=`${url}&or=stage%3D%3Dcompleted&or=stage%3D%3Dcancelled`
-        // }
+
 
         axios.get(url).then(
             (response) => {
@@ -450,7 +445,6 @@ render() {
                                                         r.Release.stage !== "invalidated")
 
                                             ).map((item, index) =>
-                                                <>
                                                 <div className="col-12"
                                                      key={item.Site_id.replace("Site/","")}
                                                      id={item.Site_id.replace("Site/","")}>
@@ -462,10 +456,7 @@ render() {
                                                         history={this.props.history}
                                                         item={item}
                                                     />
-
                                                 </div>
-
-                                                </>
                                             )}
 
 
@@ -497,7 +488,6 @@ render() {
                                                 r.Release.stage !== "complete" &&
                                                 r.Release.stage !== "cancelled" &&
                                                 r.Release.stage !== "invalidated").map((item, index) =>
-                                                <>
                                                     <div className="col-12"
                                                          key={item.Release._key}
                                                          id={item.Release._key}
@@ -512,8 +502,6 @@ render() {
                                                         />
 
                                                     </div>
-
-                                                </>
                                             )}
 
 
@@ -546,7 +534,6 @@ render() {
                                                 r.registration.stage !== "complete" &&
                                                 r.registration.stage !== "cancelled" &&
                                                 r.registration.stage !== "invalidated").map((item, index) =>
-                                                <>
                                                     <div className="col-12"
                                                          key={item.registration._key}
                                                          id={item.registration._key}
@@ -560,7 +547,6 @@ render() {
                                                             item={item}
                                                         />
                                                     </div>
-                                                </>
                                             )}
 
 
@@ -602,7 +588,6 @@ render() {
                                                         r.EventRelease.stage !== "cancelled"&&
                                                         r.EventRelease.stage !== "invalidated")
                                             ).map((item, index) =>
-                                                <>
                                                     <div className="col-12"
                                                          key={item.EventRelease._key}
                                                          id={item.EventRelease._key}
@@ -616,7 +601,6 @@ render() {
                                                             item={item}
                                                         />
                                                     </div>
-                                                </>
                                             )}
 
 

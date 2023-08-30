@@ -1,19 +1,8 @@
-import React, {useEffect, useState} from "react";
-import {makeStyles} from "@mui/styles";
+import React, { useEffect, useState } from "react";
 import CustomizedInput from "./CustomizedInput";
 import CustomPopover from "../CustomPopover";
 import InfoIcon from "./InfoIcon";
-import {InputAdornment} from "@mui/material";
-
-const useStyles = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
+import { InputAdornment } from "@mui/material";
 
 const TextFieldWrapper = ({
     name,
@@ -29,28 +18,28 @@ const TextFieldWrapper = ({
     error,
     initialValue,
     disabled,
-    readonly,ignoreTrim,
+    readonly, ignoreTrim,
     height,
-    customReadOnly,reset,noMargin,
-                              editMode,
-                              numberInput,
-                              startAdornment,endAdornment,
+    customReadOnly, reset, noMargin,
+    editMode,
+    numberInput,
+                              decimalInput,
+    startAdornment, endAdornment,classAdd,
     ...otherProps
 }) => {
-    // const [field, mata] = useField(name)
-    const classes = useStyles();
     const [field, setField] = useState("");
 
     useEffect(() => {
 
-            if (onChange) {
+        if (onChange) {
 
-                setField(initialValue??'')
-                if (!editMode){
-                    onChange(initialValue);
-                }
+            setField(initialValue ?? '')
+            // if (!editMode) {
 
-            }
+                onChange(initialValue);
+            // }
+
+        }
         // }
     }, [initialValue]);
 
@@ -78,12 +67,18 @@ const TextFieldWrapper = ({
         setField(value);
 
         if (!ignoreTrim)
-          value.trim()
+            value.trim()
 
-        if (onChange){
-            if (numberInput){
-                putMask(value,event)
-            }else{
+        if (onChange) {
+            if (numberInput) {
+                putMaskNumber(value, event)
+            }
+           else if (decimalInput) {
+
+                putMaskDecimal(value, event)
+            }
+
+            else {
                 onChange(value);
             }
 
@@ -91,25 +86,40 @@ const TextFieldWrapper = ({
     };
 
 
-    const putMask = (value,event) => {
+    const putMaskNumber = (value, event) => {
 
         let x = value.replace(/\D/g, '')
-        value=x
 
-            setField(value)
-            if (onChange){
-                onChange(value)
-            }
+        value = x
+
+        setField(value)
+        if (onChange) {
+            onChange(value)
+        }
+
+    };
+    const putMaskDecimal = (value, event) => {
+
+        let x = value.replace(/[^\d\.]/g, '')
+        value = x
+        if (isNaN(value)){
+            value=value.substring(0, value.length - 1)
+        }
+        setField(value)
+        if (onChange) {
+            onChange(value)
+        }
+
 
     };
 
     return (
         <>
-            {title &&!hidden&& (
+            {title && !hidden && (
                 <div className={"custom-label text-bold text-blue mb-0 ellipsis-end"}>
                     {/*<span className="mr-1">{title}</span>*/}
                     <span
-                        dangerouslySetInnerHTML={{__html:title}}
+                        dangerouslySetInnerHTML={{ __html: title }}
                         className={"title-bold"} style={{ textTransform: "capitalize" }} />
                     {details && (
                         <CustomPopover  {...otherProps} heading={detailsHeading} text={details}>
@@ -118,11 +128,9 @@ const TextFieldWrapper = ({
                     )}
                 </div>
             )}
-            {explanation && (
-                <div className={"text-gray-light  mb-0 ellipsis-end"}>{explanation}</div>
-            )}
 
-            <div className={`${type !== "hidden" ? "field-box " : "d-none"} ${noMargin?"":"mb-2"}`}>
+
+            <div  className={`${classAdd}  ${type !== "hidden" ? "field-box " : "d-none"} ${noMargin ? "" : "mb-2"}`} >
                 <CustomizedInput
                     // defaultValue={"name"}
 
@@ -133,16 +141,21 @@ const TextFieldWrapper = ({
                     label={label}
                     hidden={hidden}
                     value={field}
+
                     className={error && "border-red-error"}
                     onChange={handleChange}
                     name={name}
                     {...configTextField}
-                    startAdornment={startAdornment?<InputAdornment position="start">{startAdornment}</InputAdornment>:""}
-                    endAdornment={endAdornment?<InputAdornment position="start">{endAdornment}</InputAdornment>:""}
+                    startAdornment={startAdornment ? <InputAdornment position="start">{startAdornment}</InputAdornment> : ""}
+                    endAdornment={endAdornment ? <InputAdornment position="end ">{endAdornment}</InputAdornment> : ""}
 
 
                 />
+                {explanation && (
+                    <span className={"text-gray-light text-12 m-0 ellipsis-end"}>{explanation}</span>
+                )}
             </div>
+            {}
             {error && (
                 <span
                     style={{ color: "#f44336", fontSize: "12px!important" }}

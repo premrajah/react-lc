@@ -1,19 +1,31 @@
 /* eslint-disable no-mixed-operators */
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import "../../Util/upload-file.css";
-import { Cancel, Check, Error, Info, Publish } from "@mui/icons-material";
+import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
 import axios from "axios/index";
-import { baseUrl, ENTITY_TYPES, getMimeTypeAndIcon, MIME_TYPES_ACCEPT } from "../../Util/Constants";
+import {
+    baseUrl,
+    ENTITY_TYPES,
+    getMimeTypeAndIcon,
+    MIME_TYPES_ACCEPT,
+    RECUR_UNITS,
+    WEIGHT_OPTIONS
+} from "../../Util/Constants";
 import _ from "lodash";
-import { Spinner } from "react-bootstrap";
+import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
-import { createProductUrl } from "../../Util/Api";
-import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
-import { cleanFilename, fetchErrorMessage, removeKeyFromObj } from "../../Util/GlobalFunctions";
+import {createProductUrl} from "../../Util/Api";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import {
+    cleanFilename, compareDeep,
+    fetchErrorMessage, getModifiedObjectKeys,
+    // getModifiedObjectKeys, getModifiedObjectKeysLodash,
+    // removeKeyFromObj, trackModifiedObjectKeys
+} from "../../Util/GlobalFunctions";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
@@ -27,6 +39,13 @@ import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import ReactPlayer from "react-player/lazy";
 import ArtifactManager from "../FormsUI/ArtifactManager";
+import AddIcon from "@mui/icons-material/Add";
+import {v4 as uuid} from "uuid";
+import PartsList from "./PartsList";
+import ProcessesList from "./ProcessesList";
+import OutboundTransportList from "./OutboundTransportList";
+import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
+import {compareObjs} from "@fullcalendar/react";
 
 
 let slugify = require('slugify')
@@ -61,6 +80,7 @@ let slugify = require('slugify')
                 nextIntervalFlag: false,
                 activePage: 0, //0 logon. 1- sign up , 3 -search,
                 categories: [],
+                resourceCategories: [],
                 subCategories: [],
                 catSelected: {},
                 subCatSelected: {},
@@ -70,6 +90,7 @@ let slugify = require('slugify')
                 page: 1,
                 fields: {},
                 errors: {},
+                carbonErrors: [],
                 fieldsSite: {},
                 errorsSite: {},
                 fieldsProduct: {},
@@ -99,7 +120,6 @@ let slugify = require('slugify')
                 free: false,
                 price: null,
                 brand: null,
-                manufacturedDate: null,
                 model: null,
                 serial: null,
                 startDate: null,
@@ -128,7 +148,22 @@ let slugify = require('slugify')
                 is_manufacturer:true,
                 prevImages:[],
                 errorPending:false,
-                selectedSite:null
+                selectedSite:null,
+                showAddParts:false,
+                showAddProcesses:false,
+                showAddOutboundTransport:false,
+                existingItemsParts:[],
+                existingItemsProcesses:[],
+                existingItemsOutboundTransport:[],
+                energySources:[],
+                transportModes:[],
+                totalPercentError:false,
+                previousData:null,
+                prevExistingItemsParts:[],
+                prevExistingItemsProcesses:[],
+                prevExistingItemsOutboundTransport:[],
+                weightOptionsShow:false,
+                    weightFieldName:"weight_per_volume_kgs"
 
             };
 
@@ -139,10 +174,11 @@ let slugify = require('slugify')
             this.uploadImage = this.uploadImage.bind(this);
 
             this.checkListable = this.checkListable.bind(this);
-            this.showMoreDetails = this.showMoreDetails.bind(this);
+
         }
 
-        showSubmitSite=(data)=> {
+        showSubmitSiteForm=(data)=> {
+
 
             try {
 
@@ -159,6 +195,7 @@ let slugify = require('slugify')
             if (data){
                 let fields=this.state.fields
                 fields["deliver"]=data._key
+
 
                 this.setState({
                     selectedSite: data,
@@ -192,8 +229,8 @@ let slugify = require('slugify')
 
                             let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
                             let subCategories=cat.length>0?cat[0].types:[]
-                           let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
-                              let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                            let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                            let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
 
                             this.setState({
                                 subCategories:subCategories,
@@ -209,6 +246,86 @@ let slugify = require('slugify')
         }
 
 
+        getResourceCarbon=(item)=> {
+            axios.get(baseUrl + "resource-carbon")
+                .then(
+                    (response) => {
+                        let   responseAll=[]
+                        responseAll = _.sortBy(response.data.data, ["name"]);
+
+                        this.setState({
+                            resourceCategories: responseAll,
+                        });
+
+                        if (this.props.item)
+                        this.loadInitialCarbonData({...this.props.item})
+
+                    },
+                    (error) => {}
+                );
+        }
+
+        getTransportMode=()=> {
+            axios.get(baseUrl + "transport-mode")
+                .then(
+                    (response) => {
+                        let   responseAll=[]
+                        responseAll = _.sortBy(response.data.data, ["name"]);
+
+                        this.setState({
+                            transportModes: responseAll,
+                        });
+
+                        // if (responseAll.length>0&&this.props.item){
+                        //
+                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        //     let subCategories=cat.length>0?cat[0].types:[]
+                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                        //
+                        //     this.setState({
+                        //         subCategories:subCategories,
+                        //         states : states,
+                        //         units : units
+                        //     })
+                        //
+                        // }
+
+                    },
+                    (error) => {}
+                );
+        }
+        getEnergyProcess=()=> {
+            axios.get(baseUrl + "energy-source")
+                .then(
+                    (response) => {
+                        let   responseAll=[]
+                        responseAll = _.sortBy(response.data.data, ["name"]);
+
+
+                        this.setState({
+                            energySources: responseAll,
+                        });
+
+                        // if (responseAll.length>0&&this.props.item){
+                        //
+                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        //     let subCategories=cat.length>0?cat[0].types:[]
+                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                        //
+                        //     this.setState({
+                        //         subCategories:subCategories,
+                        //         states : states,
+                        //         units : units
+                        //     })
+                        //
+                        // }
+
+                    },
+                    (error) => {}
+                );
+        }
 
 
         handleChangeFile(event) {
@@ -379,11 +496,94 @@ let slugify = require('slugify')
             });
         }
 
-        showMoreDetails() {
+        showMoreDetails=()=> {
             this.setState({
                 moreDetail: !this.state.moreDetail,
             });
         }
+
+        addParts=()=> {
+
+            this.setState({
+                showAddParts: !this.state.showAddParts,
+            });
+        }
+        addProcesses=()=> {
+
+            this.setState({
+                showAddProcesses: !this.state.showAddProcesses,
+            });
+        }
+        addOutboundTransports=()=> {
+
+            this.setState({
+                showAddOutboundTransport: !this.state.showAddOutboundTransport,
+            });
+        }
+
+
+
+        addItemParts=(type)=> {
+
+            if (type===1){
+                this.setState(prevState => ({
+                    existingItemsParts: [
+                        ...prevState.existingItemsParts,
+                        {
+                            index:uuid(),
+                            name: "",
+
+                        }
+                    ]
+                }));
+            }
+          else if (type===2){
+                this.setState(prevState => ({
+                    existingItemsProcesses: [
+                        ...prevState.existingItemsProcesses,
+                        {
+                            index:uuid(),
+                            name: "",
+
+                        }
+                    ]
+                }));
+            }
+            else if (type===3){
+                this.setState(prevState => ({
+                    existingItemsOutboundTransport: [
+                        ...prevState.existingItemsOutboundTransport,
+                        {
+                            index:uuid(),
+                            name: "",
+
+                        }
+                    ]
+                }));
+            }
+
+
+
+        }
+
+        deleteItemParts=(record,type)=> {
+
+
+            if (type===1)
+            this.setState({
+                existingItemsParts: this.state.existingItemsParts.filter(r => r !== record)
+            });
+
+          else  if (type===2)
+                this.setState({
+                    existingItemsProcesses: this.state.existingItemsProcesses.filter(r => r !== record)
+                });
+          else  if (type===3)
+                this.setState({
+                    existingItemsOutboundTransport: this.state.existingItemsOutboundTransport.filter(r => r !== record)
+                });
+        }
+
 
         setUpYearList() {
             let years = [];
@@ -428,14 +628,37 @@ let slugify = require('slugify')
 
             }
 
-                if (!this.state.disableVolume&&!this.props.productLines){
-                validations.push( validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.number, message: 'This field should be a number.'}],fields),
-                )
+            if (!this.state.disableVolume&&!this.props.productLines){
+                validations.push( validateFormatCreate("volume", [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a decimal number.'}],fields))
+            }
+
+            if(this.state.existingItemsParts.length>0){
+
+                validations.push(validateFormatCreate("factory_geo_location", [{check: Validators.required, message: 'Required'}],fields))
+
+            }
+
+
+            if (this.state.weightOptionsShow){
+                validations.push(validateFormatCreate("weightOptions", [{check: Validators.required, message: 'Required'}],fields))
+                validations.push( validateFormatCreate(this.state.weightFieldName, [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a decimal number.'}],fields))
+
+            }
+
+
+            let {formIsValid,errors}= validateInputs(validations,fields,editMode)
+
+            console.log(formIsValid,errors)
+
+
+            if (this.validationsCarbonDataError()){
+
+                formIsValid=false
             }
 
 
 
-            let {formIsValid,errors}= validateInputs(validations,fields,editMode)
+
 
             this.setState({ errors: errors });
 
@@ -452,20 +675,148 @@ let slugify = require('slugify')
             return formIsValid;
         }
 
+
+        validationsCarbonDataError=()=>{
+
+            let carbonErrors=[]
+            let errorFlag=false
+            let totalPercent=0
+            let fieldsParts=["category","unit","type","state","percentage"]
+            let fieldsProcesses=["name","source_id"]
+            let fieldsOutbound=["transport_mode","geo_location"]
+
+            this.state.existingItemsParts.forEach((existingPart)=>{
+
+
+                fieldsParts.forEach((fieldsPart)=>{
+
+                    if (existingPart.fields&&fieldsPart==="percentage"&&existingPart.fields[fieldsPart]){
+                        totalPercent=totalPercent+parseInt(existingPart.fields[fieldsPart])
+                    }
+                    if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
+                        errorFlag=true
+
+                        let error=carbonErrors[existingPart.index]
+
+                        if (error){
+                            error[fieldsPart]={error:true, message:"Required"}
+                            carbonErrors[existingPart.index]=error
+                        }else{
+                            carbonErrors[[existingPart.index]]= {[fieldsPart]:{error:true, message:"Required"}}
+
+                        }
+
+                    }
+
+                })
+
+            })
+
+            this.state.existingItemsProcesses.forEach((existingPart)=>{
+
+
+                fieldsProcesses.forEach((fieldsPart)=>{
+
+                    if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
+                        errorFlag=true
+
+                        let error=carbonErrors[existingPart.index]
+
+                        if (error){
+                            error[fieldsPart]={error:true, message:"Required"}
+                            carbonErrors[existingPart.index]=error
+                        }else{
+                            carbonErrors[[existingPart.index]]= {[fieldsPart]:{error:true, message:"Required"}}
+
+                        }
+
+                    }
+
+                })
+
+            })
+
+            this.state.existingItemsOutboundTransport.forEach((existingPart)=>{
+
+                fieldsOutbound.forEach((fieldsPart)=>{
+
+
+                    if ((!existingPart.fields)||(!existingPart.fields[fieldsPart])){
+                        errorFlag=true
+
+                        let error=carbonErrors[existingPart.index]
+
+                        if (error){
+                            error[fieldsPart]={error:true, message:"Required"}
+                            carbonErrors[existingPart.index]=error
+                        }else{
+                            carbonErrors[[existingPart.index]]= {[fieldsPart]:{error:true, message:"Required"}}
+
+                        }
+
+                    }
+
+                })
+
+            })
+
+
+            if (this.state.existingItemsParts.length>0&&totalPercent!==100){
+                errorFlag=true
+                this.setState({
+                    totalPercentError:true
+                })
+            }else{
+                this.setState({
+                    totalPercentError:false
+                })
+            }
+
+
+
+            this.setState({
+                carbonErrors:carbonErrors,
+            })
+
+
+            return errorFlag
+        }
+
+
         handleChangeProduct(value,field ) {
 
                 let fields = this.state.fields;
             fields[field] = value;
 
 
+            if (field === "factory_geo_location"||field === "geo_location") {
+                fields[field] = {
+                    "address_info": {
+                        "formatted_address": value.address,
+                        "geometry": {
+                            "location": {
+                                "lat": value.latitude,
+                                "lng": value.longitude
+
+                                // "lat":"40.99489459999999",
+                                // "lng":"17.22261"
+                            },
+                            "location_type": "APPROXIMATE",
+
+                        },
+                        "place_id": "",
+                        "types": [],
+                        "plus_code": null
+                    },
+                    "is_verified": true
+                }
+
+            }
              if (field==="year_of_making"){
                  fields[field]= Number(value)
              }
 
-
             this.setState({ fields });
-
-
 
             if (field==="purpose"&&value==="Aggregate"){
 
@@ -505,90 +856,151 @@ let slugify = require('slugify')
 
         }
 
+
+        configureCarbonValues=(existingItemsParts,existingItemsProcesses,existingItemsOutboundTransport,productData)=>{
+            let composition=[]
+            let processes=[]
+            let outboundTransports=[]
+
+            for (let i=0;i<existingItemsParts.length;i++){
+
+                let item={
+                    carbon_resource: existingItemsParts[i].fields?.unit,
+                    percentage:parseInt(existingItemsParts[i].fields?.percentage),
+                }
+
+
+                if (existingItemsParts[i].fields?.geo_location&&existingItemsParts[i].fields?.transport_mode){
+
+                    item.inbound_transport=  {
+                            geo_location: existingItemsParts[i].fields?.geo_location,
+                                transport_mode: existingItemsParts[i].fields?.transport_mode
+                        }
+                }
+                composition.push(item)
+
+            }
+            for (let i=0;i<existingItemsProcesses.length;i++){
+                processes.push({
+                    name: existingItemsProcesses[i].fields?.name,
+                    description: null,
+                    kwh: parseFloat(existingItemsProcesses[i].fields?.kwh),
+                    source_id:existingItemsProcesses[i].fields?.source_id
+                })
+
+            }
+            for (let i=0;i<existingItemsOutboundTransport.length;i++){
+
+
+                outboundTransports.push({
+                    geo_location: existingItemsOutboundTransport[i].fields?.geo_location,
+                    transport_mode:existingItemsOutboundTransport[i].fields?.transport_mode
+                })
+
+            }
+
+            // if (composition.length>0){
+                productData.composition=composition
+            // }
+            // if (outboundTransports.length>0){
+                productData.outbound_transport=outboundTransports
+            // }
+            // if (processes.length>0){
+                productData.processes=processes
+            // }
+
+
+            return productData
+        }
+
+        configurePayload=(payloadObj,formData)=>{
+
+            this.productLevelOneKeys.forEach((key)=>{
+                if (formData.get(key)){
+                    if (key==="purpose"||key==="condition"){
+                        payloadObj[key]=formData.get(key).toLowerCase()
+                    }
+                    else if (key==="year_of_making"||key==="volume"){
+                        payloadObj[key]=parseInt(formData.get(key))
+                    }
+                    else {
+                        payloadObj[key]=formData.get(key)
+                    }
+                }
+            })
+
+            this.skuKeys.forEach((key)=>{
+                if (formData.get(key)){
+                    if (key==="power_supply"){
+                        payloadObj.sku[key]=formData.get(key).toLowerCase()
+                    }
+                    else if (key==="embodied_carbon_kgs"||key==="gross_weight_kgs"){
+                        payloadObj.sku[key]=parseFloat(formData.get(key))
+                    }else {
+                        payloadObj.sku[key]=formData.get(key)
+                    }
+                }
+            })
+
+            return payloadObj
+        }
         handleSubmit = (event) => {
 
-
+            try {
             event.preventDefault();
             event.stopPropagation()
             if (!this.handleValidationProduct()){
                 return
             }
-
-
-                const form = event.currentTarget;
-
-                this.setState({
-                    btnLoading: true,
-                    loading:true
-                });
-
-                const data = new FormData(event.target);
-
-                    const name = data.get("name");
-                    const purpose = data.get("purpose");
-                    const condition = data.get("condition");
-                    const description = data.get("description");
-                    const category = data.get("category");
-                    const type = data.get("type");
-                    const units = data.get("units");
-                    const serial = data.get("serial");
-                    const model = data.get("model");
-                    const brand = data.get("brand");
-                    const volume = data.get("volume");
-                    const sku = data.get("sku");
-                    const upc = data.get("upc");
-                    const part_no = data.get("part_no");
-                    const state = data.get("state");
+                    const data = new FormData(event.target);
                     // const is_listable = this.state.is_listable?true:false;
                     // const is_manufacturer = this.state.is_manufacturer?true:false;
                     const is_listable = true;
                     const is_manufacturer = false;
                     const site = data.get("deliver")
-                    const year_of_making = data.get("manufacturedDate") ? data.get("manufacturedDate") : 0
-                    const external_reference = data.get("external_reference")
-                    const power_supply = data.get("power_supply");
                     const energy_rating = this.state.energyRating;
-                    const embodied_carbon_kgs = data.get("embodied_carbon_kgs");
-                    const gross_weight_kgs = data.get("gross_weight_kgs");
+
+                let productData = {
+                    energy_rating: energy_rating,
+                    is_listable: is_listable,
+                    sku: {},
+                };
 
 
-                    let productData = {
-                        purpose: purpose.toLowerCase(),
-                        condition: condition.toLowerCase(),
-                        name: name,
-                        description: description,
-                        category: category,
-                        type: type,
-                        units: units,
-                        state: state,
-                        volume: volume,
-                        energy_rating: energy_rating,
-                        is_listable: is_listable,
-                        "external_reference": external_reference,
-                        sku: {
-                            serial: serial,
-                            model: model,
-                            brand: brand,
-                            sku: sku,
-                            upc: upc,
-                            part_no: part_no,
-                            embodied_carbon_kgs: embodied_carbon_kgs?embodied_carbon_kgs:null,
-                            gross_weight_kgs:gross_weight_kgs?gross_weight_kgs:null
-                        },
-                        year_of_making: year_of_making,
-                    };
 
-                    if (power_supply){
-                        productData.sku.power_supply=  power_supply.toLowerCase()
+
+                  productData=this.configurePayload(productData,data)
+
+                if (this.state.weightOptionsShow){
+
+
+
+                    if (this.state.weightFieldName==="gross_weight_kgs"){
+                        productData["weight_per_volume_kgs"]=null
+                        productData.sku[this.state.weightFieldName]=this.state.fields[this.state.weightFieldName]
+
+                    }else{
+                        productData["gross_weight_kgs"]=null
+                        productData[this.state.weightFieldName]=this.state.fields[this.state.weightFieldName]
+
                     }
+
+                }
+
+                if (this.state.fields?.['factory_geo_location']){
+                    productData['factory_geo_location']=this.state.fields?.['factory_geo_location']
+                }
+
+                productData= this.configureCarbonValues(this.state.existingItemsParts,this.state.existingItemsProcesses,
+                    this.state.existingItemsOutboundTransport,productData)
+
+
 
                     if (this.props.createProductId) {
                         productData._id = "Product/" + this.props.createProductId
                     }
 
                     let completeData;
-
-                    // if (this.props.parentProduct) {
                     completeData = {
                         product: productData,
                         sub_products: [],
@@ -599,6 +1011,10 @@ let slugify = require('slugify')
                     };
 
 
+                this.setState({
+                    btnLoading: true,
+                    loading:true
+                });
                     this.setState({isSubmitButtonPressed: true})
 
                     if (this.props.productLines) {
@@ -610,8 +1026,7 @@ let slugify = require('slugify')
                             .put(
                                 createProductUrl,
                                 completeData,
-                            )
-                            .then((res) => {
+                            ).then((res) => {
 
                                 if (!this.props.parentProduct) {
                                     this.setState({
@@ -621,18 +1036,13 @@ let slugify = require('slugify')
                                 }
 
                                 this.props.refreshPageWithSavedState( {refresh:true,reset: true})
-
-
                                 this.props.showSnackbar({
                                     show: true,
                                     severity: "success",
-                                    message: name + " created successfully. Thanks"
+                                    message: productData.name + " created successfully. Thanks"
                                 })
                                 this.showProductSelection();
-
                                 this.setState({loading: false,})
-
-
                                 this.setState({
                                     btnLoading: false,
                                     loading: false,
@@ -657,6 +1067,10 @@ let slugify = require('slugify')
                             });
 
                 }
+            }catch (e){
+                console.log(e)
+            }
+
         };
 
         saveProductLines=(name,completeData)=>{
@@ -783,21 +1197,21 @@ let slugify = require('slugify')
 
         updateImages() {
 
-            let flagChange = true
+            let flagChange = false
 
+            //if deleted or added new entry
+            if (this.state.images.length!==this.props.item.artifacts.length){
 
-            // console.log(this.state.images , this.state.prevImages)
-            // if (this.state.images.length !== this.props.item.artifacts.length) {
-            //     flagChange = true
-            // } else {
-            //     this.state.images.forEach((item) => {
+                flagChange=true
+
+            }
+
+            console.log(this.state.images.filter((image)=> this.props.item.artifacts.find((artifactObj)=> artifactObj._key===image)))
+
+            // else if (this.state.images.filter((image)=> this.props.item.artifacts.find((artifactObj)=> artifactObj._key===image)  )){
             //
-            //         if (!this.props.item.artifacts.find(artifact => artifact._key === item)) {
-            //             flagChange = true
-            //         }
-            //
-            //     })
             // }
+
 
             if (flagChange)
 
@@ -843,15 +1257,26 @@ let slugify = require('slugify')
                 )
                 .then((res) => {
 
-                    this.props.loadCurrentProduct(this.props.item.product._key)
+                    // this.props.loadCurrentProduct(this.props.item.product._key)
+
 
                 })
                 .catch((error) => {
 
-                });
+                }).finally(()=>{
+
+                    return
+            });
         }
 
-        updateSubmitProduct = async (event, formData) => {
+
+         productLevelOneKeys=["name","category","condition","description", "purpose","state", "type",
+            "units","volume","external_reference","year_of_making","weight_per_volume_kgs"]
+         skuKeys=["brand","embodied_carbon_kgs",
+             "sku",
+             // "upc",
+            "gross_weight_kgs","model","part_no","power_supply","serial",]
+        updateSubmitProduct =  async (event, formData) => {
 
             event.preventDefault();
             event.stopPropagation()
@@ -862,39 +1287,70 @@ let slugify = require('slugify')
                 return
             }
 
+            const data = new FormData(event.target);
 
-            await   this.updateImages();
 
-            if (fields["deliver"] !== undefined) {
-                this.updateSite(fields["deliver"]);
-                // this.props.showSnackbar({show:true,severity:"success",message:this.props.item.product.name+" updated successfully. Thanks"})
-                // this.props.triggerCallback("edit")
-                removeKeyFromObj(fields, ['deliver'])
+            // const is_listable = this.state.is_listable?true:false;
+            // const is_manufacturer = this.state.is_manufacturer?true:false;
+            const is_listable = true;
+            const is_manufacturer = false;
+            const site = data.get("deliver")
+            const energy_rating = this.state.energyRating;
+
+            let productData = {
+                energy_rating: energy_rating,
+                is_listable: is_listable,
+                sku: {},
+            };
+
+            productData = this.configurePayload(productData, data)
+            delete this.props.item.product['sku']['sku']
+
+            let keysChanged = await getModifiedObjectKeys(productData, this.props.item.product, [...this.productLevelOneKeys, ...this.skuKeys])
+
+
+
+
+
+            keysChanged = await this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
+                this.state.existingItemsOutboundTransport, keysChanged)
+
+            if (JSON.stringify(keysChanged.composition) === JSON.stringify(this.state.prevExistingItemsParts)) {
+                delete keysChanged.composition
+            }
+
+            let keysChangedParts = await getModifiedObjectKeys(keysChanged.composition, this.state.prevExistingItemsParts)
+            let keysChangedProcesses = await getModifiedObjectKeys(keysChanged.processes, this.state.prevExistingItemsProcesses)
+            let keysChangedOutbound = await getModifiedObjectKeys(keysChanged.outbound_transport, this.state.prevExistingItemsOutboundTransport)
+
+
+
+            if (keysChangedParts&&Object.keys(keysChangedParts).length===0){
+                delete keysChanged.composition
+            }
+            if (keysChangedProcesses&&Object.keys(keysChangedProcesses).length===0){
+                delete keysChanged.processes
+            }
+            if (keysChangedOutbound&&Object.keys(keysChangedOutbound).length===0){
+                delete keysChanged.outbound_transport
             }
 
 
-            if (Object.keys(fields).length === 0) {
-                this.props.triggerCallback("edit")
-                return;
+            if (this.props.item.product?.['factory_geo_location']) {
+
+                let res = compareDeep(this.props.item.product?.['factory_geo_location'],this.state.fields?.['factory_geo_location'])
+
+                if (!res){
+                    keysChanged['factory_geo_location']=this.state.fields?.['factory_geo_location']
+                }
+
             }
 
-            if (fields["serial"] !== undefined || fields["model"] !== undefined || fields["brand"] !== undefined ||
-                fields["sku"] !== undefined || fields["upc"] !== undefined || fields["gross_weight_kgs"] !== undefined || fields["embodied_carbon_kgs"] !== undefined) {
+            console.log( keysChanged)
 
-                let sku = {}
 
-                let skuFields = ["sku", "serial", "model", "upc", "part_no",
-                    "embodied_carbon_kgs", "gross_weight_kgs", "brand","external_reference"]
-
-                skuFields.forEach(item => {
-                    if (!(fields[item] === undefined)) {
-
-                        sku[item] = fields[item]
-                    }
-                })
-
-                await removeKeyFromObj(fields, skuFields)
-                fields.sku = sku
+            if (site !== this.props.item.site._key){
+                await this.updateSite(fields["deliver"]);
             }
 
             this.setState({
@@ -902,13 +1358,29 @@ let slugify = require('slugify')
                 loading: true
             });
 
+            if (keysChanged["weight_per_volume_kgs"]){
+                if (keysChanged.sku){
+                    keysChanged.sku["gross_weight_kgs"]=null
+                }else{
+                    keysChanged.sku={
+                        "gross_weight_kgs":null
+                    }
+                }
+
+            }
+            if (keysChanged?.sku["gross_weight_kgs"]){
+                keysChanged["weight_per_volume_kgs"]=null
+            }
             try {
+
                 let productData = {
                     id: this.props.item.product._key,
-                    is_manufacturer: this.state.is_manufacturer ? true : false,
-                    update:
-                    fields
+                    // is_manufacturer: this.state.is_manufacturer ? true : false,
+                    update: keysChanged
                 };
+
+                // productData["update"] = this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
+                //     this.state.existingItemsOutboundTransport, productData["update"])
 
                 axios
                     .post(
@@ -920,7 +1392,7 @@ let slugify = require('slugify')
 
 
                         this.props.refreshPageWithSavedState(
-                            {refresh:true,reset: false}
+                            {refresh: true, reset: false}
                         )
 
                         this.props.showSnackbar({
@@ -931,11 +1403,10 @@ let slugify = require('slugify')
                         this.props.triggerCallback("edit")
 
                         if (this.props.loadCurrentProduct)
-                        this.props.loadCurrentProduct(this.props.item.product._key)
+                            this.props.loadCurrentProduct(this.props.item.product._key)
 
                     })
                     .catch((error) => {
-                        // console.log("*****************",error)
 
                         this.setState({
                             btnLoading: false,
@@ -945,6 +1416,7 @@ let slugify = require('slugify')
                         this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
 
                     });
+
 
             } catch (e) {
                 console.log(e)
@@ -961,11 +1433,11 @@ let slugify = require('slugify')
         componentDidUpdate(prevProps, prevState, snapshot) {
             if (prevProps!==this.props){
 
+
                 if (this.props.item){
                     this.isManufacturer()
                     this.loadImages(this.props.item.artifacts)
                     this.checkListable(this.props.item.product.is_listable)
-
 
                 }
 
@@ -1029,47 +1501,131 @@ let slugify = require('slugify')
         };
         componentDidMount() {
 
+
             window.scrollTo(0, 0);
+            this.getResourceCarbon()
+            this.getEnergyProcess()
+            this.getTransportMode()
+
+            if (this.props.item){
+                if (this.props.item.product.units.toLowerCase()!=="kgs"){
+                    this.setState({
+                        weightOptionsShow:true,
+                        weightFieldName:this.props.item.product.weight_per_volume_kgs?"weight_per_volume_kgs":"gross_weight_kgs"
+
+                    })
+                }else{
+                    this.setState({
+                        weightOptionsShow:false,
+                    })
+                }
+            }
 
             this.setState({
                 parentProductId:null
             }, ()=>{
-
                 this.handleView(this.props.productId,this.props.type)
-
             })
-
-
             if (this.props.item){
-
                 this.loadImages(this.props.item.artifacts)
                 this.setState({
                     isEditProduct:true,
                 })
                 this.isManufacturer()
+
+                if (this.props.item.product?.['factory_geo_location']){
+
+                   let fields=this.state.fields
+                    fields['factory_geo_location']=this.props.item.product?.['factory_geo_location']
+                    this.setState({
+                        fields:fields
+                    })
+                }
             }
-
-
             this.setUpYearList();
-
             this.props.loadSites(this.props.userDetail.token);
-
-            // if (this.props.productId){
-            //     this.setState({
-            //         productId:this.props.productId,
-            //         showForm:false
-            //     })
-            // }else{
-            //     this.setState({
-            //         productId:null,
-            //         showForm:true
-            //     })
-            // }
-
             this.fetchCache()
 
+            if (this.props.item){
+                this.setState({
+                    prevExistingItemsParts:JSON.parse(JSON.stringify({...this.props.item.product.composition})),
+                    prevExistingItemsProcesses:JSON.parse(JSON.stringify({...this.props.item.product.processes})),
+                    prevExistingItemsOutboundTransport:JSON.parse(JSON.stringify({...this.props.item.product.outbound_transport})),
+                })
+
+            }
         }
 
+        loadInitialCarbonData=(itemObj)=>{
+
+            try {
+
+
+          let item=itemObj
+            if(this.props.productLines){
+
+                item={...this.props.item}
+            }
+            let existingParts=[]
+            let existingProcesses=[]
+            let existingOutboundTransport=[]
+
+            if (item.product.composition)
+            item.product.composition.forEach((compositionItem)=>{
+
+                axios.get(baseUrl + "resource-carbon/"+compositionItem.carbon_resource.split("/")[1])
+                    .then(
+                        (response) => {
+                            let   responseAll=response.data.data
+
+                            let item={
+                                index:uuid(),
+                                fields: {
+                                    category: responseAll.category.name,
+                                    type: responseAll.type.name,
+                                    state: responseAll.state.name,
+                                    unit: compositionItem?.carbon_resource,
+                                    percentage: compositionItem.percentage,
+                                }}
+
+                            if (compositionItem.inbound_transport){
+                                item.fields.geo_location= compositionItem.inbound_transport.geo_location
+                                item.fields.transport_mode= compositionItem.inbound_transport.transport_mode
+                            }
+                            existingParts.push(item)
+
+                            console.log(item)
+                        },
+                        (error) => {}
+                    );
+            })
+
+            if(item.product.processes)
+            item.product.processes.forEach((item)=>{
+                existingProcesses.push({
+                    index:uuid(),
+                    fields: item
+                })
+            })
+            if(item.product.outbound_transport)
+            item.product.outbound_transport.forEach((item)=>{
+                existingOutboundTransport.push({
+                    index:uuid(),
+                    fields: item
+                })
+            })
+
+            this.setState({
+                existingItemsParts:existingParts ,
+                existingItemsProcesses:existingProcesses  ,
+                existingItemsOutboundTransport:existingOutboundTransport ,
+            })
+
+
+            }catch (e){
+                console.log(e)
+            }
+        }
 
         showMultipleUpload=()=>{
 
@@ -1078,6 +1634,194 @@ let slugify = require('slugify')
 
         }
 
+        fillTemplateValues=(itemTemplate)=>{
+
+
+            let cat= this.state.categories.length>0? this.state.categories.filter(
+                (item) => item.name === itemTemplate.value.product.category
+            )[0]:null
+
+
+            let subCategories=cat?cat.types:[]
+            let states = subCategories.length>0?this.state.categories.filter((item) => item.name === itemTemplate.value.product.category)[0].types.filter((item) => item.name === itemTemplate.value.product.type)[0].state:[]
+            let  units = states.length>0?this.state.categories.filter((item) => item.name === itemTemplate.value.product.category)[0].types.filter((item) => item.name === itemTemplate.value.product.type)[0].units:[]
+
+
+            this.setState({
+                subCategories:subCategories,
+                states : states,
+                units : units
+            })
+
+
+            setTimeout(()=>{
+
+                this.setState({
+                    selectedTemplate:itemTemplate
+                })
+            },500)
+
+
+            this.loadInitialCarbonData(itemTemplate.value)
+
+            this.loadImages(itemTemplate.value.artifacts)
+        }
+
+
+        handleChangePartsList=( value,valueText,field,uId,index,type) =>{
+
+            console.log(value,field)
+// debugger
+
+
+            if (value)
+            try {
+                if (type===1){
+                    let existingItems = [...this.state.existingItemsParts];
+                    if (existingItems[index]){
+
+                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
+                        fields[field]=value
+
+                        if (field!=="geo_location"){
+                            fields[field]=value
+                        }else {
+                            fields[field]={
+                                "address_info": {
+                                    "formatted_address":value.address,
+                                    "geometry": {
+                                        "location": {
+                                            "lat": value.latitude,
+                                            "lng": value.longitude
+
+                                            // "lat":"40.99489459999999",
+                                            // "lng":"17.22261"
+                                        },
+                                        "location_type": "APPROXIMATE",
+
+                                    },
+                                    "place_id": "",
+                                    "types": [],
+                                    "plus_code": null
+                                },
+                                "is_verified": true
+                            }
+
+
+                        }
+
+                        existingItems[index] = {
+                            index:uId,
+                            fields:fields
+                        };
+                    }else {
+                        existingItems[index] = {
+                            index:uId,
+                            error:false,
+                            fields:{field:value}
+                        };
+
+                    }
+                    this.setState({
+                        existingItemsParts:existingItems
+                    })
+
+
+                }
+
+             else   if (type===2){
+                    let existingItems = [...this.state.existingItemsProcesses];
+                    if (existingItems[index]){
+
+                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
+                        fields[field]=value
+
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            // error:false,
+                            fields:fields
+                        };
+                    }else {
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            error:false,
+                            fields:{field:value}
+                        };
+
+                    }
+                    this.setState({
+                        existingItemsProcesses:existingItems
+                    })
+
+
+                }
+
+             else  if (type===3){
+                    let existingItems = [...this.state.existingItemsOutboundTransport];
+                    if (existingItems[index]){
+
+                        let fields=existingItems[index]["fields"]?existingItems[index]["fields"]:{}
+
+
+                        if (field!=="geo_location"){
+                            fields[field]=value
+                        }else {
+                            fields[field]={
+                                "address_info": {
+                                    "formatted_address":value.address,
+                                    "geometry": {
+                                        "location": {
+                                            "lat": value.latitude,
+                                            "lng": value.longitude
+
+                                            // "lat":"40.99489459999999",
+                                            // "lng":"17.22261"
+                                        },
+                                        "location_type": "APPROXIMATE",
+
+                                    },
+                                    "place_id": "",
+                                    "types": [],
+                                    "plus_code": null
+                                },
+                                "is_verified": true
+                            }
+
+
+                        }
+
+                        existingItems[index] = {
+                            index:uId,
+                            fields:fields
+                        };
+                    }else {
+                        existingItems[index] = {
+                            // value:value,
+                            // valueText:valueText,
+                            index:uId,
+                            error:false,
+                            fields:{field:value}
+                        };
+
+                    }
+                    this.setState({
+                        existingItemsOutboundTransport:existingItems
+                    })
+
+                }
+
+            }catch (e){
+                console.log(e)
+            }
+
+            console.log("old pro",this.state.prevExistingItemsProcesses)
+            console.log("old parts",this.state.prevExistingItemsParts)
+            console.log("old outbound",this.state.prevExistingItemsOutboundTransport)
+        }
 
         handleView=(productId,type)=>{
 
@@ -1102,16 +1846,10 @@ let slugify = require('slugify')
                     showForm: false
                 })
             }
-
-
             // this.props.setMultiplePopUp({show:true,type:"isProduct"})
             // this.props.showProductPopUp({ action: "hide_all", show: false });
 
         }
-
-
-
-
 
         render() {
 
@@ -1164,25 +1902,13 @@ let slugify = require('slugify')
                                         borderRadius: 4,
                                         fontSize: 16,
                                         border: '1px solid #ced4da',}}
-                                    variant="standard"
-                                    // details=""
-                                    // initialValue={this.props.item&&this.props.item.site._key}
-                                    // option={"name"}
-                                    // valueKey={"key"}
-                                    // subValueKey={"name"}
+                                        variant="standard"
+
                                     onChange={(value)=> {
-
-
-                                        this.setState({
-                                            selectedTemplate:this.state.templates.find(item=>item.key===value.currentTarget.value )
-                                        })
-
-                                        this.loadImages(this.state.templates.find(item=>item.key===value.currentTarget.value).value.artifacts)
-
-
+                                        let template=this.state.templates.find(item=>item.key===value.currentTarget.value )
+                                        this.fillTemplateValues(template)
                                     }}
-                                    // select={"Select"}
-                                    // options={this.state.templates}
+
                                     name={"template"}
                                     title="Select Product Line..">
                                     <option value={""}>Select Product Line</option>
@@ -1199,14 +1925,15 @@ let slugify = require('slugify')
 
                     <div className={"row justify-content-center create-product-row"}>
                         <div className={"col-12"}>
-                              <form  onChange={this.handleChangeForm} onSubmit={this.props.item?this.updateSubmitProduct:this.handleSubmit}>
+                              <form
+                                  autoComplete={false}
+                                  onChange={this.handleChangeForm}
+                                     onSubmit={(!this.props.item||this.props.productLines)?this.handleSubmit:this.updateSubmitProduct}>
                                 <div className="row ">
                                     {this.props.productLines &&
                                     <div className="col-12 mt-2">
                                     <TextFieldWrapper
-
                                         details="The name of  template"
-
                                         initialValue={(this.props.item?this.props.item.name:"")}
                                         hidden={this.props.item?true:false}
                                             onChange={(value)=>this.handleChangeProduct(value,"templateName")}
@@ -1220,11 +1947,7 @@ let slugify = require('slugify')
                                        <TextFieldWrapper
                                            editMode
                                            details="The name of a product"
-                                         // initialValue={(this.props.item&&this.props.item.product.name)
-                                         // ||(this.state.selectedTemplate&&this.state.selectedTemplate.value.product.name)
-                                         // }
-
-                                           initialValue={this.props.item&&this.props.item.product.name
+                                           initialValue={this.props.item&&this.props.item?.product.name
                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.name:"")
                                            }
                                          onChange={(value)=>this.handleChangeProduct(value,"name")}
@@ -1247,7 +1970,8 @@ let slugify = require('slugify')
                                             name={"is_listable"} title="List for sale" />
 
                                     </div>}
-                                    {!this.props.productLines &&    <div className="col-md-4 d-none col-sm-12  justify-content-start align-items-center">
+                                    {!this.props.productLines &&
+                                        <div className="col-md-4 d-none col-sm-12  justify-content-start align-items-center">
 
                                         <CheckboxWrapper
 
@@ -1335,7 +2059,7 @@ let slugify = require('slugify')
                                                             units: units
                                                         })
                                                     }
-                                                },500)
+                                                },100)
 
 
                                                 this.handleChangeProduct(value,"type")
@@ -1459,7 +2183,7 @@ let slugify = require('slugify')
                                                 <p style={{ marginTop: "10px" }}>
                                                     <span className="mr-1 text-gray-light">or </span>
                                                     <span
-                                                        onClick={()=>this.showSubmitSite()}
+                                                        onClick={()=>this.showSubmitSiteForm()}
                                                         className={
                                                             " forgot-password-link ellipsis-end"
                                                         }>
@@ -1520,9 +2244,15 @@ let slugify = require('slugify')
 
                                       </div>
                                   </div>
-                                  {!this.props.productLines && <div className="row  mt-2">
+                                  <div className="row  mt-2">
                                         <div className="col-12">
-                                            <div className="row  justify-content-start ">
+
+
+
+                                                <div className="row  justify-content-start ">
+
+                                                    {!this.props.productLines &&
+                                                        <>
                                                 <div className="col-12 ">
                                                     <div
                                                         className={"custom-label text-bold text-blue mb-1"}>
@@ -1537,7 +2267,23 @@ let slugify = require('slugify')
                                                         select={"Select"}
                                                                          disableAutoLoadingIcon
                                                         initialValue={this.props.item&&this.props.item.product.units}
-                                                        onChange={(value)=>this.handleChangeProduct(value,"units")}
+
+
+                                                        onChange={(value)=>{
+                                                            this.handleChangeProduct(value,"units")
+
+                                                            console.log(value)
+                                                            if (value!=="kgs"){
+                                                                this.setState({
+                                                                    weightOptionsShow:true
+                                                                })
+                                                            }else{
+                                                                this.setState({
+                                                                    weightOptionsShow:false
+                                                                })
+                                                            }
+
+                                                        }}
                                                         error={this.state.errors["units"]}
 
                                                         disabled={ (this.state.units.length > 0) ? false : true}
@@ -1558,9 +2304,71 @@ let slugify = require('slugify')
                                                         name="volume" title="(Volume)" />}
 
                                                 </div>
+                                                         </>
+                                                    }
+                                                    {this.state.weightOptionsShow &&
+                                                        <div className="col-md-4 col-xs-12 ">
+
+                                                    <div className="row  ">
+                                                        <div className="col-12 ">
+                                                            <div className="custom-label text-bold text-blue ">Select Weight Input type </div>
+                                                        </div>
+                                                        <div className="col-12 d-flex flex-row connected-fields ">
+
+                                                            <div  style={{flex:"66%"}}>
+                                                                <SelectArrayWrapper
+
+                                                                    id={"first-input"}
+                                                                    noMargin
+                                                                    initialValue={this.state.weightFieldName}
+                                                                    select={"Select"}
+                                                                    option={"value"}
+                                                                    valueKey={"key"}
+                                                                    error={this.state.errors["weightOptions"]}
+                                                                    onChange={(value)=> {
+
+                                                                        this.handleChangeProduct(value,"weightOptions")
+                                                                        this.setState({
+                                                                            weightFieldName:value
+                                                                        })
+                                                                    }}
+                                                                    options={WEIGHT_OPTIONS} name={"weightOptions"}
+                                                                />
+                                                            </div>
+                                                            <div  style={{flex:"33%"}}>
+                                                                <TextFieldWrapper
+                                                                    id={"last-input"}
+                                                                    width="auto"
+                                                                    noMargin
+                                                                    placeholder="e.g 1,2,3 .."
+                                                                    initialValue={this.state.weightOptionsShow&&(this.props.item&&this.props.item.product.weight_per_volume_kgs?this.props.item.product.weight_per_volume_kgs:this.props.item&&this.props.item.product.sku.gross_weight_kgs)}
+                                                                    onChange={(value)=>this.handleChangeProduct(value,this.state.weightFieldName)}
+                                                                    error={this.state.errors[this.state.weightFieldName]}
+                                                                    name={this.state.weightFieldName}
+                                                                    decimalInput
+
+                                                                />
+                                                            </div>
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                {/*<TextFieldWrapper*/}
+                                                {/*    editMode*/}
+                                                {/*    decimalInput*/}
+                                                {/*    error={this.state.errors["gross_weight_kgs"]}*/}
+                                                {/*    onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}*/}
+                                                {/*    // details="A unique number used by external systems"*/}
+                                                {/*    initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""*/}
+                                                {/*        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")*/}
+                                                {/*    } name="gross_weight_kgs" title="Gross Weight (Kg)" />*/}
+                                                </div>}
                                             </div>
                                         </div>
-                                    </div>}
+                                    </div>
 
                                 <div className="row  mt-2">
                                     <div className="col-12">
@@ -1598,6 +2406,7 @@ let slugify = require('slugify')
                                         </span>
                                     </div>
                                 </div>
+
                                 <div className={`row  ${this.state.moreDetail?"mt-2":"d-none"}`}>
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <SelectArrayWrapper
@@ -1609,7 +2418,7 @@ let slugify = require('slugify')
                                                         onChange={(value)=> {
 
                                                         }}
-                                                        options={this.state.yearsList} name={"manufacturedDate"} title="Year Of Manufacture"/>
+                                                        options={this.state.yearsList} name={"year_of_making"} title="Year Of Manufacture"/>
 
                                                 </div>
 
@@ -1641,29 +2450,7 @@ let slugify = require('slugify')
 
                                                 </div>}
 
-                                                {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}
-                                                {/*    <TextFieldWrapper*/}
-                                                {/*        editMode*/}
-                                                {/*        details="Stock Keeping Unit"*/}
-                                                {/*        initialValue={this.props.item?this.props.item.product.sku.sku:""*/}
-                                                {/*        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.sku:"")*/}
-                                                {/*        }*/}
-                                                {/*        onChange={(value)=>this.handleChangeProduct(value,"sku")}*/}
-                                                {/*        name="sku"*/}
-                                                {/*        title="Sku" />*/}
 
-                                                {/*</div>*/}
-
-                                                {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}
-                                                {/*    <TextFieldWrapper*/}
-                                                {/*        editMode*/}
-                                                {/*        onChange={(value)=>this.handleChangeProduct(value,"upc")}*/}
-                                                {/*        details="Universal Product Code"*/}
-                                                {/*        initialValue={this.props.item?this.props.item.product.sku.upc:""*/}
-                                                {/*        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.upc:"")*/}
-                                                {/*        } name="upc" title="UPC" />*/}
-
-                                                {/*</div>*/}
 
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <TextFieldWrapper
@@ -1687,38 +2474,203 @@ let slugify = require('slugify')
 
                                     <div className="col-md-4 col-sm-6 col-xs-6">
                                         <TextFieldWrapper
+                                            numberInput
                                             editMode
                                             onChange={(value)=>this.handleChangeProduct(value,"embodied_carbon_kgs")}
                                             // details="A unique number used by external systems"
-                                            initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_kgs:""
-                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_kgs:"")
+                                            initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_kgs:null
+                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_kgs:null)
                                             } name="embodied_carbon_kgs" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
 
                                     </div>
-                                    <div className="col-md-4 col-sm-6 col-xs-6">
-                                        <TextFieldWrapper
-                                            editMode
-                                            onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}
-                                            // details="A unique number used by external systems"
-                                            initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""
-                                                ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")
-                                            } name="gross_weight_kgs" title="Gross Weight (Kg)" />
+                                    {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}
+                                    {/*    <TextFieldWrapper*/}
+                                    {/*        editMode*/}
+                                    {/*        onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}*/}
+                                    {/*        // details="A unique number used by external systems"*/}
+                                    {/*        initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""*/}
+                                    {/*            ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")*/}
+                                    {/*        } name="gross_weight_kgs" title="Gross Weight (Kg)" />*/}
 
-                                    </div>
+                                    {/*</div>*/}
 
                                             </div>
+                                  <div className="row  mt-2">
+                                  <div className={"col-md-8 col-sm-12 col-xs-12"}>
+
+                                      <SearchPlaceAutocomplete
+
+                                          initialValue={this.props.item?.product?.factory_geo_location}
+                                          error={this.state.errors["factory_geo_location"]}
+                                          fromOutboundTransport
+                                          title={"Factory Location"}
+                                          hideMap
+                                          onChange={(value, valueText) => {
+                                              try {
+                                                  if (value && value.latitude && value.longitude) {
+
+                                                      this.handleChangeProduct({
+                                                          latitude: value.latitude,
+                                                          longitude: value.longitude, address: value.address
+                                                      }, `factory_geo_location`)
+
+                                                  }
+                                              } catch (e) {
+                                                  console.log("map error ", e)
+                                              }
+                                          }
+                                          }
+
+                                      />
+                                      <span className="text-gray-light text-12 m-0 ellipsis-end">(Min 4 char required to search)</span>
+                                      {this.state.errors["factory_geo_location"]?.error && <span className="text-danger"> Required</span>}
+                                  </div>
+                                  </div>
+
+                                  <div className="row  mt-2">
+                                      <div className="col-12 text-left">
+                                        <span style={{ float: "left" }}>
+                                            <span
+                                                onClick={this.addParts}
+                                                className={
+                                                    " forgot-password-link"
+                                                }>
+
+                                                      {this.state.showAddParts
+                                                          ? "Hide Add Parts"
+                                                          : "Add Parts"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                            </span>
+                                        </span>
+                                          <span className="text-12 blue-text">{this.props.item?.product?.composition.length>0?`(${this.props.item.product?.composition?.length} entries exist)`:""}</span>
+                                      </div>
+                                  </div>
+
+                                  <div className={`row border-box bg-light ${this.state.showAddParts?"mt-2":"d-none"}`}>
+                                      <div className="col-md-12 col-sm-6 col-xs-6">
+
+                                          <PartsList
+                                              totalPercentError={this.state.totalPercentError}
+
+                                              errors={this.state.carbonErrors}
+                                              list={this.state.resourceCategories}
+                                              transportModesList={this.state.transportModes}
+                                              filters={[]}
+                                              deleteItem={(data)=>this.deleteItemParts(data,1)}
+                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,1)}
+                                              existingItems={this.state.existingItemsParts}
+                                          />
+
+                                      </div>
+                                      <div className="row   ">
+                                          <div className="col-12 mt-2  ">
+                                              <div className="">
+                                                  <BlueSmallBtn
+                                                      onClick={()=>this.addItemParts(1)}
+                                                      title={"Add"}
+                                                      type="button"
+                                                  >
+                                                      <AddIcon/>
+                                                  </BlueSmallBtn>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                  </div>
+
+                                  <div className="row  mt-2">
+                                      <div className="col-12 text-left">
+                                        <span style={{ float: "left" }}>
+                                            <span
+                                                onClick={this.addProcesses}
+                                                className={
+                                                    " forgot-password-link"
+                                                }>
+
+                                                      {this.state.showAddProcesses
+                                                          ? "Hide Processes"
+                                                          : "Add Processes"} <CustomPopover text="Add processes involved in the manufacturing of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                            </span>
+                                            <span className="text-12 blue-text"> {this.props.item?.product?.processes.length>0?`(${this.props.item?.product?.processes.length} entries exist)`:""}</span>
+                                        </span>
+                                      </div>
+                                  </div>
+
+                                  <div className={`row border-box bg-light ${this.state.showAddProcesses?"mt-2":"d-none"}`}>
+                                      <div className="col-md-12 col-sm-6 col-xs-6">
+
+                                          <ProcessesList
+                                              errors={this.state.carbonErrors}
+                                              list={this.state.energySources}
+                                              filters={[]}
+                                              deleteItem={(data)=>this.deleteItemParts(data,2)}
+                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,2)}
+                                              existingItems={this.state.existingItemsProcesses}
+                                          />
+
+                                      </div>
+                                      <div className="row   ">
+                                          <div className="col-12 mt-2  ">
+                                              <div className="">
+                                                  <BlueSmallBtn
+                                                      onClick={()=>this.addItemParts(2)}
+                                                      title={"Add"}
+                                                      type="button"
+                                                  >
+                                                      <AddIcon/>
+                                                  </BlueSmallBtn>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                  </div>
 
 
 
-                                  {/*<ArtifactProductsTab*/}
-                                  {/*    hideMenu*/}
-                                  {/*    setArtifacts={(artifacts)=>this.loadImages(artifacts)}*/}
-                                  {/*    showCancel*/}
-                                  {/*    item={this.props.item?this.props.item:null}*/}
-                                  {/*    type={this.props.item?"edit":"add"}*/}
-                                  {/*    entityType={ENTITY_TYPES.Product}*/}
-                                  {/*    setFiles={(files)=>this.setState({files:files})}*/}
-                                  {/*/>*/}
+                                  <div className="row  mt-2">
+                                      <div className="col-12 text-left">
+                                        <span style={{ float: "left" }}>
+                                            <span
+                                                onClick={this.addOutboundTransports}
+                                                className={
+                                                    " forgot-password-link"
+                                                }>
+                                                      {this.state.showAddOutboundTransport
+                                                          ? "Hide Outbound Transport"
+                                                          : "Add Outbound Transport"} <CustomPopover text="Add outbound transport details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
+                                            </span>
+                                            <span className="text-12 blue-text">{this.props.item?.product?.outbound_transport.length>0?`(${this.props.item?.product?.outbound_transport.length} entries exist)`:""}</span>
+                                        </span>
+                                      </div>
+                                  </div>
+
+                                  <div className={`row border-box bg-light ${this.state.showAddOutboundTransport?"mt-2":"d-none"}`}>
+                                      <div className="col-md-12 col-sm-6 col-xs-6">
+
+                                          <OutboundTransportList
+                                              errors={this.state.carbonErrors}
+                                              list={this.state.transportModes}
+                                              filters={[]}
+                                              deleteItem={(data)=>this.deleteItemParts(data,3)}
+                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,3)}
+                                              existingItems={this.state.existingItemsOutboundTransport}
+                                          />
+
+                                      </div>
+                                      <div className="row   ">
+                                          <div className="col-12 mt-2  ">
+                                              <div className="">
+                                                  <BlueSmallBtn
+                                                      onClick={()=>this.addItemParts(3)}
+                                                      title={"Add"}
+                                                      type="button"
+                                                  >
+                                                      <AddIcon/>
+                                                  </BlueSmallBtn>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                  </div>
                        <div className={"row "}>
                                 <div className="    col-12 mt-2">
                                     <div className={"custom-label text-bold text-blue mb-3"}>
@@ -1777,9 +2729,8 @@ let slugify = require('slugify')
                                                                 {this.state.files &&
                                                                 this.state.files.map(
                                                                     (item, index) => (
-                                                                        <>
+                                                                        <React.Fragment key={index}>
                                                                         {getMimeTypeAndIcon(item.file.mime_type).type==="image"&&<div
-                                                                            key={index}
                                                                             className={"file-uploader-thumbnail-container"}>
                                                                             <div
                                                                                 data-index={
@@ -2065,7 +3016,7 @@ let slugify = require('slugify')
                                                                                 </div>
                                                                             </div>}
 
-                                                                        </>
+                                                                        </React.Fragment>
                                                                     )
 
                                                                 )}
@@ -2125,7 +3076,7 @@ let slugify = require('slugify')
 
                             <div className="col-md-12 col-sm-12 col-xs-12 ">
                                 <div
-                                    onClick={()=>this.showSubmitSite()}
+                                    onClick={()=>this.showSubmitSiteForm()}
                                     className={
                                         "custom-label text-bold text-blue  pb-2 click-item"
                                     }>
@@ -2142,7 +3093,7 @@ let slugify = require('slugify')
                                 </div>
                                 <div className={"row"}>
                                     <div className={"col-12"}>
-                                        {this.state.showSubmitSite && <SiteFormNew dontCallUpdate showHeader={false}  refresh={(data) => this.showSubmitSite(data)}   />}
+                                        {this.state.showSubmitSite && <SiteFormNew dontCallUpdate showHeader={false}  refresh={(data) => this.showSubmitSiteForm(data)}   />}
                                     </div>
                                 </div>
                             </div>

@@ -32,7 +32,7 @@ const OCVCDisplay = ({ productId }) => {
                 <div className="col-md-6">
                     {Object.entries(context).map(([key, value]) => (
                         <div key={key} className="ps-5">
-                            <span style={{ textTransform: "capitalize" }}>{key}</span> :{" "}
+                            <span style={{ textTransform: "capitalize" }}>{key}</span>
                             <span
                                 style={{
                                     textTransform: "uppercase",

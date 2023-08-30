@@ -153,7 +153,7 @@ class SearchItem extends Component {
                                     {this.props.item.search.stage}
                                 </span>
                         </p>
-                        <p  className={" text-gray-light text-14 text-right"}>
+                        <div  className={" text-gray-light text-14 text-right"}>
                             {this.props.showMoreMenu && (
                                 <MoreMenu
                                     triggerCallback={(action) => this.callBackResult(action)}
@@ -162,7 +162,7 @@ class SearchItem extends Component {
                                     edit={false}
                                 />
                             )}
-                        </p>
+                        </div>
                         </div>
 
                         <p className={" text-gray-light text-14 date-bottom text-right"}>

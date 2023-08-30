@@ -59,13 +59,13 @@ const OrgComponent = (props) => {
     return (
         <>
             {org && (
-                <div
+                    <span
                     style={{
                         display: "inline-flex",
                         justifyContent: "center",
                         alignItems: "center",
                     }}>
-                    <div
+                    <span
                         className="mr-1 text-gray-light "
                         style={{
                             textTransform: "capitalize",
@@ -73,14 +73,14 @@ const OrgComponent = (props) => {
                             // color : "#444",
                         }}>
                         {!props.hideTitle && <span className={props.colorClass ? props.colorClass : "sub-title-text-pink"}> {org.name}</span>}
-                    </div>
+                    </span>
                     <OverlayTrigger
                         trigger={["hover", "focus"]}
                         placement={"bottom"}
                         overlay={orgPopover}>
                         <Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"small"} />
                     </OverlayTrigger>
-                </div>
+                </span>
             )}
         </>
     );

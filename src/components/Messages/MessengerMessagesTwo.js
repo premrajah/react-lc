@@ -701,7 +701,7 @@ try{
                                 bgColor: "background.paper",
                             }}>
                             {filteredGroups.map((g, index) => (
-                                <React.Fragment key={index}>
+                                <React.Fragment key={`${index}-cm`}>
                                     <HandleGroupDataDisplay
                                         userOrg={userDetail.orgId}
                                         selectedMenuItemIndex={selectedMenuItemIndex}
@@ -801,9 +801,8 @@ try{
                         <div className="col">
                             {selectedOrgs.length > 0 && (
                                 <small>
-                                    Selected:{" "}
-                                    {selectedOrgs.map((o, i) => (
-                                        <span className="mr-1" key={i}>
+                                    Selected:{selectedOrgs.map((o, i) => (
+                                        <span className="mr-1" key={`${i}-label-cm`}>
                                             <span>{o.label}</span>
                                             {selectedOrgs.length > 1 && <span>, </span>}
                                         </span>
@@ -911,15 +910,18 @@ const HandleGroupDataDisplay = ({
 
 
     return (
-        <>
-            <MenuItem
-                button
-                divider
-                dense
-                disableGutters
-                key={`${index}-${groupListItem.message_group._key}`}
-                id={`group-item-${index}-${groupListItem.message_group._key}`}
-                selected={groupListItem.message_group._key === selectedMessageGroupKey}
+        <React.Fragment
+            key={`${index}-g-${groupListItem.message_group._key}`}
+        >
+            <li
+                className={`click-item group-list-item-df   ${groupListItem.message_group._key === selectedMessageGroupKey?"bg-selected":""}`}
+
+                // divider
+                // dense
+                // disableGutters
+                // button={true}
+                id={`group-item-g-${index}-${groupListItem.message_group._key}`}
+                // selected={groupListItem.message_group._key === selectedMessageGroupKey}
                 style={{ whiteSpace: "normal" }}>
                 <MessengerMessagesTwoGroupItem
                     userOrg={userOrg}
@@ -928,8 +930,8 @@ const HandleGroupDataDisplay = ({
                     handleGroupClickCallback={handleGroupClickCallback}
                     handleSelectedItemCallback={handleSelectedItemCallback}
                 />
-            </MenuItem>
-        </>
+            </li>
+        </React.Fragment>
     );
 };
 

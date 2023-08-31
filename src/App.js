@@ -93,6 +93,7 @@ import ProductsCondensedView from "./pages/my-products/ProductsCondensedView";
 import TestRoute from "./components/TestRoute";
 import SitesNew from "./pages/sites/SitesNew";
 import VerifyEmail from "./pages/account/VerifyEmail";
+import DocumentPortal from './components/Portal/DocumentPortal';
 
 
 ReactGA.initialize(gaTID);
@@ -222,6 +223,7 @@ class App extends Component {
                         />
                         <Route exact path="/marketplace/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
+                        <LoggedInRoute exact path="/portal" component={DocumentPortal} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
                         <Route component={NotFound} />

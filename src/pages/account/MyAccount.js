@@ -17,6 +17,7 @@ import ManageOrgUsers from "../../components/Account/ManageOrgUsers";
 import AssumeRoles from "../../components/Account/AssumeRoles";
 import ManageOrgSettings from "../../components/Account/ManageOrgSettings";
 import EmbodiedCarbon from "../../components/Account/EmbodiedCarbon";
+import DocumentPortal from '../../components/Portal/DocumentPortal';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -118,6 +119,7 @@ function MyAccount(props) {
                                         {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
                                             <Tab key={10} label="Embodied Carbon" value={10} />
                                         )}
+                                        <Tab key={11} label="Documents Portal" value={11} />
                                     </Tabs>
                                 </div>
                                 <div className="col-md-9  p-0 rad-8 bg-white">
@@ -171,6 +173,9 @@ function MyAccount(props) {
                                         </TabPanel>
                                     )}
 
+                                    <TabPanel value={value} index={11}>
+                                        <DocumentPortal />
+                                    </TabPanel>
                                 </div>
                             </div>
                         )}

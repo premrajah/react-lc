@@ -222,7 +222,7 @@ class App extends Component {
                             component={ItemDetailMatch}
                         />
                         <Route exact path="/marketplace/:slug" component={ItemDetail} />
-                        <Route exact path="/portal" component={DocumentPortal} />
+                        <Route exact path="/documents-portal" component={DocumentPortal} />
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />

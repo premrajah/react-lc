@@ -3,116 +3,92 @@ import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import PropTypes from 'prop-types';
 import PageHeader from '../PageHeader';
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Tab, Tabs } from '@mui/material';
 import { Download } from '@mui/icons-material';
+import Layout from '../Layout/Layout';
 
 
 
 function DocumentPortal() {
 
-    const [activeTab, setActiveTab] = useState(0);
-
-
-    const handleTabChange = (e, newTabState) => {
-        setActiveTab(newTabState);
-    }
-
     return (
         <>
-            <div className="container">
-                <PageHeader
-                    pageTitle="Documents Portal"
-                    subTitle=""
-                />
+            <Layout>
+                <div className="container mt-3">
+                    <PageHeader
+                        pageTitle="Documents Portal"
+                        subTitle=""
+                    />
 
-                <Box sx={{ width: '100%', typography: 'body1' }}>
-                    <Box sx={{ borderBottom: 2, borderColor: '#EAEAEF' }}>
-                        <Tabs
-                            value={activeTab}
-                            TabIndicatorProps={{
-                                style: {
-                                    backgroundColor: "#27245C",
-                                    padding: '2px',
-                                    color: "#27245C"
-                                }
-                            }}
-                            onChange={handleTabChange}
-                            aria-label="lab API tabs example">
-                            <Tab label="Upload to Loopcycle" {...a11yProps(0)} />
-                            <Tab label="Uploaded Documents" {...a11yProps(1)} />
-                        </Tabs>
-                    </Box>
+                    <Card variant='outlined'>
+                        <CardHeader title="Please download and fill out these documents">
 
-                    <CustomTabPanel value={activeTab} index={0}>
-                        <section className="row">
-                            <div className="col">
-                                <div>
-                                    <Download style={{ fontSize: "16px" }} />
-                                    <span>
-                                        <a href="..." download='...'>
-                                            Manufacturer Documents
-                                        </a>
-                                    </span>
+                        </CardHeader>
+                        <CardContent>
+                            <section className="row">
+                                <div className="col">
+                                    <div>
+                                        <Download style={{ fontSize: "16px" }} />
+                                        <span>
+                                            <a href="..." download='...'>
+                                                Manufacturer Documents
+                                            </a>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        </section>
+                            </section>
+                            <section className="row mt-3">
+                                <div className="col">
+                                    <p>Once completed please upload the documents below.</p>
+                                </div>
+                            </section>
 
-                        <section className="row mt-2">
-                            <div className="col">
-                                <p>Fill out these documents and once completed please upload the documents below.</p>
-                                <p>If you require any help, Please get in touch <a className='text-pink click-item' href = "mailto:hello@loopcycle.io">hello@loopcycle.io</a></p>
-                            </div>
-                        </section>
-                    </CustomTabPanel>
+                            <section className="row">
+                                <div className="col">
+                                    <p>If you require any help, Please get in touch <a className='text-pink click-item' href="mailto:hello@loopcycle.io">hello@loopcycle.io</a></p>
+                                </div>
+                            </section>
+                        </CardContent>
+                    </Card>
 
-                    <CustomTabPanel value={activeTab} index={0}>
-                        <section className="row">
-                            <div className="col">
-                                TODO: Upload 
-                            </div>
-                        </section>
-                    </CustomTabPanel>
+                    <Card variant='outlined' className='mt-3'>
+                        <CardContent>
 
-                </Box>
-            </div >
+                            <section className='row'>
+                                <div className="col">
+                                    <h3>Upload</h3>
+                                </div>
+                            </section>
+
+                            <section className="row">
+                                <div className="col">
+                                    <p>Waiver</p>
+                                </div>
+                            </section>
+
+                            <section className="row">
+                                <div className="col">
+
+                                    <p>
+                                        By signing this declaration, you declare that the information provided is accurate, and that you have read and understand the contents defined.
+                                        You agree and acknowledge that you shall be responsible for any misinformation provided in this submission. Further, you unconditionally release, waive, discharge, and agree to hold harmless Loop Infinity Ltd ('Loopcycle’) and/or affiliated companies, their officers, directors, shareholders, agents, servants, associates and/or their representatives from any and all liability, claims, demands, actions and causes of actions arising out of the information that you have provided in this submission.
+                                    </p>
+                                </div>
+                            </section>
+
+                            <section className="row mt-3">
+                                <div className="col">
+                                    <p>[BOX] I expressly acknowledge that I have carefully read, understand and accept the contents of this declaration.</p>
+                                </div>
+                            </section>
+                        </CardContent>
+                    </Card>
+                </div >
+            </Layout>
         </>
     )
 }
 
-
-CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-
-
-function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <>{children}</>
-                </Box>
-            )}
-        </div>
-    );
-}
 
 
 const mapStateToProps = (state) => {
@@ -124,8 +100,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
-        showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
 
     };
 };

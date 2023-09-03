@@ -65,11 +65,11 @@ class HomeScreenInfo extends Component {
     render() {
         return (
             <div className="wrapper">
-                <section>
+                {/* <section>
                     <div className="container">
                         <Dashboard />
                     </div>
-                </section>
+                </section> */}
 
                 <section>
                     <div className="container">

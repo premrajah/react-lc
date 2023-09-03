@@ -48,25 +48,26 @@ export class Validators {
     static decimal(value, message, password, min, max) {
         const length = value ? value.toString().length : 0;
 
+        try {
         if (length > 0) {
-            const decimalCheck = value.replace(".", "");
 
+            const decimalCheck = value.includes(".")?value.replace(".", ""):value;
             let result = regex.number.test(decimalCheck);
-
             if (min && min > value) {
                 result = false;
             }
-
             if (max && value > max) {
                 result = false;
             }
-
             if (!result) {
                 return { error: true, message };
             }
         }
-
         return false;
+        }catch (e){
+            console.log("decimal check",value, message, password, min, max)
+            return false;
+        }
     }
 
     static number(value, message) {
@@ -84,16 +85,23 @@ export class Validators {
 }
 
 export const validateInput = (validators, value) => {
-    if (validators && validators.length) {
-        for (let i = 0; i < validators.length; i++) {
-            const error = validators[i].check(value, validators[i].message);
-            if (error) {
-                return error;
+    try {
+        if (validators && validators.length) {
+            for (let i = 0; i < validators.length; i++) {
+                const error = validators[i].check(value, validators[i].message);
+                if (error) {
+                    return error;
+                }
             }
         }
+        return false;
+    }catch (e){
+        console.log(validators,value)
+        return false;
     }
 
-    return false;
+
+
 };
 
 export const validateInputs = (validations, fields, editMode) => {

@@ -27,7 +27,6 @@ const TextFieldWrapper = ({
     startAdornment, endAdornment,classAdd,
     ...otherProps
 }) => {
-
     const [field, setField] = useState("");
 
     useEffect(() => {

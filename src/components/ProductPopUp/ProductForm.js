@@ -603,10 +603,7 @@ let slugify = require('slugify')
 
         handleValidationProduct(editMode) {
 
-
             let fields = this.state.fields;
-
-
             let validations=[
                 validateFormatCreate("name", [{check: Validators.required, message: 'Required'}],fields),
                 validateFormatCreate("brand", [{check: Validators.required, message: 'Required'}],fields),
@@ -642,9 +639,7 @@ let slugify = require('slugify')
             if (this.state.weightOptionsShow){
                 validations.push(validateFormatCreate("weightOptions", [{check: Validators.required, message: 'Required'}],fields))
                 validations.push( validateFormatCreate(this.state.weightFieldName, [{check: Validators.required, message: 'Required'},{check: Validators.decimal, message: 'This field should be a decimal number.'}],fields))
-
             }
-
 
             let {formIsValid,errors}= validateInputs(validations,fields,editMode)
 
@@ -655,10 +650,6 @@ let slugify = require('slugify')
 
                 formIsValid=false
             }
-
-
-
-
 
             this.setState({ errors: errors });
 
@@ -1368,7 +1359,7 @@ let slugify = require('slugify')
                 }
 
             }
-            if (keysChanged?.sku["gross_weight_kgs"]){
+            if (keysChanged?.sku?.gross_weight_kgs){
                 keysChanged["weight_per_volume_kgs"]=null
             }
             try {

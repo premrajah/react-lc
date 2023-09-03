@@ -105,13 +105,12 @@ const Dashboard = ({ isLoggedIn }) => {
                                         {/* <YAxis /> */}
                                         <Tooltip />
                                         {/* <Legend /> */}
-                                        <Bar dataKey="name" stackId="a" fill="#27245C" />
                                         <Bar dataKey="materials" stackId="a" fill="#27245C" />
                                         <Bar dataKey="manufacture" stackId="a" fill="#07AD89" />
                                         <Bar dataKey="transport" stackId="a" fill="#D31169" />
-                                        <Bar dataKey="installation" stackId="a" fill="#D1E534" />
-                                        <Bar dataKey="inlife" stackId="a" fill="#52507D" />
-                                        <Bar dataKey="disposal" stackId="a" fill="#51C6AC" />
+                                        <Bar dataKey="installation" stackId="a" fill="#FFEC5C" />
+                                        <Bar dataKey="inlife" stackId="a" fill="#B4CF66" />
+                                        <Bar dataKey="disposal" stackId="a" fill="#FF5A33" />
                                     </BarChart>
                                 </>
                             </ResponsiveContainer>
@@ -185,17 +184,16 @@ const Dashboard = ({ isLoggedIn }) => {
                                         data={metrics.bar_charts.asset_type.data}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" />
-                                        {/* <XAxis dataKey="name" /> */}
+                                        <XAxis dataKey="name" />
                                         {/* <YAxis /> */}
                                         <Tooltip />
-                                        {/* <Legend /> */}
-                                        <Bar dataKey="name" stackId="a" fill="#27245C" />
+                                        <Legend />
                                         <Bar dataKey="materials" stackId="a" fill="#27245C" />
                                         <Bar dataKey="manufacture" stackId="a" fill="#07AD89" />
                                         <Bar dataKey="transport" stackId="a" fill="#D31169" />
-                                        <Bar dataKey="installation" stackId="a" fill="#D1E534" />
-                                        <Bar dataKey="inlife" stackId="a" fill="#52507D" />
-                                        <Bar dataKey="disposal" stackId="a" fill="#51C6AC" />
+                                        <Bar dataKey="installation" stackId="a" fill="#FFEC5C" />
+                                        <Bar dataKey="inlife" stackId="a" fill="#B4CF66" />
+                                        <Bar dataKey="disposal" stackId="a" fill="#FF5A33" />
                                     </BarChart>
                                 </>
                             </ResponsiveContainer>

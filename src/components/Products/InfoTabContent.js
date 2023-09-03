@@ -101,7 +101,7 @@ class InfoTabContent extends Component {
 
                                     <table className="table table-striped text-12">
                                         <tbody>
-                                        {Object.keys(this.props.item.product?.computed_carbon).map((item, i) =>
+                                        {Object.keys(this.props.item.product?.computed_carbon|| {}).map((item, i) =>
                                             <React.Fragment key={i}>
                                                 {this.props.item.product.computed_carbon[item] ? <tr>
                                                     <td className="text-blue text-capitlize">{item.replaceAll("_", " ")}</td>
@@ -112,7 +112,7 @@ class InfoTabContent extends Component {
                                             </React.Fragment>
                                         )}
 
-                                        {Object.keys(this.props.item.product.computed_carbon).length > 0 &&
+                                        {Object.keys(this.props.item.product.computed_carbon|| {}).length > 0 &&
                                             <tr>
                                                 <td className={"text-label"}>Total</td>
                                                 <td>{this.calculateTotalCarbon(this.props.item.product.computed_carbon)}</td>

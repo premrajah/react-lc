@@ -171,11 +171,11 @@ const DynamicAutoCompleteBox=(props)=> {
                                             setTimeout(()=> {
                                                 setStates(states)
                                                 setUnits([])
-                                            },2050)
+                                            },200)
                                         }
 
                                     }
-                                },500)
+                                },200)
 
                                 props.handleChange(value, valueText,`type`,props.uId,props.index);
 

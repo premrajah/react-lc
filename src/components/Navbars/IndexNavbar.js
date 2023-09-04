@@ -215,9 +215,9 @@ class ComponentsNavbar extends React.Component {
                         </Nav>
 
                         <Nav className={" justify-content-end menu-align-right"}>
-                            <NavItem className='web-only mr-3'>
+                            {this.props.isLoggedIn && <NavItem className='web-only mr-3'>
                                 <Link to="/documents-portal" className="nav-link d-none d-lg-block wl-link-white" color="default">Upload Docs</Link>
-                            </NavItem>
+                            </NavItem>}
 
                             {this.props.isLoggedIn && (
                                 <>

@@ -23,7 +23,7 @@ export const baseUrl =
             ? "https://graph-stage.makealoop.io/api/2/"
             : REACT_APP_BRANCH_ENV === "local"
                 ? "http://127.0.0.1/api/2/"
-                : "https://graph-dev.makealoop.io/api/2/";
+                : "https://graph.makealoop.io/api/2/";
 
 export const baseImgUrl =
     REACT_APP_BRANCH_ENV === "master"
@@ -91,6 +91,7 @@ export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
 export const ENTITY_TYPES = {
     Product: "product",
     PRODUCT: "Product",
+    DOCUMENT: "Document",
     Site: "site",
     Event: "event"
 }

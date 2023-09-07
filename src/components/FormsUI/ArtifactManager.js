@@ -12,7 +12,6 @@ import { validateFormatCreate, validateInputs, Validators } from "../../Util/Val
 import { ArrowDropDown, ArrowDropUp } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomPopover from "./CustomPopover";
-import Tooltip from '@mui/material/Tooltip';
 
 const ArtifactManager = ({
     entityId,
@@ -484,15 +483,13 @@ const ArtifactManager = ({
                                             <ArtifactIconDisplayBasedOnMimeType
                                                 artifact={artifact}
                                             />
-                                            <Tooltip title={artifact.blob_url ?? ""}>
-                                                <a href={artifact.blob_url} target="_blank" rel="noopener noreferrer">
-                                                    <span
-                                                        className="ms-4  text-blue text-bold"
-                                                        rel="noopener noreferrer">
-                                                        {artifact.name}
-                                                    </span>
-                                                </a>
-                                            </Tooltip>
+                                            <a href={artifact.blob_url} target="_blank" rel="noopener noreferrer">
+                                                <span
+                                                    className="ms-4  text-blue text-bold"
+                                                    rel="noopener noreferrer">
+                                                    {artifact.name}
+                                                </span>
+                                            </a>
                                         </div>
                                         <div className="col-2 d-flex justify-content-end">
                                             {!props.hideMenu && (

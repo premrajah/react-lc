@@ -2532,7 +2532,7 @@ let slugify = require('slugify')
                                                           : "Add Parts"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>
                                         </span>
-                                          <span className="text-12 blue-text">{this.props.item?.product?.composition.length>0?`(${this.props.item.product?.composition?.length} entries exist)`:""}</span>
+                                          <span className="text-12 blue-text">{this.props.item?.product?.composition?.length>0?`(${this.props.item.product?.composition?.length} entries exist)`:""}</span>
                                       </div>
                                   </div>
 
@@ -2581,7 +2581,7 @@ let slugify = require('slugify')
                                                           ? "Hide Processes"
                                                           : "Add Processes"} <CustomPopover text="Add processes involved in the manufacturing of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>
-                                            <span className="text-12 blue-text"> {this.props.item?.product?.processes.length>0?`(${this.props.item?.product?.processes.length} entries exist)`:""}</span>
+                                            <span className="text-12 blue-text"> {this.props.item?.product?.processes?.length>0?`(${this.props.item?.product?.processes.length} entries exist)`:""}</span>
                                         </span>
                                       </div>
                                   </div>
@@ -2629,7 +2629,7 @@ let slugify = require('slugify')
                                                           ? "Hide Outbound Transport"
                                                           : "Add Outbound Transport"} <CustomPopover text="Add outbound transport details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
                                             </span>
-                                            <span className="text-12 blue-text">{this.props.item?.product?.outbound_transport.length>0?`(${this.props.item?.product?.outbound_transport.length} entries exist)`:""}</span>
+                                            <span className="text-12 blue-text">{this.props.item?.product?.outbound_transport?.length>0?`(${this.props.item?.product?.outbound_transport.length} entries exist)`:""}</span>
                                         </span>
                                       </div>
                                   </div>

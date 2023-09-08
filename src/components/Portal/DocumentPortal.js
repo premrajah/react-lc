@@ -287,12 +287,12 @@ const DocumentPortal=({
                         <h5 className={"blue-text text-left text-bold mb-4"}>Upload documents</h5>
                         <div className="mt-4 mb-4">
 
-                                <span className="top-element  text-underline">
+                                <p className="top-element  " style={{textDecoration: "underline"}}>
                    <Download style={{fontSize:"16px"}} /><a href={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} title={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} download={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'}>Download Manufacture Compliance Documents</a>
 
-                        </span>
-                            <br/>
-                            <span>(Please fill out these documents & once completed, upload to the Upload Documents tab.)</span>
+                        </p>
+
+                            <p className="mt-2">Please fill out these documents & once completed, upload to the Upload Documents tab.</p>
 
                         </div>
 
@@ -408,7 +408,7 @@ const DocumentPortal=({
                                                 text="By signing this declaration, you declare that the information provided is accurate, and that you have read and understand the contents defined.
 
 You agree and acknowledge that you shall be responsible for any misinformation provided in this submission. Further, you unconditionally release, waive, discharge, and agree to hold harmless Loop Infinity Ltd ('Loopcycle’) and/or affiliated companies, their officers, directors, shareholders, agents, servants, associates and/or their representatives from any and all liability, claims, demands, actions and causes of actions arising out of the information that you have provided in this submission."
-                                                > <Info className="text-blue" style={{ cursor: "pointer",  }} fontSize={"24px!important"}/>
+                                                > <Info className="text-blue" style={{ cursor: "pointer", fontSize:"24px!important" }} />
 </CustomPopover>
                                 </span>
                                         </p>

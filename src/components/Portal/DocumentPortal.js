@@ -1,21 +1,24 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import PropTypes from 'prop-types';
 import PageHeader from '../PageHeader';
 import {Box, Button, Card, CardContent, CardHeader, Tab, Tabs} from '@mui/material';
-import { Download } from '@mui/icons-material';
+import {Download, Info} from '@mui/icons-material';
 import Layout from '../Layout/Layout';
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import ArtifactManager from "../FormsUI/ArtifactManager";
 import {baseUrl, ENTITY_TYPES, getImageAsBytes, MIME_TYPES_ACCEPT} from "../../Util/Constants";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
-import {checkIfMimeTypeAllowed, cleanFilename} from "../../Util/GlobalFunctions";
+import {checkIfMimeTypeAllowed, cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import ArtifactIconDisplayBasedOnMimeType from "../UploadImages/ArtifactIconDisplayBasedOnMimeType";
 import Tooltip from "@mui/material/Tooltip";
 import MoreMenu from "../MoreMenu";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
+import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
+import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
+import CustomPopover from "../FormsUI/CustomPopover";
 const DocumentPortal=({
                           showSnackbar,
                           refresh,
@@ -25,7 +28,11 @@ const DocumentPortal=({
                       })=> {
     const [activeKey,setActiveKey]=useState("1"   )
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [agree, setAgree] = useState(false);
+    const [agreeError, setAgreeError] = useState(false);
 
+
+    const [uploadedFilesTmp,setUploadedFilesTmp]=useState([])
     const [artifactsTmp,setArtifactsTmp]=useState([])
     const [file,setFile]=useState(null)
     const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +42,10 @@ const DocumentPortal=({
         handleUploadedFiles(chosenFiles);
     };
 
+
+    useEffect(()=>{
+        getPreviousDocs()
+    },[])
 
 
     const handleCancel=(e) =>{
@@ -118,11 +129,24 @@ const DocumentPortal=({
     };
 
     const submitDoc = async (file) => {
+        if (!agree){
+
+            setAgreeError(true)
+            return
+        }else{
+            setAgreeError(false)
+        }
+
+
+
+
+
+
         setIsLoading(true);
 
         console.log(artifactsTmp)
 
-        let artifactIds=artifactsTmp.map((item)=>item._key)
+        let artifactIds=artifactsTmp.map((item)=>item._id)
 
         console.log(artifactIds)
 
@@ -130,9 +154,18 @@ const DocumentPortal=({
                     const uploadedFile = await axios.post(
                         `${baseUrl}carbon`,
                         {
-                            // composition_carbon:{
-                            //  name:cleanFilename(file.name.toLowerCase())
-                            // },
+                            composition_carbon:{
+                             name:"my-name",
+                             "source":"stored",
+                             ref:null,
+
+                                entries:[],
+                             version:1,
+                                custom:{
+                                 acknowledgement:"i agree"
+                                }
+                            },
+                            product_ids:[],
                             artifact_ids:artifactIds
                         }, { onUploadProgress }
                     ).finally(()=>{
@@ -141,6 +174,8 @@ const DocumentPortal=({
                             severity: "success",
                             message: "Document uploaded successfully. Thanks",
                         });
+
+                        getPreviousDocs()
                     });
 
 
@@ -153,6 +188,33 @@ const DocumentPortal=({
                         message: "Unable to add artifact at this time.",
                     });
                 }
+
+
+    };
+
+    const getPreviousDocs = async () => {
+        setIsLoading(true);
+
+
+        try {
+            const prevFiles = await axios.get(
+                `${baseUrl}carbon`,
+
+            ).finally(()=>{
+
+            });
+
+            setUploadedFilesTmp(prevFiles)
+
+        } catch (error) {
+            console.log("handleUploadFileToProduct try/catch error ", error);
+            setIsLoading(false);
+            showSnackbar({
+                show: true,
+                severity: "error",
+                message: fetchErrorMessage(error),
+                });
+        }
 
 
     };
@@ -229,6 +291,17 @@ const DocumentPortal=({
                     <div className="row   justify-content-center">
                     <div className={"col-6 "}>
                         <h4 className={"blue-text text-heading mb-4"}>Upload documents</h4>
+                        <div className="mt-4">
+
+                                <span className="top-element  text-underline">
+                   <Download style={{fontSize:"16px"}} /><a href={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} title={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} download={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'}>Download Manufacture Compliance Documents</a>
+
+                        </span>
+                            <br/>
+                            <span>(Please fill out these documents & once completed, upload to the Upload Documents tab.)</span>
+
+                        </div>
+
 
                         <label htmlFor="images" className="drop-container" id="dropcontainer">
                             {/*<span className="drop-title">Drop files here</span>*/}
@@ -317,9 +390,37 @@ const DocumentPortal=({
                                 </div>
 
 
-                                {artifactsTmp && artifactsTmp.length > 0 ? ( <div className="col-12 text-center" >
+                                {artifactsTmp && artifactsTmp.length > 0 ? ( <div className="col-12 text-left" >
 
-                                    <GreenButton
+                                    <div className={"mb-2"}>
+                                        <p className={"mt-1 mb-0"}>
+                                            <CheckboxWrapper
+
+                                                showErrorMessage
+                                                name={"agree"}
+                                                onChange={(value)=> setAgree(value)}
+                                                initialValue={false}
+                                                // color="#07AD88"
+                                                error={agreeError}
+                                                inputProps={{ "aria-label": "secondary checkbox" }}
+                                            />
+
+                                            {/*</div>*/}
+                                            {/*<div className={"col-10"}>*/}
+                                            <span className={"small"}>
+
+                                   I expressly acknowledge that I have carefully read, understand and accept the contents of this declaration.
+                                                <CustomPopover
+                                                text="By signing this declaration, you declare that the information provided is accurate, and that you have read and understand the contents defined.
+
+You agree and acknowledge that you shall be responsible for any misinformation provided in this submission. Further, you unconditionally release, waive, discharge, and agree to hold harmless Loop Infinity Ltd ('Loopcycle’) and/or affiliated companies, their officers, directors, shareholders, agents, servants, associates and/or their representatives from any and all liability, claims, demands, actions and causes of actions arising out of the information that you have provided in this submission."
+                                                > <Info className="text-blue" style={{ cursor: "pointer",  }} fontSize={"24px!important"}/>
+</CustomPopover>
+                                </span>
+                                        </p>
+
+                                    </div>
+                                        <GreenButton
                                     title={"Submit Files"}
                                     onClick={submitDoc}
                                     />
@@ -330,20 +431,12 @@ const DocumentPortal=({
 
                         </div>
 
-                        <div className="mt-4">
 
-                                <span className="top-element  text-underline">
-                   <Download style={{fontSize:"16px"}} /><a href={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} title={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} download={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'}>Download Manufacture Compliance Documents</a>
-
-                        </span>
-                            <br/>
-                            <span>( Please fill out these documents & once completed, upload to the Upload Documents tab. )</span>
-
-                        </div>
                     </div>
                         <div className={"col-6 "}>
 
-                            <h4 className={"blue-text text-heading mb-4"}>Previous Uploads</h4>
+                            {uploadedFilesTmp?.length<0&&
+                                <h4 className={"blue-text text-heading mb-4"}>Previous Uploads</h4>}
 
 
                         </div>

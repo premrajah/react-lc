@@ -50,7 +50,7 @@ const DynamicAutoCompleteBox=(props)=> {
                             details="Materials or category a product belongs to Type"
                             initialValue={props.item.fields?.transport_mode}
                             option={"name"}
-                            valueKey={"_key "}
+                            valueKey={"_id"}
 
                             select={"Select"}
                             // error={this.state.errors["category"]}

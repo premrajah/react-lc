@@ -137,11 +137,6 @@ const DocumentPortal=({
             setAgreeError(false)
         }
 
-
-
-
-
-
         setIsLoading(true);
 
         console.log(artifactsTmp)
@@ -167,13 +162,16 @@ const DocumentPortal=({
                             },
                             product_ids:[],
                             artifact_ids:artifactIds
-                        }, { onUploadProgress }
+                        }
                     ).finally(()=>{
                         showSnackbar({
                             show: true,
                             severity: "success",
                             message: "Document uploaded successfully. Thanks",
                         });
+
+
+                        setArtifactsTmp([])
 
                         getPreviousDocs()
                     });
@@ -212,14 +210,10 @@ const DocumentPortal=({
             showSnackbar({
                 show: true,
                 severity: "error",
-                message: fetchErrorMessage(error),
+                message: "Unable to complete your request, please try again after some time.",
                 });
         }
-
-
     };
-
-
 
     const handleDocActions = (action, key, blob_url) => {
 
@@ -281,17 +275,17 @@ const DocumentPortal=({
 
     return (
         <>
-            <Layout>
-                <div className="container mt-3">
+            {/*<Layout>*/}
+                <div className="container mt-3 pb-3">
                     <PageHeader
                         pageTitle="Documents Portal"
                         subTitle=""
                     />
 
                     <div className="row   justify-content-center">
-                    <div className={"col-6 "}>
-                        <h4 className={"blue-text text-heading mb-4"}>Upload documents</h4>
-                        <div className="mt-4">
+                    <div className={"col-6 text-left"}>
+                        <h5 className={"blue-text text-left text-bold mb-4"}>Upload documents</h5>
+                        <div className="mt-4 mb-4">
 
                                 <span className="top-element  text-underline">
                    <Download style={{fontSize:"16px"}} /><a href={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} title={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} download={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'}>Download Manufacture Compliance Documents</a>
@@ -427,25 +421,18 @@ You agree and acknowledge that you shall be responsible for any misinformation p
                                 </div>):""}
                             </div>
                             </div>
-
-
                         </div>
-
-
                     </div>
                         <div className={"col-6 "}>
-
                             {uploadedFilesTmp?.length<0&&
-                                <h4 className={"blue-text text-heading mb-4"}>Previous Uploads</h4>}
-
-
+                                <h5 className={"blue-text text-left text-bold mb-4"}>Previous Uploads</h5>}
                         </div>
                     </div>
 
 
 
                 </div >
-            </Layout>
+            {/*</Layout>*/}
         </>
     )
 }

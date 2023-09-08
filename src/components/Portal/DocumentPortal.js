@@ -190,14 +190,16 @@ const DocumentPortal = ({
 
 
         try {
-            const prevFiles = await axios.get(
+            const prevFilesRes = await axios.get(
                 `${baseUrl}carbon`,
 
             ).finally(() => {
 
             });
+console.log(prevFilesRes)
 
-            setUploadedFilesTmp(prevFiles)
+            if (prevFilesRes&&prevFilesRes?.data?.data)
+            setUploadedFilesTmp(prevFilesRes.data.data)
 
         } catch (error) {
             console.log("handleUploadFileToProduct try/catch error ", error);
@@ -278,7 +280,7 @@ const DocumentPortal = ({
                 />
 
                 <div className="row   justify-content-center">
-                    <div className={"col-6 text-left"}>
+                    <div className={"col-12 text-left"}>
                         <h5 className={"blue-text text-left text-bold mb-4"}>Upload documents</h5>
                         <div className="mt-4 mb-4">
 
@@ -417,11 +419,118 @@ You agree and acknowledge that you shall be responsible for any misinformation p
                                 </div>
                             </div>
                         </div>
+                        <div className="row justify-content-center d-flex align-items-center">
+                        <div className={"col-12 "}>
+                            {uploadedFilesTmp?.length >0 &&
+                                <>
+                                    <h5 className={"blue-text mt-4 text-left text-bold mb-4"}>Previous Uploads</h5>
+                                    <div className="col-12 ">
+                                        <div className="row ">
+                                            <div className="col-12">
+                                                {uploadedFilesTmp && uploadedFilesTmp.length > 0 ? (
+                                                    uploadedFilesTmp.map((uploadedGroup, index) =>
+                                                        uploadedGroup.artifacts.map((artifact, index) =>
+
+
+
+                                                            <React.Fragment key={artifact._key}>
+                                                                <div key={index}
+                                                                     className="mt-1 mb-1 text-left pt-1 pb-1  row">
+                                                                    <div className="col-10 ellipsis-end">
+                                                                        <ArtifactIconDisplayBasedOnMimeType
+                                                                            artifact={artifact}
+                                                                        />
+                                                                        <Tooltip title={artifact.blob_url ?? ""}>
+                                                                            <a href={artifact.blob_url} target="_blank"
+                                                                               rel="noopener noreferrer">
+                                                                        <span
+                                                                            className="ms-4  text-blue text-bold"
+                                                                            rel="noopener noreferrer">
+                                                                            {artifact.name}
+                                                                        </span>
+                                                                            </a>
+                                                                        </Tooltip>
+                                                                    </div>
+                                                                    <div className="col-2 d-flex justify-content-end">
+                                                                        {!props.hideMenu && (
+                                                                            <MoreMenu
+                                                                                triggerCallback={(action) => {
+                                                                                    handleDocActions(action,
+                                                                                        artifact._key,
+                                                                                        artifact.blob_url);
+                                                                                }}
+                                                                                download={true}
+                                                                                // delete={props.isLoggedIn && !props.isArchiver}
+                                                                            />
+                                                                        )}
+                                                                        {props.showDelete && (
+                                                                            <span
+                                                                                className="ms-2 text-danger "
+                                                                                style={{cursor: "pointer"}}
+                                                                                onClick={() =>
+                                                                                    handleDeleteDocument(artifact._key)
+                                                                                }>
+                                                                        <CloseIcon
+                                                                            // style={{ opacity: "0.5" }}
+                                                                            className=" text-danger "
+                                                                        />
+                                                                    </span>
+                                                                        )}
+                                                                    </div>
+
+                                                                </div>
+                                                            </React.Fragment>
+
+                                                        )
+                                                    )
+                                                ) : ""}
+                                            </div>
+
+
+                                            {artifactsTmp && artifactsTmp.length > 0 ? (<div className="col-12 text-left" >
+
+                                                <div className={"mb-2"}>
+                                                    <p className={"mt-1 mb-0"}>
+                                                        <CheckboxWrapper
+
+                                                            showErrorMessage
+                                                            name={"agree"}
+                                                            onChange={(value) => setAgree(value)}
+                                                            initialValue={false}
+                                                            // color="#07AD88"
+                                                            error={agreeError}
+                                                            inputProps={{ "aria-label": "secondary checkbox" }}
+                                                        />
+
+                                                        {/*</div>*/}
+                                                        {/*<div className={"col-10"}>*/}
+                                                        <span className={"small"}>
+
+                                                    I expressly acknowledge that I have carefully read, understand and accept the contents of this declaration.
+                                                    <CustomPopover
+                                                        text="By signing this declaration, you declare that the information provided is accurate, and that you have read and understand the contents defined.
+
+You agree and acknowledge that you shall be responsible for any misinformation provided in this submission. Further, you unconditionally release, waive, discharge, and agree to hold harmless Loop Infinity Ltd ('Loopcycle’) and/or affiliated companies, their officers, directors, shareholders, agents, servants, associates and/or their representatives from any and all liability, claims, demands, actions and causes of actions arising out of the information that you have provided in this submission."
+                                                    > <Info className="text-blue" style={{ cursor: "pointer", fontSize: "24px!important" }} />
+                                                    </CustomPopover>
+                                                </span>
+                                                    </p>
+
+                                                </div>
+                                                <GreenButton
+                                                    title={"Submit Files"}
+                                                    onClick={submitDoc}
+                                                />
+                                            </div>) : ""}
+                                        </div>
+                                    </div>
+
+                                </>
+                            }
+                        </div>
+                        </div>
                     </div>
-                    <div className={"col-6 "}>
-                        {uploadedFilesTmp?.length < 0 &&
-                            <h5 className={"blue-text text-left text-bold mb-4"}>Previous Uploads</h5>}
-                    </div>
+
                 </div>
 
 

@@ -21,7 +21,7 @@ const DocumentPortal = ({
     setArtifacts,
     ...props
 }) => {
-    const [activeKey, setActiveKey] = useState("1")
+
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [agree, setAgree] = useState(false);
     const [agreeError, setAgreeError] = useState(false);

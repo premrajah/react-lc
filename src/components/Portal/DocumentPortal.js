@@ -440,7 +440,6 @@ You agree and acknowledge that you shall be responsible for any misinformation p
                                                                         <ArtifactIconDisplayBasedOnMimeType
                                                                             artifact={artifact}
                                                                         />
-                                                                        <Tooltip title={artifact.blob_url ?? ""}>
                                                                             <a href={artifact.blob_url} target="_blank"
                                                                                rel="noopener noreferrer">
                                                                         <span
@@ -449,7 +448,6 @@ You agree and acknowledge that you shall be responsible for any misinformation p
                                                                             {artifact.name}
                                                                         </span>
                                                                             </a>
-                                                                        </Tooltip>
                                                                     </div>
                                                                     <div className="col-2 d-flex justify-content-end">
                                                                         {!props.hideMenu && (

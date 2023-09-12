@@ -7,6 +7,7 @@ import { Download, Info } from '@mui/icons-material';
 import { baseUrl, getImageAsBytes, MIME_TYPES_ACCEPT } from "../../Util/Constants";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
+import moment from "moment";
 import { checkIfMimeTypeAllowed, cleanFilename } from "../../Util/GlobalFunctions";
 import ArtifactIconDisplayBasedOnMimeType from "../UploadImages/ArtifactIconDisplayBasedOnMimeType";
 import Tooltip from "@mui/material/Tooltip";
@@ -435,7 +436,7 @@ You agree and acknowledge that you shall be responsible for any misinformation p
                                                             <React.Fragment key={artifact._key}>
                                                                 <div key={index}
                                                                      className="mt-1 mb-1 text-left pt-1 pb-1  row">
-                                                                    <div className="col-10 ellipsis-end">
+                                                                    <div className="col-8 ellipsis-end">
                                                                         <ArtifactIconDisplayBasedOnMimeType
                                                                             artifact={artifact}
                                                                         />
@@ -448,6 +449,11 @@ You agree and acknowledge that you shall be responsible for any misinformation p
                                                                         </span>
                                                                             </a>
                                                                     </div>
+
+                                                                    <div className="col-2 d-flex align-items-center justify-content-end">
+                                                                        <small className='text-gray-light'>{moment(artifact._ts_epoch_ms).format("DD MMM YYYY")}</small>
+                                                                    </div>
+
                                                                     <div className="col-2 d-flex justify-content-end">
                                                                         {!props.hideMenu && (
                                                                             <MoreMenu
@@ -476,6 +482,7 @@ You agree and acknowledge that you shall be responsible for any misinformation p
                                                                     </div>
 
                                                                 </div>
+                                                                
                                                             </React.Fragment>
 
                                                         )

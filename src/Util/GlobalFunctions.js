@@ -389,13 +389,14 @@ export const checkIfMimeTypeAllowed = (file) => {
 };
 export const checkIfDocumentFromType = (mime_type) => {
     if (
-        mime_type === "application/pdf" ||
-        mime_type === "application/rtf" ||
-        mime_type === "application/msword" ||
-        mime_type === "text/rtf" ||
-        mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        mime_type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-        mime_type === "application/vnd.ms-excel"
+        mime_type === MIME_TYPES.PDF ||
+        mime_type === MIME_TYPES.DOC ||
+        mime_type === MIME_TYPES.DOCX ||
+        mime_type === MIME_TYPES.APP_RTF ||
+        mime_type === MIME_TYPES.TEXT_RTF ||
+        mime_type === MIME_TYPES.XLS ||
+        mime_type === MIME_TYPES.XLSX ||
+        mime_type === MIME_TYPES.XLSM
     ) {
         return true;
     } else return false;

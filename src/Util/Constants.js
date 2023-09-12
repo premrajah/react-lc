@@ -78,14 +78,16 @@ export const MIME_TYPES = {
     TEXT_RTF: "text/rtf",
     XLS: "application/vnd.ms-excel",
     XLSX: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    XLSM: "application/vnd.ms-excel.sheet.macroEnabled.12",
 };
 
 export const MIME_TYPES_ARRAY = Object.keys(MIME_TYPES).map((key) => MIME_TYPES[key])
 
 export const MIME_TYPES_ACCEPT =
-    "image/jpeg,image/jpg,image/png,video/mp4," +
-    "video/quicktime,application/msword,application/pdf," +
-    "application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    `${MIME_TYPES.JPEG}/${MIME_TYPES.JPG}/${MIME_TYPES.PNG}/${MIME_TYPES.MP4}/${MIME_TYPES.MOV}/
+    ${MIME_TYPES.DOC}/${MIME_TYPES.DOCX}/${MIME_TYPES.PDF}/${MIME_TYPES.TEXT_RTF}/${MIME_TYPES.APP_RTF}/${MIME_TYPES.XLS}/${MIME_TYPES.XLSX}/
+    ${MIME_TYPES.XLSM}`;
+
 export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
 
 export const ENTITY_TYPES = {

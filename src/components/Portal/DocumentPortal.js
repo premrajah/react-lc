@@ -25,13 +25,12 @@ const DocumentPortal = ({
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [agree, setAgree] = useState(false);
     const [agreeError, setAgreeError] = useState(false);
-
-
     const [uploadedFilesTmp, setUploadedFilesTmp] = useState([])
     const [artifactsTmp, setArtifactsTmp] = useState([])
     const [file, setFile] = useState(null)
     const [isLoading, setIsLoading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(null);
+
     const handleFileEvent = (e) => {
         const chosenFiles = Array.prototype.slice.call(e.target.files);
         handleUploadedFiles(chosenFiles);

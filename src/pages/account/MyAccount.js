@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import {connect} from "react-redux";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import SettingsWhite from "../../img/icons/settings-blue.png";
 import PageHeader from "../../components/PageHeader";
 import Layout from "../../components/Layout/Layout";
@@ -18,6 +18,7 @@ import AssumeRoles from "../../components/Account/AssumeRoles";
 import ManageOrgSettings from "../../components/Account/ManageOrgSettings";
 import EmbodiedCarbon from "../../components/Account/EmbodiedCarbon";
 import DocumentPortal from '../../components/Portal/DocumentPortal';
+import DocumentAdmin from '../../components/Portal/DocumentAdmin';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -79,107 +80,115 @@ function MyAccount(props) {
                 <div className="row">
                     <div className="col-md-12">
                         {props.isLoggedIn
-                        // && props.userContext
-                        && (
-                            <div className="row">
-                                <div className="col-md-3">
-                                    <Tabs
-                                        className={"custom-vertical-tabs"}
-                                        orientation="vertical"
-                                        variant="scrollable"
-                                        value={value}
-                                        onChange={handleChange}
-                                        aria-label="Vertical tabs example"
-                                        sx={{ borderRight: 1, borderColor: "divider" }}>
-                                        <Tab key={0} label="Personal Information" value={0} />
-                                        <Tab key={1} label="Company Information" value={1} />
-                                        {/*<Tab key={2} label="Change Password" value={2} />*/}
-                                        {/*<Tab key={3} label="Product Lines" value={3} />*/}
-                                        {/*<Tab key={4} label="Statistics" value={4} />*/}
-                                        {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
-                                            <Tab key={5} label="Manage Users" value={5} />
+                            // && props.userContext
+                            && (
+                                <div className="row">
+                                    <div className="col-md-3">
+                                        <Tabs
+                                            className={"custom-vertical-tabs"}
+                                            orientation="vertical"
+                                            variant="scrollable"
+                                            value={value}
+                                            onChange={handleChange}
+                                            aria-label="Vertical tabs example"
+                                            sx={{ borderRight: 1, borderColor: "divider" }}>
+                                            <Tab key={0} label="Personal Information" value={0} />
+                                            <Tab key={1} label="Company Information" value={1} />
+                                            {/*<Tab key={2} label="Change Password" value={2} />*/}
+                                            {/*<Tab key={3} label="Product Lines" value={3} />*/}
+                                            {/*<Tab key={4} label="Statistics" value={4} />*/}
+                                            {props.userContext && props.userContext.perms.includes("OrgAdminWrite") && (
+                                                <Tab key={5} label="Manage Users" value={5} />
+                                            )}
+                                            {props.userContext && props.userContext.perms.includes("OrgAdminWrite") && (
+                                                <Tab key={6} label="Manage Roles" value={6} />
+                                            )}
+                                            {props.userContext && props.userContext.perms.includes("AdminWrite") && (
+                                                <Tab key={7} label="System Users" value={7} />
+                                            )}
+                                            {props.userContext && props.userContext.perms.includes("AdminWrite") &&
+                                                (props.userContext.perms.includes("LcAssumeUserRole") ||
+                                                    props.userContext.perms.includes(
+                                                        "LcAssumeOrgRole"
+                                                    )) && (
+                                                    <Tab key={8} label="Assume Users" value={8} />
+                                                )}
+                                            {props.userContext && props.userContext.perms.includes("AdminWrite") && (
+                                                <Tab key={9} label="Manage Orgs" value={9} />
+                                            )}
+
+                                            {props.userContext && props.userContext.perms.includes("AdminWrite") && (
+                                                <Tab key={10} label="Embodied Carbon" value={10} />
+                                            )}
+
+                                            <Tab key={11} label="Documents Download" value={11} />
+
+                                            <Tab key={12} label="Upload Documents" value={12} />
+                                        </Tabs>
+                                    </div>
+                                    <div className="col-md-9  p-0 rad-8 bg-white">
+                                        <TabPanel value={value} index={0}>
+                                            <EditAccount />
+                                        </TabPanel>
+                                        <TabPanel value={value} index={1}>
+                                            <CompanyInfo />
+                                        </TabPanel>
+
+                                        {/*<TabPanel value={value} index={3}>*/}
+                                        {/*   */}
+                                        {/*</TabPanel>*/}
+                                        <TabPanel value={value} index={4}>
+                                            <Statistics />
+                                        </TabPanel>
+
+                                        {props.userContext && props.userContext.perms.includes("OrgAdminWrite") && (
+                                            <TabPanel value={value} index={5}>
+                                                <ManageOrgUsers />
+                                            </TabPanel>
                                         )}
-                                        {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
-                                            <Tab key={6} label="Manage Roles" value={6} />
+                                        {props.userContext && props.userContext.perms.includes("OrgAdminWrite") && (
+                                            <TabPanel value={value} index={6}>
+                                                <ManageRole />
+                                            </TabPanel>
                                         )}
-                                        {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
-                                            <Tab key={7} label="System Users" value={7} />
+                                        {props.userContext && props.userContext.perms.includes("AdminWrite") && (
+                                            <TabPanel value={value} index={7}>
+                                                <SystemManageUser />
+                                            </TabPanel>
                                         )}
-                                        {props.userContext&&props.userContext.perms.includes("AdminWrite") &&
+                                        {props.userContext && props.userContext.perms.includes("AdminWrite") &&
                                             (props.userContext.perms.includes("LcAssumeUserRole") ||
                                                 props.userContext.perms.includes(
                                                     "LcAssumeOrgRole"
                                                 )) && (
-                                                <Tab key={8} label="Assume Users" value={8} />
+                                                <TabPanel value={value} index={8}>
+                                                    <AssumeRoles />
+                                                </TabPanel>
                                             )}
-                                        {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
-                                            <Tab key={9} label="Manage Orgs" value={9} />
+
+                                        {props.userContext && props.userContext.perms.includes("AdminWrite") && (
+                                            <TabPanel value={value} index={9}>
+                                                <ManageOrgSettings />
+                                            </TabPanel>
                                         )}
-
-                                        {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
-                                            <Tab key={10} label="Embodied Carbon" value={10} />
-                                        )}
-
-                                        <Tab key={11} label="Upload Documents" value={11} />
-                                    </Tabs>
-                                </div>
-                                <div className="col-md-9  p-0 rad-8 bg-white">
-                                    <TabPanel value={value} index={0}>
-                                        <EditAccount />
-                                    </TabPanel>
-                                    <TabPanel value={value} index={1}>
-                                        <CompanyInfo />
-                                    </TabPanel>
-
-                                    {/*<TabPanel value={value} index={3}>*/}
-                                    {/*   */}
-                                    {/*</TabPanel>*/}
-                                    <TabPanel value={value} index={4}>
-                                        <Statistics />
-                                    </TabPanel>
-
-                                    {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
-                                        <TabPanel value={value} index={5}>
-                                            <ManageOrgUsers />
-                                        </TabPanel>
-                                    )}
-                                    {props.userContext&&props.userContext.perms.includes("OrgAdminWrite") && (
-                                        <TabPanel value={value} index={6}>
-                                            <ManageRole />
-                                        </TabPanel>
-                                    )}
-                                    {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
-                                        <TabPanel value={value} index={7}>
-                                            <SystemManageUser />
-                                        </TabPanel>
-                                    )}
-                                    {props.userContext&&props.userContext.perms.includes("AdminWrite") &&
-                                        (props.userContext.perms.includes("LcAssumeUserRole") ||
-                                            props.userContext.perms.includes(
-                                                "LcAssumeOrgRole"
-                                            )) && (
-                                            <TabPanel value={value} index={8}>
-                                                <AssumeRoles />
+                                        {props.userContext && props.userContext.perms.includes("AdminWrite") && (
+                                            <TabPanel value={value} index={10}>
+                                                <EmbodiedCarbon />
                                             </TabPanel>
                                         )}
 
-                                    {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
-                                        <TabPanel value={value} index={9}>
-                                            <ManageOrgSettings />
-                                        </TabPanel>
-                                    )}
-                                    {props.userContext&&props.userContext.perms.includes("AdminWrite") && (
-                                        <TabPanel value={value} index={10}>
-                                            <EmbodiedCarbon />
-                                        </TabPanel>
-                                    )}
+                                        {props.userContext && props.userContext.perms.includes("AdminWrite") && (
+                                            <TabPanel value={value} index={11}>
+                                                <DocumentAdmin />
+                                            </TabPanel>
+                                        )}
 
-                                    <TabPanel value={value} index={11}>
-                                        <DocumentPortal />
-                                    </TabPanel>
+                                        <TabPanel value={value} index={12}>
+                                            <DocumentPortal />
+                                        </TabPanel>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
                     </div>
                 </div>
             </div>

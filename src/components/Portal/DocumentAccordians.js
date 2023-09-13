@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import {formatDate} from "@fullcalendar/react";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
 import {AttachFile, FileCopy} from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -59,8 +60,14 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-export default function DocumentAccordians({uploadedGroup}) {
+export default function DocumentAccordians({uploadedGroup,editDocGroup}) {
     const [expanded, setExpanded] = React.useState('panel1');
+
+    const editItem=(item)=>{
+
+        editDocGroup(item)
+
+    }
 
     const handleChange =
         (panel) => (event, newExpanded) => {
@@ -75,10 +82,9 @@ export default function DocumentAccordians({uploadedGroup}) {
 <>
                     <Accordion expanded={expanded === uploadedGroup.composition_carbon._key} onChange={handleChange(uploadedGroup.composition_carbon._key)}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                            <Typography component={"div"} className="text-capitlize w-100 d-flex justify-content-between"><div>{uploadedGroup.composition_carbon.name} (Version: {uploadedGroup.composition_carbon.version}, {uploadedGroup.composition_carbon.source}, {uploadedGroup.artifacts.length}<AttachFile className="text-blue"/>)</div> <div> <small className="text-right">{getTimeFormat(uploadedGroup.composition_carbon._ts_epoch_ms)}</small></div></Typography>
+                            <div component={"div"} className="text-capitlize w-100 d-flex justify-content-between"><div>{uploadedGroup.composition_carbon.name} (V: {uploadedGroup.composition_carbon.version}, {uploadedGroup.composition_carbon.source}, {uploadedGroup.artifacts.length}<AttachFile className="text-blue"/>)<p className="text-right text-12">{getTimeFormat(uploadedGroup.composition_carbon._ts_epoch_ms)}</p></div> <div onClick={(event)=>{event.stopPropagation();  editItem(uploadedGroup);}}><EditIcon/> </div></div>
                         </AccordionSummary>
                         <AccordionDetails>
-
                             {uploadedGroup.artifacts.map((artifact, index) =>
                             <Typography>
                                 <React.Fragment key={artifact._key}>
@@ -102,19 +108,19 @@ export default function DocumentAccordians({uploadedGroup}) {
                                             <small className='text-gray-light'>{moment(artifact._ts_epoch_ms).format("DD MMM YYYY")}</small>
                                         </div>
 
-                                        <div className="col-2 d-flex justify-content-end">
+                                        {/*<div className="col-2 d-flex justify-content-end">*/}
 
-                                                <MoreMenu
-                                                    triggerCallback={(action) => {
-                                                        handleDocActions(action,
-                                                            artifact._key,
-                                                            artifact.blob_url);
-                                                    }}
-                                                    download={true}
-                                                    // delete={props.isLoggedIn && !props.isArchiver}
-                                                />
+                                        {/*        <MoreMenu*/}
+                                        {/*            triggerCallback={(action) => {*/}
+                                        {/*                handleDocActions(action,*/}
+                                        {/*                    artifact._key,*/}
+                                        {/*                    artifact.blob_url);*/}
+                                        {/*            }}*/}
+                                        {/*            download={true}*/}
+                                        {/*            // delete={props.isLoggedIn && !props.isArchiver}*/}
+                                        {/*        />*/}
 
-                                        </div>
+                                        {/*</div>*/}
 
                                     </div>
 

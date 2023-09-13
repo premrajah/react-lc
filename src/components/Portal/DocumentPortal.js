@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import * as actionCreator from "../../store/actions/actions";
 import PageHeader from '../PageHeader';
 import { Button } from '@mui/material';
-import { Download, Info } from '@mui/icons-material';
+import {Download, Info, Upload} from '@mui/icons-material';
 import { baseUrl, getImageAsBytes, MIME_TYPES_ACCEPT } from "../../Util/Constants";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
@@ -17,6 +17,7 @@ import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import CustomPopover from "../FormsUI/CustomPopover";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import DocumentAccordians from "./DocumentAccordians";
+import GlobalDialog from "../RightBar/GlobalDialog";
 const DocumentPortal = ({
     showSnackbar,
     refresh,
@@ -26,7 +27,11 @@ const DocumentPortal = ({
 }) => {
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [editItem, setEditItem] = useState(null);
+
     const [agree, setAgree] = useState(false);
+    const [showUpload, setShowUpload] = useState(false);
+
     const [agreeError, setAgreeError] = useState(false);
     const [uploadedFilesTmp, setUploadedFilesTmp] = useState([])
     const [artifactsTmp, setArtifactsTmp] = useState([])
@@ -126,6 +131,14 @@ const DocumentPortal = ({
             });
     };
 
+    const editDocGroup=(item)=>{
+
+        console.log(item)
+        setArtifactsTmp(item.artifacts)
+        setEditItem(item)
+        setShowUpload(true)
+
+    }
     const submitDoc = async (file) => {
 
         if (!name){
@@ -174,6 +187,76 @@ const DocumentPortal = ({
                     message: "Document uploaded successfully. Thanks",
                 });
 
+                setShowUpload(!showUpload)
+
+                setArtifactsTmp([])
+
+                getPreviousDocs()
+            });
+
+
+        } catch (error) {
+            console.log("handleUploadFileToProduct try/catch error ", error);
+            setIsLoading(false);
+            showSnackbar({
+                show: true,
+                severity: "warning",
+                message: "Unable to add artifact at this time.",
+            });
+        }
+
+
+    };
+    const updateDoc = async (file) => {
+
+        if (!name){
+            setNameError(true)
+            return
+        } else {
+            setNameError(false)
+        }
+
+        if (!agree) {
+
+            setAgreeError(true)
+            return
+        } else {
+            setAgreeError(false)
+        }
+
+        setIsLoading(true);
+
+
+        let artifactIds = artifactsTmp.map((item) => item._id)
+
+
+        try {
+            const uploadedFile = await axios.post(
+                `${baseUrl}carbon`,
+                {
+                    existing_composition_carbon_id:editItem.composition_carbon._id,
+                    product_ids: [],
+                    artifact_ids: artifactIds,
+                composition_carbon: {
+                    name: name,
+                        "source": "stored",
+                        ref: null,
+                        entries: [],
+                        version: 1,
+                        custom: {
+                        acknowledgement: "i agree"
+                    }
+                },
+
+                }
+            ).finally(() => {
+                showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Document uploaded successfully. Thanks",
+                });
+
+                setShowUpload(!showUpload)
 
                 setArtifactsTmp([])
 
@@ -258,23 +341,6 @@ const DocumentPortal = ({
 
         setArtifactsTmp(afterRemoveDoc);
 
-        // if (entityType === ENTITY_TYPES.Site) {
-        //     const payload = {
-        //         site_id: entityId,
-        //         artifact_ids: artifactIds,
-        //     };
-        //
-        //     if (entityId) handleReplaceArtifacts(payload);
-        // }
-        // if (entityType === ENTITY_TYPES.Product) {
-        //     const payload = {
-        //         product_id: entityId,
-        //         artifact_ids: artifactIds,
-        //     };
-        //
-        //     if (entityId) handleReplaceArtifacts(payload);
-        // }
-
     };
 
 
@@ -289,19 +355,32 @@ const DocumentPortal = ({
 
                 <div className="row   justify-content-center">
                     <div className={"col-12 text-left"}>
-                        <h5 className={"blue-text text-left text-bold mb-4"}>Upload documents</h5>
-                        <div className="mt-4 mb-4">
-
-                            <p className="top-element  " style={{ textDecoration: "underline" }}>
-                                <Download style={{ fontSize: "16px" }} /><a href={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} title={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} download={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'}>Download Manufacture Compliance Documents</a>
-
-                            </p>
-
-                            <p className="mt-2">Please fill out these documents & once completed, upload to the Upload Documents tab.</p>
-
+                        <div className="d-flex justify-content-between">
+                            <h5 className={"blue-text text-left text-bold"}>Upload documents</h5>
+                            <div className="">
+                                <p className="top-element mb-0 " style={{ textDecoration: "underline" }}>
+                                    <Download style={{ fontSize: "16px" }} /><a href={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} title={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} download={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'}>Download Manufacture Compliance Documents</a>
+                                </p>
+                                <span className="mt-2 text-14">Please fill out these documents & once completed, upload them on this tab.</span>
+                            </div>
                         </div>
 
 
+                        <div onClick={()=>setShowUpload(!showUpload)}>
+                            <Upload style={{ fontSize: "24px" }} />Click to Upload Documents
+                        </div>
+
+
+                        <GlobalDialog
+                            size="sm"
+                            heading={"Upload Documents"}
+
+                            show={showUpload}
+                            hide={()=> {
+                                setShowUpload(!showUpload)
+                            }}
+                        >
+                        <div className={"col-12 mt-2 mb-2"}>
                         <label htmlFor="images" className="drop-container" id="dropcontainer">
                             <Button className="" variant="outlined" component="label">
                                 Upload Files
@@ -388,7 +467,7 @@ const DocumentPortal = ({
                                         <div className={"mb-2"}>
                                             <div>
                                                 <TextFieldWrapper
-
+                                                    initialValue={editItem?editItem.composition_carbon.name:""}
                                                     details="Title for documents for future reference"
                                                     onChange={(value)=> setName(value)}
                                                     error={nameError?{message:"Required"}:""}
@@ -424,14 +503,18 @@ You agree and acknowledge that you shall be responsible for any misinformation p
                                         </div>
                                         <GreenButton
                                             title={"Submit Files"}
-                                            onClick={submitDoc}
+                                            onClick={editItem?updateDoc:submitDoc}
                                         />
                                     </div>) : ""}
                                 </div>
                             </div>
                         </div>
+
+                        </div>
+                        </GlobalDialog>
+
                         <div className="row justify-content-center d-flex align-items-center">
-                        <div className={"col-12 "}>
+                        <div className={"col-12 mt-4 border-top-dashed"}>
                             {uploadedFilesTmp?.length >0 &&
                                 <>
                                     <h5 className={"blue-text mt-4 text-left text-bold mb-4"}>Previous Uploads</h5>
@@ -443,6 +526,8 @@ You agree and acknowledge that you shall be responsible for any misinformation p
 
 
                                                         <DocumentAccordians
+
+                                                            editDocGroup={editDocGroup}
 
                                                             uploadedGroup={uploadedGroup}
                                                         />

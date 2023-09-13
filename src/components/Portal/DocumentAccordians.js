@@ -83,7 +83,7 @@ export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEd
 <>
                     <Accordion expanded={expanded === uploadedGroup.composition_carbon._key} onChange={handleChange(uploadedGroup.composition_carbon._key)}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                            <div component={"div"} className="text-capitlize w-100 d-flex justify-content-between"><div>{uploadedGroup.composition_carbon.name} (V: {uploadedGroup.composition_carbon.version}, {uploadedGroup.composition_carbon.source}, {uploadedGroup.artifacts.length}<AttachFile className="text-blue"/>)<p className="text-right text-12">{getTimeFormat(uploadedGroup.composition_carbon._ts_epoch_ms)}</p></div> {!disableEdit&&<div onClick={(event)=>{event.stopPropagation();  editItem(uploadedGroup);}}><EditIcon/> </div>}</div>
+                            <div component={"div"} className="text-capitlize w-100 d-flex justify-content-between"><div>{uploadedGroup.composition_carbon.name} - Ver.{uploadedGroup.composition_carbon.version}, {uploadedGroup.composition_carbon.source}, {uploadedGroup.artifacts.length}<AttachFile fontSize="small" className="text-blue"/> <p className="text-right text-12">{getTimeFormat(uploadedGroup.composition_carbon._ts_epoch_ms)}</p></div> {!disableEdit&&<div onClick={(event)=>{event.stopPropagation();  editItem(uploadedGroup);}}><EditIcon fontSize="small" /> </div>}</div>
                         </AccordionSummary>
                         <AccordionDetails>
                             {uploadedGroup.artifacts.map((artifact, index) =>

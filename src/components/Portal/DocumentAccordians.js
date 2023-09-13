@@ -13,6 +13,7 @@ import MoreMenu from "../MoreMenu";
 import CloseIcon from "@mui/icons-material/Close";
 import {formatDate} from "@fullcalendar/react";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
+import {AttachFile, FileCopy} from "@mui/icons-material";
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -70,13 +71,15 @@ export default function DocumentAccordians({uploadedGroup}) {
         <div>
 
             <>
-                {uploadedGroup.artifacts.map((artifact, index) =>
+
 <>
                     <Accordion expanded={expanded === uploadedGroup.composition_carbon._key} onChange={handleChange(uploadedGroup.composition_carbon._key)}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                            <Typography component={"div"} className="text-capitlize w-100 d-flex justify-content-between"><div>{uploadedGroup.composition_carbon.name} (Version: {uploadedGroup.composition_carbon.version}) , {uploadedGroup.composition_carbon.source}</div> <div> <small className="text-right">{getTimeFormat(uploadedGroup.composition_carbon._ts_epoch_ms)}</small></div></Typography>
+                            <Typography component={"div"} className="text-capitlize w-100 d-flex justify-content-between"><div>{uploadedGroup.composition_carbon.name} (Version: {uploadedGroup.composition_carbon.version}, {uploadedGroup.composition_carbon.source}, {uploadedGroup.artifacts.length}<AttachFile className="text-blue"/>)</div> <div> <small className="text-right">{getTimeFormat(uploadedGroup.composition_carbon._ts_epoch_ms)}</small></div></Typography>
                         </AccordionSummary>
                         <AccordionDetails>
+
+                            {uploadedGroup.artifacts.map((artifact, index) =>
                             <Typography>
                                 <React.Fragment key={artifact._key}>
                                     <div key={index}
@@ -117,12 +120,13 @@ export default function DocumentAccordians({uploadedGroup}) {
 
                                 </React.Fragment>
                             </Typography>
+                            )}
                         </AccordionDetails>
                     </Accordion>
 
 
 </>
-                )}
+
             </>
 
         </div>

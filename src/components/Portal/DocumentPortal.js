@@ -389,11 +389,11 @@ const DocumentPortal = ({
                                             <div>
                                                 <TextFieldWrapper
 
-                                                    details="Name of documents"
+                                                    details="Title for documents for future reference"
                                                     onChange={(value)=> setName(value)}
                                                     error={nameError?{message:"Required"}:""}
                                                     name="name"
-                                                    title="Name" />
+                                                    title="Title" />
                                             </div>
 
                                             <p className={"mt-1 mb-0"}>

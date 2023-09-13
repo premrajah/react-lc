@@ -1,7 +1,12 @@
-import React, {Component} from 'react'
+import React, {Component, useEffect} from 'react'
 import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import OrgSettings from "../Account/OrgSettings";
 import PageHeader from "../PageHeader";
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
+import * as actionCreator from "../../store/actions/actions";
+import {connect} from "react-redux";
+import DocumentAccordians from "./DocumentAccordians";
 
 class DocumentAdmin extends Component {
   constructor(props) {
@@ -26,11 +31,54 @@ class DocumentAdmin extends Component {
       roleBy:"Email",
       assumeRoles:[],
       orgId:null,
-      activeKey:"1"
+      activeKey:"1",
+      uploadedFilesTmp:[]
 
     };
 
   }
+
+  componentDidMount() {
+
+
+      this.getPreviousDocs()
+
+  }
+
+
+   getPreviousDocs = async (orgId) => {
+
+    this.setState({
+      loading:true
+    })
+
+    try {
+      let prevFilesRes = await axios.get(
+          `${baseUrl}carbon/org/${orgId}`,
+      ).finally(() => {
+      });
+
+      if (prevFilesRes&&prevFilesRes?.data?.data){
+        console.log("inside iff",prevFilesRes)
+        this.setState({
+          uploadedFilesTmp:prevFilesRes.data.data
+        })
+      }
+
+
+    } catch (error) {
+      console.log("handleUploadFileToProduct try/catch error ", error);
+      this.setState({
+        loading:false
+      })
+
+      this.props.showSnackbar({
+        show: true,
+        severity: "error",
+        message: "Unable to complete your request, please try again after some time.",
+      });
+    }
+  };
 
   render() {
   return (
@@ -54,28 +102,49 @@ class DocumentAdmin extends Component {
           suggestions={this.state.orgNames}
           selectedCompany={(action) => {
 
-            this.setState({
-              orgId:action.org
-            })
+            this.getPreviousDocs(action.org)
+            // this.setState({
+            //   orgId:action.org
+            // })
 
           }}
       />
     </div>
 
 
-
-    {this.state.orgId &&
         <div className="col-12    mt-4">
 
+          <div className="row justify-content-center d-flex align-items-center">
+            <div className={"col-12 mt-4 border-top-dashed"}>
+
+                  <>
+                    <h5 className={"blue-text mt-4 text-left text-bold mb-4"}>Uploads</h5>
+                    <div className="col-12 ">
+                      <div className="row ">
+                        <div className="col-12">
+
+                          {this.state.uploadedFilesTmp.map((uploadedGroup, index) =>
+                              <>
+                                  <DocumentAccordians
+                                      disableEdit
+                                      uploadedGroup={uploadedGroup}
+                                  />
+                              </>
+                                )
+                          }
+                        </div>
 
 
-          <h2>Documents for {this.state.orgId }</h2>
-          {/*<OrgSettings isVisible={true}*/}
-          {/*             orgId={this.state.orgId}*/}
 
-          {/*/>*/}
+                      </div>
+                    </div>
+                  </>
+            </div>
+          </div>
+
+
         </div>
-    }
+
 
 
 
@@ -87,4 +156,20 @@ class DocumentAdmin extends Component {
 }
 
 
-export default DocumentAdmin
+
+const mapStateToProps = (state) => {
+  return {
+
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+    showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
+
+
+  };
+};
+export default  connect(mapStateToProps, mapDispatchToProps)(DocumentAdmin);

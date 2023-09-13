@@ -60,11 +60,12 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-export default function DocumentAccordians({uploadedGroup,editDocGroup}) {
+export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEdit}) {
     const [expanded, setExpanded] = React.useState('panel1');
 
     const editItem=(item)=>{
 
+        if (!disableEdit)
         editDocGroup(item)
 
     }
@@ -82,7 +83,7 @@ export default function DocumentAccordians({uploadedGroup,editDocGroup}) {
 <>
                     <Accordion expanded={expanded === uploadedGroup.composition_carbon._key} onChange={handleChange(uploadedGroup.composition_carbon._key)}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                            <div component={"div"} className="text-capitlize w-100 d-flex justify-content-between"><div>{uploadedGroup.composition_carbon.name} (V: {uploadedGroup.composition_carbon.version}, {uploadedGroup.composition_carbon.source}, {uploadedGroup.artifacts.length}<AttachFile className="text-blue"/>)<p className="text-right text-12">{getTimeFormat(uploadedGroup.composition_carbon._ts_epoch_ms)}</p></div> <div onClick={(event)=>{event.stopPropagation();  editItem(uploadedGroup);}}><EditIcon/> </div></div>
+                            <div component={"div"} className="text-capitlize w-100 d-flex justify-content-between"><div>{uploadedGroup.composition_carbon.name} (V: {uploadedGroup.composition_carbon.version}, {uploadedGroup.composition_carbon.source}, {uploadedGroup.artifacts.length}<AttachFile className="text-blue"/>)<p className="text-right text-12">{getTimeFormat(uploadedGroup.composition_carbon._ts_epoch_ms)}</p></div> {!disableEdit&&<div onClick={(event)=>{event.stopPropagation();  editItem(uploadedGroup);}}><EditIcon/> </div>}</div>
                         </AccordionSummary>
                         <AccordionDetails>
                             {uploadedGroup.artifacts.map((artifact, index) =>

@@ -15,6 +15,8 @@ import MoreMenu from "../MoreMenu";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import CustomPopover from "../FormsUI/CustomPopover";
+import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
+import DocumentAccordians from "./DocumentAccordians";
 const DocumentPortal = ({
     showSnackbar,
     refresh,
@@ -31,7 +33,8 @@ const DocumentPortal = ({
     const [file, setFile] = useState(null)
     const [isLoading, setIsLoading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(null);
-
+    const [name, setName] = useState(null);
+    const [nameError, setNameError] = useState(null);
     const handleFileEvent = (e) => {
         const chosenFiles = Array.prototype.slice.call(e.target.files);
         handleUploadedFiles(chosenFiles);
@@ -124,6 +127,14 @@ const DocumentPortal = ({
     };
 
     const submitDoc = async (file) => {
+
+        if (!name){
+            setNameError(true)
+            return
+        } else {
+            setNameError(false)
+        }
+
         if (!agree) {
 
             setAgreeError(true)
@@ -143,7 +154,7 @@ const DocumentPortal = ({
                 `${baseUrl}carbon`,
                 {
                     composition_carbon: {
-                        name: "my-name",
+                        name: name,
                         "source": "stored",
                         ref: null,
 
@@ -292,12 +303,6 @@ const DocumentPortal = ({
 
 
                         <label htmlFor="images" className="drop-container" id="dropcontainer">
-                            {/*<span className="drop-title">Drop files here</span>*/}
-                            {/*or*/}
-                            {/*<input*/}
-                            {/*    onChange={handleFileEvent}*/}
-                            {/*    multiple type="file" id="images" accept="image/*" required/>*/}
-
                             <Button className="" variant="outlined" component="label">
                                 Upload Files
                                 <input
@@ -381,9 +386,18 @@ const DocumentPortal = ({
                                     {artifactsTmp && artifactsTmp.length > 0 ? (<div className="col-12 text-left" >
 
                                         <div className={"mb-2"}>
+                                            <div>
+                                                <TextFieldWrapper
+
+                                                    details="Name of documents"
+                                                    onChange={(value)=> setName(value)}
+                                                    error={nameError?{message:"Required"}:""}
+                                                    name="name"
+                                                    title="Name" />
+                                            </div>
+
                                             <p className={"mt-1 mb-0"}>
                                                 <CheckboxWrapper
-
                                                     showErrorMessage
                                                     name={"agree"}
                                                     onChange={(value) => setAgree(value)}
@@ -426,103 +440,20 @@ You agree and acknowledge that you shall be responsible for any misinformation p
                                             <div className="col-12">
                                                 {uploadedFilesTmp && uploadedFilesTmp.length > 0 ? (
                                                     uploadedFilesTmp.map((uploadedGroup, index) =>
-                                                        uploadedGroup.artifacts.map((artifact, index) =>
 
 
+                                                        <DocumentAccordians
 
-                                                            <React.Fragment key={artifact._key}>
-                                                                <div key={index}
-                                                                     className="mt-1 mb-1 text-left pt-1 pb-1  row">
-                                                                    <div className="col-8 ellipsis-end">
-                                                                        <ArtifactIconDisplayBasedOnMimeType
-                                                                            artifact={artifact}
-                                                                        />
-                                                                            <a href={artifact.blob_url} target="_blank"
-                                                                               rel="noopener noreferrer">
-                                                                        <span
-                                                                            className="ms-4  text-blue text-bold"
-                                                                            rel="noopener noreferrer">
-                                                                            {artifact.name}
-                                                                        </span>
-                                                                            </a>
-                                                                    </div>
+                                                            uploadedGroup={uploadedGroup}
+                                                        />
 
-                                                                    <div className="col-2 d-flex align-items-center justify-content-end">
-                                                                        <small className='text-gray-light'>{moment(artifact._ts_epoch_ms).format("DD MMM YYYY")}</small>
-                                                                    </div>
 
-                                                                    <div className="col-2 d-flex justify-content-end">
-                                                                        {!props.hideMenu && (
-                                                                            <MoreMenu
-                                                                                triggerCallback={(action) => {
-                                                                                    handleDocActions(action,
-                                                                                        artifact._key,
-                                                                                        artifact.blob_url);
-                                                                                }}
-                                                                                download={true}
-                                                                                // delete={props.isLoggedIn && !props.isArchiver}
-                                                                            />
-                                                                        )}
-                                                                        {props.showDelete && (
-                                                                            <span
-                                                                                className="ms-2 text-danger "
-                                                                                style={{cursor: "pointer"}}
-                                                                                onClick={() =>
-                                                                                    handleDeleteDocument(artifact._key)
-                                                                                }>
-                                                                        <CloseIcon
-                                                                            // style={{ opacity: "0.5" }}
-                                                                            className=" text-danger "
-                                                                        />
-                                                                    </span>
-                                                                        )}
-                                                                    </div>
-
-                                                                </div>
-                                                                
-                                                            </React.Fragment>
-
-                                                        )
                                                     )
                                                 ) : ""}
                                             </div>
 
 
-                                            {artifactsTmp && artifactsTmp.length > 0 ? (<div className="col-12 text-left" >
 
-                                                <div className={"mb-2"}>
-                                                    <p className={"mt-1 mb-0"}>
-                                                        <CheckboxWrapper
-
-                                                            showErrorMessage
-                                                            name={"agree"}
-                                                            onChange={(value) => setAgree(value)}
-                                                            initialValue={false}
-                                                            // color="#07AD88"
-                                                            error={agreeError}
-                                                            inputProps={{ "aria-label": "secondary checkbox" }}
-                                                        />
-
-                                                        {/*</div>*/}
-                                                        {/*<div className={"col-10"}>*/}
-                                                        <span className={"small"}>
-
-                                                    I expressly acknowledge that I have carefully read, understand and accept the contents of this declaration.
-                                                    <CustomPopover
-                                                        text="By signing this declaration, you declare that the information provided is accurate, and that you have read and understand the contents defined.
-
-You agree and acknowledge that you shall be responsible for any misinformation provided in this submission. Further, you unconditionally release, waive, discharge, and agree to hold harmless Loop Infinity Ltd ('Loopcycle’) and/or affiliated companies, their officers, directors, shareholders, agents, servants, associates and/or their representatives from any and all liability, claims, demands, actions and causes of actions arising out of the information that you have provided in this submission."
-                                                    > <Info className="text-blue" style={{ cursor: "pointer", fontSize: "24px!important" }} />
-                                                    </CustomPopover>
-                                                </span>
-                                                    </p>
-
-                                                </div>
-                                                <GreenButton
-                                                    title={"Submit Files"}
-                                                    onClick={submitDoc}
-                                                />
-                                            </div>) : ""}
                                         </div>
                                     </div>
 

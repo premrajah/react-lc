@@ -18,6 +18,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
+import DocumentAdmin from "../Portal/DocumentAdmin";
 
 class ManageOrgSettings extends Component {
     constructor(props) {
@@ -316,6 +317,7 @@ class ManageOrgSettings extends Component {
                                         <Tab label="Configure Org Settings" value="1" />
 
                                         <Tab label="Add Users" value="2"/>
+                                        <Tab label="Org Documents" value="3"/>
 
                                     </TabList>
                                 </Box>
@@ -475,6 +477,12 @@ class ManageOrgSettings extends Component {
 
                                     </div>
 
+                                </TabPanel>
+
+                                <TabPanel value="3">
+                                    <div className="row d-flex align-items-center">
+                                        <DocumentAdmin/>
+                                    </div>
                                 </TabPanel>
                             </TabContext>
                         </Box>

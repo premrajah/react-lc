@@ -121,7 +121,6 @@ function MyAccount(props) {
                                                 <Tab key={10} label="Embodied Carbon" value={10} />
                                             )}
 
-                                            <Tab key={11} label="Documents Download" value={11} />
 
                                             <Tab key={12} label="Upload Documents" value={12} />
                                         </Tabs>
@@ -177,11 +176,7 @@ function MyAccount(props) {
                                             </TabPanel>
                                         )}
 
-                                        {props.userContext && props.userContext.perms.includes("AdminWrite") && (
-                                            <TabPanel value={value} index={11}>
-                                                <DocumentAdmin />
-                                            </TabPanel>
-                                        )}
+
 
                                         <TabPanel value={value} index={12}>
                                             <DocumentPortal />

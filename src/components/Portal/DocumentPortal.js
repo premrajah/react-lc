@@ -134,11 +134,9 @@ const DocumentPortal = ({
 
         setIsLoading(true);
 
-        console.log(artifactsTmp)
 
         let artifactIds = artifactsTmp.map((item) => item._id)
 
-        console.log(artifactIds)
 
         try {
             const uploadedFile = await axios.post(
@@ -196,7 +194,6 @@ const DocumentPortal = ({
             ).finally(() => {
 
             });
-console.log(prevFilesRes)
 
             if (prevFilesRes&&prevFilesRes?.data?.data)
             setUploadedFilesTmp(prevFilesRes.data.data)

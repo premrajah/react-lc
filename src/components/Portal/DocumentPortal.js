@@ -377,6 +377,8 @@ const DocumentPortal = ({
 
                             show={showUpload}
                             hide={()=> {
+                                setEditItem(null)
+                                setArtifactsTmp(null)
                                 setShowUpload(!showUpload)
                             }}
                         >
@@ -415,7 +417,7 @@ const DocumentPortal = ({
                                                                     artifact={artifact}
                                                                 />
                                                                 <Tooltip title={artifact.blob_url ?? ""}>
-                                                                    <a href={artifact.blob_url} target="_blank" rel="noopener noreferrer">
+                                                                        <a href={artifact.blob_url} target="_blank" rel="noopener noreferrer">
                                                                         <span
                                                                             className="ms-4  text-blue text-bold"
                                                                             rel="noopener noreferrer">

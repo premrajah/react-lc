@@ -105,30 +105,23 @@ class DocumentAdmin extends Component {
     </div>
 
 
-        <div className="col-12    mt-4">
+        <div className="col-12  ">
 
           <div className="row justify-content-center d-flex align-items-center">
-            <div className={"col-12 mt-4 border-top-dashed"}>
-
+            <div className={"col-12  "}>
                   <>
-                    <h5 className={"blue-text mt-4 text-left text-bold mb-4"}>Uploads</h5>
+                    {this.state.uploadedFilesTmp.length>0&& <h5 className={"blue-text mt-4 text-left text-bold mb-4"}>Uploads</h5>}
                     <div className="col-12 ">
                       <div className="row ">
                         <div className="col-12">
-
                           {this.state.uploadedFilesTmp.map((uploadedGroup, index) =>
                               <>
                                   <DocumentAccordians
                                       disableEdit
                                       uploadedGroup={uploadedGroup}
                                   />
-                              </>
-                                )
-                          }
+                              </>)}
                         </div>
-
-
-
                       </div>
                     </div>
                   </>

@@ -14,8 +14,7 @@ const SelectArrayWrapper = (props) => {
         placeholder, valueKey, name, select, onChange, helperText, disabled, defaultValueSelect,
         defaultValue, options, multiple, error, editMode, noMargin, disableAutoLoadingIcon, ...rest } = props;
 
-    const [value, setValue] = React.useState();
-    const [resetSelect, setResetSelect] = React.useState(false);
+    const [value, setValue] = React.useState("");
     const [loading, setLoading] = React.useState(false);
     const selectRef = useRef()
     const handleChange = (event) => {
@@ -27,29 +26,18 @@ const SelectArrayWrapper = (props) => {
 
     useEffect(() => {
         if (onChange) {
-            // setValue(initialValue)
-
-            // if (!editMode) {
-            onChange(initialValue)
-            // }
+            onChange(initialValue)            
         }
     }, [initialValue])
 
     useEffect(() => {
-
         if (!disableAutoLoadingIcon) {
             if (options && options.length > 0) {
                 setLoading(false)
             } else {
                 setLoading(true)
-
-                if (reset) {
-                    // reset={}
-                }
-
             }
         }
-
     }, [options])
 
 
@@ -76,38 +64,26 @@ const SelectArrayWrapper = (props) => {
 
                     <CustomizedSelect
                         id={id}
-
-                        // ref={reset?selectRef:null}
                         selectedIndex={0}
                         multiple={multiple}
                         native={notNative ? false : true}
                         variant="standard"
                         label={label}
-                        // value={defaultValue}
                         onChange={handleChange}
                         style={{ width: "100%" }}
                         disabled={disabled}
                         name={name}
                         className={` ${error && "border-red-error"} txt-capitalize ${textAlignRight && "select-text-right"}  ${noBorder && "select-no-border"} `}
-                    // defaultValue={defaultValue ? defaultValue : ""}
                     >
-                        {select &&
-                            <option value={""}>
-                                {select}
-                            </option>}
-                        {placeholder &&
-                            <option value="" disabled>
-                                {placeholder}
-                            </option>}
+                        {select && <option value={""}>{select}</option>}
+                        {placeholder && <option value="" disabled>{placeholder}</option>}
 
 
                         {options && options.map((item, index) => (
                             <option
                                 selected={subValueKey ? item[valueKey][subValueKey] === initialValue : valueKey ? (item[valueKey] === initialValue) : (item === initialValue)}
-
                                 key={subValueKey ? item[valueKey][subValueKey] : valueKey ? item[valueKey] : item}
                                 value={subValueKey ? item[valueKey][subValueKey] : valueKey ? item[valueKey] : item}
-
                             >
                                 {subOption ? option ? item[option][subOption] : item : option ? item[option] : item}
                             </option>

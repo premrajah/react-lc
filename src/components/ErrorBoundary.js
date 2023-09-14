@@ -18,7 +18,7 @@ class ErrorBoundary extends Component {
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.error){
-            
+            console.log(this.state.error)
         }
     }
 

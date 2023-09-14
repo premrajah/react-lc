@@ -131,7 +131,6 @@ const DocumentPortal = ({
 
     const editDocGroup=(item)=>{
 
-        console.log(item)
         setArtifactsTmp(item.artifacts)
         setEditItem(item)
         setShowUpload(true)

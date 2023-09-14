@@ -38,13 +38,6 @@ class DocumentAdmin extends Component {
 
   }
 
-  componentDidMount() {
-
-
-      this.getPreviousDocs()
-
-  }
-
 
    getPreviousDocs = async (orgId) => {
 

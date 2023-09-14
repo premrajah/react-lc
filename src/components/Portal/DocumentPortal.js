@@ -106,8 +106,6 @@ const DocumentPortal = ({
                     );
 
                     if (uploadedFile) {
-                        const uploadedToCloudDataKey = uploadedFile.data.data._key;
-
                         const a = uploadedFile.data.data;
                         setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
 
@@ -133,7 +131,6 @@ const DocumentPortal = ({
 
     const editDocGroup=(item)=>{
 
-        console.log(item)
         setArtifactsTmp(item.artifacts)
         setEditItem(item)
         setShowUpload(true)
@@ -158,11 +155,10 @@ const DocumentPortal = ({
 
         setIsLoading(true);
 
-
-        let artifactIds = artifactsTmp.map((item) => item._id)
-
-
         try {
+
+            let artifactIds = artifactsTmp.map((item) => item._id)
+
             const uploadedFile = await axios.post(
                 `${baseUrl}carbon`,
                 {
@@ -355,30 +351,28 @@ const DocumentPortal = ({
 
                 <div className="row   justify-content-center">
                     <div className={"col-12 text-left"}>
-                        <div className="d-flex justify-content-between">
+                        <div className="row d-flex align-items-center"><div className="col-md-6">
                             <h5 className={"blue-text text-left text-bold"}>Upload documents</h5>
-                            <div className="">
+                            <div onClick={()=>setShowUpload(!showUpload)}>
+                                <Upload style={{ fontSize: "24px" }} />Click to Upload Documents
+                            </div>
+                        </div>
+                            <div className="col-md-6 " >
+                            <div className="mt-sm-4 mt-xs-4">
                                 <p className="top-element mb-0 " style={{ textDecoration: "underline" }}>
                                     <Download style={{ fontSize: "16px" }} /><a href={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} title={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'} download={'/downloads/docs/manufacturer-sustainability-compliance-documents.zip'}>Download Manufacture Compliance Documents</a>
                                 </p>
                                 <span className="mt-2 text-14">Please fill out these documents & once completed, upload them on this tab.</span>
                             </div>
+                            </div>
                         </div>
-
-
-                        <div onClick={()=>setShowUpload(!showUpload)}>
-                            <Upload style={{ fontSize: "24px" }} />Click to Upload Documents
-                        </div>
-
-
                         <GlobalDialog
                             size="sm"
                             heading={"Upload Documents"}
-
                             show={showUpload}
                             hide={()=> {
                                 setEditItem(null)
-                                setArtifactsTmp(null)
+                                setArtifactsTmp([])
                                 setShowUpload(!showUpload)
                             }}
                         >
@@ -410,18 +404,18 @@ const DocumentPortal = ({
                                         {artifactsTmp && artifactsTmp.length > 0 ? (
                                             artifactsTmp.map((artifact, index) => {
                                                 return (
-                                                    <React.Fragment key={artifact._key}>
+                                                    <React.Fragment key={artifact?._key}>
                                                         <div key={index} className="mt-1 mb-1 text-left pt-1 pb-1  row">
                                                             <div className="col-10 ellipsis-end">
                                                                 <ArtifactIconDisplayBasedOnMimeType
-                                                                    artifact={artifact}
+                                                                    artifact={artifact?artifact:null}
                                                                 />
-                                                                <Tooltip title={artifact.blob_url ?? ""}>
-                                                                        <a href={artifact.blob_url} target="_blank" rel="noopener noreferrer">
+                                                                <Tooltip title={artifact?.blob_url ?? ""}>
+                                                                        <a href={artifact?.blob_url} target="_blank" rel="noopener noreferrer">
                                                                         <span
                                                                             className="ms-4  text-blue text-bold"
                                                                             rel="noopener noreferrer">
-                                                                            {artifact.name}
+                                                                            {artifact?.name}
                                                                         </span>
                                                                     </a>
                                                                 </Tooltip>
@@ -431,8 +425,8 @@ const DocumentPortal = ({
                                                                     <MoreMenu
                                                                         triggerCallback={(action) => {
                                                                             handleDocActions(action,
-                                                                                artifact._key,
-                                                                                artifact.blob_url);
+                                                                                artifact?._key,
+                                                                                artifact?.blob_url);
                                                                         }}
                                                                         download={true}
                                                                         delete={props.isLoggedIn && !props.isArchiver}
@@ -443,7 +437,7 @@ const DocumentPortal = ({
                                                                         className="ms-2 text-danger "
                                                                         style={{ cursor: "pointer" }}
                                                                         onClick={() =>
-                                                                            handleDeleteDocument(artifact._key)
+                                                                            handleDeleteDocument(artifact?._key)
                                                                         }>
                                                                         <CloseIcon
                                                                             // style={{ opacity: "0.5" }}

@@ -1,18 +1,18 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import CustomizedSelect from "./CustomizedSelect";
 import CustomPopover from "../CustomPopover";
 import InfoIcon from "./InfoIcon";
-import {Spinner} from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 
 const SelectArrayWrapper = (props) => {
 
-    const {label,title,option,notNative,initialValue,detailsHeading,details,noBorder,textAlignRight,
-        subOption,subValueKey,valueText,explanation,id,
+    const { label, title, option, notNative, initialValue, detailsHeading, details, noBorder, textAlignRight,
+        subOption, subValueKey, valueText, explanation, id,
         reset,
-        placeholder,valueKey, name,select,onChange, helperText,disabled,defaultValueSelect,
-        defaultValue,options,multiple,error,editMode,noMargin,disableAutoLoadingIcon, ...rest} = props;
+        placeholder, valueKey, name, select, onChange, helperText, disabled, defaultValueSelect,
+        defaultValue, options, multiple, error, editMode, noMargin, disableAutoLoadingIcon, ...rest } = props;
 
     const [value, setValue] = React.useState();
     const [resetSelect, setResetSelect] = React.useState(false);
@@ -21,48 +21,48 @@ const SelectArrayWrapper = (props) => {
     const handleChange = (event) => {
 
         setValue(event.target.value);
-           if (onChange)
-            onChange(event.target.value,event.target.textContent.toLowerCase())
+        if (onChange)
+            onChange(event.target.value, event.target.textContent.toLowerCase())
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         if (onChange) {
-              // setValue(initialValue)
+            // setValue(initialValue)
 
             // if (!editMode) {
-                onChange(initialValue)
+            onChange(initialValue)
             // }
         }
-    },[initialValue])
+    }, [initialValue])
 
-    useEffect(()=>{
+    useEffect(() => {
 
         if (!disableAutoLoadingIcon) {
-            if (options&&options.length > 0) {
+            if (options && options.length > 0) {
                 setLoading(false)
             } else {
                 setLoading(true)
 
-                if (reset){
-                   // reset={}
+                if (reset) {
+                    // reset={}
                 }
 
             }
         }
 
-    },[options])
+    }, [options])
 
 
 
     return (
         <>
-            {title&& <div className={"custom-label text-bold ellipsis-end text-blue mb-0"}>
-                {title} {details&&<CustomPopover heading={detailsHeading} text={details}><InfoIcon/></CustomPopover>}
+            {title && <div className={"custom-label text-bold ellipsis-end text-blue mb-0"}>
+                {title} {details && <CustomPopover heading={detailsHeading} text={details}><InfoIcon /></CustomPopover>}
 
             </div>}
-            <div className={`${noMargin?"":"mb-2 "} field-box `}>
+            <div className={`${noMargin ? "" : "mb-2 "} field-box `}>
                 <FormControl variant="outlined" >
-                {label && <InputLabel >{label}</InputLabel>}
+                    {label && <InputLabel >{label}</InputLabel>}
                     {loading && (
                         <Spinner
                             className={`mr-2 select-loading`}
@@ -74,52 +74,52 @@ const SelectArrayWrapper = (props) => {
                         />
                     )}
 
-            <CustomizedSelect
-                id={id}
+                    <CustomizedSelect
+                        id={id}
 
-                // ref={reset?selectRef:null}
-                selectedIndex={0}
-                multiple={multiple}
-                native={notNative?false:true}
-                variant="standard"
-                label={label}
-                // value={defaultValue}
-                onChange={handleChange}
-                style={{width:"100%"}}
-                disabled={disabled}
-                name={name}
-                className={` ${error&&"border-red-error"} txt-capitalize ${textAlignRight&&"select-text-right"}  ${noBorder&&"select-no-border"} `}
-                // defaultValue={defaultValue ? defaultValue : ""}
-            >
-                {select&&
-                <option  value={""}>
-                    {select}
-                </option>}
-                {placeholder&&
-                <option  value="" disabled>
-                    {placeholder}
-                </option>}
-
-
-                {options&&options.map((item, index) => (
-                    <option
-                        selected={subValueKey?item[valueKey][subValueKey]===initialValue:valueKey?(item[valueKey]===initialValue):(item===initialValue)}
-
-                        key={subValueKey?item[valueKey][subValueKey]:valueKey?item[valueKey]:item}
-                        value={subValueKey?item[valueKey][subValueKey]:valueKey?item[valueKey]:item}
-
+                        // ref={reset?selectRef:null}
+                        selectedIndex={0}
+                        multiple={multiple}
+                        native={notNative ? false : true}
+                        variant="standard"
+                        label={label}
+                        // value={defaultValue}
+                        onChange={handleChange}
+                        style={{ width: "100%" }}
+                        disabled={disabled}
+                        name={name}
+                        className={` ${error && "border-red-error"} txt-capitalize ${textAlignRight && "select-text-right"}  ${noBorder && "select-no-border"} `}
+                    // defaultValue={defaultValue ? defaultValue : ""}
                     >
-                     {subOption?option?item[option][subOption]:item:option?item[option]:item}
-                    </option>
-                ))}
+                        {select &&
+                            <option value={""}>
+                                {select}
+                            </option>}
+                        {placeholder &&
+                            <option value="" disabled>
+                                {placeholder}
+                            </option>}
 
 
-            </CustomizedSelect>
+                        {options && options.map((item, index) => (
+                            <option
+                                selected={subValueKey ? item[valueKey][subValueKey] === initialValue : valueKey ? (item[valueKey] === initialValue) : (item === initialValue)}
+
+                                key={subValueKey ? item[valueKey][subValueKey] : valueKey ? item[valueKey] : item}
+                                value={subValueKey ? item[valueKey][subValueKey] : valueKey ? item[valueKey] : item}
+
+                            >
+                                {subOption ? option ? item[option][subOption] : item : option ? item[option] : item}
+                            </option>
+                        ))}
+
+
+                    </CustomizedSelect>
                 </FormControl>
                 {explanation && (
                     <span className={"text-gray-light text-12 m-0 ellipsis-end"}>{explanation}</span>
                 )}
-                {error && <span style={{color:"#f44336",fontSize: "12px!important"}} className={"text-danger"}> {error.message}</span>}
+                {error && <span style={{ color: "#f44336", fontSize: "12px!important" }} className={"text-danger"}> {error.message}</span>}
 
 
             </div>

@@ -15,6 +15,8 @@ import {formatDate} from "@fullcalendar/react";
 import {getTimeFormat} from "../../Util/GlobalFunctions";
 import {AttachFile, FileCopy} from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
+import axios from "axios";
+import {baseUrl} from "../../Util/Constants";
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -55,6 +57,45 @@ const handleDocActions = (action, key, blob_url) => {
         window.location.href = blob_url;
 
 };
+
+// M9vIfzwKjP
+
+// const calCarbon = async (compositionId,artifactId) => {
+//
+//
+//     try {
+//         const uploadedFile = await axios.post(
+//             `${baseUrl}carbon/compute`,
+//             {
+//
+//                 artifact_id: artifactId,
+//                 composition_carbon: compositionId
+//
+//             }
+//         ).finally(() => {
+//             showSnackbar({
+//                 show: true,
+//                 severity: "success",
+//                 message: "Document uploaded successfully. Thanks",
+//             });
+//
+//         });
+//
+//
+//     } catch (error) {
+//         console.log("handleUploadFileToProduct try/catch error ", error);
+//         setIsLoading(false);
+//         showSnackbar({
+//             show: true,
+//             severity: "warning",
+//             message: "Unable to add artifact at this time.",
+//         });
+//     }
+//
+//
+// };
+
+
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     padding: theme.spacing(2),
     borderTop: '1px solid rgba(0, 0, 0, .125)',
@@ -104,25 +145,9 @@ export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEd
                                                                         </span>
                                             </a>
                                         </div>
-
                                         <div className="col-2 d-flex align-items-center justify-content-end">
                                             <small className='text-gray-light'>{moment(artifact._ts_epoch_ms).format("DD MMM YYYY")}</small>
                                         </div>
-
-                                        {/*<div className="col-2 d-flex justify-content-end">*/}
-
-                                        {/*        <MoreMenu*/}
-                                        {/*            triggerCallback={(action) => {*/}
-                                        {/*                handleDocActions(action,*/}
-                                        {/*                    artifact._key,*/}
-                                        {/*                    artifact.blob_url);*/}
-                                        {/*            }}*/}
-                                        {/*            download={true}*/}
-                                        {/*            // delete={props.isLoggedIn && !props.isArchiver}*/}
-                                        {/*        />*/}
-
-                                        {/*</div>*/}
-
                                     </div>
 
                                 </React.Fragment>

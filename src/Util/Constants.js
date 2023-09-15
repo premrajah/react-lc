@@ -72,6 +72,7 @@ export const MIME_TYPES = {
     MP4: "video/mp4",
     MOV: "video/quicktime",
     DOC: "application/msword",
+    CSV: "text/csv",
     PDF: "application/pdf",
     APP_RTF: "application/rtf",
     DOCX: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",

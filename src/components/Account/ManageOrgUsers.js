@@ -295,7 +295,6 @@ class ManageOrgUsers extends Component {
                                             <TabList
 
                                                 allowScrollButtonsMobile
-                                                variant="centered"
 
                                                 scrollButtons="auto"
 

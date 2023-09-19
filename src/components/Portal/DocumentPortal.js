@@ -23,6 +23,7 @@ const DocumentPortal = ({
     refresh,
     type,
     setArtifacts,
+                            userDetail,
     ...props
 }) => {
 
@@ -526,6 +527,7 @@ You agree and acknowledge that you shall be responsible for any misinformation p
                                                             editDocGroup={editDocGroup}
 
                                                             uploadedGroup={uploadedGroup}
+                                                            orgId={userDetail.orgId}
                                                         />
 
 

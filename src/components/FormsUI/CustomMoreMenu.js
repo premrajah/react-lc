@@ -111,16 +111,10 @@ class CustomMoreMenu extends Component {
 
                         </Menu>
                     </Button>
-
-
-
-
-
                 </div>
 
                 <GlobalDialog
                     size="sm"
-
                     heading={this.state.currentAction?this.state.currentAction.label:""}
                     show={this.state.showDialog}
                     hide={this.toggleDialog}

@@ -12,11 +12,13 @@ import moment from "moment/moment";
 import MoreMenu from "../MoreMenu";
 import CloseIcon from "@mui/icons-material/Close";
 import {formatDate} from "@fullcalendar/react";
-import {getTimeFormat} from "../../Util/GlobalFunctions";
+import {getFileExtension, getTimeFormat} from "../../Util/GlobalFunctions";
 import {AttachFile, FileCopy} from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
+import {useEffect} from "react";
+import CustomMoreMenu from "../FormsUI/CustomMoreMenu";
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -60,40 +62,8 @@ const handleDocActions = (action, key, blob_url) => {
 
 // M9vIfzwKjP
 
-// const calCarbon = async (compositionId,artifactId) => {
-//
-//
-//     try {
-//         const uploadedFile = await axios.post(
-//             `${baseUrl}carbon/compute`,
-//             {
-//
-//                 artifact_id: artifactId,
-//                 composition_carbon: compositionId
-//
-//             }
-//         ).finally(() => {
-//             showSnackbar({
-//                 show: true,
-//                 severity: "success",
-//                 message: "Document uploaded successfully. Thanks",
-//             });
-//
-//         });
-//
-//
-//     } catch (error) {
-//         console.log("handleUploadFileToProduct try/catch error ", error);
-//         setIsLoading(false);
-//         showSnackbar({
-//             show: true,
-//             severity: "warning",
-//             message: "Unable to add artifact at this time.",
-//         });
-//     }
-//
-//
-// };
+
+
 
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
@@ -101,7 +71,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEdit}) {
+export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEdit,orgId}) {
     const [expanded, setExpanded] = React.useState('panel1');
 
     const editItem=(item)=>{
@@ -110,6 +80,36 @@ export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEd
         editDocGroup(item)
 
     }
+
+    const calCarbon = async (artifactId) => {
+
+        try {
+            const uploadedFile = await axios.post(
+                `${baseUrl}carbon/compute`,
+                {
+                    artifact_id: artifactId,
+                    composition_carbon_id: uploadedGroup.composition_carbon._key,
+                    org_id:orgId
+                }
+            ).finally(() => {
+                // showSnackbar({
+                //     show: true,
+                //     severity: "success",
+                //     message: "Document uploaded successfully. Thanks",
+                // });
+            });
+
+
+        } catch (error) {
+            console.log("handleUploadFileToProduct try/catch error ", error);
+            // setIsLoading(false);
+            // showSnackbar({
+            //     show: true,
+            //     severity: "warning",
+            //     message: "Unable to add artifact at this time.",
+            // });
+        }
+    };
 
     const handleChange =
         (panel) => (event, newExpanded) => {
@@ -147,6 +147,14 @@ export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEd
                                         </div>
                                         <div className="col-2 d-flex align-items-center justify-content-end">
                                             <small className='text-gray-light'>{moment(artifact._ts_epoch_ms).format("DD MMM YYYY")}</small>
+
+                                        </div>
+                                        <div className="col-2 d-flex align-items-center justify-content-end">
+
+                                            {getFileExtension(artifact.blob_url).includes("csv")?<CustomMoreMenu
+                                                actions={[{label:"Calculate Carbon", value:"calculate"}]}
+                                                triggerCallback={()=>calCarbon(artifact._key)}
+                                            />:null}
                                         </div>
                                     </div>
 

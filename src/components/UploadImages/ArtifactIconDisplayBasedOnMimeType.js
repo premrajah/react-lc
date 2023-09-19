@@ -68,11 +68,7 @@ const ArtifactIconDisplayBasedOnMimeType = ({ artifact, showSnackbar }) => {
                 case MIME_TYPES.JPEG:
                 case MIME_TYPES.PNG:
                     return <>
-                        {/*<ImageIcon*/}
-                        {/*    style={FileIconStyle}*/}
-                        {/*    className="rad-4 click-item"*/}
-                        {/*    onClick={() => handleArtifactImageDialogDisplayOpen(URL)}*/}
-                        {/*/>*/}
+
                         <span
                             className="rad-4 click-item"
                             onClick={() => handleArtifactImageDialogDisplayOpen(artifact?.blob_url)}
@@ -93,6 +89,7 @@ const ArtifactIconDisplayBasedOnMimeType = ({ artifact, showSnackbar }) => {
                         onClick={() => handleArtifactDialogDisplayOpen(artifact?.blob_url)}
                     />;
                 // Documents
+                case MIME_TYPES.CSV:
                 case MIME_TYPES.XLSX:
                 case MIME_TYPES.XLS:
                 case MIME_TYPES.TEXT_RTF:

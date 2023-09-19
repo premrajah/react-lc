@@ -206,6 +206,17 @@ export const arrangeObjectKeysAlphabatically = (obj) => {
     });
 };
 
+// program to get the file extension
+
+export const getFileExtension=(filename)=>{
+
+    // get file extension
+    const extension = filename.split('.').pop();
+
+    console.log(extension)
+    return extension;
+}
+
 export const sortArraysByKey = (array, key) => {
     return array.sort(function (a, b) {
         if (a[key] < b[key]) {

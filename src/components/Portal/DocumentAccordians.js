@@ -12,7 +12,7 @@ import moment from "moment/moment";
 import MoreMenu from "../MoreMenu";
 import CloseIcon from "@mui/icons-material/Close";
 import {formatDate} from "@fullcalendar/react";
-import {getFileExtension, getTimeFormat} from "../../Util/GlobalFunctions";
+import {getFileExtension, getDateFormat, getTimeFormat} from "../../Util/GlobalFunctions";
 import {AttachFile, FileCopy} from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
@@ -84,6 +84,12 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
     }
 
+    useEffect(()=>{
+
+        if (uploadedGroup)
+        setDownloads(uploadedGroup.artifacts)
+    },[])
+
     const calCarbon = async (artifactId) => {
 
         setActiveArtifact(artifactId)
@@ -131,10 +137,10 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 <>
                     <Accordion expanded={expanded === uploadedGroup.composition_carbon._key} onChange={handleChange(uploadedGroup.composition_carbon._key)}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                            <div component={"div"} className="text-capitlize w-100 d-flex justify-content-between"><div>{uploadedGroup.composition_carbon.name} - Ver.{uploadedGroup.composition_carbon.version}, {uploadedGroup.composition_carbon.source}, {uploadedGroup.artifacts.length}<AttachFile fontSize="small" className="text-blue"/> <p className="text-right text-12">{getTimeFormat(uploadedGroup.composition_carbon._ts_epoch_ms)}</p></div> {!disableEdit&&<div onClick={(event)=>{event.stopPropagation();  editItem(uploadedGroup);}}><EditIcon fontSize="small" /> </div>}</div>
+                            <div component={"div"} className="text-capitlize w-100 d-flex justify-content-between"><div>{uploadedGroup.composition_carbon.name} - Ver.{uploadedGroup.composition_carbon.version}, {uploadedGroup.composition_carbon.source}, {uploadedGroup.artifacts.length}<AttachFile fontSize="small" className="text-blue"/> <p className="text-right text-12">{getDateFormat(uploadedGroup.composition_carbon._ts_epoch_ms)}</p></div> {!disableEdit&&<div onClick={(event)=>{event.stopPropagation();  editItem(uploadedGroup);}}><EditIcon fontSize="small" /> </div>}</div>
                         </AccordionSummary>
                         <AccordionDetails>
-                            {uploadedGroup.artifacts.map((artifact, index) =>
+                            {downloads.map((artifact, index) =>
                             <Typography>
                                 <React.Fragment key={artifact._key}>
                                     <div key={index}
@@ -153,8 +159,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
                                             </a>
                                         </div>
                                         <div className="col-2 d-flex align-items-center justify-content-end">
-                                            <small className='text-gray-light'>{moment(artifact._ts_epoch_ms).format("DD MMM YYYY")}</small>
-
+                                            <small className='text-gray-light'>{getTimeFormat(artifact._ts_epoch_ms)}</small>
                                         </div>
                                         {disableEdit &&
                                             <div className="col-2 d-flex align-items-center justify-content-end">
@@ -165,25 +170,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
                                             />:null}
                                         </div>}
 
-                                        {(downloads.length>0&&(activeArtifact===artifact._key))&&
-                                            <>
-                                            <p>
-                                                <hr/>
-                                            <ul>
-                                            {downloads.map((artifactD)=>
-                                               <li><a href={artifactD.blob_url} target="_blank"
-                                                      rel="noopener noreferrer">
-                                                                        <span
-                                                                            className="ms-4  text-blue text-bold"
-                                                                            rel="noopener noreferrer">
-                                                                            {artifactD.name}
-                                                                        </span>
-                                               </a></li>
-                                            )}
-                                        </ul>
-                                            </p>
-                                            </>
-                                        }
+
                                     </div>
 
                                 </React.Fragment>

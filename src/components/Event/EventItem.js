@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import {getInitials, getTimeFormat, removeDuplicates} from "../../Util/GlobalFunctions";
+import {getInitials, getDateFormat, removeDuplicates} from "../../Util/GlobalFunctions";
 import {baseUrl} from "../../Util/Constants";
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import {Close, Edit, FactCheck} from "@mui/icons-material";
@@ -137,7 +137,7 @@ class EventItem extends Component {
                                         {item.event.description}
 
                                     </p>
-                                    <p style={{lineHeight:"12px"}} className="text-gray-light m-0 text-12 p-0 ">{getTimeFormat(item.event.resolution_epoch_ms)}</p>
+                                    <p style={{lineHeight:"12px"}} className="text-gray-light m-0 text-12 p-0 ">{getDateFormat(item.event.resolution_epoch_ms)}</p>
 
                                     <div className="d-flex  flex-column right-btn-auto">
                                         {this.state.actions.length>0&&

@@ -15,7 +15,7 @@ import OrgComponent from "./Org/OrgComponent";
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import GlobalDialog from "./RightBar/GlobalDialog";
 import BlueSmallBtn from "./FormsUI/Buttons/BlueSmallBtn";
-import { getTimeFormat, PreProcessCSVData } from "../Util/GlobalFunctions";
+import { getDateFormat, PreProcessCSVData } from "../Util/GlobalFunctions";
 
 
 
@@ -116,7 +116,7 @@ const SiteTrailsTimeline=(props)=> {
                     itemTmp.push("")
                 }
 
-                itemTmp.push(getTimeFormat(_ts_epoch_ms))
+                itemTmp.push(getDateFormat(_ts_epoch_ms))
 
                 csvDataNew.push(itemTmp)
                 index += 1

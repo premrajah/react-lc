@@ -7,7 +7,7 @@ import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import {Spinner} from "react-bootstrap";
 import Avatar from "@mui/material/Avatar";
-import {getInitials, getTimeFormat} from "../../Util/GlobalFunctions";
+import {getInitials, getDateFormat} from "../../Util/GlobalFunctions";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -165,7 +165,7 @@ const MessengerMessagesTwoSelectedMessage = ({ groupMessageKey,showNewMessage,sh
                                     </a>
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{item.name}</StyledTableCell>
-                                <StyledTableCell align="right">{getTimeFormat(item._ts_epoch_ms)}</StyledTableCell>
+                                <StyledTableCell align="right">{getDateFormat(item._ts_epoch_ms)}</StyledTableCell>
                                 <StyledTableCell align="right">{ m.orgs.find((org) => org.actor === "message_from").org.org.name }</StyledTableCell>
                                 <StyledTableCell align="right"><a href={item.blob_url} target="_blank" rel="noreferrer">Download</a></StyledTableCell>
                             </StyledTableRow>

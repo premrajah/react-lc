@@ -523,9 +523,7 @@ You agree and acknowledge that you shall be responsible for any misinformation p
 
 
                                                         <DocumentAccordians
-
                                                             editDocGroup={editDocGroup}
-
                                                             uploadedGroup={uploadedGroup}
                                                             orgId={userDetail.orgId}
                                                         />

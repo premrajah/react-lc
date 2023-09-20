@@ -212,8 +212,6 @@ export const getFileExtension=(filename)=>{
 
     // get file extension
     const extension = filename.split('.').pop();
-
-    console.log(extension)
     return extension;
 }
 

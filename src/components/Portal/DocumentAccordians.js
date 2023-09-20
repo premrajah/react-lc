@@ -19,6 +19,8 @@ import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
 import {useEffect} from "react";
 import CustomMoreMenu from "../FormsUI/CustomMoreMenu";
+import * as actionCreator from "../../store/actions/actions";
+import {connect} from "react-redux";
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -71,9 +73,10 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEdit,orgId}) {
+ function DocumentAccordians({uploadedGroup,editDocGroup,disableEdit,orgId,showSnackbar}) {
     const [expanded, setExpanded] = React.useState('panel1');
-
+    const [downloads, setDownloads] = React.useState([]);
+     const [activeArtifact, setActiveArtifact] = React.useState([]);
     const editItem=(item)=>{
 
         if (!disableEdit)
@@ -83,8 +86,10 @@ export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEd
 
     const calCarbon = async (artifactId) => {
 
+        setActiveArtifact(artifactId)
+
         try {
-            const uploadedFile = await axios.post(
+            const uploadedFiles = await axios.post(
                 `${baseUrl}carbon/compute`,
                 {
                     artifact_id: artifactId,
@@ -92,22 +97,24 @@ export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEd
                     org_id:orgId
                 }
             ).finally(() => {
-                // showSnackbar({
-                //     show: true,
-                //     severity: "success",
-                //     message: "Document uploaded successfully. Thanks",
-                // });
+                showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Document created successfully. Thanks",
+                });
             });
 
+            if (uploadedFiles)
+            setDownloads(uploadedFiles.data?.data?.artifacts)
 
         } catch (error) {
             console.log("handleUploadFileToProduct try/catch error ", error);
             // setIsLoading(false);
-            // showSnackbar({
-            //     show: true,
-            //     severity: "warning",
-            //     message: "Unable to add artifact at this time.",
-            // });
+            showSnackbar({
+                show: true,
+                severity: "warning",
+                message: "Unable to add artifact at this time.",
+            });
         }
     };
 
@@ -149,13 +156,34 @@ export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEd
                                             <small className='text-gray-light'>{moment(artifact._ts_epoch_ms).format("DD MMM YYYY")}</small>
 
                                         </div>
-                                        <div className="col-2 d-flex align-items-center justify-content-end">
+                                        {disableEdit &&
+                                            <div className="col-2 d-flex align-items-center justify-content-end">
 
-                                            {getFileExtension(artifact.blob_url).includes("csv")?<CustomMoreMenu
+                                            {getFileExtension(artifact.blob_url).includes("csv?")?<CustomMoreMenu
                                                 actions={[{label:"Calculate Carbon", value:"calculate"}]}
                                                 triggerCallback={()=>calCarbon(artifact._key)}
                                             />:null}
-                                        </div>
+                                        </div>}
+
+                                        {(downloads.length>0&&(activeArtifact===artifact._key))&&
+                                            <>
+                                            <p>
+                                                <hr/>
+                                            <ul>
+                                            {downloads.map((artifactD)=>
+                                               <li><a href={artifactD.blob_url} target="_blank"
+                                                      rel="noopener noreferrer">
+                                                                        <span
+                                                                            className="ms-4  text-blue text-bold"
+                                                                            rel="noopener noreferrer">
+                                                                            {artifactD.name}
+                                                                        </span>
+                                               </a></li>
+                                            )}
+                                        </ul>
+                                            </p>
+                                            </>
+                                        }
                                     </div>
 
                                 </React.Fragment>
@@ -172,3 +200,19 @@ export default function DocumentAccordians({uploadedGroup,editDocGroup,disableEd
         </div>
     );
 }
+
+
+const mapStateToProps = (state) => {
+    return {
+        userDetail: state.userDetail,
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentAccordians);

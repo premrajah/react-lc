@@ -119,6 +119,7 @@ class DocumentAdmin extends Component {
                                   <DocumentAccordians
                                       disableEdit
                                       uploadedGroup={uploadedGroup}
+                                      orgId={this.props.userDetail.orgId}
                                   />
                               </>)}
                         </div>
@@ -145,7 +146,7 @@ class DocumentAdmin extends Component {
 
 const mapStateToProps = (state) => {
   return {
-
+    userDetail: state.userDetail,
   };
 };
 

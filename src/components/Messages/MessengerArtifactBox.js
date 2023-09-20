@@ -20,7 +20,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {getTimeFormat} from "../../Util/GlobalFunctions";
+import {getDateFormat} from "../../Util/GlobalFunctions";
 const LC_PURPLE = "#27245C";
 const LC_PINK = "#D31169";
 
@@ -94,7 +94,7 @@ const MessengerChatBox = ({ m, userDetail, showSnackbar }) => {
                                         </a>
                                     </StyledTableCell>
                                     <StyledTableCell align="right">{item.name}</StyledTableCell>
-                                    <StyledTableCell align="right">{getTimeFormat(item._ts_epoch_ms)}</StyledTableCell>
+                                    <StyledTableCell align="right">{getDateFormat(item._ts_epoch_ms)}</StyledTableCell>
                                     <StyledTableCell align="right">{item.name}</StyledTableCell>
                                     <StyledTableCell align="right"><a href={item.blob_url} target="_blank" rel="noreferrer">Download</a></StyledTableCell>
                                 </StyledTableRow>

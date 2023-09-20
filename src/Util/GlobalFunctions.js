@@ -283,9 +283,16 @@ export const seekAxiosGet = (url, doNotEncode, controller) => {
         });
 };
 
-export const getTimeFormat = (time) => {
+export const getDateFormat = (time) => {
     return moment(time).format("DD MMM YYYY");
 };
+
+export const getTimeFormat = (time) => {
+    return moment(time).format("DD-MM-YYYY HH:mm");
+};
+
+
+
 
 export const isEmptyHtml = (el) => {
     // return trim(el.html())

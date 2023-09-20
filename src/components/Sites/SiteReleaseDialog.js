@@ -10,7 +10,7 @@ import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
-import {getTimeFormat} from "../../Util/GlobalFunctions";
+import {getDateFormat} from "../../Util/GlobalFunctions";
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 
 
@@ -191,7 +191,7 @@ this.fetchReleases()
                                                 <div className={"col-11 text-blue "}>
                                                     Site Release request to  <b>{release.responder.name}</b> <br/>
                                                     Status: <span className="text-pink text-capitlize">{release.Release.stage}</span>
-                                                    <br/><small className="text-gray-light mr-2">{getTimeFormat(release.Release._ts_epoch_ms)}</small>
+                                                    <br/><small className="text-gray-light mr-2">{getDateFormat(release.Release._ts_epoch_ms)}</small>
                                                 </div>
 
                                                 <div className={"col-1 text-right "}>

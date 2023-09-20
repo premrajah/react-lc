@@ -8,7 +8,7 @@ import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import moment from "moment";
 import MoreMenu from "../MoreMenu";
-import {capitalize, getTimeFormat} from "../../Util/GlobalFunctions";
+import {capitalize, getDateFormat} from "../../Util/GlobalFunctions";
 
 class SearchItem extends Component {
     constructor(props) {
@@ -144,7 +144,7 @@ class SearchItem extends Component {
                                     </span>
                         </div>
                         <div className={"text-gray-light mt-1 mb-1 width-75 text-14"}>
-                           <span>{getTimeFormat(this.props.item.search.require_after_epoch_ms)}</span> - <span>{getTimeFormat(this.props.item.search.expire_after_epoch_ms)}</span>
+                           <span>{getDateFormat(this.props.item.search.require_after_epoch_ms)}</span> - <span>{getDateFormat(this.props.item.search.expire_after_epoch_ms)}</span>
                         </div>
                         <div className={"add-top-button pl-3-desktop"}>
 

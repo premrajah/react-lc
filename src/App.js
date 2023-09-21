@@ -94,6 +94,8 @@ import TestRoute from "./components/TestRoute";
 import SitesNew from "./pages/sites/SitesNew";
 import VerifyEmail from "./pages/account/VerifyEmail";
 import DocumentPortal from './components/Portal/DocumentPortal';
+import ProductKinds from "./pages/product-kind/ProductKinds";
+import ProductKindDetail from "./pages/product-kind/ProductKindDetail";
 
 
 ReactGA.initialize(gaTID);
@@ -157,6 +159,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         {/*<LoggedInRoute exact path="/my-products" component={Products} />*/}
                         <LoggedInRoute exact path="/my-products" component={ProductsNew} />
+                        <LoggedInRoute exact path="/product-kinds" component={ProductKinds} />
                         <LoggedInRoute exact path="/my-products/:id" component={ProductsNew} />
                         <LoggedInRoute exact path="/my-products-condensed" component={ProductsCondensedView} />
                         {/*<LoggedInRoute exact path="/sites" component={Sites} />*/}
@@ -199,6 +202,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={ProductView} />
+                        <LoggedInRoute exact path="/product-kind/:slug" component={ProductKindDetail} />
                         <LoggedInRoute exact path="/product/preview/:slug" component={Product} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <Route exact path="/ps/:slug" component={Site} />

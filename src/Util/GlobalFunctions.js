@@ -275,10 +275,10 @@ export const seekAxiosGet = (url, doNotEncode, controller) => {
             signal: controller ? controller.signal : null,
         })
         .catch((error) => {
-            if (controller.isAborted(),error){
+            if (controller?.aborted){
                 console.log("prev call cancelled", error)
             }
-            console.error(error);
+            console.error("seek error",url ,error);
             return "Unknown error occurred.";
         });
 };

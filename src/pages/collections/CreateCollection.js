@@ -116,7 +116,7 @@ class CreateCollection extends Component {
 
             <>
 
-                    <Layout hideFooter={true}>
+                <Layout hideFooter={true}>
                         <CollectionForm/>
                 </Layout>
 

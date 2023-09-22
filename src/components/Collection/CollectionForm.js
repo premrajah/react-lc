@@ -116,8 +116,8 @@ class CollectionForm extends Component {
         this.setState({
                 addCountAny: array,
                 countAny: this.state.countAny - 1,
-            },()=>
-                this.countStrategyProducts()
+            },()=>{}
+                // this.countStrategyProducts()
         );
 
 
@@ -132,8 +132,9 @@ class CollectionForm extends Component {
         this.setState({
                 addCountAll: arrayCount,
                 countAll: this.state.countAll - 1,
-            },()=>
-                this.countStrategyProducts()
+            },()=> {
+
+            }
         );
 
     }
@@ -209,8 +210,6 @@ class CollectionForm extends Component {
 
 
         if (this.state.activeStep===1){
-
-            this.countStrategyProducts()
         }
 
         let autocompleteOptions=this.state.autocompleteOptions
@@ -571,61 +570,18 @@ class CollectionForm extends Component {
     };
 
 
-
-
     handleNext = (event) => {
-
 
         if(event.keyCode === 13) {
 
             event.preventDefault();
             return false;
         }
-
-        if (this.state.activeStep===0)
-            this.countStrategyProducts()
-
-        if (this.state.activeStep<(getSteps().length-1)&&this.handleValidation(this.state.activeStep)) {
-
-            if (this.state.activeStep===0&&!this.validateDates()){
-
-                return
-            }
-
-
-
-            let newSkipped = this.state.skipped;
-            if (this.isStepSkipped(this.state.activeStep)) {
-                newSkipped = new Set(newSkipped.values());
-                newSkipped.delete(this.state.activeStep);
-            }
-
-            this.setState({
-                activeStep: this.state.activeStep + 1
-            });
-
-            this.setState({
-                skipped:newSkipped
-            });
-
-
+        if (!this.handleValidation()) {
+            return
         }else{
-
-
-            if (this.state.item){
-
-                this.handleUpdate()
-
-            }else{
-
-                this.handleSubmit()
-
-            }
-
-
+            this.handleSubmit()
         }
-
-
     };
 
     handleChangeDateStartDate = (date) => {
@@ -657,9 +613,8 @@ class CollectionForm extends Component {
 
         const name = fields["name"];
         const description = fields["description"];
-        const startDate = new Date(fields["startDate"]).getTime() ;
-        const endDate =  new Date(fields["endDate"]).getTime();
-        const messageTemplate = fields["messageTemplate"];
+
+
 
         let conditionAll=[]
         let conditionAny=[]
@@ -691,13 +646,11 @@ class CollectionForm extends Component {
             campaign:{
                 name:name,
                 description:description,
-                start_ts:startDate,
-                end_ts:endDate,
                 all_of:conditionAll,
                 any_of:conditionAny
             },
-            message_template:messageTemplate,
-            artifact_ids:this.state.images,
+            // message_template:messageTemplate,
+            // artifact_ids:this.state.images,
         };
 
         this.setState({isSubmitButtonPressed: true,loading:true})
@@ -1122,7 +1075,7 @@ class CollectionForm extends Component {
 
 
 
-    handleValidation(activeStep) {
+    handleValidation() {
 
 
         let fields = this.state.fields;
@@ -1130,21 +1083,10 @@ class CollectionForm extends Component {
         let validations=[]
 
 
-
-        if (activeStep===0) {
-
-            this.validateDates()
             validations = [
                 validateFormatCreate("name", [{check: Validators.required, message: 'Required'}], fields),
                 validateFormatCreate("description", [{check: Validators.required, message: 'Required'}], fields),
-
-
             ]
-
-        }
-
-        else if (activeStep===1) {
-
 
             for (let i=0;i<this.state.countAll;i++){
 
@@ -1152,76 +1094,21 @@ class CollectionForm extends Component {
                 validations.push(validateFormatCreate(`operatorAnd[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
                 validations.push(validateFormatCreate(`valueAnd[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
 
-
             }
             for (let i=0;i<this.state.countAny;i++){
 
                 validations.push(validateFormatCreate(`propertyOr[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
                 validations.push(validateFormatCreate(`operatorOr[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
                 validations.push(validateFormatCreate(`valueOr[${i}]`, [{check: Validators.required, message: 'Required'}], fields))
-
-
             }
 
-
-
-        }
-
-        else if (activeStep===2) {
-            validations = [
-                validateFormatCreate("messageTemplate", [{check: Validators.required, message: 'Required'}], fields),
-            ]
-
-        }
 
 
         let {formIsValid, errors} = validateInputs(validations)
 
         this.setState({errors: errors});
 
-
-
-
         return formIsValid;
-
-    }
-
-
-    validateDates(){
-
-
-        let valid=true
-
-        if (!this.state.startDate){
-
-            this.setState({
-                startDateError:true
-            })
-
-            valid=  false
-
-        }else{
-            this.setState({
-                startDateError:false
-            })
-        }
-
-        if (!this.state.endDate){
-
-            this.setState({
-                endDateError:true
-            })
-
-            valid =  false
-
-        }else{
-            this.setState({
-                endDateError:false
-            })
-
-        }
-        return valid
-
 
     }
 
@@ -1239,29 +1126,25 @@ class CollectionForm extends Component {
                     <div className="container  mb-150  pb-5 pt-4">
 
                         <div className={classes.root}>
-                            <Stepper className={"mb-4 p-0"} style={{background:"transparent"}} activeStep={this.state.activeStep}>
-                                {this.state.steps.map((label, index) => {
-                                    const stepProps = {};
-                                    const labelProps = {};
-                                    if (this.isStepOptional(index)) {
-                                        labelProps.optional = <Typography variant="caption">Optional</Typography>;
-                                    }
-                                    if (this.isStepSkipped(index)) {
-                                        stepProps.completed = false;
-                                    }
-                                    return (
-                                        <Step key={label} {...stepProps}>
-                                            <StepLabel {...labelProps}>{label}</StepLabel>
-                                        </Step>
-                                    );
-                                })}
-                            </Stepper>
+                            {/*<Stepper className={"mb-4 p-0"} style={{background:"transparent"}} activeStep={this.state.activeStep}>*/}
+                            {/*    {this.state.steps.map((label, index) => {*/}
+                            {/*        const stepProps = {};*/}
+                            {/*        const labelProps = {};*/}
+                            {/*        if (this.isStepOptional(index)) {*/}
+                            {/*            labelProps.optional = <Typography variant="caption">Optional</Typography>;*/}
+                            {/*        }*/}
+                            {/*        if (this.isStepSkipped(index)) {*/}
+                            {/*            stepProps.completed = false;*/}
+                            {/*        }*/}
+                            {/*        return (*/}
+                            {/*            <Step key={label} {...stepProps}>*/}
+                            {/*                <StepLabel {...labelProps}>{label}</StepLabel>*/}
+                            {/*            </Step>*/}
+                            {/*        );*/}
+                            {/*    })}*/}
+                            {/*</Stepper>*/}
                             <div>
-
                                 <div>
-
-
-                                    <div className={this.state.activeStep===0?"":"d-none"}>
                                         <form onSubmit={this.state.item?this.updateSite:this.handleSubmit}>
 
                                             <div className="row no-gutters">
@@ -1291,101 +1174,8 @@ class CollectionForm extends Component {
 
                                                 </div>
                                             </div>
-
-                                            <div className="row no-gutters mb-3">
-                                                <div className="col-6 pe-1">
-
-                                                    <div
-                                                        className={
-                                                            "custom-label text-bold text-blue "
-                                                        }>
-                                                        Start Date
-                                                    </div>
-
-
-
-                                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-                                                        <DesktopDatePicker
-
-                                                            disableHighlightToday={true}
-                                                            minDate={new Date()}
-                                                            // label="Required By"
-                                                            inputVariant="outlined"
-                                                            variant={"outlined"}
-                                                            margin="normal"
-                                                            id="date-picker-dialog-1"
-                                                            // label="Available From"
-                                                            inputFormat="dd/MM/yyyy"
-                                                            value={this.state.startDate}
-
-                                                            // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.state.item&&this.state.item.campaign.start_ts}
-                                                            // onChange={this.handleChangeDateStartDate.bind(
-                                                            //     this
-                                                            // )}
-                                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
-                                                                <div className="custom-calander-container">
-                                                                    <CustomizedInput ref={inputRef} {...inputProps} />
-                                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
-                                                                </div>
-                                                            )}
-                                                            // renderInput={(params) => <CustomizedInput {...params} />}
-                                                            onChange={(value)=>this.handleChange(value,"startDate")}
-
-                                                        />
-                                                    </LocalizationProvider>
-
-                                                    {this.state.startDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
-
-                                                </div>
-
-                                                <div className="col-6 ps-1 ">
-
-                                                    <div
-                                                        className={
-                                                            "custom-label text-bold text-blue "
-                                                        }>
-                                                        End Date
-                                                    </div>
-                                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-                                                        <DesktopDatePicker
-                                                            disableHighlightToday={true}
-
-                                                            minDate={new Date()}
-                                                            // label="Required By"
-                                                            inputVariant="outlined"
-                                                            variant={"outlined"}
-                                                            margin="normal"
-                                                            id="date-picker-dialog"
-                                                            inputFormat="dd/MM/yyyy"
-                                                            value={this.state.endDate}
-                                                            // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.state.item&&this.state.item.campaign.end_ts}
-                                                            renderInput=   {({ inputRef, inputProps, InputProps }) => (
-                                                                <div className="custom-calander-container">
-                                                                    <CustomizedInput ref={inputRef} {...inputProps} />
-                                                                    <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
-                                                                </div>
-                                                            )}
-                                                            // renderInput={(params) => <CustomizedInput {...params} />}
-                                                            onChange={(value)=>this.handleChange(value,"endDate")}
-
-                                                        />
-                                                    </LocalizationProvider>
-                                                    {this.state.endDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
-
-                                                </div>
-                                            </div>
-
-
-
-
                                         </form>
 
-                                    </div>
-
-
-                                    <div className={this.state.activeStep===1?"":"d-none"}>
                                         <div className="row p-3">
 
 
@@ -1630,53 +1420,13 @@ class CollectionForm extends Component {
 
                                             </div>
 
-                                            <div className={"col-12 mb-3 p-3 bg-white rad-8 text-blue text-bold"}>Products targeted based on conditions defined above: <span className={"sub-title-text-pink"}>{this.state.strategyProducts.length}</span></div>
+                                            {/*<div className={"col-12 mb-3 p-3 bg-white rad-8 text-blue text-bold"}>Products targeted based on conditions defined above: <span className={"sub-title-text-pink"}>{this.state.strategyProducts.length}</span></div>*/}
 
                                         </div>
-                                    </div>
-
-
-                                    <div className={this.state.activeStep===2?"":"d-none"}>
                                         <div className="row mt-3 ">
                                             <div className="col-12 mt-0">
                                                 <div className="row camera-grids   no-gutters   ">
-                                                    <div className="col-12  text-left ">
 
-                                                        <form onSubmit={this.state.itemIndex?this.updateSite:this.handleSubmit}>
-
-                                                            <div className="row no-gutters">
-                                                                <div className="col-12 ">
-
-                                                                    <TextFieldWrapper
-                                                                        multiline
-                                                                        rows={4}
-                                                                        initialValue={this.state.item?this.props.type!=="draft"?this.state.item.message_template.text:this.state.item.message_template:""}
-                                                                        onChange={(value)=>this.handleChange(value,"messageTemplate")}
-                                                                        error={this.state.errors["messageTemplate"]}
-                                                                        name="messageTemplate" title="Message Template" />
-
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div className={"row d-none"}>
-                                                                <div className="col-12 mt-4 mb-2">
-
-                                                                    <button
-                                                                        type={"submit"}
-                                                                        className={
-                                                                            "btn btn-default btn-lg btn-rounded shadow btn-block btn-green login-btn"
-                                                                        }
-                                                                        disabled={this.state.isSubmitButtonPressed}>
-                                                                        {this.state.item?"Update Site":"Add Site"}
-                                                                    </button>
-
-                                                                </div>
-                                                            </div>
-
-                                                        </form>
-
-                                                    </div>
 
                                                     <div className="row camera-grids   no-gutters mb-4  ">
 
@@ -1839,69 +1589,24 @@ class CollectionForm extends Component {
 
 
                                         </div>
-                                    </div>
 
 
+                                    <div className="row mt-3 ">
+                                        <div className="col-6 mt-0">
+                                            <GreenSmallBtn
+                                                fullWidth
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={(e)=> {this.handleNext(e)}}
+                                                loading={this.state.loading}
+                                                disabled={this.state.loading}
+                                                className={" btn-gray-border "}
+                                                title={"Submit"}
 
-
-
-                                    <div>
-                                        <div className="row mt-3 ">
-                                            <div className="col-6 mt-0">
-                                                <Button  disabled={this.state.activeStep === 0} onClick={this.handleBack} className={" btn-back"}>
-                                                    Back
-                                                </Button>
-                                                {this.isStepOptional(this.state.activeStep) && (
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        onClick={this.handleSkip}
-                                                        // className={classes.button}
-                                                    >
-                                                        Skip
-                                                    </Button>
-                                                )}
-                                                <GreenSmallBtn
-
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={(e)=> {this.handleNext(e)}}
-                                                    loading={this.state.loading}
-                                                    disabled={this.state.loading}
-                                                    className={" btn-gray-border "}
-                                                    title={this.state.files.length > 0 ? (
-                                                            this.state.files.filter((item) => item.status === 0).length >
-                                                            0 ?"Upload In Progress":this.state.activeStep!==2?"Next":"Submit"):
-                                                        this.state.activeStep === this.state.steps.length - 1 ? 'Submit' : 'Next'}
-                                                >
-
-                                                </GreenSmallBtn>
-                                            </div>
-                                            <div className="col-6 text-right pe-5 mt-0">
-                                                <GreenSmallBtn
-
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={this.saveDraft}
-
-                                                    loading={this.state.loading}
-                                                    disabled={this.state.loading}
-
-                                                    className={" btn-gray-border "}
-                                                    title={"Save As Draft"}
-                                                >
-
-                                                </GreenSmallBtn>
-                                                {/*}*/}
-
-                                            </div>
+                                            >
+                                            </GreenSmallBtn>
                                         </div>
-
                                     </div>
-
-                                    {/*{this.state.selectOptionError&&<span className={"text-danger"}>*Atleast one condition is required.</span>}*/}
-
-                                    <p className="mt-2">"If no conditions are added, the ad campaign will target all of your brand's products in the Loopcycle Platform"</p>
 
                                 </div>
                             </div>

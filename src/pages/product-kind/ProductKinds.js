@@ -231,12 +231,6 @@ class ProductKinds extends Component {
         }
     };
 
-    addProductLine = () => {
-        this.setState({
-            showProductLine: !this.state.showProductLine,
-        });
-    };
-
 
     fieldSelection = () => {
         this.setState({
@@ -813,11 +807,6 @@ class ProductKinds extends Component {
         });
     };
 
-    toggleDownloadQrCodes = () => {
-        this.setState({
-            showDownloadQrCodes: !this.state.showDownloadQrCodes,
-        });
-    };
 
     setMultipleSelectFlag = (rows) => {
 
@@ -1115,52 +1104,12 @@ class ProductKinds extends Component {
                                             {/*   */}
                                             {/*</div>*/}
                                             <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
-
                                                 <MenuDropdown
                                                     maxWidth={"200px"}
                                                     initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
                                                     setSelection={this.setSelection}
                                                     options={["Products", "Service", "Records", "Track", "Issues", "Archive"]}
                                                 />
-                                                {this.state.selectionMode !== "Issues" &&
-                                                    <>
-                                                        <div className="me-2">
-                                                            <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
-
-                                                                <BlueSmallBtn
-                                                                    classAdd="mb-1"
-                                                                    title={"Download Open Cyclecodes"}
-                                                                    onClick={() => this.toggleDownloadQrCodes()}
-                                                                >
-
-                                                                </BlueSmallBtn>
-                                                            </CustomPopover>
-                                                        </div>
-                                                        {/*<div className="me-2">*/}
-                                                        {/*    <CustomPopover text={"Export all products to csv."}>*/}
-                                                        {/*        <BlueSmallBtn*/}
-                                                        {/*            classAdd="mb-1"*/}
-                                                        {/*            title={"Export To CSV"}*/}
-                                                        {/*            // disabled={this.state.downloadAllLoading}*/}
-                                                        {/*            // progressLoading={this.state.downloadAllLoading}*/}
-                                                        {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
-                                                        {/*            // onClick={()=>this.downloadAll(0,100)}*/}
-                                                        {/*            onClick={this.fieldSelection}*/}
-                                                        {/*        >*/}
-
-                                                        {/*        </BlueSmallBtn>*/}
-                                                        {/*    </CustomPopover>*/}
-                                                        {/*</div>*/}
-                                                        <div className="me-2">
-                                                            <CustomPopover text={"Add Product Lines"}>
-                                                                <BlueSmallBtn
-                                                                    classAdd="mb-1"
-                                                                    onClick={this.addProductLine}>
-                                                                    Product Lines
-                                                                </BlueSmallBtn>
-                                                            </CustomPopover>
-                                                        </div>
-                                                    </>}
                                             </div>
                                         </> :
 
@@ -1209,22 +1158,7 @@ class ProductKinds extends Component {
 
                     </div>
                 </>
-                <GlobalDialog
-                    allowScroll
-                    size={"lg"}
-                    hide={this.addProductLine}
-                    show={this.state.showProductLine}
-                    heading={"Product Lines"}>
-                    <>
-                        {this.state.showProductLine && (
-                            <>
-                                <div className="col-12 ">
-                                    <ProductLines />
-                                </div>
-                            </>
-                        )}
-                    </>
-                </GlobalDialog>
+                
                 <GlobalDialog
                     allowScroll
                     size={"md"}

@@ -112,14 +112,7 @@ class ProductKinds extends Component {
         }
     }
 
-    clearList = () => {
-        // this.setState({
-        //         offset: 0,
-        //         items: [],
-        //         lastPageReached: false,
-        //         loadingResults: false,
-        //     });
-    };
+
 
     handleChange(value, field) {
         let fields = this.state.fields;
@@ -548,7 +541,6 @@ class ProductKinds extends Component {
 
         try {
             if (data && data.reset) {
-                // await   this.clearList();
                 this.setState({
                     offset: 0,
                     lastPageReached: false,
@@ -613,9 +605,6 @@ class ProductKinds extends Component {
                     });
                 });
 
-
-            // let result = await seekAxiosGet(url,null,this.controller);
-
             if (result && result.data && result.data.data) {
 
                 this.setState({
@@ -623,7 +612,6 @@ class ProductKinds extends Component {
                 });
 
                 this.setState({
-                    // items: this.state.items.concat(result.data ? result.data.data : []),
                     loadingResults: false,
                     lastPageReached: result.data
                         ? result.data.data.length === 0
@@ -702,15 +690,6 @@ class ProductKinds extends Component {
 
 
 
-    componentDidMount() {
-        // this.detectChange()
-
-
-        // this.setQueryData(this.state.selectionMode)
-
-
-    }
-
     handleAddToProductsExportList = (returnedItem) => {
 
 
@@ -746,11 +725,6 @@ class ProductKinds extends Component {
                     Product.purpose,
                     Product.units,
                     Product.volume,
-                    // site.name,
-                    // site.address,
-                    // service_agent.name,
-                    // qr_artifact.name,
-                    // qr_artifact.blob_url,
                 ]);
             });
         } else {
@@ -850,8 +824,6 @@ class ProductKinds extends Component {
                 })
             }
         })
-
-
 
         return data
 
@@ -1047,7 +1019,7 @@ class ProductKinds extends Component {
                         <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle={this.state.selectionMode}
-                            subTitle="All your added products can be found here"
+                            subTitle="All your added product kinds can be found here"
                         />
 
                         <ErrorBoundary>
@@ -1082,61 +1054,6 @@ class ProductKinds extends Component {
                                 loadingMore={this.state.loadingMore}
 
                             >
-                                <div className="row  d-flex align-items-center">
-                                    {this.state.selectedRows.length === 0 && !this.state.selectAll ? <>
-                                        {/*<div className="col-md-2 btn-rows">*/}
-                                        {/*   */}
-                                        {/*</div>*/}
-                                        <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
-                                            <MenuDropdown
-                                                maxWidth={"200px"}
-                                                initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
-                                                setSelection={this.setSelection}
-                                                options={["Products", "Service", "Records", "Track", "Issues", "Archive"]}
-                                            />
-                                        </div>
-                                    </> :
-
-                                        <div className="col-md-12 d-flex ">
-                                            {this.state.selectAll ?
-                                                <>{this.state.count} selected
-                                                    <span onClick={() => this.selectAll()} className="ms-1 click-item text-bold text-underline">Clear Selection</span>
-                                                </> : <></>}
-                                            {!this.state.selectAll &&
-                                                <BlueSmallBtn
-                                                    classAdd={'ms-2  '}
-                                                    title={`${!this.state.selectAll ? "Select All (" + this.state.count + ")" : "Unselect All (" + this.state.count + ")"}`}
-                                                    onClick={() => this.selectAll()}
-                                                >
-                                                </BlueSmallBtn>}
-
-
-                                            <BlueSmallBtn
-                                                classAdd={'ms-2 align-items-center d-flex'}
-                                                onClick={() => {
-                                                    if (this.state.selectAll) {
-                                                        this.downloadAll(0, 100, [], "location")
-                                                    } else {
-                                                        this.getSitesForProducts()
-                                                    }
-                                                }}
-                                                title={this.state.downloadAllLoading ? "Loading.. " : " Locations"}
-                                            >
-                                                {!this.state.downloadAllLoading ? <MapIcon style={{ fontSize: "20px" }} /> : <><CircularProgressWithLabel textSize={10} size={24} value={this.state.downloadAllLoading ? ((this.state.allDownloadItems.length / this.state.count) * 100) : 0} /></>}
-                                            </BlueSmallBtn>
-
-                                            <BlueSmallBtn
-                                                classAdd={'ms-2'}
-                                                title={"Export To CSV"}
-                                                onClick={() => this.fieldSelection()}>
-                                                <DownloadIcon style={{ fontSize: "20px" }} />
-                                            </BlueSmallBtn>
-
-                                        </div>
-                                    }
-
-                                </div>
-
                             </PaginationGrid>
                         </ErrorBoundary>
 

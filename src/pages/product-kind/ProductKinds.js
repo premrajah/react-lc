@@ -52,7 +52,7 @@ class ProductKinds extends Component {
             lastPageReached: false,
             offset: 0,
             pageSize: 15,
-            pageSizeDivide:3,
+            pageSizeDivide: 3,
             loadingResults: true,
             count: 0,
             showProductPopUp: false,
@@ -70,7 +70,7 @@ class ProductKinds extends Component {
             selectedSearch: null,
             queryData: {},
             initialFilter: {},
-            loadingMore:true,
+            loadingMore: true,
             menuOptions: {
                 ProductKinds: { url: "name=ProductKind&no_parent=true&relation=belongs_to&include-to=Site:located_at" },
                 Service: { url: "name=ProductKind&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
@@ -177,7 +177,7 @@ class ProductKinds extends Component {
                 filter: queryData.filter,
                 reset: queryData.reset,
                 sort: queryData.sort,
-                page: queryData.page?queryData.page:0
+                page: queryData.page ? queryData.page : 0
             }
 
             if (!data.sort && this.state.defaultSort) {
@@ -544,7 +544,7 @@ class ProductKinds extends Component {
 
     cancelToken
 
-    loadItemsPageWise = async (data, filters,tempOffset=0,iteration=1) => {
+    loadItemsPageWise = async (data, filters, tempOffset = 0, iteration = 1) => {
 
         try {
             if (data && data.reset) {
@@ -579,21 +579,21 @@ class ProductKinds extends Component {
                     loadingResults: true,
                 });
             }
-            let newSize = this.state.pageSize/this.state.pageSizeDivide;
+            let newSize = this.state.pageSize / this.state.pageSizeDivide;
 
             this.setState({
                 loadingMore: true,
             });
-            if (iteration===1){
-                tempOffset=data.page * this.state.pageSize
+            if (iteration === 1) {
+                tempOffset = data.page * this.state.pageSize
 
                 this.setState({
                     items: [],
                 })
-            } else{
+            } else {
             }
 
-            url = `${url}&count=false&offset=${tempOffset?tempOffset:0}&size=${newSize}`;
+            url = `${url}&count=false&offset=${tempOffset ? tempOffset : 0}&size=${newSize}`;
 
             if (data.sort) {
                 url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
@@ -633,19 +633,19 @@ class ProductKinds extends Component {
                     offset: tempOffset,
                 });
 
-                if (result.data.data.length !== 0){
+                if (result.data.data.length !== 0) {
 
-                    tempOffset=newSize+tempOffset
+                    tempOffset = newSize + tempOffset
 
                     this.setState({
                         items: this.state.items.concat(result.data ? result.data.data : []),
                     })
 
-                    if (iteration<this.state.pageSizeDivide){
+                    if (iteration < this.state.pageSizeDivide) {
 
-                        let dataTemp=data
-                        dataTemp.reset=false
-                        this.loadItemsPageWise(dataTemp,filters,tempOffset,iteration+1)
+                        let dataTemp = data
+                        dataTemp.reset = false
+                        this.loadItemsPageWise(dataTemp, filters, tempOffset, iteration + 1)
                     }
 
 
@@ -720,22 +720,6 @@ class ProductKinds extends Component {
         this.setState({ selectedProducts: [...filteredProduct, returnedItem] });
 
 
-        // axios.get(baseUrl + "product/" + returnedItem._key + "/expand").then(
-        //     (response) => {
-        //         let productSelected = response.data.data;
-        //
-        //         // check if already exists
-        //         let filteredProduct = this.state.selectedProducts.filter(
-        //             (product) => product.product._key !== productSelected.product._key
-        //         );
-        //         this.setState({ selectedProducts: [...filteredProduct, productSelected] });
-        //     },
-        //     (error) => {
-        //         // this.setState({
-        //         //     notFound: true,
-        //         // });
-        //     }
-        // );
     };
 
     removeFromSelectedProducts = (i) => {
@@ -1100,18 +1084,18 @@ class ProductKinds extends Component {
                             >
                                 <div className="row  d-flex align-items-center">
                                     {this.state.selectedRows.length === 0 && !this.state.selectAll ? <>
-                                            {/*<div className="col-md-2 btn-rows">*/}
-                                            {/*   */}
-                                            {/*</div>*/}
-                                            <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
-                                                <MenuDropdown
-                                                    maxWidth={"200px"}
-                                                    initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
-                                                    setSelection={this.setSelection}
-                                                    options={["Products", "Service", "Records", "Track", "Issues", "Archive"]}
-                                                />
-                                            </div>
-                                        </> :
+                                        {/*<div className="col-md-2 btn-rows">*/}
+                                        {/*   */}
+                                        {/*</div>*/}
+                                        <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
+                                            <MenuDropdown
+                                                maxWidth={"200px"}
+                                                initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
+                                                setSelection={this.setSelection}
+                                                options={["Products", "Service", "Records", "Track", "Issues", "Archive"]}
+                                            />
+                                        </div>
+                                    </> :
 
                                         <div className="col-md-12 d-flex ">
                                             {this.state.selectAll ?
@@ -1158,7 +1142,7 @@ class ProductKinds extends Component {
 
                     </div>
                 </>
-                
+
                 <GlobalDialog
                     allowScroll
                     size={"md"}
@@ -1319,13 +1303,13 @@ class ProductKinds extends Component {
                             <div className="col-12">
                                 {this.state.viewSiteSelected && this.state.viewSiteSelected.geo_codes && this.state.viewSiteSelected.geo_codes.length > 0 &&
                                     <GoogleMap searchLocation
-                                               siteId={this.state.viewSiteSelected._key}
-                                               width={"100%"} height={"300px"}
-                                               location={{
-                                                   name: `${this.state.viewSiteSelected.name}`,
-                                                   location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
-                                                   isCenter: true
-                                               }} />}
+                                        siteId={this.state.viewSiteSelected._key}
+                                        width={"100%"} height={"300px"}
+                                        location={{
+                                            name: `${this.state.viewSiteSelected.name}`,
+                                            location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
+                                            isCenter: true
+                                        }} />}
                             </div>
                         }
                     </div>

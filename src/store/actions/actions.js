@@ -43,6 +43,7 @@ import {
     SERVICE_AGENT_REQUEST,
     SHOW_SNACKBAR,
     CURRENT_PRODUCT,
+    CURRENT_PRODUCT_KIND,
     GET_LISTINGS,
     PRODUCT_NPARENT_LIST_PAGE,
     CURRENT_SITE,
@@ -332,6 +333,15 @@ export const setCurrentProduct = (data) => {
         value: data,
     };
 
+
+};
+
+export const setCurrentProductKind = (data) => {
+
+    return {
+        type: CURRENT_PRODUCT_KIND,
+        value: data,
+    };
 
 };
 

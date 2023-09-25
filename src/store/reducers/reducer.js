@@ -61,7 +61,8 @@ import {
     USER_CONTEXT,
     REFRESH_PAGE,
     USER_CACHE,
-    REFRESH_PAGE_SAVE_STATE
+    REFRESH_PAGE_SAVE_STATE,
+    CURRENT_PRODUCT_KIND,
 } from "../types";
 
 export const initialState = {
@@ -80,18 +81,16 @@ export const initialState = {
     orgCache: null,
     userCache: null,
     userContext: null,
-
     showProductPopUp: false,
     showProductPopUpType: 'new',
-
     showCreateProduct: false,
     showCreateSubProduct: false,
     showProductView: false,
     showSubProductView: false,
-    showSiteProductView:false,
+    showSiteProductView: false,
     product: null,
     parentProduct: null,
-    parentProductId:null,
+    parentProductId: null,
     productList: [],
     productWithoutParentList: [],
     productWithoutParentNoList: [],
@@ -102,35 +101,35 @@ export const initialState = {
     showSitePopUp: false,
     orgImage: null,
     messages: [],
-    refresh:false,
-    refreshState:{},
+    refresh: false,
+    refreshState: {},
     notifications: [],
     messageAlert: false,
     notificationAlert: false,
     unreadMessages: false,
     unreadNotifications: false,
-    productPageOffset:0,
-    productPageSize:400,
-    lastPageReached:false,
+    productPageOffset: 0,
+    productPageSize: 400,
+    lastPageReached: false,
     serviceAgentRequests: [],
     productReleaseRequests: [],
     productReleaseRequested: [],
     productRegisterRequests: [],
     snackbarMessage: { show: false, message: "", severity: "" },
     currentProduct: null,
-
+    currentProductKind: null,
     currentProductLoading: false,
     currentSite: null,
     currentSiteLoading: false,
-    signUpPageSubmitted:false,
-    showMultiplePopUp: {show:false,type:null},
-    createProductId:null,
-    productNotFound:false,
-    showRightBar:false,
-    showGlobalDiaglog:false,
-    showSiteForm:{
-        show:false,
-        item:null
+    signUpPageSubmitted: false,
+    showMultiplePopUp: { show: false, type: null },
+    createProductId: null,
+    productNotFound: false,
+    showRightBar: false,
+    showGlobalDiaglog: false,
+    showSiteForm: {
+        show: false,
+        item: null
     }
 
 
@@ -143,22 +142,22 @@ const reducer = (state = initialState, action) => {
         case SET_USER_DETAIL:
             newState.userDetail = action.value;
             break;
+
         case USER_CACHE:
             newState.userCache = action.value;
-try{
+            try {
 
-    if (action.value&&action.value.not_first_login&&action.value.not_first_login.value==="true"){
-        newState.firstLogin=false
-    }else{
-        newState.firstLogin=true
-    }
-}catch (e){
+                if (action.value && action.value.not_first_login && action.value.not_first_login.value === "true") {
+                    newState.firstLogin = false
+                } else {
+                    newState.firstLogin = true
+                }
+            } catch (e) {
                 // console.log(e)
-    newState.firstLogin=true
-}
-
-
+                newState.firstLogin = true
+            }
             break;
+
         case ORG_CACHE:
 
             newState.orgCache = action.value;
@@ -171,7 +170,7 @@ try{
             break;
         case USER_CONTEXT:
             newState.userContext = action.value;
-            newState.userDetail=action.value;
+            newState.userDetail = action.value;
             break;
         case REFRESH_PAGE:
             newState.refresh = action.value;
@@ -200,16 +199,20 @@ try{
             break;
         case CURRENT_PRODUCT:
 
-            newState.loading=false
+            newState.loading = false;
             newState.productNotFound = false;
             newState.currentProduct = action.value;
-
             break;
 
+        case CURRENT_PRODUCT_KIND:
+            newState.loading = false;
+            newState.productNotFound = false;
+            newState.currentProductKind = action.value;
+            break;
 
         case EMPTY_CURRENT:
 
-            newState.loading=true
+            newState.loading = true
             newState.currentProduct = null;
             newState.currentProductLoading = true;
             newState.currentSite = null;
@@ -240,7 +243,7 @@ try{
             newState.reviewBoxOpen = action.value;
             break;
         case LOAD_USER_DETAIL:
-            if (action.value&&action.value["token"]&&action.value["userDetials"]) {
+            if (action.value && action.value["token"] && action.value["userDetials"]) {
 
                 newState.loginFailed = false;
                 newState.isLoggedIn = true;
@@ -301,7 +304,7 @@ try{
 
             break;
         case CURRENT_SITE:
-            newState.loading=false
+            newState.loading = false
             newState.currentSite = action.value;
 
             break;
@@ -311,50 +314,50 @@ try{
             break;
         case PRODUCT_PAGE_RESET:
 
-            newState.productPageSize=20
+            newState.productPageSize = 20
             newState.productPageOffset = 0
-            newState.productWithoutParentListPage= [];
+            newState.productWithoutParentListPage = [];
 
             break;
         case PRODUCT_NPARENT_LIST_PAGE:
 
-            newState.lastPageReached=false
+            newState.lastPageReached = false
 
-            let initialLength=state.productWithoutParentListPage.length
+            let initialLength = state.productWithoutParentListPage.length
 
             if (action.value.size) {
                 newState.productPageOffset = action.value.offset + action.value.size
             }
-            else{
+            else {
                 newState.productPageSize = state.productPageSize
-                newState.productPageOffset = state.productPageOffset+state.productPageSize
+                newState.productPageOffset = state.productPageOffset + state.productPageSize
             }
 
             let prevListPage = []
             if (!action.value.refresh) {
                 prevListPage = state.productWithoutParentListPage
-            }else{
-                newState.productPageSize=20
-                newState.productPageOffset = 20+ 20
+            } else {
+                newState.productPageSize = 20
+                newState.productPageOffset = 20 + 20
             }
 
-            let concatList=(action.value.val)
+            let concatList = (action.value.val)
 
-            prevListPage=prevListPage.concat(concatList)
-            prevListPage=prevListPage.filter( (ele, ind) => ind === prevListPage.findIndex( elem => elem._key === ele._key ))
-
-
-            newState.productWithoutParentListPage= prevListPage;
+            prevListPage = prevListPage.concat(concatList)
+            prevListPage = prevListPage.filter((ele, ind) => ind === prevListPage.findIndex(elem => elem._key === ele._key))
 
 
-            let newLength=prevListPage.length
+            newState.productWithoutParentListPage = prevListPage;
 
-            if (newLength===initialLength){
 
-                newState.lastPageReached=true
+            let newLength = prevListPage.length
 
-            }else{
-                newState.lastPageReached=false
+            if (newLength === initialLength) {
+
+                newState.lastPageReached = true
+
+            } else {
+                newState.lastPageReached = false
             }
 
 
@@ -368,18 +371,18 @@ try{
             break;
         case PRODUCT_NPARENT_LIST:
 
-            newState.productWithoutParentList= (action.value.val);
+            newState.productWithoutParentList = (action.value.val);
 
             newState.loading = false;
 
-            newState.productPageOffset=action.value.offset
-            newState.productPageSize=action.value.size
+            newState.productPageOffset = action.value.offset
+            newState.productPageSize = action.value.size
 
             break;
         case PRODUCT_NPARENT_NO_LIST:
 
-            newState.productWithoutParentNoList=[]
-            newState.productWithoutParentNoList= (action.value.val);
+            newState.productWithoutParentNoList = []
+            newState.productWithoutParentNoList = (action.value.val);
 
             newState.loading = false;
 
@@ -410,7 +413,7 @@ try{
             newState.showProductPopUp = action.value.show;
 
             if (action.value.type)
-            newState.showProductPopUpType = action.value.type
+                newState.showProductPopUpType = action.value.type
 
             newState.parentProductId = action.value.parentProductId
 
@@ -419,8 +422,8 @@ try{
 
             if (type === "create_product") {
 
-                if ( action.value.id)
-                newState.createProductId = action.value.id;
+                if (action.value.id)
+                    newState.createProductId = action.value.id;
 
                 newState.showCreateProduct = true;
                 newState.showCreateSubProduct = false;
@@ -473,7 +476,7 @@ try{
         case LOADING:
 
 
-            newState.loading = action.value?action.value:false
+            newState.loading = action.value ? action.value : false
 
 
             break;
@@ -517,17 +520,18 @@ try{
         case STOP_LOADING:
             newState.loading = false;
             break;
+
         case USER_DETAIL:
             newState.isLoggedIn = true;
 
             newState.userDetail = action.value;
             newState.loading = false;
-
             break;
+
         case SIGN_UP:
             newState.loginPopUpStatus = 5;
             newState.loading = false;
-            newState.signUpPageSubmitted=true
+            newState.signUpPageSubmitted = true
             break;
         case GET_MESSAGES:
             newState.messages = action.value;

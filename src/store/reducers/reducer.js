@@ -117,6 +117,7 @@ export const initialState = {
     productRegisterRequests: [],
     snackbarMessage: { show: false, message: "", severity: "" },
     currentProduct: null,
+    currentCollection: null,
     currentProductKind: null,
     currentProductLoading: false,
     currentSite: null,
@@ -208,6 +209,10 @@ const reducer = (state = initialState, action) => {
             newState.loading = false;
             newState.productNotFound = false;
             newState.currentProductKind = action.value;
+            break;
+
+        case CURRENT_COLLECTION:
+            newState.loading = false
             break;
 
         case EMPTY_CURRENT:

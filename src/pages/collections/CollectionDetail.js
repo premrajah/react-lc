@@ -7,7 +7,7 @@ import Layout from "../../components/Layout/Layout";
 import ProductDetailContent from "../../components/Products/ProductDetailContent";
 import axios from "axios";
 import {baseUrl} from "../../Util/Constants";
-import CollectionForm from "../../components/Collection/CollectionForm";
+import CollectionDetailContent from "../../components/Collection/CollectionDetailContent";
 
 class CollectionDetail extends Component {
     slug;
@@ -36,12 +36,12 @@ class CollectionDetail extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(newProps) {
-        if (newProps.match.params.slug !== this.props.match.params.slug) {
-            this.slug = newProps.match.params.slug;
-            window.scrollTo(0, 0);
-            this.props.loadCurrentProduct(encodeUrl(this.slug));
-
-        }
+        // if (newProps.match.params.slug !== this.props.match.params.slug) {
+        //     this.slug = newProps.match.params.slug;
+        //     window.scrollTo(0, 0);
+        //     this.props.loadCurrentCollection(encodeUrl(this.slug));
+        //
+        // }
     }
 
 
@@ -56,27 +56,24 @@ class CollectionDetail extends Component {
 
 
 
-     loadCurrentProduct = (data) =>  {
+    loadCurrentCollection = (data) =>  {
 
-         this.props.loading(true)
-         this.setState({
-             loading:true
-         })
+        this.props.loading(true)
+        this.setState({
+            loading:true
+        })
         try{
             axios
-                .get(baseUrl + "product/" + encodeUrl(data) + "/expand?agg"
+                .get(baseUrl + "collection/" + encodeUrl(data) + "/expand"
                 )
                 .then(
                     (response) => {
                         let responseAll = response.data;
-
-
-                        this.props.setCurrentProduct(responseAll.data)
+                        this.props.setCurrentCollection(responseAll.data)
                         this.props.loading(false)
                         this.setState({
                             loading:false
                         })
-
                     },
                     (error) => {
 
@@ -95,10 +92,21 @@ class CollectionDetail extends Component {
         }
     };
 
-
     componentDidMount() {
 
+        if (this.props.location.search.includes("r=true")&&this.props.userDetail.is_org_admin ){
 
+            axios.get(baseUrl + "product/" + this.slug + "/code-artifact?r=true").then(
+                (response) => {
+                    let responseAll = response.data;
+
+                    this.loadCurrentCollection(encodeUrl(this.slug),true);
+                },
+                (error) => {}
+            );
+        }else {
+            this.loadCurrentCollection(encodeUrl(this.slug),true);
+        }
     }
 
     setParams=(params)=>{
@@ -111,15 +119,36 @@ class CollectionDetail extends Component {
 
     render() {
 
-
         return (
-
             <>
-
-                    <Layout hideFooter={true}>
-                        <CollectionForm/>
-                </Layout>
-
+                {!this.state.loading &&
+                !this.props.currentCollection ? (
+                        <NotFound />
+                    ) :
+                    <>
+                        {!this.props.location.pathname.includes("preview")?
+                            <Layout hideFooter={true} sendParams={this.setParams}>
+                                <div className={"container pb-5 mb-5"}>
+                                    {!this.state.loading&&this.props.currentCollection &&
+                                        <CollectionDetailContent
+                                            history={this.props.history}
+                                            hideRegister={true}
+                                            paramsString={this.state.paramsString}
+                                            item={this.props.currentCollection}
+                                        />}
+                                </div>
+                            </Layout>:
+                            <div className={"container pb-5 mb-5"}>
+                                {!this.state.loading&&this.props.currentCollection &&
+                                    <CollectionDetailContent
+                                        paramsString={this.state.paramsString}
+                                        history={this.props.history}
+                                        hideRegister={true}
+                                        item={this.props.currentCollection}
+                                    />}
+                            </div>}
+                    </>
+                }
             </>
 
         );
@@ -135,12 +164,9 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.isLoggedIn,
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
-        // showLoginCheckoutPopUp: state.showLoginCheckoutPopUp,
         userDetail: state.userDetail,
-        // abondonCartItem : state.abondonCartItem,
-        // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-        currentProduct:state.currentProduct,
+        currentCollection:state.currentCollection,
         productNotFound:state.productNotFound,
 
     };
@@ -153,8 +179,8 @@ const mapDispachToProps = (dispatch) => {
         loading: (data) => dispatch(actionCreator.loading(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-        loadCurrentProduct: (data) => dispatch(actionCreator.loadCurrentProduct(data)),
-        setCurrentProduct: (data) => dispatch(actionCreator.setCurrentProduct(data)),
+        // loadCurrentCollection: (data) => dispatch(actionCreator.loadCurrentCollection(data)),
+        setCurrentCollection: (data) => dispatch(actionCreator.setCurrentCollection(data)),
 
     };
 };

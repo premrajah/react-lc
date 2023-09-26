@@ -194,13 +194,8 @@ class CampaignDetail extends Component {
                                                             this.callBackResult(action)
                                                         }
                                                         edit={
-                                                           true
-                                                        }
-
+                                                           true}
                                                     />
-
-
-
                                             </div>
                                         </div>
                                     </div>

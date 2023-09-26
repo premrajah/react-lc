@@ -2,30 +2,19 @@ import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
 import {connect} from "react-redux";
 import {withStyles} from "@mui/styles/index";
-import {baseUrl, checkImage, MIME_TYPES_ACCEPT} from "../../Util/Constants";
+import {baseUrl} from "../../Util/Constants";
 import axios from "axios";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../../components/FormsUI/ProductForm/Select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import {Cancel, Check, Error, Publish} from "@mui/icons-material";
-import {Spinner} from "react-bootstrap";
+import {Error} from "@mui/icons-material";
 import Select from "@mui/material/Select";
-import {campaignStrategyUrl, createCampaignUrl} from "../../Util/Api";
-import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
-import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-import CustomizedInput from "../../components/FormsUI/ProductForm/CustomizedInput";
-import DescriptionIcon from "@mui/icons-material/Description";
+import {campaignStrategyUrl, createCollectionUrl} from "../../Util/Api";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
-import {DesktopDatePicker} from "@mui/x-date-pickers";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 let slugify = require('slugify')
@@ -275,43 +264,10 @@ class CollectionForm extends Component {
 
         if (this.props.item) {
 
-
-            if (this.props.type !== "draft") {
-
                 await this.loadSavedValues(this.props.item, this.props.type)
-
-                this.callStrategy()
-
-
                 this.setState({
                     item: this.props.item
                 })
-
-                this.loadImages(this.props.item.artifacts)
-                if (this.state.item)
-                    this.setState({
-                        startDate: this.state.item.campaign.start_ts,
-                        endDate: this.state.item.campaign.end_ts
-                    })
-            } else {
-
-
-                this.setState({
-                    item: this.props.item.campaign.value
-                })
-                this.loadImages(this.props.item.campaign.value.artifacts)
-
-                let fields=this.state.fields
-                fields["startDate"]=this.props.item.campaign.value.campaign.start_ts
-                fields["startDate"]=this.props.item.campaign.value.campaign.end_ts
-
-                this.setState({
-                    startDate: this.props.item.campaign.value.campaign.start_ts,
-                    endDate: this.props.item.campaign.value.campaign.end_ts,
-                    fields:fields
-                })
-            }
-
 
         }
     }
@@ -503,60 +459,24 @@ class CollectionForm extends Component {
 
         let item=null
 
-        if (type!=="draft"){
             item=data
-        }else{
-            item=data.value
 
-        }
 
 
         this.setState({
-            countAll:item.campaign.all_of.length,
-            countAny:item.campaign.any_of.length,
+            countAll:item.collection.all_of.length,
+            countAny:item.collection.any_of.length,
 
-            conditionAll:item.campaign.all_of,
-            conditionAny:item.campaign.any_of,
+            conditionAll:item.collection.all_of,
+            conditionAny:item.collection.any_of,
 
-            addCountAll:Array.from({length: item.campaign.all_of.length}, () => Math.floor(Math.random() * 10000)),
-            addCountAny:Array.from({length: item.campaign.any_of.length}, () => Math.floor(Math.random() * 10000)),
+            addCountAll:Array.from({length: item.collection.all_of.length}, () => Math.floor(Math.random() * 10000)),
+            addCountAny:Array.from({length: item.collection.any_of.length}, () => Math.floor(Math.random() * 10000)),
 
         })
 
 
     }
-
-    loadImages=(artifacts)=> {
-        let images = [];
-
-        let currentFiles = [];
-
-        for (let k = 0; k < artifacts.length; k++) {
-
-            var fileItem = {
-                status: 1,
-                id: artifacts[k]._key,
-                imgUrl: artifacts[k].blob_url,
-                file: {
-                    mime_type:artifacts[k].mime_type,
-                    name: artifacts[k].name,
-                },
-            };
-            // fileItem.status = 1  //success
-            // fileItem.id = this.state.item.artifacts[k]._key
-            // fileItem.url = this.state.item.artifacts[k].blob_url
-
-            images.push(artifacts[k]._key);
-
-            currentFiles.push(fileItem);
-        }
-
-        this.setState({
-            files: currentFiles,
-            images: images,
-        });
-    }
-
 
 
     isStepOptional = (step) => {
@@ -643,11 +563,12 @@ class CollectionForm extends Component {
 
         const campaignData = {
 
-            campaign:{
+            collection:{
                 name:name,
                 description:description,
                 all_of:conditionAll,
-                any_of:conditionAny
+                any_of:conditionAny,
+                stage:"created"
             },
             // message_template:messageTemplate,
             // artifact_ids:this.state.images,
@@ -657,7 +578,7 @@ class CollectionForm extends Component {
 
         axios
             .put(
-                createCampaignUrl,
+                createCollectionUrl,
                 campaignData,
             )
             .then((res) => {
@@ -686,98 +607,6 @@ class CollectionForm extends Component {
 
 
 
-    saveDraft = () => {
-
-        let fields=this.state.fields
-
-        const name = fields["name"];
-        const description = fields["description"];
-        const startDate = new Date(fields["startDate"]).getTime() ;
-        const endDate =  new Date(fields["endDate"]).getTime();
-        const messageTemplate = fields["messageTemplate"];
-
-        let conditionAll=[]
-        let conditionAny=[]
-
-
-        for (let i=0;i<this.state.countAll;i++) {
-
-            conditionAll.push({
-                predicate: fields[`propertyAnd[${i}]`],
-                operator: fields[`operatorAnd[${i}]`],
-                value: fields[`valueAnd[${i}]`]
-
-            })
-        }
-
-        for (let i=0;i<this.state.countAny;i++) {
-
-            conditionAny.push({
-                predicate: fields[`propertyOr[${i}]`],
-                operator: fields[`operatorOr[${i}]`],
-                value: fields[`valueOr[${i}]`]
-
-            })
-        }
-
-
-        const campaignData = {
-
-            campaign:{
-                name:name,
-                description:description,
-                start_ts:startDate,
-                end_ts:endDate,
-                all_of:conditionAll,
-                any_of:conditionAny,
-                createdAt:Date.now()
-            },
-            message_template:messageTemplate,
-            artifact_ids:this.state.images,
-            artifacts:this.state.artifacts,
-
-        };
-
-        this.setState({isSubmitButtonPressed: true,loading:true})
-
-        axios
-            .post(
-                `${baseUrl}org/cache`, {
-                    key: "campaign_"+slugify(name,{
-                        lower: true,
-                        replacement: '_',
-                    },),
-                    value:   JSON.stringify(campaignData),
-                },
-            )
-            .then((res) => {
-
-                this.props.showSnackbar({
-                    show: true,
-                    severity: "success",
-                    message:  "Saved as draft successfully. Thanks"
-                })
-                this.props.refreshData()
-
-                this.setState({isSubmitButtonPressed: false,loading:false})
-
-
-            })
-            .catch((error) => {
-                this.setState({
-                    btnLoading: false,
-                    loading: false,
-                    isSubmitButtonPressed: false
-                });
-                this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
-                this.props.refreshData()
-
-                this.setState({isSubmitButtonPressed: false,loading:false})
-            });
-
-
-
-    };
 
 
     handleUpdate = () => {
@@ -786,9 +615,7 @@ class CollectionForm extends Component {
 
         const name = fields["name"];
         const description = fields["description"];
-        const startDate = new Date(fields["startDate"]).getTime() ;
-        const endDate =  new Date(fields["endDate"]).getTime();
-        const messageTemplate = fields["messageTemplate"];
+
 
         let conditionAll=[]
         let conditionAny=[]
@@ -817,24 +644,23 @@ class CollectionForm extends Component {
 
         const campaignData = {
 
-            id:this.state.item.campaign._id,
+            id:this.state.item.collection._id,
             update:{
                 name:name,
                 description:description,
-                start_ts:startDate,
-                end_ts:endDate,
+
                 all_of:conditionAll,
                 any_of:conditionAny
             },
-            message_template:messageTemplate,
-            artifact_ids:this.state.images,
+
+
         };
 
         this.setState({isSubmitButtonPressed: true})
 
         axios
             .post(
-                createCampaignUrl,
+                createCollectionUrl,
                 campaignData,
                 {
                     headers: {
@@ -844,29 +670,8 @@ class CollectionForm extends Component {
             )
             .then((res) => {
 
-                //
-                // if (!this.props.parentProduct) {
-                //     this.setState({
-                //         product: res.data.data,
-                //         parentProduct: res.data.data,
-                //     });
-                // }
-
-                // this.props.showSnackbar({show:true,severity:"success",message:"Campaign updated successfully. Thanks"})
-
-
                 this.props.refreshData()
-                //
-                // if (!this.props.parentProduct) {
-                //     this.setState({
-                //         product: res.data.data,
-                //         parentProduct: res.data.data,
-                //     });
-                // }
-
-                // this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
                 this.props.toggleRightBar()
-
 
             })
             .catch((error) => {
@@ -1145,14 +950,14 @@ class CollectionForm extends Component {
                             {/*</Stepper>*/}
                             <div>
                                 <div>
-                                        <form onSubmit={this.state.item?this.updateSite:this.handleSubmit}>
+                                        <form onSubmit={this.state.item?this.handleUpdate:this.handleSubmit}>
 
                                             <div className="row no-gutters">
                                                 <div className="col-12 ">
-                                                    <h1>{this.state.item?this.state.item.campaign.name:""}</h1>
+                                                    <h1>{this.state.item?this.state.item.collection.name:""}</h1>
 
                                                     <TextFieldWrapper
-                                                        initialValue={this.state.item?this.state.item.campaign.name:""}
+                                                        initialValue={this.state.item?this.state.item.collection.name:""}
                                                         onChange={(value)=>this.handleChange(value,"name")}
                                                         error={this.state.errors["name"]}
                                                         name="name" title="Name" />
@@ -1167,7 +972,7 @@ class CollectionForm extends Component {
                                                     <TextFieldWrapper
                                                         multiline
                                                         rows={4}
-                                                        initialValue={this.state.item&&this.state.item.campaign.description}
+                                                        initialValue={this.state.item&&this.state.item.collection.description}
                                                         onChange={(value)=>this.handleChange(value,"description")}
                                                         error={this.state.errors["description"]}
                                                         name="description" title="Description" />
@@ -1423,172 +1228,7 @@ class CollectionForm extends Component {
                                             {/*<div className={"col-12 mb-3 p-3 bg-white rad-8 text-blue text-bold"}>Products targeted based on conditions defined above: <span className={"sub-title-text-pink"}>{this.state.strategyProducts.length}</span></div>*/}
 
                                         </div>
-                                        <div className="row mt-3 ">
-                                            <div className="col-12 mt-0">
-                                                <div className="row camera-grids   no-gutters   ">
 
-
-                                                    <div className="row camera-grids   no-gutters mb-4  ">
-
-                                                        <div className="col-12  text-left ">
-                                                            <div className="">
-                                                                <div className={""}>
-                                                                    {/*<img src={CameraGray} className={"camera-icon-preview"}/>*/}
-
-                                                                    <div className={"file-uploader-box"}>
-                                                                        <div
-                                                                            className={
-                                                                                "file-uploader-thumbnail-container"
-                                                                            }>
-                                                                            <div
-                                                                                className={
-                                                                                    "file-uploader-thumbnail-container"
-                                                                                }>
-                                                                                <label
-                                                                                    className={"label-file-input"}
-                                                                                    htmlFor="fileInput">
-                                                                                    <Publish
-                                                                                        style={{
-                                                                                            fontSize: 32,
-                                                                                            color: "#a8a8a8",
-                                                                                            margin: "auto",
-                                                                                        }}
-                                                                                    />
-                                                                                </label>
-                                                                                <input
-                                                                                    accept={MIME_TYPES_ACCEPT}
-                                                                                    style={{ display: "none" }}
-                                                                                    id="fileInput"
-                                                                                    className={""}
-                                                                                    multiple
-                                                                                    type="file"
-                                                                                    onChange={this.handleChangeFile.bind(
-                                                                                        this
-                                                                                    )}
-                                                                                />
-                                                                            </div>
-
-                                                                            {this.state.files &&
-                                                                                this.state.files.map(
-                                                                                    (item, index) => (
-                                                                                        <div
-                                                                                            key={index}
-                                                                                            className={
-                                                                                                "file-uploader-thumbnail-container"
-                                                                                            }>
-
-                                                                                            <div
-
-                                                                                                data-index={
-                                                                                                    index
-                                                                                                }
-                                                                                                className={
-                                                                                                    "file-uploader-thumbnail"
-                                                                                                }
-
-                                                                                                style={{
-                                                                                                    backgroundImage: `url("${item.imgUrl ? checkImage(item.imgUrl)?item.imgUrl:"" : URL.createObjectURL(item.file)}")`
-
-                                                                                                }}
-                                                                                            >
-
-                                                                                                {item.file&&(!checkImage(item.file.name))?
-
-                                                                                                    <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={"attachment-icon file p-1 rad-4"} />
-                                                                                                    :null}
-
-
-                                                                                                {item.imgUrl&&(!checkImage(item.imgUrl))? <DescriptionIcon style={{background:"#EAEAEF", opacity:"0.5", fontSize:" 2.2rem"}} className={"attachment-icon file p-1 rad-4"} />:null}
-                                                                                                {item.status ===
-                                                                                                    0 && (
-                                                                                                        <Spinner
-                                                                                                            as="span"
-                                                                                                            animation="border"
-                                                                                                            size="sm"
-                                                                                                            role="status"
-                                                                                                            aria-hidden="true"
-                                                                                                            style={{
-                                                                                                                color:
-                                                                                                                    "#cccccc",
-                                                                                                            }}
-                                                                                                            className={
-                                                                                                                "center-spinner"
-                                                                                                            }
-                                                                                                        />
-                                                                                                    )}
-
-                                                                                                {item.status ===
-                                                                                                    1 && (
-                                                                                                        <Check
-                                                                                                            style={{
-                                                                                                                color:
-                                                                                                                    "#cccccc",
-                                                                                                            }}
-                                                                                                            className={
-                                                                                                                " file-upload-img-thumbnail-check"
-                                                                                                            }
-                                                                                                        />
-                                                                                                    )}
-                                                                                                {item.status ===
-                                                                                                    2 && (
-                                                                                                        <span
-                                                                                                            className={
-                                                                                                                "file-upload-img-thumbnail-error"
-                                                                                                            }>
-                                                                                                <Error
-                                                                                                    style={{
-                                                                                                        color:
-                                                                                                            "red",
-                                                                                                    }}
-                                                                                                    className={
-                                                                                                        " "
-                                                                                                    }
-                                                                                                />
-                                                                                                <p>
-                                                                                                    Error!
-                                                                                                </p>
-                                                                                            </span>
-                                                                                                    )}
-                                                                                                <Cancel
-                                                                                                    data-name={
-                                                                                                        item.file &&
-                                                                                                        item
-                                                                                                            .file[
-                                                                                                            "name"
-                                                                                                            ]
-                                                                                                            ? item
-                                                                                                                .file[
-                                                                                                                "name"
-                                                                                                                ]
-                                                                                                            : ""
-                                                                                                    }
-                                                                                                    data-index={
-                                                                                                        item.id
-                                                                                                    }
-                                                                                                    onClick={this.handleCancel.bind(
-                                                                                                        this
-                                                                                                    )}
-                                                                                                    className={
-                                                                                                        "file-upload-img-thumbnail-cancel"
-                                                                                                    }
-                                                                                                />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    )
-                                                                                )}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                        </div>
 
 
                                     <div className="row mt-3 ">

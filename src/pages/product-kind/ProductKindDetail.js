@@ -1,12 +1,12 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import encodeUrl from "encodeurl";
 import NotFound from "../../components/NotFound/index";
 import Layout from "../../components/Layout/Layout";
 import ProductDetailContent from "../../components/Products/ProductDetailContent";
 import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 
 class ProductKindDetail extends Component {
     slug;
@@ -20,10 +20,10 @@ class ProductKindDetail extends Component {
             item: null,
             showPopUp: false,
             subProducts: [],
-            currentProduct:null,
-            loading:false,
+            currentProduct: null,
+            loading: false,
             notFound: false,
-            paramsString:null
+            paramsString: null
         };
 
         this.slug = props.match.params.slug;
@@ -55,15 +55,15 @@ class ProductKindDetail extends Component {
 
 
 
-     loadCurrentProduct = (data) =>  {
+    loadCurrentProduct = (data) => {
 
-         this.props.loading(true)
-         this.setState({
-             loading:true
-         })
-        try{
+        this.props.loading(true)
+        this.setState({
+            loading: true
+        })
+        try {
             axios
-                .get(baseUrl + "product/" + encodeUrl(data) + "/expand?agg"
+                .get(baseUrl + "product-kind/" + encodeUrl(data) + "/expand"
                 )
                 .then(
                     (response) => {
@@ -73,7 +73,7 @@ class ProductKindDetail extends Component {
                         this.props.setCurrentProduct(responseAll.data)
                         this.props.loading(false)
                         this.setState({
-                            loading:false
+                            loading: false
                         })
 
                     },
@@ -81,14 +81,14 @@ class ProductKindDetail extends Component {
 
 
                         this.setState({
-                            loading:false
+                            loading: false
                         })
 
                         this.props.loading(false)
                     }
                 );
 
-        } catch(e) {
+        } catch (e) {
             console.log(e)
 
         }
@@ -97,26 +97,26 @@ class ProductKindDetail extends Component {
 
     componentDidMount() {
 
-        if (this.props.location.search.includes("r=true")&&this.props.userDetail.is_org_admin ){
+        if (this.props.location.search.includes("r=true") && this.props.userDetail.is_org_admin) {
 
             axios.get(baseUrl + "product/" + this.slug + "/code-artifact?r=true").then(
                 (response) => {
                     let responseAll = response.data;
 
-                    this.loadCurrentProduct(encodeUrl(this.slug),true);
+                    this.loadCurrentProduct(encodeUrl(this.slug), true);
                 },
-                (error) => {}
+                (error) => { }
             );
-        }else {
+        } else {
 
-            this.loadCurrentProduct(encodeUrl(this.slug),true);
+            this.loadCurrentProduct(encodeUrl(this.slug), true);
         }
     }
 
-    setParams=(params)=>{
+    setParams = (params) => {
 
         this.setState({
-            paramsString:params
+            paramsString: params
         })
 
     }
@@ -130,33 +130,33 @@ class ProductKindDetail extends Component {
 
 
                 {!this.state.loading &&
-                !this.props.currentProduct ? (
+                    !this.props.currentProduct ? (
                     <NotFound />
                 ) :
-                <>
-                    {!this.props.location.pathname.includes("preview")?
-                    <Layout hideFooter={true} sendParams={this.setParams}>
-                    <div className={"container pb-5 mb-5"}>
-                        {!this.state.loading&&this.props.currentProduct &&
-                        <ProductDetailContent
-                            history={this.props.history}
-                            hideRegister={true}
-                            paramsString={this.state.paramsString}
-                            item={this.props.currentProduct}
-                        />}
+                    <>
+                        {!this.props.location.pathname.includes("preview") ?
+                            <Layout hideFooter={true} sendParams={this.setParams}>
+                                <div className={"container pb-5 mb-5"}>
+                                    {!this.state.loading && this.props.currentProduct &&
+                                        <ProductDetailContent
+                                            history={this.props.history}
+                                            hideRegister={true}
+                                            paramsString={this.state.paramsString}
+                                            item={this.props.currentProduct}
+                                        />}
 
-                    </div>
-                </Layout>:
-                        <div className={"container pb-5 mb-5"}>
-                            {!this.state.loading&&this.props.currentProduct &&
-                            <ProductDetailContent
-                                paramsString={this.state.paramsString}
-                                history={this.props.history}
-                                hideRegister={true}
-                                item={this.props.currentProduct}
-                            />}
+                                </div>
+                            </Layout> :
+                            <div className={"container pb-5 mb-5"}>
+                                {!this.state.loading && this.props.currentProduct &&
+                                    <ProductDetailContent
+                                        paramsString={this.state.paramsString}
+                                        history={this.props.history}
+                                        hideRegister={true}
+                                        item={this.props.currentProduct}
+                                    />}
 
-                        </div>}
+                            </div>}
                     </>
                 }
 
@@ -181,8 +181,8 @@ const mapStateToProps = (state) => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-        currentProduct:state.currentProduct,
-        productNotFound:state.productNotFound,
+        currentProduct: state.currentProduct,
+        productNotFound: state.productNotFound,
 
     };
 };

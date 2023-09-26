@@ -55,7 +55,7 @@ import {
     TOGGLE_GLOBAL_DIALOG,
     USER_CONTEXT,
     ORG_CACHE,
-    REFRESH_PAGE, EMPTY_CURRENT, CURRENT_PRODUCT_LOADING, USER_CACHE, REFRESH_PAGE_SAVE_STATE
+    REFRESH_PAGE, EMPTY_CURRENT, CURRENT_PRODUCT_LOADING, USER_CACHE, REFRESH_PAGE_SAVE_STATE, CURRENT_COLLECTION
 } from "../types";
 
 // Added by Chandan For Google Analytics
@@ -334,7 +334,15 @@ export const setCurrentProduct = (data) => {
 
 
 };
+export const setCurrentCollection = (data) => {
 
+    return {
+        type: CURRENT_COLLECTION,
+        value: data,
+    };
+
+
+};
 export const setCurrentSite = (data) => {
 
     return {

@@ -98,6 +98,7 @@ import ProductKinds from "./pages/product-kind/ProductKinds";
 import ProductKindDetail from "./pages/product-kind/ProductKindDetail";
 import CreateCollection from "./pages/collections/CreateCollection";
 import CollectionDetail from "./pages/collections/CollectionDetail";
+import Collections from "./pages/collections/Collections";
 
 
 ReactGA.initialize(gaTID);
@@ -202,6 +203,8 @@ class App extends Component {
                         <LoggedInRoute exact path="/search/:slug" component={ViewSearchNew} />
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/create-collection" component={CreateCollection} />
+                        <LoggedInRoute exact path="/collections" component={Collections} />
+
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={ProductView} />

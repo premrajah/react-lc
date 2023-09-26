@@ -61,7 +61,7 @@ import {
     USER_CONTEXT,
     REFRESH_PAGE,
     USER_CACHE,
-    REFRESH_PAGE_SAVE_STATE
+    REFRESH_PAGE_SAVE_STATE, CURRENT_COLLECTION
 } from "../types";
 
 export const initialState = {
@@ -118,7 +118,7 @@ export const initialState = {
     productRegisterRequests: [],
     snackbarMessage: { show: false, message: "", severity: "" },
     currentProduct: null,
-
+    currentCollection: null,
     currentProductLoading: false,
     currentSite: null,
     currentSiteLoading: false,
@@ -207,6 +207,13 @@ try{
             break;
 
 
+        case CURRENT_COLLECTION:
+
+            newState.loading=false
+            newState.productNotFound = false;
+            newState.currentCollection = action.value;
+
+            break;
         case EMPTY_CURRENT:
 
             newState.loading=true
@@ -356,34 +363,21 @@ try{
             }else{
                 newState.lastPageReached=false
             }
-
-
-
             // newState.productWithoutParentList= (action.value.val);
-
             newState.loading = false;
-
-
-
             break;
         case PRODUCT_NPARENT_LIST:
 
             newState.productWithoutParentList= (action.value.val);
-
             newState.loading = false;
-
             newState.productPageOffset=action.value.offset
             newState.productPageSize=action.value.size
-
             break;
         case PRODUCT_NPARENT_NO_LIST:
 
             newState.productWithoutParentNoList=[]
             newState.productWithoutParentNoList= (action.value.val);
-
             newState.loading = false;
-
-
             break;
         case SITE_LIST:
             newState.siteList = action.value;
@@ -471,11 +465,7 @@ try{
 
             break;
         case LOADING:
-
-
             newState.loading = action.value?action.value:false
-
-
             break;
         case SLIDES_LOAD:
             newState.slides = action.value;

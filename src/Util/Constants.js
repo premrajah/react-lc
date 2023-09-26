@@ -155,6 +155,19 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
 
 ];
 
+export const COLLECTION_FILTER_VALUES_KEY = [
+    { field: "id", label: "ID", visible: false, sortable: false, notFilterable: "true" },
+    // {key:"_id",label:"ID" ,visible:true,sortable:true},
+    { field: "name", label: "Name", visible: true, sortable: true, flex: 2 },
+    { field: "description", label: "Description", visible: false, sortable: false, notFilterable: "true" },
+    // { field: "condition", label: "Condition", visible: false, sortable: false, flex: 0.5, notFilterable: "true" },
+    // { field: "sku", subField: "serial", label: "Serial No", visible: true, sortable: false, flex: 0.75 },
+    // { field: "site", label: "Site", visible: true, sortable: false, notFilterable: "true", flex: 1.5 },
+    // { field: "siteId", label: "Site Id", visible: false, sortable: false, notFilterable: "true", flex: 1.5 },
+    { field: "_ts_epoch_ms", label: "Added on", visible: true, sortable: true, sort: 'desc', sortingOrder: ['desc', 'asc', null], notFilterable: "true" },
+
+];
+
 export const SITE_FILTER_VALUES_KEY = [
     { field: "id", label: "ID", visible: false, sortable: false, notFilterable: "true" },
     // {key:"_id",label:"ID" ,visible:true,sortable:true},

@@ -63,6 +63,7 @@ import {
     USER_CACHE,
     REFRESH_PAGE_SAVE_STATE,
     CURRENT_PRODUCT_KIND,
+    CURRENT_COLLECTION,
 } from "../types";
 
 export const initialState = {

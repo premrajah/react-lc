@@ -214,6 +214,8 @@ const reducer = (state = initialState, action) => {
 
         case CURRENT_COLLECTION:
             newState.loading = false
+            newState.productNotFound = false;
+            newState.currentCollection = action.value;
             break;
 
         case EMPTY_CURRENT:

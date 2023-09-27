@@ -1282,7 +1282,7 @@ class ProductKinds extends Component {
                     show={this.state.showProductKindFormPopUp}
                     heading="Add Product Kind">
                     <>
-                        <ProductKindForm />
+                        <ProductKindForm  hide={this.hideProductKindFormPopUp}/>
                     </>
                 </GlobalDialog>
             </Layout>

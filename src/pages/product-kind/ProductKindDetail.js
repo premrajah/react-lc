@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import encodeUrl from "encodeurl";
 import NotFound from "../../components/NotFound/index";
 import Layout from "../../components/Layout/Layout";
-import ProductDetailContent from "../../components/Products/ProductDetailContent";
+import ProductKindDetailContent from "../../components/ProductKind/ProductKindDetailContent";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 
@@ -20,7 +20,7 @@ class ProductKindDetail extends Component {
             item: null,
             showPopUp: false,
             subProducts: [],
-            currentProduct: null,
+            currentProductKind: null,
             loading: false,
             notFound: false,
             paramsString: null
@@ -63,14 +63,12 @@ class ProductKindDetail extends Component {
         })
         try {
             axios
-                .get(baseUrl + "product-kind/" + encodeUrl(data) + "/expand"
-                )
+                .get(`${baseUrl}product-kind/${encodeUrl(data)}`)
                 .then(
                     (response) => {
-                        let responseAll = response.data;
-
-
-                        this.props.setCurrentProduct(responseAll.data)
+                        let responseAll = response.data.data;
+                        console.log(">> ", responseAll);
+                        this.props.setCurrentProductKind(responseAll)
                         this.props.loading(false)
                         this.setState({
                             loading: false
@@ -78,8 +76,7 @@ class ProductKindDetail extends Component {
 
                     },
                     (error) => {
-
-
+                        console.log("product-kind error inside ", error);
                         this.setState({
                             loading: false
                         })
@@ -89,28 +86,15 @@ class ProductKindDetail extends Component {
                 );
 
         } catch (e) {
-            console.log(e)
-
+            console.log("product-kind error outside ", e)
         }
     };
 
 
     componentDidMount() {
 
-        if (this.props.location.search.includes("r=true") && this.props.userDetail.is_org_admin) {
-
-            axios.get(baseUrl + "product/" + this.slug + "/code-artifact?r=true").then(
-                (response) => {
-                    let responseAll = response.data;
-
-                    this.loadCurrentProduct(encodeUrl(this.slug), true);
-                },
-                (error) => { }
-            );
-        } else {
-
-            this.loadCurrentProduct(encodeUrl(this.slug), true);
-        }
+        this.loadCurrentProduct(encodeUrl(this.slug), true);
+        
     }
 
     setParams = (params) => {
@@ -130,30 +114,30 @@ class ProductKindDetail extends Component {
 
 
                 {!this.state.loading &&
-                    !this.props.currentProduct ? (
+                    !this.props.currentProductKind ? (
                     <NotFound />
                 ) :
                     <>
                         {!this.props.location.pathname.includes("preview") ?
                             <Layout hideFooter={true} sendParams={this.setParams}>
                                 <div className={"container pb-5 mb-5"}>
-                                    {!this.state.loading && this.props.currentProduct &&
-                                        <ProductDetailContent
+                                    {!this.state.loading && this.props.currentProductKind &&
+                                        <ProductKindDetailContent
                                             history={this.props.history}
                                             hideRegister={true}
                                             paramsString={this.state.paramsString}
-                                            item={this.props.currentProduct}
+                                            item={this.props.currentProductKind}
                                         />}
 
                                 </div>
                             </Layout> :
                             <div className={"container pb-5 mb-5"}>
-                                {!this.state.loading && this.props.currentProduct &&
-                                    <ProductDetailContent
+                                {!this.state.loading && this.props.currentProductKind &&
+                                    <ProductKindDetailContent
                                         paramsString={this.state.paramsString}
                                         history={this.props.history}
                                         hideRegister={true}
-                                        item={this.props.currentProduct}
+                                        item={this.props.currentProductKind}
                                     />}
 
                             </div>}
@@ -181,7 +165,7 @@ const mapStateToProps = (state) => {
         // abondonCartItem : state.abondonCartItem,
         // showNewsletter: state.showNewsletter
         loginPopUpStatus: state.loginPopUpStatus,
-        currentProduct: state.currentProduct,
+        currentProductKind: state.currentProductKind,
         productNotFound: state.productNotFound,
 
     };
@@ -195,7 +179,7 @@ const mapDispachToProps = (dispatch) => {
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadCurrentProduct: (data) => dispatch(actionCreator.loadCurrentProduct(data)),
-        setCurrentProduct: (data) => dispatch(actionCreator.setCurrentProduct(data)),
+        setCurrentProductKind: (data) => dispatch(actionCreator.setCurrentProductKind(data)),
 
     };
 };

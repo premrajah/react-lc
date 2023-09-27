@@ -7,7 +7,8 @@ import {
     baseUrl,
     ISSUES_FILTER_VALUES_KEY,
     PRODUCTS_FIELD_SELECTION,
-    PRODUCTS_FILTER_VALUES_KEY
+    PRODUCTS_FILTER_VALUES_KEY,
+    PRODUCTS_KIND_FILTER_VALUES_KEY
 } from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
 import { Modal, ModalBody } from "react-bootstrap";
@@ -32,6 +33,8 @@ import { GoogleMap } from "../../components/Map/MapsContainer";
 import MenuDropdown from "../../components/FormsUI/MenuDropdown";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import MapIcon from "@mui/icons-material/Place";
+import { Link } from 'react-router-dom';
+import ProductKindForm from '../../components/ProductKind/ProductKindForm';
 
 class ProductKinds extends Component {
     constructor(props) {
@@ -81,7 +84,8 @@ class ProductKinds extends Component {
             },
             defaultSort: { key: "_ts_epoch_ms", sort: "desc" },
             selectAll: false,
-            resetSelection: false
+            resetSelection: false,
+            showProductKindFormPopUp: false,
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -147,7 +151,7 @@ class ProductKinds extends Component {
             this.setState({
                 selectionMode: queryData.type
             })
-            let linkUrl = queryData.type === "Issues" ? `issue` : queryData.type === `Records` ? `p` : `product`
+            let linkUrl = `product-kind`
             let linkParams = `type=${queryData.type}`
             // if (!queryData.reset){
             if (queryData.filter) {
@@ -160,12 +164,12 @@ class ProductKinds extends Component {
 
 
             let data = {
-                dataUrl: this.state.menuOptions[queryData.type ? queryData.type : "ProductKinds"].url,
+                dataUrl: this.state.menuOptions[queryData.type ? queryData.type : "ProductKind"].url,
                 linkUrl: linkUrl,
-                linkField: queryData.type === "Issues" ? "title" : "name",
-                objKey: queryData.type === "Issues" ? "Issue" : "ProductKinds",
+                linkField: "name",
+                objKey: "ProductKind",
                 linkParams: linkParams,
-                headers: queryData.type === "Issues" ? ISSUES_FILTER_VALUES_KEY : PRODUCTS_FILTER_VALUES_KEY,
+                headers: PRODUCTS_KIND_FILTER_VALUES_KEY,
                 keyword: queryData.keyword,
                 filter: queryData.filter,
                 reset: queryData.reset,
@@ -180,7 +184,6 @@ class ProductKinds extends Component {
             this.setState({
                 queryData: data
             })
-
 
             this.setFilters(data, data.type)
 
@@ -894,6 +897,14 @@ class ProductKinds extends Component {
 
     };
 
+    handleAddProductKindForm = () => {
+        this.setState({showProductKindFormPopUp: true});
+    }
+
+    hideProductKindFormPopUp = () => {
+        this.setState({showProductKindFormPopUp: false});
+    }
+
     initializeData = (params) => {
 
         this.setState({
@@ -1018,20 +1029,27 @@ class ProductKinds extends Component {
                     <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
                             pageIcon={CubeBlue}
-                            pageTitle={this.state.selectionMode}
+                            pageTitle="Product Kind"
                             subTitle="All your added product kinds can be found here"
                         />
 
+                        <div className="row">
+                            <div className="col">
+                                <Link to="/product-kinds" onClick={() => this.handleAddProductKindForm()} className="btn-gray-border  me-2  click-item">
+                                    Add Product Kind
+                                </Link>
+                            </div>
+                        </div>
+
                         <ErrorBoundary>
                             <PaginationGrid
-                                entityType={"Product"}
+                                entityType={"ProductKind"}
                                 count={this.state.count}
                                 resetSelection={this.state.resetSelection}
                                 items={this.state.items}
                                 pageSize={this.state.pageSize}
                                 offset={this.state.offset}
                                 visibleCount={this.state.items.length}
-                                // loading={this.state.loadingResults}
                                 lastPageReached={this.state.lastPageReached}
                                 currentPage={this.state.queryData.page ? this.state.queryData.page : 0}
                                 loadMore={(data) => {
@@ -1256,6 +1274,16 @@ class ProductKinds extends Component {
                         }
                     </div>
 
+                </GlobalDialog>
+
+                <GlobalDialog
+                    size="md"
+                    hide={this.hideProductKindFormPopUp}
+                    show={this.state.showProductKindFormPopUp}
+                    heading="Add Product Kind">
+                    <>
+                        <ProductKindForm />
+                    </>
                 </GlobalDialog>
             </Layout>
         );

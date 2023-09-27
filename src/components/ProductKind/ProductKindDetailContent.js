@@ -155,7 +155,7 @@ class ProductKindDetailContent extends Component {
                 .then((res) => {
 
 
-                    this.fetchExistingAgentRequests(this.state.item.product._key)
+                    this.fetchExistingAgentRequests(this.state.item.product_kind._key)
 
                     this.props.showSnackbar({show:true,severity:"success",message:"Change service agent request cancelled successfully. Thanks"})
                     // this.setState({
@@ -188,7 +188,7 @@ class ProductKindDetailContent extends Component {
                 .then((res) => {
 
 
-                    this.fetchReleases(this.state.item.product._key)
+                    this.fetchReleases(this.state.item.product_kind._key)
 
                     this.props.showSnackbar({show:true,severity:"success",message:"Release request cancelled successfully. Thanks"})
 
@@ -332,6 +332,7 @@ class ProductKindDetailContent extends Component {
     }
 
     componentDidMount() {
+        console.log("++ ", this.props.item);
         if (!this.props.item) {
             this.loadProduct(this.props.productId);
 
@@ -342,12 +343,12 @@ class ProductKindDetailContent extends Component {
 
             this.setActiveKey(null,"1")
 
-            if (this.props.item.product){
+            if (this.props.item.product_kind){
                 this.loadInfo(this.props.item);
-                this.fetchExistingAgentRequests(this.props.item.product._key)
-                this.fetchReleases(this.props.item.product._key)
-                this.getEvents(this.props.item.product._key)
-                this.ocVCProduct(this.props.item.product._key)
+                this.fetchExistingAgentRequests(this.props.item.product_kind._key)
+                this.fetchReleases(this.props.item.product_kind._key)
+                this.getEvents(this.props.item.product_kind._key)
+                this.ocVCProduct(this.props.item.product_kind._key)
             }
 
         }
@@ -459,12 +460,12 @@ class ProductKindDetailContent extends Component {
 
         axios
             .post(baseUrl + "product/archive", {
-                product_id: this.state.item.product._key,
+                product_id: this.state.item.product_kind._key,
             })
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product has moved to archive successfully. Thanks"})
 
-                this.ocVCProduct(this.state.item.product._key)
+                this.ocVCProduct(this.state.item.product_kind._key)
             })
             .catch((error) => {
                 // this.setState({
@@ -479,12 +480,12 @@ class ProductKindDetailContent extends Component {
 
         axios
             .post(baseUrl + "product/unarchive", {
-                product_id: this.state.item.product._key,
+                product_id: this.state.item.product_kind._key,
             })
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product unarchived successfully. Thanks"})
 
-                this.ocVCProduct(this.state.item.product._key)
+                this.ocVCProduct(this.state.item.product_kind._key)
             })
             .catch((error) => {
 
@@ -516,7 +517,7 @@ class ProductKindDetailContent extends Component {
     }
     submitDuplicateProduct = (event) => {
         axios
-            .post(baseUrl + "product/" + this.state.item.product._key + "/duplicate", {})
+            .post(baseUrl + "product/" + this.state.item.product_kind._key + "/duplicate", {})
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Duplicate product created successfully. Thanks"})
 
@@ -561,7 +562,7 @@ class ProductKindDetailContent extends Component {
 
                 {
                     org_id: site,
-                    product_id: this.state.item.product._key,
+                    product_id: this.state.item.product_kind._key,
                 }
             )
             .then((res) => {
@@ -570,7 +571,7 @@ class ProductKindDetailContent extends Component {
                     showReleaseSuccess: true,
                 });
 
-                this.fetchReleases(this.state.item.product._key)
+                this.fetchReleases(this.state.item.product_kind._key)
 
 
             })
@@ -604,7 +605,7 @@ class ProductKindDetailContent extends Component {
 
                 {
                     org_id: site,
-                    product_id: this.state.item.product._key,
+                    product_id: this.state.item.product_kind._key,
                     rental_stage:"start_rental"
                 }
             )
@@ -650,7 +651,7 @@ class ProductKindDetailContent extends Component {
                 baseUrl + "product/site",
 
                 {
-                    product_id: this.state.item.product._key,
+                    product_id: this.state.item.product_kind._key,
                     site_id: site,
                 },
             )
@@ -658,8 +659,8 @@ class ProductKindDetailContent extends Component {
 
 
                 this.showReleaseProductPopUp()
-                this.props.loadCurrentProduct(this.state.item.product._key)
-                this.props.showSnackbar({show:true,severity:"success",message:"Request to release "+this.state.item.product.name+" internally to new site is completed successfully. Thanks"})
+                this.props.loadCurrentProduct(this.state.item.product_kind._key)
+                this.props.showSnackbar({show:true,severity:"success",message:"Request to release "+this.state.item.product_kind.name+" internally to new site is completed successfully. Thanks"})
 
 
             })
@@ -695,7 +696,7 @@ class ProductKindDetailContent extends Component {
 
                 {
                     org_id: site,
-                    product_id: this.state.item.product._key,
+                    product_id: this.state.item.product_kind._key,
                 }
             )
             .then((res) => {
@@ -705,7 +706,7 @@ class ProductKindDetailContent extends Component {
                 });
 
                 this.props.showSnackbar({show:true,severity:"success",message:"Change Service Agent request submitted successfully"})
-                this.fetchExistingAgentRequests(this.state.item.product._key)
+                this.fetchExistingAgentRequests(this.state.item.product_kind._key)
 
             })
             .catch((error) => {
@@ -828,7 +829,7 @@ class ProductKindDetailContent extends Component {
 
     loadProduct(productKey) {
         if (productKey)
-            axios.get(baseUrl + "product/" + productKey + "/expand").then(
+            axios.get(baseUrl + "product-kind/" + productKey).then(
                 (response) => {
                     var responseAll = response.data;
 
@@ -843,11 +844,11 @@ class ProductKindDetailContent extends Component {
                     this.fetchExistingAgentRequests(productKey)
                     this.fetchReleases(productKey)
 
-                    this.getEvents(responseAll.data.product._key)
+                    this.getEvents(responseAll.data.product_kind._key)
 
-                    this.ocVCProduct(responseAll.data.product._key)
+                    this.ocVCProduct(responseAll.data.product_kind._key)
 
-                    this.loadInfo(responseAll.data.product._key);
+                    this.loadInfo(responseAll.data.product_kind._key);
                 },
                 (error) => {}
             );
@@ -973,7 +974,7 @@ class ProductKindDetailContent extends Component {
                         </div>}
                         <div className="row  pt-4 pb-4  justify-content-start">
                             <div className="text-left ps-0   col-sm-12 col-xs-12 breadcrumb-row">
-                                <Link to={`/my-products${this.props.paramsString?this.props.paramsString:""}`}>{getParameterByName("type",this.props.paramsString?this.props.paramsString:"Products")} List</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product?.name}</span>
+                                <Link to={`/my-products${this.props.paramsString?this.props.paramsString:""}`}>{getParameterByName("type",this.props.paramsString?this.props.paramsString:"Products")} List</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product_kind?.name}</span>
 
                             </div>
                         </div>
@@ -1021,7 +1022,7 @@ class ProductKindDetailContent extends Component {
                                             <div className="col-12 position-relative">
                                                 {this.state.isArchiver && <small className="text-danger d-flex justify-content-start align-items-center "><PriorityHighIcon style={{fontSize:"16px"}} />Archived product.</small>}
                                                 <h4 className="text-capitalize product-title width-90">
-                                                    {this.state.item.product?.name}
+                                                    {this.state.item.product_kind?.name}
                                                 </h4>
                                                 <div className="top-right text-right">
                                                     <div className="d-flex flex-row align-items-center justify-content-center ">
@@ -1085,7 +1086,7 @@ class ProductKindDetailContent extends Component {
                                         <p
                                             style={{ fontSize: "16px" }}
                                             className={"text-gray-light  "}>
-                                            {this.state.item.product.description}
+                                            {/* {this.state.item?.product_kind.description} */}
                                         </p>
                                     </div>
                                 </div>
@@ -1118,32 +1119,12 @@ class ProductKindDetailContent extends Component {
                                                         aria-label="lab API tabs example">
 
                                                         <Tab label="Product Info" value="1" />
-                                                        {(this.state.item.product.purpose === "aggregate") &&
-                                                        <Tab label="Aggregation" value="2"/>
-                                                        }
+                                                        
                                                         <Tab label="Sub Products" value="3" />
 
-                                                        <Tab label="Site" value="4" />
-                                                        {this.state.searches.length > 0 && (
-                                                            <Tab label="Searches" value="5" />
-                                                        )}
-
-                                                        {this.state.listingLinked &&
-                                                        <Tab label="Listing" value="6" />
-                                                        }
-
                                                         <Tab label="Attachments" value="7" />
-                                                          <Tab
-                                                              label={<span>Calendar {this.state.eventsLoading? <Spinner
-                                                                  className="mr-2"
-                                                                  as="span"
-                                                                  animation="border"
-                                                                  size="sm"
-                                                                  role="status"
-                                                                  aria-hidden="true"
-                                                              />:""}</span>}
-                                                              // label="Calendar"
-                                                              value="8" />
+
+                                                    
 
                                                     </TabList>
                                                 </Box>
@@ -1154,76 +1135,24 @@ class ProductKindDetailContent extends Component {
 
                                                 </TabPanel>
 
-                                                {(this.state.item.product.purpose === "aggregate") &&
-                                                <TabPanel value="2">
-
-                                                    <AggregatesTab item={this.state.item}/>
-                                                </TabPanel>}
+                                                
                                                 <TabPanel value="3">
                                                     <SubProductsTab
                                                         isOwner={this.state.isOwner}
                                                         item={this.state.item}/>
                                                 </TabPanel>
-                                                <TabPanel value="4">
-                                                    <>
+                                               
 
-                                                        <p className={"mt-4 mb-4"}>Linked Site:<span className={"text-bold"}> <Link to={"/ps/"+this.state.item.site._key}>{this.state.item.site.name}</Link></span></p>
-                                                        {this.state.item.site.geo_codes && this.state.item.site.geo_codes[0] &&
+                                    
 
-                                                        <div className={"bg-white rad-8 p-2"}>
-                                                            <GoogleMap
-                                                                searchLocation
-                                                                siteId={this.state.item.site._key} width={"100%"}
-                                                                       height={"300px"} location={{
-                                                                name: this.state.item.site.name,
-                                                                location: this.state.item.site.geo_codes[0].address_info.geometry.location,
-                                                                isCenter: true
-                                                            }}/>
-                                                        </div>
-
-                                                        }
-
-                                                    </>
-
-                                                </TabPanel>
-
-
-                                                {this.state.searches.length > 0 && (
-                                                    <>
-                                                        <div className={"mt-4"}></div>
-                                                        <TabPanel value="5">
-                                                            {this.state.searches.map((item) => (
-                                                                <SearchItem smallImage={true} item={item}/>
-                                                            ))}
-                                                        </TabPanel>
-                                                    </>
-                                                )}
-
-                                                {this.state.listingLinked && (
-
-                                                    <>
-                                                        <div className={"mt-4"}></div>
-                                                        <TabPanel value="6">
-                                                            {this.state.listingLinked && (
-                                                                <ResourceItem
-                                                                    hideCategory
-                                                                    smallImage={true}
-                                                                    history={this.props.history}
-                                                                    item={this.state.listingLinked}
-                                                                    artifacts={this.state.item.artifacts}
-                                                                    hideMoreMenu={true}
-                                                                />
-                                                            )}
-                                                        </TabPanel>
-                                                    </>
-                                                )}
+                                              
                                                 <TabPanel value="7">
 
                                                     <div className=" bg-white rad-8 mt-4 p-3">
                                                     <ArtifactManager
                                                         entityType={ENTITY_TYPES.Product}
                                                         item={this.state.item}
-                                                        entityId={this.state.item.product._key}
+                                                        entityId={this.state.item.product_kind._key}
                                                         artifacts={this.state.item.artifacts}
                                                         type={"edit"}
                                                         isArchiver={this.state.isArchiver}
@@ -1231,16 +1160,7 @@ class ProductKindDetailContent extends Component {
                                                     </div>
                                                 </TabPanel>
 
-                                                  <TabPanel value="8">
-                                                    <BigCalenderEvents
-                                                        eventsLoading={this.state.eventsLoading}
-                                                        events={this.state.events}
-                                                        productId={this.state.item.product._key}
-                                                        smallView
-                                                    />
-                                                </TabPanel>
-
-
+                                                
                                             </TabContext>
                                         </Box>
 
@@ -1273,8 +1193,8 @@ class ProductKindDetailContent extends Component {
                                         this.showEvent();
                                     }}
 
-                                    productId={this.state.item.product._key}
-                                    triggerCallback={() => this.getEvents(this.state.item.product._key)}   />
+                                    productId={this.state.item.product_kind._key}
+                                    triggerCallback={() => this.getEvents(this.state.item.product_kind._key)}   />
                             </div>}
 </>
                         </GlobalDialog>
@@ -1304,7 +1224,7 @@ class ProductKindDetailContent extends Component {
 
                         <GlobalDialog
                             allowOverflow
-                            heading={"Release Product: "+ this.state.item.product.name}
+                            heading={"Release Product: "+ this.state.item.product_kind.name}
                             show={this.state.showReleaseProduct}
                             hide={this.showReleaseProductPopUp}
                         >

@@ -16,7 +16,7 @@ import { Spinner } from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
-import { createProductUrl } from "../../Util/Api";
+import { createProductKindUrl} from "../../Util/Api";
 import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
 import {
     cleanFilename, compareDeep,
@@ -572,19 +572,12 @@ class ProductKindForm extends Component {
             validateFormatCreate("state", [{ check: Validators.required, message: 'Required' }], fields),
         ]
 
-        if (!this.props.productLines && !this.props.item) {
+        if (!this.props.item) {
             validations.push(validateFormatCreate("units", [{ check: Validators.required, message: 'Required' }], fields))
             validations.push(validateFormatCreate("deliver", [{ check: Validators.required, message: 'Required' }], fields))
-            // validations.push(validateFormatCreate("templateName", [{check: Validators.required, message: 'Required'}],fields))
-
-        }
-        if (this.props.productLines) {
-
-            validations.push(validateFormatCreate("templateName", [{ check: Validators.required, message: 'Required' }], fields))
-
         }
 
-        if (!this.state.disableVolume && !this.props.productLines) {
+        if (!this.state.disableVolume) {
             validations.push(validateFormatCreate("volume", [{ check: Validators.required, message: 'Required' }, { check: Validators.decimal, message: 'This field should be a decimal number.' }], fields))
         }
 
@@ -894,6 +887,7 @@ class ProductKindForm extends Component {
 
         return payloadObj
     }
+
     handleSubmit = (event) => {
 
         try {
@@ -903,11 +897,8 @@ class ProductKindForm extends Component {
                 return
             }
             const data = new FormData(event.target);
-            // const is_listable = this.state.is_listable?true:false;
-            // const is_manufacturer = this.state.is_manufacturer?true:false;
             const is_listable = true;
             const is_manufacturer = false;
-            const site = data.get("deliver")
             const energy_rating = this.state.energyRating;
 
             let productData = {
@@ -916,15 +907,9 @@ class ProductKindForm extends Component {
                 sku: {},
             };
 
-
-
-
             productData = this.configurePayload(productData, data)
 
             if (this.state.weightOptionsShow) {
-
-
-
                 if (this.state.weightFieldName === "gross_weight_kgs") {
                     productData["weight_per_volume_kgs"] = null
                     productData.sku[this.state.weightFieldName] = this.state.fields[this.state.weightFieldName]
@@ -934,7 +919,6 @@ class ProductKindForm extends Component {
                     productData[this.state.weightFieldName] = this.state.fields[this.state.weightFieldName]
 
                 }
-
             }
 
             if (this.state.fields?.['factory_geo_location']) {
@@ -943,7 +927,6 @@ class ProductKindForm extends Component {
 
             productData = this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
                 this.state.existingItemsOutboundTransport, productData)
-
 
 
             if (this.props.createProductId) {
@@ -956,7 +939,6 @@ class ProductKindForm extends Component {
                 sub_products: [],
                 is_manufacturer: is_manufacturer,
                 artifact_ids: this.state.images,
-                site_id: site,
                 parent_product_id: this.state.parentProductId ? this.state.parentProductId : null,
             };
 
@@ -967,14 +949,9 @@ class ProductKindForm extends Component {
             });
             this.setState({ isSubmitButtonPressed: true })
 
-            if (this.props.productLines) {
-                completeData.name = data.get("templateName")
-                this.saveProductLines(data.get("templateName"), completeData)
-            } else {
-
                 axios
                     .put(
-                        createProductUrl,
+                        createProductKindUrl,
                         completeData,
                     ).then((res) => {
 
@@ -1016,86 +993,12 @@ class ProductKindForm extends Component {
 
                     });
 
-            }
+            
         } catch (e) {
             console.log(e)
         }
 
     };
-
-    saveProductLines = (name, completeData) => {
-
-
-        completeData.artifacts = this.state.artifacts
-
-
-        axios
-            .post(
-                `${baseUrl}org/cache`, {
-                key: "product_line_" + slugify(name, {
-                    lower: true,
-                    replacement: '_',
-                },),
-                value: JSON.stringify(completeData),
-            },
-            )
-            .then((res) => {
-
-                // if (!this.props.parentProduct) {
-                //     this.setState({
-                //         product: res.data.data,
-                //         parentProduct: res.data.data,
-                //     });
-                // }
-                //
-                // this.props.refreshPage(true)
-                this.props.showSnackbar({
-                    show: true,
-                    severity: "success",
-                    message: "Product line created successfully. Thanks"
-                })
-
-                if (this.props.refresh) {
-                    this.props.refresh()
-                    this.props.hide()
-                }
-                // this.showProductSelection();
-
-                // this.props.loadProducts(this.props.userDetail.token);
-                // this.props.loadProductsWithoutParent();
-
-
-                // this.setState({
-                //     parentProductId:res.data.data.product._key
-                // })
-
-                this.setState({ loading: false, })
-
-
-                this.setState({
-                    btnLoading: false,
-                    loading: false,
-                    isSubmitButtonPressed: false
-                });
-
-                // if (!this.state.parentProductId) {
-                //     this.handleView(res.data.data.product._key, 'parent')
-                // } else {
-                //     this.handleView(this.state.parentProductId, 'parent')
-                // }
-
-            })
-            .catch((error) => {
-                this.setState({
-                    btnLoading: false,
-                    loading: false,
-                    isSubmitButtonPressed: false
-                });
-                this.props.showSnackbar({ show: true, severity: "error", message: fetchErrorMessage(error) })
-
-            });
-    }
-
 
 
     loadImages = (artifacts) => {
@@ -1195,31 +1098,7 @@ class ProductKindForm extends Component {
                 });
     }
 
-    updateSite(site) {
-        axios
-            .post(
-                baseUrl + "product/site",
-
-                {
-                    product_id: this.props.item.product._key,
-                    site_id: site,
-                },
-            )
-            .then((res) => {
-
-                // this.props.loadCurrentProduct(this.props.item.product._key)
-
-
-            })
-            .catch((error) => {
-
-            }).finally(() => {
-
-                return
-            });
-    }
-
-
+  
     productLevelOneKeys = ["name", "category", "condition", "description", "purpose", "state", "type",
         "units", "volume", "external_reference", "year_of_making", "weight_per_volume_kgs"]
     skuKeys = ["brand", "embodied_carbon_kgs",
@@ -1244,7 +1123,6 @@ class ProductKindForm extends Component {
         // const is_manufacturer = this.state.is_manufacturer?true:false;
         const is_listable = true;
         const is_manufacturer = false;
-        const site = data.get("deliver")
         const energy_rating = this.state.energyRating;
 
         let productData = {
@@ -1257,9 +1135,6 @@ class ProductKindForm extends Component {
         delete this.props.item.product['sku']['sku']
 
         let keysChanged = await getModifiedObjectKeys(productData, this.props.item.product, [...this.productLevelOneKeys, ...this.skuKeys])
-
-
-
 
 
         keysChanged = await this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
@@ -1296,12 +1171,6 @@ class ProductKindForm extends Component {
 
         }
 
-        console.log(keysChanged)
-
-
-        if (site !== this.props.item.site._key) {
-            await this.updateSite(fields["deliver"]);
-        }
 
         this.setState({
             btnLoading: true,
@@ -1512,10 +1381,6 @@ class ProductKindForm extends Component {
 
 
             let item = itemObj
-            if (this.props.productLines) {
-
-                item = { ...this.props.item }
-            }
             let existingParts = []
             let existingProcesses = []
             let existingOutboundTransport = []
@@ -1829,20 +1694,8 @@ class ProductKindForm extends Component {
                                 <form
                                     autoComplete={false}
                                     onChange={this.handleChangeForm}
-                                    onSubmit={(!this.props.item || this.props.productLines) ? this.handleSubmit : this.updateSubmitProduct}>
+                                    onSubmit={(!this.props.item) ? this.handleSubmit : this.updateSubmitProduct}>
                                     <div className="row ">
-                                        {this.props.productLines &&
-                                            <div className="col-12 mt-2">
-                                                <TextFieldWrapper
-                                                    details="The name of  template"
-                                                    initialValue={(this.props.item ? this.props.item.name : "")}
-                                                    hidden={this.props.item ? true : false}
-                                                    onChange={(value) => this.handleChangeProduct(value, "templateName")}
-                                                    error={this.state.errors["templateName"]}
-                                                    name="templateName" title="Template Name"
-                                                />
-                                            </div>
-                                        }
                                         <div className="col-12 mt-2">
 
                                             <TextFieldWrapper
@@ -1861,8 +1714,7 @@ class ProductKindForm extends Component {
                                     </div>
 
                                     <div className="row  mt-2">
-                                        {!this.props.productLines && <div className="col-md-4 col-sm-12 d-none justify-content-start align-items-center">
-
+                                        <div className="col-md-4 col-sm-12 d-none justify-content-start align-items-center">
                                             <CheckboxWrapper
 
                                                 details="When listed, product will appear in the marketplace searches"
@@ -1870,8 +1722,7 @@ class ProductKindForm extends Component {
                                                 onChange={(checked) => this.checkListable(checked)} color="primary"
                                                 name={"is_listable"} title="List for sale" />
 
-                                        </div>}
-                                        {!this.props.productLines &&
+                                        </div>
                                             <div className="col-md-4 d-none col-sm-12  justify-content-start align-items-center">
 
                                                 <CheckboxWrapper
@@ -1881,7 +1732,7 @@ class ProductKindForm extends Component {
                                                     onChange={(checked) => this.checkListableManufacturer(checked)} color="primary"
                                                     name={"is_manufacturer"} title="Manufacturer" />
 
-                                            </div>}
+                                            </div>
 
                                         <div className="col-md-4 col-sm-12">
 
@@ -2045,59 +1896,7 @@ class ProductKindForm extends Component {
                                                         name="brand"
                                                         title="Brand" />
                                                 </div>
-                                                {!this.props.productLines &&
-                                                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 ">
-
-                                                        <DynamicSelectArrayWrapper
-                                                            editMode
-                                                            onChange={(value) => this.handleChangeProduct(value, `deliver`)}
-                                                            api={""}
-                                                            error={this.state.errors[`deliver`]}
-                                                            name={`deliver`}
-                                                            // options={this.props.siteList}
-                                                            apiUrl={baseUrl + "seek?name=Site&no_parent=true&count=false"}
-                                                            option={"Site"}
-                                                            subOption={"name"}
-                                                            searchKey={"name"}
-                                                            valueKey={"Site"}
-                                                            subValueKey={"_key"}
-                                                            title="Dispatch / Collection Address"
-                                                            details="Select product’s location from the existing sites or add new address below"
-                                                            initialValue={this.state.selectedSite ? this.state.selectedSite._key : this.props.item ? this.props.item.site._key : null}
-                                                            initialValueTextbox={this.state.selectedSite ? this.state.selectedSite.name : this.props.item ? this.props.item.site.name : ""}
-
-                                                        />
-                                                        {/*<SelectArrayWrapper*/}
-
-                                                        {/*    details="Select product’s location from the existing sites or add new address below"*/}
-                                                        {/*    initialValue={this.props.item&&this.props.item.site._key}*/}
-                                                        {/*    option={"name"}*/}
-                                                        {/*    valueKey={"_key"}*/}
-                                                        {/*    error={this.state.errors["deliver"]}*/}
-                                                        {/*    onChange={(value)=> {this.handleChangeProduct(value,"deliver")}}*/}
-                                                        {/*    select={"Select"}*/}
-                                                        {/*    options={this.props.siteList}*/}
-                                                        {/*    name={"deliver"}*/}
-                                                        {/*    title="Dispatch / Collection Address"*/}
-                                                        {/*/>*/}
-
-
-                                                        <p style={{ marginTop: "10px" }}>
-                                                            <span className="mr-1 text-gray-light">or </span>
-                                                            <span
-                                                                onClick={() => this.showSubmitSiteForm()}
-                                                                className={
-                                                                    " forgot-password-link ellipsis-end"
-                                                                }>
-                                                                {this.state.showSubmitSite
-                                                                    ? "Hide Add Site"
-                                                                    : "Add New Address"}
-                                                            </span>
-                                                        </p>
-
-
-
-                                                    </div>}
+                                               
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <SelectArrayWrapper
                                                         editMode
@@ -2153,7 +1952,6 @@ class ProductKindForm extends Component {
 
                                             <div className="row  justify-content-start ">
 
-                                                {!this.props.productLines &&
                                                     <>
                                                         <div className="col-12 ">
                                                             <div
@@ -2207,7 +2005,7 @@ class ProductKindForm extends Component {
 
                                                         </div>
                                                     </>
-                                                }
+                                                
                                                 {this.state.weightOptionsShow &&
                                                     <div className="col-md-4 col-xs-12 ">
 
@@ -2340,7 +2138,6 @@ class ProductKindForm extends Component {
 
                                         </div>
 
-                                        {!this.props.productLines &&
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
                                                     editMode
@@ -2350,7 +2147,7 @@ class ProductKindForm extends Component {
                                                     onChange={(value) => this.handleChangeProduct(value, "serial")}
                                                     title="Serial Number" />
 
-                                            </div>}
+                                            </div>
 
 
 
@@ -2949,14 +2746,14 @@ class ProductKindForm extends Component {
 
                                                 ) : (
                                                     <GreenButton
-                                                        title={this.props.productLines ? "Submit" : this.props.item ? "Update Product Kind" : "Add Product Kind"}
+                                                        title={this.props.item ? "Update Product Kind" : "Add Product Kind"}
                                                         type={"submit"}
                                                         loading={this.state.loading}
                                                         disabled={this.state.loading || this.state.isSubmitButtonPressed}>
                                                     </GreenButton>)
                                             ) : (
                                                 <GreenButton
-                                                    title={this.props.productLines ? "Submit" : this.props.item ? "Update Product Kind" : "Add Product Kind"}
+                                                    title={this.props.item ? "Update Product Kind" : "Add Product Kind"}
                                                     type={"submit"}
                                                     loading={this.state.loading}
                                                     disabled={this.state.loading || this.state.isSubmitButtonPressed}>

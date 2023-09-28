@@ -13,6 +13,12 @@ class ProductsTab extends Component {
         this.props.showProductPopUp({ type: "parent", show: true, parentProductId:this.props.item.product._key,});
     }
 
+
+    componentDidMount() {
+
+
+    }
+
     render() {
 
         return (

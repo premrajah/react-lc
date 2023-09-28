@@ -4,27 +4,17 @@ import {connect} from "react-redux";
 import {baseUrl} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import {Alert, Spinner} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
-import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
-import ProductForm from "../ProductPopUp/ProductForm";
 import OrgComponent from "../Org/OrgComponent";
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 import GlobalDialog from "../RightBar/GlobalDialog";
-import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
-import BlueButton from "../FormsUI/Buttons/BlueButton";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
-import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
-import {fetchErrorMessage, getDateFormat, getParameterByName} from "../../Util/GlobalFunctions";
-import EventForm from "../Event/EventForm";
+import {fetchErrorMessage} from "../../Util/GlobalFunctions";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import ProductsTab from "./ProductsTab";
 import InfoTabContent from "./InfoTabContent";
@@ -150,7 +140,7 @@ class CollectionDetailContent extends Component {
                 .then((res) => {
 
 
-                    this.fetchExistingAgentRequests(this.state.item.collection._key)
+                    this.fetchExistingAgentRequests(this.state.item._key)
 
                     this.props.showSnackbar({show:true,severity:"success",message:"Change service agent request cancelled successfully. Thanks"})
                     // this.setState({
@@ -183,7 +173,7 @@ class CollectionDetailContent extends Component {
                 .then((res) => {
 
 
-                    this.fetchReleases(this.state.item.collection._key)
+                    this.fetchReleases(this.state.item._key)
 
                     this.props.showSnackbar({show:true,severity:"success",message:"Release request cancelled successfully. Thanks"})
 
@@ -337,12 +327,12 @@ class CollectionDetailContent extends Component {
 
             this.setActiveKey(null,"1")
 
-            if (this.props.item.collection){
+            if (this.props.item){
                 this.loadInfo(this.props.item);
-                this.fetchExistingAgentRequests(this.props.item.collection._key)
-                this.fetchReleases(this.props.item.collection._key)
-                this.getEvents(this.props.item.collection._key)
-                this.ocVCProduct(this.props.item.collection._key)
+                this.fetchExistingAgentRequests(this.props.item._key)
+                this.fetchReleases(this.props.item._key)
+                this.getEvents(this.props.item._key)
+                this.ocVCProduct(this.props.item._key)
             }
 
         // }
@@ -454,12 +444,12 @@ class CollectionDetailContent extends Component {
 
         axios
             .post(baseUrl + "product/archive", {
-                product_id: this.state.item.collection._key,
+                product_id: this.state.item._key,
             })
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product has moved to archive successfully. Thanks"})
 
-                this.ocVCProduct(this.state.item.collection._key)
+                this.ocVCProduct(this.state.item._key)
             })
             .catch((error) => {
                 // this.setState({
@@ -474,12 +464,12 @@ class CollectionDetailContent extends Component {
 
         axios
             .post(baseUrl + "product/unarchive", {
-                product_id: this.state.item.collection._key,
+                product_id: this.state.item._key,
             })
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product unarchived successfully. Thanks"})
 
-                this.ocVCProduct(this.state.item.collection._key)
+                this.ocVCProduct(this.state.item._key)
             })
             .catch((error) => {
 
@@ -511,7 +501,7 @@ class CollectionDetailContent extends Component {
     }
     submitDuplicateProduct = (event) => {
         axios
-            .post(baseUrl + "product/" + this.state.item.collection._key + "/duplicate", {})
+            .post(baseUrl + "product/" + this.state.item._key + "/duplicate", {})
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Duplicate product created successfully. Thanks"})
 
@@ -556,7 +546,7 @@ class CollectionDetailContent extends Component {
 
                 {
                     org_id: site,
-                    product_id: this.state.item.collection._key,
+                    product_id: this.state.item._key,
                 }
             )
             .then((res) => {
@@ -565,7 +555,7 @@ class CollectionDetailContent extends Component {
                     showReleaseSuccess: true,
                 });
 
-                this.fetchReleases(this.state.item.collection._key)
+                this.fetchReleases(this.state.item._key)
 
 
             })
@@ -599,7 +589,7 @@ class CollectionDetailContent extends Component {
 
                 {
                     org_id: site,
-                    product_id: this.state.item.collection._key,
+                    product_id: this.state.item._key,
                     rental_stage:"start_rental"
                 }
             )
@@ -645,7 +635,7 @@ class CollectionDetailContent extends Component {
                 baseUrl + "product/site",
 
                 {
-                    product_id: this.state.item.collection._key,
+                    product_id: this.state.item._key,
                     site_id: site,
                 },
             )
@@ -653,8 +643,8 @@ class CollectionDetailContent extends Component {
 
 
                 this.showReleaseProductPopUp()
-                this.props.loadCurrentProduct(this.state.item.collection._key)
-                this.props.showSnackbar({show:true,severity:"success",message:"Request to release "+this.state.item.collection.name+" internally to new site is completed successfully. Thanks"})
+                this.props.loadCurrentProduct(this.state.item._key)
+                this.props.showSnackbar({show:true,severity:"success",message:"Request to release "+this.state.item.name+" internally to new site is completed successfully. Thanks"})
 
 
             })
@@ -690,7 +680,7 @@ class CollectionDetailContent extends Component {
 
                 {
                     org_id: site,
-                    product_id: this.state.item.collection._key,
+                    product_id: this.state.item._key,
                 }
             )
             .then((res) => {
@@ -700,7 +690,7 @@ class CollectionDetailContent extends Component {
                 });
 
                 this.props.showSnackbar({show:true,severity:"success",message:"Change Service Agent request submitted successfully"})
-                this.fetchExistingAgentRequests(this.state.item.collection._key)
+                this.fetchExistingAgentRequests(this.state.item._key)
 
             })
             .catch((error) => {
@@ -968,7 +958,7 @@ class CollectionDetailContent extends Component {
                             </div>}
                         <div className="row  pt-4 pb-4  justify-content-start">
                             <div className="text-left ps-0   col-sm-12 col-xs-12 breadcrumb-row">
-                                <Link to={`/collections`}>Collections</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.collection?.name}</span>
+                                <Link to={`/collections`}>Collections</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item?.name}</span>
 
                             </div>
                         </div>
@@ -1016,7 +1006,7 @@ class CollectionDetailContent extends Component {
                                             <div className="col-12 position-relative">
                                                 {this.state.isArchiver && <small className="text-danger d-flex justify-content-start align-items-center "><PriorityHighIcon style={{fontSize:"16px"}} />Archived product.</small>}
                                                 <h4 className="text-capitalize product-title width-90">
-                                                    {this.state.item.collection?.name}
+                                                    {this.state.item?.name}
                                                 </h4>
                                                 <div className="top-right text-right">
                                                     <div className="d-flex flex-row align-items-center justify-content-center ">
@@ -1051,7 +1041,7 @@ class CollectionDetailContent extends Component {
                                         <p
                                             style={{ fontSize: "16px" }}
                                             className={"text-gray-light  "}>
-                                            {this.state.item.collection.description}
+                                            {this.state.item.description}
                                         </p>
                                     </div>
                                 </div>
@@ -1091,16 +1081,16 @@ class CollectionDetailContent extends Component {
                                                         </TabList>
                                                     </Box>
 
-                                                    <TabPanel value="1">
-                                                        <InfoTabContent  item={this.state.item}/>
+                                                    {/*<TabPanel value="1">*/}
+                                                    {/*    <InfoTabContent  item={this.state.item}/>*/}
 
 
-                                                    </TabPanel>
+                                                    {/*</TabPanel>*/}
 
 
                                                         <TabPanel value="2">
 
-                                                            <ConditionsContent  item={this.state.item} />
+                                                            {/*<ConditionsContent  item={this.state.item} />*/}
                                                         </TabPanel>
                                                     <TabPanel value="3">
                                                         <ProductsTab
@@ -1123,14 +1113,10 @@ class CollectionDetailContent extends Component {
                         </div>
 
 
-
-
-
-
                         <GlobalDialog
                             size="lg"
-                            heading={"Add Product"}
-                            hideHeading
+                            heading={"Edit Collection"}
+
                             show={this.state.showProductEdit}
                             hide={()=> {
                                 this.showProductEdit();
@@ -1143,11 +1129,7 @@ class CollectionDetailContent extends Component {
                                     item={this.state.item}
                                     type={true}
                                     refreshData={ ()=> {
-                                        // this.toggleRightBar()
-                                        // this.refreshList()
-                                        // this.setState({
-                                        //     campaignMode:0
-                                        // });
+                                       
                                     }}
                                 />
                                 }

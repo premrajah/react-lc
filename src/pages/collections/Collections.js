@@ -32,6 +32,7 @@ import { GoogleMap } from "../../components/Map/MapsContainer";
 import MenuDropdown from "../../components/FormsUI/MenuDropdown";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import MapIcon from "@mui/icons-material/Place";
+import CollectionForm from "../../components/Collection/CollectionForm";
 
 class Collections extends Component {
     constructor(props) {
@@ -62,7 +63,7 @@ class Collections extends Component {
             allDownloadItems: [],
             showFieldSelection: false,
             productDisplayView: "large",
-            showProductEdit: false,
+            showProductEditPopUp: false,
             showQuickView: false,
             selectedRows: [],
             selectionMode: null,
@@ -127,7 +128,12 @@ class Collections extends Component {
         this.setState({ fields });
     }
 
-
+    showProductEdit() {
+        this.setState({
+            showProductEditPopUp: !this.state.showProductEditPopUp,
+            productDuplicate: false,
+        });
+    }
     setQueryData = (queryData, filterReset) => {
 
         this.resetSelection()
@@ -967,7 +973,6 @@ class Collections extends Component {
                 })
 
             this.setQueryData({
-
                 reset: true,
                 filter: filter,
                 keyword: keyword
@@ -991,73 +996,7 @@ class Collections extends Component {
                 params={{ type: this.state.selectionMode, filter: this.state.selectedFilter, keyword: this.state.selectedSearch }}
             >
                 <>
-                    {this.state.selectedProducts.length > 0 ? (
-                        <div
-                            className="sticky-top-csv slide-rl"
-                            style={{ top: "68px", position: "fixed", zIndex: "100" }}>
-                            <div
-                                className="float-right me-1 p-3"
-                                style={{
-                                    width: "240px",
-                                    maxWidth: "300px",
-                                    height: "auto",
-                                    boxShadow: "0 2px 30px 0 rgba(0,0,0,.15)",
-                                    backgroundColor: "#fff",
-                                }}>
-                                <div
-                                    className="row no-gutters mb-2 pb-2 "
-                                    style={{ borderBottom: "1px solid #70707062" }}>
-                                    <div className="col-12  ">
-                                        <a href
-                                           onClick={this.getSitesForProducts}
-                                           className=" btn-sm btn-gray-border  me-2">
-                                            {/*<MapIcon style={{fontSize:"20px"}} /> */}
-                                            Locations
-                                        </a>
-                                        <BlueSmallBtn
-                                            title={"CSV"}
-                                            onClick={() => this.fieldSelection()}>
-                                            <DownloadIcon style={{ fontSize: "20px" }} />
-                                        </BlueSmallBtn>
-                                    </div>
-                                </div>
-                                <div className="row  no-gutters mb-1">
-                                    <div className="col blue-text">Selected Products</div>
-                                    <button
-                                        className=" btn-pink "
-                                        onClick={() => this.setState({ selectedProducts: [] })}>
-                                        <>Clear</>
-                                    </button>
-                                </div>
 
-                                <div
-                                    className="row"
-                                    style={{ overflowY: "auto", maxHeight: "250px" }}>
-                                    <div className="col">
-                                        {this.state.selectedProducts.map((product, index) => (
-                                            <div
-                                                key={index}
-                                                onClick={() =>
-                                                    this.removeFromSelectedProducts(index)
-                                                }
-                                                style={{
-                                                    cursor: "pointer",
-                                                    textOverflow: "ellipsis",
-                                                    whiteSpace: "nowrap",
-                                                    overflow: "hidden",
-                                                }}>
-                                                <IndeterminateCheckBoxIcon
-                                                    style={{ opacity: "0.5" }}
-                                                    className={"text-blue"}
-                                                />
-                                                {product.Product.name}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ) : null}
 
                     <div className="container  mb-150  pb-4 pt-4">
                         <PageHeader
@@ -1099,97 +1038,19 @@ class Collections extends Component {
 
                             >
                                 <div className="row  d-flex align-items-center">
-                                    {this.state.selectedRows.length === 0 && !this.state.selectAll ? <>
-                                            {/*<div className="col-md-2 btn-rows">*/}
-                                            {/*   */}
-                                            {/*</div>*/}
-                                            <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
 
-                                                <MenuDropdown
-                                                    maxWidth={"200px"}
-                                                    initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
-                                                    setSelection={this.setSelection}
-                                                    options={["Products", "Service", "Records", "Track", "Issues", "Archive"]}
-                                                />
-                                                {this.state.selectionMode !== "Issues" &&
-                                                    <>
-                                                        <div className="me-2">
-                                                            <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
-
-                                                                <BlueSmallBtn
-                                                                    classAdd="mb-1"
-                                                                    title={"Download Open Cyclecodes"}
-                                                                    onClick={() => this.toggleDownloadQrCodes()}
-                                                                >
-
-                                                                </BlueSmallBtn>
-                                                            </CustomPopover>
-                                                        </div>
-                                                        {/*<div className="me-2">*/}
-                                                        {/*    <CustomPopover text={"Export all products to csv."}>*/}
-                                                        {/*        <BlueSmallBtn*/}
-                                                        {/*            classAdd="mb-1"*/}
-                                                        {/*            title={"Export To CSV"}*/}
-                                                        {/*            // disabled={this.state.downloadAllLoading}*/}
-                                                        {/*            // progressLoading={this.state.downloadAllLoading}*/}
-                                                        {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
-                                                        {/*            // onClick={()=>this.downloadAll(0,100)}*/}
-                                                        {/*            onClick={this.fieldSelection}*/}
-                                                        {/*        >*/}
-
-                                                        {/*        </BlueSmallBtn>*/}
-                                                        {/*    </CustomPopover>*/}
-                                                        {/*</div>*/}
-                                                        <div className="me-2">
-                                                            <CustomPopover text={"Add Product Lines"}>
-                                                                <BlueSmallBtn
-                                                                    classAdd="mb-1"
-                                                                    onClick={this.addProductLine}>
-                                                                    Product Lines
-                                                                </BlueSmallBtn>
-                                                            </CustomPopover>
-                                                        </div>
-                                                    </>}
-                                            </div>
-                                        </> :
-
-                                        <div className="col-md-12 d-flex ">
-                                            {this.state.selectAll ?
-                                                <>{this.state.count} selected
-                                                    <span onClick={() => this.selectAll()} className="ms-1 click-item text-bold text-underline">Clear Selection</span>
-                                                </> : <></>}
-                                            {!this.state.selectAll &&
-                                                <BlueSmallBtn
-                                                    classAdd={'ms-2  '}
-                                                    title={`${!this.state.selectAll ? "Select All (" + this.state.count + ")" : "Unselect All (" + this.state.count + ")"}`}
-                                                    onClick={() => this.selectAll()}
-                                                >
-                                                </BlueSmallBtn>}
-
-
-                                            <BlueSmallBtn
-                                                classAdd={'ms-2 align-items-center d-flex'}
-                                                onClick={() => {
-                                                    if (this.state.selectAll) {
-                                                        this.downloadAll(0, 100, [], "location")
-                                                    } else {
-                                                        this.getSitesForProducts()
-                                                    }
-                                                }}
-                                                title={this.state.downloadAllLoading ? "Loading.. " : " Locations"}
-                                            >
-                                                {!this.state.downloadAllLoading ? <MapIcon style={{ fontSize: "20px" }} /> : <><CircularProgressWithLabel textSize={10} size={24} value={this.state.downloadAllLoading ? ((this.state.allDownloadItems.length / this.state.count) * 100) : 0} /></>}
-                                            </BlueSmallBtn>
+                                    <div className="col-12">
 
                                             <BlueSmallBtn
                                                 classAdd={'ms-2'}
-                                                title={"Export To CSV"}
-                                                onClick={() => this.fieldSelection()}>
-                                                <DownloadIcon style={{ fontSize: "20px" }} />
+                                                title={"Add Collection"}
+                                                onClick={()=>this.showProductEdit()}
+                                            >
+
                                             </BlueSmallBtn>
 
                                         </div>
-                                    }
+
 
                                 </div>
 
@@ -1198,149 +1059,7 @@ class Collections extends Component {
 
                     </div>
                 </>
-                <GlobalDialog
-                    allowScroll
-                    size={"lg"}
-                    hide={this.addProductLine}
-                    show={this.state.showProductLine}
-                    heading={"Product Lines"}>
-                    <>
-                        {this.state.showProductLine && (
-                            <>
-                                <div className="col-12 ">
-                                    <ProductLines />
-                                </div>
-                            </>
-                        )}
-                    </>
-                </GlobalDialog>
-                <GlobalDialog
-                    allowScroll
-                    size={"md"}
-                    hide={this.fieldSelection}
-                    show={this.state.showFieldSelection}
-                    heading={"Download Products"}>
-                    <>
-                        {this.state.showFieldSelection && (
-                            <>
-                                <div className="col-12 ">
-                                    <form id={"product-field-form"} onSubmit={this.handleSubmit}>
-                                        <div className="row  mt-2">
-                                            {PRODUCTS_FIELD_SELECTION.map((item) =>
-                                                <div className="col-md-3 col-sm-6  justify-content-start align-items-center">
-                                                    <CheckboxWrapper
-                                                        id={`${item.key}`}
-                                                        // details="When listed, product will appear in the marketplace searches"
-                                                        initialValue={item.checked}
-                                                        // onChange={(checked)=>this.checkListable(checked)}
-                                                        color="primary"
-                                                        name={`${item.key}`}
-                                                        title={`${item.value}`} />
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="row  mt-2">
-                                            <div className="col-12 d-flex justify-content-center">
-                                                {!this.state.downloadAllLoading ?
-                                                    <BlueSmallBtn
-                                                        type={"submit"}
-                                                        title={this.state.downloadAllLoading ? "" : " Download"}
-                                                        disabled={this.state.downloadAllLoading}>
-                                                    </BlueSmallBtn> : <CircularProgressWithLabel value={this.state.downloadAllLoading ? ((this.state.allDownloadItems.length / this.state.count) * 100) : 0} />}
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </>
-                        )}
-                    </>
-                </GlobalDialog>
-                <Modal
-                    aria-labelledby="contained-modal-title-vcenter"
-                    show={this.state.showMap}
-                    centered
-                    size={"lg"}
-                    onHide={this.toggleMap}
-                    animation={false}>
-                    <ModalBody>
-                        <div className=" text-right web-only">
-                            <Close
-                                onClick={this.toggleMap}
-                                className="blue-text click-item"
-                                style={{ fontSize: 32 }}
-                            />
-                        </div>
 
-                        <div className={"row justify-content-center"}>
-                            {this.state.mapData.length > 0 &&
-                                <ProductsGoogleMap
-                                    mapData={this.state.mapData}
-                                    width="700px"
-                                    height="400px"
-                                />}
-                        </div>
-                    </ModalBody>
-                </Modal>
-                }
-                <Modal
-                    aria-labelledby="contained-modal-title-vcenter"
-                    show={this.state.showDownloadQrCodes}
-                    centered
-                    onHide={this.toggleDownloadQrCodes}
-                    animation={false}>
-                    <ModalBody>
-                        <div className=" text-right web-only">
-                            <Close
-                                onClick={this.toggleDownloadQrCodes}
-                                className="blue-text click-item"
-                                style={{ fontSize: 32 }}
-                            />
-                        </div>
-                        <div className={"row justify-content-center"}>
-                            <div className={"col-12 text-left"}>
-                                <h5
-                                    style={{ textTransform: "Capitalize" }}
-                                    className={"text-bold text-blue"}>
-                                    Download Multiple Cyclecodes
-                                </h5>
-                            </div>
-                        </div>
-
-                        <div className={"row justify-content-center"}>
-                            <form onSubmit={this.downloadMultipleQrCodes}>
-                                <div className="row mb-2 text-center">
-                                    <div className="col-12 ">
-                                        <TextFieldWrapper
-                                            numberInput
-                                            // readonly ={this.state.disableVolume}
-                                            initialValue={
-                                                this.state.selectedItem &&
-                                                this.state.selectedItem.factor + ""
-                                            }
-                                            // value={this.state.disableVolume?"0":""}
-                                            onChange={(value) => this.handleChange(value, "count")}
-                                            error={this.state.errors["count"]}
-                                            placeholder={"Enter required number of Cyclecodes"}
-                                            name="count"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={"row"}>
-                                    <div className="col-12 d-flex justify-content-center mt-2">
-                                        <button
-                                            type={"submit"}
-                                            className={
-                                                "btn btn-default btn-lg btn-rounded shadow  btn-green login-btn"
-                                            }>
-                                            {"Download"}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </ModalBody>
-                </Modal>
 
                 <GlobalDialog
                     size="md"
@@ -1360,57 +1079,32 @@ class Collections extends Component {
                     </div>
 
                 </GlobalDialog>
-                <GlobalDialog
-                    size="md"
-                    removePadding
-                    hideHeader
-                    show={this.state.showSiteView}
-                    hide={() => {
-                        this.showSiteViewPopUp();
-                    }} >
-
-                    <div className="form-col-left col-12">
-                        {this.state.showSiteView &&
-                            <div className="col-12">
-                                {this.state.viewSiteSelected && this.state.viewSiteSelected.geo_codes && this.state.viewSiteSelected.geo_codes.length > 0 &&
-                                    <GoogleMap searchLocation
-                                               siteId={this.state.viewSiteSelected._key}
-                                               width={"100%"} height={"300px"}
-                                               location={{
-                                                   name: `${this.state.viewSiteSelected.name}`,
-                                                   location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
-                                                   isCenter: true
-                                               }} />}
-                            </div>
-                        }
-                    </div>
-
-                </GlobalDialog>
 
 
                 <GlobalDialog
-                    size="md"
-                    heading={"Add Product"}
-                    hideHeading
-                    show={this.state.showProductEdit}
-                    hide={() => {
-                        this.showProductEditPopUp();
+                    size="lg"
+                    heading={"Add Collection"}
+
+                    show={this.state.showProductEditPopUp}
+                    hide={()=> {
+                        this.showProductEdit();
                     }} >
 
                     <div className="form-col-left col-12">
-                        {this.state.showProductEdit &&
-                            <ProductForm
-                                hideUpload edit
+                        {this.state.showProductEditPopUp &&
+                            <CollectionForm
+                                refreshData={ ()=> {
 
-                                triggerCallback={(action) => this.showProductEditPopUp()}
-
-                                heading={"Edit Product"}
-                                item={this.state.editItemSelected}
+                                    this.initializeData();
+                                    this.showProductEdit();
+                                }}
                             />
                         }
                     </div>
 
                 </GlobalDialog>
+
+
             </Layout>
         );
     }

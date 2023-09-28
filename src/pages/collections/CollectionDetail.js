@@ -64,8 +64,7 @@ class CollectionDetail extends Component {
         })
         try{
             axios
-                .get(baseUrl + "collection/" + encodeUrl(data) + "/expand"
-                )
+                .get(baseUrl + "collection/" + encodeUrl(data))
                 .then(
                     (response) => {
                         let responseAll = response.data;

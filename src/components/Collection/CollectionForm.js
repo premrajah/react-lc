@@ -16,6 +16,7 @@ import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompl
 import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
 import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
 import ErrorBoundary from "../../components/ErrorBoundary";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
 
 let slugify = require('slugify')
 
@@ -928,7 +929,7 @@ class CollectionForm extends Component {
 
                 <div className="wrapper">
 
-                    <div className="container  mb-150  pb-5 pt-4">
+                    <div className="container  pt-4">
 
                         <div className={classes.root}>
                             {/*<Stepper className={"mb-4 p-0"} style={{background:"transparent"}} activeStep={this.state.activeStep}>*/}
@@ -1093,7 +1094,7 @@ class CollectionForm extends Component {
 
 
                                                     <div className="row   pt-2 ">
-                                                        <div className="col-12 mt-2  pb-4">
+                                                        <div className="col-12 mt-2 ">
                                     <span
                                         onClick={this.addCountAll}
                                         className={
@@ -1208,7 +1209,7 @@ class CollectionForm extends Component {
 
 
                                                     <div className="row   pt-2 ">
-                                                        <div className="col-12 mt-2 mb-4 pb-4">
+                                                        <div className="col-12 mt-2 ">
                                     <span
                                         onClick={this.addCountAny}
                                         className={
@@ -1231,20 +1232,20 @@ class CollectionForm extends Component {
 
 
 
-                                    <div className="row mt-3 ">
-                                        <div className="col-6 mt-0">
-                                            <GreenSmallBtn
-                                                fullWidth
+                                    <div className="row mt-3 justify-content-center ">
+                                        <div className="col-6 text-center mt-0">
+                                            <GreenButton
+                                                c
                                                 variant="contained"
                                                 color="primary"
                                                 onClick={(e)=> {this.handleNext(e)}}
                                                 loading={this.state.loading}
                                                 disabled={this.state.loading}
-                                                className={" btn-gray-border "}
+
                                                 title={"Submit"}
 
                                             >
-                                            </GreenSmallBtn>
+                                            </GreenButton>
                                         </div>
                                     </div>
 

@@ -17,7 +17,7 @@ class ConditionsContent extends Component {
             <div className={"mt-4"}>
 
                 {this.props.item &&
-                (this.props.item.collection.all_of&&this.props.item.collection.all_of.length>0) && (
+                (this.props.item.all_of&&this.props.item.all_of.length>0) && (
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-12"}>
                             <p
@@ -28,9 +28,9 @@ class ConditionsContent extends Component {
                             </p>
                             <div className={"col-12 bg-white p-3 rad-8 gray-border"}>
 
-                            {this.props.item.collection.all_of.map((item,index)=>
+                            {this.props.item.all_of.map((item,index)=>
                                 <>
-                                    {index>0&&(index+1)<=this.props.item.collection.all_of.length&& <div className="listing-row-border "></div>}
+                                    {index>0&&(index+1)<=this.props.item.all_of.length&& <div className="listing-row-border "></div>}
                                 <div
 
                                     className="row  mb-1">
@@ -56,7 +56,7 @@ class ConditionsContent extends Component {
                     </div>
                 )}
 
-                {(this.props.item.collection.all_of&&this.props.item.collection.any_of.length>0) && (
+                {(this.props.item.all_of&&this.props.item.any_of.length>0) && (
                 <div className="row  justify-content-start search-container  pb-2">
                     <div className={"col-12"}>
                         <p
@@ -66,10 +66,10 @@ class ConditionsContent extends Component {
                         </p>
                         <div className={"col-12 bg-white p-3 rad-8 gray-border"}>
 
-                            {this.props.item.collection.any_of.map((item,index)=>
+                            {this.props.item.any_of.map((item,index)=>
                                 <>
 
-                                    {index>0&&(index+1)<=this.props.item.collection.any_of.length&& <div className="listing-row-border "></div>}
+                                    {index>0&&(index+1)<=this.props.item.any_of.length&& <div className="listing-row-border "></div>}
                                 <div
 
                                     className="row  mb-1 mt-1">

@@ -22,12 +22,20 @@ const SubproductItem = (props) => {
 const loadProduct=(id)=> {
 
 
-    axios.get(baseUrl + "product/" + id)
+    let subUrl=!props.productKind?"product/":"product-kind/"
+
+    axios.get(baseUrl + subUrl + id)
         .then(
             (response) => {
 
                 let responseAll = response.data;
-               setItem(responseAll.data.product)
+
+                if (!props.productKind){
+                    setItem(responseAll.data.product)
+                }else{
+                    setItem(responseAll.data.product_kind)
+                }
+
 
             },
             (error) => {
@@ -124,7 +132,8 @@ const loadProduct=(id)=> {
 
             <div className={`${props.smallImage?"col-10 ":"col-9 "}pl-2`}>
                 <div>
-                    <Link  to={props.noLinking?"#":props.customLink?props.customLink:`/product/${item._key}`}>
+                    <Link  to={props.noLinking?"#":props.customLink?props.customLink:`/${props.productKind?"product-kind":"product"}/${item._key}`}>
+
                         <span className={"title-bold"}>{item.name}</span>
                     </Link>
                 </div>
@@ -144,6 +153,8 @@ const loadProduct=(id)=> {
                 </div>
                     {item.sku&&item.sku.brand&&
                     <p className={"text-capitalize text-gray-light"}>Brand: <span className={"sub-title-text-pink"}>{item.sku.brand}</span></p>}
+                    {item.sku&&item.sku.embodied_carbon_kgs&&
+                        <p className={"text-capitalize text-gray-light"}>Embodied Carbon (Kgs): <span className={"sub-title-text-pink"}>{item.sku.embodied_carbon_kgs}</span></p>}
                     {item.search_ids && <div className="text-gray-light">
                         <span className="mr-1">{item.search_ids.length}</span>
                         <span>Searches</span>

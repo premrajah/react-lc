@@ -186,10 +186,10 @@ class ProductKindForm extends Component {
 
                     if (responseAll.length > 0 && this.props.item) {
 
-                        let cat = responseAll.filter((item) => item.name === this.props.item.product.category)
+                        let cat = responseAll.filter((item) => item.name === this.props.item.product_kind.category)
                         let subCategories = cat.length > 0 ? cat[0].types : []
-                        let states = subCategories.length > 0 ? responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state : []
-                        let units = states.length > 0 ? responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units : []
+                        let states = subCategories.length > 0 ? responseAll.filter((item) => item.name === this.props.item.product_kind.category)[0].types.filter((item) => item.name === this.props.item.product_kind.type)[0].state : []
+                        let units = states.length > 0 ? responseAll.filter((item) => item.name === this.props.item.product_kind.category)[0].types.filter((item) => item.name === this.props.item.product_kind.type)[0].units : []
 
                         this.setState({
                             subCategories: subCategories,
@@ -1035,7 +1035,7 @@ class ProductKindForm extends Component {
                     baseUrl + "product/artifact/replace",
 
                     {
-                        product_id: this.props.item.product._key,
+                        product_id: this.props.item.product_kind._key,
                         artifact_ids: this.state.images,
                     },
                 )
@@ -1048,7 +1048,7 @@ class ProductKindForm extends Component {
                         // });
                     }
 
-                    this.props.loadCurrentProduct(this.props.item.product._key)
+                    this.props.loadCurrentProduct(this.props.item.product_kind._key)
 
 
 
@@ -1094,9 +1094,9 @@ class ProductKindForm extends Component {
         };
 
         productData = this.configurePayload(productData, data)
-        delete this.props.item.product['sku']['sku']
+        delete this.props.item.product_kind['sku']['sku']
 
-        let keysChanged = await getModifiedObjectKeys(productData, this.props.item.product, [...this.productLevelOneKeys, ...this.skuKeys])
+        let keysChanged = await getModifiedObjectKeys(productData, this.props.item.product_kind, [...this.productLevelOneKeys, ...this.skuKeys])
 
 
         keysChanged = await this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
@@ -1123,9 +1123,9 @@ class ProductKindForm extends Component {
         }
 
 
-        if (this.props.item.product?.['factory_geo_location']) {
+        if (this.props.item.product_kind?.['factory_geo_location']) {
 
-            let res = compareDeep(this.props.item.product?.['factory_geo_location'], this.state.fields?.['factory_geo_location'])
+            let res = compareDeep(this.props.item.product_kind?.['factory_geo_location'], this.state.fields?.['factory_geo_location'])
 
             if (!res) {
                 keysChanged['factory_geo_location'] = this.state.fields?.['factory_geo_location']
@@ -1155,7 +1155,7 @@ class ProductKindForm extends Component {
         try {
 
             let productData = {
-                id: this.props.item.product._key,
+                id: this.props.item.product_kind._key,
                 // is_manufacturer: this.state.is_manufacturer ? true : false,
                 update: keysChanged
             };
@@ -1165,7 +1165,7 @@ class ProductKindForm extends Component {
 
             axios
                 .post(
-                    baseUrl + "product",
+                    baseUrl + "product-kind",
 
                     productData
                 )
@@ -1179,12 +1179,12 @@ class ProductKindForm extends Component {
                     this.props.showSnackbar({
                         show: true,
                         severity: "success",
-                        message: this.props.item.product.name + " updated successfully. Thanks"
+                        message: this.props.item.product_kind.name + " updated successfully. Thanks"
                     })
                     this.props.triggerCallback("edit")
 
                     if (this.props.loadCurrentProduct)
-                        this.props.loadCurrentProduct(this.props.item.product._key)
+                        this.props.loadCurrentProduct(this.props.item.product_kind._key)
 
                 })
                 .catch((error) => {
@@ -1218,7 +1218,7 @@ class ProductKindForm extends Component {
             if (this.props.item) {
                 this.isManufacturer()
                 this.loadImages(this.props.item.artifacts)
-                this.checkListable(this.props.item.product.is_listable)
+                this.checkListable(this.props.item.product_kind.is_listable)
 
             }
 
@@ -1270,7 +1270,7 @@ class ProductKindForm extends Component {
 
     isManufacturer = () => {
 
-        axios.get(baseUrl + "product/" + this.props.item.product._key + "/oc-vc").then(
+        axios.get(baseUrl + "product/" + this.props.item.product_kind._key + "/oc-vc").then(
             (response) => {
 
                 this.setState({
@@ -1289,10 +1289,10 @@ class ProductKindForm extends Component {
         this.getTransportMode()
 
         if (this.props.item) {
-            if (this.props.item.product.units.toLowerCase() !== "kgs") {
+            if (this.props.item.product_kind.units.toLowerCase() !== "kgs") {
                 this.setState({
                     weightOptionsShow: true,
-                    weightFieldName: this.props.item.product.weight_per_volume_kgs ? "weight_per_volume_kgs" : "gross_weight_kgs"
+                    weightFieldName: this.props.item.product_kind.weight_per_volume_kgs ? "weight_per_volume_kgs" : "gross_weight_kgs"
 
                 })
             } else {
@@ -1314,10 +1314,10 @@ class ProductKindForm extends Component {
             })
             this.isManufacturer()
 
-            if (this.props.item.product?.['factory_geo_location']) {
+            if (this.props.item.product_kind?.['factory_geo_location']) {
 
                 let fields = this.state.fields
-                fields['factory_geo_location'] = this.props.item.product?.['factory_geo_location']
+                fields['factory_geo_location'] = this.props.item.product_kind?.['factory_geo_location']
                 this.setState({
                     fields: fields
                 })
@@ -1329,9 +1329,9 @@ class ProductKindForm extends Component {
 
         if (this.props.item) {
             this.setState({
-                prevExistingItemsParts: JSON.parse(JSON.stringify({ ...this.props.item.product.composition })),
-                prevExistingItemsProcesses: JSON.parse(JSON.stringify({ ...this.props.item.product.processes })),
-                prevExistingItemsOutboundTransport: JSON.parse(JSON.stringify({ ...this.props.item.product.outbound_transport })),
+                prevExistingItemsParts: JSON.parse(JSON.stringify({ ...this.props.item.product_kind.composition })),
+                prevExistingItemsProcesses: JSON.parse(JSON.stringify({ ...this.props.item.product_kind.processes })),
+                prevExistingItemsOutboundTransport: JSON.parse(JSON.stringify({ ...this.props.item.product_kind.outbound_transport })),
             })
 
         }
@@ -1347,8 +1347,8 @@ class ProductKindForm extends Component {
             let existingProcesses = []
             let existingOutboundTransport = []
 
-            if (item.product.composition)
-                item.product.composition.forEach((compositionItem) => {
+            if (item.product_kind.composition)
+                item.product_kind.composition.forEach((compositionItem) => {
 
                     axios.get(baseUrl + "resource-carbon/" + compositionItem.carbon_resource.split("/")[1])
                         .then(
@@ -1378,15 +1378,15 @@ class ProductKindForm extends Component {
                         );
                 })
 
-            if (item.product.processes)
-                item.product.processes.forEach((item) => {
+            if (item.product_kind.processes)
+                item.product_kind.processes.forEach((item) => {
                     existingProcesses.push({
                         index: uuid(),
                         fields: item
                     })
                 })
-            if (item.product.outbound_transport)
-                item.product.outbound_transport.forEach((item) => {
+            if (item.product_kind.outbound_transport)
+                item.product_kind.outbound_transport.forEach((item) => {
                     existingOutboundTransport.push({
                         index: uuid(),
                         fields: item
@@ -1663,8 +1663,8 @@ class ProductKindForm extends Component {
                                             <TextFieldWrapper
                                                 editMode
                                                 details="The name of a product"
-                                                initialValue={this.props.item && this.props.item?.product.name
-                                                    || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.name : "")
+                                                initialValue={this.props.item && this.props.item?.product_kind.name
+                                                    || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product_kind.name : "")
                                                 }
                                                 onChange={(value) => this.handleChangeProduct(value, "name")}
                                                 error={this.state.errors["name"]}
@@ -1680,7 +1680,7 @@ class ProductKindForm extends Component {
                                             <CheckboxWrapper
 
                                                 details="When listed, product will appear in the marketplace searches"
-                                                initialValue={this.props.item && this.props.item.product.is_listable || true}
+                                                initialValue={this.props.item && this.props.item.product_kind.is_listable || true}
                                                 onChange={(checked) => this.checkListable(checked)} color="primary"
                                                 name={"is_listable"} title="List for sale" />
 
@@ -1701,7 +1701,7 @@ class ProductKindForm extends Component {
                                             <SelectArrayWrapper
                                                 editMode
                                                 details="Materials or category a product belongs to Type"
-                                                initialValue={this.props.item ? this.props.item.product.category : ""
+                                                initialValue={this.props.item ? this.props.item.product_kind.category : ""
                                                     || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.category : "")
                                                 }
                                                 option={"name"}
@@ -1736,8 +1736,8 @@ class ProductKindForm extends Component {
 
                                             <SelectArrayWrapper
                                                 editMode
-                                                initialValue={this.props.item ? this.props.item.product.type : ""
-                                                    || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.type : "")
+                                                initialValue={this.props.item ? this.props.item.product_kind.type : ""
+                                                    || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product_kind.type : "")
                                                 }
                                                 disableAutoLoadingIcon
                                                 option={"name"}
@@ -1793,8 +1793,8 @@ class ProductKindForm extends Component {
                                             <SelectArrayWrapper
                                                 editMode
                                                 disableAutoLoadingIcon
-                                                initialValue={this.props.item ? this.props.item.product.state : ""
-                                                    || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.state : "")}
+                                                initialValue={this.props.item ? this.props.item.product_kind.state : ""
+                                                    || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product_kind.state : "")}
                                                 onChange={(value) => {
 
                                                     this.handleChangeProduct(value, "state")
@@ -1811,8 +1811,8 @@ class ProductKindForm extends Component {
 
                                             <SelectArrayWrapper
                                                 editMode
-                                                initialValue={this.props.item ? (this.props.item.product.condition) : ""
-                                                    || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.condition : "")
+                                                initialValue={this.props.item ? (this.props.item.product_kind.condition) : ""
+                                                    || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product_kind.condition : "")
                                                 }
                                                 onChange={(value) => this.handleChangeProduct(value, "condition")}
                                                 error={this.state.errors["condition"]}
@@ -1838,8 +1838,8 @@ class ProductKindForm extends Component {
                                                     Aggregate: a product made up from other products,
                                                     Prototype: a first version of a product"
 
-                                                        initialValue={this.props.item ? (this.props.item.product.purpose) : ""
-                                                            || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.purpose : "")
+                                                        initialValue={this.props.item ? (this.props.item.product_kind.purpose) : ""
+                                                            || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product_kind.purpose : "")
                                                         }
                                                         onChange={(value) => {
                                                             this.handleChangeProduct(value, "purpose")
@@ -1852,7 +1852,7 @@ class ProductKindForm extends Component {
                                                     <TextFieldWrapper
                                                         editMode
                                                         details="The brand name of a product"
-                                                        initialValue={this.props.item && this.props.item.product.sku.brand || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.sku.brand : "")}
+                                                        initialValue={this.props.item && this.props.item.product_kind.sku.brand || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product_kind.sku.brand : "")}
                                                         onChange={(value) => this.handleChangeProduct(value, "brand")}
                                                         error={this.state.errors["brand"]}
                                                         name="brand"
@@ -1863,8 +1863,8 @@ class ProductKindForm extends Component {
                                                     <SelectArrayWrapper
                                                         editMode
                                                         disableAutoLoadingIcon
-                                                        initialValue={this.props.item && this.props.item.product.sku.power_supply
-                                                            || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.sku.power_supply : "")
+                                                        initialValue={this.props.item && this.props.item.product_kind.sku.power_supply
+                                                            || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product_kind.sku.power_supply : "")
                                                         }
                                                         select={"Select"}
 
@@ -1896,7 +1896,7 @@ class ProductKindForm extends Component {
                                                         ValueLabel: ValueLabelComponent,
                                                     }}
                                                     aria-label="custom thumb label"
-                                                    defaultValue={this.props.item && this.props.item.product.energy_rating ? this.props.item.product.energy_rating : 0}
+                                                    defaultValue={this.props.item && this.props.item.product_kind.energy_rating ? this.props.item.product_kind.energy_rating : 0}
                                                     onChange={(event) => {
                                                         this.setState({
                                                             energyRating: event.target.value
@@ -1928,7 +1928,7 @@ class ProductKindForm extends Component {
                                                                 details="A measurement chosen as a standard"
                                                                 select={"Select"}
                                                                 disableAutoLoadingIcon
-                                                                initialValue={this.props.item && this.props.item.product.units}
+                                                                initialValue={this.props.item && this.props.item.product_kind.units}
 
 
                                                                 onChange={(value) => {
@@ -1959,7 +1959,7 @@ class ProductKindForm extends Component {
                                                                 details="The number of units"
                                                                 placeholder={"Numbers e.g 1,2.. "}
                                                                 // readonly ={this.state.disableVolume}
-                                                                initialValue={this.props.item && this.props.item.product.volume + ""}
+                                                                initialValue={this.props.item && this.props.item.product_kind.volume + ""}
                                                                 // value={this.state.disableVolume?"0":""}
                                                                 onChange={(value) => this.handleChangeProduct(value, "volume")}
                                                                 error={this.state.errors["volume"]}
@@ -2003,7 +2003,7 @@ class ProductKindForm extends Component {
                                                                         width="auto"
                                                                         noMargin
                                                                         placeholder="e.g 1,2,3 .."
-                                                                        initialValue={this.state.weightOptionsShow && (this.props.item && this.props.item.product.weight_per_volume_kgs ? this.props.item.product.weight_per_volume_kgs : this.props.item && this.props.item.product.sku.gross_weight_kgs)}
+                                                                        initialValue={this.state.weightOptionsShow && (this.props.item && this.props.item.product_kind.weight_per_volume_kgs ? this.props.item.product_kind.weight_per_volume_kgs : this.props.item && this.props.item.product_kind.sku.gross_weight_kgs)}
                                                                         onChange={(value) => this.handleChangeProduct(value, this.state.weightFieldName)}
                                                                         error={this.state.errors[this.state.weightFieldName]}
                                                                         name={this.state.weightFieldName}
@@ -2024,7 +2024,7 @@ class ProductKindForm extends Component {
                                                         {/*    error={this.state.errors["gross_weight_kgs"]}*/}
                                                         {/*    onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}*/}
                                                         {/*    // details="A unique number used by external systems"*/}
-                                                        {/*    initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""*/}
+                                                        {/*    initialValue={this.props.item?this.props.item.product_kind.sku.gross_weight_kgs:""*/}
                                                         {/*        ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")*/}
                                                         {/*    } name="gross_weight_kgs" title="Gross Weight (Kg)" />*/}
                                                     </div>}
@@ -2038,7 +2038,7 @@ class ProductKindForm extends Component {
                                             <TextFieldWrapper
                                                 editMode
                                                 details="Describe the product your adding"
-                                                initialValue={this.props.item && this.props.item.product.description
+                                                initialValue={this.props.item && this.props.item.product_kind.description
                                                     || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.description : "")
                                                 }
                                                 onChange={(value) => this.handleChangeProduct(value, "description")}
@@ -2073,7 +2073,7 @@ class ProductKindForm extends Component {
                                         <div className="col-md-4 col-sm-6 col-xs-6">
                                             <SelectArrayWrapper
                                                 editMode
-                                                initialValue={this.props.item ? this.props.item.product.year_of_making : ""
+                                                initialValue={this.props.item ? this.props.item.product_kind.year_of_making : ""
                                                     || (this.state.selectedTemplate ? parseInt(this.state.selectedTemplate.value.product.year_of_making) : "")
                                                 }
                                                 select={"Select"}
@@ -2089,7 +2089,7 @@ class ProductKindForm extends Component {
 
                                             <TextFieldWrapper
                                                 editMode
-                                                initialValue={this.props.item ? this.props.item.product.sku.model : ""
+                                                initialValue={this.props.item ? this.props.item.product_kind.sku.model : ""
                                                     || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.sku.model : "")}
                                                 name="model"
                                                 title="Model"
@@ -2103,7 +2103,7 @@ class ProductKindForm extends Component {
                                             <div className="col-md-4 col-sm-6 col-xs-6">
                                                 <TextFieldWrapper
                                                     editMode
-                                                    initialValue={this.props.item ? this.props.item.product.sku.serial : null}
+                                                    initialValue={this.props.item ? this.props.item.product_kind.sku.serial : null}
                                                     name="serial"
 
                                                     onChange={(value) => this.handleChangeProduct(value, "serial")}
@@ -2117,7 +2117,7 @@ class ProductKindForm extends Component {
                                             <TextFieldWrapper
                                                 editMode
                                                 onChange={(value) => this.handleChangeProduct(value, "part_no")}
-                                                initialValue={this.props.item ? this.props.item.product.sku.part_no : ""
+                                                initialValue={this.props.item ? this.props.item.product_kind.sku.part_no : ""
                                                     || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.sku.part_no : "")
                                                 } name="part_no" title="Part No." />
 
@@ -2127,7 +2127,7 @@ class ProductKindForm extends Component {
                                                 editMode
                                                 onChange={(value) => this.handleChangeProduct(value, "external_reference")}
                                                 details="A unique number used by external systems"
-                                                initialValue={this.props.item ? this.props.item.product.external_reference : ""
+                                                initialValue={this.props.item ? this.props.item.product_kind.external_reference : ""
                                                     || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.external_reference : "")
                                                 } name="external_reference" title="External reference" />
 
@@ -2139,7 +2139,7 @@ class ProductKindForm extends Component {
                                                 editMode
                                                 onChange={(value) => this.handleChangeProduct(value, "embodied_carbon_kgs")}
                                                 // details="A unique number used by external systems"
-                                                initialValue={this.props.item ? this.props.item.product.sku.embodied_carbon_kgs : null
+                                                initialValue={this.props.item ? this.props.item.product_kind.sku.embodied_carbon_kgs : null
                                                     || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.sku.embodied_carbon_kgs : null)
                                                 } name="embodied_carbon_kgs" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
 
@@ -2149,7 +2149,7 @@ class ProductKindForm extends Component {
                                         {/*        editMode*/}
                                         {/*        onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}*/}
                                         {/*        // details="A unique number used by external systems"*/}
-                                        {/*        initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""*/}
+                                        {/*        initialValue={this.props.item?this.props.item.product_kind.sku.gross_weight_kgs:""*/}
                                         {/*            ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")*/}
                                         {/*        } name="gross_weight_kgs" title="Gross Weight (Kg)" />*/}
 
@@ -2161,7 +2161,7 @@ class ProductKindForm extends Component {
 
                                             <SearchPlaceAutocomplete
 
-                                                initialValue={this.props.item?.product?.factory_geo_location}
+                                                initialValue={this.props.item?.product_kind?.factory_geo_location}
                                                 error={this.state.errors["factory_geo_location"]}
                                                 fromOutboundTransport
                                                 title={"Factory Location"}
@@ -2202,7 +2202,7 @@ class ProductKindForm extends Component {
                                                         : "Add Parts"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"} /></CustomPopover>
                                                 </span>
                                             </span>
-                                            <span className="text-12 blue-text">{this.props.item?.product?.composition?.length > 0 ? `(${this.props.item.product?.composition?.length} entries exist)` : ""}</span>
+                                            <span className="text-12 blue-text">{this.props.item?.product_kind?.composition?.length > 0 ? `(${this.props.item.product_kind?.composition?.length} entries exist)` : ""}</span>
                                         </div>
                                     </div>
 
@@ -2251,7 +2251,7 @@ class ProductKindForm extends Component {
                                                         ? "Hide Processes"
                                                         : "Add Processes"} <CustomPopover text="Add processes involved in the manufacturing of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"} /></CustomPopover>
                                                 </span>
-                                                <span className="text-12 blue-text"> {this.props.item?.product?.processes?.length > 0 ? `(${this.props.item?.product?.processes.length} entries exist)` : ""}</span>
+                                                <span className="text-12 blue-text"> {this.props.item?.product_kind?.processes?.length > 0 ? `(${this.props.item?.product_kind?.processes.length} entries exist)` : ""}</span>
                                             </span>
                                         </div>
                                     </div>
@@ -2299,7 +2299,7 @@ class ProductKindForm extends Component {
                                                         ? "Hide Outbound Transport"
                                                         : "Add Outbound Transport"} <CustomPopover text="Add outbound transport details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"} /></CustomPopover>
                                                 </span>
-                                                <span className="text-12 blue-text">{this.props.item?.product?.outbound_transport?.length > 0 ? `(${this.props.item?.product?.outbound_transport.length} entries exist)` : ""}</span>
+                                                <span className="text-12 blue-text">{this.props.item?.product_kind?.outbound_transport?.length > 0 ? `(${this.props.item?.product_kind?.outbound_transport.length} entries exist)` : ""}</span>
                                             </span>
                                         </div>
                                     </div>
@@ -2346,7 +2346,7 @@ class ProductKindForm extends Component {
                                                 type={this.props.item ? "edit" : "add"}
                                                 entityType={ENTITY_TYPES.Product}
                                                 setFiles={(files) => this.setState({ files: files })}
-                                                entityId={this.props.item ? this.props.item.product._key : null}
+                                                entityId={this.props.item ? this.props.item.product_kind._key : null}
                                             />
                                             <div className="container-fluid  pb-3 d-none">
                                                 <div className="row camera-grids      ">

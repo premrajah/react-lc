@@ -49,13 +49,13 @@ const Layout=(props)=>{
         const { children } = props
         return (
             <div  className='layout layout-main'>
-                <Header />
+                {!props.skipLayout?<Header />:<></>}
                 <div className="main-content-area">
                     <ErrorBoundary parent>
                 {children}
                     </ErrorBoundary>
                 </div>
-                {!props.hideFooter&&<Footer/>}
+                {(!props.hideFooter&&!props.skipLayout)?<Footer/>:<></>}
                 <BackToTop/>
             </div>
         );

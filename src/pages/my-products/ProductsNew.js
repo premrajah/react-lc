@@ -994,10 +994,16 @@ class ProductsNew extends Component {
 
     }
 
+
+
+
     render() {
 
         return (
+
+            <>
             <Layout
+                skipLayout={this.props.skipLayout}
                 sendParams={this.initializeData}
                 params={{ type: this.state.selectionMode, filter: this.state.selectedFilter, keyword: this.state.selectedSearch }}
             >
@@ -1079,11 +1085,11 @@ class ProductsNew extends Component {
                     ) : null}
 
                     <div className="container  mb-150  pb-4 pt-4">
-                        <PageHeader
+                        {!this.props.skipPageHeader?  <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle={this.state.selectionMode}
                             subTitle="All your added products can be found here"
-                        />
+                        />:<></>}
 
                         <ErrorBoundary>
                             <PaginationGrid
@@ -1124,13 +1130,13 @@ class ProductsNew extends Component {
                                         {/*</div>*/}
                                         <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
 
-                                            <MenuDropdown
+                                            {!this.props.skipDropdown? <MenuDropdown
                                                 maxWidth={"200px"}
                                                 initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
                                                 setSelection={this.setSelection}
                                                 options={["Products", "Service", "Records", "Track", "Issues", "Archive"]}
-                                            />
-                                            {this.state.selectionMode !== "Issues" &&
+                                            />:<></>}
+                                            {!this.props.skipDropdown &&this.state.selectionMode !== "Issues" &&
                                                 <>
                                                     <div className="me-2">
                                                         <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
@@ -1217,6 +1223,10 @@ class ProductsNew extends Component {
 
                     </div>
                 </>
+
+            </Layout>
+
+
                 <GlobalDialog
                     allowScroll
                     size={"lg"}
@@ -1393,13 +1403,13 @@ class ProductsNew extends Component {
                             <div className="col-12">
                                 {this.state.viewSiteSelected && this.state.viewSiteSelected.geo_codes && this.state.viewSiteSelected.geo_codes.length > 0 &&
                                     <GoogleMap searchLocation
-                                        siteId={this.state.viewSiteSelected._key}
-                                        width={"100%"} height={"300px"}
-                                        location={{
-                                            name: `${this.state.viewSiteSelected.name}`,
-                                            location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
-                                            isCenter: true
-                                        }} />}
+                                               siteId={this.state.viewSiteSelected._key}
+                                               width={"100%"} height={"300px"}
+                                               location={{
+                                                   name: `${this.state.viewSiteSelected.name}`,
+                                                   location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
+                                                   isCenter: true
+                                               }} />}
                             </div>
                         }
                     </div>
@@ -1430,12 +1440,20 @@ class ProductsNew extends Component {
                     </div>
 
                 </GlobalDialog>
-            </Layout>
+            </>
         );
     }
 }
 
-
+// const OptionalLayout=({skipLayout,children,...otherProps})=>{
+//
+//
+//     return (
+//         !skipLayout?<Layout {...otherProps}>{children}</Layout>:children
+//     )
+//
+//
+// }
 
 
 const mapStateToProps = (state) => {

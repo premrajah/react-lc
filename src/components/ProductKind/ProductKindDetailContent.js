@@ -37,6 +37,7 @@ import QrCode from "../Products/QrCode";
 import AggregatesTab from "../Products/AggregatesTab";
 import SubProductsTab from "../Products/SubProductsTab";
 import InfoTabContentProductKind from './InfoTabContentProductKind';
+import ProductKindForm from "./ProductKindForm";
 
 
 class ProductKindDetailContent extends Component {
@@ -975,7 +976,7 @@ class ProductKindDetailContent extends Component {
                         </div>}
                         <div className="row  pt-4 pb-4  justify-content-start">
                             <div className="text-left ps-0   col-sm-12 col-xs-12 breadcrumb-row">
-                                <Link to={`/my-products${this.props.paramsString?this.props.paramsString:""}`}>{getParameterByName("type",this.props.paramsString?this.props.paramsString:"Products")} List</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product_kind?.name}</span>
+                                <Link to={`/product-kinds`}>List</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product_kind?.name}</span>
 
                             </div>
                         </div>
@@ -1006,7 +1007,7 @@ class ProductKindDetailContent extends Component {
                                                 </>
                                             )}
 
-                                            <QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>
+                                            {/*<QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>*/}
                                     {/*    </div>*/}
 
 
@@ -1028,38 +1029,37 @@ class ProductKindDetailContent extends Component {
                                                 <div className="top-right text-right">
                                                     <div className="d-flex flex-row align-items-center justify-content-center ">
 
-                                                    { (this.state.item.org?._id ===
-                                                        this.props.userDetail.orgId) &&
+
                                                     <MoreMenu
                                                         triggerCallback={(action) =>
                                                             this.callBackResult(action)
                                                         }
 
-                                                        archive={
-                                                            this.state.isOwner
-                                                        }
-                                                        unArchive={
-                                                            this.state.isArchiver
-                                                        }
-                                                        serviceAgent={
-                                                            this.state.isServiceAgent}
-
-                                                        duplicate={
-                                                            this.state.isOwner
-                                                        }
+                                                        // archive={
+                                                        //     this.state.isOwner
+                                                        // }
+                                                        // unArchive={
+                                                        //     this.state.isArchiver
+                                                        // }
+                                                        // serviceAgent={
+                                                        //     this.state.isServiceAgent}
+                                                        //
+                                                        // duplicate={
+                                                        //     this.state.isOwner
+                                                        // }
                                                         edit={
-                                                            this.state.isOwner
+                                                            true
                                                         }
 
                                                         // addEvent={(action)=>
                                                         //     this.callBackResult(action)
                                                         // }
 
-                                                        addEvent={this.state.isOwner}
+                                                        // addEvent={this.state.isOwner}
 
                                                     />
 
-                                                    }
+
 
                                                     </div>
                                                 </div>
@@ -1120,8 +1120,8 @@ class ProductKindDetailContent extends Component {
                                                         aria-label="lab API tabs example">
 
                                                         <Tab label="Product Info" value="1" />
-                                                        
-                                                        <Tab label="Sub Products" value="3" />
+
+                                                        {this.props.item.sub_products&&this.props.item.sub_products.length>0&&   <Tab label="Sub Products" value="3" />}
 
                                                         <Tab label="Attachments" value="7" />
 
@@ -1138,9 +1138,10 @@ class ProductKindDetailContent extends Component {
 
                                                 
                                                 <TabPanel value="3">
-                                                    <SubProductsTab
+                                                    {this.props.item.sub_products&&this.props.item.sub_products.length>0&&
+                                                        <SubProductsTab
                                                         isOwner={this.state.isOwner}
-                                                        item={this.state.item}/>
+                                                        item={this.state.item}/>}
                                                 </TabPanel>
                                                
 
@@ -1211,7 +1212,8 @@ class ProductKindDetailContent extends Component {
                             }} >
 
                                     <div className="form-col-left col-12">
-                                        {this.state.showProductEdit &&  <ProductForm
+                                        {this.state.showProductEdit &&
+                                            <ProductKindForm
                                             hideUpload
                                             edit
                                             triggerCallback={(action) => this.callBackSubmit(action)} heading={"Edit Product"}

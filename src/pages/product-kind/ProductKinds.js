@@ -164,7 +164,7 @@ class ProductKinds extends Component {
 
 
             let data = {
-                dataUrl: this.state.menuOptions[queryData.type ? queryData.type : "ProductKind"].url,
+                dataUrl: "name=ProductKind",
                 linkUrl: linkUrl,
                 linkField: "name",
                 objKey: "ProductKind",
@@ -416,7 +416,7 @@ class ProductKinds extends Component {
     showProductEditPopUp = (key) => {
 
         if (key)
-            axios.get(baseUrl + "product/" + key + "/expand")
+            axios.get(baseUrl + "product-kind/" + key )
                 .then(
                     (response) => {
 
@@ -912,29 +912,25 @@ class ProductKinds extends Component {
         })
 
         if (params) {
-
-            let type = new URLSearchParams(params).get("type");
             const filter = new URLSearchParams(params).get("filter");
             const keyword = new URLSearchParams(params).get("keyword");
 
-            if (type === undefined || type === "undefined") {
-                type = "ProductKinds"
-            }
+
 
             let iniValues = {
                 filter: filter,
                 keyword: keyword,
-                type: type
+
             }
 
-            if (type) {
+
                 this.setState({
                     initialFilter: iniValues
                 })
-            }
+
 
             this.setQueryData({
-                type: type,
+
                 reset: true,
                 filter: filter,
                 keyword: keyword
@@ -942,7 +938,7 @@ class ProductKinds extends Component {
         } else {
 
             this.setQueryData({
-                type: "ProductKinds", reset: true
+                reset: true
             })
 
         }
@@ -954,6 +950,7 @@ class ProductKinds extends Component {
 
         return (
             <Layout
+                skipLayout={this.props.skipLayout}
                 sendParams={this.initializeData}
                 params={{ type: this.state.selectionMode, filter: this.state.selectedFilter, keyword: this.state.selectedSearch }}
             >
@@ -1027,19 +1024,19 @@ class ProductKinds extends Component {
                     ) : null}
 
                     <div className="container  mb-150  pb-4 pt-4">
-                        <PageHeader
+                        {!this.props.skipPageHeader?    <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle="Product Kind"
                             subTitle="All your added product kinds can be found here"
-                        />
+                        />:<></>}
 
-                        <div className="row">
+                        {!this.props.skipAddNew?  <div className="row">
                             <div className="col">
                                 <Link to="/product-kinds" onClick={() => this.handleAddProductKindForm()} className="btn-gray-border  me-2  click-item">
                                     Add Product Kind
                                 </Link>
                             </div>
-                        </div>
+                        </div>:<></>}
 
                         <ErrorBoundary>
                             <PaginationGrid
@@ -1218,6 +1215,8 @@ class ProductKinds extends Component {
                     <div className="form-col-left col-12">
                         {this.state.showQuickView &&
                             <SubproductItem
+
+                                productKind
                                 customLink={`/${this.state.queryData["linkUrl"]}/${this.state.viewItemSelectedKey}?${this.state.queryData["linkParams"] ? this.state.queryData["linkParams"] : ""}`}
                                 hideMoreMenu hideDate smallImage={true} productId={this.state.viewItemSelectedKey} />
                         }
@@ -1263,12 +1262,12 @@ class ProductKinds extends Component {
 
                     <div className="form-col-left col-12">
                         {this.state.showProductEdit &&
-                            <ProductForm
+                            <ProductKindForm
                                 hideUpload edit
 
                                 triggerCallback={(action) => this.showProductEditPopUp()}
 
-                                heading={"Edit Product"}
+                                heading={"Edit Product Kind"}
                                 item={this.state.editItemSelected}
                             />
                         }

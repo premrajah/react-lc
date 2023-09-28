@@ -18,7 +18,7 @@ class InfoTabContent extends Component {
             <div className={"bg-white mt-4 rad-8 p-2 gray-border"}>
 
                 {this.props.item &&
-                (this.props.item.collection.stage) && (
+                (this.props.item.stage) && (
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
@@ -30,14 +30,14 @@ class InfoTabContent extends Component {
                                 style={{ fontSize: "18px" }}
                                 className="text-gray-light  mb-1">
                                 {
-                                    this.props.item.collection.stage
+                                    this.props.item.stage
                                 }
                             </p>
                         </div>
                     </div>
                 )}
                 {this.props.item &&
-                (this.props.item.collection._ts_epoch_ms) && (
+                (this.props.item._ts_epoch_ms) && (
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
@@ -49,14 +49,14 @@ class InfoTabContent extends Component {
                                 style={{ fontSize: "18px" }}
                                 className="text-gray-light  mb-1">
 
-                                {moment(this.props.item.collection._ts_epoch_ms).format("DD MMM YYYY")}
+                                {moment(this.props.item._ts_epoch_ms).format("DD MMM YYYY")}
 
                             </p>
                         </div>
                     </div>
                 )}
                 {this.props.item &&
-                (this.props.item.collection.start_ts) && (
+                (this.props.item.start_ts) && (
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
@@ -67,7 +67,7 @@ class InfoTabContent extends Component {
                             <p
                                 style={{ fontSize: "18px" }}
                                 className="text-gray-light  mb-1">
-                                {moment(this.props.item.collection.start_ts).format("DD MMM YYYY")}
+                                {moment(this.props.item.start_ts).format("DD MMM YYYY")}
 
 
                             </p>
@@ -75,7 +75,7 @@ class InfoTabContent extends Component {
                     </div>
                 )}
                 {this.props.item &&
-                (this.props.item.collection.end_ts) && (
+                (this.props.item.end_ts) && (
                     <div className="row  justify-content-start search-container  pb-2">
                         <div className={"col-auto"}>
                             <p
@@ -86,7 +86,7 @@ class InfoTabContent extends Component {
                             <p
                                 style={{ fontSize: "18px" }}
                                 className=" text-gray-light mb-1">
-                                {moment(this.props.item.collection.end_ts).format("DD MMM YYYY")}
+                                {moment(this.props.item.end_ts).format("DD MMM YYYY")}
                             </p>
                         </div>
                     </div>

@@ -1027,8 +1027,8 @@ class Collections extends Component {
                                         reset: data.reset
                                     })
                                 }}
-                                actions={this.state.selectionMode && this.state.menuOptions[this.state.selectionMode].actions ?
-                                    this.state.menuOptions[this.state.selectionMode].actions : ["edit", "view"]}
+                                // actions={this.state.selectionMode && this.state.menuOptions[this.state.selectionMode].actions ?
+                                //     this.state.menuOptions[this.state.selectionMode].actions : ["edit", "view"]}
                                 checkboxSelection={(this.state.selectionMode !== "Issues") && !this.state.selectAll}
                                 setMultipleSelectFlag={this.setMultipleSelectFlag}
                                 actionCallback={this.actionCallback}

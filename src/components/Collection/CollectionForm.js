@@ -465,14 +465,14 @@ class CollectionForm extends Component {
 
 
         this.setState({
-            countAll:item.collection.all_of.length,
-            countAny:item.collection.any_of.length,
+            countAll:item.all_of.length,
+            countAny:item.any_of.length,
 
-            conditionAll:item.collection.all_of,
-            conditionAny:item.collection.any_of,
+            conditionAll:item.all_of,
+            conditionAny:item.any_of,
 
-            addCountAll:Array.from({length: item.collection.all_of.length}, () => Math.floor(Math.random() * 10000)),
-            addCountAny:Array.from({length: item.collection.any_of.length}, () => Math.floor(Math.random() * 10000)),
+            addCountAll:Array.from({length: item.all_of.length}, () => Math.floor(Math.random() * 10000)),
+            addCountAny:Array.from({length: item.any_of.length}, () => Math.floor(Math.random() * 10000)),
 
         })
 
@@ -645,7 +645,7 @@ class CollectionForm extends Component {
 
         const campaignData = {
 
-            id:this.state.item.collection._id,
+            id:this.state.item._id,
             update:{
                 name:name,
                 description:description,
@@ -951,14 +951,14 @@ class CollectionForm extends Component {
                             {/*</Stepper>*/}
                             <div>
                                 <div>
-                                        <form onSubmit={this.state.item?this.handleUpdate:this.handleSubmit}>
+                                        <form onSubmit={this.props.item?this.handleUpdate:this.handleSubmit}>
 
                                             <div className="row no-gutters">
                                                 <div className="col-12 ">
-                                                    <h1>{this.state.item?this.state.item.collection.name:""}</h1>
+                                                    <h1>{this.state.item?this.state.item.name:""}</h1>
 
                                                     <TextFieldWrapper
-                                                        initialValue={this.state.item?this.state.item.collection.name:""}
+                                                        initialValue={this.state.item?this.state.item.name:""}
                                                         onChange={(value)=>this.handleChange(value,"name")}
                                                         error={this.state.errors["name"]}
                                                         name="name" title="Name" />
@@ -973,7 +973,7 @@ class CollectionForm extends Component {
                                                     <TextFieldWrapper
                                                         multiline
                                                         rows={4}
-                                                        initialValue={this.state.item&&this.state.item.collection.description}
+                                                        initialValue={this.state.item&&this.state.item.description}
                                                         onChange={(value)=>this.handleChange(value,"description")}
                                                         error={this.state.errors["description"]}
                                                         name="description" title="Description" />
@@ -990,7 +990,7 @@ class CollectionForm extends Component {
 
                                                 <p className={"text-bold "}>Choose must conditions </p>
 
-                                                <form onSubmit={this.state.item?this.updateSite:this.handleSubmit}>
+                                                <form onSubmit={this.state.item?this.handleUpdate:this.handleSubmit}>
 
 
                                                     <div className="row no-gutters mt-4">

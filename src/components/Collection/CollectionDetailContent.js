@@ -20,7 +20,14 @@ import ProductsTab from "./ProductsTab";
 import InfoTabContent from "./InfoTabContent";
 import ConditionsContent from "./ConditionsContent";
 import CollectionForm from "./CollectionForm";
-
+import Products from "../../pages/my-products/Products";
+import ProductsNew from "../../pages/my-products/ProductsNew";
+import ProductKinds from "../../pages/product-kind/ProductKinds";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 class CollectionDetailContent extends Component {
 
@@ -173,7 +180,7 @@ class CollectionDetailContent extends Component {
                 .then((res) => {
 
 
-                    this.fetchReleases(this.state.item._key)
+                    // this.fetchReleases(this.state.item?._key)
 
                     this.props.showSnackbar({show:true,severity:"success",message:"Release request cancelled successfully. Thanks"})
 
@@ -444,12 +451,12 @@ class CollectionDetailContent extends Component {
 
         axios
             .post(baseUrl + "product/archive", {
-                product_id: this.state.item._key,
+                product_id: this.state.item?._key,
             })
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product has moved to archive successfully. Thanks"})
 
-                this.ocVCProduct(this.state.item._key)
+                // this.ocVCProduct(this.state.item._key)
             })
             .catch((error) => {
                 // this.setState({
@@ -464,12 +471,12 @@ class CollectionDetailContent extends Component {
 
         axios
             .post(baseUrl + "product/unarchive", {
-                product_id: this.state.item._key,
+                product_id: this.state.item?._key,
             })
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Product unarchived successfully. Thanks"})
 
-                this.ocVCProduct(this.state.item._key)
+                this.ocVCProduct(this.state.item?._key)
             })
             .catch((error) => {
 
@@ -501,7 +508,7 @@ class CollectionDetailContent extends Component {
     }
     submitDuplicateProduct = (event) => {
         axios
-            .post(baseUrl + "product/" + this.state.item._key + "/duplicate", {})
+            .post(baseUrl + "product/" + this.state.item?._key + "/duplicate", {})
             .then((res) => {
                 this.props.showSnackbar({show:true,severity:"success",message:"Duplicate product created successfully. Thanks"})
 
@@ -546,7 +553,7 @@ class CollectionDetailContent extends Component {
 
                 {
                     org_id: site,
-                    product_id: this.state.item._key,
+                    product_id: this.state.item?._key,
                 }
             )
             .then((res) => {
@@ -555,7 +562,7 @@ class CollectionDetailContent extends Component {
                     showReleaseSuccess: true,
                 });
 
-                this.fetchReleases(this.state.item._key)
+                this.fetchReleases(this.state.item?._key)
 
 
             })
@@ -943,19 +950,8 @@ class CollectionDetailContent extends Component {
 
         return (
             <>
-                {this.state.item ? (
-                    <>
 
-                        {this.state.zoomQrCode&&
-                            <div onClick={this.callZoom} className="qr-code-zoom row zoom-out-cursor">
-                                {this.state.item&&this.state.item.qr_artifact && (
-                                    <img
-                                        className="img-fluid qr-code-zoom"
-                                        src={this.state.item.qr_artifact.blob_url}
-                                        alt=''
-                                    />
-                                )}
-                            </div>}
+                    <>
                         <div className="row  pt-4 pb-4  justify-content-start">
                             <div className="text-left ps-0   col-sm-12 col-xs-12 breadcrumb-row">
                                 <Link to={`/collections`}>Collections</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item?.name}</span>
@@ -963,40 +959,7 @@ class CollectionDetailContent extends Component {
                             </div>
                         </div>
                         <div className="row   justify-content-center">
-                            {/*<div className="col-md-4 col-sm-12 col-xs-12 ">*/}
 
-                            {/*    <div className="row stick-left-box">*/}
-                            {/*        /!*<div className="col-12 ">*!/*/}
-                            {/*        /!*    <div className="   ">*!/*/}
-                            {/*        /!*<ImageHeader images={this.state.item.artifacts} />*!/*/}
-                            {/*        {this.state.isLoggedIn &&*/}
-                            {/*            !this.state.hideRegister &&*/}
-                            {/*            this.state.userDetail.orgId !== this.state.item.org._id && (*/}
-                            {/*                <>*/}
-                            {/*                    <div className={"col-12 pb-5 mb-5"}>*/}
-                            {/*                        <div className="row justify-content-start pb-3  ">*/}
-                            {/*                            <div className="col-12 ">*/}
-                            {/*                                <button*/}
-                            {/*                                    onClick={this.showRegister}*/}
-                            {/*                                    className={*/}
-                            {/*                                        "shadow-sm mr-2 btn btn-link btn-green mt-2 mb-2"*/}
-                            {/*                                    }>*/}
-                            {/*                                    Register this product*/}
-                            {/*                                </button>*/}
-                            {/*                            </div>*/}
-                            {/*                        </div>*/}
-                            {/*                    </div>*/}
-                            {/*                </>*/}
-                            {/*            )}*/}
-
-                            {/*        /!*<QrCode callZoom={this.callZoom} hideRegister={this.props.hideRegister}  item={this.state.item}/>*!/*/}
-                            {/*        /!*    </div>*!/*/}
-
-
-                            {/*        /!*</div>*!/*/}
-                            {/*    </div>*/}
-
-                            {/*</div>*/}
 
                             <div className={"col-md-12 col-sm-12 col-xs-12  "}>
 
@@ -1004,10 +967,29 @@ class CollectionDetailContent extends Component {
                                     <div className="col-12 ">
                                         <div className="row">
                                             <div className="col-12 position-relative">
-                                                {this.state.isArchiver && <small className="text-danger d-flex justify-content-start align-items-center "><PriorityHighIcon style={{fontSize:"16px"}} />Archived product.</small>}
-                                                <h4 className="text-capitalize product-title width-90">
-                                                    {this.state.item?.name}
-                                                </h4>
+                                                <Accordion>
+                                                    <AccordionSummary
+                                                        expandIcon={<ExpandMoreIcon />}
+                                                        aria-controls="panel1a-content"
+                                                        id="panel1a-header"
+                                                    >
+                                                         <h4 className="text-capitalize product-title width-100">
+                                                            {this.state.item?.name}
+                                                        </h4>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <>
+                                                            <Typography>
+                                                                {this.state.item?.description}
+                                                            </Typography>
+                                                            {this.state.item?   <InfoTabContent item={this.state.item} />:<></>}
+                                                                {this.state.item?  <ConditionsContent  item={this.state.item} />:<></>}
+                                                        </>
+
+                                                    </AccordionDetails>
+                                                </Accordion>
+
+
                                                 <div className="top-right text-right">
                                                     <div className="d-flex flex-row align-items-center justify-content-center ">
 
@@ -1024,7 +1006,7 @@ class CollectionDetailContent extends Component {
                                     <div className="col-12">
                                         <div className="row">
                                             <div className="col-7">
-                                                <OrgComponent org={this.state.item.org} />
+                                                {/*<OrgComponent org={this.state.item.org} />*/}
                                             </div>
                                             <div className="col-5 text-right justify-content-end d-flex">
                                                 {this.state.isOwner
@@ -1036,15 +1018,6 @@ class CollectionDetailContent extends Component {
                                     </div>
                                 </div>
 
-                                <div className="row justify-content-start pb-3 ">
-                                    <div className="col-auto">
-                                        <p
-                                            style={{ fontSize: "16px" }}
-                                            className={"text-gray-light  "}>
-                                            {this.state.item.description}
-                                        </p>
-                                    </div>
-                                </div>
 
                                 <div className={"listing-row-border "}></div>
 
@@ -1072,32 +1045,35 @@ class CollectionDetailContent extends Component {
                                                             onChange={this.setActiveKey}
 
                                                             aria-label="lab API tabs example">
-                                                            <Tab label="Info" value="1" />
-                                                            <Tab label="Conditions" value="2" />
-                                                            <Tab label="Products" value="3" />
-
+                                                            {/*<Tab label="Info" value="1" />*/}
+                                                            {/*<Tab label="Conditions" value="2" />*/}
+                                                            <Tab label="Products" value="1" />
+                                                            <Tab label="Product Kind" value="2" />
 
 
                                                         </TabList>
                                                     </Box>
 
-                                                    {/*<TabPanel value="1">*/}
-                                                    {/*    <InfoTabContent  item={this.state.item}/>*/}
 
+                                                    <TabPanel value="1">
+                                                       <ProductsNew
+                                                           fromCollections
+                                                           skipLayout
+                                                           skipPageHeader
+                                                           skipDropdown
 
-                                                    {/*</TabPanel>*/}
-
-
-                                                        <TabPanel value="2">
-
-                                                            {/*<ConditionsContent  item={this.state.item} />*/}
-                                                        </TabPanel>
-                                                    <TabPanel value="3">
-                                                        <ProductsTab
-                                                            isOwner={this.state.isOwner}
-                                                            item={this.state.item}/>
+                                                       collection={this.state.item?._key}
+                                                       />
                                                     </TabPanel>
-
+                                                    <TabPanel value="2">
+                                                        <ProductKinds
+                                                            fromCollections
+                                                            skipLayout
+                                                            skipAddNew
+                                                            skipPageHeader
+                                                            collection={this.state.item?._key}
+                                                        />
+                                                    </TabPanel>
 
 
 
@@ -1125,7 +1101,6 @@ class CollectionDetailContent extends Component {
                             <div className="form-col-left col-12">
                                 {this.state.showProductEdit &&
                                     <CollectionForm
-
                                     item={this.state.item}
                                     type={true}
                                     refreshData={ ()=> {
@@ -1136,18 +1111,8 @@ class CollectionDetailContent extends Component {
                             </div>
 
                         </GlobalDialog>
-
-
-
-
-
-
-
-
                     </>
-                ) : (
-                    <div className={"loading-screen"}> Loading .... </div>
-                )}
+
             </>
         );
     }

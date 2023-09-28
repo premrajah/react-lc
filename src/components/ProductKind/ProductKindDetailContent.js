@@ -36,6 +36,7 @@ import InfoTabContent from "../Products/InfoTabContent";
 import QrCode from "../Products/QrCode";
 import AggregatesTab from "../Products/AggregatesTab";
 import SubProductsTab from "../Products/SubProductsTab";
+import InfoTabContentProductKind from './InfoTabContentProductKind';
 
 
 class ProductKindDetailContent extends Component {
@@ -1131,7 +1132,7 @@ class ProductKindDetailContent extends Component {
 
                                                 <TabPanel value="1">
 
-                                                    <InfoTabContent item={this.state.item}/>
+                                                    <InfoTabContentProductKind item={this.state.item}/>
 
                                                 </TabPanel>
 

@@ -172,42 +172,6 @@ class ProductKindForm extends Component {
 
     }
 
-    showSubmitSiteForm = (data) => {
-
-
-        try {
-
-            window.scrollTo(0, 0);
-
-            this.setState({
-                errorRegister: null,
-            });
-
-            this.setState({
-                showSubmitSite: !this.state.showSubmitSite,
-            });
-
-            if (data) {
-                let fields = this.state.fields
-                fields["deliver"] = data._key
-
-
-                this.setState({
-                    selectedSite: data,
-                    fields: fields
-                })
-            } else {
-                this.setState({
-                    selectedSite: null
-                })
-            }
-            this.props.loadSites(this.props.userDetail.token);
-
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
 
     getFiltersCategories() {
         axios.get(baseUrl + "category")
@@ -574,7 +538,6 @@ class ProductKindForm extends Component {
 
         if (!this.props.item) {
             validations.push(validateFormatCreate("units", [{ check: Validators.required, message: 'Required' }], fields))
-            validations.push(validateFormatCreate("deliver", [{ check: Validators.required, message: 'Required' }], fields))
         }
 
         if (!this.state.disableVolume) {
@@ -780,23 +743,19 @@ class ProductKindForm extends Component {
 
     showProductSelection = () => {
 
+        this.props.hide();
 
-        this.props.loadProductsWithoutParentNoListing({ offset: 0, size: this.props.productPageSize, refresh: true });
+        // this.props.loadProductsWithoutParentNoListing({ offset: 0, size: this.props.productPageSize, refresh: true });
 
 
-        if (!this.props.parentProduct) {
-            this.props.setProduct(this.state.product);
-            this.props.setParentProduct(this.state.parentProduct);
-        } else {
-        }
+        // if (!this.props.parentProduct) {
+        //     this.props.setProduct(this.state.product);
+        //     this.props.setParentProduct(this.state.parentProduct);
+        // } else {
+        // }
 
-        // this.props.loadProducts(this.props.userDetail.token);
-        // this.props.loadProductsWithoutParent(this.props.userDetail.token);
-
-        this.props.showProductPopUp({ type: "sub_product_view", show: true });
-
-        this.props.loadProductsWithoutParent({ offset: 0, size: this.props.productPageSize, refresh: true });
-
+        // this.props.showProductPopUp({ type: "sub_product_view", show: true });
+        // this.props.loadProductsWithoutParent({ offset: 0, size: this.props.productPageSize, refresh: true });
     }
 
 
@@ -935,7 +894,7 @@ class ProductKindForm extends Component {
 
             let completeData;
             completeData = {
-                product: productData,
+                product_kind: productData,
                 sub_products: [],
                 is_manufacturer: is_manufacturer,
                 artifact_ids: this.state.images,
@@ -949,7 +908,10 @@ class ProductKindForm extends Component {
             });
             this.setState({ isSubmitButtonPressed: true })
 
-                axios
+                console.log(">> ", completeData, productData)
+                
+                
+                axios   
                     .put(
                         createProductKindUrl,
                         completeData,
@@ -2769,35 +2731,7 @@ class ProductKindForm extends Component {
                     </div>
                 }
 
-                {this.state.showSubmitSite && (
-                    <div
-                        className="row justify-content-center  ">
-
-                        <div className="col-md-12 col-sm-12 col-xs-12 ">
-                            <div
-                                onClick={() => this.showSubmitSiteForm()}
-                                className={
-                                    "custom-label text-bold text-blue  pb-2 click-item"
-                                }>
-                                <ArrowBackIcon /> Add Product Kind
-                            </div>
-                        </div>
-
-                        <div className="col-md-12 col-sm-12 col-xs-12 ">
-                            <div className=" row  justify-content-center align-items-center">
-                                <div className="col-12">
-                                    <h4 className={"blue-text text-heading ellipsis-end mb-0 text-capitalize"}>Add New Site</h4>
-                                </div>
-
-                            </div>
-                            <div className={"row"}>
-                                <div className={"col-12"}>
-                                    {this.state.showSubmitSite && <SiteFormNew dontCallUpdate showHeader={false} refresh={(data) => this.showSubmitSiteForm(data)} />}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                
             </>
         );
     }

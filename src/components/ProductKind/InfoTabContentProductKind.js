@@ -7,7 +7,6 @@ import InfoTabContentItem from '../Products/InfoTabContentItem';
 const InfoTabContentProductKind = ({item}) => {
 
     const {artifacts, product_kind, site} = item;
-    console.log("++ ", product_kind);
 
     const calculateTotalCarbon = (responseItem) => {
         const valuesToArray = Object.entries(responseItem)

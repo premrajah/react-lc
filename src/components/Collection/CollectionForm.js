@@ -13,8 +13,7 @@ import {Error} from "@mui/icons-material";
 import Select from "@mui/material/Select";
 import {campaignStrategyUrl, createCollectionUrl} from "../../Util/Api";
 import AutoCompleteComboBox from "../../components/FormsUI/ProductForm/AutoCompleteComboBox";
-import GreenSmallBtn from "../../components/FormsUI/Buttons/GreenSmallBtn";
-import {cleanFilename, fetchErrorMessage} from "../../Util/GlobalFunctions";
+import {cleanFilename} from "../../Util/GlobalFunctions";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 

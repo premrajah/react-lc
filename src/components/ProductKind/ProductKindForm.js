@@ -1,42 +1,30 @@
 /* eslint-disable no-mixed-operators */
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import "../../Util/upload-file.css";
-import { Cancel, Check, Error, Info, Publish } from "@mui/icons-material";
+import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
 import axios from "axios/index";
-import {
-    baseUrl,
-    ENTITY_TYPES,
-    getMimeTypeAndIcon,
-    MIME_TYPES_ACCEPT, WEIGHT_OPTIONS
-} from "../../Util/Constants";
+import {baseUrl, ENTITY_TYPES, getMimeTypeAndIcon, MIME_TYPES_ACCEPT, WEIGHT_OPTIONS} from "../../Util/Constants";
 import _ from "lodash";
-import { Spinner } from "react-bootstrap";
+import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
-import { createProductKindUrl} from "../../Util/Api";
-import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
-import {
-    cleanFilename, compareDeep,
-    fetchErrorMessage, getModifiedObjectKeys,
-} from "../../Util/GlobalFunctions";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {createProductKindUrl} from "../../Util/Api";
+import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import {cleanFilename, compareDeep, fetchErrorMessage, getModifiedObjectKeys,} from "../../Util/GlobalFunctions";
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
 import GreenButton from "../FormsUI/Buttons/GreenButton";
-import SiteFormNew from "../Sites/SiteFormNew";
 import Slider from '@mui/material/Slider';
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
-import ProductExpandItemNew from "../Products/ProductExpandItemNew";
-import DynamicSelectArrayWrapper from "../FormsUI/ProductForm/DynamicSelect";
 import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
 import ReactPlayer from "react-player/lazy";
 import ArtifactManager from "../FormsUI/ArtifactManager";
 import AddIcon from "@mui/icons-material/Add";
-import { v4 as uuid } from "uuid";
+import {v4 as uuid} from "uuid";
 import PartsList from "../ProductPopUp/PartsList";
 import ProcessesList from "../ProductPopUp/ProcessesList";
 import OutboundTransportList from "../ProductPopUp/OutboundTransportList";

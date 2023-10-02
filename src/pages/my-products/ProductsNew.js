@@ -180,6 +180,10 @@ class ProductsNew extends Component {
                 page: queryData.page?queryData.page:0
             }
 
+            if (this.props.fromCollections){
+                data.objKey=null
+            }
+
             if (!data.sort && this.state.defaultSort) {
                 data.sort = this.state.defaultSort
             }
@@ -487,7 +491,13 @@ class ProductsNew extends Component {
     cancelTokenSeek
     seekCount = async (url) => {
 
-         url = `${url}&count=true`;
+
+        if (!this.props.fromCollections){
+            url = `${url}&count=true`;
+        }else{
+            url = `${url}/count`;
+        }
+
 
 
 
@@ -554,21 +564,26 @@ class ProductsNew extends Component {
 
         try {
             if (data && data.reset) {
-                // await   this.clearList();
                 this.setState({
                     offset: 0,
                     lastPageReached: false,
-
                 });
-
             }
 
             //Check if there are any previous pending requests
             if (typeof this.cancelToken != typeof undefined) {
                 this.cancelToken.cancel()
             }
-            let url = `${baseUrl}seek?${data.dataUrl}`;
 
+            let url = ``;
+            if (this.props.fromCollections){
+                url=`${baseUrl}collection/${this.props.collectionId}/product`
+            }else{
+                 url = `${baseUrl}seek?${data.dataUrl}`;
+            }
+
+
+            if (filters.length>0)
             filters.forEach((item) => {
                 url = url + `&or=${item.key}~%${item.value}%`;
             });
@@ -579,12 +594,14 @@ class ProductsNew extends Component {
 
 
             if (data && data.reset) {
-
                 this.seekCount(url);
                 this.setState({
                     loadingResults: true,
                 });
             }
+
+            if (this.props.fromCollections)
+            url = url + `?`;
             let newSize = this.state.pageSize/this.state.pageSizeDivide;
 
             this.setState({
@@ -599,7 +616,11 @@ class ProductsNew extends Component {
             } else{
             }
 
-            url = `${url}&count=false&offset=${tempOffset?tempOffset:0}&size=${newSize}`;
+            if (!this.props.fromCollections){
+                url = `${url}&count=false`
+            }
+
+            url = `${url}&offset=${tempOffset?tempOffset:0}&size=${newSize}`;
 
             if (data.sort) {
                 url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
@@ -994,10 +1015,16 @@ class ProductsNew extends Component {
 
     }
 
+
+
+
     render() {
 
         return (
+
+            <>
             <Layout
+                skipLayout={this.props.skipLayout}
                 sendParams={this.initializeData}
                 params={{ type: this.state.selectionMode, filter: this.state.selectedFilter, keyword: this.state.selectedSearch }}
             >
@@ -1079,11 +1106,11 @@ class ProductsNew extends Component {
                     ) : null}
 
                     <div className="container  mb-150  pb-4 pt-4">
-                        <PageHeader
+                        {!this.props.skipPageHeader?  <PageHeader
                             pageIcon={CubeBlue}
                             pageTitle={this.state.selectionMode}
                             subTitle="All your added products can be found here"
-                        />
+                        />:<></>}
 
                         <ErrorBoundary>
                             <PaginationGrid
@@ -1124,13 +1151,13 @@ class ProductsNew extends Component {
                                         {/*</div>*/}
                                         <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
 
-                                            <MenuDropdown
+                                            {!this.props.skipDropdown? <MenuDropdown
                                                 maxWidth={"200px"}
                                                 initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
                                                 setSelection={this.setSelection}
                                                 options={["Products", "Service", "Records", "Track", "Issues", "Archive"]}
-                                            />
-                                            {this.state.selectionMode !== "Issues" &&
+                                            />:<></>}
+                                            {!this.props.skipDropdown &&this.state.selectionMode !== "Issues" &&
                                                 <>
                                                     <div className="me-2">
                                                         <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
@@ -1217,6 +1244,10 @@ class ProductsNew extends Component {
 
                     </div>
                 </>
+
+            </Layout>
+
+
                 <GlobalDialog
                     allowScroll
                     size={"lg"}
@@ -1300,7 +1331,7 @@ class ProductsNew extends Component {
                         </div>
                     </ModalBody>
                 </Modal>
-                }
+
                 <Modal
                     aria-labelledby="contained-modal-title-vcenter"
                     show={this.state.showDownloadQrCodes}
@@ -1393,13 +1424,13 @@ class ProductsNew extends Component {
                             <div className="col-12">
                                 {this.state.viewSiteSelected && this.state.viewSiteSelected.geo_codes && this.state.viewSiteSelected.geo_codes.length > 0 &&
                                     <GoogleMap searchLocation
-                                        siteId={this.state.viewSiteSelected._key}
-                                        width={"100%"} height={"300px"}
-                                        location={{
-                                            name: `${this.state.viewSiteSelected.name}`,
-                                            location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
-                                            isCenter: true
-                                        }} />}
+                                               siteId={this.state.viewSiteSelected._key}
+                                               width={"100%"} height={"300px"}
+                                               location={{
+                                                   name: `${this.state.viewSiteSelected.name}`,
+                                                   location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
+                                                   isCenter: true
+                                               }} />}
                             </div>
                         }
                     </div>
@@ -1430,12 +1461,20 @@ class ProductsNew extends Component {
                     </div>
 
                 </GlobalDialog>
-            </Layout>
+            </>
         );
     }
 }
 
-
+// const OptionalLayout=({skipLayout,children,...otherProps})=>{
+//
+//
+//     return (
+//         !skipLayout?<Layout {...otherProps}>{children}</Layout>:children
+//     )
+//
+//
+// }
 
 
 const mapStateToProps = (state) => {

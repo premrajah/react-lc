@@ -12,7 +12,7 @@ import { validateFormatCreate, validateInputs, Validators } from "../../Util/Val
 import { ArrowDropDown, ArrowDropUp } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomPopover from "./CustomPopover";
-import Tooltip from '@mui/material/Tooltip';
+import {loadCurrentProductKind} from "../../store/actions/actions";
 
 const ArtifactManager = ({
     entityId,
@@ -21,6 +21,7 @@ const ArtifactManager = ({
     loadCurrentSite,
     showSnackbar,
     refresh,
+                             loadCurrentProductKind,
     type,
     setArtifacts,
     ...props
@@ -74,6 +75,14 @@ const ArtifactManager = ({
 
             if (entityId) handleReplaceArtifacts(payload);
         }
+        if (entityType === ENTITY_TYPES.PRODUCT_KIND) {
+            const payload = {
+                product_kind_id: entityId,
+                artifact_ids: artifactIds,
+            };
+
+            if (entityId) handleReplaceArtifacts(payload);
+        }
 
     };
 
@@ -93,13 +102,28 @@ const ArtifactManager = ({
         else if (entityType === ENTITY_TYPES.Product) {
             url = `${baseUrl}product/artifact/replace`
         }
+        else if (entityType === ENTITY_TYPES.PRODUCT_KIND) {
+            url = `${baseUrl}product-kind/artifact/replace`
+        }
+
 
         axios
             .post(url, payload)
             .then((response) => {
                 if (response.status === 200) {
 
-                    loadCurrentProduct(payload.product_id);
+                    if (entityType === ENTITY_TYPES.Site) {
+                        loadCurrentSite(payload.site_id);
+                    }
+
+                    else if (entityType === ENTITY_TYPES.Product) {
+                        loadCurrentProduct(payload.product_id);
+                    }
+                    else if (entityType === ENTITY_TYPES.PRODUCT_KIND) {
+                        loadCurrentProductKind(entityId);
+                    }
+
+
                     showSnackbar({
                         show: true,
                         severity: "success",
@@ -157,6 +181,47 @@ const ArtifactManager = ({
             });
         }
     };
+    const addArtifactToProductKind = async (key, type) => {
+        try {
+            const payload = {
+                product_kind_id: entityId,
+                artifact_ids: [key],
+            };
+
+            const uploadToServer = await axios.post(`${baseUrl}product-kind/artifact`, payload);
+
+            if (uploadToServer.status === 200) {
+                setIsLoading(false);
+
+                setUploadedFiles([]); // reset uploaded files
+
+                // if (
+                //     type === MIME_TYPES.PNG ||
+                //     type === MIME_TYPES.JPEG ||
+                //     type === MIME_TYPES.JPG
+                // ) {
+
+
+                loadCurrentProductKind(entityId);
+                // }
+
+                showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Artifacts added successfully to product kind. Thanks",
+                });
+            }
+        } catch (error) {
+            console.log("addArtifactTo error ", error);
+            setIsLoading(false);
+            showSnackbar({
+                show: true,
+                severity: "warning",
+                message: "Unable to add Artifacts to the product kind at this time.",
+            });
+        }
+    };
+
     const addArtifactToSite = async (key, type) => {
         try {
             const payload = {
@@ -232,6 +297,15 @@ const ArtifactManager = ({
                             const a = uploadedFile.data.data;
                             setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
                         }
+                       else  if (entityType === ENTITY_TYPES.PRODUCT_KIND) {
+                            // add to product
+                            if (type !== "add") {
+                                await addArtifactToProductKind(uploadedToCloudDataKey, file.type);
+                            }
+
+                            const a = uploadedFile.data.data;
+                            setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
+                        }
                         else if (entityType === ENTITY_TYPES.Site) {
                             // add to product
                             if (type !== "add") {
@@ -241,6 +315,7 @@ const ArtifactManager = ({
                             const a = uploadedFile.data.data;
                             setArtifactsTmp((artifactsTmp) => [a].concat(artifactsTmp));
                         }
+
 
 
                     }
@@ -484,15 +559,13 @@ const ArtifactManager = ({
                                             <ArtifactIconDisplayBasedOnMimeType
                                                 artifact={artifact}
                                             />
-                                            <Tooltip title={artifact.blob_url ?? ""}>
-                                                <a href={artifact.blob_url} target="_blank" rel="noopener noreferrer">
-                                                    <span
-                                                        className="ms-4  text-blue text-bold"
-                                                        rel="noopener noreferrer">
-                                                        {artifact.name}
-                                                    </span>
-                                                </a>
-                                            </Tooltip>
+                                            <a href={artifact.blob_url} target="_blank" rel="noopener noreferrer">
+                                                <span
+                                                    className="ms-4  text-blue text-bold"
+                                                    rel="noopener noreferrer">
+                                                    {artifact.name}
+                                                </span>
+                                            </a>
                                         </div>
                                         <div className="col-2 d-flex justify-content-end">
                                             {!props.hideMenu && (
@@ -545,6 +618,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         loadCurrentSite: (data) => dispatch(actionCreator.loadCurrentSite(data)),
         loadCurrentProduct: (data) => dispatch(actionCreator.loadCurrentProduct(data)),
+        loadCurrentProductKind: (data) => dispatch(actionCreator.loadCurrentProductKind(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
     };

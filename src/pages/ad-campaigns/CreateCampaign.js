@@ -1498,7 +1498,7 @@ let item=null
 
 
                                                     <div className="row   pt-2 ">
-                                                        <div className="col-12 mt-2  pb-4">
+                                                        <div className="col-12 mt-2  ">
                                     <span
                                         onClick={this.addCountAll}
                                         className={
@@ -1613,7 +1613,7 @@ let item=null
 
 
                                                     <div className="row   pt-2 ">
-                                                        <div className="col-12 mt-2 mb-4 pb-4">
+                                                        <div className="col-12 mt-2 ">
                                     <span
                                         onClick={this.addCountAny}
                                         className={

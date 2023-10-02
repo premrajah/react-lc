@@ -43,6 +43,7 @@ import {
     SERVICE_AGENT_REQUEST,
     SHOW_SNACKBAR,
     CURRENT_PRODUCT,
+    CURRENT_PRODUCT_KIND,
     GET_LISTINGS,
     PRODUCT_NPARENT_LIST_PAGE,
     CURRENT_SITE,
@@ -55,7 +56,7 @@ import {
     TOGGLE_GLOBAL_DIALOG,
     USER_CONTEXT,
     ORG_CACHE,
-    REFRESH_PAGE, EMPTY_CURRENT, CURRENT_PRODUCT_LOADING, USER_CACHE, REFRESH_PAGE_SAVE_STATE
+    REFRESH_PAGE, EMPTY_CURRENT, CURRENT_PRODUCT_LOADING, USER_CACHE, REFRESH_PAGE_SAVE_STATE, CURRENT_COLLECTION
 } from "../types";
 
 // Added by Chandan For Google Analytics
@@ -307,6 +308,18 @@ export const loadCurrentProduct = (data, refresh) => {
     };
 };
 
+export const loadCurrentProductKind = (data, refresh) => {
+    return (dispatch) => {
+
+        if (refresh) {
+            dispatch(emptyCurrent());
+        }
+        dispatch(currentProductLoading(true));
+
+        dispatch(loadCurrentProductKindSync(data));
+    };
+};
+
 
 export const currentProductLoading = (data) => {
 
@@ -335,6 +348,23 @@ export const setCurrentProduct = (data) => {
 
 };
 
+export const setCurrentProductKind = (data) => {
+
+    return {
+        type: CURRENT_PRODUCT_KIND,
+        value: data,
+    };
+
+};
+export const setCurrentCollection = (data) => {
+
+    return {
+        type: CURRENT_COLLECTION,
+        value: data,
+    };
+
+
+};
 export const setCurrentSite = (data) => {
 
     return {
@@ -356,6 +386,36 @@ export const loadCurrentProductSync = (data) => (dispatch) => {
                     let responseAll = response.data;
 
                     dispatch({ type: CURRENT_PRODUCT, value: responseAll.data });
+                    dispatch(currentProductLoading(false));
+
+                },
+                (error) => {
+                    dispatch(currentProductLoading(false));
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+
+                    dispatch({ type: PRODUCT_NOT_FOUND, value: true });
+
+                }
+            );
+
+    } catch (e) {
+        console.log(e)
+
+
+    }
+};
+export const loadCurrentProductKindSync = (data) => (dispatch) => {
+
+    try {
+        axios
+            .get(baseUrl + "product-kind/" + encodeUrl(data) )
+            .then(
+                (response) => {
+                    let responseAll = response.data;
+
+                    dispatch({ type: CURRENT_PRODUCT_KIND, value: responseAll.data });
                     dispatch(currentProductLoading(false));
 
                 },

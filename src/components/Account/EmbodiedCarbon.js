@@ -53,10 +53,18 @@ const EmbodiedCarbon = (props) => {
                 // const url = URL.createObjectURL(blob);
 
                 // const blob=await res.blob()
+
+                let output_filename = exportFileName ? `${exportFileName}.zip` : `${date}_embodied_carbon_result.zip`;
+
+                if(res.headers['x-filename'] !== null && res.headers['x-filename'] !== undefined) {
+                    output_filename = res.headers['x-filename'];
+                }
+
                 const url = URL.createObjectURL(res.data);
+                // const url = URL.createObjectURL(new Blob([res.data]));
 
                 a.href = url;
-                a.download = exportFileName ? `${exportFileName}.xlsx` : `${date}_embodied_carbon_result.xlsx`;
+                a.download = output_filename;
                 a.click();
                 window.URL.revokeObjectURL(url);
 

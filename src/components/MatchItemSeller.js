@@ -10,7 +10,7 @@ import GreenButton from "./FormsUI/Buttons/GreenButton";
 import BlueBorderButton from "./FormsUI/Buttons/BlueBorderButton";
 import GlobalDialog from "./RightBar/GlobalDialog";
 import GrayBorderBtn from "./FormsUI/Buttons/GrayBorderBtn";
-import {fetchErrorMessage, getActionName, getTimeFormat} from "../Util/GlobalFunctions";
+import {fetchErrorMessage, getActionName, getDateFormat} from "../Util/GlobalFunctions";
 import GreenSmallBtn from "./FormsUI/Buttons/GreenSmallBtn";
 
 class MatchItemSeller extends Component {
@@ -637,7 +637,7 @@ class MatchItemSeller extends Component {
                                         <span> Message: <span className="text-gray-light">{message.message.text}</span></span>
                                     </div>
                                     <div className="col-3 text-right">
-                                        <span className="text-gray-light "><span className="me-4"> {getTimeFormat(message.message._ts_epoch_ms)}</span></span>
+                                        <span className="text-gray-light "><span className="me-4"> {getDateFormat(message.message._ts_epoch_ms)}</span></span>
                                     </div>
                                 </div>
                                 </React.Fragment>

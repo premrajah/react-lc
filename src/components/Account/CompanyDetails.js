@@ -20,7 +20,7 @@ import Add from "@mui/icons-material/Add";
 import Minus from "@mui/icons-material/Remove";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import BlueBorderButton from "../FormsUI/Buttons/BlueBorderButton";
-import {getTimeFormat} from "../../Util/GlobalFunctions";
+import {getDateFormat} from "../../Util/GlobalFunctions";
 import OrgSettings from "./OrgSettings";
 import Box from "@mui/material/Box";
 import TabContext from "@mui/lab/TabContext";
@@ -929,7 +929,7 @@ class CompanyDetails extends Component {
                     <div id={`${item._key}-${index}`} key={`${item._key}-${index}`}
                          className=" row d-flex align-items-start mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
                             <div className={"col-7 text-blue "}>
-                            <OrgComponent orgId={item._to.replace("Org/",'')} /> <br/> <small className={"text-gray-light"}>{getTimeFormat(item._ts_epoch_ms)}</small>
+                            <OrgComponent orgId={item._to.replace("Org/",'')} /> <br/> <small className={"text-gray-light"}>{getDateFormat(item._ts_epoch_ms)}</small>
                         </div>
                         <div className={"col-3  "}>
                             Status: <span className={"text-pink"}>Pending Approval</span>

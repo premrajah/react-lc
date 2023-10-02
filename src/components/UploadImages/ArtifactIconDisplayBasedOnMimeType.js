@@ -58,62 +58,62 @@ const ArtifactIconDisplayBasedOnMimeType = ({ artifact, showSnackbar }) => {
 
     const DisplayIcons = (mime) => {
 
-        const domain = new URL(artifact.blob_url);
-        const hostname = domain.hostname.toString();
+        if (artifact){
+            const domain = new URL(artifact?.blob_url);
+            const hostname = domain.hostname.toString();
 
-        switch (mime) {
-            // Images
-            case MIME_TYPES.JPG:
-            case MIME_TYPES.JPEG:
-            case MIME_TYPES.PNG:
-                return <>
-                    {/*<ImageIcon*/}
-                    {/*    style={FileIconStyle}*/}
-                    {/*    className="rad-4 click-item"*/}
-                    {/*    onClick={() => handleArtifactImageDialogDisplayOpen(URL)}*/}
-                    {/*/>*/}
-                    <span
-                        className="rad-4 click-item"
-                        onClick={() => handleArtifactImageDialogDisplayOpen(artifact.blob_url)}
-                    >
-                        <img src={artifact.blob_url} alt={artifact.name} style={ImageIconStyle} />
-                    </span>
-                </>
-            // Videos
-            case MIME_TYPES.MOV:
-            case MIME_TYPES.MP4:
-                return hostname.includes('youtube') ? <OndemandVideoIcon
-                    style={FileIconStyle}
-                    className="rad-4 click-item"
-                    onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}
-                /> : <LinkIcon
-                    style={FileIconStyle}
-                    className="rad-4 click-item"
-                    onClick={() => handleArtifactDialogDisplayOpen(artifact.blob_url)}
-                />;
-            // Documents
-            case MIME_TYPES.XLSX:
-            case MIME_TYPES.XLS:
-            case MIME_TYPES.TEXT_RTF:
-            case MIME_TYPES.APP_RTF:
-            case MIME_TYPES.DOCX:
-            case MIME_TYPES.DOC:
-            case MIME_TYPES.PDF:
-                return (
-                    <a href={artifact.blob_url} download>
-                        <DescriptionIcon
-                            style={FileIconStyle}
+            switch (mime) {
+                // Images
+                case MIME_TYPES.JPG:
+                case MIME_TYPES.JPEG:
+                case MIME_TYPES.PNG:
+                    return <>
+
+                        <span
                             className="rad-4 click-item"
-                        />
-                    </a>
-                );
-            default:
-                return <BrowserNotSupportedIcon style={FileIconStyle} />;
+                            onClick={() => handleArtifactImageDialogDisplayOpen(artifact?.blob_url)}
+                        >
+                        <img src={artifact?.blob_url} alt={artifact?.name} style={ImageIconStyle} />
+                    </span>
+                    </>
+                // Videos
+                case MIME_TYPES.MOV:
+                case MIME_TYPES.MP4:
+                    return hostname.includes('youtube') ? <OndemandVideoIcon
+                        style={FileIconStyle}
+                        className="rad-4 click-item"
+                        onClick={() => handleArtifactDialogDisplayOpen(artifact?.blob_url)}
+                    /> : <LinkIcon
+                        style={FileIconStyle}
+                        className="rad-4 click-item"
+                        onClick={() => handleArtifactDialogDisplayOpen(artifact?.blob_url)}
+                    />;
+                // Documents
+                case MIME_TYPES.CSV:
+                case MIME_TYPES.XLSX:
+                case MIME_TYPES.XLS:
+                case MIME_TYPES.TEXT_RTF:
+                case MIME_TYPES.APP_RTF:
+                case MIME_TYPES.DOCX:
+                case MIME_TYPES.DOC:
+                case MIME_TYPES.PDF:
+                    return (
+                        <a href={artifact?.blob_url} download>
+                            <DescriptionIcon
+                                style={FileIconStyle}
+                                className="rad-4 click-item"
+                            />
+                        </a>
+                    );
+                default:
+                    return <BrowserNotSupportedIcon style={FileIconStyle} />;
+            }
         }
+
     };
 
     return <>
-        {DisplayIcons(artifact.mime_type)}
+        {DisplayIcons(artifact?.mime_type)}
 
         <GlobalDialog hideHeading removePadding size="md" show={artifactImageDialogDisplay} hide={() => handleArtifactImageDialogDisplayClose()}>
             <div className="col-12">

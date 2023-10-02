@@ -81,7 +81,7 @@ const DynamicAutoCompleteBox=(props)=> {
                 (item) => props.item.fields.category === item.category
             )[0]&&props.list.filter(
                 (item) => props.item.fields.category === item.category
-            )[0].types:[]
+            )[0]?.types:[]
             setTypes(typeValues)
 
 
@@ -89,14 +89,18 @@ const DynamicAutoCompleteBox=(props)=> {
 
                 let stateValues=typeValues.filter(
                     (item) => props.item.fields.type === item.type
-                )[0].states
+                )[0]?.states
+
+                if (stateValues)
                 setStates(stateValues)
 
-                if(props.item.fields?.state&&stateValues.length>0){
+                if(props.item.fields?.state&&stateValues?.length>0){
 
                     let unitValues=stateValues.filter(
                         (item) => props.item.fields.state === item.state
-                    )[0].units
+                    )[0]?.units
+
+                    if (unitValues)
                     setUnits(unitValues)
                 }
             }

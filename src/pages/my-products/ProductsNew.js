@@ -180,6 +180,10 @@ class ProductsNew extends Component {
                 page: queryData.page?queryData.page:0
             }
 
+            if (this.props.fromCollections){
+                data.objKey=null
+            }
+
             if (!data.sort && this.state.defaultSort) {
                 data.sort = this.state.defaultSort
             }
@@ -487,7 +491,13 @@ class ProductsNew extends Component {
     cancelTokenSeek
     seekCount = async (url) => {
 
-         url = `${url}&count=true`;
+
+        if (!this.props.fromCollections){
+            url = `${url}&count=true`;
+        }else{
+            url = `${url}/count`;
+        }
+
 
 
 
@@ -567,7 +577,14 @@ class ProductsNew extends Component {
             if (typeof this.cancelToken != typeof undefined) {
                 this.cancelToken.cancel()
             }
-            let url = `${baseUrl}seek?${data.dataUrl}`;
+
+            let url = ``;
+            if (this.props.fromCollections){
+                url=`${baseUrl}collection/${this.props.collectionId}/product`
+            }else{
+                 url = `${baseUrl}seek?${data.dataUrl}`;
+            }
+
 
             filters.forEach((item) => {
                 url = url + `&or=${item.key}~%${item.value}%`;
@@ -579,12 +596,14 @@ class ProductsNew extends Component {
 
 
             if (data && data.reset) {
-
                 this.seekCount(url);
                 this.setState({
                     loadingResults: true,
                 });
             }
+
+            if (this.props.fromCollections)
+            url = url + `?`;
             let newSize = this.state.pageSize/this.state.pageSizeDivide;
 
             this.setState({
@@ -599,7 +618,11 @@ class ProductsNew extends Component {
             } else{
             }
 
-            url = `${url}&count=false&offset=${tempOffset?tempOffset:0}&size=${newSize}`;
+            if (!this.props.fromCollections){
+                url = `${url}&count=false`
+            }
+
+            url = `${url}&offset=${tempOffset?tempOffset:0}&size=${newSize}`;
 
             if (data.sort) {
                 url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
@@ -1310,7 +1333,7 @@ class ProductsNew extends Component {
                         </div>
                     </ModalBody>
                 </Modal>
-                }
+
                 <Modal
                     aria-labelledby="contained-modal-title-vcenter"
                     show={this.state.showDownloadQrCodes}

@@ -198,7 +198,11 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
         setTimeout(()=>{
 
             items.forEach((listItem)=>{
-                let Product=listItem[`${data.objKey}`]
+
+
+
+                let Product=data.objKey?listItem[`${data.objKey}`]:listItem
+
 
                 if (Product){
 

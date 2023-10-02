@@ -2349,7 +2349,7 @@ class ProductKindForm extends Component {
                                                 showDelete
                                                 item={this.props.item ? this.props.item : null}
                                                 type={this.props.item ? "edit" : "add"}
-                                                entityType={ENTITY_TYPES.Collection}
+                                                entityType={ENTITY_TYPES.PRODUCT_KIND}
                                                 setFiles={(files) => this.setState({ files: files })}
                                                 entityId={this.props.item ? this.props.item.product_kind._key : null}
                                             />

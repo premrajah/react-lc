@@ -93,7 +93,7 @@ export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
 
 export const ENTITY_TYPES = {
     Product: "product",
-    Collection: "collection",
+    PRODUCT_KIND: "product-kind",
     PRODUCT: "Product",
     Site: "site",
     Event: "event"

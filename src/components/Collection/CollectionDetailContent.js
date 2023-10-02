@@ -1061,8 +1061,7 @@ class CollectionDetailContent extends Component {
                                                            skipLayout
                                                            skipPageHeader
                                                            skipDropdown
-
-                                                       collection={this.state.item?._key}
+                                                           collectionId={this.state.item?._key}
                                                        />
                                                     </TabPanel>
                                                     <TabPanel value="2">
@@ -1071,7 +1070,7 @@ class CollectionDetailContent extends Component {
                                                             skipLayout
                                                             skipAddNew
                                                             skipPageHeader
-                                                            collection={this.state.item?._key}
+                                                            collectionId={this.state.item?._key}
                                                         />
                                                     </TabPanel>
 

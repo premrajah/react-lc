@@ -164,7 +164,7 @@ class ProductKinds extends Component {
 
 
             let data = {
-                dataUrl: "name=ProductKind",
+                dataUrl: "name=ProductKind&no_parent=true",
                 linkUrl: linkUrl,
                 linkField: "name",
                 objKey: "ProductKind",

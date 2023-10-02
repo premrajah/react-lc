@@ -109,10 +109,7 @@ class ProductKindDetail extends Component {
 
 
         return (
-
             <>
-
-
                 {!this.state.loading &&
                     !this.props.currentProductKind ? (
                     <NotFound />
@@ -143,10 +140,7 @@ class ProductKindDetail extends Component {
                             </div>}
                     </>
                 }
-
-
             </>
-
         );
     }
 }

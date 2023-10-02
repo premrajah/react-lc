@@ -1232,7 +1232,7 @@ class ProductKinds extends Component {
                         {this.state.showQuickView &&
                             <SubproductItem
 
-                                productKind
+                                fromProductKind
                                 customLink={`/${this.state.queryData["linkUrl"]}/${this.state.viewItemSelectedKey}?${this.state.queryData["linkParams"] ? this.state.queryData["linkParams"] : ""}`}
                                 hideMoreMenu hideDate smallImage={true} productId={this.state.viewItemSelectedKey} />
                         }

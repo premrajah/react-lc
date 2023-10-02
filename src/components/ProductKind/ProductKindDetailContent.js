@@ -1100,7 +1100,7 @@ class ProductKindDetailContent extends Component {
 
                                                         <Tab label="Product Info" value="1" />
                                                         <Tab label="Sub Product Kinds" value="2" />
-                                                           <Tab label="Sub Products" value="3" />
+                                                           {/*<Tab label="Sub Products" value="3" />*/}
 
                                                         <Tab label="Attachments" value="7" />
 
@@ -1120,13 +1120,13 @@ class ProductKindDetailContent extends Component {
                                                             productKindType
                                                             item={this.state.item}/>
                                                 </TabPanel>
-                                                <TabPanel value="3">
+                                                {/*<TabPanel value="3">*/}
 
-                                                        <SubProductsTab
-                                                            fromProductKind
-                                                            productType
-                                                        item={this.state.item}/>
-                                                </TabPanel>
+                                                {/*        <SubProductsTab*/}
+                                                {/*            fromProductKind*/}
+                                                {/*            productType*/}
+                                                {/*        item={this.state.item}/>*/}
+                                                {/*</TabPanel>*/}
                                               
                                                 <TabPanel value="7">
 

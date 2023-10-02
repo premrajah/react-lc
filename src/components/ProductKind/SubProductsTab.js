@@ -129,16 +129,16 @@ class SubProductsTab extends Component {
                                     Create New
                                 </button>
 
-                                <button
-                                    className={
-                                        "btn-gray-border click-item ms-2"
-                                    }
-                                    // data-parent={this.state.item.product._key}
-                                    // onClick={this.showExisting}
-                                >
-                                    <AddLinkIcon />
-                                    Link Existing
-                                </button>
+                                {/*<button*/}
+                                {/*    className={*/}
+                                {/*        "btn-gray-border click-item ms-2"*/}
+                                {/*    }*/}
+                                {/*    // data-parent={this.state.item.product._key}*/}
+                                {/*    // onClick={this.showExisting}*/}
+                                {/*>*/}
+                                {/*    <AddLinkIcon />*/}
+                                {/*    Link Existing*/}
+                                {/*</button>*/}
 
                             </div>
 

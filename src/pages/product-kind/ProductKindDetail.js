@@ -67,7 +67,7 @@ class ProductKindDetail extends Component {
                 .then(
                     (response) => {
                         let responseAll = response.data.data;
-                        console.log(">> ", responseAll);
+                        // console.log(">> ", responseAll);
                         this.props.setCurrentProductKind(responseAll)
                         this.props.loading(false)
                         this.setState({

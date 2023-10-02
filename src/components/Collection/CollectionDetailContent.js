@@ -1043,7 +1043,7 @@ class CollectionDetailContent extends Component {
                                                             aria-label="lab API tabs example">
                                                             {/*<Tab label="Info" value="1" />*/}
                                                             {/*<Tab label="Conditions" value="2" />*/}
-                                                            <Tab label="Products" value="1" />
+                                                             <Tab label="Products" value="1" />
                                                             <Tab label="Product Kind" value="2" />
 
 

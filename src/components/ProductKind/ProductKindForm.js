@@ -944,7 +944,9 @@ class ProductKindForm extends Component {
                             loading: false,
                             isSubmitButtonPressed: false
                         });
-                        this.props.showSnackbar({ show: true, severity: "error", message: fetchErrorMessage(error) })
+                        console.log("collection form ",error)
+
+                        this.props.showSnackbar({ show: true, severity: "error", message: "Unknown error occurred, please try after sometime." })
 
                     });
 
@@ -1440,7 +1442,7 @@ class ProductKindForm extends Component {
 
     handleChangePartsList = (value, valueText, field, uId, index, type) => {
 
-        console.log(value, field)
+        // console.log(value, field)
         // debugger
 
 
@@ -1588,9 +1590,7 @@ class ProductKindForm extends Component {
                 console.log(e)
             }
 
-        console.log("old pro", this.state.prevExistingItemsProcesses)
-        console.log("old parts", this.state.prevExistingItemsParts)
-        console.log("old outbound", this.state.prevExistingItemsOutboundTransport)
+
     }
 
     handleView = (productId, type) => {
@@ -1926,7 +1926,7 @@ class ProductKindForm extends Component {
                                                                 onChange={(value) => {
                                                                     this.handleChangeProduct(value, "units")
 
-                                                                    console.log(value)
+
                                                                     if (value !== "kgs") {
                                                                         this.setState({
                                                                             weightOptionsShow: true

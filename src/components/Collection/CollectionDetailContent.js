@@ -1041,17 +1041,16 @@ class CollectionDetailContent extends Component {
                                                             onChange={this.setActiveKey}
 
                                                             aria-label="lab API tabs example">
-                                                            {/*<Tab label="Info" value="1" />*/}
-                                                            {/*<Tab label="Conditions" value="2" />*/}
-                                                             <Tab label="Products" value="1" />
-                                                            <Tab label="Product Kind" value="2" />
+
+                                                            {this.state.item?.type==="product"&&  <Tab label="Products" value="1" />}
+                                                            {this.state.item?.type==="product_kind"&&      <Tab label="Product Kind" value="2" />}
 
 
                                                         </TabList>
                                                     </Box>
 
 
-                                                    <TabPanel value="1">
+                                                    {this.state.item?.type==="product"&& <TabPanel value="1">
                                                        <ProductsNew
                                                            fromCollections
                                                            skipLayout
@@ -1059,8 +1058,9 @@ class CollectionDetailContent extends Component {
                                                            skipDropdown
                                                            collectionId={this.state.item?._key}
                                                        />
-                                                    </TabPanel>
-                                                    <TabPanel value="2">
+                                                    </TabPanel>}
+                                                    {this.state.item?.type==="product_kind"&&
+                                                        <TabPanel value="2">
                                                         <ProductKinds
                                                             fromCollections
                                                             skipLayout
@@ -1068,7 +1068,7 @@ class CollectionDetailContent extends Component {
                                                             skipPageHeader
                                                             collectionId={this.state.item?._key}
                                                         />
-                                                    </TabPanel>
+                                                    </TabPanel>}
 
 
 

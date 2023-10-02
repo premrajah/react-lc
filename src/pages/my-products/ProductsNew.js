@@ -564,13 +564,10 @@ class ProductsNew extends Component {
 
         try {
             if (data && data.reset) {
-                // await   this.clearList();
                 this.setState({
                     offset: 0,
                     lastPageReached: false,
-
                 });
-
             }
 
             //Check if there are any previous pending requests
@@ -586,6 +583,7 @@ class ProductsNew extends Component {
             }
 
 
+            if (filters.length>0)
             filters.forEach((item) => {
                 url = url + `&or=${item.key}~%${item.value}%`;
             });

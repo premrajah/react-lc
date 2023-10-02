@@ -955,7 +955,7 @@ class ProductKindDetailContent extends Component {
                         </div>}
                         <div className="row  pt-4 pb-4  justify-content-start">
                             <div className="text-left ps-0   col-sm-12 col-xs-12 breadcrumb-row">
-                                <Link to={`/product-kinds`}>List</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product_kind?.name}</span>
+                                <Link to={`/product-kinds`}>Product Kind List</Link><span className={"divider-breadcrumb ps-2 pe-2"}>&#10095;</span><span className={"text-capitalize text-breadcrumb-light"}> {this.state.item.product_kind?.name}</span>
 
                             </div>
                         </div>

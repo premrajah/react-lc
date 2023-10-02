@@ -142,9 +142,7 @@ class ProductKinds extends Component {
             }
 
 
-            this.setState({
-                selectionMode: queryData.type
-            })
+
             let linkUrl = `product-kind`
             let linkParams = `type=${queryData.type}`
             // if (!queryData.reset){
@@ -968,7 +966,7 @@ class ProductKinds extends Component {
             <Layout
                 skipLayout={this.props.skipLayout}
                 sendParams={this.initializeData}
-                params={{ type: this.state.selectionMode, filter: this.state.selectedFilter, keyword: this.state.selectedSearch }}
+                // params={{ type: this.state.selectionMode, filter: this.state.selectedFilter, keyword: this.state.selectedSearch }}
             >
                 <>
                     {this.state.selectedProducts.length > 0 ? (
@@ -1067,7 +1065,7 @@ class ProductKinds extends Component {
                                 currentPage={this.state.queryData.page ? this.state.queryData.page : 0}
                                 loadMore={(data) => {
                                     this.setQueryData({
-                                        type: this.state.selectionMode,
+
                                         filter: data.searchFilter,
                                         keyword: data.searchValue,
                                         sort: data.sort,
@@ -1075,9 +1073,8 @@ class ProductKinds extends Component {
                                         reset: data.reset
                                     })
                                 }}
-                                actions={this.state.selectionMode && this.state.menuOptions[this.state.selectionMode].actions ?
-                                    this.state.menuOptions[this.state.selectionMode].actions : ["edit", "view"]}
-                                checkboxSelection={(this.state.selectionMode !== "Issues") && !this.state.selectAll}
+                                actions={["edit", "view"]}
+                                checkboxSelection={true}
                                 setMultipleSelectFlag={this.setMultipleSelectFlag}
                                 actionCallback={this.actionCallback}
                                 data={this.state.queryData}

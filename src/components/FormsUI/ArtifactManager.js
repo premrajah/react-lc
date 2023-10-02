@@ -21,6 +21,7 @@ const ArtifactManager = ({
     loadCurrentSite,
     showSnackbar,
     refresh,
+                             loadCurrentProductKind,
     type,
     setArtifacts,
     ...props

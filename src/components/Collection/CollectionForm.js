@@ -529,6 +529,8 @@ class CollectionForm extends Component {
 
     handleSubmit = (event) => {
 
+        event.stopPropagation();
+        event.preventDefault();
 
         let fields=this.state.fields
 
@@ -610,8 +612,9 @@ class CollectionForm extends Component {
 
 
 
-    handleUpdate = () => {
-
+    handleUpdate = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
         let fields=this.state.fields
 
         const name = fields["name"];
@@ -951,7 +954,7 @@ class CollectionForm extends Component {
                             {/*</Stepper>*/}
                             <div>
                                 <div>
-                                        <form onSubmit={this.props.item?this.handleUpdate:this.handleSubmit}>
+                                    <form onSubmit={this.state.item?this.handleUpdate:this.handleSubmit}>
 
                                             <div className="row no-gutters">
                                                 <div className="col-12 ">
@@ -980,7 +983,7 @@ class CollectionForm extends Component {
 
                                                 </div>
                                             </div>
-                                        </form>
+
 
                                         <div className="row p-3">
 
@@ -990,7 +993,7 @@ class CollectionForm extends Component {
 
                                                 <p className={"text-bold "}>Choose must conditions </p>
 
-                                                <form onSubmit={this.state.item?this.handleUpdate:this.handleSubmit}>
+                                                {/*<form onSubmit={this.state.item?this.handleUpdate:this.handleSubmit}>*/}
 
 
                                                     <div className="row no-gutters mt-4">
@@ -1107,12 +1110,12 @@ class CollectionForm extends Component {
                                                     </div>
 
 
-                                                </form>
+
 
                                             </div>
                                             <div className="col-12 mt-3 p-3 mb-4 bg-white container-light-border">
                                                 <p className={"text-bold "}>Choose optional conditions </p>
-                                                <form onSubmit={this.state.item?this.updateSite:this.handleSubmit}>
+                                                {/*<form onSubmit={this.state.item?this.updateSite:this.handleSubmit}>*/}
 
                                                     <div className="row no-gutters mt-4">
                                                         <div className="col-3">
@@ -1222,7 +1225,7 @@ class CollectionForm extends Component {
                                                     </div>
 
 
-                                                </form>
+                                                {/*</form>*/}
 
                                             </div>
 
@@ -1235,7 +1238,7 @@ class CollectionForm extends Component {
                                     <div className="row mt-3 justify-content-center ">
                                         <div className="col-6 text-center mt-0">
                                             <GreenButton
-                                                c
+                                                type={"submit"}
                                                 variant="contained"
                                                 color="primary"
                                                 onClick={(e)=> {this.handleNext(e)}}
@@ -1248,6 +1251,7 @@ class CollectionForm extends Component {
                                             </GreenButton>
                                         </div>
                                     </div>
+                                    </form>
 
                                 </div>
                             </div>

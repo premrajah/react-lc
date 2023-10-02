@@ -1132,7 +1132,7 @@ class ProductKindDetailContent extends Component {
 
                                                     <div className=" bg-white rad-8 mt-4 p-3">
                                                     <ArtifactManager
-                                                        entityType={ENTITY_TYPES.Product}
+                                                        entityType={ENTITY_TYPES.PRODUCT_KIND}
                                                         item={this.state.item}
                                                         entityId={this.state.item.product_kind._key}
                                                         artifacts={this.state.item.artifacts}

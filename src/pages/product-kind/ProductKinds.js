@@ -608,9 +608,9 @@ class ProductKinds extends Component {
             }
 
             if (!this.props.fromCollections){
-                url = `${url}&count=false`
+                url = `${url}&count=false&`
             }
-            url = `${url}&offset=${tempOffset ? tempOffset : 0}&size=${newSize}`;
+            url = `${url}offset=${tempOffset ? tempOffset : 0}&size=${newSize}`;
 
             if (data.sort) {
                 url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;

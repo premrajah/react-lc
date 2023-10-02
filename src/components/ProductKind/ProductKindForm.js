@@ -41,6 +41,7 @@ import PartsList from "../ProductPopUp/PartsList";
 import ProcessesList from "../ProductPopUp/ProcessesList";
 import OutboundTransportList from "../ProductPopUp/OutboundTransportList";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
+import ProductKindExpandItem from "./ProductKindExpandItem";
 
 
 let slugify = require('slugify')
@@ -898,8 +899,12 @@ class ProductKindForm extends Component {
                 sub_products: [],
                 is_manufacturer: is_manufacturer,
                 artifact_ids: this.state.images,
-                parent_product_id: this.state.parentProductId ? this.state.parentProductId : null,
             };
+
+            if (this.props.parentProductKindId){
+                completeData.parent_product_kind_id= this.props.parentProductKindId
+
+            }
 
 
             this.setState({
@@ -908,8 +913,6 @@ class ProductKindForm extends Component {
             });
             this.setState({ isSubmitButtonPressed: true })
 
-                console.log(">> ", completeData, productData)
-                
                 
                 axios   
                     .put(
@@ -924,13 +927,16 @@ class ProductKindForm extends Component {
                             });
                         }
 
+                        if (this.props.refreshPageWithSavedState)
                         this.props.refreshPageWithSavedState({ refresh: true, reset: true })
+
                         this.props.showSnackbar({
                             show: true,
                             severity: "success",
                             message: productData.name + " created successfully. Thanks"
                         })
-                        this.showProductSelection();
+
+                        // this.showProductSelection();
                         this.setState({ loading: false, })
                         this.setState({
                             btnLoading: false,
@@ -938,12 +944,11 @@ class ProductKindForm extends Component {
                             isSubmitButtonPressed: false
                         });
 
-                        if (!this.state.parentProductId) {
-                            this.handleView(res.data.data.product._key, 'parent')
-                        } else {
-                            this.handleView(this.state.parentProductId, 'parent')
-                        }
 
+
+                        if (this.props.triggerCallback){
+                            this.props.triggerCallback()
+                        }
                     })
                     .catch((error) => {
                         this.setState({
@@ -1183,8 +1188,8 @@ class ProductKindForm extends Component {
                     })
                     this.props.triggerCallback("edit")
 
-                    if (this.props.loadCurrentProduct)
-                        this.props.loadCurrentProduct(this.props.item.product_kind._key)
+                    if (this.props.loadCurrentProductKind)
+                        this.props.loadCurrentProductKind(this.props.item.product_kind._key)
 
                 })
                 .catch((error) => {
@@ -1213,7 +1218,6 @@ class ProductKindForm extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps !== this.props) {
-
 
             if (this.props.item) {
                 this.isManufacturer()
@@ -1635,7 +1639,7 @@ class ProductKindForm extends Component {
         return (
             <>
                 {!this.state.showForm &&
-                    <ProductExpandItemNew
+                    <ProductKindExpandItem
                         createNew={this.handleView}
                         productId={this.state.parentProductId}
                     />}
@@ -2338,13 +2342,14 @@ class ProductKindForm extends Component {
                                                 Add Attachments <CustomPopover text="Add images, videos, manuals and other documents or external links (png, jpeg, jpg, doc, csv)"><InfoIcon /></CustomPopover>
                                             </div>
                                             <ArtifactManager
+                                                fromCollection
                                                 hideMenu
                                                 artifacts={this.props.item ? this.props.item.artifacts : []}
                                                 setArtifacts={(artifacts) => this.loadImages(artifacts)}
                                                 showDelete
                                                 item={this.props.item ? this.props.item : null}
                                                 type={this.props.item ? "edit" : "add"}
-                                                entityType={ENTITY_TYPES.Product}
+                                                entityType={ENTITY_TYPES.Collection}
                                                 setFiles={(files) => this.setState({ files: files })}
                                                 entityId={this.props.item ? this.props.item.product_kind._key : null}
                                             />

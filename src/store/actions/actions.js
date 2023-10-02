@@ -308,6 +308,18 @@ export const loadCurrentProduct = (data, refresh) => {
     };
 };
 
+export const loadCurrentProductKind = (data, refresh) => {
+    return (dispatch) => {
+
+        if (refresh) {
+            dispatch(emptyCurrent());
+        }
+        dispatch(currentProductLoading(true));
+
+        dispatch(loadCurrentProductKindSync(data));
+    };
+};
+
 
 export const currentProductLoading = (data) => {
 
@@ -374,6 +386,36 @@ export const loadCurrentProductSync = (data) => (dispatch) => {
                     let responseAll = response.data;
 
                     dispatch({ type: CURRENT_PRODUCT, value: responseAll.data });
+                    dispatch(currentProductLoading(false));
+
+                },
+                (error) => {
+                    dispatch(currentProductLoading(false));
+                    // this.setState({
+                    //     notFound: true,
+                    // });
+
+                    dispatch({ type: PRODUCT_NOT_FOUND, value: true });
+
+                }
+            );
+
+    } catch (e) {
+        console.log(e)
+
+
+    }
+};
+export const loadCurrentProductKindSync = (data) => (dispatch) => {
+
+    try {
+        axios
+            .get(baseUrl + "product-kind/" + encodeUrl(data) )
+            .then(
+                (response) => {
+                    let responseAll = response.data;
+
+                    dispatch({ type: CURRENT_PRODUCT_KIND, value: responseAll.data });
                     dispatch(currentProductLoading(false));
 
                 },

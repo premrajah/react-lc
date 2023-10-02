@@ -1,19 +1,15 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as actionCreator from "../../store/actions/actions";
-import { connect } from "react-redux";
-import { baseUrl, ENTITY_TYPES } from "../../Util/Constants";
+import {connect} from "react-redux";
+import {baseUrl, ENTITY_TYPES} from "../../Util/Constants";
 import axios from "axios/index";
 import encodeUrl from "encodeurl";
-import { Alert, Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import SearchItem from "../Searches/search-item";
-import ResourceItem from "../../pages/create-search/ResourceItem";
+import {Alert} from "react-bootstrap";
+import {Link} from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import MoreMenu from "../MoreMenu";
 import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import ImageHeader from "../UIComponents/ImageHeader";
-import ProductForm from "../ProductPopUp/ProductForm";
-import { GoogleMap } from "../Map/MapsContainer";
 import OrgComponent from "../Org/OrgComponent";
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -27,17 +23,13 @@ import BlueButton from "../FormsUI/Buttons/BlueButton";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
-import { fetchErrorMessage, getParameterByName, getDateFormat } from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, getDateFormat} from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
-import BigCalenderEvents from "../Event/BigCalenderEvents";
 import ArtifactManager from "../FormsUI/ArtifactManager";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import InfoTabContent from "../Products/InfoTabContent";
-import QrCode from "../Products/QrCode";
-import AggregatesTab from "../Products/AggregatesTab";
-import SubProductsTab from "../Products/SubProductsTab";
 import InfoTabContentProductKind from './InfoTabContentProductKind';
 import ProductKindForm from "./ProductKindForm";
+import SubProductsTab from "./SubProductsTab";
 
 
 class ProductKindDetailContent extends Component {
@@ -128,16 +120,11 @@ class ProductKindDetailContent extends Component {
     }
 
     setActiveReleaseTabKey=(event,key)=>{
-
-
         this.setState({
             activeReleaseTabKey:key,
             errorRelease: null,
             showReleaseSuccess:false
-
         })
-
-
     }
 
     cancelChangeServiceAgentRequest = () => {
@@ -189,12 +176,8 @@ class ProductKindDetailContent extends Component {
                 .post(baseUrl + "release/stage", data)
                 .then((res) => {
 
-
                     this.fetchReleases(this.state.item.product_kind._key)
-
                     this.props.showSnackbar({show:true,severity:"success",message:"Release request cancelled successfully. Thanks"})
-
-
                 })
                 .catch((error) => {
                     // this.setState({
@@ -339,12 +322,11 @@ class ProductKindDetailContent extends Component {
             this.loadProduct(this.props.productId);
 
         } else {
+
             this.setState({
                 item: this.props.item,
             });
-
             this.setActiveKey(null,"1")
-
             if (this.props.item.product_kind){
                 this.loadInfo(this.props.item);
                 this.fetchExistingAgentRequests(this.props.item.product_kind._key)
@@ -352,10 +334,7 @@ class ProductKindDetailContent extends Component {
                 this.getEvents(this.props.item.product_kind._key)
                 this.ocVCProduct(this.props.item.product_kind._key)
             }
-
         }
-
-
 
     }
 
@@ -661,7 +640,7 @@ class ProductKindDetailContent extends Component {
 
 
                 this.showReleaseProductPopUp()
-                this.props.loadCurrentProduct(this.state.item.product_kind._key)
+                this.props.loadCurrentProductKind(this.state.item.product_kind._key)
                 this.props.showSnackbar({show:true,severity:"success",message:"Request to release "+this.state.item.product_kind.name+" internally to new site is completed successfully. Thanks"})
 
 
@@ -1120,8 +1099,8 @@ class ProductKindDetailContent extends Component {
                                                         aria-label="lab API tabs example">
 
                                                         <Tab label="Product Info" value="1" />
-
-                                                        {this.props.item.sub_products&&this.props.item.sub_products.length>0&&   <Tab label="Sub Products" value="3" />}
+                                                        <Tab label="Sub Product Kinds" value="2" />
+                                                           <Tab label="Sub Products" value="3" />
 
                                                         <Tab label="Attachments" value="7" />
 
@@ -1131,22 +1110,23 @@ class ProductKindDetailContent extends Component {
                                                 </Box>
 
                                                 <TabPanel value="1">
-
                                                     <InfoTabContentProductKind item={this.state.item}/>
-
                                                 </TabPanel>
+                                                <TabPanel value="2">
 
-                                                
-                                                <TabPanel value="3">
-                                                    {this.props.item.sub_products&&this.props.item.sub_products.length>0&&
                                                         <SubProductsTab
-                                                        isOwner={this.state.isOwner}
-                                                        item={this.state.item}/>}
+                                                            refresh={()=>this.props.loadCurrentProductKind(this.state.item.product_kind._key)}
+                                                            fromProductKind
+                                                            productKindType
+                                                            item={this.state.item}/>
                                                 </TabPanel>
-                                               
+                                                <TabPanel value="3">
 
-                                    
-
+                                                        <SubProductsTab
+                                                            fromProductKind
+                                                            productType
+                                                        item={this.state.item}/>
+                                                </TabPanel>
                                               
                                                 <TabPanel value="7">
 
@@ -2059,8 +2039,8 @@ const mapDispachToProps = (dispatch) => {
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
-        loadCurrentProduct: (data) =>
-            dispatch(actionCreator.loadCurrentProduct(data)),
+        loadCurrentProductKind: (data) =>
+            dispatch(actionCreator.loadCurrentProductKind(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(ProductKindDetailContent);

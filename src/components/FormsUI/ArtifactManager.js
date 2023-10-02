@@ -73,6 +73,14 @@ const ArtifactManager = ({
 
             if (entityId) handleReplaceArtifacts(payload);
         }
+        if (entityType === ENTITY_TYPES.Collection) {
+            const payload = {
+                product_kind_id: entityId,
+                artifact_ids: artifactIds,
+            };
+
+            if (entityId) handleReplaceArtifacts(payload);
+        }
 
     };
 
@@ -92,6 +100,10 @@ const ArtifactManager = ({
         else if (entityType === ENTITY_TYPES.Product) {
             url = `${baseUrl}product/artifact/replace`
         }
+        else if (entityType === ENTITY_TYPES.Collection) {
+            url = `${baseUrl}product-kind/artifact/replace`
+        }
+
 
         axios
             .post(url, payload)

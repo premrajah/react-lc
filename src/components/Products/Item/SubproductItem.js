@@ -22,7 +22,7 @@ const SubproductItem = (props) => {
 const loadProduct=(id)=> {
 
 
-    let subUrl=!props.productKind?"product/":"product-kind/"
+    let subUrl=!props.fromProductKind?"product/":"product-kind/"
 
     axios.get(baseUrl + subUrl + id)
         .then(
@@ -30,7 +30,7 @@ const loadProduct=(id)=> {
 
                 let responseAll = response.data;
 
-                if (!props.productKind){
+                if (!props.fromProductKind){
                     setItem(responseAll.data.product)
                 }else{
                     setItem(responseAll.data.product_kind)
@@ -132,7 +132,7 @@ const loadProduct=(id)=> {
 
             <div className={`${props.smallImage?"col-10 ":"col-9 "}pl-2`}>
                 <div>
-                    <Link  to={props.noLinking?"#":props.customLink?props.customLink:`/${props.productKind?"product-kind":"product"}/${item._key}`}>
+                    <Link  to={props.noLinking?"#":props.customLink?props.customLink:`/${props.fromProductKind?"product-kind":"product"}/${item._key}`}>
 
                         <span className={"title-bold"}>{item.name}</span>
                     </Link>

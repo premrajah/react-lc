@@ -810,18 +810,18 @@ class ProductKindDetailContent extends Component {
                         item: responseAll.data,
                     });
 
-                    this.loadInfo(responseAll.data);
+                    // this.loadInfo(responseAll.data);
 
                     this.setActiveKey(null,"1")
 
-                    this.fetchExistingAgentRequests(productKey)
-                    this.fetchReleases(productKey)
-
-                    this.getEvents(responseAll.data.product_kind._key)
-
-                    this.ocVCProduct(responseAll.data.product_kind._key)
-
-                    this.loadInfo(responseAll.data.product_kind._key);
+                    // this.fetchExistingAgentRequests(productKey)
+                    // this.fetchReleases(productKey)
+                    //
+                    // this.getEvents(responseAll.data.product_kind._key)
+                    //
+                    // this.ocVCProduct(responseAll.data.product_kind._key)
+                    //
+                    // this.loadInfo(responseAll.data.product_kind._key);
                 },
                 (error) => {}
             );

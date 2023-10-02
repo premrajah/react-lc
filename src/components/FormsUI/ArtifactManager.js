@@ -76,7 +76,7 @@ const ArtifactManager = ({
         }
         if (entityType === ENTITY_TYPES.PRODUCT_KIND) {
             const payload = {
-                product_id: entityId,
+                product_kind_id: entityId,
                 artifact_ids: artifactIds,
             };
 
@@ -119,7 +119,7 @@ const ArtifactManager = ({
                         loadCurrentProduct(payload.product_id);
                     }
                     else if (entityType === ENTITY_TYPES.PRODUCT_KIND) {
-                        loadCurrentProductKind(payload.product_id);
+                        loadCurrentProductKind(entityId);
                     }
 
 
@@ -183,7 +183,7 @@ const ArtifactManager = ({
     const addArtifactToProductKind = async (key, type) => {
         try {
             const payload = {
-                product_id: entityId,
+                product_kind_id: entityId,
                 artifact_ids: [key],
             };
 

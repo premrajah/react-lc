@@ -93,6 +93,12 @@ import ProductsCondensedView from "./pages/my-products/ProductsCondensedView";
 import TestRoute from "./components/TestRoute";
 import SitesNew from "./pages/sites/SitesNew";
 import VerifyEmail from "./pages/account/VerifyEmail";
+import DocumentPortal from './components/Portal/DocumentPortal';
+import ProductKinds from "./pages/product-kind/ProductKinds";
+import ProductKindDetail from "./pages/product-kind/ProductKindDetail";
+import CreateCollection from "./pages/collections/CreateCollection";
+import CollectionDetail from "./pages/collections/CollectionDetail";
+import Collections from "./pages/collections/Collections";
 
 
 ReactGA.initialize(gaTID);
@@ -156,6 +162,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         {/*<LoggedInRoute exact path="/my-products" component={Products} />*/}
                         <LoggedInRoute exact path="/my-products" component={ProductsNew} />
+                        <LoggedInRoute exact path="/product-kinds" component={ProductKinds} />
                         <LoggedInRoute exact path="/my-products/:id" component={ProductsNew} />
                         <LoggedInRoute exact path="/my-products-condensed" component={ProductsCondensedView} />
                         {/*<LoggedInRoute exact path="/sites" component={Sites} />*/}
@@ -195,9 +202,14 @@ class App extends Component {
                         <LoggedInRoute exact path="/transfer-scaling" component={TransferScaling} />
                         <LoggedInRoute exact path="/search/:slug" component={ViewSearchNew} />
                         <LoggedInRoute exact path="/search" component={Search} />
+                        <LoggedInRoute exact path="/create-collection" component={CreateCollection} />
+                        <LoggedInRoute exact path="/collections" component={Collections} />
+
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={ProductView} />
+                        <LoggedInRoute exact path="/product-kind/:slug" component={ProductKindDetail} />
+                        <LoggedInRoute exact path="/collection/:slug" component={CollectionDetail} />
                         <LoggedInRoute exact path="/product/preview/:slug" component={Product} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <Route exact path="/ps/:slug" component={Site} />
@@ -221,6 +233,7 @@ class App extends Component {
                             component={ItemDetailMatch}
                         />
                         <Route exact path="/marketplace/:slug" component={ItemDetail} />
+                        <Route exact path="/documents-portal" component={DocumentPortal} />
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />

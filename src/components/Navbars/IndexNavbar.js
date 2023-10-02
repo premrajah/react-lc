@@ -215,6 +215,10 @@ class ComponentsNavbar extends React.Component {
                         </Nav>
 
                         <Nav className={" justify-content-end menu-align-right"}>
+                            {/*{this.props.isLoggedIn && <NavItem className='web-only mr-3'>*/}
+                            {/*    <Link to="/documents-portal" className="nav-link d-none d-lg-block wl-link-white" color="default">Upload Docs</Link>*/}
+                            {/*</NavItem>}*/}
+
                             {this.props.isLoggedIn && (
                                 <>
                                     <NavItem className={"web-only mr-3"}>
@@ -238,6 +242,8 @@ class ComponentsNavbar extends React.Component {
 
                                 </>
                             )}
+
+
                             <NavItem className={"web-only mr-3"}>
                                 <Link
                                     className="nav-link d-none d-lg-block wl-link-white "
@@ -390,6 +396,14 @@ class ComponentsNavbar extends React.Component {
                                         <Link className={"dropdown-item"} to="/my-products">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Products
+                                        </Link>
+                                        <Link className={"dropdown-item"} to="/product-kinds">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Product Kinds
+                                        </Link>
+                                        <Link className={"dropdown-item"} to="/collections">
+                                            <i className="tim-icons icon-bullet-list-67" />
+                                            Collections
                                         </Link>
                                         <Link className={"dropdown-item"} to="/my-diary">
                                             <i className="tim-icons icon-bullet-list-67" />

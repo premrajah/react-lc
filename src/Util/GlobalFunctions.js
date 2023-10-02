@@ -206,6 +206,15 @@ export const arrangeObjectKeysAlphabatically = (obj) => {
     });
 };
 
+// program to get the file extension
+
+export const getFileExtension=(filename)=>{
+
+    // get file extension
+    const extension = filename.split('.').pop();
+    return extension;
+}
+
 export const sortArraysByKey = (array, key) => {
     return array.sort(function (a, b) {
         if (a[key] < b[key]) {
@@ -266,17 +275,24 @@ export const seekAxiosGet = (url, doNotEncode, controller) => {
             signal: controller ? controller.signal : null,
         })
         .catch((error) => {
-            if (controller.isAborted(),error){
+            if (controller?.aborted){
                 console.log("prev call cancelled", error)
             }
-            console.error(error);
+            console.error("seek error",url ,error);
             return "Unknown error occurred.";
         });
 };
 
-export const getTimeFormat = (time) => {
+export const getDateFormat = (time) => {
     return moment(time).format("DD MMM YYYY");
 };
+
+export const getTimeFormat = (time) => {
+    return moment(time).format("DD-MM-YYYY HH:mm");
+};
+
+
+
 
 export const isEmptyHtml = (el) => {
     // return trim(el.html())
@@ -389,13 +405,14 @@ export const checkIfMimeTypeAllowed = (file) => {
 };
 export const checkIfDocumentFromType = (mime_type) => {
     if (
-        mime_type === "application/pdf" ||
-        mime_type === "application/rtf" ||
-        mime_type === "application/msword" ||
-        mime_type === "text/rtf" ||
-        mime_type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        mime_type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-        mime_type === "application/vnd.ms-excel"
+        mime_type === MIME_TYPES.PDF ||
+        mime_type === MIME_TYPES.DOC ||
+        mime_type === MIME_TYPES.DOCX ||
+        mime_type === MIME_TYPES.APP_RTF ||
+        mime_type === MIME_TYPES.TEXT_RTF ||
+        mime_type === MIME_TYPES.XLS ||
+        mime_type === MIME_TYPES.XLSX ||
+        mime_type === MIME_TYPES.XLSM
     ) {
         return true;
     } else return false;

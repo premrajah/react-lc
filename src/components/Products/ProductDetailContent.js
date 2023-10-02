@@ -31,7 +31,7 @@ import BlueButton from "../FormsUI/Buttons/BlueButton";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import BlueBorderLink from "../FormsUI/Buttons/BlueBorderLink";
 import ReportIcon from "@mui/icons-material/SwapVerticalCircle";
-import { fetchErrorMessage, getParameterByName, getTimeFormat } from "../../Util/GlobalFunctions";
+import { fetchErrorMessage, getParameterByName, getDateFormat } from "../../Util/GlobalFunctions";
 import EventForm from "../Event/EventForm";
 import BigCalenderEvents from "../Event/BigCalenderEvents";
 import ArtifactManager from "../FormsUI/ArtifactManager";
@@ -1484,7 +1484,7 @@ class ProductDetailContent extends Component {
                                                                     <div className={"col-11 text-blue "}>
                                                                        Product Release request to  <b>{release.responder.name}</b> <br/>
                                                                         Status: <span className="text-pink text-capitlize">{release.Release.stage}</span>
-                                                                        <br/><small className="text-gray-light mr-2">{getTimeFormat(release.Release._ts_epoch_ms)}</small>
+                                                                        <br/><small className="text-gray-light mr-2">{getDateFormat(release.Release._ts_epoch_ms)}</small>
                                                                     </div>
 
                                                                     <div className={"col-1 text-right "}>
@@ -1745,7 +1745,7 @@ class ProductDetailContent extends Component {
                                                                 <div className={"col-11 text-blue "}>
                                                                     Product Release request to  <b>{release.responder.name}</b> <br/>
                                                                     Status: <span className="text-pink text-capitlize">{release.Release.stage}</span>
-                                                                    <br/><small className="text-gray-light mr-2">{getTimeFormat(release.Release._ts_epoch_ms)}</small>
+                                                                    <br/><small className="text-gray-light mr-2">{getDateFormat(release.Release._ts_epoch_ms)}</small>
                                                                 </div>
 
                                                                 <div className={"col-1 text-right "}>
@@ -2076,7 +2076,7 @@ class ProductDetailContent extends Component {
                                             <div className={"col-11 text-blue "}>
                                                 Product Change service agent request to  <b>{release.responder.name}</b> <br/>
                                                 Status: <span className="text-pink text-capitlize">{release.Release.stage}</span>
-                                                <br/><small className="text-gray-light mr-2">{getTimeFormat(release.Release._ts_epoch_ms)}</small>
+                                                <br/><small className="text-gray-light mr-2">{getDateFormat(release.Release._ts_epoch_ms)}</small>
                                             </div>
 
                                             <div className={"col-1 text-right "}>

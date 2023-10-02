@@ -41,7 +41,7 @@ const Dashboard = ({ isLoggedIn }) => {
                     const { data } = response.data;
 
                     setMetrics(data);
-                    console.log(">>> ", data);
+                    // console.log(">>> ", data);
 
                 })
                 .catch(error => {

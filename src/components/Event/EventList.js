@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import List from '@mui/material/List';
-import {fetchErrorMessage, getTimeFormat} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, getDateFormat} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import {baseUrl, checkImage, RECUR_UNITS} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -236,7 +236,7 @@ class EventList extends Component {
                  product.product.name,
                 event.stage,
                 event.process,
-                getTimeFormat(event.resolution_epoch_ms),
+                getDateFormat(event.resolution_epoch_ms),
                 event.recur_in_epoch_ms?this.state.intervals.find((item)=> item.key=== event.recur_in_epoch_ms).value:"",
                  event.recur?event.recur.value:"",
                  event.recur?event.recur.unit:"",
@@ -338,7 +338,7 @@ class EventList extends Component {
                     event.title,
                     event.stage,
                     event.process,
-                    getTimeFormat(event.resolution_epoch_ms),
+                    getDateFormat(event.resolution_epoch_ms),
                     event.recur_in_epoch_ms?this.state.intervals.find((item)=> item.key=== event.recur_in_epoch_ms).value:"",
                     event.recur?event.recur.value:"",
                     event.recur?event.recur.unit:"",
@@ -354,7 +354,7 @@ class EventList extends Component {
                 const {product, event, service_agent} = item;
                 icsDataNew.push({
                     // start: [
-                    //     getTimeFormat(event.resolution_epoch_ms)] ,
+                    //     getDateFormat(event.resolution_epoch_ms)] ,
                     start:[moment(event.resolution_epoch_ms).toDate().getFullYear(), moment(event.resolution_epoch_ms).toDate().getMonth()+1, moment(event.resolution_epoch_ms).toDate().getDate(), 9, 0],
                     title:  event.title,
                     description:  event.description,
@@ -657,7 +657,7 @@ class EventList extends Component {
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
                                                 {
-                                                    getTimeFormat(this.state.selectedEvent.event.resolution_epoch_ms)
+                                                    getDateFormat(this.state.selectedEvent.event.resolution_epoch_ms)
                                                 }
                                             </p>
                                         </div>

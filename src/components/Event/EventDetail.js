@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {fetchErrorMessage, getTimeFormat, LoaderAnimated} from "../../Util/GlobalFunctions";
+import {fetchErrorMessage, getDateFormat, LoaderAnimated} from "../../Util/GlobalFunctions";
 import {baseUrl, checkImage, RECUR_UNITS} from "../../Util/Constants";
 import DescriptionIcon from "@mui/icons-material/Description";
 import axios from "axios";
@@ -183,7 +183,7 @@ class EventDetail extends Component {
                                                 style={{ fontSize: "18px" }}
                                                 className="text-gray-light  mb-1">
                                                 {
-                                                    getTimeFormat(this.state.event.event.resolution_epoch_ms)
+                                                    getDateFormat(this.state.event.event.resolution_epoch_ms)
                                                 }
                                             </p>
                                         </div>

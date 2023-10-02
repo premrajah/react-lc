@@ -72,24 +72,28 @@ export const MIME_TYPES = {
     MP4: "video/mp4",
     MOV: "video/quicktime",
     DOC: "application/msword",
+    CSV: "text/csv",
     PDF: "application/pdf",
     APP_RTF: "application/rtf",
     DOCX: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     TEXT_RTF: "text/rtf",
     XLS: "application/vnd.ms-excel",
     XLSX: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    XLSM: "application/vnd.ms-excel.sheet.macroEnabled.12",
 };
 
 export const MIME_TYPES_ARRAY = Object.keys(MIME_TYPES).map((key) => MIME_TYPES[key])
 
 export const MIME_TYPES_ACCEPT =
-    "image/jpeg,image/jpg,image/png,video/mp4," +
-    "video/quicktime,application/msword,application/pdf," +
-    "application/rtf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    `${MIME_TYPES.JPEG}/${MIME_TYPES.JPG}/${MIME_TYPES.PNG}/${MIME_TYPES.MP4}/${MIME_TYPES.MOV}/
+    ${MIME_TYPES.DOC}/${MIME_TYPES.DOCX}/${MIME_TYPES.PDF}/${MIME_TYPES.TEXT_RTF}/${MIME_TYPES.APP_RTF}/${MIME_TYPES.XLS}/${MIME_TYPES.XLSX}/
+    ${MIME_TYPES.XLSM}`;
+
 export const CAMPAIGN_FILTER_VALUES = ["name", "description"];
 
 export const ENTITY_TYPES = {
     Product: "product",
+    PRODUCT_KIND: "product-kind",
     PRODUCT: "Product",
     Site: "site",
     Event: "event"
@@ -145,11 +149,37 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
     { field: "name", label: "Name", visible: true, sortable: true, flex: 2 },
     { field: "description", label: "Description", visible: false, sortable: false, notFilterable: "true" },
     { field: "condition", label: "Condition", visible: false, sortable: false, flex: 0.5, notFilterable: "true" },
-    { field: "sku", subField: "serial", label: "Serial No", visible: true, sortable: false, flex: 0.75 },
+    // { field: "sku", subField: "serial", label: "Serial No", visible: true, sortable: false, flex: 0.75 },
+    { field: "sku", subField: "embodied_carbon_kgs", label: "Embodied Carbon", visible: true, sortable: false, flex: 0.75 },
     { field: "site", label: "Site", visible: true, sortable: false, notFilterable: "true", flex: 1.5 },
     { field: "siteId", label: "Site Id", visible: false, sortable: false, notFilterable: "true", flex: 1.5 },
     { field: "_ts_epoch_ms", label: "Added on", visible: true, sortable: true, sort: 'desc', sortingOrder: ['desc', 'asc', null], notFilterable: "true" },
 
+];
+
+export const COLLECTION_FILTER_VALUES_KEY = [
+    { field: "id", label: "ID", visible: false, sortable: false, notFilterable: "true" },
+    // {key:"_id",label:"ID" ,visible:true,sortable:true},
+    { field: "name", label: "Name", visible: true, sortable: true, flex: 2 },
+    { field: "description", label: "Description", visible: false, sortable: false, notFilterable: "true" },
+    // { field: "condition", label: "Condition", visible: false, sortable: false, flex: 0.5, notFilterable: "true" },
+    // { field: "sku", subField: "serial", label: "Serial No", visible: true, sortable: false, flex: 0.75 },
+    // { field: "site", label: "Site", visible: true, sortable: false, notFilterable: "true", flex: 1.5 },
+    // { field: "siteId", label: "Site Id", visible: false, sortable: false, notFilterable: "true", flex: 1.5 },
+    { field: "_ts_epoch_ms", label: "Added on", visible: true, sortable: true, sort: 'desc', sortingOrder: ['desc', 'asc', null], notFilterable: "true" },
+
+];
+
+export const PRODUCTS_KIND_FILTER_VALUES_KEY = [
+    { field: "id", label: "ID", visible: false, sortable: false, notFilterable: "true" },
+    // {key:"_id",label:"ID" ,visible:true,sortable:true},
+    { field: "name", label: "Name", visible: true, sortable: true, flex: 2 },
+    { field: "description", label: "Description", visible: false, sortable: false, notFilterable: "true" },
+    { field: "condition", label: "Condition", visible: false, sortable: false, flex: 0.5, notFilterable: "true" },
+    { field: "sku", subField: "embodied_carbon_kgs", label: "Embodied Carbon", visible: true, sortable: false, flex: 0.75 },
+
+    // { field: "sku", subField: "serial", label: "Serial No", visible: true, sortable: false, flex: 0.75 },
+    { field: "_ts_epoch_ms", label: "Added on", visible: true, sortable: true, sort: 'desc', sortingOrder: ['desc', 'asc', null], notFilterable: "true" },
 ];
 
 export const SITE_FILTER_VALUES_KEY = [

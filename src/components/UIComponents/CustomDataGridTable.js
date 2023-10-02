@@ -18,7 +18,7 @@ import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import { Delete } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { capitalize, getSite, getTimeFormat } from "../../Util/GlobalFunctions";
+import { capitalize, getSite, getDateFormat } from "../../Util/GlobalFunctions";
 import { Link } from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
 import Stack from '@mui/material/Stack';
@@ -134,7 +134,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                         <>
 
                             {params.field === "_ts_epoch_ms" ? <span>
-                            {getTimeFormat(params.value)}
+                            {getDateFormat(params.value)}
                     </span> : params.field === data.linkField ? <span className="text-blue">
                      <Link to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>
                                      <><span className="text-capitalize d-flex align-items-center flex-row">
@@ -198,7 +198,11 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
         setTimeout(()=>{
 
             items.forEach((listItem)=>{
-                let Product=listItem[`${data.objKey}`]
+
+
+
+                let Product=data.objKey?listItem[`${data.objKey}`]:listItem
+
 
                 if (Product){
 

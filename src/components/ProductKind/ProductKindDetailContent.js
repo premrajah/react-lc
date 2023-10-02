@@ -317,23 +317,15 @@ class ProductKindDetailContent extends Component {
     }
 
     componentDidMount() {
-        console.log("++ ", this.props.item);
+
         if (!this.props.item) {
             this.loadProduct(this.props.productId);
 
         } else {
-
             this.setState({
                 item: this.props.item,
             });
             this.setActiveKey(null,"1")
-            if (this.props.item.product_kind){
-                this.loadInfo(this.props.item);
-                this.fetchExistingAgentRequests(this.props.item.product_kind._key)
-                this.fetchReleases(this.props.item.product_kind._key)
-                this.getEvents(this.props.item.product_kind._key)
-                this.ocVCProduct(this.props.item.product_kind._key)
-            }
         }
 
     }
@@ -349,7 +341,7 @@ class ProductKindDetailContent extends Component {
                     item: this.props.item,
                 });
 
-                this.loadInfo(this.props.item);
+                // this.loadInfo(this.props.item);
             }
             // this.setActiveKey(null,"1")
         }
@@ -373,7 +365,7 @@ class ProductKindDetailContent extends Component {
 
             this.getSubProducts(newProps.item);
 
-            this.loadInfo(newProps.item);
+            // this.loadInfo(newProps.item);
         }
     }
 

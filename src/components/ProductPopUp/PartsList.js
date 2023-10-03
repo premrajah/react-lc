@@ -329,14 +329,14 @@ const DynamicAutoCompleteBox=(props)=> {
                         <div className="col-md-4 col-sm-12">
                             <SelectArrayWrapper
                                 editMode
+                                option={"name"}
+                                valueKey={"_id"}
                                 error={props.errors?.transport_mode}
                                 details="Materials or category a product belongs to Type"
                                 initialValue={props.item.fields?.transport_mode}
-
                                 select={"Select"}
                                 // error={this.state.errors["category"]}
                                 onChange={(value,valueText)=> {
-
                                     props.handleChange(value, valueText,`transport_mode`,props.uId,props.index);
                                 }}
                                 options={props.transportModesList}

@@ -178,7 +178,6 @@ const mapDispachToProps = (dispatch) => {
         loading: (data) => dispatch(actionCreator.loading(data)),
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
-        // loadCurrentCollection: (data) => dispatch(actionCreator.loadCurrentCollection(data)),
         setCurrentCollection: (data) => dispatch(actionCreator.setCurrentCollection(data)),
 
     };

@@ -20,12 +20,7 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
 import {createProductUrl} from "../../Util/Api";
 import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {
-    cleanFilename, compareDeep,
-    fetchErrorMessage, getModifiedObjectKeys,
-    // getModifiedObjectKeys, getModifiedObjectKeysLodash,
-    // removeKeyFromObj, trackModifiedObjectKeys
-} from "../../Util/GlobalFunctions";
+import {cleanFilename, compareDeep, fetchErrorMessage, getModifiedObjectKeys,} from "../../Util/GlobalFunctions";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CustomPopover from "../FormsUI/CustomPopover";
 import InfoIcon from "../FormsUI/ProductForm/InfoIcon";
@@ -45,7 +40,7 @@ import PartsList from "./PartsList";
 import ProcessesList from "./ProcessesList";
 import OutboundTransportList from "./OutboundTransportList";
 import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
-import {compareObjs} from "@fullcalendar/react";
+
 
 
 let slugify = require('slugify')
@@ -159,6 +154,7 @@ let slugify = require('slugify')
                 transportModes:[],
                 totalPercentError:false,
                 previousData:null,
+                tags:[],
                 prevExistingItemsParts:[],
                 prevExistingItemsProcesses:[],
                 prevExistingItemsOutboundTransport:[],
@@ -244,6 +240,36 @@ let slugify = require('slugify')
                     (error) => {}
                 );
         }
+        getTags=()=> {
+            axios.get(baseUrl + "tag")
+                .then(
+                    (response) => {
+                        let   responseAll=[]
+                        responseAll = _.sortBy(response.data.data, ["name"]);
+
+                        this.setState({
+                            tags: responseAll,
+                        });
+
+                        // if (responseAll.length>0&&this.props.item){
+                        //
+                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
+                        //     let subCategories=cat.length>0?cat[0].types:[]
+                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
+                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
+                        //
+                        //     this.setState({
+                        //         subCategories:subCategories,
+                        //         states : states,
+                        //         units : units
+                        //     })
+                        //
+                        // }
+
+                    },
+                    (error) => {}
+                );
+        }
 
 
         getResourceCarbon=(item)=> {
@@ -302,25 +328,9 @@ let slugify = require('slugify')
                         let   responseAll=[]
                         responseAll = _.sortBy(response.data.data, ["name"]);
 
-
                         this.setState({
                             energySources: responseAll,
                         });
-
-                        // if (responseAll.length>0&&this.props.item){
-                        //
-                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
-                        //     let subCategories=cat.length>0?cat[0].types:[]
-                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
-                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
-                        //
-                        //     this.setState({
-                        //         subCategories:subCategories,
-                        //         states : states,
-                        //         units : units
-                        //     })
-                        //
-                        // }
 
                     },
                     (error) => {}
@@ -1662,9 +1672,6 @@ let slugify = require('slugify')
         handleChangePartsList=( value,valueText,field,uId,index,type) =>{
 
             console.log(value,field)
-// debugger
-
-
             if (value)
             try {
                 if (type===1){
@@ -1824,6 +1831,7 @@ let slugify = require('slugify')
                 selectedTemplate:null
             })
             this.getFiltersCategories();
+            this.getTags();
 
             if (type==='new') {
                 this.setState({

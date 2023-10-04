@@ -181,7 +181,7 @@ class ProductsNew extends Component {
             }
 
             if (this.props.fromCollections){
-                data.objKey=null
+                data.objKey="product"
             }
 
             if (!data.sort && this.state.defaultSort) {
@@ -462,7 +462,7 @@ class ProductsNew extends Component {
         if (key) {
             this.setState({
                 showSiteView: !this.state.showSiteView,
-                viewSiteSelected: getSite(this.state.items.find(item => item.Product._key === key)),
+                viewSiteSelected: this.props.fromCollections?this.state.items.find(item => item.product._key === key).site:getSite(this.state.items.find(item => item.Product._key === key)),
             });
         } else {
             this.setState({
@@ -1114,6 +1114,7 @@ class ProductsNew extends Component {
 
                         <ErrorBoundary>
                             <PaginationGrid
+                                fromCollections={this.props.fromCollections}
                                 entityType={"Product"}
                                 count={this.state.count}
                                 resetSelection={this.state.resetSelection}

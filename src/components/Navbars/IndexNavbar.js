@@ -16,6 +16,7 @@ import { Badge, Snackbar, Tooltip } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Menu from '@mui/material/Menu';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DevelopmentUserInfoDisplay from "./DevelopmentUserInfoDisplay";
 
 
@@ -298,6 +299,14 @@ class ComponentsNavbar extends React.Component {
 
                             {this.props.isLoggedIn && (
                                 <>
+                                    {this.props?.userContext?.perms?.includes("AdminWrite") && <NavItem>
+                                        <button className="btn btn-link text-dark btn-inbox">
+                                            <Link to="/magic">
+                                                <AutoFixHighIcon className="white-text" style={{ fontSize: 24 }} />
+                                            </Link>
+                                        </button>
+                                    </NavItem>}
+
                                     <NavItem>
                                         <button className="btn btn-link text-dark btn-inbox">
                                             <Link to="/messages" onClick={() => this.props.dispatchUnreadMessages(false)}>
@@ -520,6 +529,7 @@ const mapStateToProps = (state) => {
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
         userDetail: state.userDetail,
+        userContext: state.userContext,
         orgImage: state.orgImage,
         messages: state.messages,
         notifications: state.notifications,

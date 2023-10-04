@@ -7,7 +7,6 @@ import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
 import axios from "axios/index";
 import {
     baseUrl,
-    EmbodiedCarbonKgCO,
     ENTITY_TYPES,
     getMimeTypeAndIcon,
     MIME_TYPES_ACCEPT,
@@ -2480,7 +2479,7 @@ let slugify = require('slugify')
                                             // details="A unique number used by external systems"
                                             initialValue={this.props.item?this.props.item.product.sku.embodied_carbon_kgs:null
                                                 ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.embodied_carbon_kgs:null)
-                                            } name="embodied_carbon_kgs" title={`Embodied Carbon (${EmbodiedCarbonKgCO})`} />
+                                            } name="embodied_carbon_kgs" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
 
                                     </div>
                                     {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}

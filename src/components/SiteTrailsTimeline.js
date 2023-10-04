@@ -10,7 +10,7 @@ import MapIcon from '@mui/icons-material/Place';
 import { GoogleMap } from "./Map/MapsContainer";
 import { ArrowCircleUp, Circle } from "@mui/icons-material";
 import CustomPopover from "./FormsUI/CustomPopover";
-import { EmbodiedCarbonKgCO, TRANSPORT_MODES } from "../Util/Constants";
+import { TRANSPORT_MODES } from "../Util/Constants";
 import OrgComponent from "./Org/OrgComponent";
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import GlobalDialog from "./RightBar/GlobalDialog";
@@ -179,7 +179,7 @@ const SiteTrailsTimeline=(props)=> {
                 props.distanceTotals && props.distanceTotals.carbon.carbon_kgs > 0 && <>
 
                     <span
-                        className={" text-label text-blue mb-1 text-label"}>Transport Emissions : {props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} {EmbodiedCarbonKgCO}</span>
+                        className={" text-label text-blue mb-1 text-label"}>Transport Emissions : {props.distanceTotals.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgCO<sub>2</sub>e</span>
 
                     <span
                         className="text-14"> {(props.distanceTotals.distance.value / 1000).toLocaleString(undefined, {maximumFractionDigits: 2})} kms&nbsp;</span>
@@ -301,7 +301,7 @@ const DistanceTrailOnlyPopOver = (props) => {
         <Typography style={{opacity: "1"}}>
 
             <CustomPopover
-                heading={`Transport Emissions: ${trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} ${EmbodiedCarbonKgCO}`}
+                heading={`Transport Emissions: ${trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgCO<sub>2</sub>e`}
 
                 text={<>
                     <span>{`Gross Weight : ${trail.gross_weight_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgs`}</span><br></br>
@@ -318,7 +318,7 @@ const DistanceTrailOnlyPopOver = (props) => {
                 {trail.carbon && <>
                       <span className={"text-caps  sub-title-text-pink"}>{props.symbol}&nbsp;</span>
                 <span className="text-blue">
-                    {trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} {EmbodiedCarbonKgCO}</span>
+                    {trail.carbon.carbon_kgs.toLocaleString(undefined, {maximumFractionDigits: 2})} kgCO<sub>2</sub>e</span>
                 <br></br>
                 <span
                     className="text-12"> {(trail.distance.value / 1000).toLocaleString(undefined, {maximumFractionDigits: 2})} kms&nbsp;

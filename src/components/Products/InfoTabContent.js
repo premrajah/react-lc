@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { EmbodiedCarbonKgCO, capitalizeFirstLetter } from "../../Util/Constants";
+import { capitalizeFirstLetter } from "../../Util/Constants";
 import { capitalize } from "../../Util/GlobalFunctions";
 import InfoTabContentItem from './InfoTabContentItem';
 import DownloadIcon from "@mui/icons-material/GetApp";
@@ -84,7 +84,7 @@ class InfoTabContent extends Component {
                 {(this.props.item && this.props.item.product.sku &&
                     this.props.item.product.sku.embodied_carbon_kgs && this.props.item.product.sku.embodied_carbon_kgs > 0) ? (
                     <InfoTabContentItem
-                        embodiedCarbon title={<>Embodied Carbon (EmbodiedCarbonKgCO)</>}
+                        embodiedCarbon title={<>Embodied Carbon (kgCO<sub>2</sub>e)</>}
                         value={
                             this.props.item &&
                             this.props.item.product.sku &&
@@ -93,7 +93,7 @@ class InfoTabContent extends Component {
                         }
 
 
-                        popoverHeading={` Emissions: ${this.props.item.product.sku.embodied_carbon_kgs.toFixed(2)} ${EmbodiedCarbonKgCO}`}
+                        popoverHeading={` Emissions: ${this.props.item.product.sku.embodied_carbon_kgs.toFixed(2)} kgCO<sub>2</sub>e`}
                         popoverText={<>
 
                             <div className="row  mt-2">
@@ -136,7 +136,7 @@ class InfoTabContent extends Component {
                     />
                 ) : <></>}
                 {(this.props?.item?.total_logistic_carbon?.carbon?.carbon_kgs.toFixed(2)) ? (
-                    <InfoTabContentItem simple title={<>Transport Emissions (EmbodiedCarbonKgCO)</>} value={(this.props?.item && this.props?.item?.total_logistic_carbon?.carbon) &&
+                    <InfoTabContentItem simple title={<>Transport Emissions (kgCO<sub>2</sub>e)</>} value={(this.props?.item && this.props?.item?.total_logistic_carbon?.carbon) &&
                         this.props?.item?.total_logistic_carbon?.carbon?.carbon_kgs.toLocaleString(undefined, { maximumFractionDigits: 2 })} />
                 ) : <></>}
 

@@ -142,7 +142,6 @@ class App extends Component {
             <>
                 <ThemeProvider theme={theme}>
                 <BrowserRouter>
-                    {/*<Header />*/}
                     <Switch>
                         <Route exact path="/" component={withRouter(Home)} />
                         <Route exact path="/test-route" component={TestRoute} />
@@ -152,6 +151,13 @@ class App extends Component {
                         <Route exact path="/privacy" component={Privacy} />
                         <Route exact path="/acceptable" component={AcceptableUse} />
                         <Route exact path="/verify" component={VerifyEmail} />
+                        <Route exact path="/magic" component={Magic} />
+                        <Route exact path="/find-resources" component={FindResourcePage} />
+                        <Route exact path="/p/:slug" component={ItemCycleDetail} />
+                        <Route exact path="/ps/:slug" component={Site} />
+                        <Route exact path="/marketplace/:slug" component={ItemDetail} />
+                        <Route exact path="/documents-portal" component={DocumentPortal} />
+
                         <LoggedInRoute exact path="/notifications" component={NotificationPage} />
                         <LoggedInRoute exact path="/messages" component={MessagePage} />
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
@@ -193,7 +199,6 @@ class App extends Component {
                         <LoggedOutRoute exact path="/login" component={LoginPage} />
                         <LoggedOutRoute exact path="/forgot-password" component={ForgotPasswordPage} />
                         <LoggedInRoute exact path="/code" component={CycleCode} />
-                        <Route exact path="/find-resources" component={FindResourcePage} />
                         <LoggedInRoute exact path="/resource/:slug" component={ResourceItem} />
                         <PromptLoginRoute exact path="/account" component={MyAccount} />
                         <LoggedInRoute exact path="/help" component={Help} />
@@ -205,42 +210,23 @@ class App extends Component {
                         <LoggedInRoute exact path="/search" component={Search} />
                         <LoggedInRoute exact path="/create-collection" component={CreateCollection} />
                         <LoggedInRoute exact path="/collections" component={Collections} />
-
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         <LoggedInRoute exact path="/product/:slug" component={ProductView} />
                         <LoggedInRoute exact path="/product-kind/:slug" component={ProductKindDetail} />
                         <LoggedInRoute exact path="/collection/:slug" component={CollectionDetail} />
                         <LoggedInRoute exact path="/product/preview/:slug" component={Product} />
-                        <Route exact path="/p/:slug" component={ItemCycleDetail} />
-                        <Route exact path="/ps/:slug" component={Site} />
-                        <LoggedInRoute
-                            exact
-                            path="/sub-product-view/:slug"
-                            component={SubProductView}
-                        />
-                        <LoggedInRoute
-                            exact
-                            path="/message-seller/:slug"
-                            component={MessageSeller}
-                        />
+                        <LoggedInRoute exact path="/sub-product-view/:slug" component={SubProductView} />
+                        <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
                         <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
                         <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />
                         <LoggedInRoute exact path="/matched/:match" component={ItemDetailMatched} />
-                        <LoggedInRoute
-                            exact
-                            path="/match/:search/:listing"
-                            component={ItemDetailMatch}
-                        />
-                        <Route exact path="/marketplace/:slug" component={ItemDetail} />
-                        <Route exact path="/documents-portal" component={DocumentPortal} />
+                        <LoggedInRoute exact path="/match/:search/:listing" component={ItemDetailMatch} />
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
-                        <Route exact path="/magic" component={Magic} />
                         <Route component={NotFound} />
-
                     </Switch>
 
                     {this.props.showLoginPopUp && <LoginPopUp />}

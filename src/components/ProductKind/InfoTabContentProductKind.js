@@ -1,5 +1,5 @@
 import React from "react";
-import { capitalizeFirstLetter } from "../../Util/Constants";
+import { EmbodiedCarbonKgCO, capitalizeFirstLetter } from "../../Util/Constants";
 import { capitalize } from "../../Util/GlobalFunctions";
 import InfoTabContentItem from '../Products/InfoTabContentItem';
 
@@ -84,7 +84,7 @@ const InfoTabContentProductKind = ({item}) => {
                 {(item && product_kind?.sku &&
                     product_kind?.sku.embodied_carbon_kgs && product_kind?.sku.embodied_carbon_kgs > 0) ? (
                     <InfoTabContentItem
-                        embodiedCarbon title={<>Embodied Carbon (kgCO<sub>2</sub>e)</>}
+                        embodiedCarbon title={<>Embodied Carbon ({EmbodiedCarbonKgCO})</>}
                         value={
                             item &&
                             product_kind?.sku &&
@@ -93,7 +93,7 @@ const InfoTabContentProductKind = ({item}) => {
                         }
 
 
-                        popoverHeading={` Emissions: ${product_kind?.sku.embodied_carbon_kgs.toFixed(2)} kgCO<sub>2</sub>e`}
+                        popoverHeading={` Emissions: ${product_kind?.sku.embodied_carbon_kgs.toFixed(2)} ${EmbodiedCarbonKgCO}`}
                         popoverText={<>
 
                             <div className="row  mt-2">

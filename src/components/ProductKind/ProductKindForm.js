@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import "../../Util/upload-file.css";
 import {Cancel, Check, Error, Info, Publish} from "@mui/icons-material";
 import axios from "axios/index";
-import {baseUrl, ENTITY_TYPES, getMimeTypeAndIcon, MIME_TYPES_ACCEPT, WEIGHT_OPTIONS} from "../../Util/Constants";
+import {baseUrl, EmbodiedCarbonKgCO, ENTITY_TYPES, getMimeTypeAndIcon, MIME_TYPES_ACCEPT, WEIGHT_OPTIONS} from "../../Util/Constants";
 import _ from "lodash";
 import {Spinner} from "react-bootstrap";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
@@ -2133,7 +2133,7 @@ class ProductKindForm extends Component {
                                                 // details="A unique number used by external systems"
                                                 initialValue={this.props.item ? this.props.item.product_kind.sku.embodied_carbon_kgs : null
                                                     || (this.state.selectedTemplate ? this.state.selectedTemplate.value.product.sku.embodied_carbon_kgs : null)
-                                                } name="embodied_carbon_kgs" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
+                                                } name="embodied_carbon_kgs" title={`Embodied Carbon (${EmbodiedCarbonKgCO})`} />
 
                                         </div>
                                         {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}

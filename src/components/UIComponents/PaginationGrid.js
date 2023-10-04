@@ -109,6 +109,7 @@ class PaginationGrid extends Component {
                 <div className="row  ">
                     <div className="col-md-12 col-12 position-relative pe-0 ">
                 <CustomDataGridTable
+                    fromCollections={this.props.fromCollections}
                     entityType={this.props.entityType}
                     loadMore={(reset,sortData,newPage) => this.loadMore(reset,sortData,newPage)}
                     // headers={this.props.headers}

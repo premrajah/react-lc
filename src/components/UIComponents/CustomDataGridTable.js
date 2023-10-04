@@ -28,7 +28,7 @@ import { Avatar } from "@mui/material";
 import placeholderImg from "../../img/place-holder-lc.png";
 
 const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,resetSelection,entityType,
-                               linkField,dataKey,loading,loadMore,checkboxSelection,
+                               linkField,dataKey,loading,loadMore,checkboxSelection,fromCollections,
                                setMultipleSelectFlag,actionCallback, items,element,children, ...otherProps}) =>{
 
     const [tableHeader,setTableHeader] = useState([]);
@@ -139,7 +139,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                      <Link to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>
                                      <><span className="text-capitalize d-flex align-items-center flex-row">
                                          {entityType==="Product"&&<GetProductImageThumbnail productKey={params.row.id} />}
-                                         {entityType==="Site"&&<GetSiteImageThumbnail geo_codes={params.row.geo_codes} />}
+                                         {entityType==="Site"&&<GetSiteImageThumbnail  geo_codes={params.row.geo_codes} />}
                                          {params.value} {params.row.is_head_office&&<span className="text-pink ms-2 text-12 text-bold">(Head Office)</span>} &#160; {entityType==="Collection"&& <span className=" active-collection text-capitlize">{params.row.type}</span>}
                                      </span></>
                     </Link>
@@ -219,7 +219,12 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                                 } else {
 
                                     if (item.field==="site"){
-                                        itemTmp[`${item.field}`] = getSite(listItem)?.name
+                                        if (fromCollections){
+                                            itemTmp[`${item.field}`] = (listItem)?.site?.name
+                                        }
+                                        else{
+                                            itemTmp[`${item.field}`] = getSite(listItem)?.name
+                                        }
                                     }
                                    else if (item.field==="siteId"){
                                         itemTmp[`${item.field}`] = getSite(listItem)?._key

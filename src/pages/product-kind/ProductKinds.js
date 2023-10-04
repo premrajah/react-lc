@@ -144,7 +144,7 @@ class ProductKinds extends Component {
 
 
             let linkUrl = `product-kind`
-            let linkParams = `type=${queryData.type}`
+            let linkParams = ``
             // if (!queryData.reset){
             if (queryData.filter) {
                 linkParams = `${linkParams}&filter=${queryData.filter}`

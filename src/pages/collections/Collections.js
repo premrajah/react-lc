@@ -992,6 +992,7 @@ class Collections extends Component {
                                 count={this.state.count}
                                 resetSelection={this.state.resetSelection}
                                 items={this.state.items}
+
                                 pageSize={this.state.pageSize}
                                 offset={this.state.offset}
                                 visibleCount={this.state.items.length}

@@ -18,7 +18,7 @@ import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
 import { Delete } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { capitalize, getSite, getDateFormat } from "../../Util/GlobalFunctions";
+import {capitalize, getSite, getDateFormat, formatCarbonValue} from "../../Util/GlobalFunctions";
 import { Link } from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
 import Stack from '@mui/material/Stack';
@@ -118,7 +118,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
 
                 headersTmp.push({
                     field: item.subField ? item.subField : item.field,
-                    headerName: item.label,
+                    headerName:  <span dangerouslySetInnerHTML={{ __html: item.label }}/>,
                     editable: false,
                     sortable: item.sortable,
                     sortingOrder: item.sortingOrder ? item.sortingOrder : ['asc', 'desc', null],
@@ -131,22 +131,24 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                     // minWidth:50,
                     // maxWidth:"unset",
                     renderCell: (params) => (
-                        <>
+                        <>{params.field === "embodied_carbon_kgs"?formatCarbonValue(params.value):
 
-                            {params.field === "_ts_epoch_ms" ? <span>
+                                params.field === "_ts_epoch_ms" ? <span>
                             {getDateFormat(params.value)}
                     </span> : params.field === data.linkField ? <span className="text-blue">
                      <Link to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>
                                      <><span className="text-capitalize d-flex align-items-center flex-row">
                                          {entityType==="Product"&&<GetProductImageThumbnail productKey={params.row.id} />}
                                          {entityType==="Site"&&<GetSiteImageThumbnail geo_codes={params.row.geo_codes} />}
-                                         {params.value}{params.row.is_head_office&&<span className="text-pink ms-2 text-12 text-bold">(Head Office)</span>}</span></>
+                                         {params.value} {params.row.is_head_office&&<span className="text-pink ms-2 text-12 text-bold">(Head Office)</span>} &#160; {entityType==="Collection"&& <span className=" active-collection text-capitlize">{params.row.type}</span>}
+                                     </span></>
                     </Link>
                     </span> : params.field === "year_of_making" ? <span>{(params.value === 0 ? "" : params.value)}</span> :
                                     params.field === "category" ? <GetCatBox item={params.row}/>:params.field === "site" ?
                                     <span><ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>
                                     <Link to={`/ps/${params.row.siteId}?${data.linkParams}`}>{params.value}</Link>
-                                    </span>: params.value}
+                                    </span>:
+                                        params.value}
                         </>
                     ),
 

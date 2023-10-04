@@ -988,7 +988,7 @@ class Collections extends Component {
 
                         <ErrorBoundary>
                             <PaginationGrid
-                                entityType={"Product"}
+                                entityType={"Collection"}
                                 count={this.state.count}
                                 resetSelection={this.state.resetSelection}
                                 items={this.state.items}

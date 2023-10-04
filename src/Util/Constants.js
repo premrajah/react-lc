@@ -150,7 +150,7 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
     { field: "description", label: "Description", visible: false, sortable: false, notFilterable: "true" },
     { field: "condition", label: "Condition", visible: false, sortable: false, flex: 0.5, notFilterable: "true" },
     // { field: "sku", subField: "serial", label: "Serial No", visible: true, sortable: false, flex: 0.75 },
-    { field: "sku", subField: "embodied_carbon_kgs", label: "Embodied Carbon", visible: true, sortable: false, flex: 0.75 },
+    { field: "sku", subField: "embodied_carbon_kgs", label: "Embodied Carbon(kgCO<sub>2</sub>e)", visible: true, sortable: false, flex: 1.25 },
     { field: "site", label: "Site", visible: true, sortable: false, notFilterable: "true", flex: 1.5 },
     { field: "siteId", label: "Site Id", visible: false, sortable: false, notFilterable: "true", flex: 1.5 },
     { field: "_ts_epoch_ms", label: "Added on", visible: true, sortable: true, sort: 'desc', sortingOrder: ['desc', 'asc', null], notFilterable: "true" },
@@ -161,6 +161,7 @@ export const COLLECTION_FILTER_VALUES_KEY = [
     { field: "id", label: "ID", visible: false, sortable: false, notFilterable: "true" },
     // {key:"_id",label:"ID" ,visible:true,sortable:true},
     { field: "name", label: "Name", visible: true, sortable: true, flex: 2 },
+    { field: "type", label: "Type", visible: false, sortable: false, flex: 1 },
     { field: "description", label: "Description", visible: false, sortable: false, notFilterable: "true" },
     // { field: "condition", label: "Condition", visible: false, sortable: false, flex: 0.5, notFilterable: "true" },
     // { field: "sku", subField: "serial", label: "Serial No", visible: true, sortable: false, flex: 0.75 },
@@ -174,10 +175,9 @@ export const PRODUCTS_KIND_FILTER_VALUES_KEY = [
     { field: "id", label: "ID", visible: false, sortable: false, notFilterable: "true" },
     // {key:"_id",label:"ID" ,visible:true,sortable:true},
     { field: "name", label: "Name", visible: true, sortable: true, flex: 2 },
+    { field: "sku", subField: "embodied_carbon_kgs", label: "Embodied Carbon(kgCO<sub>2</sub>e)", visible: true, sortable: false, flex: 1.25 },
     { field: "description", label: "Description", visible: false, sortable: false, notFilterable: "true" },
     { field: "condition", label: "Condition", visible: false, sortable: false, flex: 0.5, notFilterable: "true" },
-    { field: "sku", subField: "embodied_carbon_kgs", label: "Embodied Carbon", visible: true, sortable: false, flex: 0.75 },
-
     // { field: "sku", subField: "serial", label: "Serial No", visible: true, sortable: false, flex: 0.75 },
     { field: "_ts_epoch_ms", label: "Added on", visible: true, sortable: true, sort: 'desc', sortingOrder: ['desc', 'asc', null], notFilterable: "true" },
 ];

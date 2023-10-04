@@ -5051,3 +5051,13 @@ input[type=file]::file-selector-button:hover {
     background: #0d45a5;
 }
 /*document portal ends*/
+
+.active-collection{
+    background: #b8ddd1;
+    color: #07ad89;
+
+    border-radius: 30px;
+    padding: 2px 7px 2px 7px;
+    position: relative;
+    width: auto !important;
+}

@@ -7,6 +7,13 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import AddIcon from "@mui/icons-material/Add";
 import ProductKindForm from "./ProductKindForm";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import LinkExistingList from "../Products/LinkExistingList";
+import {baseUrl} from "../../Util/Constants";
+import BlueSmallBtn from "../FormsUI/Buttons/BlueSmallBtn";
+import GreenButton from "../FormsUI/Buttons/GreenButton";
+import axios from "axios";
+import ProductKindExistingList from "./ProductKindExistingList";
+import {v4 as uuid} from "uuid";
 
 class SubProductsTab extends Component {
     slug;
@@ -18,7 +25,8 @@ class SubProductsTab extends Component {
             showAddProducts:false,
             showAddProductKinds:false,
             showAddNew:false,
-            showLinkNew:false
+            showLinkNew:false,
+            existingItems: [],
         }}
 
 
@@ -36,6 +44,14 @@ class SubProductsTab extends Component {
         this.setState({
             showLinkNew:!this.state.showLinkNew
         })
+
+        setTimeout(()=>{
+            this.setState({
+                existingItems:  this.state.showLinkNew?[ {index: uuid(),value:"",valueText:"",error:null}]:[]
+
+            });
+
+        },100)
     }
     toggleShowProductKinds=()=>{
         this.setState({
@@ -54,8 +70,101 @@ class SubProductsTab extends Component {
 
     }
 
+    linkSubProduct = (event)=>{
+
+        event.preventDefault();
+        try {
+            this.setState({
+                btnLoading: true,
+            });
+            let array = [];
+            let errorFlag=false
+            for (let i = 0; i < this.state.existingItems.length; i++) {
+                if (this.state.existingItems[i].value&&this.state.existingItems[i].value.length>0){
+                    array.push({ id: this.state.existingItems[i].value});
+                }else{
+                    errorFlag=true
+                    let existingItems = this.state.existingItems;
+                    existingItems[i].error=true
+                    this.setState({
+                        existingItems:existingItems
+                    })
+                }
+            }
+
+            if (errorFlag){
+                return
+            }
+            let dataForm = {
+                product_kind_id: this.props.item.product_kind._key,
+                sub_product_kinds: array,
+            };
 
 
+            axios
+                .post(baseUrl + "product-kind/sub-product-kinds", dataForm)
+                .then((res) => {
+                    // dispatch({type: "SIGN_UP", value : res.data})
+
+                    this.setState({
+                        existingItems: [],
+                        showExisting: false,
+                    });
+                    this.props.showSnackbar({show:true,severity:"success",message:"Subproducts kinds linked successfully. Thanks"})
+
+                    this.loadProduct(this.props.item.product_kind._key);
+                    this.props.loadCurrentProductKind(this.props.item.product_kind._key)
+
+                })
+                .catch((error) => {
+                    console.log(error)
+                    this.props.showSnackbar({show:true,severity:"error",message:"Unknown error occurred. "})
+
+                });
+
+        }catch (e){
+            console.log("error link submit product", e);
+        }
+    }
+
+    addItem=()=> {
+
+
+        this.setState(prevState => ({
+            existingItems: [
+                ...prevState.existingItems,
+                {
+                    index:uuid(),
+                    name: "",
+
+                }
+            ]
+        }));
+
+    }
+
+    deleteItem=(record)=> {
+
+        this.setState({
+            existingItems: this.state.existingItems.filter(r => r !== record)
+        });
+
+
+    }
+
+    handleChange=( value,valueText,field,uId,index) =>{
+
+        let existingItems = [...this.state.existingItems];
+        existingItems[index] = {
+            value:value,valueText:valueText,
+            index:uId,
+            error:false
+        };
+        this.setState({
+            existingItems:existingItems
+        })
+
+    }
     render() {
 
         return (
@@ -129,16 +238,15 @@ class SubProductsTab extends Component {
                                     Create New
                                 </button>
 
-                                {/*<button*/}
-                                {/*    className={*/}
-                                {/*        "btn-gray-border click-item ms-2"*/}
-                                {/*    }*/}
-                                {/*    // data-parent={this.state.item.product._key}*/}
-                                {/*    // onClick={this.showExisting}*/}
-                                {/*>*/}
-                                {/*    <AddLinkIcon />*/}
-                                {/*    Link Existing*/}
-                                {/*</button>*/}
+                                <button
+                                    className={
+                                        "btn-gray-border click-item ms-2"
+                                    }
+                                    onClick={()=> this.toggleLinkNew()}
+                                >
+                                    <AddLinkIcon />
+                                    Link Existing
+                                </button>
 
                             </div>
 
@@ -163,6 +271,65 @@ class SubProductsTab extends Component {
                                     this.toggleShowProductKinds()
                                 }}
                             />}
+
+                        {  this.state.showLinkNew && (
+                            <>
+                                <div className="row   justify-content-left">
+                                    <form onChange={this.handleChangeForm} style={{ width: "100%" }}
+                                          onSubmit={this.linkSubProduct}
+                                    >
+                                        <div className="col-12 mt-4" style={{ padding: "0!important" }}>
+
+                                            <ProductKindExistingList
+                                                option={"ProductKind"}
+                                                subOption={"name"}
+                                                searchKey={"name"}
+                                                valueKey={"ProductKind"}
+                                                subValueKey={"_key"}
+                                                field={"product-kind"}
+                                                apiUrl={baseUrl + "seek?name=ProductKind&no_parent=true&count=false"}
+                                                filters={[this.props.item.product_kind._key,...this.props.item?.sub_product_kinds.map(item=>item._key)]}
+                                                fields={this.state.fields}
+                                                deleteItem={this.deleteItem}
+                                                handleChange={this.handleChange}
+                                                existingItems={this.state.existingItems} />
+                                        </div>
+                                        {this.state.showLinkNew &&
+                                            <div className="row   ">
+                                                <div className="col-12 mt-2  ">
+                                                    <div className="">
+                                                        <BlueSmallBtn
+                                                            onClick={this.addItem}
+                                                            title={"Add"}
+                                                            type="button"
+                                                        >
+                                                            <AddIcon/>
+                                                        </BlueSmallBtn>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+
+                                        <div className="col-12 mt-4 mobile-menu">
+                                            <div className="row text-center ">
+                                                <div className="col-12 text-center">
+
+                                                    {this.state.existingItems.length>0 && <GreenButton
+                                                        title={"Add Subproduct kind"}
+                                                        type={"submit"}
+                                                        // loading={this.state.loading}
+                                                        // disabled={this.state.loading||this.state.isSubmitButtonPressed}
+
+                                                    >
+                                                    </GreenButton>}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </>
+                        )}
 
                     </div>
 
@@ -193,8 +360,8 @@ const mapDispachToProps = (dispatch) => {
         setLoginPopUpStatus: (data) => dispatch(actionCreator.setLoginPopUpStatus(data)),
         loadProducts: (data) => dispatch(actionCreator.loadProducts(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
-
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(SubProductsTab);

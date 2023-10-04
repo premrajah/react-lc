@@ -19,11 +19,56 @@ import ConditionsContent from "./ConditionsContent";
 import CollectionForm from "./CollectionForm";
 import ProductsNew from "../../pages/my-products/ProductsNew";
 import ProductKinds from "../../pages/product-kind/ProductKinds";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
+import { styled } from '@mui/material/styles';
+// import Accordion from '@mui/material/Accordion';
+// import AccordionSummary from '@mui/material/AccordionSummary';
+// import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import MuiAccordionSummary, {
+    AccordionSummaryProps,
+} from '@mui/material/AccordionSummary';
+
+const Accordion = styled((props) => (
+    <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => {
+    return ({
+        border: `1px solid ${theme.palette.divider}`,
+        '&:not(:last-child)': {
+            // borderBottom: 0,
+        },
+        '&:before': {
+            display: 'none',
+        },
+    });
+});
+
+const AccordionSummary = styled((props) => (
+    <MuiAccordionSummary
+        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+        {...props}
+    />
+))(({ theme }) => ({
+    backgroundColor:
+        theme.palette.mode === 'dark'
+            ? 'rgba(255, 255, 255, .05)'
+            : 'rgba(0, 0, 0, .03)',
+    flexDirection: 'row-reverse',
+    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+        transform: 'rotate(90deg)',
+    },
+    '& .MuiAccordionSummary-content': {
+        marginLeft: theme.spacing(1),
+    },
+}));
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+    padding: theme.spacing(2),
+    borderTop: '1px solid rgba(0, 0, 0, .125)',
+}));
 
 class CollectionDetailContent extends Component {
 
@@ -104,63 +149,18 @@ class CollectionDetailContent extends Component {
     }
 
     setActiveKey=(event,key)=>{
-
-
         this.setState({
             activeKey:key
         })
-
-
     }
 
     setActiveReleaseTabKey=(event,key)=>{
-
-
         this.setState({
             activeReleaseTabKey:key,
             errorRelease: null,
             showReleaseSuccess:false
-
         })
-
-
     }
-
-    cancelChangeServiceAgentRequest = () => {
-
-        if (this.state.serviceAgentRequests&&this.state.serviceAgentRequests.length>0) {
-            let data = {
-                id: this.state.serviceAgentRequests[0].Release._key,
-                new_stage: "cancelled",
-                // "site_id": this.state.site
-            };
-
-            this.setState({
-                btnLoading: true,
-            });
-            axios
-                .post(baseUrl + "service-agent/stage", data)
-                .then((res) => {
-
-
-                    this.fetchExistingAgentRequests(this.state.item._key)
-
-                    this.props.showSnackbar({show:true,severity:"success",message:"Change service agent request cancelled successfully. Thanks"})
-                    // this.setState({
-                    //     btnLoading: false,
-                    // });
-
-                })
-                .catch((error) => {
-                    this.props.showSnackbar({show:true,severity:"error",message:fetchErrorMessage(error)})
-                    this.setState({
-                        btnLoading: false,
-                    });
-                });
-
-        }
-    };
-
 
     actionSubmit = () => {
 
@@ -961,7 +961,7 @@ class CollectionDetailContent extends Component {
 
                                 <div className="row justify-content-start pb-3  ">
                                     <div className="col-12 ">
-                                        <div className="row">
+                                        <div className="row g-0">
                                             <div className="col-12 position-relative">
                                                 <Accordion>
                                                     <AccordionSummary
@@ -969,9 +969,9 @@ class CollectionDetailContent extends Component {
                                                         aria-controls="panel1a-content"
                                                         id="panel1a-header"
                                                     >
-                                                         <h4 className="text-capitalize product-title width-100">
+                                                         <Typography  variant="h5"  component={"h5"} className="text-capitalize width-100">
                                                             {this.state.item?.name}
-                                                        </h4>
+                                                        </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
                                                         <>
@@ -1099,7 +1099,8 @@ class CollectionDetailContent extends Component {
                                     item={this.state.item}
                                     type={true}
                                     refreshData={ ()=> {
-                                       
+                                       this.props.loadCurrentCollection(this.state.item?._key);
+                                        this.showProductEdit();
                                     }}
                                 />
                                 }
@@ -1144,8 +1145,8 @@ const mapDispachToProps = (dispatch) => {
         setProduct: (data) => dispatch(actionCreator.setProduct(data)),
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
         loadSites: (data) => dispatch(actionCreator.loadSites(data)),
-        loadCurrentProduct: (data) =>
-            dispatch(actionCreator.loadCurrentProduct(data)),
+        loadCurrentCollection: (data) => dispatch(actionCreator.loadCurrentCollection(data)),
+
     };
 };
 export default connect(mapStateToProps, mapDispachToProps)(CollectionDetailContent);

@@ -99,6 +99,7 @@ import ProductKindDetail from "./pages/product-kind/ProductKindDetail";
 import CreateCollection from "./pages/collections/CreateCollection";
 import CollectionDetail from "./pages/collections/CollectionDetail";
 import Collections from "./pages/collections/Collections";
+import Magic from "./pages/magic/Magic";
 
 
 ReactGA.initialize(gaTID);
@@ -237,6 +238,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/testing" component={ProductTreeView} />
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />
+                        <Route exact path="/magic" component={Magic} />
                         <Route component={NotFound} />
 
                     </Switch>

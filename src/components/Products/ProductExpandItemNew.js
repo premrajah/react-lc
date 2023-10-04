@@ -69,7 +69,6 @@ class ProductExpandItem extends Component {
 
         this.setState({
             showExisting: !this.state.showExisting,
-
         });
         setTimeout(()=>{
             this.setState({
@@ -372,7 +371,6 @@ class ProductExpandItem extends Component {
                                 <div className="col-12 mt-4" style={{ padding: "0!important" }}>
 
                                     <LinkExistingList
-
                                         option={"Product"}
                                         subOption={"name"}
                                         searchKey={"name"}

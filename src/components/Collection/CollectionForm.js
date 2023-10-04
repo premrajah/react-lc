@@ -595,13 +595,15 @@ class CollectionForm extends Component {
                 //     });
                 // }
 
-                // this.props.showSnackbar({show:true,severity:"success",message:"Campaign created successfully. Thanks"})
+                this.props.showSnackbar({show:true,severity:"success",message:"Collection created successfully. Thanks"})
                 // this.props.toggleRightBar()
 
                 this.setState({isSubmitButtonPressed: false,loading:false})
             })
             .catch((error) => {
                 this.setState({isSubmitButtonPressed: false,loading:false})
+                this.props.showSnackbar({show:true,severity:"error",message:"Unknown error occurred."})
+
             });
 
 
@@ -676,9 +678,15 @@ class CollectionForm extends Component {
                 this.props.refreshData()
                 this.props.toggleRightBar()
 
+                this.props.showSnackbar({show:true,severity:"success",message:"Collection updated successfully. Thanks"})
+
+
             })
             .catch((error) => {
                 this.setState({isSubmitButtonPressed: false})
+                console.log(error)
+                this.props.showSnackbar({show:true,severity:"error",message:"Unknown error occurred."})
+
             });
 
 

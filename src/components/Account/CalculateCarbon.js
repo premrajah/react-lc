@@ -1063,7 +1063,6 @@ class CalculateCarbon extends Component {
 
                                             <PartsList
                                                 totalPercentError={this.state.totalPercentError}
-
                                                 errors={this.state.carbonErrors}
                                                 list={this.state.resourceCategories}
                                                 transportModesList={this.state.transportModes}

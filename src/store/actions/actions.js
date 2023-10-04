@@ -307,6 +307,17 @@ export const loadCurrentProduct = (data, refresh) => {
         dispatch(loadCurrentProductSync(data));
     };
 };
+export const loadCurrentCollection = (data, refresh) => {
+    return (dispatch) => {
+
+        if (refresh) {
+            dispatch(emptyCurrent());
+        }
+        dispatch(currentProductLoading(true));
+
+        dispatch(loadCurrentCollectionSync(data));
+    };
+};
 
 export const loadCurrentProductKind = (data, refresh) => {
     return (dispatch) => {
@@ -424,6 +435,33 @@ export const loadCurrentProductKindSync = (data) => (dispatch) => {
                     // this.setState({
                     //     notFound: true,
                     // });
+
+                    dispatch({ type: PRODUCT_NOT_FOUND, value: true });
+
+                }
+            );
+
+    } catch (e) {
+        console.log(e)
+
+
+    }
+};
+export const loadCurrentCollectionSync = (data) => (dispatch) => {
+
+    try {
+        axios
+            .get(baseUrl + "collection/" + encodeUrl(data) )
+            .then(
+                (response) => {
+                    let responseAll = response.data;
+
+                    dispatch({ type: CURRENT_COLLECTION, value: responseAll.data });
+                    dispatch(currentProductLoading(false));
+
+                },
+                (error) => {
+                    dispatch(currentProductLoading(false));
 
                     dispatch({ type: PRODUCT_NOT_FOUND, value: true });
 

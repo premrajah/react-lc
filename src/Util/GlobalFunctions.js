@@ -665,3 +665,12 @@ export const compareDeep=(Obj1,Obj2)=>{
     return _.isEqual(Obj1,Obj2)
 
 }
+
+export const formatCarbonValue=(number)=>{
+
+    if (number)
+    return (number).toLocaleString(undefined, { maximumFractionDigits: 2 });
+else
+    return ""
+
+}

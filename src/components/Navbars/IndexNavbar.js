@@ -18,7 +18,8 @@ import Menu from '@mui/material/Menu';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DevelopmentUserInfoDisplay from "./DevelopmentUserInfoDisplay";
-
+import GlobalDialog from "../RightBar/GlobalDialog";
+import MagicLinksCreator from "../Magic/MagicLinksCreator";
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
@@ -42,7 +43,9 @@ class ComponentsNavbar extends React.Component {
             nextIntervalFlag: false,
             orgImage: "",
             anchorEl: null,
-            menuOpen: false
+            menuOpen: false,
+            magicLinkPopup: false,
+            magicLinkCurrentPagePath: null,
         };
 
         this.toggleMenu = this.toggleMenu.bind(this);
@@ -53,6 +56,21 @@ class ComponentsNavbar extends React.Component {
 
     }
 
+    handleHideMagicLinkPopup = () => {
+        this.setState({
+            magicLinkPopup: false,
+            magicLinkCurrentPagePath: null, //clear pagePath
+        });
+    }
+
+    handleOpenMagicLinkPopup = () => {
+        let path = window.location.href;
+
+        this.setState({
+            magicLinkPopup: true,
+            magicLinkCurrentPagePath: path,
+        })        
+    }
 
     handleClickMenu = (event) => {
         this.setState({
@@ -102,11 +120,6 @@ class ComponentsNavbar extends React.Component {
     };
 
     componentDidMount() {
-
-        // window.removeEventListener("scroll", this.changeColor);
-        // window.addEventListener("scroll", this.changeColor);
-
-
 
         if (this.props.isLoggedIn) {
             this.getArtifactForOrg();
@@ -182,6 +195,7 @@ class ComponentsNavbar extends React.Component {
     };
 
     render() {
+        
         return (
             <>
                 <Snackbar open={this.props.messageAlert} autoHideDuration={6000} onClick={() => this.props.dispatchMessageAlert(false)} onClose={() => this.props.dispatchMessageAlert(false)}>
@@ -301,7 +315,7 @@ class ComponentsNavbar extends React.Component {
                                 <>
                                     {this.props?.userContext?.perms?.includes("AdminWrite") && <NavItem>
                                         <button className="btn btn-link text-dark btn-inbox">
-                                            <Link to="/magic">
+                                            <Link to="#" onClick={() => this.handleOpenMagicLinkPopup()}>
                                                 <AutoFixHighIcon className="white-text" style={{ fontSize: 24 }} />
                                             </Link>
                                         </button>
@@ -490,6 +504,15 @@ class ComponentsNavbar extends React.Component {
                         {this.props.loading && <LinearIndeterminate />}
                     </Container>
                 </Navbar>
+
+                <GlobalDialog
+                    size="md"
+                    show={this.state.magicLinkPopup}
+                    hide={() => this.handleHideMagicLinkPopup()}
+                    heading="Create Magic Link"
+                >
+                    <MagicLinksCreator pagePath={this.state.magicLinkCurrentPagePath} />
+                </GlobalDialog>
             </>
         );
     }

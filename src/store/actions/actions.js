@@ -727,6 +727,11 @@ export const userContextSync = (data) => (dispatch) => {
         });
 };
 
+export const setUserContext = (data) => {
+    console.log("action data ", data);
+    return { type: USER_CONTEXT, value: data };
+};
+
 
 export const userCache = (data) => {
 

@@ -151,7 +151,7 @@ class App extends Component {
                         <Route exact path="/privacy" component={Privacy} />
                         <Route exact path="/acceptable" component={AcceptableUse} />
                         <Route exact path="/verify" component={VerifyEmail} />
-                        <Route exact path="/magic" component={Magic} />
+                        <Route exact path="/magic/:slug" component={Magic} />
                         <Route exact path="/find-resources" component={FindResourcePage} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />
                         <Route exact path="/ps/:slug" component={Site} />

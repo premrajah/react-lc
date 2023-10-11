@@ -20,6 +20,7 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DevelopmentUserInfoDisplay from "./DevelopmentUserInfoDisplay";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import MagicLinksCreator from "../Magic/MagicLinksCreator";
+import { withRouter } from "react-router-dom";
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
@@ -30,6 +31,7 @@ const LightTooltip = withStyles((theme) => ({
     },
 }))(Tooltip);
 
+// pass path name to component
 
 class ComponentsNavbar extends React.Component {
     timer;
@@ -64,12 +66,11 @@ class ComponentsNavbar extends React.Component {
     }
 
     handleOpenMagicLinkPopup = () => {
-        let path = window.location.href;
-
+        const { pathname, search } = this.props.location;
         this.setState({
             magicLinkPopup: true,
-            magicLinkCurrentPagePath: path,
-        })        
+            magicLinkCurrentPagePath: `${pathname}${search && search}`,
+        })
     }
 
     handleClickMenu = (event) => {
@@ -195,7 +196,7 @@ class ComponentsNavbar extends React.Component {
     };
 
     render() {
-        
+
         return (
             <>
                 <Snackbar open={this.props.messageAlert} autoHideDuration={6000} onClick={() => this.props.dispatchMessageAlert(false)} onClose={() => this.props.dispatchMessageAlert(false)}>
@@ -581,4 +582,4 @@ const mapDispatchToProps = (dispatch) => {
         dispatchUnreadNotifications: (data) => dispatch(actionCreator.unreadNotifications(data)),
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ComponentsNavbar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ComponentsNavbar));

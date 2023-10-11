@@ -5,7 +5,7 @@ import { Validators, validateFormatCreate, validateInputs } from "../../Util/Val
 import GreenButton from "../FormsUI/Buttons/GreenButton";
 import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import axios from "axios";
-import { baseUrl } from "../../Util/Constants";
+import { baseUrl, frontEndUrl } from "../../Util/Constants";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import CopyContentButton from "../Utils/CopyContentButton";
@@ -95,7 +95,6 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
         if (!companyId) { return }
         try {
             const roleData = await axios.get(`${baseUrl}role/org/${companyId}`);
-            console.log("roleDAta ", roleData.data.data);
 
             if (roleData || roleData.length > 0) {
 
@@ -125,7 +124,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
             org_id,
             "role_id": roleId,
             "email_list": (email_list || email_list !== "") ? [email_list] : [],
-            destination_path,
+            "destination_path" : `${frontEndUrl.slice(0, -1)}${destination_path}`,
             "no_of_uses": (!no_of_uses || no_of_uses === "0") ? null : Number(no_of_uses),
         }
 
@@ -141,7 +140,6 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                 // TODO: let user know success
                 // TODO: reset form values
                 const { data } = magic.data
-                console.log("createMagicLink ", magic);
                 setMagicLinkUrl(data);
                 hideMagicLinkPopup();
                 setMagicLinkDisplayPopup(true);

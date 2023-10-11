@@ -21,25 +21,19 @@ function Magic({ isLoggedIn, userDetail, userContext, loadUserDetail, setUserCon
                 axios.get(`${baseUrl}magic/${slug}`)
                     .then((response) => {
 
-                        if (!response.status === 200) {
-                            // TODO: show error to user
-                        }
-
-                        if (response.status === 419) {
-                            // TODO: too many tries
-                        }
+                        console.log("getMAgic response ", response);
 
                         if (response.status === 200) {
-                            // TODO: update user context and redirect user
                             console.log("response ", response.data.data);
+
                             setMagicResponse(response.data.data);
-                            let token = response.data.data.user_context.token;
-                            setUserContext(response.data.data.user_context);
-                            saveKey("token", token);
-                            loadUserDetail();
+                            const  {user_context} = response.data.data;
+                            const {token} = user_context;
+
+                            setUserContext({token, "user": user_context});
                         }
 
-                        console.error("inside then error ", response.errors);
+                        console.error("inside then error ", response);
                     })
                     .catch(error => {
                         console.log("getMagic inside errors ", error, error.message);

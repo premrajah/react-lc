@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { connect } from "react-redux";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import { Validators, validateFormatCreate, validateInputs } from "../../Util/Validator";
@@ -7,15 +7,19 @@ import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
 import axios from "axios";
 import { baseUrl } from "../../Util/Constants";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
+import GlobalDialog from "../RightBar/GlobalDialog";
+import CopyContentButton from "../Utils/CopyContentButton";
 
 
 
-function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, loading: buttonLoading }) {
+function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, loading: buttonLoading, hideMagicLinkPopup }) {
 
     const [fields, setFields] = useState({});
     const [errors, setErrors] = useState({});
     const [org_id, setOrg_id] = useState(null);
     const [companyRoles, setCompanyRoles] = useState(null);
+    const [magicLinkDisplayPopup, setMagicLinkDisplayPopup] = useState(false);
+    const [magicLinkUrl, setMagicLinkUrl] = useState(null);
 
     // useEffect(() => {
 
@@ -35,13 +39,12 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
 
         let validations = [
             validateFormatCreate("destination_path", [{ check: Validators.required, message: 'Required' }], formFields),
-            validateFormatCreate("company", [{check: Validators.required, message: 'Required'}],formFields),
-            validateFormatCreate("role_id", [{check: Validators.required, message: 'Required'}],formFields),
+            validateFormatCreate("company", [{ check: Validators.required, message: 'Required' }], formFields),
+            validateFormatCreate("role_id", [{ check: Validators.required, message: 'Required' }], formFields),
 
         ]
 
         let { formIsValid, errors } = validateInputs(validations, formFields)
-
 
         if (!formIsValid) {
             setErrors({ errorPending: true })
@@ -50,7 +53,6 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
         }
 
         setErrors(errors);
-        console.log("form errors ", errors, formIsValid);
 
         return formIsValid;
     }
@@ -107,23 +109,17 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
 
 
     const handleSubmitForm = async (e) => {
-        console.log("e ", e);
         if (!e || !e.target) { return };
         e.preventDefault();
 
         if (!handleValidation()) { return };
 
         const formData = new FormData(e.target);
-        console.log("> ", formData);
 
         const destination_path = formData.get("destination_path");
         const roleId = formData.get("role_id");
         const email_list = formData.get("email_list");
         const no_of_uses = formData.get("no_of_uses");
-
-        console.log("no_of_uses ", no_of_uses);
-
-
 
         const postData = {
             org_id,
@@ -133,26 +129,34 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
             "no_of_uses": (!no_of_uses || no_of_uses === "0") ? null : Number(no_of_uses),
         }
 
-        console.log(">dp ", postData);
-
         await createMagicLink(postData);
 
     }
 
     const createMagicLink = async (postData) => {
         try {
-            const magic = axios.post(`${baseUrl}magic`, postData);
+            const magic = await axios.post(`${baseUrl}magic`, postData);
 
             if (magic) {
                 // TODO: let user know success
                 // TODO: reset form values
+                const { data } = magic.data
                 console.log("createMagicLink ", magic);
+                setMagicLinkUrl(data);
+                hideMagicLinkPopup();
+                setMagicLinkDisplayPopup(true);
+
             }
 
         } catch (error) {
             console.error("createMAgicLink error ", error);
             // TODO: let user know failure
         }
+    }
+
+    const hideMagicLinkDisplayPopup = () => {
+        setMagicLinkDisplayPopup(false);
+        setMagicLinkUrl(null);
     }
 
     return (<>
@@ -244,6 +248,28 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                     </div>
                 </div>
             </form>
+        </section>
+
+        <section>
+            <GlobalDialog
+                size="md"
+                show={magicLinkDisplayPopup}
+                hide={() => hideMagicLinkDisplayPopup()}
+                heading="Created Magic Link"
+            >
+                {magicLinkUrl && <div className="row mt-4" style={{minHeight: "200px"}}>
+                    <div className="col-md-2 custom-label text-bold text-blue">
+                        Magic Link
+                    </div>
+                    <div className="col-md-8">
+                        {magicLinkUrl}
+                    </div>
+                    <div className="col-md-2">
+                        <CopyContentButton value={magicLinkUrl} />
+                    </div>
+                </div>
+                }
+            </GlobalDialog>
         </section>
     </>)
 }

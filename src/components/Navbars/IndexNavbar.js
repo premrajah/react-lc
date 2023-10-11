@@ -511,7 +511,7 @@ class ComponentsNavbar extends React.Component {
                     hide={() => this.handleHideMagicLinkPopup()}
                     heading="Create Magic Link"
                 >
-                    <MagicLinksCreator pagePath={this.state.magicLinkCurrentPagePath} />
+                    <MagicLinksCreator pagePath={this.state.magicLinkCurrentPagePath} hideMagicLinkPopup={this.handleHideMagicLinkPopup} />
                 </GlobalDialog>
             </>
         );

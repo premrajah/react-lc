@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Redirect, useHistory } from "react-router-dom";
 import axios from "axios";
 import Layout from "../../components/Layout/Layout";
 import { baseUrl } from "../../Util/Constants";
 import * as actionCreator from "../../store/actions/actions";
-import { saveKey } from "../../LocalStorage/user";
 
 
 function Magic({ isLoggedIn, userDetail, userContext, loadUserDetail, setUserContext }) {
 
     const { slug } = useParams();
+    const history = useHistory();
 
-    const [magicResponse, setMagicResponse] = useState(null);
     const [errors, setErrors] = useState(null);
 
     useEffect(() => {
@@ -21,37 +20,51 @@ function Magic({ isLoggedIn, userDetail, userContext, loadUserDetail, setUserCon
                 axios.get(`${baseUrl}magic/${slug}`)
                     .then((response) => {
 
-                        console.log("getMAgic response ", response);
-
                         if (response.status === 200) {
-                            console.log("response ", response.data.data);
+                            const { data } = response.data
 
-                            setMagicResponse(response.data.data);
-                            const  {user_context} = response.data.data;
-                            const {token} = user_context;
+                            const { user_context } = data;
+                            const { token } = user_context;
+                            const { destination_path } = data;
 
-                            setUserContext({token, "user": user_context});
+                            let newURL = destination_path.replace(/^.*\/\/[^\/]+/, '');
+
+                            setUserContext({ token, "user": user_context });
+                            history.push(newURL);
                         }
 
-                        console.error("inside then error ", response);
+                        if (response.errors.length > 0) {
+                            console.log("Errors ");
+                            setErrors(response.errors);
+                        }
                     })
                     .catch(error => {
-                        console.log("getMagic inside errors ", error, error.message);
+                        console.log("getMagic inside errors ", error);
                         setErrors(error);
                     })
             } catch (error) {
-                console.error("getMagic ", error)
+                console.error("getMagic outside catch error ", error)
                 setErrors(error);
             }
         }
         getMagic();
-    }, [slug])
+    }, [history, setUserContext, slug])
 
     return (
         <Layout>
             <div className="container">
-                <section>
-                    Hello {magicResponse && magicResponse.usage_count}
+                <section className="mt-4">
+                    {errors && <div>
+                        <div className="text-danger">{errors?.message ?? "Apologies, The link has expired. Please contact Admin"}</div>
+                        <ul className="list-group">
+                            <li className="list-group-item p-2">
+                                Error status code <span className="text-danger">404</span> The link is not valid or missing characters.
+                            </li>
+                            <li className="list-group-item p-2">
+                                Error status code <span className="text-danger"> 409</span> The link is not valid or has expired.
+                            </li>
+                        </ul>
+                    </div>}
                 </section>
             </div>
         </Layout>

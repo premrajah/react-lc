@@ -159,11 +159,13 @@ class ProductsNew extends Component {
             this.setState({
                 showLinkProductKindPopUp: !this.state.showLinkProductKindPopUp,
                 linkProductRequestId: key,
+                btnLoading: false,
             });
         } else {
             this.setState({
                 showLinkProductKindPopUp: !this.state.showLinkProductKindPopUp,
                 linkProductRequestId: null,
+                btnLoading: false,
             });
         }
 
@@ -534,15 +536,20 @@ class ProductsNew extends Component {
 
     toggleProductKindRequestPopUp = (key) => {
 
+
         if (key) {
             this.setState({
                 showProductKindRequestPopUp: !this.state.showProductKindRequestPopUp,
                 productKindRequestId: key,
+                productKindRequestSuccess:false,
+                btnLoading: false,
             });
         } else {
             this.setState({
                 showProductKindRequestPopUp: !this.state.showProductKindRequestPopUp,
                 productKindRequestId: null,
+                productKindRequestSuccess:false,
+                btnLoading: false,
             });
         }
     }
@@ -552,11 +559,13 @@ class ProductsNew extends Component {
             this.setState({
                 showDeleteLinkProductKindPopUp: !this.state.showDeleteLinkProductKindPopUp,
                 productRequestId: key,
+                btnLoading: false,
             });
         } else {
             this.setState({
                 showDeleteLinkProductKindPopUp: !this.state.showDeleteLinkProductKindPopUp,
                 productRequestId: null,
+                btnLoading: false,
             });
         }
     }
@@ -1021,15 +1030,17 @@ class ProductsNew extends Component {
                 this.setState({
                     currentReleaseId: res.data.data._key,
                     productKindRequestSuccess: true,
+                    btnLoading: false,
                 });
             })
             .catch((error) => {
                 this.setState({
                     errorRequest: error.response.data.errors[0].message,
+                    btnLoading: false,
                 });
             });
     };
-    submitLinkProductKindRequest = (event) => {
+    approveLinkProductKindRequest = (event) => {
         this.setState({
             errorRegister: null,
         });
@@ -1042,24 +1053,18 @@ class ProductsNew extends Component {
         const data = new FormData(event.target);
 
         const productKind = data.get("product-kind");
-
-
-        axios
-            .post(
-                baseUrl + "product/product-kind",
-                {
+        
+        axios.post(baseUrl + "product/product-kind", {
                     product_kind_id: productKind,
                     product_id: this.state.linkProductRequestId,
-                }
-            )
-            .then((res) => {
+                }).then((res) => {
                 this.setState({
                     currentReleaseId: res.data.data._key,
                     productKindRequestSuccess: true,
+                    btnLoading: false,
                 });
 
                 this.toggleLinkProductKindPopUp()
-
                 this.props.showSnackbar({
                     show: true,
                     severity: "success",
@@ -1071,6 +1076,7 @@ class ProductsNew extends Component {
             .catch((error) => {
                 this.setState({
                     errorRequest: error.response.data.errors[0].message,
+                    btnLoading: false,
                 });
 
                 console.log(error)
@@ -1097,34 +1103,28 @@ class ProductsNew extends Component {
 
 
         axios
-            .delete(
-                baseUrl + "product/"+this.state.productRequestId+"/product-kind",
-                // {
-                //     product_kind_id: productKind,
-                //     product_id: this.state.linkProductRequestId,
-                // }
-            )
+            .delete(baseUrl + "product/"+this.state.productRequestId+"/product-kind",)
             .then((res) => {
-                // this.setState({
-                //     currentReleaseId: res.data.data._key,
-                //     productKindRequestSuccess: true,
-                // });
+
                 this.toggleDelinkProductKindRequestPopUp()
 
                 this.props.showSnackbar({
                     show: true,
                     severity: "success",
                     message: "Product kind removed successfully.",
+                    btnLoading: false,
                 });
                 this.props.refreshPageWithSavedState( {refresh:true,reset: true})
             })
             .catch((error) => {
-                // this.setState({
-                //     errorRequest: error.response.data.errors[0].message,
-                // });
+                this.setState({
+                    errorRequest: error.response.data.errors[0].message,
+                    btnLoading: false,
+                });
                 console.log(error)
                 this.props.showSnackbar({
                     show: true,
+
                     severity: "warning",
                     message: "Oops! Something went wrong, please try again after some time.",
                 });
@@ -1699,7 +1699,8 @@ class ProductsNew extends Component {
                         this.toggleProductKindRequestPopUp();
                     }}
                 >
-                    <> <div className={"row "}>
+                    {this.state.showProductKindRequestPopUp ?
+                        <> <div className={"row "}>
 
                         {!this.state.productKindRequestSuccess &&
 
@@ -1765,15 +1766,15 @@ class ProductsNew extends Component {
                                                             style={{
                                                                 textAlign: "center",
                                                             }}>
-                                                            {!(this.state.releases&&
-                                                                    this.state.requests.length&&
-                                                                    this.state.requests.filter(item=>item.Release.stage==="requested").length>0)&&
+
                                                                 <BlueButton
+                                                                    disabled={this.state.btnLoading}
+                                                                    loading={this.state.btnLoading}
                                                                     fullWidth
                                                                     title={"Submit"}
                                                                     type={"submit"}>
 
-                                                                </BlueButton>}
+                                                                </BlueButton>
                                                         </div>
                                                         <div
                                                             className={"col-6 "}
@@ -1809,29 +1810,9 @@ class ProductsNew extends Component {
                             </div>
                         )}
 
-                        {this.state.releases&&this.state.releases.length>0
-                            && this.state.releases.filter(item=>item.Release.stage==="requested").map((release)=>
-
-                                <div className={"col-12 mt-3 "}>
-
-                                    <div className="row mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
-                                        <div className={"col-11 text-blue "}>
-                                            Product Release request to  <b>{release.responder.name}</b> <br/>
-                                            Status: <span className="text-pink text-capitlize">{release.Release.stage}</span>
-                                            <br/><small className="text-gray-light mr-2">{getDateFormat(release.Release._ts_epoch_ms)}</small>
-                                        </div>
-
-                                        <div className={"col-1 text-right "}>
-                                            <CloseButtonPopUp
-                                                onClick={this.actionSubmit}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
 
                     </div>
-                    </>
+                    </>:<></>}
 
                 </GlobalDialog>
                 <GlobalDialog
@@ -1840,7 +1821,8 @@ class ProductsNew extends Component {
                     hide={this.toggleLinkProductKindPopUp}
                     show={this.state.showLinkProductKindPopUp}
                     heading={"Link Product Kind"}>
-                    <form onSubmit={this.submitLinkProductKindRequest}>
+                    {this.state.showLinkProductKindPopUp&&<>
+                    <form onSubmit={this.approveLinkProductKindRequest}>
 
                         <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12 ">
 
@@ -1879,7 +1861,8 @@ class ProductsNew extends Component {
                                             fullWidth
                                             title={"Submit"}
                                             type={"submit"}>
-
+                                            disabled={this.state.btnLoading}
+                                            loading={this.state.btnLoading}
                                         </BlueButton>
                                 </div>
                                 <div
@@ -1899,6 +1882,7 @@ class ProductsNew extends Component {
                         </div>
 
                     </form>
+                        </>}
                 </GlobalDialog>
 
                 <GlobalDialog
@@ -1926,6 +1910,8 @@ class ProductsNew extends Component {
 
                                     <BlueButton
                                         fullWidth
+                                        disabled={this.state.btnLoading}
+                                        loading={this.state.btnLoading}
                                         title={"Submit"}
                                         type={"submit"}>
 

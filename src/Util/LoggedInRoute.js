@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-
 import * as actionCreator from "../store/actions/actions";
 import { connect } from "react-redux";
 

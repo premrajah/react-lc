@@ -154,6 +154,9 @@ export const PRODUCTS_FILTER_VALUES_KEY = [
     { field: "site", label: "Site", visible: true, sortable: false, notFilterable: "true", flex: 1.5 },
     { field: "siteId", label: "Site Id", visible: false, sortable: false, notFilterable: "true", flex: 1.5 },
     { field: "_ts_epoch_ms", label: "Added on", visible: true, sortable: true, sort: 'desc', sortingOrder: ['desc', 'asc', null], notFilterable: "true" },
+    {directKey:true, field: "ProductKindToProduct", label: "ProductKindToProduct", visible: false, sortable: false,  notFilterable: "true" },
+
+
 
 ];
 

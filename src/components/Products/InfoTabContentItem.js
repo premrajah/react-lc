@@ -32,7 +32,7 @@ function InfoTabContentItem({ title, value, simple, simpleTitleClasses, simpleVa
             </div>}
 
             {embodiedCarbon && <div className="col-auto">
-                <p className="text-label text-blue mb-1">
+                <p className="text-label text-blue mb-1 text-capitalize">
                     {title ?? ""}
                 </p>
                 <p className="text-gray-light mb-1 text-capitalize">

@@ -70,16 +70,17 @@ class ProductKinds extends Component {
             loadingMore: true,
             menuOptions: {
                 ProductKinds: { url: "name=ProductKind&no_parent=true&relation=belongs_to&include-to=Site:located_at" },
-                Service: { url: "name=ProductKind&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
-                Records: { url: "name=ProductKind&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at", actions: ["view"] },
-                Track: { url: "name=ProductKind&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
-                Archive: { url: "name=ProductKind&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
-                Issues: { url: "name=Issue", actions: [] }
+                // Service: { url: "name=ProductKind&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
+                // Records: { url: "name=ProductKind&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at", actions: ["view"] },
+                // Track: { url: "name=ProductKind&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
+                // Archive: { url: "name=ProductKind&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
+                // Issues: { url: "name=Issue", actions: [] }
             },
             defaultSort: { key: "_ts_epoch_ms", sort: "desc" },
             selectAll: false,
             resetSelection: false,
             showProductKindFormPopUp: false,
+            showProductKindPopUp:false
         };
 
         this.showProductSelection = this.showProductSelection.bind(this);
@@ -229,6 +230,13 @@ class ProductKinds extends Component {
             showFieldSelection: !this.state.showFieldSelection,
         });
     };
+    toggleProductKindPopUp = () => {
+        this.setState({
+            showProductKindPopUp: !this.state.showProductKindPopUp,
+        });
+    };
+
+
     selectAll = () => {
         this.setState({
             selectAll: !this.state.selectAll,
@@ -934,14 +942,10 @@ class ProductKinds extends Component {
             let iniValues = {
                 filter: filter,
                 keyword: keyword,
-
             }
-
-
                 this.setState({
                     initialFilter: iniValues
                 })
-
 
             this.setQueryData({
 
@@ -1287,6 +1291,9 @@ class ProductKinds extends Component {
                     </div>
 
                 </GlobalDialog>
+
+
+
 
                 <GlobalDialog
                     size="md"

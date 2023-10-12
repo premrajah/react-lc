@@ -9,10 +9,10 @@ import { baseUrl, frontEndUrl } from "../../Util/Constants";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import CopyContentButton from "../Utils/CopyContentButton";
+import * as actionCreator from "../../store/actions/actions";
 
 
-
-function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, loading: buttonLoading, hideMagicLinkPopup }) {
+function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, loading: buttonLoading, hideMagicLinkPopup, showSnackbar }) {
 
     const [fields, setFields] = useState({});
     const [errors, setErrors] = useState({});
@@ -69,6 +69,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
 
             } catch (error) {
                 console.error("company details outside error ", error);
+                showSnackbar({show: true, severity: "error",message: "Something went wrong, unable to get company details at this time"});
             }
         } else {
             fields.company = null;
@@ -88,6 +89,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
             }
         } catch (error) {
             console.error("getCompanyDetails error ", error);
+            showSnackbar({show: true, severity: "error",message: "Something went wrong, unable to get company details at this time"});
         }
     }
 
@@ -103,6 +105,8 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
 
         } catch (error) {
             console.error("getRole error ", error,);
+            showSnackbar({show: true, severity: "error",message: "Something went wrong, unable to get company role at this time"});
+
         }
     }
 
@@ -124,7 +128,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
             org_id,
             "role_id": roleId,
             "email_list": (email_list || email_list !== "") ? [email_list] : [],
-            "destination_path" : `${frontEndUrl.slice(0, -1)}${destination_path}`,
+            "destination_path": `${frontEndUrl.slice(0, -1)}${destination_path}`,
             "no_of_uses": (!no_of_uses || no_of_uses === "0") ? null : Number(no_of_uses),
         }
 
@@ -137,18 +141,16 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
             const magic = await axios.post(`${baseUrl}magic`, postData);
 
             if (magic) {
-                // TODO: let user know success
-                // TODO: reset form values
                 const { data } = magic.data
                 setMagicLinkUrl(data);
                 hideMagicLinkPopup();
                 setMagicLinkDisplayPopup(true);
-
+                showSnackbar({show: true, severity: "success",message: "Successfully create magic link"});
             }
 
         } catch (error) {
             console.error("createMAgicLink error ", error);
-            // TODO: let user know failure
+            showSnackbar({show: true, severity: "error",message: "Something went wrong, unable to create magic link"});
         }
     }
 
@@ -255,7 +257,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                 hide={() => hideMagicLinkDisplayPopup()}
                 heading="Created Magic Link"
             >
-                {magicLinkUrl && <div className="row mt-4" style={{minHeight: "200px"}}>
+                {magicLinkUrl && <div className="row mt-4" style={{ minHeight: "200px" }}>
                     <div className="col-md-2 custom-label text-bold text-blue">
                         Magic Link
                     </div>
@@ -282,7 +284,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
+
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MagicLinksCreator)

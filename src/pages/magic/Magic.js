@@ -7,7 +7,7 @@ import { baseUrl } from "../../Util/Constants";
 import * as actionCreator from "../../store/actions/actions";
 
 
-function Magic({ isLoggedIn, userDetail, userContext, loadUserDetail, setUserContext }) {
+function Magic({ isLoggedIn, userDetail, userContext, loadUserDetail, setUserContext, showSnackbar }) {
 
     const { slug } = useParams();
     const history = useHistory();
@@ -30,25 +30,25 @@ function Magic({ isLoggedIn, userDetail, userContext, loadUserDetail, setUserCon
                             let newURL = destination_path.replace(/^.*\/\/[^\/]+/, '');
 
                             setUserContext({ token, "user": user_context });
+                            showSnackbar({show: true, severity: "success",message: "Successfully logged In"});
                             history.push(newURL);
+
                         }
 
-                        if (response.errors.length > 0) {
-                            console.log("Errors ");
-                            setErrors(response.errors);
-                        }
                     })
                     .catch(error => {
                         console.log("getMagic inside errors ", error);
                         setErrors(error);
+                        showSnackbar({show: true, severity: "error",message: "Something went wrong, link not valid"});
                     })
             } catch (error) {
                 console.error("getMagic outside catch error ", error)
                 setErrors(error);
+                showSnackbar({show: true, severity: "error",message: "Something went wrong, link not valid"});
             }
         }
         getMagic();
-    }, [history, setUserContext, slug])
+    }, [history, setUserContext, showSnackbar, slug])
 
     return (
         <Layout>
@@ -84,7 +84,7 @@ const mapDispatchToProps = (dispatch) => {
         userContext: (data) => dispatch(actionCreator.userContext(data)),
         loadUserDetail: (data) => dispatch(actionCreator.loadUserDetail(data)),
         setUserContext: (data) => dispatch(actionCreator.setUserContext(data)),
-
+        showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
     };
 };
 

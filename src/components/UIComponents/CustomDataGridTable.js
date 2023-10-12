@@ -15,9 +15,10 @@ import { styled } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import ActionIconBtn from "../FormsUI/Buttons/ActionIconBtn";
-import { Delete } from "@mui/icons-material";
+import {AddLink, Cancel, Delete, LinkOff} from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+
 import {capitalize, getSite, getDateFormat, formatCarbonValue} from "../../Util/GlobalFunctions";
 import { Link } from "react-router-dom";
 import MapIcon from "@mui/icons-material/Place";
@@ -26,6 +27,7 @@ import axios from "axios";
 import { baseUrl, googleApisBaseURL, MIME_TYPES } from "../../Util/Constants";
 import { Avatar } from "@mui/material";
 import placeholderImg from "../../img/place-holder-lc.png";
+import CustomPopover from "../FormsUI/CustomPopover";
 
 const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,resetSelection,entityType,
                                linkField,dataKey,loading,loadMore,checkboxSelection,fromCollections,
@@ -110,11 +112,9 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
             let headersTmp = []
             let visibleFields = {}
             data.headers.forEach((item) => {
-
                 if (!item.visible){
                     visibleFields[item.field] = item.visible
                 }
-
 
                 headersTmp.push({
                     field: item.subField ? item.subField : item.field,
@@ -131,11 +131,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                     // minWidth:50,
                     // maxWidth:"unset",
                     renderCell: (params) => (
-                        <>{params.field === "embodied_carbon_kgs"?formatCarbonValue(params.value):
-
-                                params.field === "_ts_epoch_ms" ? <span>
-                            {getDateFormat(params.value)}
-                    </span> : params.field === data.linkField ? <span className="text-blue">
+                        <>
+                            {params.field === "embodied_carbon_kgs"?formatCarbonValue(params.value):
+                                params.field === "_ts_epoch_ms"?<span>{getDateFormat(params.value)}</span>
+                                    : params.field === data.linkField ? <span className="text-blue">
                      <Link to={`/${data.linkUrl}/${params.row.id}?${data.linkParams}`}>
                                      <><span className="text-capitalize d-flex align-items-center flex-row">
                                          {entityType==="Product"&&<GetProductImageThumbnail productKey={params.row.id} />}
@@ -143,7 +142,7 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                                          {params.value} {params.row.is_head_office&&<span className="text-pink ms-2 text-12 text-bold">(Head Office)</span>} &#160; {entityType==="Collection"&& <span className=" active-collection text-capitlize">{params.row.type}</span>}
                                      </span></>
                     </Link>
-                    </span> : params.field === "year_of_making" ? <span>{(params.value === 0 ? "" : params.value)}</span> :
+                    </span>:params.field === "year_of_making" ? <span>{(params.value === 0 ? "" : params.value)}</span> :
                                     params.field === "category" ? <GetCatBox item={params.row}/>:params.field === "site" ?
                                     <span><ActionIconBtn onClick={() => actionCallback(params.row.id, "map")}><MapIcon/></ActionIconBtn>
                                     <Link to={`/ps/${params.row.siteId}?${data.linkParams}`}>{params.value}</Link>
@@ -172,15 +171,23 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                     renderCell: (params,index) => (
                         <React.Fragment key={index}>
                             {actions.map((action,ind) =>
-                                <React.Fragment key={ind}>
-                                <ActionIconBtn
-                                    onClick={() => actionCallback(params.row.id, action)}
-                                >
-                                    {action === "edit" ? <EditIcon/> : action === "view" ?
-                                        <VisibilityIcon/> : action === "delete" ? <Delete/> : action === "map" ?
-                                            <MapIcon/> : action}
-                                </ActionIconBtn>
+                                <><React.Fragment key={ind}>
+                                    {(params.row.ProductKindToProduct&&action==="link" && params.row.ProductKindToProduct.length>0)?
+                                        <></>:
+                                        (params.row.ProductKindToProduct&&action==="de-link" && params.row.ProductKindToProduct.length===0)?
+                                            <></>:
+                                <ActionIconBtn onClick={() => actionCallback(params.row.id, action)}>
+                                  {action === "de-link"?<CustomPopover text={"De-Link from product kind"}><LinkOff /></CustomPopover>
+                                  :(action === "link"||action === "link-request") ?<CustomPopover text={"Link to product kind"}><AddLink /></CustomPopover>
+                                  :action === "cancel" ?<CustomPopover text={"Cancel"}><Cancel /></CustomPopover>
+                                  :action === "edit" ? <EditIcon/>
+                                  :action === "view" ? <VisibilityIcon/>
+                                  :action === "delete" ? <Delete/>
+                                  :action === "map"? <MapIcon/>
+                                  :action}
+                                </ActionIconBtn>}
                                 </React.Fragment>
+                                </>
                             )}
 
                         </React.Fragment>
@@ -201,8 +208,6 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
 
             items.forEach((listItem)=>{
 
-
-
                 let Product=data.objKey?listItem[`${data.objKey}`]:listItem
 
 
@@ -214,7 +219,10 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
                         .forEach((item)=>   {
                             try {
 
-                                if (item.subField) {
+                                if (item.directKey){
+                                    itemTmp[`${item.field}`] = listItem[`${item.field}`]
+                                }
+                                else if (item.subField) {
                                     itemTmp[`${item.subField}`] = Product[`${item.field}`][`${item.subField}`]
                                 } else {
 
@@ -268,6 +276,15 @@ const CustomDataGridTable=({data,pageSize,count,actions,linkUrl,currentPage,rese
         setValue(row[field]);
         setAnchorEl(event.currentTarget);
     };
+    // const CheckIfProductKindLinked=({ProductKindToProduct})=>{
+    //
+    //     let isLinked=ProductKindToProduct
+    //
+    //
+    //     return(
+    //
+    //     )
+    // }
 
     const handlePopoverClose = () => {
         setAnchorEl(null);
@@ -553,7 +570,6 @@ function CustomPagination(props) {
 const GetCatBox=(props)=>{
 
     return(
-
         <span  className="text-capitlize mb-1 text-12 text-bold cat-box text-left p-1">
                                 <span className="text-capitlize">
                                     {capitalize(props.item.category)}
@@ -566,7 +582,7 @@ const GetCatBox=(props)=>{
                                 <span className="  text-capitlize">
                                     {capitalize(props.item.state)}
                                 </span>
-                            </span>
+        </span>
     )
 }
 

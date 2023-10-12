@@ -710,13 +710,8 @@ export const userContextSync = (data) => (dispatch) => {
         .get(baseUrl + "user/context")
         .then((res) => {
 
-
             if (res.status === 200) {
-
                 dispatch({ type: USER_CONTEXT, value: res.data.data });
-
-
-
             } else {
                 //
                 // dispatch({ type: "LOGIN_ERROR", value: res.errors[0].message })

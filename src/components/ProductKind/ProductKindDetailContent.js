@@ -1258,7 +1258,7 @@ class ProductKindDetailContent extends Component {
 
                                             <TabPanel value="1">
 
-                                                {/*<div className={"col-12 "}>*/}
+
                                                 <form onSubmit={this.submitReleaseInteranally}>
                                                     <div className={"row no-gutters justify-content-center "}>
                                                         <div className={"col-12  mt-3"}>
@@ -1269,25 +1269,13 @@ class ProductKindDetailContent extends Component {
                                                                         details="Select the site where your product is currently located."
                                                                         option={"name"}
                                                                         valueKey={"_key"}
-                                                                        // error={this.state.errors["deliver"]}
-                                                                        // onChange={(value)=> {
-                                                                        //
-                                                                        //     this.handleChangeProduct(value,"deliver")
-                                                                        //
-                                                                        // }}
                                                                         select={"Select "}
                                                                         options={this.state.sites} name={"site"}
                                                                         title="Select release site"/>
-
                                                                 </div>
-
-
-
                                                                 {this.state.errorRelease && (
                                                                     <div
-                                                                        className={
-                                                                            "row justify-content-center"
-                                                                        }>
+                                                                        className={"row justify-content-center"}>
                                                                         <div
                                                                             className={"col-12 mt-4 mb-4 "}
                                                                             style={{ textAlign: "center" }}>
@@ -1341,7 +1329,7 @@ class ProductKindDetailContent extends Component {
                                                         </div>
                                                     </div>
                                                 </form>
-                                                {/*</div>*/}
+
 
                                             </TabPanel>
                                             <TabPanel value="2">

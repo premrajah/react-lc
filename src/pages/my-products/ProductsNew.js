@@ -10,7 +10,7 @@ import {
     PRODUCTS_FILTER_VALUES_KEY
 } from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
-import { Modal, ModalBody } from "react-bootstrap";
+import {Alert, Modal, ModalBody} from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import { ProductsGoogleMap } from "../../components/Map/ProductsMapContainer";
@@ -19,7 +19,7 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
-import { getSite, removeEmptyValuesObj } from "../../Util/GlobalFunctions";
+import {getDateFormat, getSite, removeEmptyValuesObj} from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
@@ -32,6 +32,13 @@ import { GoogleMap } from "../../components/Map/MapsContainer";
 import MenuDropdown from "../../components/FormsUI/MenuDropdown";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import MapIcon from "@mui/icons-material/Place";
+import AutocompleteCustom from "../../components/AutocompleteSearch/AutocompleteCustom";
+import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
+import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
+import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
+import TextField from "@mui/material/TextField";
+import BlueBorderLink from "../../components/FormsUI/Buttons/BlueBorderLink";
+import DynamicSelectArrayWrapper from "../../components/FormsUI/ProductForm/DynamicSelect";
 
 class ProductsNew extends Component {
     constructor(props) {
@@ -71,12 +78,17 @@ class ProductsNew extends Component {
             queryData: {},
             initialFilter: {},
             loadingMore:true,
+            showOrgForm:false,
+            showDeleteLinkProductKindPopUp:false,
+            showProductKindRequestPopUp:false,
+            productKindRequestSuccess:false,
             menuOptions: {
-                Products: { url: "name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at" },
-                Service: { url: "name=Product&relation=service_agent_for&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
-                Records: { url: "name=Product&relation=past_owner&relation=belongs_to&no_parent=true&include-to=Site:located_at", actions: ["view"] },
-                Track: { url: "name=Product&relation=tracked_by&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
-                Archive: { url: "name=Product&relation=archived&no_parent=true&relation=belongs_to&include-to=Site:located_at", actions: ["view"] },
+                Products: { url: "name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["edit","view","link","de-link"] },
+                Service: { url: "name=Product&relation=service_agent_for&no_parent=true&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["view"] },
+                Requests: { url: "name=Product&relation=kind_of&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["link-request","cancel"] },
+                Records: { url: "name=Product&relation=past_owner&no_parent=true&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["view"] },
+                Track: { url: "name=Product&relation=tracked_by&no_parent=true&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["view"] },
+                Archive: { url: "name=Product&relation=archived&no_parent=true&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["view"] },
                 Issues: { url: "name=Issue", actions: [] }
             },
             defaultSort: { key: "_ts_epoch_ms", sort: "desc" },
@@ -110,6 +122,20 @@ class ProductsNew extends Component {
         else if (action === "map") {
             this.showSiteViewPopUp(key)
         }
+        else if (action === "link") {
+            this.toggleProductKindRequestPopUp(key)
+        }
+        else if (action === "de-link") {
+            this.toggleDelinkProductKindRequestPopUp(key)
+        }
+        else if (action === "cancel") {
+            this.toggleDelinkProductKindRequestPopUp(key)
+        }
+        else if (action === "link-request") {
+            this.toggleLinkProductKindPopUp(key)
+        }
+
+
     }
 
     clearList = () => {
@@ -127,6 +153,22 @@ class ProductsNew extends Component {
         this.setState({ fields });
     }
 
+    toggleLinkProductKindPopUp = (key) => {
+
+        if (key) {
+            this.setState({
+                showLinkProductKindPopUp: !this.state.showLinkProductKindPopUp,
+                linkProductRequestId: key,
+            });
+        } else {
+            this.setState({
+                showLinkProductKindPopUp: !this.state.showLinkProductKindPopUp,
+                linkProductRequestId: null,
+            });
+        }
+
+
+    };
 
     setQueryData = (queryData, filterReset) => {
 
@@ -167,7 +209,7 @@ class ProductsNew extends Component {
 
 
             let data = {
-                dataUrl: this.state.menuOptions[queryData.type ? queryData.type : "Products"].url,
+                dataUrl: this.state.menuOptions[queryData.type? queryData.type : "Products"].url,
                 linkUrl: linkUrl,
                 linkField: queryData.type === "Issues" ? "title" : "name",
                 objKey: queryData.type === "Issues" ? "Issue" : "Product",
@@ -472,7 +514,54 @@ class ProductsNew extends Component {
         }
 
     }
-    showQuickViewPopUp = (key) => {
+    companyDetails = (detail) => {
+        if (detail.org) {
+            this.setState({
+                org_id: detail.org,
+            });
+        } else {
+            axios.get(baseUrl + "org/company/" + detail.company).then(
+                (response) => {
+                    var responseAll = response.data.data;
+
+                    this.setState({
+                        org_id: responseAll._key,
+                    });
+                }
+            ).catch(error => {});
+        }
+    };
+
+    toggleProductKindRequestPopUp = (key) => {
+
+        if (key) {
+            this.setState({
+                showProductKindRequestPopUp: !this.state.showProductKindRequestPopUp,
+                productKindRequestId: key,
+            });
+        } else {
+            this.setState({
+                showProductKindRequestPopUp: !this.state.showProductKindRequestPopUp,
+                productKindRequestId: null,
+            });
+        }
+    }
+    toggleDelinkProductKindRequestPopUp = (key) => {
+
+        if (key) {
+            this.setState({
+                showDeleteLinkProductKindPopUp: !this.state.showDeleteLinkProductKindPopUp,
+                productRequestId: key,
+            });
+        } else {
+            this.setState({
+                showDeleteLinkProductKindPopUp: !this.state.showDeleteLinkProductKindPopUp,
+                productRequestId: null,
+            });
+        }
+    }
+
+        showQuickViewPopUp = (key) => {
 
         if (key) {
             this.setState({
@@ -904,6 +993,144 @@ class ProductsNew extends Component {
         return data
 
     }
+
+    submitProductKindRequest = (event) => {
+        this.setState({
+            errorRegister: null,
+        });
+
+        event.preventDefault();
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+
+        const site = data.get("org");
+
+        console.log(this.state.productKindRequestId,site)
+        axios
+            .post(
+                baseUrl + "product/product-kind/request",
+                {
+                    org_id: site,
+                    product_id: this.state.productKindRequestId,
+                }
+            )
+            .then((res) => {
+                this.setState({
+                    currentReleaseId: res.data.data._key,
+                    productKindRequestSuccess: true,
+                });
+            })
+            .catch((error) => {
+                this.setState({
+                    errorRequest: error.response.data.errors[0].message,
+                });
+            });
+    };
+    submitLinkProductKindRequest = (event) => {
+        this.setState({
+            errorRegister: null,
+        });
+
+        event.preventDefault();
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+
+        const productKind = data.get("product-kind");
+
+
+        axios
+            .post(
+                baseUrl + "product/product-kind",
+                {
+                    product_kind_id: productKind,
+                    product_id: this.state.linkProductRequestId,
+                }
+            )
+            .then((res) => {
+                this.setState({
+                    currentReleaseId: res.data.data._key,
+                    productKindRequestSuccess: true,
+                });
+
+                this.toggleLinkProductKindPopUp()
+
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Product kind added successfully.",
+                });
+                this.props.refreshPageWithSavedState( {refresh:true,reset: true})
+
+            })
+            .catch((error) => {
+                this.setState({
+                    errorRequest: error.response.data.errors[0].message,
+                });
+
+                console.log(error)
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "warning",
+                    message: "Oops! Something went wrong, please try again after some time.",
+                });
+            });
+    };
+    removeLinkProductKindRequest = (event) => {
+        this.setState({
+            errorRegister: null,
+        });
+
+        event.preventDefault();
+        this.setState({
+            btnLoading: true,
+        });
+
+        const data = new FormData(event.target);
+
+        const productKind = data.get("product-kind");
+
+
+        axios
+            .delete(
+                baseUrl + "product/"+this.state.productRequestId+"/product-kind",
+                // {
+                //     product_kind_id: productKind,
+                //     product_id: this.state.linkProductRequestId,
+                // }
+            )
+            .then((res) => {
+                // this.setState({
+                //     currentReleaseId: res.data.data._key,
+                //     productKindRequestSuccess: true,
+                // });
+                this.toggleDelinkProductKindRequestPopUp()
+
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "success",
+                    message: "Product kind removed successfully.",
+                });
+                this.props.refreshPageWithSavedState( {refresh:true,reset: true})
+            })
+            .catch((error) => {
+                // this.setState({
+                //     errorRequest: error.response.data.errors[0].message,
+                // });
+                console.log(error)
+                this.props.showSnackbar({
+                    show: true,
+                    severity: "warning",
+                    message: "Oops! Something went wrong, please try again after some time.",
+                });
+            });
+    };
+
     handleValidationScaling() {
         let fields = this.state.fields;
 
@@ -1136,7 +1363,7 @@ class ProductsNew extends Component {
                                     })
                                 }}
                                 actions={this.state.selectionMode && this.state.menuOptions[this.state.selectionMode].actions ?
-                                    this.state.menuOptions[this.state.selectionMode].actions : ["edit", "view"]}
+                                    this.state.menuOptions[this.state.selectionMode].actions : ["edit", "view","link"]}
                                 checkboxSelection={(this.state.selectionMode !== "Issues") && !this.state.selectAll}
                                 setMultipleSelectFlag={this.setMultipleSelectFlag}
                                 actionCallback={this.actionCallback}
@@ -1156,7 +1383,7 @@ class ProductsNew extends Component {
                                                 maxWidth={"200px"}
                                                 initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
                                                 setSelection={this.setSelection}
-                                                options={["Products", "Service", "Records", "Track", "Issues", "Archive"]}
+                                                options={["Products", "Service", "Requests","Records", "Track", "Issues", "Archive"]}
                                             />:<></>}
                                             {!this.props.skipDropdown &&this.state.selectionMode !== "Issues" &&
                                                 <>
@@ -1461,6 +1688,266 @@ class ProductsNew extends Component {
                         }
                     </div>
 
+                </GlobalDialog>
+
+                <GlobalDialog
+                    size="sm"
+                    heading={"Link Product Request"}
+                    hideHeading
+                    show={this.state.showProductKindRequestPopUp}
+                    hide={() => {
+                        this.toggleProductKindRequestPopUp();
+                    }}
+                >
+                    <> <div className={"row "}>
+
+                        {!this.state.productKindRequestSuccess &&
+
+                            <>
+                                <div className={"col-12 mt-3 "}>
+                                    <div style={{position:"relative"}} className="text_fild ">
+                                        <div
+                                            className="custom-label text-bold ellipsis-end text-blue mb-0">Search company
+                                        </div>
+                                        <AutocompleteCustom
+
+                                            filterOrgs={[{_id:this.props.userDetail.orgId}]}
+                                            orgs={true}
+                                            companies={true}
+                                            suggestions={this.state.orgNames}
+                                            selectedCompany={(action) =>
+                                                this.companyDetails(action)
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                                <div className={"col-12 "}>
+                            <form onSubmit={this.submitProductKindRequest}>
+                                <div className={"row justify-content-center "}>
+                                    <div className={"col-12 text-center mt-2"}>
+                                        <div className={"row no-gutters justify-content-center"}>
+                                            <div className={"col-12 text-center "}>
+                                                <input
+                                                    className={"d-none"}
+                                                    value={this.state.org_id}
+                                                    name={"org"}
+                                                />
+                                            </div>
+                                            {this.state.errorRequest && (
+                                                <div
+                                                    className={
+                                                        "row justify-content-center"
+                                                    }>
+                                                    <div
+                                                        className={"col-12 mt-4 mb-4"}
+                                                        style={{ textAlign: "center" }}>
+                                                        <Alert
+                                                            key={"alert"}
+                                                            variant={"danger"}>
+                                                            {this.state.errorRequest}
+                                                        </Alert>
+                                                    </div>
+                                                </div>
+                                            )}
+
+
+
+                                                <div
+                                                    className={
+                                                        "col-12 justify-content-center mt-3 "
+                                                    }>
+                                                    <div
+                                                        className={
+                                                            "row justify-content-center"
+                                                        }>
+                                                        <div
+                                                            className={"col-6"}
+                                                            style={{
+                                                                textAlign: "center",
+                                                            }}>
+                                                            {!(this.state.releases&&
+                                                                    this.state.requests.length&&
+                                                                    this.state.requests.filter(item=>item.Release.stage==="requested").length>0)&&
+                                                                <BlueButton
+                                                                    fullWidth
+                                                                    title={"Submit"}
+                                                                    type={"submit"}>
+
+                                                                </BlueButton>}
+                                                        </div>
+                                                        <div
+                                                            className={"col-6 "}
+                                                            style={{
+                                                                textAlign: "center",
+                                                            }}>
+                                                            <BlueBorderButton
+                                                                type="button"
+                                                                fullWidth
+                                                                title={"Cancel"}
+                                                                onClick={this.toggleProductKindRequestPopUp}
+                                                            >
+                                                            </BlueBorderButton>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        </>
+                        }
+
+                        {this.state.productKindRequestSuccess && (
+                            <div className={"row justify-content-center"}>
+                                <div className={"col-12 mt-4 mb-3 text-center"}>
+                                    <Alert key={"alert"} variant={"success"}>
+                                        Your product kind request has been submitted successfully. Thanks
+                                    </Alert>
+                                </div>
+                            </div>
+                        )}
+
+                        {this.state.releases&&this.state.releases.length>0
+                            && this.state.releases.filter(item=>item.Release.stage==="requested").map((release)=>
+
+                                <div className={"col-12 mt-3 "}>
+
+                                    <div className="row mt-2 mb-4 no-gutters bg-light border-box rad-8 align-items-center">
+                                        <div className={"col-11 text-blue "}>
+                                            Product Release request to  <b>{release.responder.name}</b> <br/>
+                                            Status: <span className="text-pink text-capitlize">{release.Release.stage}</span>
+                                            <br/><small className="text-gray-light mr-2">{getDateFormat(release.Release._ts_epoch_ms)}</small>
+                                        </div>
+
+                                        <div className={"col-1 text-right "}>
+                                            <CloseButtonPopUp
+                                                onClick={this.actionSubmit}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                    </div>
+                    </>
+
+                </GlobalDialog>
+                <GlobalDialog
+                    allowScroll
+                    size={"sm"}
+                    hide={this.toggleLinkProductKindPopUp}
+                    show={this.state.showLinkProductKindPopUp}
+                    heading={"Link Product Kind"}>
+                    <form onSubmit={this.submitLinkProductKindRequest}>
+
+                        <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12 ">
+
+                            <DynamicSelectArrayWrapper
+                                editMode
+                                // onChange={(value)=>this.handleChangeProduct(value,`deliver`)}
+                                api={""}
+                                error={this.state.errors[`product-kind`]}
+                                name={`product-kind`}
+                                // options={this.props.siteList}
+                                apiUrl={baseUrl+"seek?name=ProductKind&no_parent=true"}
+                                option={"ProductKind"}
+                                subOption={"name"}
+                                searchKey={"name"}
+                                valueKey={"ProductKind"}
+                                subValueKey={"_key"}
+                                title="Select Product Kind"
+                                // details="Select product’s location from the existing sites or add new address below"
+                                // initialValue={this.state.selectedSite?this.state.selectedSite._key: this.props.item?this.props.item.site._key:null}
+                                // initialValueTextbox={this.state.selectedSite?this.state.selectedSite.name:this.props.item?this.props.item.site.name:""}
+                            />
+                        </div>
+                        <div
+                            className={"col-12 justify-content-center mt-3 "}>
+                            <div
+                                className={
+                                    "row justify-content-center"
+                                }>
+                                <div
+                                    className={"col-6"}
+                                    style={{
+                                        textAlign: "center",
+                                    }}>
+
+                                        <BlueButton
+                                            fullWidth
+                                            title={"Submit"}
+                                            type={"submit"}>
+
+                                        </BlueButton>
+                                </div>
+                                <div
+                                    className={"col-6 "}
+                                    style={{
+                                        textAlign: "center",
+                                    }}>
+                                    <BlueBorderButton
+                                        type="button"
+                                        fullWidth
+                                        title={"Cancel"}
+                                        onClick={this.toggleLinkProductKindPopUp}
+                                    >
+                                    </BlueBorderButton>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </GlobalDialog>
+
+                <GlobalDialog
+                    allowScroll
+                    size={"sm"}
+                    hide={this.toggleDelinkProductKindRequestPopUp}
+                    show={this.state.showDeleteLinkProductKindPopUp}
+                    heading={"De-Link Product Kind"}>
+                    <form onSubmit={this.removeLinkProductKindRequest}>
+                        <div
+                            className={"col-12 justify-content-center mt-3 "}>
+                            Are you sure you want to proceed ?
+                        </div>
+                        <div
+                            className={"col-12 justify-content-center mt-3 "}>
+                            <div
+                                className={
+                                    "row justify-content-center"
+                                }>
+                                <div
+                                    className={"col-6"}
+                                    style={{
+                                        textAlign: "center",
+                                    }}>
+
+                                    <BlueButton
+                                        fullWidth
+                                        title={"Submit"}
+                                        type={"submit"}>
+
+                                    </BlueButton>
+                                </div>
+                                <div
+                                    className={"col-6 "}
+                                    style={{
+                                        textAlign: "center",
+                                    }}>
+                                    <BlueBorderButton
+                                        type="button"
+                                        fullWidth
+                                        title={"Cancel"}
+                                        onClick={this.toggleDelinkProductKindRequestPopUp}
+                                    >
+                                    </BlueBorderButton>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
                 </GlobalDialog>
             </>
         );

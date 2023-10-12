@@ -34,7 +34,10 @@ class InfoTabContent extends Component {
                         categoryState={capitalize(this.props.item.product.state)}
                     />
                 </div>
-
+                {this.props.item &&
+                    this.props.item.product.sku.tags && (
+                        <InfoTabContentItem simple title={Object.keys(this.props.item.product.sku.tags)[0]} value={Object.values(this.props.item.product.sku.tags)[0]} />
+                    )}
                 {this.props.item.product.purpose === "aggregate" && this.props.item.product.units && <InfoTabContentItem simple title="Units" value={this.props.item.product.units} />}
 
                 {this.props.item.product.purpose !== "aggregate" && this.props.item.product.units && <InfoTabContentItem simple title="Units" unitVolume={this.props.item.product.volume} value={this.props.item.product.units} />}

@@ -1463,7 +1463,6 @@ class ProductDetailContent extends Component {
                                                                     className="custom-label text-bold ellipsis-end text-blue mb-0">Search release company
                                                                 </div>
                                                                 <AutocompleteCustom
-
                                                                     filterOrgs={[{_id:this.props.userDetail.orgId}]}
                                                                     orgs={true}
                                                                     companies={true}

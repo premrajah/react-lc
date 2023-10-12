@@ -155,6 +155,7 @@ let slugify = require('slugify')
                 totalPercentError:false,
                 previousData:null,
                 tags:[],
+                subTags:[],
                 prevExistingItemsParts:[],
                 prevExistingItemsProcesses:[],
                 prevExistingItemsOutboundTransport:[],
@@ -251,20 +252,23 @@ let slugify = require('slugify')
                             tags: responseAll,
                         });
 
-                        // if (responseAll.length>0&&this.props.item){
-                        //
-                        //     let cat=responseAll.filter((item) => item.name === this.props.item.product.category)
-                        //     let subCategories=cat.length>0?cat[0].types:[]
-                        //     let states = subCategories.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].state:[]
-                        //     let  units = states.length>0?responseAll.filter((item) => item.name === this.props.item.product.category)[0].types.filter((item) => item.name === this.props.item.product.type)[0].units:[]
-                        //
-                        //     this.setState({
-                        //         subCategories:subCategories,
-                        //         states : states,
-                        //         units : units
-                        //     })
-                        //
-                        // }
+                        if (responseAll.length>0&&this.props.item&&this.props.item.product?.sku?.tags){
+
+                            let tagObj=this.props.item.product?.sku?.tags
+                            let tag=Object.keys(tagObj)[0]
+                            let subTag=Object.values(tagObj)[0]
+
+                            let tagSelected=responseAll.filter((item) => item.name===tag)
+                            let subTags=tagSelected.values()
+
+
+                            this.setState({
+                                tagSelected:tagSelected.name,
+                                subTags : subTags,
+                                subTagSelected : subTag
+                            })
+
+                        }
 
                     },
                     (error) => {}
@@ -943,6 +947,12 @@ let slugify = require('slugify')
                 }
             })
 
+            if (formData.get("tag")){
+                payloadObj.sku["tags"]={
+                    [formData.get("tag")]:formData.get("subTag")
+                }
+            }
+
             return payloadObj
         }
         handleSubmit = (event) => {
@@ -1010,6 +1020,8 @@ let slugify = require('slugify')
                         site_id: site,
                         parent_product_id: this.state.parentProductId ? this.state.parentProductId : null,
                     };
+
+
 
 
                 this.setState({
@@ -2015,8 +2027,6 @@ let slugify = require('slugify')
                                                              title="Resource Category"
                                         /></div>
 
-
-
                                     <div className={"col-md-4 col-sm-12 col-xs-12"}>
 
                                         <SelectArrayWrapper
@@ -2407,6 +2417,20 @@ let slugify = require('slugify')
                                 </div>
 
                                 <div className={`row  ${this.state.moreDetail?"mt-2":"d-none"}`}>
+
+                                    <div className="col-md-4 col-sm-6 col-xs-6">
+                                        <SelectArrayWrapper
+                                            editMode
+                                            initialValue={this.props.item?this.props.item.product.year_of_making:""
+                                                ||(this.state.selectedTemplate?parseInt(this.state.selectedTemplate.value.product.year_of_making):"")
+                                            }
+                                            select={"Select"}
+                                            onChange={(value)=> {
+
+                                            }}
+                                            options={this.state.yearsList} name={"year_of_making"} title="Year Of Manufacture"/>
+
+                                    </div>
                                                 <div className="col-md-4 col-sm-6 col-xs-6">
                                                     <SelectArrayWrapper
                                                         editMode
@@ -2482,16 +2506,63 @@ let slugify = require('slugify')
                                             } name="embodied_carbon_kgs" title="Embodied Carbon (kgCO<sub>2</sub>e</span>)" />
 
                                     </div>
-                                    {/*<div className="col-md-4 col-sm-6 col-xs-6">*/}
-                                    {/*    <TextFieldWrapper*/}
-                                    {/*        editMode*/}
-                                    {/*        onChange={(value)=>this.handleChangeProduct(value,"gross_weight_kgs")}*/}
-                                    {/*        // details="A unique number used by external systems"*/}
-                                    {/*        initialValue={this.props.item?this.props.item.product.sku.gross_weight_kgs:""*/}
-                                    {/*            ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.sku.gross_weight_kgs:"")*/}
-                                    {/*        } name="gross_weight_kgs" title="Gross Weight (Kg)" />*/}
 
-                                    {/*</div>*/}
+                                    <div className="col-12  ">
+                                    <div className="row  mt-2">
+                                    <div className="col-md-4 col-sm-12">
+
+                                        <SelectArrayWrapper
+                                            editMode
+                                            details="Tag a product"
+                                            initialValue={this.props.item && this.state.tagSelected?this.state.tagSelected:null}
+                                            option={"name"}
+                                            valueKey={"name"}
+                                            select={"Select"}
+                                            error={this.state.errors["tag"]}
+                                            onChange={(value)=> {
+
+                                                this.handleChangeProduct(value,"tag")
+                                                this.setState({
+                                                    tagSelected:  this.state.tags.length>0? this.state.tags.filter(
+                                                        (item) => item.name === value
+                                                    )[0]:null,
+
+                                                    subTags:this.state.tags.length>0?this.state.tags.filter(
+                                                        (item) => item.name === value
+                                                    )[0]&&this.state.tags.filter(
+                                                        (item) => item.name === value
+                                                    )[0].values:[],
+
+                                                })
+                                            }}
+                                            options={this.state.tags} name={"tag"}
+                                            title="Tags"
+                                        /></div>
+                                    <div className="col-md-4 col-sm-12">
+
+                                        <SelectArrayWrapper
+                                            disabled={
+                                                ((this.state.subTags&&this.state.subTags.length > 0)) ? false : true
+                                            }
+                                            initialValue={this.props.item && this.state.subTagSelected?this.state.subTagSelected:null}
+                                            editMode
+                                            disableAutoLoadingIcon
+                                            // details="Tag a product"
+                                            // initialValue={this.props.item?this.props.item.product.category:"" ||(this.state.selectedTemplate?this.state.selectedTemplate.value.product.category:"")}
+                                            // option={"name"}
+                                            // valueKey={"name"}
+                                            select={"Select"}
+                                            error={this.state.errors["subTag"]}
+                                            onChange={(value)=> {
+
+                                                this.handleChangeProduct(value,"subTag")
+
+                                            }}
+                                            options={this.state.subTags} name={"subTag"}
+                                            title="Select tag value"
+                                        /></div>
+                                    </div>
+                                    </div>
 
                                             </div>
                                   <div className="row  mt-2">
@@ -2526,150 +2597,9 @@ let slugify = require('slugify')
                                   </div>
                                   </div>
 
-                                  <div className="row  mt-2">
-                                      <div className="col-12 text-left">
-                                        <span style={{ float: "left" }}>
-                                            <span
-                                                onClick={this.addParts}
-                                                className={
-                                                    " forgot-password-link"
-                                                }>
-
-                                                      {this.state.showAddParts
-                                                          ? "Hide Add Parts"
-                                                          : "Add Parts"} <CustomPopover text="Add parts details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
-                                            </span>
-                                        </span>
-                                          <span className="text-12 blue-text">{this.props.item?.product?.composition?.length>0?`(${this.props.item.product?.composition?.length} entries exist)`:""}</span>
-                                      </div>
-                                  </div>
-
-                                  <div className={`row border-box bg-light ${this.state.showAddParts?"mt-2":"d-none"}`}>
-                                      <div className="col-md-12 col-sm-6 col-xs-6">
-
-                                          <PartsList
-                                              totalPercentError={this.state.totalPercentError}
-
-                                              errors={this.state.carbonErrors}
-                                              list={this.state.resourceCategories}
-                                              transportModesList={this.state.transportModes}
-                                              filters={[]}
-                                              deleteItem={(data)=>this.deleteItemParts(data,1)}
-                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,1)}
-                                              existingItems={this.state.existingItemsParts}
-                                          />
-
-                                      </div>
-                                      <div className="row   ">
-                                          <div className="col-12 mt-2  ">
-                                              <div className="">
-                                                  <BlueSmallBtn
-                                                      onClick={()=>this.addItemParts(1)}
-                                                      title={"Add"}
-                                                      type="button"
-                                                  >
-                                                      <AddIcon/>
-                                                  </BlueSmallBtn>
-                                              </div>
-                                          </div>
-                                      </div>
-
-                                  </div>
-
-                                  <div className="row  mt-2">
-                                      <div className="col-12 text-left">
-                                        <span style={{ float: "left" }}>
-                                            <span
-                                                onClick={this.addProcesses}
-                                                className={
-                                                    " forgot-password-link"
-                                                }>
-
-                                                      {this.state.showAddProcesses
-                                                          ? "Hide Processes"
-                                                          : "Add Processes"} <CustomPopover text="Add processes involved in the manufacturing of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
-                                            </span>
-                                            <span className="text-12 blue-text"> {this.props.item?.product?.processes?.length>0?`(${this.props.item?.product?.processes.length} entries exist)`:""}</span>
-                                        </span>
-                                      </div>
-                                  </div>
-
-                                  <div className={`row border-box bg-light ${this.state.showAddProcesses?"mt-2":"d-none"}`}>
-                                      <div className="col-md-12 col-sm-6 col-xs-6">
-
-                                          <ProcessesList
-                                              errors={this.state.carbonErrors}
-                                              list={this.state.energySources}
-                                              filters={[]}
-                                              deleteItem={(data)=>this.deleteItemParts(data,2)}
-                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,2)}
-                                              existingItems={this.state.existingItemsProcesses}
-                                          />
-
-                                      </div>
-                                      <div className="row   ">
-                                          <div className="col-12 mt-2  ">
-                                              <div className="">
-                                                  <BlueSmallBtn
-                                                      onClick={()=>this.addItemParts(2)}
-                                                      title={"Add"}
-                                                      type="button"
-                                                  >
-                                                      <AddIcon/>
-                                                  </BlueSmallBtn>
-                                              </div>
-                                          </div>
-                                      </div>
-
-                                  </div>
 
 
 
-                                  <div className="row  mt-2">
-                                      <div className="col-12 text-left">
-                                        <span style={{ float: "left" }}>
-                                            <span
-                                                onClick={this.addOutboundTransports}
-                                                className={
-                                                    " forgot-password-link"
-                                                }>
-                                                      {this.state.showAddOutboundTransport
-                                                          ? "Hide Outbound Transport"
-                                                          : "Add Outbound Transport"} <CustomPopover text="Add outbound transport details of a product"><Info style={{ cursor: "pointer", color: "#d7d7d7" }} fontSize={"24px"}/></CustomPopover>
-                                            </span>
-                                            <span className="text-12 blue-text">{this.props.item?.product?.outbound_transport?.length>0?`(${this.props.item?.product?.outbound_transport.length} entries exist)`:""}</span>
-                                        </span>
-                                      </div>
-                                  </div>
-
-                                  <div className={`row border-box bg-light ${this.state.showAddOutboundTransport?"mt-2":"d-none"}`}>
-                                      <div className="col-md-12 col-sm-6 col-xs-6">
-
-                                          <OutboundTransportList
-                                              errors={this.state.carbonErrors}
-                                              list={this.state.transportModes}
-                                              filters={[]}
-                                              deleteItem={(data)=>this.deleteItemParts(data,3)}
-                                              handleChange={(value,valueText,field,uId,index)=>this.handleChangePartsList(value,valueText,field,uId,index,3)}
-                                              existingItems={this.state.existingItemsOutboundTransport}
-                                          />
-
-                                      </div>
-                                      <div className="row   ">
-                                          <div className="col-12 mt-2  ">
-                                              <div className="">
-                                                  <BlueSmallBtn
-                                                      onClick={()=>this.addItemParts(3)}
-                                                      title={"Add"}
-                                                      type="button"
-                                                  >
-                                                      <AddIcon/>
-                                                  </BlueSmallBtn>
-                                              </div>
-                                          </div>
-                                      </div>
-
-                                  </div>
                        <div className={"row "}>
                                 <div className="    col-12 mt-2">
                                     <div className={"custom-label text-bold text-blue mb-3"}>

@@ -722,6 +722,12 @@ export const userContextSync = (data) => (dispatch) => {
         });
 };
 
+export const setUserContext = (data) => {
+    saveKey("token", data.token);
+    saveKey("user", data.user);
+    return { type: LOAD_USER_DETAIL, value: { userDetials: data.user, token: data.token } };
+};
+
 
 export const userCache = (data) => {
 

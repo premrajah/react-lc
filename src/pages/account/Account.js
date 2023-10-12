@@ -175,8 +175,8 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispachToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {};
 };
 
-export default connect(mapStateToProps, mapDispachToProps)(Account);
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

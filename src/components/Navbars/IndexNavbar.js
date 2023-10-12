@@ -16,8 +16,11 @@ import { Badge, Snackbar, Tooltip } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Menu from '@mui/material/Menu';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DevelopmentUserInfoDisplay from "./DevelopmentUserInfoDisplay";
-
+import GlobalDialog from "../RightBar/GlobalDialog";
+import MagicLinksCreator from "../Magic/MagicLinksCreator";
+import { withRouter } from "react-router-dom";
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
@@ -28,6 +31,7 @@ const LightTooltip = withStyles((theme) => ({
     },
 }))(Tooltip);
 
+// pass path name to component
 
 class ComponentsNavbar extends React.Component {
     timer;
@@ -41,7 +45,9 @@ class ComponentsNavbar extends React.Component {
             nextIntervalFlag: false,
             orgImage: "",
             anchorEl: null,
-            menuOpen: false
+            menuOpen: false,
+            magicLinkPopup: false,
+            magicLinkCurrentPagePath: null,
         };
 
         this.toggleMenu = this.toggleMenu.bind(this);
@@ -52,6 +58,20 @@ class ComponentsNavbar extends React.Component {
 
     }
 
+    handleHideMagicLinkPopup = () => {
+        this.setState({
+            magicLinkPopup: false,
+            magicLinkCurrentPagePath: null, //clear pagePath
+        });
+    }
+
+    handleOpenMagicLinkPopup = () => {
+        const { pathname, search } = this.props.location;
+        this.setState({
+            magicLinkPopup: true,
+            magicLinkCurrentPagePath: `${pathname}${search && search}`,
+        })
+    }
 
     handleClickMenu = (event) => {
         this.setState({
@@ -101,11 +121,6 @@ class ComponentsNavbar extends React.Component {
     };
 
     componentDidMount() {
-
-        // window.removeEventListener("scroll", this.changeColor);
-        // window.addEventListener("scroll", this.changeColor);
-
-
 
         if (this.props.isLoggedIn) {
             this.getArtifactForOrg();
@@ -181,6 +196,7 @@ class ComponentsNavbar extends React.Component {
     };
 
     render() {
+
         return (
             <>
                 <Snackbar open={this.props.messageAlert} autoHideDuration={6000} onClick={() => this.props.dispatchMessageAlert(false)} onClose={() => this.props.dispatchMessageAlert(false)}>
@@ -298,6 +314,14 @@ class ComponentsNavbar extends React.Component {
 
                             {this.props.isLoggedIn && (
                                 <>
+                                    {this.props?.userContext?.perms?.includes("AdminWrite") && <NavItem>
+                                        <button className="btn btn-link text-dark btn-inbox">
+                                            <Link to="#" onClick={() => this.handleOpenMagicLinkPopup()}>
+                                                <AutoFixHighIcon className="white-text" style={{ fontSize: 24 }} />
+                                            </Link>
+                                        </button>
+                                    </NavItem>}
+
                                     <NavItem>
                                         <button className="btn btn-link text-dark btn-inbox">
                                             <Link to="/messages" onClick={() => this.props.dispatchUnreadMessages(false)}>
@@ -481,6 +505,15 @@ class ComponentsNavbar extends React.Component {
                         {this.props.loading && <LinearIndeterminate />}
                     </Container>
                 </Navbar>
+
+                <GlobalDialog
+                    size="md"
+                    show={this.state.magicLinkPopup}
+                    hide={() => this.handleHideMagicLinkPopup()}
+                    heading="Create Magic Link"
+                >
+                    <MagicLinksCreator pagePath={this.state.magicLinkCurrentPagePath} hideMagicLinkPopup={this.handleHideMagicLinkPopup} />
+                </GlobalDialog>
             </>
         );
     }
@@ -520,6 +553,7 @@ const mapStateToProps = (state) => {
         loginFailed: state.loginFailed,
         showLoginPopUp: state.showLoginPopUp,
         userDetail: state.userDetail,
+        userContext: state.userContext,
         orgImage: state.orgImage,
         messages: state.messages,
         notifications: state.notifications,
@@ -548,4 +582,4 @@ const mapDispatchToProps = (dispatch) => {
         dispatchUnreadNotifications: (data) => dispatch(actionCreator.unreadNotifications(data)),
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ComponentsNavbar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ComponentsNavbar));

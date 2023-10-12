@@ -79,6 +79,7 @@ class ProductsNew extends Component {
             initialFilter: {},
             loadingMore:true,
             showOrgForm:false,
+            addEmail:false,
             showDeleteLinkProductKindPopUp:false,
             showProductKindRequestPopUp:false,
             productKindRequestSuccess:false,
@@ -148,6 +149,11 @@ class ProductsNew extends Component {
     };
 
     handleChange(value, field) {
+        let fields = this.state.fields;
+        fields[field] = value;
+        this.setState({ fields });
+    }
+    handleChangeRequest(value, field) {
         let fields = this.state.fields;
         fields[field] = value;
         this.setState({ fields });
@@ -517,11 +523,14 @@ class ProductsNew extends Component {
 
     }
     companyDetails = (detail) => {
+        let fields = this.state.fields
         if (detail.org) {
             this.setState({
                 org_id: detail.org,
             });
-        } else {
+            fields.company = detail.org
+
+        } else if (detail.company) {
             axios.get(baseUrl + "org/company/" + detail.company).then(
                 (response) => {
                     var responseAll = response.data.data;
@@ -529,9 +538,18 @@ class ProductsNew extends Component {
                     this.setState({
                         org_id: responseAll._key,
                     });
+                    fields.company = responseAll._key
                 }
             ).catch(error => {});
         }
+        else{
+            fields.company=null
+        }
+
+
+        this.setState({
+            fields: fields
+        })
     };
 
     toggleProductKindRequestPopUp = (key) => {
@@ -1003,12 +1021,16 @@ class ProductsNew extends Component {
 
     }
 
-    submitProductKindRequest = (event) => {
+    createLinkProductKindRequest = (event) => {
         this.setState({
             errorRegister: null,
         });
-
         event.preventDefault();
+
+        if (!this.handleValidationProductKindRequest()){
+            return
+        }
+
         this.setState({
             btnLoading: true,
         });
@@ -1018,13 +1040,17 @@ class ProductsNew extends Component {
         const site = data.get("org");
 
         console.log(this.state.productKindRequestId,site)
+
+        let payload={ org_id: site,
+            product_id: this.state.productKindRequestId,}
+
+        if (data.get("email")){
+            payload.email=data.get("email")
+        }
         axios
             .post(
                 baseUrl + "product/product-kind/request",
-                {
-                    org_id: site,
-                    product_id: this.state.productKindRequestId,
-                }
+                payload
             )
             .then((res) => {
                 this.setState({
@@ -1146,6 +1172,30 @@ class ProductsNew extends Component {
         ];
 
         let { formIsValid, errors } = validateInputs(validations);
+        this.setState({ errors: errors });
+        return formIsValid;
+    }
+    handleValidationProductKindRequest() {
+        let fields = this.state.fields;
+
+        let validations = [
+            validateFormatCreate("company", [{check: Validators.required, message: 'Required'}],fields),
+
+        ];
+
+        if (this.state.addEmail)
+        validations.push(validateFormatCreate(
+            "email",
+            [
+                { check: Validators.required, message: "Required" },
+                { check: Validators.email, message: "Email is not valid" },
+            ],
+            fields
+        ),)
+
+        let { formIsValid, errors } = validateInputs(validations);
+
+        console.log(fields,errors)
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -1711,20 +1761,40 @@ class ProductsNew extends Component {
                                             className="custom-label text-bold ellipsis-end text-blue mb-0">Search company
                                         </div>
                                         <AutocompleteCustom
-
                                             filterOrgs={[{_id:this.props.userDetail.orgId}]}
                                             orgs={true}
                                             companies={true}
                                             suggestions={this.state.orgNames}
                                             selectedCompany={(action) =>
-                                                this.companyDetails(action)
-                                            }
+                                                this.companyDetails(action)}
                                         />
+                                        { this.state.errors["company"] &&<span style={{color: "rgb(244, 67, 54)"}} className="text-danger">Required</span>}
                                     </div>
                                 </div>
+
                                 <div className={"col-12 "}>
-                            <form onSubmit={this.submitProductKindRequest}>
+                            <form onSubmit={this.createLinkProductKindRequest}>
                                 <div className={"row justify-content-center "}>
+                                    <div className={"col-12  "}>
+                                     <p style={{ marginTop: "10px" }}>
+
+                                        <span
+                                            onClick={()=>this.setState({
+                                                addEmail:!this.state.addEmail
+                                            })}
+                                            className={" forgot-password-link ellipsis-end"}>{this.state.addEmail?"Hide email" : "Add email"}
+                                                    </span>
+                                    </p>
+                                    </div>
+                                    {this.state.addEmail&&
+                                        <div className={"col-12 mt-3 "}>
+                                        <TextFieldWrapper
+                                            onChange={(value) => this.handleChangeRequest(value,"email", )}
+                                            error={this.state.errors["email"]}
+                                            name="email"
+                                            title="Email"
+                                        />
+                                    </div>}
                                     <div className={"col-12 text-center mt-2"}>
                                         <div className={"row no-gutters justify-content-center"}>
                                             <div className={"col-12 text-center "}>
@@ -1750,8 +1820,6 @@ class ProductsNew extends Component {
                                                     </div>
                                                 </div>
                                             )}
-
-
 
                                                 <div
                                                     className={

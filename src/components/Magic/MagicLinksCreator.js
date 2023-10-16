@@ -124,11 +124,12 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
         const email_list = formData.get("email_list");
         const no_of_uses = formData.get("no_of_uses");
 
+
         const postData = {
             org_id,
             "role_id": roleId,
             "email_list": (email_list && email_list !== "") ? [email_list] : [],
-            "destination_path": `${frontEndUrl}${destination_path}`,
+            "destination_path": `${frontEndUrl.slice(0,-1)}${destination_path}`,
             "no_of_uses": (!no_of_uses || no_of_uses === "0") ? null : Number(no_of_uses),
         }
 
@@ -182,7 +183,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                     <div className="col">
                         <TextFieldWrapper
                             classAdd={"textbox-left-padding"}
-                            startAdornment={<span className="startAdornment-left">{frontEndUrl}</span>}
+                            startAdornment={<span className="startAdornment-left">{frontEndUrl.slice(0,-1)}</span>}
                             name="destination_path"
                             title="Enter destination path (URL)"
                             error={errors["destination_path"]}

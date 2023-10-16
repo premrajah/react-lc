@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import * as actionCreator from "../../store/actions/actions";
 import { connect } from "react-redux";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
 import { Validators, validateFormatCreate, validateInputs } from "../../Util/Validator";
@@ -9,7 +10,8 @@ import { baseUrl, frontEndUrl } from "../../Util/Constants";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import CopyContentButton from "../Utils/CopyContentButton";
-import * as actionCreator from "../../store/actions/actions";
+import { Link } from "react-router-dom";
+
 
 
 function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, loading: buttonLoading, hideMagicLinkPopup, showSnackbar }) {
@@ -20,10 +22,8 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
     const [companyRoles, setCompanyRoles] = useState(null);
     const [magicLinkDisplayPopup, setMagicLinkDisplayPopup] = useState(false);
     const [magicLinkUrl, setMagicLinkUrl] = useState(null);
-
-    // useEffect(() => {
-
-    // }, [errors])
+    const [emailFieldVisibility, setEmailFieldVisibility] = useState(false);
+    const [otherFieldsVisibility, setOtherFieldsVisibility] = useState(false);
 
 
     const handleChangeForm = (value, field) => {
@@ -41,7 +41,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
             validateFormatCreate("destination_path", [{ check: Validators.required, message: 'Required' }], formFields),
             validateFormatCreate("company", [{ check: Validators.required, message: 'Required' }], formFields),
             validateFormatCreate("role_id", [{ check: Validators.required, message: 'Required' }], formFields),
-
+            validateFormatCreate("email_list", [{ check: Validators.email, message: 'Please enter valid email' }], formFields),
         ]
 
         let { formIsValid, errors } = validateInputs(validations, formFields)
@@ -69,7 +69,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
 
             } catch (error) {
                 console.error("company details outside error ", error);
-                showSnackbar({show: true, severity: "error",message: "Something went wrong, unable to get company details at this time"});
+                showSnackbar({ show: true, severity: "error", message: "Something went wrong, unable to get company details at this time" });
             }
         } else {
             fields.company = null;
@@ -89,7 +89,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
             }
         } catch (error) {
             console.error("getCompanyDetails error ", error);
-            showSnackbar({show: true, severity: "error",message: "Something went wrong, unable to get company details at this time"});
+            showSnackbar({ show: true, severity: "error", message: "Something went wrong, unable to get company details at this time" });
         }
     }
 
@@ -105,7 +105,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
 
         } catch (error) {
             console.error("getRole error ", error,);
-            showSnackbar({show: true, severity: "error",message: "Something went wrong, unable to get company role at this time"});
+            showSnackbar({ show: true, severity: "error", message: "Something went wrong, unable to get company role at this time" });
 
         }
     }
@@ -145,18 +145,28 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                 setMagicLinkUrl(data);
                 hideMagicLinkPopup();
                 setMagicLinkDisplayPopup(true);
-                showSnackbar({show: true, severity: "success",message: "Successfully create magic link"});
+                showSnackbar({ show: true, severity: "success", message: "Successfully create magic link" });
             }
 
         } catch (error) {
             console.error("createMAgicLink error ", error);
-            showSnackbar({show: true, severity: "error",message: "Something went wrong, unable to create magic link"});
+            showSnackbar({ show: true, severity: "error", message: "Something went wrong, unable to create magic link" });
         }
     }
 
     const hideMagicLinkDisplayPopup = () => {
         setMagicLinkDisplayPopup(false);
         setMagicLinkUrl(null);
+    }
+
+    const showHideEmailFieldsHandler = () => {
+        setEmailFieldVisibility(!emailFieldVisibility);
+        !emailFieldVisibility && handleChangeForm([], "email_list"); // reset email feiel
+    }
+
+    const showHideOtherFieldsHandler = () => {
+        setOtherFieldsVisibility(!otherFieldsVisibility);
+        !otherFieldsVisibility && handleChangeForm(null, "no_of_uses"); // reset other fields
     }
 
     return (<>
@@ -215,32 +225,53 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                     </div>
                 </div>}
 
-                <div className="row">
-                    <div className="col">
-                        <TextFieldWrapper
-                            name="email_list"
-                            title="Add emails"
-                            error={errors["email_list"]}
-                            onChange={(value) => handleChangeForm(value, "email_list")}
-                            initialValue=""
-                            placeholder="Enter emails (separate with comma)"
-                        />
-                    </div>
-                </div>
 
-                <div className="row">
-                    <div className="col-md-6">
-                        <TextFieldWrapper
-                            name="no_of_uses"
-                            title="Number of uses (Optional: default 5)"
-                            error={errors["no_of_uses"]}
-                            onChange={(value) => handleChangeForm(value, "no_of_uses")}
-                            initialValue=""
-                            placeholder="Enter number of uses (default 5)"
-                            numberInput
-                        />
+                <section>
+
+                    <div className="row mt-2">
+                        <div className="col">
+                                <Link to="#" onClick={() => showHideEmailFieldsHandler()} className="btn-gray-border click-item">
+                                    {!emailFieldVisibility ? `Add emails` : `Hide email field`}
+                                </Link>
+                        </div>
                     </div>
-                </div>
+
+                    {emailFieldVisibility && <div className="row mt-2">
+                        <div className="col">
+                            <TextFieldWrapper
+                                name="email_list"
+                                title=""
+                                error={errors["email_list"]}
+                                onChange={(value) => handleChangeForm(value, "email_list")}
+                                initialValue=""
+                                placeholder="Enter emails (separate with comma)"
+                            />
+                        </div>
+                    </div>}
+
+                    <div className="row mt-2">
+                        <div className="col">
+                        <Link to="#" onClick={() => showHideOtherFieldsHandler()} className="btn-gray-border click-item">
+                                    {!otherFieldsVisibility ? `Other` : `Hide other fields`}
+                                </Link>
+                        </div>
+                    </div>
+
+                    {otherFieldsVisibility && <div className="row mt-2">
+                        <div className="col-md-6">
+                            <TextFieldWrapper
+                                name="no_of_uses"
+                                title=""
+                                error={errors["no_of_uses"]}
+                                onChange={(value) => handleChangeForm(value, "no_of_uses")}
+                                initialValue=""
+                                placeholder="Enter number of uses (Optional: default 5)"
+                                numberInput
+                            />
+                        </div>
+                    </div>}
+
+                </section>
 
                 <div className="row mt-2">
                     <div className="col d-flex justify-content-end">

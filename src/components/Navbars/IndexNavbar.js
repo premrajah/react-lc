@@ -69,7 +69,7 @@ class ComponentsNavbar extends React.Component {
         const { pathname, search } = this.props.location;
         this.setState({
             magicLinkPopup: true,
-            magicLinkCurrentPagePath: `${pathname}${search && search}`,
+            magicLinkCurrentPagePath: `${search && search}`,
         })
     }
 

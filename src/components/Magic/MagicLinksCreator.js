@@ -127,10 +127,12 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
         const postData = {
             org_id,
             "role_id": roleId,
-            "email_list": (email_list || email_list !== "") ? [email_list] : [],
-            "destination_path": `${frontEndUrl.slice(0, -1)}${destination_path}`,
+            "email_list": (email_list && email_list !== "") ? [email_list] : [],
+            "destination_path": `${frontEndUrl}${destination_path}`,
             "no_of_uses": (!no_of_uses || no_of_uses === "0") ? null : Number(no_of_uses),
         }
+
+
 
         await createMagicLink(postData);
 

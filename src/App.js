@@ -100,6 +100,7 @@ import CreateCollection from "./pages/collections/CreateCollection";
 import CollectionDetail from "./pages/collections/CollectionDetail";
 import Collections from "./pages/collections/Collections";
 import Magic from "./pages/magic/Magic";
+import Dashboard from "./components/Home/Dashboard/Dashboard";
 
 
 ReactGA.initialize(gaTID);
@@ -151,6 +152,7 @@ class App extends Component {
                         <Route exact path="/privacy" component={Privacy} />
                         <Route exact path="/acceptable" component={AcceptableUse} />
                         <Route exact path="/verify" component={VerifyEmail} />
+                        <Route exact path="/dashboard" component={Dashboard} />
                         <Route exact path="/magic/:slug" component={Magic} />
                         <Route exact path="/find-resources" component={FindResourcePage} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />

@@ -9,7 +9,7 @@ import AddProduct from "../../img/icons/add-product-icon.svg";
 import SellProduct from "../../img/icons/Sell-Products.svg";
 import NewListing from "../../img/icons/add-listing-icon.svg";
 import NewSearch from "../../img/icons/search-icon.svg";
-import Dashboard from '../../components/Dashboard/Dashboard';
+import Dashboard from './Dashboard/Dashboard';
 
 class HomeScreenInfo extends Component {
     constructor(props) {
@@ -65,20 +65,18 @@ class HomeScreenInfo extends Component {
     render() {
         return (
             <div className="wrapper">
-                {/* <section>
-                    <div className="container">
-                        <Dashboard />
-                    </div>
-                </section> */}
-
+                {this.props.isLoggedIn?
+                    <>
+                        <Dashboard/>
+                    </>
+                    :<>
                 <section>
                     <div className="container">
                         <div className="row d-flex pt-5 pb-5 no-gutters align-items-center justify-content-center">
                             <div className="col-md-6 col-sm-12 col-xs-12  ">
                                 <div className="row no-gutters">
                                     <div className="col-12">
-                                        <h1 className="blue-text primary-heading primary-heading-font-size"
-                                        >
+                                        <h1 className="blue-text primary-heading primary-heading-font-size">
                                             Trace and trust products <br />wherever they go
                                         </h1>
                                     </div>
@@ -209,7 +207,7 @@ class HomeScreenInfo extends Component {
                         </div>
                     </div>
                 </section>
-
+                </>}
 
             </div>
         )

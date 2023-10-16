@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from "react-redux";
-import * as actionCreator from "../../store/actions/actions";
+import * as actionCreator from "../../../store/actions/actions";
 import axios from 'axios';
-import { baseUrl } from '../../Util/Constants';
+import { baseUrl } from '../../../Util/Constants';
 import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie } from 'recharts';
 
 
@@ -21,7 +21,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 };
 
 
-const Dashboard = ({ isLoggedIn }) => {
+const DashboardOld = ({ isLoggedIn }) => {
 
     const [metrics, setMetrics] = useState(null);
 
@@ -220,4 +220,4 @@ const mapDispatchToProps = (dispatch) => {
 
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardOld)

@@ -876,7 +876,6 @@ class ProductKindForm extends Component {
             productData = this.configureCarbonValues(this.state.existingItemsParts, this.state.existingItemsProcesses,
                 this.state.existingItemsOutboundTransport, productData)
 
-
             if (this.props.createProductId) {
                 productData._id = "Product/" + this.props.createProductId
             }
@@ -891,17 +890,13 @@ class ProductKindForm extends Component {
 
             if (this.props.parentProductKindId){
                 completeData.parent_product_kind_id= this.props.parentProductKindId
-
             }
-
 
             this.setState({
                 btnLoading: true,
                 loading: true
             });
             this.setState({ isSubmitButtonPressed: true })
-
-                
                 axios   
                     .put(
                         createProductKindUrl,
@@ -915,9 +910,9 @@ class ProductKindForm extends Component {
                             });
                         }
 
+
                         if (this.props.refreshPageWithSavedState)
                         this.props.refreshPageWithSavedState({ refresh: true, reset: true })
-
                         this.props.showSnackbar({
                             show: true,
                             severity: "success",
@@ -933,10 +928,13 @@ class ProductKindForm extends Component {
                         });
 
 
-
                         if (this.props.triggerCallback){
                             this.props.triggerCallback()
                         }
+                    if (this.props.hide){
+                        this.props.hide()
+                    }
+
                     })
                     .catch((error) => {
                         this.setState({

@@ -231,7 +231,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
 
                 <section>
 
-                    <div className="row mt-2">
+                    <div className="row mt-4">
                         <div className="col">
                                 <Link to="#" onClick={() => showHideEmailFieldsHandler()} className="btn-gray-border click-item">
                                     {!emailFieldVisibility ? `Add emails` : `Hide email field`}
@@ -252,10 +252,10 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                         </div>
                     </div>}
 
-                    <div className="row mt-2">
+                    <div className="row mt-4">
                         <div className="col">
                         <Link to="#" onClick={() => showHideOtherFieldsHandler()} className="btn-gray-border click-item">
-                                    {!otherFieldsVisibility ? `Other` : `Hide other fields`}
+                                    {!otherFieldsVisibility ? `More options` : `Hide options`}
                                 </Link>
                         </div>
                     </div>
@@ -272,6 +272,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                                 numberInput
                             />
                         </div>
+
                     </div>}
 
                 </section>

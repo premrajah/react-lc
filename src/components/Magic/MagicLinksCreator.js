@@ -10,13 +10,8 @@ import { baseUrl, frontEndUrl } from "../../Util/Constants";
 import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import CopyContentButton from "../Utils/CopyContentButton";
-<<<<<<< HEAD
 import { Link } from "react-router-dom";
-
-=======
-import * as actionCreator from "../../store/actions/actions";
 import CustomPopover from "../FormsUI/CustomPopover";
->>>>>>> c1126192f309ecffa7e1a967251b4db302e611c1
 
 
 function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, loading: buttonLoading, hideMagicLinkPopup, showSnackbar }) {

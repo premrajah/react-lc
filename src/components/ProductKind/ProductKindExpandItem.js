@@ -200,8 +200,6 @@ class ProductKindExpandItem extends Component {
                     this.setState({
                         existingItems:existingItems
                     })
-
-
                 }
 
             }
@@ -291,7 +289,6 @@ class ProductKindExpandItem extends Component {
                                             <p className={"custom-label text-bold text-blue mb-1"}>
                                                 Sub Products
                                             </p>
-
                                             <ol>
                                                 {this.state.item.sub_products&&
                                                     this.state.item.sub_products.map(

@@ -10,6 +10,7 @@ import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import GlobalDialog from "../RightBar/GlobalDialog";
 import CopyContentButton from "../Utils/CopyContentButton";
 import * as actionCreator from "../../store/actions/actions";
+import CustomPopover from "../FormsUI/CustomPopover";
 
 
 function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, loading: buttonLoading, hideMagicLinkPopup, showSnackbar }) {
@@ -169,12 +170,14 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                 <div className="row">
                     <div className="col">
                         <TextFieldWrapper
+                            startAdornment={frontEndUrl}
                             name="destination_path"
                             title="Enter destination path (URL)"
                             error={errors["destination_path"]}
                             onChange={(value) => handleChangeForm(value, "destination_path")}
                             initialValue={pagePath ? pagePath : ""}
                             placeholder="Enter url"
+
                         />
                     </div>
                 </div>
@@ -198,9 +201,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
 
                 {companyRoles && <div className="row">
                     <div className="col">
-                        <div className="custom-label text-bold text-blue">
-                            Select Role
-                        </div>
+
                         <SelectArrayWrapper
                             option="name"
                             select="Select"
@@ -242,9 +243,9 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                     </div>
                 </div>
 
-                <div className="row mt-2">
-                    <div className="col d-flex justify-content-end">
-                        <GreenButton title="Create Link" type="submit" loading={buttonLoading} />
+                <div className="row mt-4 justify-content-center">
+                    <div className="col-4 d-flex justify-content-center">
+                        <GreenButton fullWidth title="Create Link" type="submit" loading={buttonLoading} />
                     </div>
                 </div>
             </form>
@@ -257,17 +258,22 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                 hide={() => hideMagicLinkDisplayPopup()}
                 heading="Created Magic Link"
             >
-                {magicLinkUrl && <div className="row mt-4" style={{ minHeight: "200px" }}>
+                {magicLinkUrl &&
+                    <div className="col-12" >
+                    <div className="row mt-4 container-light-gray pt-2 pb-2" >
                     <div className="col-md-2 custom-label text-bold text-blue">
                         Magic Link
                     </div>
-                    <div className="col-md-8">
+                    <div className="col-md-6">
                         {magicLinkUrl}
                     </div>
-                    <div className="col-md-2">
+                    <div className="col-md-4 justify-content-end d-flex">
+                        <CustomPopover text={"Click to copy link"}>
                         <CopyContentButton value={magicLinkUrl} />
+                        </CustomPopover>
                     </div>
                 </div>
+                    </div>
                 }
             </GlobalDialog>
         </section>

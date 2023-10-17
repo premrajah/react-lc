@@ -12,6 +12,10 @@ import GlobalDialog from "../RightBar/GlobalDialog";
 import CopyContentButton from "../Utils/CopyContentButton";
 import { Link } from "react-router-dom";
 import CustomPopover from "../FormsUI/CustomPopover";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
+import {DesktopDatePicker} from "@mui/x-date-pickers";
+import CustomizedInput from "../FormsUI/ProductForm/CustomizedInput";
 
 
 function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, loading: buttonLoading, hideMagicLinkPopup, showSnackbar }) {
@@ -24,9 +28,15 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
     const [magicLinkUrl, setMagicLinkUrl] = useState(null);
     const [emailFieldVisibility, setEmailFieldVisibility] = useState(false);
     const [otherFieldsVisibility, setOtherFieldsVisibility] = useState(false);
+    const [expiryDate, setExpiryDate] = useState(null);
+    const [expiryDateError, setExpiryDateError] = useState(null);
 
 
     const handleChangeForm = (value, field) => {
+        if (field==="expiryDate"){
+            setExpiryDate(value)
+        }
+
         let formFields = fields;
         formFields[field] = value;
 
@@ -131,6 +141,10 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
             "email_list": (email_list && email_list !== "") ? [email_list] : [],
             "destination_path": `${frontEndUrl.slice(0,-1)}${destination_path}`,
             "no_of_uses": (!no_of_uses || no_of_uses === "0") ? null : Number(no_of_uses),
+        }
+
+        if (expiryDate){
+            postData.valid_until_epoch_ms=new Date(expiryDate).getTime();
         }
 
 
@@ -240,7 +254,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                         </div>
                     </div>
 
-                    {emailFieldVisibility && <div className="row mt-2">
+                    {emailFieldVisibility && <div className="bg-light p-2 row mt-2">
                         <div className="col">
                             <TextFieldWrapper
                                 name="email_list"
@@ -261,17 +275,59 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                         </div>
                     </div>
 
-                    {otherFieldsVisibility && <div className="row mt-2">
+                    {otherFieldsVisibility &&
+                        <div className="row bg-light p-2 mt-2">
                         <div className="col-md-6">
                             <TextFieldWrapper
                                 name="no_of_uses"
-                                title=""
+                                title="Enter number of uses "
                                 error={errors["no_of_uses"]}
                                 onChange={(value) => handleChangeForm(value, "no_of_uses")}
                                 initialValue=""
-                                placeholder="Enter number of uses (Optional: default 5)"
+                                placeholder="(Optional: default 5)"
                                 numberInput
                             />
+
+                        </div>
+                        <div className="col-md-6 ">
+
+                            <div
+                                className={
+                                    "custom-label text-bold text-blue "
+                                }>
+                                Expiry Date
+                            </div>
+
+
+
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                                <DesktopDatePicker
+
+                                    disableHighlightToday={true}
+                                    minDate={new Date()}
+                                    // label="Required By"
+                                    inputVariant="outlined"
+                                    variant={"outlined"}
+                                    margin="normal"
+                                    id="date-picker-dialog-1"
+                                    // label="Available From"
+                                    inputFormat="dd/MM/yyyy"
+                                    value={expiryDate}
+                                    renderInput=   {({ inputRef, inputProps, InputProps }) => (
+                                        <div className="custom-calander-container">
+                                            <CustomizedInput ref={inputRef} {...inputProps} />
+                                            <span className="custom-calander-icon">{InputProps?.endAdornment}</span>
+                                        </div>
+                                    )}
+                                    // renderInput={(params) => <CustomizedInput {...params} />}
+                                    onChange={(value)=>handleChangeForm(value,"expiryDate")}
+
+                                />
+                            </LocalizationProvider>
+
+                            {expiryDateError && <span style={{color:"#f44336",fontSize:"0.75rem!important"}} className='text-danger'>{"Required"}</span>}
+
                         </div>
 
                     </div>}

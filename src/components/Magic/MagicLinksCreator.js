@@ -226,7 +226,8 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                     </div>
                 </div>
 
-                {companyRoles && <div className="row">
+                {companyRoles &&
+                    <div className="row">
                     <div className="col">
 
                         <SelectArrayWrapper
@@ -254,7 +255,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                         </div>
                     </div>
 
-                    {emailFieldVisibility && <div className="bg-light p-2 row mt-2">
+                    {emailFieldVisibility && <div className="  row mt-2">
                         <div className="col">
                             <TextFieldWrapper
                                 name="email_list"
@@ -276,7 +277,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                     </div>
 
                     {otherFieldsVisibility &&
-                        <div className="row bg-light p-2 mt-2">
+                        <div className="row  p-2 mt-2">
                         <div className="col-md-6">
                             <TextFieldWrapper
                                 name="no_of_uses"

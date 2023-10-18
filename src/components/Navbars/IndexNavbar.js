@@ -237,7 +237,7 @@ class ComponentsNavbar extends React.Component {
 
                             {this.props.isLoggedIn && (
                                 <>
-                                    <NavItem className={"web-only mr-3"}>
+                                    {this.props?.userContext?.perms?.includes("SiteRead") && <NavItem className={"web-only mr-3"}>
                                         <Link
 
                                             to={"/sites?add-site=true"}
@@ -245,8 +245,8 @@ class ComponentsNavbar extends React.Component {
                                             color="default">
                                             Add Site
                                         </Link>
-                                    </NavItem>
-                                    <NavItem className={"web-only mr-3"}>
+                                    </NavItem>}
+                                    {this.props?.userContext?.perms?.includes("ProductWrite") &&  <NavItem className={"web-only mr-3"}>
                                         <Link
                                             onClick={this.showProductSelection}
                                             to={"/my-products"}
@@ -254,7 +254,7 @@ class ComponentsNavbar extends React.Component {
                                             color="default">
                                             Add Product
                                         </Link>
-                                    </NavItem>
+                                    </NavItem>}
 
                                 </>
                             )}
@@ -322,7 +322,7 @@ class ComponentsNavbar extends React.Component {
                                         </button>
                                     </NavItem>}
 
-                                    <NavItem>
+                                    {this.props?.userContext?.perms?.includes("MessageRead") && <NavItem>
                                         <button className="btn btn-link text-dark btn-inbox">
                                             <Link to="/messages" onClick={() => this.props.dispatchUnreadMessages(false)}>
                                                 <Badge color={this.props.unreadMessages ? "secondary" : "default"} variant="dot" >
@@ -330,7 +330,7 @@ class ComponentsNavbar extends React.Component {
                                                 </Badge>
                                             </Link>
                                         </button>
-                                    </NavItem>
+                                    </NavItem>}
 
                                     <NavItem>
                                         <button className="btn btn-link text-dark btn-inbox">
@@ -408,24 +408,24 @@ class ComponentsNavbar extends React.Component {
                                         className="custom-dropdown-menu"
                                     >
                                         {/*<DropdownMenu className="dropdown-with-icons">*/}
-                                        <Link className={"dropdown-item"} to="/account">
+                                        <Link className={`dropdown-item`} to="/account">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Account
                                         </Link>
 
-                                        <Link className={"dropdown-item"} to="/sites">
+                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("SiteRead") ? '' : 'disabled-link'}`} to="/sites">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Sites
                                         </Link>
-                                        <Link className={"dropdown-item"} to="/my-products">
+                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("ProductRead") ? '' : 'disabled-link'}`} to="/my-products">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Products
                                         </Link>
-                                        <Link className={"dropdown-item"} to="/product-kinds">
+                                        <Link className={`dropdown-item`} to="/product-kinds">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Product Kinds
                                         </Link>
-                                        <Link className={"dropdown-item"} to="/collections">
+                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("CollectionRead") ? '' : 'disabled-link'}`} to="/collections">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Collections
                                         </Link>
@@ -433,23 +433,23 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Calendar
                                         </Link>
-                                        <Link className={"dropdown-item"} to="/my-campaigns">
+                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("CampaignRead") ? '' : 'disabled-link'}`} to="/my-campaigns">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Campaigns
                                         </Link>
 
 
 
-                                        <Link className={"dropdown-item"} to="/my-search">
+                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("SearchRead") ? '' : 'disabled-link'}`} to="/my-search">
                                             <i className="tim-icons icon-paper" />
                                             Searches
                                         </Link>
 
-                                        <Link className={"dropdown-item"} to="/my-listings">
+                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("ListingRead") ? '' : 'disabled-link'}`} to="/my-listings">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Listings
                                         </Link>
-                                        <Link className={"dropdown-item"} to="/my-cycles">
+                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("CycleRead") ? '' : 'disabled-link'}`} to="/my-cycles">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Cycles
                                         </Link>

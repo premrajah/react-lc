@@ -3345,6 +3345,11 @@ a.page-link:hover {
     cursor: pointer;
 }
 
+.disabled-link {
+    pointer-events: none !important;
+    color: grey;
+}
+
 .time-text {
     position: absolute;
     left: 55px;

@@ -1,19 +1,19 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PageHeader from "../../components/PageHeader";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import RequestReleaseItem from "../../components/Approvals/RequestReleaseItem";
 import RequestRegisterItem from "../../components/Approvals/RequestRegisterItem";
 import RequestServiceAgentItem from "../../components/Approvals/RequestServiceAgentItem";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as actionCreator from "../../store/actions/actions";
 import Layout from "../../components/Layout/Layout";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from '@mui/lab/TabPanel';
 import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
+import { baseUrl } from "../../Util/Constants";
 import RequestSiteReleaseItem from "../../components/Approvals/RequestSiteReleaseItem";
 import RequestRentalReleaseItem from "../../components/Approvals/RequestRentalReleaseItem";
 import RentalRequestItem from "../../components/Approvals/RentalRequestItem";
@@ -38,28 +38,28 @@ class Approvals extends Component {
             value: 0,
             loading: false,
             tabQuery: 0,
-            activeKey:"1",
-            siteReleases:[],
-            eventToggle:false,
-            siteToggle:false,
+            activeKey: "1",
+            siteReleases: [],
+            eventToggle: false,
+            siteToggle: false,
         };
 
     }
 
     handleChange = (event, newValue) => {
-        this.setState({value: newValue, tabQuery: newValue});
+        this.setState({ value: newValue, tabQuery: newValue });
     };
 
-    setActiveKey=(event,key)=>{
+    setActiveKey = (event, key) => {
         this.setState({
-            activeKey:key
+            activeKey: key
         })
     }
 
 
-    setEventToggle=()=>{
+    setEventToggle = () => {
         this.setState({
-            eventToggle:!this.state.eventToggle
+            eventToggle: !this.state.eventToggle
         })
         // setTimeout(()=>{
         //
@@ -68,39 +68,39 @@ class Approvals extends Component {
 
 
     }
-    setSiteToggle=()=>{
+    setSiteToggle = () => {
         this.setState({
-            siteToggle:!this.state.siteToggle
+            siteToggle: !this.state.siteToggle
         })
 
     }
 
-     fetchSiteReleaseRequests = () => {
+    fetchSiteReleaseRequests = () => {
 
-         axios.get(baseUrl + "site-release").then(
-             (response) => {
+        axios.get(baseUrl + "site-release").then(
+            (response) => {
 
-                 let responseAll = response.data.data;
+                let responseAll = response.data.data;
 
-                 this.setState({
-                     siteReleases:responseAll
-                 })
+                this.setState({
+                    siteReleases: responseAll
+                })
 
-             },
-             (error) => {
-                 // let status = error.response.status
-                 // dispatch({ type: "PRODUCT_LIST", value: [] })
-             }
-         )
-             .catch(error => {});
+            },
+            (error) => {
+                // let status = error.response.status
+                // dispatch({ type: "PRODUCT_LIST", value: [] })
+            }
+        )
+            .catch(error => { });
     };
     fetchEventReleaseRequests = () => {
 
         this.setState({
-            eventReleases:[]
+            eventReleases: []
         })
 
-        let url=baseUrl + "seek?name=EventRelease&relation=&offset=0&size=100&count=false&include-to=Event:any&&include-to=Org:any"
+        let url = baseUrl + "seek?name=EventRelease&relation=&offset=0&size=100&count=false&include-to=Event:any&&include-to=Org:any"
 
 
 
@@ -110,7 +110,7 @@ class Approvals extends Component {
                 let responseAll = response.data.data;
 
                 this.setState({
-                    eventReleases:responseAll
+                    eventReleases: responseAll
                 })
 
             },
@@ -119,48 +119,48 @@ class Approvals extends Component {
                 // dispatch({ type: "PRODUCT_LIST", value: [] })
             }
         )
-            .catch(error => {});
+            .catch(error => { });
     };
 
     componentDidMount() {
 
-        if (this.props.location.search.includes("tab=")){
+        if (this.props.location.search.includes("tab=")) {
 
             if (this.props.location.search.includes("tab=0"))
-            this.setActiveKey(null,"1")
+                this.setActiveKey(null, "1")
 
-           else if (this.props.location.search.includes("tab=1"))
-                this.setActiveKey(null,"2")
+            else if (this.props.location.search.includes("tab=1"))
+                this.setActiveKey(null, "2")
 
-           else if (this.props.location.search.includes("tab=2"))
-                this.setActiveKey(null,"3")
+            else if (this.props.location.search.includes("tab=2"))
+                this.setActiveKey(null, "3")
 
             else if (this.props.location.search.includes("tab=3"))
-                this.setActiveKey(null,"4")
+                this.setActiveKey(null, "4")
 
             else if (this.props.location.search.includes("tab=4"))
-                this.setActiveKey(null,"5")
+                this.setActiveKey(null, "5")
 
             else if (this.props.location.search.includes("tab=5"))
-                this.setActiveKey(null,"6")
+                this.setActiveKey(null, "6")
         }
 
         const query = new URLSearchParams(this.props.location.search);
         query
-            ? this.setState({tabQuery: query.get('tab')})
-            : this.setState({tabQuery: 0});
+            ? this.setState({ tabQuery: query.get('tab') })
+            : this.setState({ tabQuery: 0 });
 
 
         this.refreshItems()
         this.props.loadSites()
-        this.props.loadProductsWithoutParent({offset:this.props.productPageOffset,size:this.props.productPageSize});
+        this.props.loadProductsWithoutParent({ offset: this.props.productPageOffset, size: this.props.productPageSize });
 
     }
 
 
     interval
 
-    refreshItems(){
+    refreshItems() {
 
         this.props.fetchReleaseRequest();
         this.props.fetchRegisterRequest();
@@ -170,17 +170,17 @@ class Approvals extends Component {
         // this.fetchRentalReleases()
         this.fetchEventReleaseRequests()
 
-    this.interval = setInterval(() => {
-        this.props.fetchReleaseRequest();
-        this.props.fetchRegisterRequest();
-        this.props.fetchServiceAgentRequest()
-        this.fetchSiteReleaseRequests()
-        this.fetchRentalRequests()
-    }, 30000);
-}
+        this.interval = setInterval(() => {
+            this.props.fetchReleaseRequest();
+            this.props.fetchRegisterRequest();
+            this.props.fetchServiceAgentRequest()
+            this.fetchSiteReleaseRequests()
+            this.fetchRentalRequests()
+        }, 30000);
+    }
 
 
-     fetchRentalRequests = () => {
+    fetchRentalRequests = () => {
 
         axios.get(baseUrl + "rental-request").then(
             (response) => {
@@ -188,7 +188,7 @@ class Approvals extends Component {
                 let responseAll = response.data.data;
 
                 this.setState({
-                    rentalRequests:responseAll
+                    rentalRequests: responseAll
                 })
 
                 // dispatch()
@@ -198,7 +198,7 @@ class Approvals extends Component {
                 // dispatch({ type: "PRODUCT_LIST", value: [] })
             }
         )
-            .catch(error => {});
+            .catch(error => { });
 
         // dispatch({ type: "PRODUCT_LIST", value: [] })
     };
@@ -210,7 +210,7 @@ class Approvals extends Component {
                 let responseAll = response.data.data;
 
                 this.setState({
-                    rentalReleases:responseAll
+                    rentalReleases: responseAll
                 })
 
                 // dispatch()
@@ -220,22 +220,22 @@ class Approvals extends Component {
                 // dispatch({ type: "PRODUCT_LIST", value: [] })
             }
         )
-            .catch(error => {});
+            .catch(error => { });
 
         // dispatch({ type: "PRODUCT_LIST", value: [] })
     };
 
-componentWillUnmount() {
-    clearInterval(this.interval);
-}
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
 
 
-render() {
+    render() {
 
         return (
             <Layout>
                 <div className="container  pb-4 pt-4">
-                        <PageHeader pageTitle="Approvals" subTitle="You can approve or decline a new product someone has released to you here" />
+                    <PageHeader pageTitle="Approvals" subTitle="You can approve or decline a new product someone has released to you here" />
 
                     <div className={"listing-row-border "}></div>
 
@@ -253,7 +253,7 @@ render() {
                                                 style: {
                                                     backgroundColor: "#27245C",
                                                     padding: '2px',
-                                                    color:"#27245C"
+                                                    color: "#27245C"
                                                 }
                                             }}
                                             onChange={this.setActiveKey}
@@ -261,7 +261,7 @@ render() {
                                             aria-label="lab API tabs example">
 
                                             <Tab label="Product Release " value="1" />
-                                            <Tab label="Product Register" value="2"/>
+                                            <Tab label="Product Register" value="2" />
                                             <Tab label="Change Service Agent" value="3" />
                                             <Tab label="Site Release " value="4" />
                                             {/*<Tab label="Rental Release " value="5" />*/}
@@ -275,7 +275,7 @@ render() {
                                             <div className="col-12 mt-3 mb-3">
                                                 <div className="col d-flex justify-content-end">
                                                     <Link to="/approved" className="btn btn-sm blue-btn"
-                                                          style={{color: "#fff"}}>
+                                                        style={{ color: "#fff" }}>
                                                         Release Request Records
                                                     </Link>
                                                 </div>
@@ -287,21 +287,21 @@ render() {
                                                 r.Release.stage !== "complete" &&
                                                 r.Release.stage !== "cancelled" &&
                                                 r.Release.stage !== "invalidated").map((item, index) => (
-                                                <div className="col-12" key={item.product_id.replace("Product/","")} id={item.product_id.replace("Product/","")}>
+                                                    <div className="col-12" key={item.product_id.replace("Product/", "")} id={item.product_id.replace("Product/", "")}>
 
-                                                    <RequestReleaseItem
+                                                        <RequestReleaseItem
 
-                                                        refresh={()=>{
+                                                            refresh={() => {
 
-                                                            this.props.fetchReleaseRequest();
-                                                        }}
+                                                                this.props.fetchReleaseRequest();
+                                                            }}
 
-                                                        history={this.props.history}
-                                                        item={item}
-                                                    />
+                                                            history={this.props.history}
+                                                            item={item}
+                                                        />
 
-                                                </div>
-                                            ))}
+                                                    </div>
+                                                ))}
 
 
                                             {this.props.productReleaseRequested.length === 0 && (
@@ -322,7 +322,7 @@ render() {
                                             <div className="col-12 mt-3 mb-3">
                                                 <div className="col d-flex justify-content-end">
                                                     <Link to="/register-record" className="btn btn-sm blue-btn"
-                                                          style={{color: "#fff"}}>
+                                                        style={{ color: "#fff" }}>
                                                         Register Request Records
                                                     </Link>
                                                 </div>
@@ -333,13 +333,13 @@ render() {
                                                 r.registration.stage !== "cancelled" &&
                                                 r.registration.stage !== "invalidated")
                                             ).map((item, index) => (
-                                                <div className={"col-12"} key={item.product_id+"_reg"} id={item.product_id+"_reg"}>
+                                                <div className={"col-12"} key={item.product_id + "_reg"} id={item.product_id + "_reg"}>
 
                                                     <RequestRegisterItem
                                                         history={this.props.history}
                                                         item={item}
 
-                                                        refresh={()=>{
+                                                        refresh={() => {
 
                                                             this.props.fetchRegisterRequest();
                                                         }}
@@ -370,18 +370,18 @@ render() {
                                             <div className="col-12 mt-3 mb-3">
                                                 <div className="col d-flex justify-content-end">
                                                     <Link to="/service-agent-record" className="btn btn-sm blue-btn"
-                                                          style={{color: "#fff"}}>
+                                                        style={{ color: "#fff" }}>
                                                         Service Agent Request Records
                                                     </Link>
                                                 </div>
                                             </div>
 
                                             {this.props.serviceAgentRequests.filter(r => (r.Release.stage !== "complete" && r.Release.stage !== "cancelled")).map((item, index) => (
-                                                <div className={"col-12"} key={item.product_id+"_sg"} id={item.product_id+"_sg"} >
+                                                <div className={"col-12"} key={item.product_id + "_sg"} id={item.product_id + "_sg"} >
                                                     <RequestServiceAgentItem
                                                         history={this.props.history}
                                                         item={item}
-                                                        refresh={()=>{
+                                                        refresh={() => {
                                                             this.props.fetchServiceAgentRequest();
                                                         }}
                                                     />
@@ -424,10 +424,10 @@ render() {
                                                     {/*      style={{color: "#fff"}}>*/}
                                                     {/*   Site Release  Records*/}
                                                     {/*</Link>*/}
-                                                    <div className="subtitle">{this.state.siteToggle?"Site Release Records":"Site Releases"}</div>
+                                                    <div className="subtitle">{this.state.siteToggle ? "Site Release Records" : "Site Releases"}</div>
                                                     <BlueSmallBtn
                                                         onClick={this.setSiteToggle}
-                                                        title={!this.state.siteToggle?"Site Release Records":"Site Releases"}
+                                                        title={!this.state.siteToggle ? "Site Release Records" : "Site Releases"}
                                                     />
                                                 </div>
                                             </div>
@@ -437,20 +437,20 @@ render() {
                                                 // r.Release.stage !== "complete" &&
                                                 // r.Release.stage !== "cancelled" &&
                                                 // r.Release.stage !== "invalidated"
-                                                this.state.siteToggle?( r.Release.stage === "complete" ||
-                                                        r.Release.stage === "cancelled" ||
-                                                        r.Release.stage === "invalidated"):
-                                                    ( r.Release.stage !== "complete" &&
-                                                        r.Release.stage !== "cancelled"&&
+                                                this.state.siteToggle ? (r.Release.stage === "complete" ||
+                                                    r.Release.stage === "cancelled" ||
+                                                    r.Release.stage === "invalidated") :
+                                                    (r.Release.stage !== "complete" &&
+                                                        r.Release.stage !== "cancelled" &&
                                                         r.Release.stage !== "invalidated")
 
                                             ).map((item, index) =>
                                                 <div className="col-12"
-                                                     key={item.Site_id.replace("Site/","")}
-                                                     id={item.Site_id.replace("Site/","")}>
+                                                    key={item.Site_id.replace("Site/", "")}
+                                                    id={item.Site_id.replace("Site/", "")}>
 
                                                     <RequestSiteReleaseItem
-                                                        refresh={()=>{
+                                                        refresh={() => {
                                                             this.fetchSiteReleaseRequests();
                                                         }}
                                                         history={this.props.history}
@@ -478,7 +478,7 @@ render() {
                                             <div className="col-12 mt-3 mb-3">
                                                 <div className="col d-flex justify-content-end">
                                                     <Link to="/rental-records" className="btn btn-sm blue-btn"
-                                                          style={{color: "#fff"}}>
+                                                        style={{ color: "#fff" }}>
                                                         Rental Release Records
                                                     </Link>
                                                 </div>
@@ -489,12 +489,12 @@ render() {
                                                 r.Release.stage !== "cancelled" &&
                                                 r.Release.stage !== "invalidated").map((item, index) =>
                                                     <div className="col-12"
-                                                         key={item.Release._key}
-                                                         id={item.Release._key}
-                                                         >
+                                                        key={item.Release._key}
+                                                        id={item.Release._key}
+                                                    >
 
                                                         <RequestRentalReleaseItem
-                                                            refresh={()=>{
+                                                            refresh={() => {
                                                                 this.fetchRentalReleases();
                                                             }}
                                                             history={this.props.history}
@@ -502,7 +502,7 @@ render() {
                                                         />
 
                                                     </div>
-                                            )}
+                                                )}
 
 
                                             {this.state.siteReleases.length === 0 && (
@@ -522,7 +522,7 @@ render() {
                                             <div className="col-12 mt-3 mb-3">
                                                 <div className="col d-flex justify-content-end">
                                                     <Link to="/rental-request-records" className="btn btn-sm blue-btn"
-                                                          style={{color: "#fff"}}>
+                                                        style={{ color: "#fff" }}>
                                                         Rental Request Records
                                                     </Link>
                                                 </div>
@@ -535,19 +535,19 @@ render() {
                                                 r.registration.stage !== "cancelled" &&
                                                 r.registration.stage !== "invalidated").map((item, index) =>
                                                     <div className="col-12"
-                                                         key={item.registration._key}
-                                                         id={item.registration._key}
+                                                        key={item.registration._key}
+                                                        id={item.registration._key}
                                                     >
 
                                                         <RentalRequestItem
-                                                            refresh={()=>{
+                                                            refresh={() => {
                                                                 this.fetchRentalRequests();
                                                             }}
                                                             history={this.props.history}
                                                             item={item}
                                                         />
                                                     </div>
-                                            )}
+                                                )}
 
 
                                             {this.state.siteReleases.length === 0 && (
@@ -571,36 +571,36 @@ render() {
                                                     {/*      style={{color: "#fff"}}>*/}
                                                     {/*    Event Release Records*/}
                                                     {/*</Link>*/}
-                                                    <div className="subtitle">{this.state.eventToggle?"Event Release Records":"Event Releases"}</div>
+                                                    <div className="subtitle">{this.state.eventToggle ? "Event Release Records" : "Event Releases"}</div>
                                                     <BlueSmallBtn
-                                                    onClick={this.setEventToggle}
-                                                    title={!this.state.eventToggle?"Event Release Records":"Event Releases"}
+                                                        onClick={this.setEventToggle}
+                                                        title={!this.state.eventToggle ? "Event Release Records" : "Event Releases"}
                                                     />
                                                 </div>
                                             </div>
 
 
                                             {this.state.eventReleases.filter(r =>
-                                                this.state.eventToggle?( r.EventRelease.stage === "complete" ||
-                                                r.EventRelease.stage === "cancelled" ||
-                                                r.EventRelease.stage === "invalidated"):
-                                                    ( r.EventRelease.stage !== "complete" &&
-                                                        r.EventRelease.stage !== "cancelled"&&
+                                                this.state.eventToggle ? (r.EventRelease.stage === "complete" ||
+                                                    r.EventRelease.stage === "cancelled" ||
+                                                    r.EventRelease.stage === "invalidated") :
+                                                    (r.EventRelease.stage !== "complete" &&
+                                                        r.EventRelease.stage !== "cancelled" &&
                                                         r.EventRelease.stage !== "invalidated")
                                             ).map((item, index) =>
-                                                    <div className="col-12"
-                                                         key={item.EventRelease._key}
-                                                         id={item.EventRelease._key}
-                                                    >
+                                                <div className="col-12"
+                                                    key={item.EventRelease._key}
+                                                    id={item.EventRelease._key}
+                                                >
 
-                                                        <RequestEventReleaseItem
-                                                            refresh={()=>{
-                                                                this.fetchEventReleaseRequests();
-                                                            }}
-                                                            history={this.props.history}
-                                                            item={item}
-                                                        />
-                                                    </div>
+                                                    <RequestEventReleaseItem
+                                                        refresh={() => {
+                                                            this.fetchEventReleaseRequests();
+                                                        }}
+                                                        history={this.props.history}
+                                                        item={item}
+                                                    />
+                                                </div>
                                             )}
 
 

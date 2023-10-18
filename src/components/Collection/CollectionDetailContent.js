@@ -120,7 +120,8 @@ class CollectionDetailContent extends Component {
             isOwner:false,
             isArchiver:false,
             isServiceAgent:false,
-            eventsLoading:false
+            eventsLoading:false,
+            refreshTabsFlag:false
 
         };
 
@@ -861,6 +862,20 @@ class CollectionDetailContent extends Component {
             );
     }
 
+    refreshTabs=()=>{
+        this.setState({
+            refreshTabsFlag:true
+        })
+        setTimeout(()=>{
+
+            this.setState({
+                refreshTabsFlag:false
+            })
+        },1000)
+
+
+    }
+
     fetchExistingAgentRequests=(productKey)=> {
         axios
             .get(baseUrl + "service-agent/product/"+productKey)
@@ -1018,7 +1033,7 @@ class CollectionDetailContent extends Component {
                                 <div className={"listing-row-border "}></div>
 
 
-                                {this.state.item &&
+                                {(this.state.item &&!this.state.refreshTabsFlag)&&
                                     <div className="row justify-content-start pb-3  tabs-detail">
                                         <div className="col-12 ">
 
@@ -1050,7 +1065,7 @@ class CollectionDetailContent extends Component {
                                                     </Box>
 
 
-                                                    {this.state.item?.type==="product"&& <TabPanel value="1">
+                                                      {this.state.item?.type==="product"&& <TabPanel value="1">
                                                        <ProductsNew
                                                            fromCollections
                                                            skipLayout
@@ -1087,7 +1102,6 @@ class CollectionDetailContent extends Component {
                         <GlobalDialog
                             size="lg"
                             heading={"Edit Collection"}
-
                             show={this.state.showProductEdit}
                             hide={()=> {
                                 this.showProductEdit();
@@ -1100,7 +1114,12 @@ class CollectionDetailContent extends Component {
                                     type={true}
                                     refreshData={ ()=> {
                                        this.props.loadCurrentCollection(this.state.item?._key);
+                                       this.refreshTabs();
+
+                                    }}
+                                    hide={()=> {
                                         this.showProductEdit();
+
                                     }}
                                 />
                                 }

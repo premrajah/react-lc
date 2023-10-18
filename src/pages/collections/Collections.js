@@ -1066,7 +1066,6 @@ class Collections extends Component {
                 <GlobalDialog
                     size="lg"
                     heading={"Add Collection"}
-
                     show={this.state.showProductEditPopUp}
                     hide={()=> {
                         this.showProductEdit();

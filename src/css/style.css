@@ -5061,3 +5061,22 @@ input[type=file]::file-selector-button:hover {
     position: relative;
     width: auto !important;
 }
+.startAdornment-left{
+    height: 90%;
+    width: 150px;
+    display: flex;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+    left: 12px;
+    border-radius: 5px;
+    z-index: 1000;
+    border: none;
+    background: #eee;
+    justify-content: center;
+    align-items: center;
+}
+.textbox-left-padding>.MuiInputBase-root>input{
+    padding-left: 175px;
+}

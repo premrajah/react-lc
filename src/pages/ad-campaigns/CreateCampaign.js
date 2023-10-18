@@ -1318,11 +1318,6 @@ let item=null
                                                             // label="Available From"
                                                             inputFormat="dd/MM/yyyy"
                                                             value={this.state.startDate}
-
-                                                            // value={this.state.fields["startDate"]?this.state.fields["startDate"]:this.state.item&&this.state.item.campaign.start_ts}
-                                                            // onChange={this.handleChangeDateStartDate.bind(
-                                                            //     this
-                                                            // )}
                                                             renderInput=   {({ inputRef, inputProps, InputProps }) => (
                                                                 <div className="custom-calander-container">
                                                                     <CustomizedInput ref={inputRef} {...inputProps} />
@@ -1360,7 +1355,6 @@ let item=null
                                                             id="date-picker-dialog"
                                                             inputFormat="dd/MM/yyyy"
                                                             value={this.state.endDate}
-                                                            // value={this.state.fields["endDate"]?this.state.fields["endDate"]:this.state.item&&this.state.item.campaign.end_ts}
                                                             renderInput=   {({ inputRef, inputProps, InputProps }) => (
                                                                 <div className="custom-calander-container">
                                                                     <CustomizedInput ref={inputRef} {...inputProps} />

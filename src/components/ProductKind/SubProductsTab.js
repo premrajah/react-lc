@@ -27,20 +27,36 @@ class SubProductsTab extends Component {
             showAddNew:false,
             showLinkNew:false,
             existingItems: [],
+            heading:""
         }}
 
 
     toggleShowProducts=()=>{
+        if (!this.state.showAddProducts){
+            this.setState({
+                heading:"Add Products"
+            })
+        }
         this.setState({
             showAddProducts:!this.state.showAddProducts
         })
     }
     toggleAddNew=()=>{
+        if (!this.state.showAddNew){
+            this.setState({
+                heading:"Add Subproduct kind"
+            })
+        }
         this.setState({
             showAddNew:!this.state.showAddNew
         })
     }
     toggleLinkNew=()=>{
+        if (!this.state.showLinkNew){
+            this.setState({
+                heading:"Add Subproduct kind"
+            })
+        }
         this.setState({
             showLinkNew:!this.state.showLinkNew
         })
@@ -102,7 +118,7 @@ class SubProductsTab extends Component {
 
 
             axios
-                .post(baseUrl + "product-kind/sub-product-kinds", dataForm)
+                .post(baseUrl + "product-kind/sub-product-kind", dataForm)
                 .then((res) => {
                     // dispatch({type: "SIGN_UP", value : res.data})
 
@@ -177,6 +193,7 @@ class SubProductsTab extends Component {
                                                         Link {this.props.productKindType?"Subproduct kinds": "Subproducts"}
                                                     </span>
                     </button>
+
                 </div>
                 <div className={"mt-4"}></div>
                 {this.props.item?.sub_products?.length > 0 && (
@@ -218,7 +235,7 @@ class SubProductsTab extends Component {
 
                 <GlobalDialog
                     size="md"
-                    heading={this.state.showAddProducts?"Add Product":"Add Product Kinds"}
+                    // heading={this.state.heading?this.state.heading:"Link"}
                     hideHeading
                     show={this.state.showAddProducts||this.state.showAddProductKinds}
                     hide={()=> {
@@ -227,21 +244,15 @@ class SubProductsTab extends Component {
 
                     <div className="form-col-left col-12">
 
-                        {!this.state.showAddNew ?
+                        {(!this.state.showAddNew&&!this.state.showLinkNew) ?
                             <div className="col-12 d-flex justify-content-between">
                             <div>
                                 <button
                                     className={"btn-gray-border  mr-2"}
                                     onClick={()=> this.toggleAddNew()}
-                                >
-                                    <AddIcon />
-                                    Create New
-                                </button>
-
+                                ><AddIcon />Create New</button>
                                 <button
-                                    className={
-                                        "btn-gray-border click-item ms-2"
-                                    }
+                                    className={"btn-gray-border click-item ms-2"}
                                     onClick={()=> this.toggleLinkNew()}
                                 >
                                     <AddLinkIcon />
@@ -255,11 +266,8 @@ class SubProductsTab extends Component {
                                 <ArrowBackIcon
                                     className="click-item"
                                     onClick={()=> {this.setState({showAddNew:false,showLinkNew:false});}}
-
-                                /> <h4 className="blue-text text-heading ms-2 ">{this.state.showAddNew &&"Add Subproduct kind"}{this.state.showLinkNew &&"Link Subproduct kind"}</h4>
-                            </div>
-
-                        }
+                                /><h4 className="blue-text text-heading ms-2 ">{this.state.showAddNew &&"Add Subproduct kind"}{this.state.showLinkNew &&"Link Subproduct kind"}</h4>
+                            </div>}
 
                         {this.state.showAddNew &&
                             <ProductKindForm

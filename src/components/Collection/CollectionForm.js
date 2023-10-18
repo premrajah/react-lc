@@ -620,7 +620,7 @@ class CollectionForm extends Component {
 
         const name = fields["name"];
         const description = fields["description"];
-
+        this.setState({isSubmitButtonPressed: true})
 
         let conditionAll=[]
         let conditionAny=[]
@@ -675,11 +675,11 @@ class CollectionForm extends Component {
             )
             .then((res) => {
 
-                this.props.refreshData()
-                this.props.toggleRightBar()
+                this.setState({isSubmitButtonPressed: false})
 
                 this.props.showSnackbar({show:true,severity:"success",message:"Collection updated successfully. Thanks"})
-
+                this.props.refreshData()
+                this.props.hide()
 
             })
             .catch((error) => {
@@ -937,35 +937,19 @@ class CollectionForm extends Component {
         return (
             <ErrorBoundary skip>
 
-                <div className="wrapper">
+                <div className="wrapper mt-2">
 
-                    <div className="container  pt-4">
+                    {/*<div className="container  pt-4">*/}
 
-                        <div className={classes.root}>
-                            {/*<Stepper className={"mb-4 p-0"} style={{background:"transparent"}} activeStep={this.state.activeStep}>*/}
-                            {/*    {this.state.steps.map((label, index) => {*/}
-                            {/*        const stepProps = {};*/}
-                            {/*        const labelProps = {};*/}
-                            {/*        if (this.isStepOptional(index)) {*/}
-                            {/*            labelProps.optional = <Typography variant="caption">Optional</Typography>;*/}
-                            {/*        }*/}
-                            {/*        if (this.isStepSkipped(index)) {*/}
-                            {/*            stepProps.completed = false;*/}
-                            {/*        }*/}
-                            {/*        return (*/}
-                            {/*            <Step key={label} {...stepProps}>*/}
-                            {/*                <StepLabel {...labelProps}>{label}</StepLabel>*/}
-                            {/*            </Step>*/}
-                            {/*        );*/}
-                            {/*    })}*/}
-                            {/*</Stepper>*/}
-                            <div>
-                                <div>
+                    {/*    <div className={classes.root}>*/}
+                    {/*       */}
+                    {/*        <div>*/}
+                    {/*            <div>*/}
                                     <form onSubmit={this.state.item?this.handleUpdate:this.handleSubmit}>
 
                                             <div className="row no-gutters">
                                                 <div className="col-12 ">
-                                                    <h1>{this.state.item?this.state.item.name:""}</h1>
+                                                    {/*<div className="title-bold"> {this.state.item?this.state.item.name:""}</div>*/}
 
                                                     <TextFieldWrapper
                                                         initialValue={this.state.item?this.state.item.name:""}
@@ -1249,8 +1233,8 @@ class CollectionForm extends Component {
                                                 variant="contained"
                                                 color="primary"
                                                 onClick={(e)=> {this.handleNext(e)}}
-                                                loading={this.state.loading}
-                                                disabled={this.state.loading}
+                                                loading={this.state.isSubmitButtonPressed}
+                                                disabled={this.state.isSubmitButtonPressed}
 
                                                 title={"Submit"}
 
@@ -1260,11 +1244,11 @@ class CollectionForm extends Component {
                                     </div>
                                     </form>
 
-                                </div>
-                            </div>
-                        </div>
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
 
-                    </div>
+                    {/*</div>*/}
                 </div>
             </ErrorBoundary>
         );

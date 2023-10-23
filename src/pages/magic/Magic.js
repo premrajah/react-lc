@@ -5,14 +5,13 @@ import axios from "axios";
 import Layout from "../../components/Layout/Layout";
 import { baseUrl } from "../../Util/Constants";
 import * as actionCreator from "../../store/actions/actions";
+import { fetchErrorMessage } from "../../Util/GlobalFunctions";
 
 
 function Magic({ isLoggedIn, userDetail, userContext, loadUserDetail, setUserContext, showSnackbar }) {
 
     const { slug } = useParams();
     const history = useHistory();
-
-    const [errors, setErrors] = useState(null);
 
     useEffect(() => {
         const getMagic = async () => {
@@ -30,21 +29,23 @@ function Magic({ isLoggedIn, userDetail, userContext, loadUserDetail, setUserCon
                             let newURL = destination_path.replace(/^.*\/\/[^\/]+/, '');
 
                             setUserContext({ token, "user": user_context });
-                            showSnackbar({show: true, severity: "success",message: "Successfully logged In"});
+                            showSnackbar({ show: true, severity: "success", message: "Successfully logged In" });
                             history.push(newURL);
-
                         }
 
                     })
                     .catch(error => {
                         console.log("getMagic inside errors ", error);
-                        setErrors(error);
-                        showSnackbar({show: true, severity: "error",message: "Something went wrong, link not valid"});
+                        history.push("/");
+
+                        showSnackbar({ show: true, severity: "error", message: `Redirected to home: ${fetchErrorMessage(error)}` });
+
                     })
             } catch (error) {
                 console.error("getMagic outside catch error ", error)
-                setErrors(error);
-                showSnackbar({show: true, severity: "error",message: "Something went wrong, link not valid"});
+                history.push("/");
+
+                showSnackbar({ show: true, severity: "error", message: `Redirected to home: ${fetchErrorMessage(error)}` });
             }
         }
         getMagic();
@@ -53,7 +54,7 @@ function Magic({ isLoggedIn, userDetail, userContext, loadUserDetail, setUserCon
     return (
         <Layout>
             <div className="container">
-                <section className="mt-4">
+                {/* <section className="mt-4">
                     {errors && <div>
                         <div className="text-danger">{errors?.message ?? "Apologies, The link has expired. Please contact Admin"}</div>
                         <ul className="list-group">
@@ -65,7 +66,7 @@ function Magic({ isLoggedIn, userDetail, userContext, loadUserDetail, setUserCon
                             </li>
                         </ul>
                     </div>}
-                </section>
+                </section> */}
             </div>
         </Layout>
     )

@@ -314,7 +314,7 @@ class ComponentsNavbar extends React.Component {
 
                             {this.props.isLoggedIn && (
                                 <>
-                                    {this.props?.userContext?.perms?.includes("AdminWrite") && <NavItem>
+                                    {(this.props?.userContext?.perms?.includes("AdminWrite") && this.props?.userContext?.perms?.includes("LcAssumeOrgRole")) && <NavItem>
                                         <button className="btn btn-link text-dark btn-inbox">
                                             <Link to="#" onClick={() => this.handleOpenMagicLinkPopup()}>
                                                 <AutoFixHighIcon className="white-text" style={{ fontSize: 24 }} />

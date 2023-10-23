@@ -160,7 +160,7 @@ class App extends Component {
                         <Route exact path="/marketplace/:slug" component={ItemDetail} />
                         <Route exact path="/documents-portal" component={DocumentPortal} />
 
-                        <LoggedInRoute exact path="/notifications" component={NotificationPage} />
+                        {this.props?.userDetail?.perms.includes("MessageRead") && <LoggedInRoute exact path="/notifications" component={NotificationPage} />}
                         {this.props?.userDetail?.perms.includes("MessageRead") && <LoggedInRoute exact path="/messages" component={MessagePage} />}
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         {this.props?.userDetail?.perms.includes("SearchRead") && <LoggedInRoute exact path="/my-search" component={MySearch} />}
@@ -178,17 +178,17 @@ class App extends Component {
                         {this.props?.userDetail?.perms.includes("SiteRead") && <LoggedInRoute exact path="/sites" component={SitesNew} />}
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
-                        <LoggedInRoute exact path="/approved" component={ApprovedReleases} />
+                        {this.props?.userDetail?.perms.includes("ProductReleaseRead") && <LoggedInRoute exact path="/approved" component={ApprovedReleases} />}
                         <LoggedInRoute exact path="/rental-records" component={RentalReleaseRecords} />
-                        <LoggedInRoute exact path="/register-record" component={RegisterRecord} />
-                        <LoggedInRoute exact path="/service-agent-record" component={ServiceAgentRecord} />
+                        {this.props?.userDetail?.perms.includes("ProductRegistrationRead") && <LoggedInRoute exact path="/register-record" component={RegisterRecord} />}
+                        {this.props?.userDetail?.perms.includes("ServiceAgentChangeRead") && <LoggedInRoute exact path="/service-agent-record" component={ServiceAgentRecord} />}
                         {this.props?.userDetail?.perms.includes("IssueRead") && <LoggedInRoute exact path="/issues" component={Issues} />}
                         {this.props?.userDetail?.perms.includes("IssueRead") && <LoggedInRoute exact path="/issue/:issueKey" component={IssueDetail} />}
                         <LoggedInRoute exact path="/product-archive" component={ProductArchive} />
                         <LoggedInRoute exact path="/product-tracked" component={TrackedProducts} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         {this.props?.userDetail?.perms.includes("CycleRead") && <LoggedInRoute exact path="/my-cycles" component={MyCycles} />}
-                        <LoggedInRoute exact path="/my-diary" component={MyDiary} />
+                        {this.props?.userDetail?.perms.includes("EventRead") && <LoggedInRoute exact path="/my-diary" component={MyDiary} />}
                         {this.props?.userDetail?.perms.includes("CycleRead") && <LoggedInRoute exact path="/cycles-record" component={CyclesRecords} />}
                         {this.props?.userDetail?.perms.includes("SearchWrite") && <LoggedInRoute exact path="/create-search" component={CreateSearchHome} />}
                         {this.props?.userDetail?.perms.includes("ListingWrite") && <LoggedInRoute exact path="/create-listing" component={CreateListingHome} />}

@@ -332,7 +332,7 @@ class ComponentsNavbar extends React.Component {
                                         </button>
                                     </NavItem>}
 
-                                    <NavItem>
+                                    {this.props?.userContext?.perms?.includes("MessageRead") && <NavItem>
                                         <button className="btn btn-link text-dark btn-inbox">
                                             <Link to="/notifications" onClick={() => this.props.dispatchUnreadNotifications(false)}>
                                                 <Badge color={this.props.unreadNotifications ? "secondary" : "default"} variant="dot" >
@@ -340,7 +340,7 @@ class ComponentsNavbar extends React.Component {
                                                 </Badge>
                                             </Link>
                                         </button>
-                                    </NavItem>
+                                    </NavItem>}
                                 </>
                             )}
 
@@ -421,7 +421,7 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Products
                                         </Link>
-                                        <Link className={`dropdown-item`} to="/product-kinds">
+                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("ProductRead") ? '' : 'disabled-link'}`} to="/product-kinds">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Product Kinds
                                         </Link>
@@ -429,7 +429,7 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Collections
                                         </Link>
-                                        <Link className={"dropdown-item"} to="/my-diary">
+                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("EventRead") ? '' : 'disabled-link'}`}  to="/my-diary">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Calendar
                                         </Link>

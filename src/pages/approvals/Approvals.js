@@ -260,13 +260,13 @@ class Approvals extends Component {
 
                                             aria-label="lab API tabs example">
 
-                                            <Tab label="Product Release " value="1" />
-                                            <Tab label="Product Register" value="2" />
-                                            <Tab label="Change Service Agent" value="3" />
-                                            <Tab label="Site Release " value="4" />
+                                            <Tab label="Product Release " value="1" disabled={this.props?.userDetail?.perms.includes("ProductReleaseRead") ? false : true} />
+                                            <Tab label="Product Register" value="2" disabled={this.props?.userDetail?.perms.includes("ProductRegistrationRead") ? false : true} />
+                                            <Tab label="Change Service Agent" value="3" disabled={this.props?.userDetail?.perms.includes("ServiceAgentChangeRead") ? false : true} />
+                                            <Tab label="Site Release " value="4" disabled={this.props?.userDetail?.perms.includes("SiteReleaseRead") ? false : true}  />
                                             {/*<Tab label="Rental Release " value="5" />*/}
                                             {/*<Tab label="Rental Requests " value="6" />*/}
-                                            <Tab label="Event Release " value="7" />
+                                            <Tab label="Event Release " value="7" disabled={this.props?.userDetail?.perms.includes("EventReleaseRead") ? false : true}  />
                                         </TabList>
                                     </Box>
 
@@ -274,7 +274,7 @@ class Approvals extends Component {
                                         <div className={"row"} >
                                             <div className="col-12 mt-3 mb-3">
                                                 <div className="col d-flex justify-content-end">
-                                                    <Link to="/approved" className="btn btn-sm blue-btn"
+                                                    <Link to="/approved" className={`btn btn-sm blue-btn ${this.props?.userContext?.perms?.includes("ProductReleaseRead") ? '' : 'disabled-link'}`}
                                                         style={{ color: "#fff" }}>
                                                         Release Request Records
                                                     </Link>
@@ -321,7 +321,7 @@ class Approvals extends Component {
 
                                             <div className="col-12 mt-3 mb-3">
                                                 <div className="col d-flex justify-content-end">
-                                                    <Link to="/register-record" className="btn btn-sm blue-btn"
+                                                    <Link to="/register-record" className={`btn btn-sm blue-btn ${this.props?.userContext?.perms?.includes("ProductRegistrationRead") ? '' : 'disabled-link'}`}
                                                         style={{ color: "#fff" }}>
                                                         Register Request Records
                                                     </Link>
@@ -369,7 +369,7 @@ class Approvals extends Component {
 
                                             <div className="col-12 mt-3 mb-3">
                                                 <div className="col d-flex justify-content-end">
-                                                    <Link to="/service-agent-record" className="btn btn-sm blue-btn"
+                                                    <Link to="/service-agent-record" className={`btn btn-sm blue-btn ${this.props?.userContext?.perms?.includes("ServiceAgentChangeRead") ? '' : 'disabled-link'}`}
                                                         style={{ color: "#fff" }}>
                                                         Service Agent Request Records
                                                     </Link>
@@ -428,6 +428,7 @@ class Approvals extends Component {
                                                     <BlueSmallBtn
                                                         onClick={this.setSiteToggle}
                                                         title={!this.state.siteToggle ? "Site Release Records" : "Site Releases"}
+                                                        disabled={this.props?.userDetail?.perms.includes("SiteReleaseRead") ? false : true} 
                                                     />
                                                 </div>
                                             </div>
@@ -575,6 +576,7 @@ class Approvals extends Component {
                                                     <BlueSmallBtn
                                                         onClick={this.setEventToggle}
                                                         title={!this.state.eventToggle ? "Event Release Records" : "Event Releases"}
+                                                        disabled={this.props?.userDetail?.perms.includes("EventReleaseRead") ? false : true} 
                                                     />
                                                 </div>
                                             </div>

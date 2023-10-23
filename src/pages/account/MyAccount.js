@@ -93,7 +93,7 @@ function MyAccount(props) {
                                             aria-label="Vertical tabs example"
                                             sx={{ borderRight: 1, borderColor: "divider" }}>
                                             <Tab key={0} label="Personal Information" value={0} />
-                                            <Tab key={1} label="Company Information" value={1} />
+                                            <Tab key={1} label="Company Information" value={1} disabled={props?.userDetail?.perms.includes("OrgRead") ? false : true} />
                                             {/*<Tab key={2} label="Change Password" value={2} />*/}
                                             {/*<Tab key={3} label="Product Lines" value={3} />*/}
                                             {/*<Tab key={4} label="Statistics" value={4} />*/}
@@ -122,7 +122,7 @@ function MyAccount(props) {
                                             )}
 
 
-                                            <Tab key={12} label="Upload Documents" value={12} />
+                                            <Tab key={12} label="Upload Documents" value={12} disabled={props?.userDetail?.perms.includes("CompositionCarbonRead") ? false : true}  />
                                         </Tabs>
                                     </div>
                                     <div className="col-md-9  p-0 rad-8 bg-white">

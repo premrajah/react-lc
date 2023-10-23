@@ -164,14 +164,14 @@ class App extends Component {
                         {this.props?.userDetail?.perms.includes("MessageRead") && <LoggedInRoute exact path="/messages" component={MessagePage} />}
                         <LoggedInRoute exact path="/company" component={CompanyPage} />
                         {this.props?.userDetail?.perms.includes("SearchRead") && <LoggedInRoute exact path="/my-search" component={MySearch} />}
-                        <LoggedInRoute exact path="/search-records" component={SearchRecords} />
+                        {this.props?.userDetail?.perms.includes("SearchRead") && <LoggedInRoute exact path="/search-records" component={SearchRecords} />}
                         {this.props?.userDetail?.perms.includes("ListingRead") && <LoggedInRoute exact path="/my-listings" component={MyListings} />}
-                        <LoggedInRoute exact path="/my-listing-record" component={ListingRecord} />
+                        {this.props?.userDetail?.perms.includes("ListingRead") && <LoggedInRoute exact path="/my-listing-record" component={ListingRecord} />}
                         <LoggedInRoute exact path="/statistics" component={Statistics} />
                         <LoggedInRoute exact path="/my-deliveries" component={MyDeliveries} />
                         {/*<LoggedInRoute exact path="/my-products" component={Products} />*/}
                         {this.props?.userDetail?.perms.includes("ProductRead") && <LoggedInRoute exact path="/my-products" component={ProductsNew} />}
-                        <LoggedInRoute exact path="/product-kinds" component={ProductKinds} />
+                        {this.props?.userDetail?.perms.includes("ProductRead") && <LoggedInRoute exact path="/product-kinds" component={ProductKinds} />}
                         {this.props?.userDetail?.perms.includes("ProductRead") && <LoggedInRoute exact path="/my-products/:id" component={ProductsNew} />}
                         {this.props?.userDetail?.perms.includes("ProductRead") && <LoggedInRoute exact path="/my-products-condensed" component={ProductsCondensedView} />}
                         {/*<LoggedInRoute exact path="/sites" component={Sites} />*/}
@@ -179,12 +179,12 @@ class App extends Component {
                         <LoggedInRoute exact path="/products-service" component={ProductsService} />
                         <LoggedInRoute exact path="/approve" component={Approvals} />
                         {this.props?.userDetail?.perms.includes("ProductReleaseRead") && <LoggedInRoute exact path="/approved" component={ApprovedReleases} />}
-                        <LoggedInRoute exact path="/rental-records" component={RentalReleaseRecords} />
+                        {this.props?.userDetail?.perms.includes("RentalReleaseRead") && <LoggedInRoute exact path="/rental-records" component={RentalReleaseRecords} />}
                         {this.props?.userDetail?.perms.includes("ProductRegistrationRead") && <LoggedInRoute exact path="/register-record" component={RegisterRecord} />}
                         {this.props?.userDetail?.perms.includes("ServiceAgentChangeRead") && <LoggedInRoute exact path="/service-agent-record" component={ServiceAgentRecord} />}
                         {this.props?.userDetail?.perms.includes("IssueRead") && <LoggedInRoute exact path="/issues" component={Issues} />}
                         {this.props?.userDetail?.perms.includes("IssueRead") && <LoggedInRoute exact path="/issue/:issueKey" component={IssueDetail} />}
-                        <LoggedInRoute exact path="/product-archive" component={ProductArchive} />
+                        {this.props?.userDetail?.perms.includes("ProductRead") && <LoggedInRoute exact path="/product-archive" component={ProductArchive} />}
                         <LoggedInRoute exact path="/product-tracked" component={TrackedProducts} />
                         <LoggedInRoute exact path="/loops" component={Loops} />
                         {this.props?.userDetail?.perms.includes("CycleRead") && <LoggedInRoute exact path="/my-cycles" component={MyCycles} />}
@@ -206,7 +206,7 @@ class App extends Component {
                         <LoggedInRoute exact path="/help" component={Help} />
                         <LoggedInRoute exact path="/payment" component={PaymentMethod} />
                         <LoggedInRoute exact path="/edit-account" component={EditAccount} />
-                        <LoggedInRoute exact path="/company-info" component={CompanyInfo} />
+                        {this.props?.userDetail?.perms.includes("OrgRead") && <LoggedInRoute exact path="/company-info" component={CompanyInfo} />}
                         <LoggedInRoute exact path="/transfer-scaling" component={TransferScaling} />
                         {this.props?.userDetail?.perms.includes("SearchRead") && <LoggedInRoute exact path="/search/:slug" component={ViewSearchNew} />}
                         {this.props?.userDetail?.perms.includes("SearchRead") && <LoggedInRoute exact path="/search" component={Search} />}

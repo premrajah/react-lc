@@ -353,7 +353,7 @@ class ComponentsNavbar extends React.Component {
 
                                     <div
                                         onClick={this.handleClickMenu}
-                                        className={"wl-link-white click-item pt-2"}>
+                                        className={"wl-link-white click-item"}>
                                         <figure className="avatar avatar-60 ">
                                             <span className={"word-user"}>
                                                 {this.props.isLoggedIn ? (

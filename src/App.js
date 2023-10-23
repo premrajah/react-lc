@@ -215,17 +215,17 @@ class App extends Component {
                         <LoggedInRoute exact path="/filter" component={Filter} />
                         <LoggedInRoute exact path="/loop-converted/:slug" component={LoopDetail} />
                         {this.props?.userDetail?.perms.includes("ProductRead") && <LoggedInRoute exact path="/product/:slug" component={ProductView} />}
-                        <LoggedInRoute exact path="/product-kind/:slug" component={ProductKindDetail} />
+                        {this.props?.userDetail?.perms.includes("ProductRead") && <LoggedInRoute exact path="/product-kind/:slug" component={ProductKindDetail} />}
                         {this.props?.userDetail?.perms.includes("CollectionRead") && <LoggedInRoute exact path="/collection/:slug" component={CollectionDetail} />}
                         {this.props?.userDetail?.perms.includes("ProductRead") && <LoggedInRoute exact path="/product/preview/:slug" component={Product} />}
-                        <LoggedInRoute exact path="/sub-product-view/:slug" component={SubProductView} />
+                        {this.props?.userDetail?.perms.includes("ProductRead") && <LoggedInRoute exact path="/sub-product-view/:slug" component={SubProductView} />}
                         <LoggedInRoute exact path="/message-seller/:slug" component={MessageSeller} />
                         {this.props?.userDetail?.perms.includes("MatchRead") && <LoggedInRoute exact path="/matches/:slug" component={SearchMatches} />}
                         <LoggedInRoute exact path="/make-offer/:slug" component={SearchMatches} />
                         {this.props?.userDetail?.perms.includes("CycleRead") && <LoggedInRoute exact path="/cycle/:slug" component={ViewCycle} />}
                         {this.props?.userDetail?.perms.includes("MatchRead") && <LoggedInRoute exact path="/matched/:match" component={ItemDetailMatched} />}
                         {this.props?.userDetail?.perms.includes("MatchRead") && <LoggedInRoute exact path="/match/:search/:listing" component={ItemDetailMatch} />}
-                        <LoggedInRoute exact path="/testing" component={ProductTreeView} />
+                        {this.props?.userDetail?.perms.includes("ProductRead") && <LoggedInRoute exact path="/testing" component={ProductTreeView} />}
                         <LoggedInRoute exact path="/:slug" component={ItemDetail} />
                         {this.props?.userDetail?.perms.includes("SearchRead") && <LoggedInRoute exact path="/:slug/:search" component={ItemDetail} />}
                         <Route component={NotFound} />

@@ -197,7 +197,7 @@ function MagicLinksCreator({ pagePath, isLoggedIn, userDetail, userContext, load
                     <div className="col">
                         <TextFieldWrapper
                             classAdd={"textbox-left-padding"}
-                            startAdornment={<span className="startAdornment-left">{frontEndUrl.slice(0,-1)}</span>}
+                            startAdornment={<span className="startAdornment-left">Loopcycle</span>}
                             name="destination_path"
                             title="Enter destination path (URL)"
                             error={errors["destination_path"]}

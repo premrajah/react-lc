@@ -107,7 +107,7 @@ class InfoTabContent extends Component {
                                             {Object.keys(this.props.item.product?.computed_carbon || {}).map((item, i) =>
                                                 <React.Fragment key={i}>
                                                     {this.props.item.product.computed_carbon[item] ? <tr>
-                                                        <td className="text-blue text-capitlize">{item.replaceAll("_", " ").replaceAll("A12", "A1/A2")}</td>
+                                                        <td className="text-blue text-capitlize">{item.replaceAll("_", " ").replaceAll("A12", "A1, A2")}</td>
                                                         <td>{this.props.item.product.computed_carbon[item]} </td>
                                                     </tr> : ""}
                                                 </React.Fragment>

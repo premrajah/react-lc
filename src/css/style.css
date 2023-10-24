@@ -17,6 +17,12 @@
     --lc-bg: #f8f8f9;
 }
 
+.bg-dark-blue{
+    background: #16113a!important;
+}
+.bg-light-blue{
+    background: #272953!important;
+}
 .bg-lyt {
     background: var(--lc-bg);
 }
@@ -5079,4 +5085,23 @@ input[type=file]::file-selector-button:hover {
 }
 .textbox-left-padding>.MuiInputBase-root>input{
     padding-left: 175px;
+}
+
+/*blue graph */
+.blue-chart-box,.blue-chart-box p{
+    color: white!important;
+}
+.speedo-blue .needle{
+    color: white!important;
+    background: white!important;
+    z-index: 1111;
+}
+.speedo-blue .gauge-center{
+    background: #272953 !important!important;
+    box-shadow: none!important;
+    border: none!important;
+}
+.speedo-blue .slice-item {
+    background-color: green!important;
+    border: none!important;
 }

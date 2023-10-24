@@ -1,10 +1,10 @@
-export const Speedometer=()=>{
+export const    Speedometer=(props)=>{
 
     return(
 
         <>        <div className="text-center">
 
-            <div className="gauge-wrapper">
+            <div className={`gauge-wrapper ${props.blue?"speedo-blue":""} `}>
                 <div className="gauge four rischio3">
                     <div className="slice-colors">
                         <div className="st slice-item"></div>
@@ -14,9 +14,12 @@ export const Speedometer=()=>{
                     </div>
                     <div className="needle"></div>
                     <div className="gauge-center">
-                        <div className="label">RISK</div>
-                        <div className="number">HIGH</div>
+                        {/*<div className="label">324343</div>*/}
+                        {/*<div className="number">324343</div>*/}
                     </div>
+                </div>
+                <div className="text-center mt-2 mb-0 p-0 text-bold text-white">
+                    <h3>3,455</h3>
                 </div>
             </div>
 

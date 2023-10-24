@@ -44,35 +44,27 @@ import {Speedometer} from "../../FormsUI/Speedometer";
 // );
 
  const optionsLineChart = {
-    responsive: true,
-    maintainAspectRatio: false,
+    // responsive: false,
+    // maintainAspectRatio: false,
+    //
     legend: {
         position: 'bottom' ,
+
     },
-        height:"500px",
-    title: {
-        display: false,
-        text: 'Chart.js Line Chart',
-    },
+    // title: {
+    //     display: true,
+    //     text: 'Chart.js Line Chart',
+    // },
      scales: {
-         x: {
-             title: {
-                 display: true,
-                 text: 'Month'
-             }
-         },
-         y: {
-             title: {
-                 display: true,
-                 text: 'Value'
-             },
-             min: 0,
-             max: 50,
+         yAxes: [{
+             display: true,
              ticks: {
-                 // forces step size to be 50 units
-                 stepSize: 10
+                 suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                 // OR //
+                 beginAtZero: true,   // minimum value will be 0.
+                 stepSize:1000
              }
-         }
+         }]
      }
 };
 
@@ -102,6 +94,32 @@ export const dataLineChart = {
     ],
 };
 
+export const dataLineChartWhite = {
+    labels:labelsChart,
+    datasets: [
+        {
+            label: 'Site 1',
+            color:"white",
+            data: [1898,1233,123,688,134,567,6921],
+            borderColor: 'rgb(255, 99, 132)',
+            // backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+        {
+            label: 'Site 2',
+            color:"white",
+            data: [198,533,1523,3188,434,1767,15100],
+            borderColor: 'rgb(53, 162, 235)',
+            // backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        },
+        {
+            label: 'Site 3',
+            color:"white",
+            data: [298,1313,723,888,1314,167,1134],
+            borderColor: 'rgb(223, 62, 35)',
+            // backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        },
+    ],
+};
 
 
 export const data = {
@@ -180,7 +198,7 @@ const dataBar = {
     labels: ['Fridge', 'Freezer', 'Oven', 'Washer', 'Tableware', 'Fryer'],
     datasets: [{
         label: '',
-        data: [65, 59, 80, 81, 56, 55, 40],
+        data: [65, 59, 80, 81, 56, 55],
         backgroundColor: [
             'rgba(255, 99, 132, 0.8)',
             'rgba(255, 159, 64, 0.8)',
@@ -217,7 +235,7 @@ const dataBarBlue = {
     labels: ['Fridge', 'Freezer', 'Oven', 'Washer', 'Tableware', 'Fryer'],
     datasets: [{
         label: '',
-        data: [34, 45, 67, 81, 90, 100],
+        data: [34, 45, 57, 41, 20, 30],
         backgroundColor: [
             '#92bcfd',
             '#5cb1ff',
@@ -250,13 +268,89 @@ const dataBarBlue = {
         borderWidth: 1
     }]
 };
+const dataBarWhite = {
+    labels: ['Fridge', 'Freezer', 'Oven', 'Washer', 'Tableware', 'Fryer'],
+    color:"#ffffff",
+    colors: {
+        forceOverride: true
+    },
+    datasets: [{
+        label: '',
+        color:"#ffffff",
+        data: [34, 45, 57, 41, 20, 30],
+        backgroundColor: [
+            '#92bcfd',
+            '#92bcfd',
+            '#92bcfd',
+            '#92bcfd',
+            "#92bcfd",
+            '#92bcfd',
+            // 'rgba(201, 203, 207, 0.8)'
+        ],
+        // backgroundColor: [
+        //     '#27245c',
+        //     '#27245c',
+        //     '#27245c',
+        //     '#27245c',
+        //     '#27245c',
+        //     '#27245c',
+        //     '#27245c',
+        // ],
+        borderColor: [
+            // 'rgb(255, 99, 132)',
+            // 'rgb(255, 159, 64)',
+            // 'rgb(255, 205, 86)',
+            // 'rgb(75, 192, 192)',
+            // 'rgb(54, 162, 235)',
+            // 'rgb(153, 102, 255)',
+            // 'rgb(201, 203, 207)'
+        ],
+
+
+        borderWidth: 1
+    }]
+};
+
 
 export const optionsBar = {
     responsive: true,
     legend: {
-        display:false
+        display:false,
+
     },
+    scales: {
+        yAxes: [{
+            display: true,
+            ticks: {
+                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                // OR //
+                beginAtZero: true,   // minimum value will be 0.
+                stepSize:5
+            }
+        }]
+    }
 };
+export const optionsBarWhite = {
+    responsive: true,
+    // maintainAspectRatio:false,
+    legend: {
+        display:false,
+
+    },
+    scales: {
+        yAxes: [{
+            display: true,
+            ticks: {
+                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                // OR //
+                beginAtZero: true,   // minimum value will be 0.
+                stepSize:2
+            }
+        }]
+    }
+};
+
+
 
 export const optionsPie = {
     responsive: true,
@@ -305,11 +399,13 @@ const Dashboard = ({ isLoggedIn }) => {
     const [percentage,setPercentage]=useState(66)
 
     return (
-        <div className="container">
-            <div  className="d-flex pt-4 row   justify-content-center">
-                <h4>Dashboard</h4>
-            </div>
-            <div style={{alignItems: "stretch!important"}} className="d-flex r-parent  pt-4  ">
+        <div className="container justify-content-center">
+            {/*<div  className="d-flex pt-4 row   justify-content-center">*/}
+            {/*    <h4>Dashboard</h4>*/}
+            {/*</div>*/}
+            <div className="row  g-0  ">
+             <div className="col-12  ">
+            <div style={{alignItems: "stretch!important"}} className="d-flex  r-parent  pt-4  ">
                 <div style={{flex:1, }} className="rad-8  r-child p-2 bg-white shadow ">
                     <p className="title-bold  text-center w-100">Your registered assets</p>
                     <div className="p-4 justify-content-center">
@@ -419,7 +515,7 @@ const Dashboard = ({ isLoggedIn }) => {
                 <div style={{flex:1}} className="rad-8 p-2 pb-2   r-child bg-white shadow ">
                     <p className="title-bold   text-center w-100">Total Site Embodied Carbon</p>
                     <div className="p-2">
-                        <Bar  options={optionsLineChart} data={dataBarBlue} />
+                        <Bar  options={optionsBar} data={dataBarBlue} />
                     </div>
                 </div>
                 <div style={{flex:1}} className="rad-8  me-2 ms-2 r-child p-2 bg-white shadow ">
@@ -444,7 +540,149 @@ const Dashboard = ({ isLoggedIn }) => {
                     </div>
                 </div>
             </div>
+            </div>
+            </div>
 
+            <div className="row  g-0 mt-4 mb-4 ">
+                <div className="col-12 blue-chart-box bg-dark-blue ps-4 pe-4  ">
+                    <div style={{alignItems: "stretch!important"}} className="d-flex  r-parent  pt-4  ">
+                        <div style={{flex:1, }} className="rad-8  r-child p-2 bg-light-blue shadow ">
+                            <p className="title-bold text-white text-center w-100">Your registered assets</p>
+                            <div className="p-4 justify-content-center">
+                                {/*<CircularProgressbarWithChildren    styles={stylesCircle}  value={percentage} >*/}
+                                {/*    <div className="p-0 m-0 text-center" style={{  margin: 0 }}>*/}
+                                {/*        <span style={{ fontSize: 24 }} className="p-0 m-0 title-bold text-blue">660</span><br/>*/}
+                                {/*        <span className="p-0 m-0 text-12">of 1000 assets</span>*/}
+                                {/*    </div>*/}
+                                {/*</CircularProgressbarWithChildren>*/}
+
+
+                                {/*<CircularProgressbar*/}
+                                {/*    styles={stylesCircle}*/}
+                                {/*    value={66}*/}
+                                {/*    text={`${66}%`}*/}
+                                {/*    circleRatio={0.50}*/}
+                                {/*    styles={buildStyles({*/}
+                                {/*        rotation: 3/4 ,*/}
+                                {/*        strokeLinecap: "butt",*/}
+                                {/*        trailColor: "#eee"*/}
+                                {/*    })}*/}
+                                {/*/>*/}
+
+                                <Speedometer blue/>
+
+                            </div>
+                        </div>
+                        <div style={{flex:1,}} className="rad-8 me-2 ms-2 r-child p-2 d-flex  justify-content-center align-items-center   bg-light-blue shadow ">
+                            {/*<p className="title-bold  text-center w-100">Assets type</p>*/}
+                            <div className="p-2 ">
+                                {/*<div className={"text-center d-flex flex-column"}>*/}
+                                <Typography className="text-white" sx={{fontWeight:"700",textAlign:"center"}} variant="h2" gutterBottom>
+                                    11,121
+                                </Typography>
+                                <Typography sx={{textAlign:"center"}} className="m-0 p-0 text-white" variant="h6" gutterBottom>
+                                    Total Manager Carbon (tC0<sub className="subs">2</sub>e)
+                                </Typography>
+                                {/*</div>*/}
+                            </div>
+                        </div>
+                        <div style={{flex:1,}}  className="rad-8 r-child  p-2 bg-light-blue shadow ">
+
+                            <p className="title-bold mb-0 pb-0 text-white text-center w-100">Product Model Embodied Carbon</p>
+                            <div className="p-0 ">
+                                <TableContainer >
+                                    <Table size="small" aria-label="a dense table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell><span  className="text-white text-bold">Product</span></TableCell>
+                                                <TableCell align="right"><span  className="text-white text-bold">Embodied Carbon</span></TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            <TableRow
+
+                                                // key={row.name}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell  className="text-white " component="th" scope="row">
+                                                    Oven
+                                                </TableCell>
+                                                <TableCell  className="text-white " align="right">12.34</TableCell>
+                                            </TableRow>
+                                            <TableRow
+                                                // key={row.name}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell   className="text-white " component="th" scope="row">
+                                                    Fridge
+                                                </TableCell>
+                                                <TableCell  className="text-white " align="right">12.34</TableCell>
+                                            </TableRow>
+                                            <TableRow
+                                                // key={row.name}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell  className="text-white " component="th" scope="row">
+                                                    Freezer
+                                                </TableCell>
+                                                <TableCell className="text-white " align="right">12.34</TableCell>
+                                            </TableRow>
+                                            <TableRow
+                                                // key={row.name}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell  className="text-white " component="th" scope="row">
+                                                    Fryer
+                                                </TableCell>
+                                                <TableCell  className="text-white " align="right">12.34</TableCell>
+                                            </TableRow>
+                                            <TableRow
+                                                // key={row.name}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell  className="text-white " component="th" scope="row">
+                                                    Tableware
+                                                </TableCell>
+                                                <TableCell  className="text-white " align="right">12.34</TableCell>
+                                            </TableRow>
+
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </div>
+                        </div>
+                    </div>
+                    <div  style={{alignItems: "stretch!important"}} className="d-flex r-parent mb-4 pt-2   ">
+                        <div style={{flex:1}} className="rad-8 p-2 pb-2   r-child bg-light-blue shadow ">
+                            <p className="title-bold   text-center w-100">Total Site Embodied Carbon</p>
+                            <div className="p-0">
+                                <Bar  options={optionsBarWhite} data={dataBarWhite} />
+                            </div>
+                        </div>
+                        <div style={{flex:1}} className="rad-8  me-2 ms-2 r-child p-2 bg-light-blue shadow ">
+                            <p className="title-bold  text-center w-100 mb-0 pb-0">Your registered assets</p>
+                            <div className="pe-4 ps-4 pb-4">
+                                    <LinearProgressBarLabel white={true}  label={"Site 1"} value={90}/>
+                                <LinearProgressBarLabel white={true} label={"Site 2"} value={80}/>
+                                <LinearProgressBarLabel white={true} label={"Site 3"} value={70}/>
+                                <LinearProgressBarLabel white={true} label={"Site 4"} value={60}/>
+                                <LinearProgressBarLabel white={true} label={"Site 5"} value={50}/>
+                                <LinearProgressBarLabel white={true} label={"Site 6"} value={40}/>
+                                <LinearProgressBarLabel white={true} label={"Site 7"} value={30}/>
+                                <LinearProgressBarLabel white={true} label={"Site 8"} value={20}/>
+                                <LinearProgressBarLabel white={true} label={"Site 9"} value={10}/>
+                                <LinearProgressBarLabel white={true} label={"Site 10"} value={5}/>
+                            </div>
+                        </div>
+                        <div style={{flex:1}}  className="rad-8  r-child p-2 bg-light-blue shadow ">
+                            <p className="title-bold text-white text-center w-100">Carbon Footprint completed</p>
+                            <div className=" ">
+                                <Line options={optionsLineChart} data={dataLineChartWhite} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     )

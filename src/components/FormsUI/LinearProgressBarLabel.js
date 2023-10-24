@@ -11,7 +11,7 @@ function LinearProgressWithLabel(props) {
             </Box>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: '100%', mr: 1 }}>
-                <LinearProgress variant="determinate" {...props} />
+                <LinearProgress  color={props.white?"secondary":"primary"} variant="determinate" {...props} />
             </Box>
             <Box sx={{ minWidth: 35 }}>
                 <Typography variant="body2" color="text.secondary">{`${Math.round(
@@ -23,7 +23,7 @@ function LinearProgressWithLabel(props) {
     );
 }
 
-export default function LinearProgressBarLabel({value,label}) {
+export default function LinearProgressBarLabel({value,label,white}) {
     // const [progress, setProgress] = React.useState(10);
     //
     // React.useEffect(() => {
@@ -37,7 +37,7 @@ export default function LinearProgressBarLabel({value,label}) {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <LinearProgressWithLabel label={label} value={value} />
+            <LinearProgressWithLabel label={label} white={white}  value={value} />
         </Box>
     );
 }

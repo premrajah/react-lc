@@ -12,7 +12,7 @@ class InfoTabContent extends Component {
         const flatArray = valuesToArray.flat();
 
         let sum = flatArray.reduce((sumSoFar, nextValue) => {
-            if(typeof nextValue === "number" && isFinite(nextValue)) {
+            if (typeof nextValue === "number" && isFinite(nextValue)) {
                 return sumSoFar + nextValue;
             }
 
@@ -104,23 +104,23 @@ class InfoTabContent extends Component {
 
                                     <table className="table table-striped text-12">
                                         <tbody>
-                                        {Object.keys(this.props.item.product?.computed_carbon|| {}).map((item, i) =>
-                                            <React.Fragment key={i}>
-                                                {this.props.item.product.computed_carbon[item] ? <tr>
-                                                    <td className="text-blue text-capitlize">{item.replaceAll("_", " ")}</td>
-                                                    <td>{this.props.item.product.computed_carbon[item]} </td>
+                                            {Object.keys(this.props.item.product?.computed_carbon || {}).map((item, i) =>
+                                                <React.Fragment key={i}>
+                                                    {this.props.item.product.computed_carbon[item] ? <tr>
+                                                        <td className="text-blue text-capitlize">{item.replaceAll("_", " ")}</td>
+                                                        <td>{this.props.item.product.computed_carbon[item]} </td>
 
-                                                </tr> : ""}
+                                                    </tr> : ""}
 
-                                            </React.Fragment>
-                                        )}
+                                                </React.Fragment>
+                                            )}
 
-                                        {Object.keys(this.props.item.product.computed_carbon|| {}).length > 0 &&
-                                            <tr>
-                                                <td className={"text-label"}>Total</td>
-                                                <td>{this.calculateTotalCarbon(this.props.item.product.computed_carbon)}</td>
+                                            {Object.keys(this.props.item.product.computed_carbon || {}).length > 0 &&
+                                                <tr>
+                                                    <td className={"text-label"}>Total</td>
+                                                    <td>{this.calculateTotalCarbon(this.props.item.product.computed_carbon)}</td>
 
-                                            </tr>}
+                                                </tr>}
                                         </tbody>
                                     </table>
                                 </div>

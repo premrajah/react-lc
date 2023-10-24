@@ -54,26 +54,17 @@ import {Speedometer} from "../../FormsUI/Speedometer";
         display: false,
         text: 'Chart.js Line Chart',
     },
-     scales: {
-         x: {
-             title: {
-                 display: true,
-                 text: 'Month'
-             }
-         },
-         y: {
-             title: {
-                 display: true,
-                 text: 'Value'
-             },
-             min: 0,
-             max: 50,
-             ticks: {
-                 // forces step size to be 50 units
-                 stepSize: 10
-             }
-         }
-     }
+    scales: {
+        yAxes: [{
+            display: true,
+            ticks: {
+                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                // OR //
+                beginAtZero: true,  // minimum value will be 0.
+                stepSize: 15
+            }
+        }]
+    }
 };
 
 const labelsChart = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];

@@ -15,10 +15,12 @@
     --lc-bg-gray: #eaeaef;
     --lc-light-gray: #939393;
     --lc-bg: #f8f8f9;
+    --rotate: #f8f8f9;
 }
 
 .bg-dark-blue{
-    background: #16113a!important;
+    /*background: #16113a!important;*/
+    background: #1C1951 ;
 }
 .bg-light-blue{
     background: #272953!important;
@@ -5097,11 +5099,27 @@ input[type=file]::file-selector-button:hover {
     z-index: 1111;
 }
 .speedo-blue .gauge-center{
-    background: #272953 !important!important;
+    background: #272953!important;
     box-shadow: none!important;
     border: none!important;
 }
 .speedo-blue .slice-item {
     background-color: green!important;
     border: none!important;
+}
+
+.speed-values{
+    position: absolute;
+    width: 200px;
+    bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+
+
+}
+.max-speedo,.min-speedo{
+    width: 50px;
+    text-align: center;
+    font-size: 12px;
+
 }

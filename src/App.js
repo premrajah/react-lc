@@ -124,6 +124,12 @@ const theme = createTheme({
             // dark: will be calculated from palette.secondary.main,
             // contrastText: '#ffcc00',
         },
+        white: {
+            // light: '#0066ff',
+            main: '#ffffff',
+            // dark: will be calculated from palette.secondary.main,
+            // contrastText: '#ffcc00',
+        },
 
 
     },

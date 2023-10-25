@@ -18,9 +18,12 @@ import {
     buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import {Typography} from "@mui/material";
+import {Button, ButtonGroup, Typography} from "@mui/material";
 import LinearProgressBarLabel from "../../FormsUI/LinearProgressBarLabel";
 import {Speedometer} from "../../FormsUI/Speedometer";
+import BlueButton from "../../FormsUI/Buttons/BlueButton";
+import BlueBorderLink from "../../FormsUI/Buttons/BlueBorderLink";
+import BlueSmallBtn from "../../FormsUI/Buttons/BlueSmallBtn";
 // import {
 //     Chart as ChartJS,
 //     CategoryScale,
@@ -44,12 +47,10 @@ import {Speedometer} from "../../FormsUI/Speedometer";
 // );
 
  const optionsLineChart = {
-    // responsive: false,
+    responsive: true,
     // maintainAspectRatio: false,
-    //
     legend: {
         position: 'bottom' ,
-
     },
     // title: {
     //     display: true,
@@ -59,14 +60,65 @@ import {Speedometer} from "../../FormsUI/Speedometer";
          yAxes: [{
              display: true,
              ticks: {
-                 suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                 // suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
                  // OR //
                  beginAtZero: true,   // minimum value will be 0.
-                 stepSize:1000
+                 stepSize:1000,
+                 // fontColor: 'green',
+
+             },
+             gridLines: {
+                 display: true
+             }
+         }],
+         xAxes: [{
+             ticks: {
+                 // fontColor: 'green',
+             },
+             gridLines: {
+                 display: true
              }
          }]
      }
 };
+const optionsLineChartWhite = {
+    responsive: true,
+    maintainAspectRatio: true,
+    legend: {
+        position: 'bottom' ,
+    },
+    // title: {
+    //     display: true,
+    //     text: 'Chart.js Line Chart',
+    // },
+    scales: {
+        yAxes: [{
+            display: true,
+            ticks: {
+                // suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                // OR //
+                beginAtZero: true,   // minimum value will be 0.
+                stepSize:5000,
+                fontColor: 'white',
+
+            },
+            gridLines: {
+                display: true
+            },
+
+        }],
+        xAxes: [{
+            ticks: {
+                fontColor: 'white',
+            },
+            gridLines: {
+                display: true
+            },
+
+        }]
+    }
+};
+
 
 const labelsChart = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
@@ -75,19 +127,19 @@ export const dataLineChart = {
     datasets: [
         {
             label: 'Site 1',
-            data: [1898,1233,123,688,134,567,6921],
+            data: [6898,3233,123,688,134,567,6921],
             borderColor: 'rgb(255, 99, 132)',
             // backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
         {
             label: 'Site 2',
-            data: [198,533,1523,3188,434,1767,15100],
+            data: [1198,5533,1523,7188,3434,9767,15100],
             borderColor: 'rgb(53, 162, 235)',
             // backgroundColor: 'rgba(53, 162, 235, 0.5)',
         },
         {
             label: 'Site 3',
-            data: [298,1313,723,888,1314,167,1134],
+            data: [9298,3313,6723,2888,11314,19167,15134],
             borderColor: 'rgb(223, 62, 35)',
             // backgroundColor: 'rgba(53, 162, 235, 0.5)',
         },
@@ -96,25 +148,26 @@ export const dataLineChart = {
 
 export const dataLineChartWhite = {
     labels:labelsChart,
+
     datasets: [
         {
             label: 'Site 1',
             color:"white",
-            data: [1898,1233,123,688,134,567,6921],
+            data: [6898,3233,123,688,134,567,6921],
             borderColor: 'rgb(255, 99, 132)',
             // backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
         {
             label: 'Site 2',
             color:"white",
-            data: [198,533,1523,3188,434,1767,15100],
+            data: [1198,5533,1523,7188,3434,9767,15100],
             borderColor: 'rgb(53, 162, 235)',
             // backgroundColor: 'rgba(53, 162, 235, 0.5)',
         },
         {
             label: 'Site 3',
             color:"white",
-            data: [298,1313,723,888,1314,167,1134],
+            data: [9298,3313,6723,2888,11314,19167,15134],
             borderColor: 'rgb(223, 62, 35)',
             // backgroundColor: 'rgba(53, 162, 235, 0.5)',
         },
@@ -342,10 +395,26 @@ export const optionsBarWhite = {
             display: true,
             ticks: {
                 suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                beginAtZero: true,   // minimum value will be 0.
+                stepSize:2,
+                fontColor: 'white',
+
+            },
+            // barThickness: 3,  // number (pixels) or 'flex'
+            // maxBarThickness: 4 // number (pixels)
+        }],
+        xAxes: [{
+            display: true,
+            ticks: {
+                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
                 // OR //
                 beginAtZero: true,   // minimum value will be 0.
-                stepSize:2
-            }
+                fontColor: 'white',
+                // barThickness: 3,  // number (pixels) or 'flex'
+                // maxBarThickness: 8 // number (pixels)
+            },
+            barThickness: 12,  // number (pixels) or 'flex'
+            // maxBarThickness: 8 // number (pixels)
         }]
     }
 };
@@ -403,177 +472,24 @@ const Dashboard = ({ isLoggedIn }) => {
             {/*<div  className="d-flex pt-4 row   justify-content-center">*/}
             {/*    <h4>Dashboard</h4>*/}
             {/*</div>*/}
-            <div className="row  g-0  ">
-             <div className="col-12  ">
-            <div style={{alignItems: "stretch!important"}} className="d-flex  r-parent  pt-4  ">
-                <div style={{flex:1, }} className="rad-8  r-child p-2 bg-white shadow ">
-                    <p className="title-bold  text-center w-100">Your registered assets</p>
-                    <div className="p-4 justify-content-center">
-                        {/*<CircularProgressbarWithChildren    styles={stylesCircle}  value={percentage} >*/}
-                        {/*    <div className="p-0 m-0 text-center" style={{  margin: 0 }}>*/}
-                        {/*        <span style={{ fontSize: 24 }} className="p-0 m-0 title-bold text-blue">660</span><br/>*/}
-                        {/*        <span className="p-0 m-0 text-12">of 1000 assets</span>*/}
-                        {/*    </div>*/}
-                        {/*</CircularProgressbarWithChildren>*/}
 
-
-                                {/*<CircularProgressbar*/}
-                                {/*    styles={stylesCircle}*/}
-                                {/*    value={66}*/}
-                                {/*    text={`${66}%`}*/}
-                                {/*    circleRatio={0.50}*/}
-                                {/*    styles={buildStyles({*/}
-                                {/*        rotation: 3/4 ,*/}
-                                {/*        strokeLinecap: "butt",*/}
-                                {/*        trailColor: "#eee"*/}
-                                {/*    })}*/}
-                                {/*/>*/}
-
-                        <Speedometer/>
-
-                    </div>
-                </div>
-                <div style={{flex:1,}} className="rad-8 me-2 ms-2 r-child p-2 d-flex  justify-content-center align-items-center   bg-white shadow ">
-                    {/*<p className="title-bold  text-center w-100">Assets type</p>*/}
-                    <div className="p-2 ">
-                        {/*<div className={"text-center d-flex flex-column"}>*/}
-                        <Typography sx={{fontWeight:"700",textAlign:"center"}} variant="h2" gutterBottom>
-                            11,121
-                        </Typography>
-                        <Typography sx={{textAlign:"center"}} className="m-0 p-0" variant="h6" gutterBottom>
-                            Total Manager Carbon (tC0<sub className="subs">2</sub>e)
-                        </Typography>
-                    {/*</div>*/}
-                    </div>
-                </div>
-                <div style={{flex:1,}}  className="rad-8 r-child  p-2 bg-white shadow ">
-
-                    <p className="title-bold mb-0 pb-0  text-center w-100">Product Model Embodied Carbon</p>
-                    <div className="p-0 ">
-                        <TableContainer >
-                            <Table size="small" aria-label="a dense table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell><span  className="text-bold">Product</span></TableCell>
-                                        <TableCell align="right"><span  className="text-bold">Embodied Carbon</span></TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    <TableRow
-                                        // key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                           Oven
-                                        </TableCell>
-                                        <TableCell align="right">12.34</TableCell>
-                                    </TableRow>
-                                    <TableRow
-                                        // key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            Fridge
-                                        </TableCell>
-                                        <TableCell align="right">12.34</TableCell>
-                                    </TableRow>
-                                    <TableRow
-                                        // key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            Freezer
-                                        </TableCell>
-                                        <TableCell align="right">12.34</TableCell>
-                                    </TableRow>
-                                    <TableRow
-                                        // key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            Fryer
-                                        </TableCell>
-                                        <TableCell align="right">12.34</TableCell>
-                                    </TableRow>
-                                    <TableRow
-                                        // key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            Tableware
-                                        </TableCell>
-                                        <TableCell align="right">12.34</TableCell>
-                                    </TableRow>
-
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </div>
-                </div>
-            </div>
-            <div  style={{alignItems: "stretch!important"}} className="d-flex r-parent mb-4 pt-2   ">
-                <div style={{flex:1}} className="rad-8 p-2 pb-2   r-child bg-white shadow ">
-                    <p className="title-bold   text-center w-100">Total Site Embodied Carbon</p>
-                    <div className="p-2">
-                        <Bar  options={optionsBar} data={dataBarBlue} />
-                    </div>
-                </div>
-                <div style={{flex:1}} className="rad-8  me-2 ms-2 r-child p-2 bg-white shadow ">
-                    <p className="title-bold  text-center w-100 mb-0 pb-0">Your registered assets</p>
-                    <div className="pe-4 ps-4 pb-4">
-                        <LinearProgressBarLabel label={"Site 1"} value={90}/>
-                        <LinearProgressBarLabel label={"Site 2"} value={80}/>
-                        <LinearProgressBarLabel label={"Site 3"} value={70}/>
-                        <LinearProgressBarLabel label={"Site 4"} value={60}/>
-                        <LinearProgressBarLabel label={"Site 5"} value={50}/>
-                        <LinearProgressBarLabel label={"Site 6"} value={40}/>
-                        <LinearProgressBarLabel label={"Site 7"} value={30}/>
-                        <LinearProgressBarLabel label={"Site 8"} value={20}/>
-                        <LinearProgressBarLabel label={"Site 9"} value={10}/>
-                        <LinearProgressBarLabel label={"Site 10"} value={5}/>
-                    </div>
-                </div>
-                <div style={{flex:1}}  className="rad-8  r-child p-2 bg-white shadow ">
-                    <p className="title-bold  text-center w-100">Carbon Footprint completed</p>
-                    <div className=" ">
-                        <Line options={optionsLineChart} data={dataLineChart} />
-                    </div>
-                </div>
-            </div>
-            </div>
-            </div>
 
             <div className="row  g-0 mt-4 mb-4 ">
-                <div className="col-12 blue-chart-box bg-dark-blue ps-4 pe-4  ">
-                    <div style={{alignItems: "stretch!important"}} className="d-flex  r-parent  pt-4  ">
-                        <div style={{flex:1, }} className="rad-8  r-child p-2 bg-light-blue shadow ">
+                <div className="col-12 rad-8 blue-chart-box bg-dark-blue ps-4 pe-4  ">
+                    <div style={{alignItems: "stretch!important",flexWrap:"wrap"}} className="d-flex  r-parent  pt-4  ">
+                        <div style={{flex:1, }} className="rad-8 mb-2   r-child p-2 bg-light-blue shadow ">
                             <p className="title-bold text-white text-center w-100">Your registered assets</p>
-                            <div className="p-4 justify-content-center">
-                                {/*<CircularProgressbarWithChildren    styles={stylesCircle}  value={percentage} >*/}
-                                {/*    <div className="p-0 m-0 text-center" style={{  margin: 0 }}>*/}
-                                {/*        <span style={{ fontSize: 24 }} className="p-0 m-0 title-bold text-blue">660</span><br/>*/}
-                                {/*        <span className="p-0 m-0 text-12">of 1000 assets</span>*/}
-                                {/*    </div>*/}
-                                {/*</CircularProgressbarWithChildren>*/}
-
-
-                                {/*<CircularProgressbar*/}
-                                {/*    styles={stylesCircle}*/}
-                                {/*    value={66}*/}
-                                {/*    text={`${66}%`}*/}
-                                {/*    circleRatio={0.50}*/}
-                                {/*    styles={buildStyles({*/}
-                                {/*        rotation: 3/4 ,*/}
-                                {/*        strokeLinecap: "butt",*/}
-                                {/*        trailColor: "#eee"*/}
-                                {/*    })}*/}
-                                {/*/>*/}
+                            <div className="p-0 justify-content-center">
 
                                 <Speedometer blue/>
 
                             </div>
+                            <div className={"w-100 d-flex justify-content-between"}  aria-label="outlined button group">
+                               <Button size={"small"} className="text-capitlize" color={"white"} variant={"outlined"}>Register Asset</Button>
+                                <Button size={"small"} className="text-capitlize" color={"white"} variant={"outlined"}>Increase Subscription Limit</Button>
+                            </div>
                         </div>
-                        <div style={{flex:1,}} className="rad-8 me-2 ms-2 r-child p-2 d-flex  justify-content-center align-items-center   bg-light-blue shadow ">
+                        <div style={{flex:1,}} className="rad-8 me-2 mb-2 ms-2 r-child p-2 d-flex  justify-content-center align-items-center   bg-light-blue shadow ">
                             {/*<p className="title-bold  text-center w-100">Assets type</p>*/}
                             <div className="p-2 ">
                                 {/*<div className={"text-center d-flex flex-column"}>*/}
@@ -581,88 +497,100 @@ const Dashboard = ({ isLoggedIn }) => {
                                     11,121
                                 </Typography>
                                 <Typography sx={{textAlign:"center"}} className="m-0 p-0 text-white" variant="h6" gutterBottom>
-                                    Total Manager Carbon (tC0<sub className="subs">2</sub>e)
+                                    Total Managed Carbon (KgC0<sub className="subs">2</sub>e)
                                 </Typography>
                                 {/*</div>*/}
                             </div>
                         </div>
-                        <div style={{flex:1,}}  className="rad-8 r-child  p-2 bg-light-blue shadow ">
-
-                            <p className="title-bold mb-0 pb-0 text-white text-center w-100">Product Model Embodied Carbon</p>
-                            <div className="p-0 ">
-                                <TableContainer >
-                                    <Table size="small" aria-label="a dense table">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell><span  className="text-white text-bold">Product</span></TableCell>
-                                                <TableCell align="right"><span  className="text-white text-bold">Embodied Carbon</span></TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            <TableRow
-
-                                                // key={row.name}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                            >
-                                                <TableCell  className="text-white " component="th" scope="row">
-                                                    Oven
-                                                </TableCell>
-                                                <TableCell  className="text-white " align="right">12.34</TableCell>
-                                            </TableRow>
-                                            <TableRow
-                                                // key={row.name}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                            >
-                                                <TableCell   className="text-white " component="th" scope="row">
-                                                    Fridge
-                                                </TableCell>
-                                                <TableCell  className="text-white " align="right">12.34</TableCell>
-                                            </TableRow>
-                                            <TableRow
-                                                // key={row.name}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                            >
-                                                <TableCell  className="text-white " component="th" scope="row">
-                                                    Freezer
-                                                </TableCell>
-                                                <TableCell className="text-white " align="right">12.34</TableCell>
-                                            </TableRow>
-                                            <TableRow
-                                                // key={row.name}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                            >
-                                                <TableCell  className="text-white " component="th" scope="row">
-                                                    Fryer
-                                                </TableCell>
-                                                <TableCell  className="text-white " align="right">12.34</TableCell>
-                                            </TableRow>
-                                            <TableRow
-                                                // key={row.name}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                            >
-                                                <TableCell  className="text-white " component="th" scope="row">
-                                                    Tableware
-                                                </TableCell>
-                                                <TableCell  className="text-white " align="right">12.34</TableCell>
-                                            </TableRow>
-
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
+                        <div style={{flex:1,}}  className="rad-8 mb-2 r-child  p-2 bg-light-blue shadow ">
+                            <p className="title-bold   text-center w-100">Carbon Footprint</p>
+                            <div className="pe-4 ps-4 pb-4">
+                                <LinearProgressBarLabel white={true} label={"Available"} value={65}/>
+                                <LinearProgressBarLabel white={true} label={"Unavailable"} value={35}/>
                             </div>
+
                         </div>
                     </div>
-                    <div  style={{alignItems: "stretch!important"}} className="d-flex r-parent mb-4 pt-2   ">
-                        <div style={{flex:1}} className="rad-8 p-2 pb-2   r-child bg-light-blue shadow ">
-                            <p className="title-bold   text-center w-100">Total Site Embodied Carbon</p>
-                            <div className="p-0">
-                                <Bar  options={optionsBarWhite} data={dataBarWhite} />
+                    <div  style={{alignItems: "stretch!important",flexWrap:"wrap"}} className="d-flex flex-sm-wrap r-parent mb-2    ">
+                        <div style={{flex:1}} className="rad-8 mb-2 m-0 d-flex flex-column w-100  r-child   ">
+                            <div style={{flex:1}}  className="rad-8   w-100 me-0 ms-0 mt-0 mb-2  r-child bg-light-blue shadow ">
+                                <p className="title-bold mb-0  text-center mt-2">Total Site Embodied Carbon</p>
+                                <div className="pb-4 pe-1 ps-1 h-100 d-flex align-items-center justify-content-center">
+                                    <Bar  options={optionsBarWhite} data={dataBarWhite} />
+                                </div>
+                            </div>
+                            <div style={{flex:1}} className="rad-8 w-100 p-2    r-child bg-light-blue shadow ">
+
+                                <p className="title-bold mb-0 pb-0 text-white text-center mt-2 ">Product Model Embodied Carbon</p>
+                                <div className="p-0 h-100  ">
+                                    <TableContainer >
+                                        <Table className="dashboard-embodied-table"  size="small" aria-label="a dense table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell><span  className="text-white text-bold">Product</span></TableCell>
+                                                    <TableCell align="right"><span  className="text-white text-bold">Embodied Carbon (KgC0<sub className="subs">2</sub>e)</span></TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                <TableRow
+
+                                                    // key={row.name}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell  className="text-white text-14" component="th" scope="row">
+                                                        Oven
+                                                    </TableCell>
+                                                    <TableCell  className="text-white  text-14" align="right">12.34</TableCell>
+                                                </TableRow>
+                                                <TableRow
+                                                    // key={row.name}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell   className="text-white " component="th" scope="row">
+                                                        Fridge
+                                                    </TableCell>
+                                                    <TableCell  className="text-white " align="right">12.34</TableCell>
+                                                </TableRow>
+                                                <TableRow
+                                                    // key={row.name}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell  className="text-white " component="th" scope="row">
+                                                        Freezer
+                                                    </TableCell>
+                                                    <TableCell className="text-white " align="right">12.34</TableCell>
+                                                </TableRow>
+                                                <TableRow
+                                                    // key={row.name}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell  className="text-white " component="th" scope="row">
+                                                        Fryer
+                                                    </TableCell>
+                                                    <TableCell  className="text-white " align="right">12.34</TableCell>
+                                                </TableRow>
+                                                <TableRow
+                                                    // key={row.name}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell  className="text-white " component="th" scope="row">
+                                                        Tableware
+                                                    </TableCell>
+                                                    <TableCell  className="text-white " align="right">12.34</TableCell>
+                                                </TableRow>
+
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </div>
+
                             </div>
                         </div>
-                        <div style={{flex:1}} className="rad-8  me-2 ms-2 r-child p-2 bg-light-blue shadow ">
-                            <p className="title-bold  text-center w-100 mb-0 pb-0">Your registered assets</p>
-                            <div className="pe-4 ps-4 pb-4">
-                                    <LinearProgressBarLabel white={true}  label={"Site 1"} value={90}/>
+                        <div style={{flex:1}} className="rad-8 mb-2   me-2 ms-2 r-child  bg-light-blue shadow ">
+                            <p className="title-bold  text-center mt-2 w-100 mb-0 pb-0">Your registered assets</p>
+                            <div className="d-flex h-100 align-items-center justify-content-center">
+                            <div className="pe-4 ps-4 w-100   pb-4">
+                                 <LinearProgressBarLabel white={true}  label={"Site 1"} value={90}/>
                                 <LinearProgressBarLabel white={true} label={"Site 2"} value={80}/>
                                 <LinearProgressBarLabel white={true} label={"Site 3"} value={70}/>
                                 <LinearProgressBarLabel white={true} label={"Site 4"} value={60}/>
@@ -673,11 +601,12 @@ const Dashboard = ({ isLoggedIn }) => {
                                 <LinearProgressBarLabel white={true} label={"Site 9"} value={10}/>
                                 <LinearProgressBarLabel white={true} label={"Site 10"} value={5}/>
                             </div>
+                            </div>
                         </div>
-                        <div style={{flex:1}}  className="rad-8  r-child p-2 bg-light-blue shadow ">
-                            <p className="title-bold text-white text-center w-100">Carbon Footprint completed</p>
-                            <div className=" ">
-                                <Line options={optionsLineChart} data={dataLineChartWhite} />
+                        <div style={{flex:1}}  className="rad-8 mb-2   r-child  bg-light-blue shadow ">
+                            <p className="title-bold mt-2 text-white text-center w-100">Carbon Footprint completed</p>
+                            <div  className=" pb-5 d-flex align-items-center h-100 justify-content-center">
+                                <Line height="250" options={optionsLineChartWhite} data={dataLineChartWhite} />
                             </div>
                         </div>
                     </div>

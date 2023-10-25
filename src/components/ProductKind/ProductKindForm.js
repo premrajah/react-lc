@@ -826,6 +826,7 @@ class ProductKindForm extends Component {
                     payloadObj.sku[key] = formData.get(key).toLowerCase()
                 }
                 else if (key === "embodied_carbon_kgs" || key === "gross_weight_kgs") {
+                    console.log(key,formData.get(key))
                     payloadObj.sku[key] = parseFloat(formData.get(key))
                 } else {
                     payloadObj.sku[key] = formData.get(key)

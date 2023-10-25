@@ -100,6 +100,7 @@ import CreateCollection from "./pages/collections/CreateCollection";
 import CollectionDetail from "./pages/collections/CollectionDetail";
 import Collections from "./pages/collections/Collections";
 import Magic from "./pages/magic/Magic";
+import Dashboard from "./components/Home/Dashboard/Dashboard";
 
 
 ReactGA.initialize(gaTID);
@@ -120,6 +121,12 @@ const theme = createTheme({
         secondary: {
             // light: '#0066ff',
             main: '#D31169',
+            // dark: will be calculated from palette.secondary.main,
+            // contrastText: '#ffcc00',
+        },
+        white: {
+            // light: '#0066ff',
+            main: '#ffffff',
             // dark: will be calculated from palette.secondary.main,
             // contrastText: '#ffcc00',
         },
@@ -153,6 +160,7 @@ class App extends Component {
                         <Route exact path="/privacy" component={Privacy} />
                         <Route exact path="/acceptable" component={AcceptableUse} />
                         <Route exact path="/verify" component={VerifyEmail} />
+                        <Route exact path="/dashboard" component={Dashboard} />
                         <Route exact path="/magic/:slug" component={Magic} />
                         <Route exact path="/find-resources" component={FindResourcePage} />
                         <Route exact path="/p/:slug" component={ItemCycleDetail} />

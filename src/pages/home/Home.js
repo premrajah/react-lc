@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Layout from "../../components/Layout/Layout";
 import * as actionCreator from "../../store/actions/actions";
-import HomeScreenInfo from './HomeScreenInfo';
-import Dashboard from '../../components/Dashboard/Dashboard';
+import HomeScreenInfo from '../../components/Home/HomeScreenInfo';
+import Dashboard from '../../components/Home/Dashboard/Dashboard';
 
 const Home = ({isLoggedIn}) => {
 

@@ -200,9 +200,9 @@ class ComponentsNavbar extends React.Component {
 
         if (this.props?.userDetail?.firstName) {
             return (<div className="mb-2">
-                <div>Welcome <span className="blue-text text-bold">{this.props?.userDetail?.firstName}</span></div> 
+                <div>Welcome <span className="blue-text text-bold">{this.props?.userDetail?.firstName}</span></div>
                 <div>{this.props?.userDetail?.is_org_admin && <span>You are logged in as Admin</span>}</div>
-                {this.props?.userDetail?.is_org_admin &&  <div>for <span className="blue-text text-bold">{this.props?.userDetail?.orgId}</span></div>}
+                {this.props?.userDetail?.is_org_admin && <div>for <span className="blue-text text-bold">{this.props?.userDetail?.orgId}</span></div>}
             </div>)
         }
 
@@ -355,7 +355,7 @@ class ComponentsNavbar extends React.Component {
                                                             </div>
                                                         </LightTooltip>
                                                     ) : this.props.userDetail.firstName ? (
-                                                        this.props.userDetail.firstName.substr(0, 2)
+                                                        <LightTooltip title={this.welcomeMessage()}><span>{this.props.userDetail.firstName.substr(0, 2)}</span></LightTooltip>
                                                     ) : (
                                                         this.props.userDetail.orgId &&
                                                         this.props.userDetail.orgId.substr(4, 2)

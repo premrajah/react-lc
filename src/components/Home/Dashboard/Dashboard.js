@@ -659,7 +659,7 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                 >
                                                     <TableCell  className="text-white text-14" component="th" scope="row">
-                                                        <Link to={`ps/${product.Product._key}`}><span style={{width:"125px"}}  className="text-left d-block ellipsis-end">   {product.Product.name}</span></Link>
+                                                        <Link to={`product/${product.Product._key}`}><span style={{width:"125px"}}  className="text-left d-block ellipsis-end">   {product.Product.name}</span></Link>
                                                     </TableCell>
                                                     <TableCell  className="text-white  text-14" align="right">12.4</TableCell>
                                                 </TableRow>

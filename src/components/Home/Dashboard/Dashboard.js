@@ -23,6 +23,7 @@ import BlueButton from "../../FormsUI/Buttons/BlueButton";
 import BlueBorderButton from "../../FormsUI/Buttons/BlueBorderButton";
 import {baseUrl} from "../../../Util/Constants";
 import axios from "axios";
+import {Spinner} from "react-bootstrap";
 // import {
 //     Chart as ChartJS,
 //     CategoryScale,
@@ -472,6 +473,8 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
     const [showRequestSusReportPopUp, setShowRequestSusReportPopUp] = React.useState(false);
     const [sites, setSites] = React.useState([]);
     const [products, setProducts] = React.useState([]);
+    const [productLoading, setProductLoading] = React.useState(false);
+    const [siteLoading, setSiteLoading] = React.useState(false);
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
     };
@@ -523,7 +526,7 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
 
 
     const loadProducts=()=>{
-
+        setProductLoading(true)
         let url =`${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=false&offset=0&size=5&sort_by=_ts_epoch_ms:DESC`
 
         axios.get(url).then(
@@ -531,10 +534,15 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                 let responseAll = response.data.data;
                 setProducts(responseAll)
             }
-        ).catch(error => {});
+        ).catch(error => {}).finally(()=>{
+
+            setProductLoading(false)
+        });;
 
     }
     const loadSites=()=>{
+
+        setSiteLoading(true)
 
         let url =`${baseUrl}seek?name=Site&no_parent=true&count=false&offset=0&size=10&sort_by=_ts_epoch_ms:DESC`
 
@@ -542,8 +550,14 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
             (response) => {
                 let responseAll = response.data.data;
                 setSites(responseAll)
+
+
             }
-        ).catch(error => {});
+
+        ).catch(error => {}).finally(()=>{
+
+            setSiteLoading(false)
+        });
 
     }
 
@@ -623,7 +637,10 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                             <div style={{flex:1}} className="rad-8 w-100 p-2 position-relative   r-child bg-light-blue shadow ">
 
                                 <p className="title-bold mb-0 pb-0 text-white text-center mt-2 ">Product Model Embodied Carbon</p>
-                                <div className="p-0 h-100  ">
+                                <div className="p-0 h-100 text-center  ">
+
+
+
                                     <TableContainer >
                                         <Table className="dashboard-embodied-table"  size="small" aria-label="a dense table">
                                             <TableHead>
@@ -642,7 +659,7 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                 >
                                                     <TableCell  className="text-white text-14" component="th" scope="row">
-                                                        <Link to={`ps/${product.Product._key}`}>   {product.Product.name}</Link>
+                                                        <Link to={`ps/${product.Product._key}`}><span style={{width:"125px"}}  className="text-left d-block ellipsis-end">   {product.Product.name}</span></Link>
                                                     </TableCell>
                                                     <TableCell  className="text-white  text-14" align="right">12.4</TableCell>
                                                 </TableRow>
@@ -653,6 +670,14 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                                             </TableBody>
                                         </Table>
                                     </TableContainer>
+                                    {productLoading&& <Spinner
+                                        className="mt-5 mr-2"
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />}
                                 </div>
                                 <div className="top-right mt-2 click-item"> <MoreVert  style={{ color: "#7a8896",fontSize:"22px" }} /></div>
 
@@ -661,7 +686,17 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                         <div style={{flex:1}} className="rad-8 mb-2 position-relative  me-2 ms-2 r-child  bg-light-blue shadow ">
                             <p className="title-bold  text-center mt-2 w-100 mb-0 pb-0">Total Managed Carbon by Site (KgC0<sub className="subs">2</sub>e)</p>
                             <div className="d-flex h-100 align-items-center justify-content-center">
-                            <div className="pe-4 ps-4 w-100   pb-4">
+                            <div className="pe-4 ps-4 w-100 text-center   pb-4">
+
+                                {siteLoading&&
+                                    <Spinner
+                                        className="mr-2"
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />}
 
                                 {sites.map((site,index)=>
                                     <Link to={`ps/${site.Site._key}`}>

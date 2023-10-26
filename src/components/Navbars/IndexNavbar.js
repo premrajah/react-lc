@@ -195,6 +195,19 @@ class ComponentsNavbar extends React.Component {
             .catch((error) => { });
     };
 
+    welcomeMessage = (userContext) => {
+        if (!userContext) return;
+
+        if (userContext.firstName) {
+            return (<div className="mb-2">
+                <div>Welcome <span className="blue-text text-bold">{userContext.firstName}</span> to the</div> 
+                <div>Loopcycle platform. {userContext.is_org_admin && <span>You are the Org Admin</span>}</div>
+                {userContext.is_org_admin &&  <div>for the Organization <span className="blue-text text-bold">{userContext.orgId}</span></div>}
+            </div>)
+        }
+
+    }
+
     render() {
 
         return (
@@ -231,43 +244,6 @@ class ComponentsNavbar extends React.Component {
                         </Nav>
 
                         <Nav className={" justify-content-end menu-align-right"}>
-                            {/*{this.props.isLoggedIn && <NavItem className='web-only mr-3'>*/}
-                            {/*    <Link to="/documents-portal" className="nav-link d-none d-lg-block wl-link-white" color="default">Upload Docs</Link>*/}
-                            {/*</NavItem>}*/}
-
-                            {this.props.isLoggedIn && (
-                                <>
-                                    {this.props?.userContext?.perms?.includes("SiteRead") && <NavItem className={"web-only mr-3"}>
-                                        <Link
-
-                                            to={"/sites?add-site=true"}
-                                            className="nav-link d-none d-lg-block wl-link-white"
-                                            color="default">
-                                            Add Site
-                                        </Link>
-                                    </NavItem>}
-                                    {this.props?.userContext?.perms?.includes("ProductWrite") &&  <NavItem className={"web-only mr-3"}>
-                                        <Link
-                                            onClick={this.showProductSelection}
-                                            to={"/my-products"}
-                                            className="nav-link d-none d-lg-block wl-link-white"
-                                            color="default">
-                                            Add Product
-                                        </Link>
-                                    </NavItem>}
-
-                                </>
-                            )}
-
-
-                            <NavItem className={"web-only mr-3"}>
-                                <Link
-                                    className="nav-link d-none d-lg-block wl-link-white "
-                                    color="default"
-                                    to={"/find-resources"}>
-                                    Marketplace
-                                </Link>
-                            </NavItem>
 
                             {/*{this.props.isLoggedIn && (*/}
                             {/*    <>*/}
@@ -407,6 +383,13 @@ class ComponentsNavbar extends React.Component {
                                         }}
                                         className="custom-dropdown-menu"
                                     >
+
+                                        <section className={`${this.props.userContext.firstName && 'border-bottom mb-2'}`}>
+                                            <div>
+                                                {this.props.userContext && this.welcomeMessage(this.props?.userContext)}
+                                            </div>
+                                        </section>
+
                                         {/*<DropdownMenu className="dropdown-with-icons">*/}
                                         <Link className={`dropdown-item`} to="/account">
                                             <i className="tim-icons icon-bullet-list-67" />
@@ -429,7 +412,7 @@ class ComponentsNavbar extends React.Component {
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Collections
                                         </Link>
-                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("EventRead") ? '' : 'disabled-link'}`}  to="/my-diary">
+                                        <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("EventRead") ? '' : 'disabled-link'}`} to="/my-diary">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Calendar
                                         </Link>
@@ -438,7 +421,10 @@ class ComponentsNavbar extends React.Component {
                                             Campaigns
                                         </Link>
 
-
+                                        <Link className={`dropdown-item`} to="/find-resources">
+                                            <i className="tim-icons icon-paper" />
+                                            Marketplace
+                                        </Link>
 
                                         <Link className={`dropdown-item ${this.props?.userContext?.perms?.includes("SearchRead") ? '' : 'disabled-link'}`} to="/my-search">
                                             <i className="tim-icons icon-paper" />

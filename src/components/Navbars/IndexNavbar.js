@@ -202,7 +202,6 @@ class ComponentsNavbar extends React.Component {
         axios
             .get(url)
             .then((response) => {
-                console.log(">>> ", response.data.data);
                 if (response.status === 200) {
                     this.setState({
                         org: response.data.data,

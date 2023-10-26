@@ -1108,9 +1108,7 @@ class ProductKinds extends Component {
                                                 <div className="col-md-3 col-sm-6  justify-content-start align-items-center">
                                                     <CheckboxWrapper
                                                         id={`${item.key}`}
-                                                        // details="When listed, product will appear in the marketplace searches"
                                                         initialValue={item.checked}
-                                                        // onChange={(checked)=>this.checkListable(checked)}
                                                         color="primary"
                                                         name={`${item.key}`}
                                                         title={`${item.value}`} />

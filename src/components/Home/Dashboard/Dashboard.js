@@ -615,8 +615,8 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                         <div style={{flex:1,}}  className="rad-8 mb-2 r-child position-relative p-2 bg-light-blue shadow ">
                             <p className="title-bold   text-center w-100">Embodied Carbon Calculations Completed</p>
                             <div className="pe-4 ps-4 pb-4">
-                                <LinearProgressBarLabel white={true} label={"Available"} value={65}/>
-                                <LinearProgressBarLabel white={true} label={"Unavailable"} value={35}/>
+                                <LinearProgressBarLabel white={"true"} label={"Available"} value={65}/>
+                                <LinearProgressBarLabel white={"true"} label={"Unavailable"} value={35}/>
                             </div>
                             <div className={"w-100 d-flex text-bottom-dash position-absolute align-text-bottom justify-content-end align-items-center"}  aria-label="outlined button group">
                                 <Button onClick={toggleRequestEmbodiedCarbonCalPopUp} size={"small"}  style={{color:"white",textTransform:"unset",fontSize:"16px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0">Request More Embodied Carbon Calculations <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Button>

@@ -1190,12 +1190,10 @@ class ProductKinds extends Component {
                                     <div className="col-12 ">
                                         <TextFieldWrapper
                                             numberInput
-                                            // readonly ={this.state.disableVolume}
                                             initialValue={
                                                 this.state.selectedItem &&
                                                 this.state.selectedItem.factor + ""
                                             }
-                                            // value={this.state.disableVolume?"0":""}
                                             onChange={(value) => this.handleChange(value, "count")}
                                             error={this.state.errors["count"]}
                                             placeholder={"Enter required number of Cyclecodes"}

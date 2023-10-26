@@ -215,7 +215,6 @@ class ComponentsNavbar extends React.Component {
 
     welcomeMessage = () => {
 
-
         if (this.props?.userDetail?.firstName) {
             return (<div className="mb-2">
                 <div>Welcome <span className="blue-text text-bold">{this.props?.userDetail?.firstName}</span> <span>{this.props?.userDetail?.lastName}</span></div>

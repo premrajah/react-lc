@@ -218,7 +218,7 @@ class ComponentsNavbar extends React.Component {
 
         if (this.props?.userDetail?.firstName) {
             return (<div className="mb-2">
-                <div>Welcome <span className="blue-text text-bold">{this.props?.userDetail?.firstName}</span></div>
+                <div>Welcome <span className="blue-text text-bold">{this.props?.userDetail?.firstName}</span> <span>{this.props?.userDetail?.lastName}</span></div>
                 <div>{this.props?.userDetail?.is_org_admin && <span>You are logged in as Admin</span>}</div>
                 {this.props?.userDetail?.is_org_admin && <div>for <span className="blue-text text-bold">{this.state?.org?.name}</span></div>}
             </div>)

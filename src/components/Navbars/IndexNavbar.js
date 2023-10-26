@@ -48,6 +48,7 @@ class ComponentsNavbar extends React.Component {
             menuOpen: false,
             magicLinkPopup: false,
             magicLinkCurrentPagePath: null,
+            org: null,
         };
 
         this.toggleMenu = this.toggleMenu.bind(this);
@@ -124,6 +125,7 @@ class ComponentsNavbar extends React.Component {
 
         if (this.props.isLoggedIn) {
             this.getArtifactForOrg();
+            this.getOrgForUser();
             this.dispatchMessagesAndNotifications();
             this.timer = setTimeout(() => {
                 this.dispatchMessagesAndNotifications();
@@ -195,6 +197,23 @@ class ComponentsNavbar extends React.Component {
             .catch((error) => { });
     };
 
+    getOrgForUser = () => {
+        let url = `${baseUrl}org`;
+        axios
+            .get(url)
+            .then((response) => {
+                console.log(">>> ", response.data.data);
+                if (response.status === 200) {
+                    this.setState({
+                        org: response.data.data,
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log("het org for user error ", error);
+            });
+    };
+
     welcomeMessage = () => {
 
 
@@ -202,7 +221,7 @@ class ComponentsNavbar extends React.Component {
             return (<div className="mb-2">
                 <div>Welcome <span className="blue-text text-bold">{this.props?.userDetail?.firstName}</span></div>
                 <div>{this.props?.userDetail?.is_org_admin && <span>You are logged in as Admin</span>}</div>
-                {this.props?.userDetail?.is_org_admin && <div>for <span className="blue-text text-bold">{this.props?.userDetail?.orgId}</span></div>}
+                {this.props?.userDetail?.is_org_admin && <div>for <span className="blue-text text-bold">{this.state?.org?.name}</span></div>}
             </div>)
         }
 

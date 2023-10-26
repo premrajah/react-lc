@@ -326,7 +326,6 @@ class ComponentsNavbar extends React.Component {
 
                             {this.props.isLoggedIn && (
                                 <NavItem className={"web-only "}>
-{console.log("uc ", this.props.userContext, " ud ",  this.props.userDetail)}
                                     <div
                                         onClick={this.handleClickMenu}
                                         className={"wl-link-white click-item"}>

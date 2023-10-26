@@ -89,6 +89,7 @@ class Sites extends Component {
     }
 
 
+
     setFilters=(data)=>{
 
 
@@ -333,14 +334,7 @@ class Sites extends Component {
                             loadMore={(data)=>this.loadSitesWithoutParentPageWise(data)}
 
                         >
-                        {/* Site Condensed view header */}
-                        {/*    <div className="row">*/}
-                        {/*        <div className="col-md-3">Site name</div>*/}
-                        {/*        <div className="col-md-4">Address</div>*/}
-                        {/*        <div className="col-md-2">Email</div>*/}
-                        {/*        <div className="col-md-1"></div>*/}
-                        {/*        <div className="col-md-2 d-flex justify-content-end">Date added</div>*/}
-                        {/*    </div>*/}
+
 
                         {this.state.items&&this.state.items
                             .map((site, index) =>

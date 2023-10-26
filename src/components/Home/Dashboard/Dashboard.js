@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { connect } from "react-redux";
+import React, {useEffect, useState} from 'react'
+import {connect} from "react-redux";
 import * as actionCreator from "../../../store/actions/actions";
-import axios from 'axios';
-import { baseUrl } from '../../../Util/Constants';
-import { Doughnut,Pie } from 'react-chartjs-2';
-import { Line , Bar} from 'react-chartjs-2';
+import {Bar, Line} from 'react-chartjs-2';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,18 +9,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {
-    CircularProgressbar,
-    CircularProgressbarWithChildren,
-    buildStyles,
-} from "react-circular-progressbar";
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import "react-circular-progressbar/dist/styles.css";
-import {Button, ButtonGroup, Typography} from "@mui/material";
+import {Button, Divider, Grow, MenuItem, MenuList, Popper, Typography} from "@mui/material";
+import { Link } from "react-router-dom";
+
 import LinearProgressBarLabel from "../../FormsUI/LinearProgressBarLabel";
 import {Speedometer} from "../../FormsUI/Speedometer";
+import {ArrowForwardIos, MoreVert} from "@mui/icons-material";
+import GlobalDialog from "../../RightBar/GlobalDialog";
+import TextFieldWrapper from "../../FormsUI/ProductForm/TextField";
 import BlueButton from "../../FormsUI/Buttons/BlueButton";
-import BlueBorderLink from "../../FormsUI/Buttons/BlueBorderLink";
-import BlueSmallBtn from "../../FormsUI/Buttons/BlueSmallBtn";
+import BlueBorderButton from "../../FormsUI/Buttons/BlueBorderButton";
+import {baseUrl} from "../../../Util/Constants";
+import axios from "axios";
+import {Spinner} from "react-bootstrap";
 // import {
 //     Chart as ChartJS,
 //     CategoryScale,
@@ -463,11 +463,112 @@ const stylesCircle=  {
         // transformOrigin: 'center center',
     },
 }
-const Dashboard = ({ isLoggedIn }) => {
+const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
 
     const [percentage,setPercentage]=useState(66)
+    const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef();
+    const [showRequestPopUp, setShowRequestPopUp] = React.useState(false);
+    const [showRequestEmbodiedCarbonCalPopUp, setShowRequestEmbodiedCarbonCalPopUp] = React.useState(false);
+    const [showRequestSusReportPopUp, setShowRequestSusReportPopUp] = React.useState(false);
+    const [sites, setSites] = React.useState([]);
+    const [products, setProducts] = React.useState([]);
+    const [productLoading, setProductLoading] = React.useState(false);
+    const [siteLoading, setSiteLoading] = React.useState(false);
+    const handleToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+    };
+    const toggleRequestPopUp = () => {
+        setShowRequestPopUp(!showRequestPopUp);
+    };
+
+    const toggleRequestEmbodiedCarbonCalPopUp = () => {
+        setShowRequestEmbodiedCarbonCalPopUp(!showRequestEmbodiedCarbonCalPopUp);
+    };
+
+    const toggleRequestSusReportPopUp = () => {
+        setShowRequestSusReportPopUp(!showRequestSusReportPopUp);
+    };
+
+    const handleClose = (event) => {
+        if (
+            anchorRef.current &&
+            anchorRef.current.contains(event.target )
+    ) {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    function handleListKeyDown(event) {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            setOpen(false);
+        } else if (event.key === 'Escape') {
+            setOpen(false);
+        }
+    }
+
+    // return focus to the button when we transitioned from !open -> open
+    const prevOpen = React.useRef(open);
+    useEffect(() => {
+        if (prevOpen.current === true && open === false) {
+            // anchorRef.current!.focus();
+        }
+
+        prevOpen.current = open;
+    }, [open]);
+
+    const showProductSelection=()=> {
+        showProductPopUp({ type: "new", show: true, parentProductId: null });
+    }
+
+
+    const loadProducts=()=>{
+        setProductLoading(true)
+        let url =`${baseUrl}seek?name=Product&no_parent=true&relation=belongs_to&count=false&offset=0&size=5&sort_by=_ts_epoch_ms:DESC`
+
+        axios.get(url).then(
+            (response) => {
+                let responseAll = response.data.data;
+                setProducts(responseAll)
+            }
+        ).catch(error => {}).finally(()=>{
+
+            setProductLoading(false)
+        });;
+
+    }
+    const loadSites=()=>{
+
+        setSiteLoading(true)
+
+        let url =`${baseUrl}seek?name=Site&no_parent=true&count=false&offset=0&size=10&sort_by=_ts_epoch_ms:DESC`
+
+        axios.get(url).then(
+            (response) => {
+                let responseAll = response.data.data;
+                setSites(responseAll)
+
+
+            }
+
+        ).catch(error => {}).finally(()=>{
+
+            setSiteLoading(false)
+        });
+
+    }
+
+    useEffect(()=>{
+        loadProducts()
+        loadSites()
+    },[])
 
     return (
+
+        <>
         <div className="container justify-content-center">
             {/*<div  className="d-flex pt-4 row   justify-content-center">*/}
             {/*    <h4>Dashboard</h4>*/}
@@ -480,16 +581,21 @@ const Dashboard = ({ isLoggedIn }) => {
                         <div style={{flex:1, }} className="rad-8 mb-2   r-child p-2 bg-light-blue shadow ">
                             <p className="title-bold text-white text-center w-100">Your registered assets</p>
                             <div className="p-0 justify-content-center">
-
+                                <Link to={"/my-products"}>
                                 <Speedometer blue/>
-
+                                </Link>
                             </div>
-                            <div className={"w-100 d-flex justify-content-between"}  aria-label="outlined button group">
-                               <Button size={"small"} className="text-capitlize" color={"white"} variant={"outlined"}>Register Asset</Button>
-                                <Button size={"small"} className="text-capitlize" color={"white"} variant={"outlined"}>Increase Subscription Limit</Button>
+                            <div className={"w-100 d-flex justify-content-between align-items-center"}  aria-label="outlined button group">
+                               <Link
+                                   onClick={showProductSelection}
+                                   to={"/my-products"}
+                                   size={"small"} style={{color:"white",}} className="link-hover-dash click-item d-flex justify-content-between align-items-center text-capitlize mb-0 pb-0" variant={"outlined"}>Register Asset <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Link>
+                                <Button onClick={toggleRequestPopUp} size={"small"}
+                                        style={{color:"white",textTransform:"unset",fontSize:"16px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0"
+                                        variant={"text"}>Increase Subscription Limit <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Button>
                             </div>
                         </div>
-                        <div style={{flex:1,}} className="rad-8 me-2 mb-2 ms-2 r-child p-2 d-flex  justify-content-center align-items-center   bg-light-blue shadow ">
+                        <div style={{flex:1,}} className="rad-8 me-2 mb-2 ms-2 r-child p-2 d-flex position-relative justify-content-center align-content-center flex-column   bg-light-blue shadow ">
                             {/*<p className="title-bold  text-center w-100">Assets type</p>*/}
                             <div className="p-2 ">
                                 {/*<div className={"text-center d-flex flex-column"}>*/}
@@ -501,28 +607,40 @@ const Dashboard = ({ isLoggedIn }) => {
                                 </Typography>
                                 {/*</div>*/}
                             </div>
+                            <div className={"w-100 d-flex text-bottom-dash position-absolute align-text-bottom justify-content-end align-items-center"}  aria-label="outlined button group">
+                                <Button onClick={toggleRequestSusReportPopUp} size={"small"}    style={{color:"white",textTransform:"unset",fontSize:"16px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0">Request Sustainability Report <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Button>
+                                {/*<Link size={"small"} style={{color:"white"}} className="link-hover-dash d-flex justify-content-between align-items-center text-capitlize mb-0 pb-0"  variant={"outlined"}>Increase Subscription Limit <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Link>*/}
+                            </div>
                         </div>
-                        <div style={{flex:1,}}  className="rad-8 mb-2 r-child  p-2 bg-light-blue shadow ">
-                            <p className="title-bold   text-center w-100">Carbon Footprint</p>
+                        <div style={{flex:1,}}  className="rad-8 mb-2 r-child position-relative p-2 bg-light-blue shadow ">
+                            <p className="title-bold   text-center w-100">Embodied Carbon Calculations Completed</p>
                             <div className="pe-4 ps-4 pb-4">
                                 <LinearProgressBarLabel white={true} label={"Available"} value={65}/>
                                 <LinearProgressBarLabel white={true} label={"Unavailable"} value={35}/>
+                            </div>
+                            <div className={"w-100 d-flex text-bottom-dash position-absolute align-text-bottom justify-content-end align-items-center"}  aria-label="outlined button group">
+                                <Button onClick={toggleRequestEmbodiedCarbonCalPopUp} size={"small"}  style={{color:"white",textTransform:"unset",fontSize:"16px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0">Request More Embodied Carbon Calculations <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Button>
+                                {/*<Link size={"small"} style={{color:"white"}} className="link-hover-dash d-flex justify-content-between align-items-center text-capitlize mb-0 pb-0"  variant={"outlined"}>Increase Subscription Limit <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Link>*/}
                             </div>
 
                         </div>
                     </div>
                     <div  style={{alignItems: "stretch!important",flexWrap:"wrap"}} className="d-flex flex-sm-wrap r-parent mb-2    ">
                         <div style={{flex:1}} className="rad-8 mb-2 m-0 d-flex flex-column w-100  r-child   ">
-                            <div style={{flex:1}}  className="rad-8   w-100 me-0 ms-0 mt-0 mb-2  r-child bg-light-blue shadow ">
-                                <p className="title-bold mb-0  text-center mt-2">Total Site Embodied Carbon</p>
+                            <div style={{flex:1}}  className="rad-8 position-relative  w-100 me-0 ms-0 mt-0 mb-2  r-child bg-light-blue shadow ">
+                                <p className="title-bold mb-0  text-center mt-2">Asset Type</p>
                                 <div className="pb-4 pe-1 ps-1 h-100 d-flex align-items-center justify-content-center">
                                     <Bar  options={optionsBarWhite} data={dataBarWhite} />
                                 </div>
+                                <div className="top-right mt-2 click-item"> <MoreVert  style={{ color: "#7a8896",fontSize:"22px" }} /></div>
                             </div>
-                            <div style={{flex:1}} className="rad-8 w-100 p-2    r-child bg-light-blue shadow ">
+                            <div style={{flex:1}} className="rad-8 w-100 p-2 position-relative   r-child bg-light-blue shadow ">
 
                                 <p className="title-bold mb-0 pb-0 text-white text-center mt-2 ">Product Model Embodied Carbon</p>
-                                <div className="p-0 h-100  ">
+                                <div className="p-0 h-100 text-center  ">
+
+
+
                                     <TableContainer >
                                         <Table className="dashboard-embodied-table"  size="small" aria-label="a dense table">
                                             <TableHead>
@@ -532,88 +650,315 @@ const Dashboard = ({ isLoggedIn }) => {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
+
+                                                {products.map((product,index)=>
+
                                                 <TableRow
 
-                                                    // key={row.name}
+                                                    key={product.Product._key}
                                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                 >
                                                     <TableCell  className="text-white text-14" component="th" scope="row">
-                                                        Oven
+                                                        <Link to={`ps/${product.Product._key}`}><span style={{width:"125px"}}  className="text-left d-block ellipsis-end">   {product.Product.name}</span></Link>
                                                     </TableCell>
-                                                    <TableCell  className="text-white  text-14" align="right">12.34</TableCell>
+                                                    <TableCell  className="text-white  text-14" align="right">12.4</TableCell>
                                                 </TableRow>
-                                                <TableRow
-                                                    // key={row.name}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell   className="text-white " component="th" scope="row">
-                                                        Fridge
-                                                    </TableCell>
-                                                    <TableCell  className="text-white " align="right">12.34</TableCell>
-                                                </TableRow>
-                                                <TableRow
-                                                    // key={row.name}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell  className="text-white " component="th" scope="row">
-                                                        Freezer
-                                                    </TableCell>
-                                                    <TableCell className="text-white " align="right">12.34</TableCell>
-                                                </TableRow>
-                                                <TableRow
-                                                    // key={row.name}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell  className="text-white " component="th" scope="row">
-                                                        Fryer
-                                                    </TableCell>
-                                                    <TableCell  className="text-white " align="right">12.34</TableCell>
-                                                </TableRow>
-                                                <TableRow
-                                                    // key={row.name}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell  className="text-white " component="th" scope="row">
-                                                        Tableware
-                                                    </TableCell>
-                                                    <TableCell  className="text-white " align="right">12.34</TableCell>
-                                                </TableRow>
+
+                                                        )}
+
 
                                             </TableBody>
                                         </Table>
                                     </TableContainer>
+                                    {productLoading&& <Spinner
+                                        className="mt-5 mr-2"
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />}
                                 </div>
+                                <div className="top-right mt-2 click-item"> <MoreVert  style={{ color: "#7a8896",fontSize:"22px" }} /></div>
 
                             </div>
                         </div>
-                        <div style={{flex:1}} className="rad-8 mb-2   me-2 ms-2 r-child  bg-light-blue shadow ">
-                            <p className="title-bold  text-center mt-2 w-100 mb-0 pb-0">Your registered assets</p>
+                        <div style={{flex:1}} className="rad-8 mb-2 position-relative  me-2 ms-2 r-child  bg-light-blue shadow ">
+                            <p className="title-bold  text-center mt-2 w-100 mb-0 pb-0">Total Managed Carbon by Site (KgC0<sub className="subs">2</sub>e)</p>
                             <div className="d-flex h-100 align-items-center justify-content-center">
-                            <div className="pe-4 ps-4 w-100   pb-4">
-                                 <LinearProgressBarLabel white={true}  label={"Site 1"} value={90}/>
-                                <LinearProgressBarLabel white={true} label={"Site 2"} value={80}/>
-                                <LinearProgressBarLabel white={true} label={"Site 3"} value={70}/>
-                                <LinearProgressBarLabel white={true} label={"Site 4"} value={60}/>
-                                <LinearProgressBarLabel white={true} label={"Site 5"} value={50}/>
-                                <LinearProgressBarLabel white={true} label={"Site 6"} value={40}/>
-                                <LinearProgressBarLabel white={true} label={"Site 7"} value={30}/>
-                                <LinearProgressBarLabel white={true} label={"Site 8"} value={20}/>
-                                <LinearProgressBarLabel white={true} label={"Site 9"} value={10}/>
-                                <LinearProgressBarLabel white={true} label={"Site 10"} value={5}/>
+                            <div className="pe-4 ps-4 w-100 text-center   pb-4">
+
+                                {siteLoading&&
+                                    <Spinner
+                                        className="mr-2"
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />}
+
+                                {sites.map((site,index)=>
+                                    <Link to={`ps/${site.Site._key}`}>
+                                        <LinearProgressBarLabel white={true}  label={site.Site.name} value={90}/>
+                                    </Link>
+                                )}
+
+
+
+                                {/*<LinearProgressBarLabel white={true} label={"Site 2"} value={80}/>*/}
+                                {/*<LinearProgressBarLabel white={true} label={"Site 3"} value={70}/>*/}
+                                {/*<LinearProgressBarLabel white={true} label={"Site 4"} value={60}/>*/}
+                                {/*<LinearProgressBarLabel white={true} label={"Site 5"} value={50}/>*/}
+                                {/*<LinearProgressBarLabel white={true} label={"Site 6"} value={40}/>*/}
+                                {/*<LinearProgressBarLabel white={true} label={"Site 7"} value={30}/>*/}
+                                {/*<LinearProgressBarLabel white={true} label={"Site 8"} value={20}/>*/}
+                                {/*<LinearProgressBarLabel white={true} label={"Site 9"} value={10}/>*/}
+                                {/*<LinearProgressBarLabel white={true} label={"Site 10"} value={5}/>*/}
                             </div>
                             </div>
+                            <div
+                                ref={anchorRef}
+                                id="composition-button"
+                                aria-controls={open ? 'composition-menu' : undefined}
+                                aria-expanded={open ? 'true' : undefined}
+                                aria-haspopup="true"
+                                onClick={handleToggle}
+                                className="top-right mt-2 click-item"> <MoreVert  style={{ color: "#7a8896",fontSize:"22px" }} /></div>
                         </div>
-                        <div style={{flex:1}}  className="rad-8 mb-2   r-child  bg-light-blue shadow ">
-                            <p className="title-bold mt-2 text-white text-center w-100">Carbon Footprint completed</p>
+                        <div style={{flex:1}}  className="rad-8 mb-2 position-relative  r-child  bg-light-blue shadow ">
+                            <p className="title-bold mt-2 text-white text-center w-100">Carbon Avoided by Site (KgC0<sub className="subs">2</sub>e)</p>
                             <div  className=" pb-5 d-flex align-items-center h-100 justify-content-center">
                                 <Line height="250" options={optionsLineChartWhite} data={dataLineChartWhite} />
                             </div>
+                            <div className="top-right mt-2 click-item"> <MoreVert  style={{ color: "#7a8896",fontSize:"22px" }} /></div>
+                            <Popper
+                                open={open}
+                                anchorEl={anchorRef.current}
+                                role={undefined}
+                                placement="bottom-start"
+                                transition
+                                disablePortal
+                            >
+                                {({ TransitionProps, placement }) => (
+                                    <Grow
+                                        {...TransitionProps}
+                                        style={{
+                                            transformOrigin:
+                                                placement === 'bottom-start' ? 'left top' : 'left bottom',
+                                        }}
+                                    >
+                                        <Paper>
+                                              <span
+                                                  style={{paddingLeft:"16px"}}
+                                                  className="text-16 text-gray-light ml-2"
+                                                  disabled={true}
+                                                  onClick={handleClose}>Filter By:</span>
+                                            <Divider />
+                                            <ClickAwayListener onClickAway={handleClose}>
+
+                                                <MenuList
+                                                    autoFocusItem={open}
+                                                    id="composition-menu"
+                                                    aria-labelledby="composition-button"
+                                                    onKeyDown={handleListKeyDown}
+                                                >
+                                                    <MenuItem onClick={handleClose}>Site</MenuItem>
+                                                    <MenuItem onClick={handleClose}>Product</MenuItem>
+                                                    <MenuItem onClick={handleClose}>Product Kind</MenuItem>
+                                                </MenuList>
+                                            </ClickAwayListener>
+                                        </Paper>
+                                    </Grow>
+                                )}
+                            </Popper>
                         </div>
                     </div>
                 </div>
             </div>
 
+
+
         </div>
+
+
+            <GlobalDialog
+                size="sm"
+                heading={"Increase Subscription Limit"}
+
+                show={showRequestPopUp}
+                hide={toggleRequestPopUp}
+            >
+                <div className="col-12">
+                <div className="row  mt-2">
+                    <div className="col-12">
+                <TextFieldWrapper
+
+                    // details="Describe the product your adding"
+                    initialValue="Hi, Loopcycle, I would like to upgrade by subscription."
+                    // onChange={(value)=>this.handleChangeProduct(value,"description")}
+                    // error={this.state.errors["description"]}
+                    multiline
+                    rows={4}
+                    name="description"
+                    title="Description"
+                />
+                    </div>
+                </div>
+                    <div
+                        className={
+                            "row justify-content-center"
+                        }>
+                        <div
+                            className={"col-6"}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <BlueButton
+                                onClick={toggleRequestPopUp}
+                                fullWidth
+                                title={"Submit"}
+                                type={"submit"}>
+
+                            </BlueButton>
+                        </div>
+                        <div
+                            className={"col-6 "}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <BlueBorderButton
+                                type="button"
+                                fullWidth
+                                title={"Cancel"}
+
+
+                                onClick={toggleRequestPopUp}
+                            >
+
+                            </BlueBorderButton>
+                        </div>
+                    </div>
+                </div>
+            </GlobalDialog>
+
+            <GlobalDialog
+                size="sm"
+                heading={"Request Embodied carbon calculations"}
+                show={showRequestEmbodiedCarbonCalPopUp}
+                hide={toggleRequestEmbodiedCarbonCalPopUp}
+            >
+                <div className="col-12">
+                    <div className="row  mt-2">
+                        <div className="col-12">
+                            <TextFieldWrapper
+
+                                // details="Describe the product your adding"
+                                initialValue="Hi, Loopcycle, I would like to upgrade by subscription."
+                                // onChange={(value)=>this.handleChangeProduct(value,"description")}
+                                // error={this.state.errors["description"]}
+                                multiline
+                                rows={4}
+                                name="description"
+                                title="Description"
+                            />
+                        </div>
+                    </div>
+                    <div
+                        className={
+                            "row justify-content-center"
+                        }>
+                        <div
+                            className={"col-6"}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <BlueButton
+                                onClick={toggleRequestEmbodiedCarbonCalPopUp}
+                                fullWidth
+                                title={"Submit"}
+                                type={"submit"}>
+
+                            </BlueButton>
+                        </div>
+                        <div
+                            className={"col-6 "}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <BlueBorderButton
+                                type="button"
+                                fullWidth
+                                title={"Cancel"}
+
+
+                                onClick={toggleRequestEmbodiedCarbonCalPopUp}
+                            >
+
+                            </BlueBorderButton>
+                        </div>
+                    </div>
+                </div>
+            </GlobalDialog>
+
+
+            <GlobalDialog
+                size="sm"
+                heading={"Request Sustainability Report"}
+                show={showRequestSusReportPopUp}
+                hide={toggleRequestSusReportPopUp}
+            >
+                <div className="col-12">
+                    <div className="row  mt-2">
+                        <div className="col-12">
+                            <TextFieldWrapper
+
+                                // details="Describe the product your adding"
+                                initialValue="Hi, Loopcycle, I would like to upgrade by subscription."
+                                // onChange={(value)=>this.handleChangeProduct(value,"description")}
+                                // error={this.state.errors["description"]}
+                                multiline
+                                rows={4}
+                                name="description"
+                                title="Description"
+                            />
+                        </div>
+                    </div>
+                    <div
+                        className={
+                            "row justify-content-center"
+                        }>
+                        <div
+                            className={"col-6"}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <BlueButton
+                                onClick={toggleRequestSusReportPopUp}
+                                fullWidth
+                                title={"Submit"}
+                                type={"submit"}>
+
+                            </BlueButton>
+                        </div>
+                        <div
+                            className={"col-6 "}
+                            style={{
+                                textAlign: "center",
+                            }}>
+                            <BlueBorderButton
+                                type="button"
+                                fullWidth
+                                title={"Cancel"}
+                                onClick={toggleRequestSusReportPopUp}
+                            >
+
+                            </BlueBorderButton>
+                        </div>
+                    </div>
+                </div>
+            </GlobalDialog>
+            </>
     )
 }
 
@@ -626,6 +971,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+
         showLoginPopUp: (data) => dispatch(actionCreator.showLoginPopUp(data)),
         showProductPopUp: (data) => dispatch(actionCreator.showProductPopUp(data)),
 

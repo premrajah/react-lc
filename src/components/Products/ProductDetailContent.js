@@ -213,7 +213,7 @@ class ProductDetailContent extends Component {
         } else {
             axios.get(baseUrl + "org/company/" + detail.company).then(
                 (response) => {
-                    var responseAll = response.data.data;
+                    let responseAll = response.data.data;
 
                     this.setState({
                         org_id: responseAll._key,

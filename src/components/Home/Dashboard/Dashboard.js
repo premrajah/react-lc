@@ -700,7 +700,7 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
 
                                 {sites.map((site,index)=>
                                     <Link to={`ps/${site.Site._key}`}>
-                                        <LinearProgressBarLabel white={true}  label={site.Site.name} value={((10-index)*0.5)*10}/>
+                                        <LinearProgressBarLabel white={"true"}  label={site.Site.name} value={((10-index)*0.5)*10}/>
                                     </Link>
                                 )}
 

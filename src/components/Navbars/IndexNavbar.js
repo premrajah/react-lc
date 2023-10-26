@@ -384,9 +384,9 @@ class ComponentsNavbar extends React.Component {
                                         className="custom-dropdown-menu"
                                     >
 
-                                        <section className={`${this.props.userContext.firstName && 'border-bottom mb-2'}`}>
+                                        <section className={`${this.props?.userContext?.firstName && 'border-bottom mb-2'}`}>
                                             <div>
-                                                {this.props.userContext && this.welcomeMessage(this.props?.userContext)}
+                                                {this.props?.userContext && this.welcomeMessage(this.props?.userContext)}
                                             </div>
                                         </section>
 

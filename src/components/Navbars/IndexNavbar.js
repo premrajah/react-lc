@@ -195,14 +195,14 @@ class ComponentsNavbar extends React.Component {
             .catch((error) => { });
     };
 
-    welcomeMessage = (userContext) => {
-        if (!userContext) return;
+    welcomeMessage = () => {
 
-        if (userContext.firstName) {
+
+        if (this.props?.userDetail?.firstName) {
             return (<div className="mb-2">
-                <div>Welcome <span className="blue-text text-bold">{userContext.firstName}</span> to the</div> 
-                <div>Loopcycle platform. {userContext.is_org_admin && <span>You are the Org Admin</span>}</div>
-                {userContext.is_org_admin &&  <div>for the Organization <span className="blue-text text-bold">{userContext.orgId}</span></div>}
+                <div>Welcome <span className="blue-text text-bold">{this.props?.userDetail?.firstName}</span></div> 
+                <div>{this.props?.userDetail?.is_org_admin && <span>You are logged in as Admin</span>}</div>
+                {this.props?.userDetail?.is_org_admin &&  <div>for <span className="blue-text text-bold">{this.props?.userDetail?.orgId}</span></div>}
             </div>)
         }
 
@@ -326,7 +326,7 @@ class ComponentsNavbar extends React.Component {
 
                             {this.props.isLoggedIn && (
                                 <NavItem className={"web-only "}>
-
+{console.log("uc ", this.props.userContext, " ud ",  this.props.userDetail)}
                                     <div
                                         onClick={this.handleClickMenu}
                                         className={"wl-link-white click-item"}>
@@ -334,7 +334,7 @@ class ComponentsNavbar extends React.Component {
                                             <span className={"word-user"}>
                                                 {this.props.isLoggedIn ? (
                                                     this.props.orgImage ? (
-                                                        <LightTooltip title={this.props.userDetail ? `${this.props.userDetail.email}` : "Menu"} arrow placement="left">
+                                                        <LightTooltip title={this.props?.userDetail ? this.welcomeMessage() : "Menu"} arrow placement="left">
                                                             <div
                                                                 style={{
                                                                     display: "flex",
@@ -372,7 +372,6 @@ class ComponentsNavbar extends React.Component {
                                     </div>
 
                                     <Menu
-                                        // className={"p-0"}
                                         style={{ padding: "10px!important" }}
                                         id="basic-menu"
                                         anchorEl={this.state.anchorEl}
@@ -384,13 +383,6 @@ class ComponentsNavbar extends React.Component {
                                         className="custom-dropdown-menu"
                                     >
 
-                                        <section className={`${this.props?.userContext?.firstName && 'border-bottom mb-2'}`}>
-                                            <div>
-                                                {this.props?.userContext && this.welcomeMessage(this.props?.userContext)}
-                                            </div>
-                                        </section>
-
-                                        {/*<DropdownMenu className="dropdown-with-icons">*/}
                                         <Link className={`dropdown-item`} to="/account">
                                             <i className="tim-icons icon-bullet-list-67" />
                                             Account

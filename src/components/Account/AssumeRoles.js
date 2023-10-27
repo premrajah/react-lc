@@ -45,8 +45,6 @@ class AssumeRoles extends Component {
             loadingResults: false,
             initialOrgId:null,
             initialOrgName:null
-
-
         };
 
     }
@@ -383,7 +381,6 @@ class AssumeRoles extends Component {
                             <div className="col-12 gray-border mt-2 org-box-scroll">
 
                         <PaginationLayout
-                            // dropDownValues={PRODUCTS_FILTER_VALUES_KEY}
                             hideSearch
                             hideCount
                             count={this.state.count}

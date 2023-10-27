@@ -37,7 +37,7 @@ export default function LinearProgressBarLabel({value,label,white}) {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <LinearProgressWithLabel label={label} white={white}  value={value} />
+            <LinearProgressWithLabel label={label} white="white"  value={value} />
         </Box>
     );
 }

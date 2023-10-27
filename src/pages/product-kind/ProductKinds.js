@@ -1108,9 +1108,7 @@ class ProductKinds extends Component {
                                                 <div className="col-md-3 col-sm-6  justify-content-start align-items-center">
                                                     <CheckboxWrapper
                                                         id={`${item.key}`}
-                                                        // details="When listed, product will appear in the marketplace searches"
                                                         initialValue={item.checked}
-                                                        // onChange={(checked)=>this.checkListable(checked)}
                                                         color="primary"
                                                         name={`${item.key}`}
                                                         title={`${item.value}`} />
@@ -1190,12 +1188,10 @@ class ProductKinds extends Component {
                                     <div className="col-12 ">
                                         <TextFieldWrapper
                                             numberInput
-                                            // readonly ={this.state.disableVolume}
                                             initialValue={
                                                 this.state.selectedItem &&
                                                 this.state.selectedItem.factor + ""
                                             }
-                                            // value={this.state.disableVolume?"0":""}
                                             onChange={(value) => this.handleChange(value, "count")}
                                             error={this.state.errors["count"]}
                                             placeholder={"Enter required number of Cyclecodes"}

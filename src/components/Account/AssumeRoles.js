@@ -419,9 +419,8 @@ class AssumeRoles extends Component {
                         <BlueButton
                             onClick={this.assumeRole}
                             fullWidth
-                            title={"Submit"}
-                            type={"button"}>
-
+                            title="Submit"
+                            type="button">
                         </BlueButton>
 
 

@@ -1,20 +1,17 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import {baseUrl, PRODUCTS_FILTER_VALUES_KEY} from "../../Util/Constants";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
 import PageHeader from "../../components/PageHeader";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
 import * as actionCreator from "../../store/actions/actions";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
-import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
-import {arrangeAlphabatically, fetchErrorMessage, getSite, seekAxiosGet} from "../../Util/GlobalFunctions";
+import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
+import { arrangeAlphabatically, fetchErrorMessage, seekAxiosGet } from "../../Util/GlobalFunctions";
 import MenuDropdown from "../FormsUI/MenuDropdown";
-import {removeKey, saveKey} from "../../LocalStorage/user-session";
+import { removeKey, saveKey } from "../../LocalStorage/user-session";
 import AutocompleteCustom from "../AutocompleteSearch/AutocompleteCustom";
-import AutoCompleteComboBox from "../FormsUI/ProductForm/AutoCompleteComboBox";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
 import PaginationLayout from "../IntersectionOserver/PaginationLayout";
-import ProductItem from "../Products/Item/ProductItem";
 
 class AssumeRoles extends Component {
     constructor(props) {

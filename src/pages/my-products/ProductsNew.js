@@ -7,7 +7,7 @@ import {
     baseUrl,
     ISSUES_FILTER_VALUES_KEY,
     PRODUCTS_FIELD_SELECTION,
-    PRODUCTS_FILTER_VALUES_KEY
+    PRODUCTS_FILTER_VALUES_KEY, PRODUCTS_FILTER_VALUES_KEY_DASHBOARD
 } from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
 import {Alert, Modal, ModalBody} from "react-bootstrap";
@@ -110,8 +110,11 @@ class ProductsNew extends Component {
     }
 
     showProductSelection() {
-        this.props.showProductPopUp({ type: "create_product", show: true });
+        // this.props.showProductPopUp({ type: "create_product", show: true });
+        this.props.showProductPopUp({ type: "new", show: true, parentProductId: null });
     }
+
+
 
     actionCallback = (key, action) => {
         if (action === "edit") {
@@ -232,6 +235,9 @@ class ProductsNew extends Component {
 
             if (this.props.fromCollections){
                 data.objKey="product"
+            }
+            if (this.props.fromDashboard){
+                data.headers= PRODUCTS_FILTER_VALUES_KEY_DASHBOARD
             }
 
             if (!data.sort && this.state.defaultSort) {
@@ -821,7 +827,7 @@ class ProductsNew extends Component {
 
     detectChange = () => {
 
-        if (this.props.match.params.id) {
+        if (this.props.match?.params?.id) {
             let id = this.props.match.params.id;
 
             if (id && id === "new") {
@@ -1382,8 +1388,9 @@ class ProductsNew extends Component {
                         </div>
                     ) : null}
 
-                    <div className="container  mb-150  pb-4 pt-4">
+                    <div className={`container ${this.props.fromDashboard?"":" mb-150"}  pb-4 pt-4`}>
                         {!this.props.skipPageHeader?  <PageHeader
+
                             pageIcon={CubeBlue}
                             pageTitle={this.state.selectionMode}
                             subTitle="All your added products can be found here"
@@ -1392,6 +1399,8 @@ class ProductsNew extends Component {
                         <ErrorBoundary>
                             <PaginationGrid
                                 fromCollections={this.props.fromCollections}
+                                fromDashboard={this.props.fromDashboard}
+
                                 entityType={"Product"}
                                 count={this.state.count}
                                 resetSelection={this.state.resetSelection}
@@ -1412,7 +1421,7 @@ class ProductsNew extends Component {
                                         reset: data.reset
                                     })
                                 }}
-                                actions={this.state.selectionMode && this.state.menuOptions[this.state.selectionMode].actions ?
+                                actions={this.props.fromDashboard?[]:this.state.selectionMode && this.state.menuOptions[this.state.selectionMode].actions ?
                                     this.state.menuOptions[this.state.selectionMode].actions : ["edit", "view","link"]}
                                 checkboxSelection={(this.state.selectionMode !== "Issues") && !this.state.selectAll}
                                 setMultipleSelectFlag={this.setMultipleSelectFlag}
@@ -1422,12 +1431,23 @@ class ProductsNew extends Component {
                                 loadingMore={this.state.loadingMore}
 
                             >
-                                <div className="row  d-flex align-items-center">
+                                {!this.props.fromDashboard &&  <div className="row  d-flex align-items-center">
                                     {this.state.selectedRows.length === 0 && !this.state.selectAll ? <>
                                         {/*<div className="col-md-2 btn-rows">*/}
                                         {/*   */}
                                         {/*</div>*/}
+                                        {/*    <div className="row">*/}
+                                                <div className="col-12">
+                                                    <BlueSmallBtn
+                                                        classAdd="mb-1"
+                                                        title={"Add Product"}
+                                                        onClick={() => this.showProductSelection()}
+                                                    />
+                                                </div>
+                                            {/*</div>*/}
                                         <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
+
+
 
                                             {!this.props.skipDropdown? <MenuDropdown
                                                 maxWidth={"200px"}
@@ -1515,7 +1535,7 @@ class ProductsNew extends Component {
                                         </div>
                                     }
 
-                                </div>
+                                </div>}
 
                             </PaginationGrid>
                         </ErrorBoundary>
@@ -2007,16 +2027,6 @@ class ProductsNew extends Component {
         );
     }
 }
-
-// const OptionalLayout=({skipLayout,children,...otherProps})=>{
-//
-//
-//     return (
-//         !skipLayout?<Layout {...otherProps}>{children}</Layout>:children
-//     )
-//
-//
-// }
 
 
 const mapStateToProps = (state) => {

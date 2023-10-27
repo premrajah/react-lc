@@ -90,10 +90,10 @@ class PaginationGrid extends Component {
             <>
                 {!this.props.hideSearch && (
                     <div className="row  justify-content-center search-container d-flex align-items-center  pt-3 pb-3">
-                        <div className="col-md-6 col-12 position-relative ">
+                        {!this.props.fromDashboard && <div className="col-md-6 col-12 position-relative ">
                             {children}
-                        </div>
-                            <div className="col-md-6 col-12 position-relative ">
+                        </div>}
+                            <div className={`${this.props.fromDashboard?"":"col-md-6 "}col-12 position-relative `}>
                             <SearchBox
                                 initialFilter={this.props.initialFilter}
                                 onSearch={this.handleSearch}

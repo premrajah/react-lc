@@ -128,7 +128,7 @@ class SearchBox extends Component {
         const { title, searchType, onSearch, dropDown, dropDownValues } = this.props;
         return (
             <div className="row  " style={{ right: 0, top: 0, bottom: 0 }}>
-                <div className="col-12 d-flex justify-content-end align-items-center position-relative p-0">
+                <div className="col-12 d-flex justify-content-end align-items-center position-relative pe-0">
 
                     <div
                         // onMouseEnter={()=>this.showSearchFilter(true)}

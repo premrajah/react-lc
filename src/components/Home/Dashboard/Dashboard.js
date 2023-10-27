@@ -24,6 +24,7 @@ import BlueBorderButton from "../../FormsUI/Buttons/BlueBorderButton";
 import {baseUrl} from "../../../Util/Constants";
 import axios from "axios";
 import {Spinner} from "react-bootstrap";
+import ProductsNew from "../../../pages/my-products/ProductsNew";
 // import {
 //     Chart as ChartJS,
 //     CategoryScale,
@@ -475,6 +476,9 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
     const [products, setProducts] = React.useState([]);
     const [productLoading, setProductLoading] = React.useState(false);
     const [siteLoading, setSiteLoading] = React.useState(false);
+    const [errors, setErrors] = React.useState([]);
+    const [fields, setFields] = React.useState([]);
+
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
     };
@@ -561,6 +565,11 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
 
     }
 
+    const handleChange=(value, field)=> {
+        let fieldsTmp =fields;
+        fieldsTmp[field] = value;
+       setFields(fieldsTmp)
+    }
     useEffect(()=>{
         loadProducts()
         loadSites()
@@ -570,10 +579,6 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
 
         <>
         <div className="container justify-content-center">
-            {/*<div  className="d-flex pt-4 row   justify-content-center">*/}
-            {/*    <h4>Dashboard</h4>*/}
-            {/*</div>*/}
-
 
             <div className="row  g-0 mt-4 mb-4 ">
                 <div className="col-12 rad-8 blue-chart-box bg-dark-blue ps-4 pe-4  ">
@@ -794,14 +799,13 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                     <div className="col-12">
                 <TextFieldWrapper
 
-                    // details="Describe the product your adding"
-                    initialValue="Hi, Loopcycle, I would like to upgrade by subscription."
-                    // onChange={(value)=>this.handleChangeProduct(value,"description")}
+                    initialValue="Hi, Loopcycle, I would like to upgrade my subscription."
+                    onChange={(value)=>handleChange(value,"message")}
                     // error={this.state.errors["description"]}
                     multiline
                     rows={4}
                     name="description"
-                    title="Description"
+                    title="Message"
                 />
                     </div>
                 </div>
@@ -843,25 +847,25 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
             </GlobalDialog>
 
             <GlobalDialog
-                size="sm"
+                size="md"
+                hideHeader
                 heading={"Request Embodied carbon calculations"}
                 show={showRequestEmbodiedCarbonCalPopUp}
                 hide={toggleRequestEmbodiedCarbonCalPopUp}
             >
                 <div className="col-12">
-                    <div className="row  mt-2">
+                    <div className="row  ">
                         <div className="col-12">
-                            <TextFieldWrapper
+                            {showRequestEmbodiedCarbonCalPopUp &&
+                                <ProductsNew
+                                    fromDashboard
 
-                                // details="Describe the product your adding"
-                                initialValue="Hi, Loopcycle, I would like to upgrade by subscription."
-                                // onChange={(value)=>this.handleChangeProduct(value,"description")}
-                                // error={this.state.errors["description"]}
-                                multiline
-                                rows={4}
-                                name="description"
-                                title="Description"
-                            />
+                                removePadding
+                                skipLayout
+                                skipPageHeader
+                                skipDropdown
+                                // collectionId={this.state.item?._key}
+                            />}
                         </div>
                     </div>
                     <div
@@ -876,7 +880,7 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                             <BlueButton
                                 onClick={toggleRequestEmbodiedCarbonCalPopUp}
                                 fullWidth
-                                title={"Submit"}
+                                title={"Request Report"}
                                 type={"submit"}>
 
                             </BlueButton>
@@ -914,9 +918,8 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                             <TextFieldWrapper
 
                                 // details="Describe the product your adding"
-                                initialValue="Hi, Loopcycle, I would like to upgrade by subscription."
-                                // onChange={(value)=>this.handleChangeProduct(value,"description")}
-                                // error={this.state.errors["description"]}
+                                initialValue="Hi, Loopcycle, I am requesting sustainability report for the following. "
+                                onChange={(value)=>handleChange(value,"message2")}
                                 multiline
                                 rows={4}
                                 name="description"

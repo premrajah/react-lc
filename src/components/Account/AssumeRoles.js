@@ -114,9 +114,9 @@ class AssumeRoles extends Component {
             this.setState({
                 errors: errors
             })
-        }
 
-        console.log(">> ", this.state.fields.value);
+            return
+        }
 
         // return false
         axios
@@ -191,7 +191,7 @@ class AssumeRoles extends Component {
 
             // let url = `${baseUrl}seek?name=Product&relation=belongs_to&no_parent=true&count=false&offset=${this.state.offset}&size=${this.state.pageSize}`;
 
-            let url = `${baseUrl}seek/entity/no-auth?name=Org`;
+            let url = `${baseUrl}seek/entity?name=Org`;
 
             // this.filters.forEach((item) => {
             //     url = url + `&or=${item.key}~%${item.value}%`;
@@ -238,7 +238,7 @@ class AssumeRoles extends Component {
     };
 
     seekCount = async () => {
-        let url = `${baseUrl}seek/entity/no-auth?name=Org&count=true`;
+        let url = `${baseUrl}seek/entity?name=Org&count=true`;
 
         // this.filters.forEach((item) => {
         //     url = url + `&or=${item.key}~%${item.value}%`;
@@ -252,11 +252,9 @@ class AssumeRoles extends Component {
     };
     showSubmitSite = () => {
 
-
         this.setState({
             showSubmitSite: !this.state.showSubmitSite,
         });
-
 
     }
 
@@ -304,9 +302,18 @@ class AssumeRoles extends Component {
 
                                 <MenuDropdown height={"60px"}
                                     // initialValue={"Org Id"}
-                                    setSelection={(value) => this.setState({
-                                        roleBy: value
-                                    })} options={this.state.assumeRoles}
+                                    setSelection={(value) => {
+
+                                        let values = this.state.fields;
+                                        values.value = null;
+
+                                        this.setState({
+                                            roleBy: value,
+                                            fields: values
+                                        })
+                                    }}
+                                    options={this.state.assumeRoles}
+
                                 />
 
                             </div>
@@ -325,11 +332,8 @@ class AssumeRoles extends Component {
 
                                         />
 
-
-
                                     </div>
-                                    <div className="col-4    mt-4">
-                                    </div>
+                                    <div className="col-4 mt-4" />
                                 </>
                             }
                             {(this.state.roleBy === "Org") &&

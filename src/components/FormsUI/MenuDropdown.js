@@ -7,7 +7,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useEffect } from "react";
 import ErrorBoundary from "../ErrorBoundary";
 
-import Paper from '@mui/material/Paper';
 export default function MenuDropdown(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [options, setOptions] = React.useState(props.options);

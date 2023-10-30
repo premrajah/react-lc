@@ -7,7 +7,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useEffect } from "react";
 import ErrorBoundary from "../ErrorBoundary";
 
-import Paper from '@mui/material/Paper';
 export default function MenuDropdown(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [options, setOptions] = React.useState(props.options);
@@ -28,7 +27,7 @@ export default function MenuDropdown(props) {
                 setSelectedIndex(props.options.indexOf(props.initialValue));
             }
         }
-    }, [props.initialValue,options]);
+    }, [props.initialValue, options]);
 
 
 
@@ -52,51 +51,51 @@ export default function MenuDropdown(props) {
 
     return (
         <>
-        <ErrorBoundary skip>
-            <List
-                style={{ width: "auto",backgroundColor:"none!important" }}
-                className={"p-0"}
-                component="span"
-                aria-label="Device settings"
+            <ErrorBoundary skip>
+                <List
+                    style={{ width: "auto", backgroundColor: "none!important" }}
+                    className={"p-0"}
+                    component="span"
+                    aria-label="Device settings"
 
-            >
-                <ListItem
-                    style={{ background:"none!important" }}
-                    button
-                    id="lock-button"
-                    aria-haspopup="listbox"
-                    aria-controls="lock-menu"
-                    aria-label="when device is locked"
-                    aria-expanded=
+                >
+                    <ListItem
+                        style={{ background: "none!important" }}
+                        button
+                        id="lock-button"
+                        aria-haspopup="listbox"
+                        aria-controls="lock-menu"
+                        aria-label="when device is locked"
+                        aria-expanded=
                         {open ? "true" : undefined}
-                    onClick={handleClickListItem}>
-                    {props.option ? options[selectedIndex][props.option] : options[selectedIndex]}
+                        onClick={handleClickListItem}>
+                        {props.option ? options[selectedIndex][props.option] : options[selectedIndex]}
 
-                    {/*{options[selectedIndex]}*/}
-                    <KeyboardArrowDownIcon />
-                </ListItem>
-            </List>
+                        {/*{options[selectedIndex]}*/}
+                        <KeyboardArrowDownIcon />
+                    </ListItem>
+                </List>
 
-            <Menu
-                id="lock-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
+                <Menu
+                    id="lock-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
                 // MenuListProps={{
                 //     "aria-labelledby": "lock-button",
                 //     role: "listbox",
                 // }}
-            >
-                {options.map((option, index) => (
-                    <MenuItem
-                        key={props.valueKey ? props.valueKey : option}
-                        onClick={(event) => handleMenuItemClick(event, index)}>
-                        {option.name ? option.name : option}
-                    </MenuItem>
-                ))}
-            </Menu>
+                >
+                    {options.map((option, index) => (
+                        <MenuItem
+                            key={props.valueKey ? props.valueKey : option}
+                            onClick={(event) => handleMenuItemClick(event, index)}>
+                            {option.name ? option.name : option}
+                        </MenuItem>
+                    ))}
+                </Menu>
 
-        </ErrorBoundary>
+            </ErrorBoundary>
 
         </>
     );

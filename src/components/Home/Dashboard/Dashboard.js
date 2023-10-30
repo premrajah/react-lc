@@ -422,7 +422,10 @@ export const optionsPie = {
     legend: {
         position: 'bottom',
         display:true,
-        fontColor:"#ffffff"
+        fontColor:"#ffffff",
+        labels:{
+            fontColor: "white"
+        }
     },
 
     dataLabels: {

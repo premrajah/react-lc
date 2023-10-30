@@ -24,30 +24,30 @@ class AssumeRoles extends Component {
             fields: {},
             errors: {},
             loading: false,
-            items:[],
-            roles:[],
-            showEdit:false,
-            selectedKey:null,
-            editMode:false,
-            allPerms:[],
-            selectedEditItem:null,
+            items: [],
+            roles: [],
+            showEdit: false,
+            selectedKey: null,
+            editMode: false,
+            allPerms: [],
+            selectedEditItem: null,
             showDeletePopUp: false,
             showAddPopUp: false,
-            roleBy:"Email",
-            assumeRoles:[],
-            orgs:[],
+            roleBy: "Email",
+            assumeRoles: [],
+            orgs: [],
             lastPageReached: false,
             offset: 0,
             pageSize: 20,
             loadingResults: false,
-            initialOrgId:null,
-            initialOrgName:null
+            initialOrgId: null,
+            initialOrgName: null
         };
 
     }
 
 
-    fetchAllPermissions=()=> {
+    fetchAllPermissions = () => {
         axios
             .get(baseUrl + "role/perm")
             .then(
@@ -64,10 +64,10 @@ class AssumeRoles extends Component {
             );
     }
 
-    toggleAddUser=async (loadRoles) => {
+    toggleAddUser = async (loadRoles) => {
 
         if (loadRoles)
-        this.fetchRoles()
+            this.fetchRoles()
 
         this.setState({
             showAddPopUp: !this.state.showAddPopUp,
@@ -84,14 +84,14 @@ class AssumeRoles extends Component {
 
 
         let validations = [
-            validateFormatCreate("email", [{check: Validators.required, message: 'Required'}], fields),
-            validateFormatCreate("role", [{check: Validators.required, message: 'Required'}], fields),
+            validateFormatCreate("email", [{ check: Validators.required, message: 'Required' }], fields),
+            validateFormatCreate("role", [{ check: Validators.required, message: 'Required' }], fields),
         ]
 
 
-        let {formIsValid, errors} = validateInputs(validations)
+        let { formIsValid, errors } = validateInputs(validations)
 
-        this.setState({errors: errors});
+        this.setState({ errors: errors });
         return formIsValid;
     }
 
@@ -99,20 +99,20 @@ class AssumeRoles extends Component {
 
         let fields = this.state.fields;
         fields[field] = value;
-        this.setState({fields});
+        this.setState({ fields });
 
     }
 
 
     assumeRole = (event) => {
 
-        if (!this.state.fields["value"]){
+        if (!this.state.fields["value"]) {
 
-            let errors=this.state.errors
-            errors.value={message:"Required."}
+            let errors = this.state.errors
+            errors.value = { message: "Required." }
 
             this.setState({
-                errors:errors
+                errors: errors
             })
         }
 
@@ -121,10 +121,10 @@ class AssumeRoles extends Component {
         // return false
         axios
             .post(
-                `${baseUrl}user/assume/${this.state.roleBy?this.state.roleBy==="Email"?"email":
-                    this.state.roleBy==="User Id"?"user":this.state.roleBy==="Org"?"org":"":null}`,
+                `${baseUrl}user/assume/${this.state.roleBy ? this.state.roleBy === "Email" ? "email" :
+                    this.state.roleBy === "User Id" ? "user" : this.state.roleBy === "Org" ? "org" : "" : null}`,
                 {
-                    assumed:this.state.fields["value"],
+                    assumed: this.state.fields["value"],
                 }
 
             )
@@ -132,35 +132,35 @@ class AssumeRoles extends Component {
 
                 removeKey("token")
                 // removeKey("user")
-                saveKey("assumedRole",true)
-                saveKey("roleName",this.state.fields["value"])
+                saveKey("assumedRole", true)
+                saveKey("roleName", this.state.fields["value"])
 
-                let usrObject=res.data.data
+                let usrObject = res.data.data
 
                 // delete usrObject["token"]
 
-                saveKey("token",JSON.stringify(res.data.data.token)+"")
+                saveKey("token", JSON.stringify(res.data.data.token) + "")
 
                 // saveKey("user",usrObject)
 
-                this.props.showSnackbar({show: true, severity: "success", message: "User assumed successfully. Thanks"})
+                this.props.showSnackbar({ show: true, severity: "success", message: "User assumed successfully. Thanks" })
 
-                setTimeout(function() {
+                setTimeout(function () {
 
-                    window.location.href=("/")
+                    window.location.href = ("/")
 
                 }, 1000);
 
 
             })
             .catch((error) => {
-                this.setState({isSubmitButtonPressed: false})
-                this.props.showSnackbar({show: true, severity: "error", message: fetchErrorMessage(error)})
+                this.setState({ isSubmitButtonPressed: false })
+                this.props.showSnackbar({ show: true, severity: "error", message: fetchErrorMessage(error) })
 
-            }).finally(()=>{
+            }).finally(() => {
 
-            this.toggleAddUser(false)
-        });
+                this.toggleAddUser(false)
+            });
 
 
     };
@@ -234,7 +234,7 @@ class AssumeRoles extends Component {
                 }
             }
 
-        }catch (e){console.log(e)}
+        } catch (e) { console.log(e) }
     };
 
     seekCount = async () => {
@@ -250,7 +250,7 @@ class AssumeRoles extends Component {
             count: result.data ? result.data.data : 0,
         });
     };
-    showSubmitSite=()=> {
+    showSubmitSite = () => {
 
 
         this.setState({
@@ -263,21 +263,21 @@ class AssumeRoles extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
-        let roles=[]
+        let roles = []
 
-        if(this.props.userDetail.perms.includes("LcAssumeUserRole")){
+        if (this.props.userDetail.perms.includes("LcAssumeUserRole")) {
             roles.push("Email")
         }
-        if(this.props.userDetail.perms.includes("LcAssumeOrgRole")){
+        if (this.props.userDetail.perms.includes("LcAssumeOrgRole")) {
             roles.push("Org")
         }
-        if(this.props.userDetail.perms.includes("LcAssumeUserRole")){
+        if (this.props.userDetail.perms.includes("LcAssumeUserRole")) {
             roles.push("User Id")
         }
 
         this.setState({
 
-            assumeRoles:roles
+            assumeRoles: roles
 
         })
 
@@ -288,154 +288,154 @@ class AssumeRoles extends Component {
 
     render() {
         return (
-<>
+            <>
 
-            <div className="container ">
+                <div className="container ">
 
-                <PageHeader
-                    pageTitle="Assume Roles"
-                    subTitle="Assume roles of users from different companies"
-                />
+                    <PageHeader
+                        pageTitle="Assume Roles"
+                        subTitle="Assume roles of users from different companies"
+                    />
 
-                {this.state.assumeRoles&&this.state.assumeRoles.length > 0 &&
-                <div className="row d-flex align-items-center">
+                    {this.state.assumeRoles && this.state.assumeRoles.length > 0 &&
+                        <div className="row d-flex align-items-center">
 
-                    <div className="col-3 mt-4">
+                            <div className="col-3 mt-4">
 
-                        <MenuDropdown height={"60px"}
-                                      // initialValue={"Org Id"}
-                                      setSelection={(value) => this.setState({
-                            roleBy: value
-                        })} options={this.state.assumeRoles}
-                        />
+                                <MenuDropdown height={"60px"}
+                                    // initialValue={"Org Id"}
+                                    setSelection={(value) => this.setState({
+                                        roleBy: value
+                                    })} options={this.state.assumeRoles}
+                                />
 
-                    </div>
-
-
-
-                    {(this.state.roleBy==="Email"||this.state.roleBy==="User Id")&&
-
-                        <>
-                    <div className="col-5    mt-4">
-
-                        <TextFieldWrapper
-                            onChange={(value) => this.handleChange(value, "value")}
-                            error={this.state.errors["value"]}
-                            name="value"
-
-                        />
-
-
-
-                    </div>
-                    <div className="col-4    mt-4">
-                    </div>
-                    </>
-                    }
-                    {(this.state.roleBy==="Org") &&
-                    <div className="col-9    mt-4">
-                        <div className="row mt-2  ">
-                            <div className="col-12  ">
-                        <AutocompleteCustom
-                            hideAddNew
-                            orgs={true}
-                            initialOrgName={this.state.initialOrgName}
-                            initialOrgId={this.state.initialOrgId}
-                            suggestions={this.state.orgNames}
-                            resetSelection={()=>{
-                                this.setState({
-                                    initialOrgName:null,
-                                    initialOrgId:null
-                                })
-                            }}
-                            selectedCompany={(action) => {
-                                let fields=this.state.fields
-                                fields.value=action.org
-                                this.setState({
-                                    fields:fields
-                                })
-                            }}
-                        />
-                                <p style={{ marginTop: "10px" }}>
-                                    {/*<span className="mr-1 text-gray-light">or </span>*/}
-                                    <span
-                                        onClick={this.showSubmitSite}
-                                        className={
-                                            " forgot-password-link ellipsis-end"
-                                        }>
-                                                        {this.state.showSubmitSite
-                                                            ? "Hide all"
-                                                            : "View All"}
-                                                    </span>
-                                </p>
-                            </div>
-                        </div>
-
-                        {this.state.showSubmitSite &&
-                        <div className="row mt-2   ">
-                            <div className="col-12  ">
-                        Showing {this.state.orgs.length} of {this.state.count}
                             </div>
 
-                            <div className="col-12 gray-border mt-2 org-box-scroll">
-
-                        <PaginationLayout
-                            hideSearch
-                            hideCount
-                            count={this.state.count}
-                            visibleCount={this.state.orgs.length}
-                            loadingResults={this.state.loadingResults}
-                            lastPageReached={this.state.lastPageReached}
-                            loadMore={(data) => { this.getOrgs(data)} }>
-                            {this.state.orgs.map((item, index) => (
-                                <div id={`${item.Org._key}-${index}`} key={item.Org._key + "-" + index}>
-                                    <div className="row no-gutters product-item justify-content-center  mb-4 bg-white rad-8 g-0">
-                                        <div
-                                            onClick={() => {
-                                                let fields=this.state.fields
-                                                fields.value=item.Org._key
-                                                this.setState({
-                                                    fields:fields,
-                                                    initialOrgName:item.Org.name,
-                                                    initialOrgId:item.Org._key,
 
 
-                                                })
-                                                this.showSubmitSite()
+                            {(this.state.roleBy === "Email" || this.state.roleBy === "User Id") &&
 
-                                            }}
-                                            className="col-12  "><span className={`${this.state.fields.value===item.Org._key?  "selected-green-item":""} tree-item-name`}>{item.Org.name}</span></div>
+                                <>
+                                    <div className="col-5    mt-4">
+
+                                        <TextFieldWrapper
+                                            onChange={(value) => this.handleChange(value, "value")}
+                                            error={this.state.errors["value"]}
+                                            name="value"
+
+                                        />
+
+
+
                                     </div>
+                                    <div className="col-4    mt-4">
+                                    </div>
+                                </>
+                            }
+                            {(this.state.roleBy === "Org") &&
+                                <div className="col-9    mt-4">
+                                    <div className="row mt-2  ">
+                                        <div className="col-12  ">
+                                            <AutocompleteCustom
+                                                hideAddNew
+                                                orgs={true}
+                                                initialOrgName={this.state.initialOrgName}
+                                                initialOrgId={this.state.initialOrgId}
+                                                suggestions={this.state.orgNames}
+                                                resetSelection={() => {
+                                                    this.setState({
+                                                        initialOrgName: null,
+                                                        initialOrgId: null
+                                                    })
+                                                }}
+                                                selectedCompany={(action) => {
+                                                    let fields = this.state.fields
+                                                    fields.value = action.org
+                                                    this.setState({
+                                                        fields: fields
+                                                    })
+                                                }}
+                                            />
+                                            <p style={{ marginTop: "10px" }}>
+                                                {/*<span className="mr-1 text-gray-light">or </span>*/}
+                                                <span
+                                                    onClick={this.showSubmitSite}
+                                                    className={
+                                                        " forgot-password-link ellipsis-end"
+                                                    }>
+                                                    {this.state.showSubmitSite
+                                                        ? "Hide all"
+                                                        : "View All"}
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {this.state.showSubmitSite &&
+                                        <div className="row mt-2   ">
+                                            <div className="col-12  ">
+                                                Showing {this.state.orgs.length} of {this.state.count}
+                                            </div>
+
+                                            <div className="col-12 gray-border mt-2 org-box-scroll">
+
+                                                <PaginationLayout
+                                                    hideSearch
+                                                    hideCount
+                                                    count={this.state.count}
+                                                    visibleCount={this.state.orgs.length}
+                                                    loadingResults={this.state.loadingResults}
+                                                    lastPageReached={this.state.lastPageReached}
+                                                    loadMore={(data) => { this.getOrgs(data) }}>
+                                                    {this.state.orgs.map((item, index) => (
+                                                        <div id={`${item.Org._key}-${index}`} key={item.Org._key + "-" + index}>
+                                                            <div className="row no-gutters product-item justify-content-center  mb-4 bg-white rad-8 g-0">
+                                                                <div
+                                                                    onClick={() => {
+                                                                        let fields = this.state.fields
+                                                                        fields.value = item.Org._key
+                                                                        this.setState({
+                                                                            fields: fields,
+                                                                            initialOrgName: item.Org.name,
+                                                                            initialOrgId: item.Org._key,
+
+
+                                                                        })
+                                                                        this.showSubmitSite()
+
+                                                                    }}
+                                                                    className="col-12  "><span className={`${this.state.fields.value === item.Org._key ? "selected-green-item" : ""} tree-item-name`}>{item.Org.name}</span></div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </PaginationLayout>
+
+                                            </div>
+                                        </div>}
+
+
                                 </div>
-                            ))}
-                        </PaginationLayout>
+                            }
+                            <div className="col-3 mt-4">
 
+                                <BlueButton
+                                    onClick={this.assumeRole}
+                                    fullWidth
+                                    title="Submit"
+                                    type="button">
+                                </BlueButton>
+
+
+                            </div>
                         </div>
-                        </div>}
 
-
-                    </div>
                     }
-                    <div className="col-3 mt-4">
-
-                        <BlueButton
-                            onClick={this.assumeRole}
-                            fullWidth
-                            title="Submit"
-                            type="button">
-                        </BlueButton>
 
 
-                    </div>
                 </div>
 
-                }
 
-
-            </div>
-
-
-</>
+            </>
         );
     }
 }
@@ -450,7 +450,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         showSnackbar: (data) => dispatch(actionCreator.showSnackbar(data)),
-        logOut:(data) => dispatch(actionCreator.logOut(data)),
+        logOut: (data) => dispatch(actionCreator.logOut(data)),
 
     };
 };

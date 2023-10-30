@@ -23,7 +23,7 @@ function LinearProgressWithLabel(props) {
     );
 }
 
-export default function LinearProgressBarLabel({value,label,white}) {
+export default function LinearProgressBarLabel({value,label,white,bgColor}) {
     // const [progress, setProgress] = React.useState(10);
     //
     // React.useEffect(() => {
@@ -37,7 +37,7 @@ export default function LinearProgressBarLabel({value,label,white}) {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <LinearProgressWithLabel label={label} white="white"  value={value} />
+            <LinearProgressWithLabel style={{backgroundColor:`${bgColor?bgColor:"transparent"}`}} label={label} white="white"  value={value} />
         </Box>
     );
 }

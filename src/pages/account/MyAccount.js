@@ -90,7 +90,7 @@ function MyAccount(props) {
                                             variant="scrollable"
                                             value={value}
                                             onChange={handleChange}
-                                            aria-label="Vertical tabs example"
+                                                 aria-label="Vertical tabs example"
                                             sx={{ borderRight: 1, borderColor: "divider" }}>
                                             <Tab key={0} label="Personal Information" value={0} />
                                             <Tab key={1} label="Company Information" value={1} disabled={props?.userDetail?.perms.includes("OrgRead") ? false : true} />

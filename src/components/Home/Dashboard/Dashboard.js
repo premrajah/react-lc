@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {connect} from "react-redux";
 import * as actionCreator from "../../../store/actions/actions";
-import {Bar, Line} from 'react-chartjs-2';
+import {Bar, Line, Pie} from 'react-chartjs-2';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -185,16 +185,16 @@ export const data = {
             backgroundColor: [
                 // 'rgba(255, 99, 132, 0.5)',
                 // 'rgba(54, 162, 235, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
+                '#07ad89',
+                '#ffffff',
                 // 'rgba(153, 102, 255, 0.5)',
                 // 'rgba(255, 159, 64, 0.5)',
             ],
             borderColor: [
                 // 'rgba(255, 99, 132, 1)',
                 // 'rgba(54, 162, 235, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(255, 206, 86, 1)',
+                '#07ad89',
+                '#ffffff',
 
                 // 'rgba(153, 102, 255, 1)',
                 // 'rgba(255, 159, 64, 1)',
@@ -205,19 +205,18 @@ export const data = {
             hoverBorderWidth:2,
         },
     ],
-    options: {
 
-        }
 };
 export const dataBlue = {
     labels: [ 'Unavailable','Available'],
+
     datasets: [
         {
             label: '# of Votes',
             data: [60, 40],
             backgroundColor: [
-                '#012a73',
-                "#d0f8fd"
+                '#212347',
+                "#d31169"
                 // 'rgba(255, 99, 132, 0.5)',
                 // 'rgba(54, 162, 235, 0.5)',
                 // 'rgba(75, 192, 192, 0.5)',
@@ -228,9 +227,8 @@ export const dataBlue = {
             borderColor: [
                 // 'rgba(255, 99, 132, 1)',
                 // 'rgba(54, 162, 235, 1)',
-                "#34495e",
-                "#d0f8fd"
-
+                '#212347',
+                "#d31169"
                 // 'rgba(153, 102, 255, 1)',
                 // 'rgba(255, 159, 64, 1)',
             ],
@@ -240,9 +238,7 @@ export const dataBlue = {
             hoverBorderWidth:2,
         },
     ],
-    options: {
 
-    }
 };
 
 // #447ef7
@@ -423,21 +419,23 @@ export const optionsBarWhite = {
 
 
 export const optionsPie = {
-    responsive: true,
-    // cutout:"50%",
-    // rotation: 270, // start angle in degrees
-    //  circumference: 90, // sweep angle in degrees
-    dataLabels:{
-      position:"bottom"
-    },
     legend: {
         position: 'bottom',
-        // display:false
+        display:true,
+        color:"#ffffff"
     },
-    title: {
-        // display: true,
-        text: 'Chart.js Bar Chart',
+    colors: {
+        forceOverride: true
     },
+    dataLabels: {
+        color:"#ffffff",
+        font: {
+            size: 22,
+        }
+    }
+
+
+
 };
 
 const stylesCircle=  {
@@ -620,8 +618,9 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                         <div style={{flex:1,}}  className="rad-8 mb-2 r-child position-relative p-2 bg-light-blue shadow ">
                             <p className="title-bold   text-center w-100">Embodied Carbon Calculations Completed</p>
                             <div className="pe-4 ps-4 pb-4">
-                                <LinearProgressBarLabel white={"true"} label={"Available"} value={65}/>
-                                <LinearProgressBarLabel white={"true"} label={"Unavailable"} value={35}/>
+                                {/*<Pie options={optionsPie} data={dataBlue}/>*/}
+                                <LinearProgressBarLabel bgColor={"rgb(238, 164, 198)"} white={"true"} label={"Available"} value={65}/>
+                                <LinearProgressBarLabel  bgColor={"rgb(238, 164, 198)"} white={"true"} label={"Unavailable"} value={35}/>
                             </div>
                             <div className={"w-100 d-flex text-bottom-dash position-absolute align-text-bottom justify-content-end align-items-center"}  aria-label="outlined button group">
                                 <Button onClick={toggleRequestEmbodiedCarbonCalPopUp} size={"small"}  style={{color:"white",textTransform:"unset",fontSize:"16px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0">Request More Embodied Carbon Calculations <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Button>
@@ -650,8 +649,8 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                                         <Table className="dashboard-embodied-table"  size="small" aria-label="a dense table">
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell><span  className="text-white text-bold">Product</span></TableCell>
-                                                    <TableCell align="right"><span  className="text-white text-bold">Embodied Carbon (KgC0<sub className="subs">2</sub>e)</span></TableCell>
+                                                    <TableCell sx={{px:0}} ><span  className="text-white text-bold">Product</span></TableCell>
+                                                    <TableCell sx={{px:0}} align="right"><span  className="text-white text-bold">Embodied Carbon (KgC0<sub className="subs">2</sub>e)</span></TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
@@ -663,14 +662,12 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                                                     key={product.Product._key}
                                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                 >
-                                                    <TableCell  className="text-white text-14" component="th" scope="row">
+                                                    <TableCell sx={{px:0}}  className="text-white text-14" component="th" scope="row">
                                                         <Link to={`product/${product.Product._key}`}><span style={{width:"125px"}}  className="text-left d-block ellipsis-end">   {product.Product.name}</span></Link>
                                                     </TableCell>
-                                                    <TableCell  className="text-white  text-14" align="right">12.4</TableCell>
+                                                    <TableCell sx={{px:0}} className="text-white  text-14" align="right">12.4</TableCell>
                                                 </TableRow>
-
                                                         )}
-
 
                                             </TableBody>
                                         </Table>
@@ -689,7 +686,7 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                             </div>
                         </div>
                         <div style={{flex:1}} className="rad-8 mb-2 position-relative  me-2 ms-2 r-child  bg-light-blue shadow ">
-                            <p className="title-bold  text-center mt-2 w-100 mb-0 pb-0">Total Managed Carbon by Site (KgC0<sub className="subs">2</sub>e)</p>
+                            <Link to={`sites`}> <p className="title-bold  text-center mt-2 w-100 mb-0 pb-0">Total Managed Carbon by Site (KgC0<sub className="subs">2</sub>e)</p></Link>
                             <div className="d-flex h-100 align-items-center justify-content-center">
                             <div className="pe-4 ps-4 w-100 text-center   pb-4">
 
@@ -705,7 +702,7 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
 
                                 {sites.map((site,index)=>
                                     <Link to={`ps/${site.Site._key}`} key={index}>
-                                        <LinearProgressBarLabel white={"true"}  label={site.Site.name} value={((10-index)*0.5)*10}/>
+                                        <LinearProgressBarLabel white={"true"}  label={site.Site.name} value={((10-index)*0.9)*10}/>
                                     </Link>
                                 )}
 

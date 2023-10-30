@@ -215,8 +215,9 @@ export const dataBlue = {
             label: '# of Votes',
             data: [60, 40],
             backgroundColor: [
-                '#212347',
-                "#d31169"
+                // '#212347',
+                "#d31169",
+                "#07ad89",
                 // 'rgba(255, 99, 132, 0.5)',
                 // 'rgba(54, 162, 235, 0.5)',
                 // 'rgba(75, 192, 192, 0.5)',
@@ -227,8 +228,9 @@ export const dataBlue = {
             borderColor: [
                 // 'rgba(255, 99, 132, 1)',
                 // 'rgba(54, 162, 235, 1)',
-                '#212347',
-                "#d31169"
+                // '#212347',
+                "#d31169",
+                "#07ad89",
                 // 'rgba(153, 102, 255, 1)',
                 // 'rgba(255, 159, 64, 1)',
             ],
@@ -422,19 +424,13 @@ export const optionsPie = {
     legend: {
         position: 'bottom',
         display:true,
-        fontColor:"#ffffff",
+        reverse: true,
+        // fontColor:"#ffffff",
         labels:{
             fontColor: "white"
         }
     },
 
-    dataLabels: {
-        color: '#ffffff',
-        // font: {
-        //     size: 14,
-        //     family: 'sans-serif'
-        // }
-    }
 };
 
 const stylesCircle=  {
@@ -580,20 +576,20 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
             <div className="row  g-0 mt-4 mb-4 ">
                 <div className="col-12 rad-8 blue-chart-box bg-dark-blue ps-4 pe-4  ">
                     <div style={{alignItems: "stretch!important",flexWrap:"wrap"}} className="d-flex  r-parent  pt-4  ">
-                        <div style={{flex:1, }} className="rad-8 mb-2   r-child p-2 bg-light-blue shadow ">
+                        <div style={{flex:1, }} className="rad-8 mb-2  position-relative r-child p-2 bg-light-blue shadow ">
                             <p className="title-bold text-white text-center w-100">Your registered assets</p>
                             <div className="p-0 justify-content-center">
                                 <Link to={"/my-products"}>
                                 <Speedometer blue/>
                                 </Link>
                             </div>
-                            <div className={"w-100 d-flex justify-content-between align-items-center"}  aria-label="outlined button group">
+                            <div style={{bottom: "10px", padding: "0 10px"}} className={"w-100 position-absolute d-flex justify-content-between align-items-center"}  aria-label="outlined button group">
                                <Link
                                    onClick={showProductSelection}
                                    to={"/my-products"}
-                                   size={"small"} style={{color:"white",}} className="link-hover-dash click-item d-flex justify-content-between align-items-center text-capitlize mb-0 pb-0" variant={"outlined"}>Register Asset <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Link>
+                                   size={"small"} style={{color:"white",}} className="link-hover-dash  click-item d-flex justify-content-between align-items-center text-capitlize mb-0 pb-0" variant={"outlined"}>Register Asset <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Link>
                                 <Button onClick={toggleRequestPopUp} size={"small"}
-                                        style={{color:"white",textTransform:"unset",fontSize:"16px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0"
+                                        style={{color:"white",textTransform:"unset",fontSize:"14px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0"
                                         variant={"text"}>Increase Subscription Limit <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Button>
                             </div>
                         </div>
@@ -610,7 +606,7 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                                 {/*</div>*/}
                             </div>
                             <div className={"w-100 d-flex text-bottom-dash position-absolute align-text-bottom justify-content-end align-items-center"}  aria-label="outlined button group">
-                                <Button onClick={toggleRequestSusReportPopUp} size={"small"}    style={{color:"white",textTransform:"unset",fontSize:"16px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0">Request Sustainability Report <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Button>
+                                <Button onClick={toggleRequestSusReportPopUp} size={"small"}    style={{color:"white",textTransform:"unset",fontSize:"14px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0">Request Sustainability Report <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Button>
                                 {/*<Link size={"small"} style={{color:"white"}} className="link-hover-dash d-flex justify-content-between align-items-center text-capitlize mb-0 pb-0"  variant={"outlined"}>Increase Subscription Limit <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Link>*/}
                             </div>
                         </div>
@@ -622,7 +618,7 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                                 {/*<LinearProgressBarLabel  bgColor={"rgb(238, 164, 198)"} white={"true"} label={"Unavailable"} value={35}/>*/}
                             </div>
                             <div className={"w-100 d-flex text-bottom-dash position-absolute align-text-bottom justify-content-end align-items-center"}  aria-label="outlined button group">
-                                <Button onClick={toggleRequestEmbodiedCarbonCalPopUp} size={"small"}  style={{color:"white",textTransform:"unset",fontSize:"16px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0">Request More Embodied Carbon Calculations <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Button>
+                                <Button onClick={toggleRequestEmbodiedCarbonCalPopUp} size={"small"}  style={{color:"white",textTransform:"unset",fontSize:"14px"}} className="link-hover-dash click-item d-flex  justify-content-between align-items-center text-capitlize mb-0 pb-0">Request More Embodied Carbon Calculations <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Button>
                                 {/*<Link size={"small"} style={{color:"white"}} className="link-hover-dash d-flex justify-content-between align-items-center text-capitlize mb-0 pb-0"  variant={"outlined"}>Increase Subscription Limit <ArrowForwardIos sx={{fontSize: "1rem"}} size={"small"}/></Link>*/}
                             </div>
 
@@ -751,7 +747,7 @@ const Dashboard = ({ isLoggedIn ,showProductPopUp}) => {
                                     >
                                         <Paper>
                                               <span
-                                                  style={{paddingLeft:"16px"}}
+                                                  style={{paddingLeft:"14px"}}
                                                   className="text-16 text-gray-light ml-2"
                                                   disabled={true}
                                                   onClick={handleClose}>Filter By:</span>

@@ -116,6 +116,8 @@ class AssumeRoles extends Component {
             })
         }
 
+        console.log(">> ", this.state.fields.value);
+
         // return false
         axios
             .post(
@@ -300,7 +302,7 @@ class AssumeRoles extends Component {
 
                     <div className="col-3 mt-4">
 
-                        <MenuDropdown heigt={"60px"}
+                        <MenuDropdown height={"60px"}
                                       // initialValue={"Org Id"}
                                       setSelection={(value) => this.setState({
                             roleBy: value

@@ -24,7 +24,7 @@ const EmbodiedCarbon = (props) => {
 
     const handleExportFileName = (value) => {
         if(!value) return;
-        setExportFileName(cleanFilename(value.trim()));
+        setExportFileName(value.trim());
     }
 
 
@@ -54,7 +54,7 @@ const EmbodiedCarbon = (props) => {
 
                 // const blob=await res.blob()
 
-                let output_filename = exportFileName ? `${exportFileName}.zip` : `${date}_embodied_carbon_result.zip`;
+                let output_filename = cleanFilename(exportFileName) ? `${cleanFilename(exportFileName)}.zip` : `${date}_embodied_carbon_result.zip`;
 
                 if(res.headers['x-filename'] !== null && res.headers['x-filename'] !== undefined) {
                     output_filename = res.headers['x-filename'];

@@ -1,26 +1,20 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
-import MuiAccordionSummary, {
-    AccordionSummaryProps,
-} from '@mui/material/AccordionSummary';
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ArtifactIconDisplayBasedOnMimeType from "../UploadImages/ArtifactIconDisplayBasedOnMimeType";
-import moment from "moment/moment";
-import MoreMenu from "../MoreMenu";
-import CloseIcon from "@mui/icons-material/Close";
-import {formatDate} from "@fullcalendar/react";
-import {getFileExtension, getDateFormat, getTimeFormat} from "../../Util/GlobalFunctions";
-import {AttachFile, FileCopy} from "@mui/icons-material";
+import { getFileExtension, getDateFormat, getTimeFormat } from "../../Util/GlobalFunctions";
+import { AttachFile } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
-import {baseUrl} from "../../Util/Constants";
-import {useEffect} from "react";
+import { baseUrl } from "../../Util/Constants";
+import { useEffect } from "react";
 import CustomMoreMenu from "../FormsUI/CustomMoreMenu";
 import * as actionCreator from "../../store/actions/actions";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />

@@ -8,12 +8,8 @@ import LoopcycleLogo from '../../img/logo-small.png';
 import PencilIcon from '@mui/icons-material/Edit';
 import IconBtn from "../FormsUI/Buttons/IconBtn";
 import TextFieldWrapper from "../FormsUI/ProductForm/TextField";
-import CheckboxWrapper from "../FormsUI/ProductForm/Checkbox";
-import SelectArrayWrapper from "../FormsUI/ProductForm/Select";
-import PhoneInput from "react-phone-input-2";
-import SearchPlaceAutocomplete from "../FormsUI/ProductForm/SearchPlaceAutocomplete";
 import BlueButton from "../FormsUI/Buttons/BlueButton";
-import {validateFormatCreate, validateInputs, Validators} from "../../Util/Validator";
+import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
 import CloseButtonPopUp from "../FormsUI/Buttons/CloseButtonPopUp";
 
 class AutocompleteCustom extends Component {

@@ -39,30 +39,26 @@ class DocumentAdmin extends Component {
 
 
     getPreviousDocs = async (orgId) => {
+        if(!orgId) return;
 
         this.setState({
             loading: true
         })
 
         try {
-            let prevFilesRes = await axios.get(
-                `${baseUrl}carbon/org/${orgId}`,
-            ).finally(() => {
-            });
+            let prevFilesRes = await axios.get(`${baseUrl}carbon/org/${orgId}`);
 
             if (prevFilesRes && prevFilesRes?.data?.data) {
                 console.log("inside iff", prevFilesRes)
                 this.setState({
                     uploadedFilesTmp: prevFilesRes.data.data
                 })
-            }
+            } 
 
 
         } catch (error) {
             console.log("handleUploadFileToProduct try/catch error ", error);
-            this.setState({
-                loading: false
-            })
+            this.setState({loading: false})
 
             this.props.showSnackbar({
                 show: true,
@@ -111,14 +107,20 @@ class DocumentAdmin extends Component {
                                 <div className="col-12 ">
                                     <div className="row ">
                                         <div className="col-12">
+
+                                            {
+                                                // no documents check
+                                                (this.state.uploadedFilesTmp && !this.state.uploadedFilesTmp.length > 0) && <div className="mt-3">No documents available at this time.</div>
+                                            }
+
                                             {this.state.uploadedFilesTmp.map((uploadedGroup, index) =>
-                                                <>
+                                                <React.Fragment key={index}>
                                                     <DocumentAccordians
                                                         disableEdit
                                                         uploadedGroup={uploadedGroup}
                                                         orgId={this.props.userDetail.orgId}
                                                     />
-                                                </>)}
+                                                </React.Fragment>)}
                                         </div>
                                     </div>
                                 </div>

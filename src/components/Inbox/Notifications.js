@@ -26,6 +26,7 @@ import OrgComponent from "../Org/OrgComponent";
 const REGEX_ID_ARRAY = /([\w\d]+)\/([\w\d-]+)/g;
 const ORG_REGEX = /(Org\/[\w\d\-\.@]+)/g;
 const PRODUCT_REGEX = /Product\/([\w\d]+)/g;
+const PRODUCT_KIND_REGEX = /ProductKind\/([\w\d]+)/g;
 const CYCLE_REGEX = /Cycle\/([\w\d]+)/g;
 
 
@@ -238,6 +239,18 @@ class Notifications extends Component {
                     to={`product/${match}`}
                     onClick={!flags ? () => this.messageRead(messageId) : undefined}>
                     View Product
+                </Link>
+            </>
+        ));
+
+        text = reactStringReplace(text, PRODUCT_KIND_REGEX, (match, i) => (
+            <>
+
+                <Link
+                    key={`${i}_${match}`}
+                    to={`product-kind/${match}`}
+                    onClick={!flags ? () => this.messageRead(messageId) : undefined}>
+                    View Product Kind
                 </Link>
             </>
         ));

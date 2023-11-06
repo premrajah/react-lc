@@ -1761,7 +1761,7 @@ class ProductsNew extends Component {
                 </GlobalDialog>
 
                 <GlobalDialog
-                    size="sm"
+                    size="md"
                     heading={"Link Product Request"}
                     hideHeading
                     show={this.state.showProductKindRequestPopUp}
@@ -1905,7 +1905,7 @@ class ProductsNew extends Component {
                 </GlobalDialog>
                 <GlobalDialog
                     allowScroll
-                    size={"sm"}
+                    size="md"
                     hide={this.toggleLinkProductKindPopUp}
                     show={this.state.showLinkProductKindPopUp}
                     heading={"Link Product Kind"}>
@@ -1975,7 +1975,7 @@ class ProductsNew extends Component {
 
                 <GlobalDialog
                     allowScroll
-                    size={"sm"}
+                    size="md"
                     hide={this.toggleDelinkProductKindRequestPopUp}
                     show={this.state.showDeleteLinkProductKindPopUp}
                     heading={"De-Link Product Kind"}>

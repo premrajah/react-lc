@@ -1769,7 +1769,7 @@ class ProductsNew extends Component {
                     }}
                 >
                     {this.state.showProductKindRequestPopUp ?
-                        <> <div className={"row "}>
+                        <> <div className={"row"} style={{height: "60vh"}}>
 
                             {!this.state.productKindRequestSuccess &&
 

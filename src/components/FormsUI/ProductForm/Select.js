@@ -79,7 +79,7 @@ const SelectArrayWrapper = (props) => {
                         {placeholder && <option value="" disabled>{placeholder}</option>}
 
 
-                        {options && options.map((item, index) => (
+                        {(options && options.length > 0) && options.map((item, index) => (
                             <option
                                 selected={subValueKey ? item[valueKey][subValueKey] === initialValue : valueKey ? (item[valueKey] === initialValue) : (item === initialValue)}
                                 key={subValueKey ? item[valueKey][subValueKey] : valueKey ? item[valueKey] : item}

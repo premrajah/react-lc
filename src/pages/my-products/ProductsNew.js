@@ -10,7 +10,7 @@ import {
     PRODUCTS_FILTER_VALUES_KEY, PRODUCTS_FILTER_VALUES_KEY_DASHBOARD
 } from "../../Util/Constants";
 import DownloadIcon from "@mui/icons-material/GetApp";
-import {Alert, Modal, ModalBody} from "react-bootstrap";
+import { Alert, Modal, ModalBody } from "react-bootstrap";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import { ProductsGoogleMap } from "../../components/Map/ProductsMapContainer";
@@ -19,7 +19,7 @@ import TextFieldWrapper from "../../components/FormsUI/ProductForm/TextField";
 import { validateFormatCreate, validateInputs, Validators } from "../../Util/Validator";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import CustomPopover from "../../components/FormsUI/CustomPopover";
-import {getDateFormat, getSite, removeEmptyValuesObj} from "../../Util/GlobalFunctions";
+import { getSite, removeEmptyValuesObj } from "../../Util/GlobalFunctions";
 import GlobalDialog from "../../components/RightBar/GlobalDialog";
 import BlueSmallBtn from "../../components/FormsUI/Buttons/BlueSmallBtn";
 import ProductLines from "../../components/Account/ProductLines";
@@ -33,11 +33,8 @@ import MenuDropdown from "../../components/FormsUI/MenuDropdown";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import MapIcon from "@mui/icons-material/Place";
 import AutocompleteCustom from "../../components/AutocompleteSearch/AutocompleteCustom";
-import CloseButtonPopUp from "../../components/FormsUI/Buttons/CloseButtonPopUp";
 import BlueButton from "../../components/FormsUI/Buttons/BlueButton";
 import BlueBorderButton from "../../components/FormsUI/Buttons/BlueBorderButton";
-import TextField from "@mui/material/TextField";
-import BlueBorderLink from "../../components/FormsUI/Buttons/BlueBorderLink";
 import DynamicSelectArrayWrapper from "../../components/FormsUI/ProductForm/DynamicSelect";
 
 class ProductsNew extends Component {
@@ -59,7 +56,7 @@ class ProductsNew extends Component {
             lastPageReached: false,
             offset: 0,
             pageSize: 15,
-            pageSizeDivide:3,
+            pageSizeDivide: 3,
             loadingResults: true,
             count: 0,
             showProductPopUp: false,
@@ -77,16 +74,16 @@ class ProductsNew extends Component {
             selectedSearch: null,
             queryData: {},
             initialFilter: {},
-            loadingMore:true,
-            showOrgForm:false,
-            addEmail:false,
-            showDeleteLinkProductKindPopUp:false,
-            showProductKindRequestPopUp:false,
-            productKindRequestSuccess:false,
+            loadingMore: true,
+            showOrgForm: false,
+            addEmail: false,
+            showDeleteLinkProductKindPopUp: false,
+            showProductKindRequestPopUp: false,
+            productKindRequestSuccess: false,
             menuOptions: {
-                Products: { url: "name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["edit","view","link","de-link"] },
+                Products: { url: "name=Product&no_parent=true&relation=belongs_to&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["edit", "view", "link", "de-link"] },
                 Service: { url: "name=Product&relation=service_agent_for&no_parent=true&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["view"] },
-                Requests: { url: "name=Product&relation=kind_of&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["link-request","cancel"] },
+                Requests: { url: "name=Product&relation=kind_of&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["link-request", "cancel"] },
                 Records: { url: "name=Product&relation=past_owner&no_parent=true&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["view"] },
                 Track: { url: "name=Product&relation=tracked_by&no_parent=true&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["view"] },
                 Archive: { url: "name=Product&relation=archived&no_parent=true&include-to=Site:located_at&include-from=ProductKind:kind_of", actions: ["view"] },
@@ -220,7 +217,7 @@ class ProductsNew extends Component {
 
 
             let data = {
-                dataUrl: this.state.menuOptions[queryData.type? queryData.type : "Products"].url,
+                dataUrl: this.state.menuOptions[queryData.type ? queryData.type : "Products"].url,
                 linkUrl: linkUrl,
                 linkField: queryData.type === "Issues" ? "title" : "name",
                 objKey: queryData.type === "Issues" ? "Issue" : "Product",
@@ -230,14 +227,14 @@ class ProductsNew extends Component {
                 filter: queryData.filter,
                 reset: queryData.reset,
                 sort: queryData.sort,
-                page: queryData.page?queryData.page:0
+                page: queryData.page ? queryData.page : 0
             }
 
-            if (this.props.fromCollections){
-                data.objKey="product"
+            if (this.props.fromCollections) {
+                data.objKey = "product"
             }
-            if (this.props.fromDashboard){
-                data.headers= PRODUCTS_FILTER_VALUES_KEY_DASHBOARD
+            if (this.props.fromDashboard) {
+                data.headers = PRODUCTS_FILTER_VALUES_KEY_DASHBOARD
             }
 
             if (!data.sort && this.state.defaultSort) {
@@ -518,7 +515,7 @@ class ProductsNew extends Component {
         if (key) {
             this.setState({
                 showSiteView: !this.state.showSiteView,
-                viewSiteSelected: this.props.fromCollections?this.state.items.find(item => item.product._key === key).site:getSite(this.state.items.find(item => item.Product._key === key)),
+                viewSiteSelected: this.props.fromCollections ? this.state.items.find(item => item.product._key === key).site : getSite(this.state.items.find(item => item.Product._key === key)),
             });
         } else {
             this.setState({
@@ -546,10 +543,10 @@ class ProductsNew extends Component {
                     });
                     fields.company = responseAll._key
                 }
-            ).catch(error => {});
+            ).catch(error => { });
         }
-        else{
-            fields.company=null
+        else {
+            fields.company = null
         }
 
 
@@ -565,14 +562,14 @@ class ProductsNew extends Component {
             this.setState({
                 showProductKindRequestPopUp: !this.state.showProductKindRequestPopUp,
                 productKindRequestId: key,
-                productKindRequestSuccess:false,
+                productKindRequestSuccess: false,
                 btnLoading: false,
             });
         } else {
             this.setState({
                 showProductKindRequestPopUp: !this.state.showProductKindRequestPopUp,
                 productKindRequestId: null,
-                productKindRequestSuccess:false,
+                productKindRequestSuccess: false,
                 btnLoading: false,
             });
         }
@@ -594,7 +591,7 @@ class ProductsNew extends Component {
         }
     }
 
-        showQuickViewPopUp = (key) => {
+    showQuickViewPopUp = (key) => {
 
         if (key) {
             this.setState({
@@ -614,9 +611,9 @@ class ProductsNew extends Component {
     seekCount = async (url) => {
 
 
-        if (!this.props.fromCollections){
+        if (!this.props.fromCollections) {
             url = `${url}&count=true`;
-        }else{
+        } else {
             url = `${url}/count`;
         }
 
@@ -682,7 +679,7 @@ class ProductsNew extends Component {
 
     cancelToken
 
-    loadItemsPageWise = async (data, filters,tempOffset=0,iteration=1) => {
+    loadItemsPageWise = async (data, filters, tempOffset = 0, iteration = 1) => {
 
         try {
             if (data && data.reset) {
@@ -698,17 +695,17 @@ class ProductsNew extends Component {
             }
 
             let url = ``;
-            if (this.props.fromCollections){
-                url=`${baseUrl}collection/${this.props.collectionId}/product`
-            }else{
-                 url = `${baseUrl}seek?${data.dataUrl}`;
+            if (this.props.fromCollections) {
+                url = `${baseUrl}collection/${this.props.collectionId}/product`
+            } else {
+                url = `${baseUrl}seek?${data.dataUrl}`;
             }
 
 
-            if (filters.length>0)
-            filters.forEach((item) => {
-                url = url + `&or=${item.key}~%${item.value}%`;
-            });
+            if (filters.length > 0)
+                filters.forEach((item) => {
+                    url = url + `&or=${item.key}~%${item.value}%`;
+                });
 
             this.setState({
                 activeQueryUrl: url
@@ -723,26 +720,26 @@ class ProductsNew extends Component {
             }
 
             if (this.props.fromCollections)
-            url = url + `?`;
-            let newSize = this.state.pageSize/this.state.pageSizeDivide;
+                url = url + `?`;
+            let newSize = this.state.pageSize / this.state.pageSizeDivide;
 
             this.setState({
                 loadingMore: true,
             });
-            if (iteration===1){
-                tempOffset=data.page * this.state.pageSize
+            if (iteration === 1) {
+                tempOffset = data.page * this.state.pageSize
 
-                    this.setState({
-                        items: [],
-                    })
-            } else{
+                this.setState({
+                    items: [],
+                })
+            } else {
             }
 
-            if (!this.props.fromCollections){
+            if (!this.props.fromCollections) {
                 url = `${url}&count=false`
             }
 
-            url = `${url}&offset=${tempOffset?tempOffset:0}&size=${newSize}`;
+            url = `${url}&offset=${tempOffset ? tempOffset : 0}&size=${newSize}`;
 
             if (data.sort) {
                 url = `${url}&sort_by=${data.sort.key}:${data.sort.sort.toUpperCase()}`;
@@ -782,19 +779,19 @@ class ProductsNew extends Component {
                     offset: tempOffset,
                 });
 
-                if (result.data.data.length !== 0){
+                if (result.data.data.length !== 0) {
 
-                        tempOffset=newSize+tempOffset
+                    tempOffset = newSize + tempOffset
 
                     this.setState({
                         items: this.state.items.concat(result.data ? result.data.data : []),
                     })
 
-                    if (iteration<this.state.pageSizeDivide){
+                    if (iteration < this.state.pageSizeDivide) {
 
-                        let dataTemp=data
-                        dataTemp.reset=false
-                        this.loadItemsPageWise(dataTemp,filters,tempOffset,iteration+1)
+                        let dataTemp = data
+                        dataTemp.reset = false
+                        this.loadItemsPageWise(dataTemp, filters, tempOffset, iteration + 1)
                     }
 
 
@@ -1033,7 +1030,7 @@ class ProductsNew extends Component {
         });
         event.preventDefault();
 
-        if (!this.handleValidationProductKindRequest()){
+        if (!this.handleValidationProductKindRequest()) {
             return
         }
 
@@ -1045,13 +1042,15 @@ class ProductsNew extends Component {
 
         const site = data.get("org");
 
-        console.log(this.state.productKindRequestId,site)
+        console.log(this.state.productKindRequestId, site)
 
-        let payload={ org_id: site,
-            product_id: this.state.productKindRequestId,}
+        let payload = {
+            org_id: site,
+            product_id: this.state.productKindRequestId,
+        }
 
-        if (data.get("email")){
-            payload.email=data.get("email")
+        if (data.get("email")) {
+            payload.email = data.get("email")
         }
         axios
             .post(
@@ -1085,26 +1084,26 @@ class ProductsNew extends Component {
         const data = new FormData(event.target);
 
         const productKind = data.get("product-kind");
-        
+
         axios.post(baseUrl + "product/product-kind", {
-                    product_kind_id: productKind,
-                    product_id: this.state.linkProductRequestId,
-                }).then((res) => {
-                this.setState({
-                    currentReleaseId: res.data.data._key,
-                    productKindRequestSuccess: true,
-                    btnLoading: false,
-                });
+            product_kind_id: productKind,
+            product_id: this.state.linkProductRequestId,
+        }).then((res) => {
+            this.setState({
+                currentReleaseId: res.data.data._key,
+                productKindRequestSuccess: true,
+                btnLoading: false,
+            });
 
-                this.toggleLinkProductKindPopUp()
-                this.props.showSnackbar({
-                    show: true,
-                    severity: "success",
-                    message: "Product kind added successfully.",
-                });
-                this.props.refreshPageWithSavedState( {refresh:true,reset: true})
+            this.toggleLinkProductKindPopUp()
+            this.props.showSnackbar({
+                show: true,
+                severity: "success",
+                message: "Product kind added successfully.",
+            });
+            this.props.refreshPageWithSavedState({ refresh: true, reset: true })
 
-            })
+        })
             .catch((error) => {
                 this.setState({
                     errorRequest: error.response.data.errors[0].message,
@@ -1135,7 +1134,7 @@ class ProductsNew extends Component {
 
 
         axios
-            .delete(baseUrl + "product/"+this.state.productRequestId+"/product-kind",)
+            .delete(baseUrl + "product/" + this.state.productRequestId + "/product-kind",)
             .then((res) => {
 
                 this.toggleDelinkProductKindRequestPopUp()
@@ -1146,7 +1145,7 @@ class ProductsNew extends Component {
                     message: "Product kind removed successfully.",
                     btnLoading: false,
                 });
-                this.props.refreshPageWithSavedState( {refresh:true,reset: true})
+                this.props.refreshPageWithSavedState({ refresh: true, reset: true })
             })
             .catch((error) => {
                 this.setState({
@@ -1185,23 +1184,23 @@ class ProductsNew extends Component {
         let fields = this.state.fields;
 
         let validations = [
-            validateFormatCreate("company", [{check: Validators.required, message: 'Required'}],fields),
+            validateFormatCreate("company", [{ check: Validators.required, message: 'Required' }], fields),
 
         ];
 
         if (this.state.addEmail)
-        validations.push(validateFormatCreate(
-            "email",
-            [
-                { check: Validators.required, message: "Required" },
-                { check: Validators.email, message: "Email is not valid" },
-            ],
-            fields
-        ),)
+            validations.push(validateFormatCreate(
+                "email",
+                [
+                    { check: Validators.required, message: "Required" },
+                    { check: Validators.email, message: "Email is not valid" },
+                ],
+                fields
+            ),)
 
         let { formIsValid, errors } = validateInputs(validations);
 
-        console.log(fields,errors)
+        console.log(fields, errors)
         this.setState({ errors: errors });
         return formIsValid;
     }
@@ -1306,244 +1305,244 @@ class ProductsNew extends Component {
         return (
 
             <>
-            <Layout
-                skipLayout={this.props.skipLayout}
-                sendParams={this.initializeData}
-                params={{ type: this.state.selectionMode, filter: this.state.selectedFilter, keyword: this.state.selectedSearch }}
-            >
-                <>
-                    {this.state.selectedProducts.length > 0 ? (
-                        <div
-                            className="sticky-top-csv slide-rl"
-                            style={{ top: "68px", position: "fixed", zIndex: "100" }}>
+                <Layout
+                    skipLayout={this.props.skipLayout}
+                    sendParams={this.initializeData}
+                    params={{ type: this.state.selectionMode, filter: this.state.selectedFilter, keyword: this.state.selectedSearch }}
+                >
+                    <>
+                        {this.state.selectedProducts.length > 0 ? (
                             <div
-                                className="float-right me-1 p-3"
-                                style={{
-                                    width: "240px",
-                                    maxWidth: "300px",
-                                    height: "auto",
-                                    boxShadow: "0 2px 30px 0 rgba(0,0,0,.15)",
-                                    backgroundColor: "#fff",
-                                }}>
+                                className="sticky-top-csv slide-rl"
+                                style={{ top: "68px", position: "fixed", zIndex: "100" }}>
                                 <div
-                                    className="row no-gutters mb-2 pb-2 "
-                                    style={{ borderBottom: "1px solid #70707062" }}>
-                                    <div className="col-12  ">
-                                        <a
-                                            href
-                                            onClick={this.getSitesForProducts}
-                                            className=" btn-sm btn-gray-border  me-2">
-                                            {/*<MapIcon style={{fontSize:"20px"}} /> */}
-                                            Locations
-                                        </a>
-
-
-                                        <BlueSmallBtn
-                                            title={"CSV"}
-
-                                            onClick={() => this.fieldSelection()}
-
-                                        >
-                                            <DownloadIcon style={{ fontSize: "20px" }} />
-                                        </BlueSmallBtn>
-
-
-                                    </div>
-                                </div>
-                                <div className="row  no-gutters mb-1">
-                                    <div className="col blue-text">Selected Products</div>
-                                    <button
-                                        className=" btn-pink "
-                                        onClick={() => this.setState({ selectedProducts: [] })}>
-                                        <>Clear</>
-                                    </button>
-                                </div>
-
-                                <div
-                                    className="row"
-                                    style={{ overflowY: "auto", maxHeight: "250px" }}>
-                                    <div className="col">
-                                        {this.state.selectedProducts.map((product, index) => (
-                                            <div
-                                                key={index}
-                                                onClick={() =>
-                                                    this.removeFromSelectedProducts(index)
-                                                }
-                                                style={{
-                                                    cursor: "pointer",
-                                                    textOverflow: "ellipsis",
-                                                    whiteSpace: "nowrap",
-                                                    overflow: "hidden",
-                                                }}>
-                                                <IndeterminateCheckBoxIcon
-                                                    style={{ opacity: "0.5" }}
-                                                    className={"text-blue"}
-                                                />
-                                                {product.Product.name}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ) : null}
-
-                    <div className={`container ${this.props.fromDashboard?"":" mb-150"}  pb-4 pt-4`}>
-                        {!this.props.skipPageHeader?  <PageHeader
-
-                            pageIcon={CubeBlue}
-                            pageTitle={this.state.selectionMode}
-                            subTitle="All your added products can be found here"
-                        />:<></>}
-
-                        <ErrorBoundary>
-                            <PaginationGrid
-                                fromCollections={this.props.fromCollections}
-                                fromDashboard={this.props.fromDashboard}
-
-                                entityType={"Product"}
-                                count={this.state.count}
-                                resetSelection={this.state.resetSelection}
-                                items={this.state.items}
-                                pageSize={this.state.pageSize}
-                                offset={this.state.offset}
-                                visibleCount={this.state.items.length}
-                                // loading={this.state.loadingResults}
-                                lastPageReached={this.state.lastPageReached}
-                                currentPage={this.state.queryData.page ? this.state.queryData.page : 0}
-                                loadMore={(data) => {
-                                    this.setQueryData({
-                                        type: this.state.selectionMode,
-                                        filter: data.searchFilter,
-                                        keyword: data.searchValue,
-                                        sort: data.sort,
-                                        page: data.newPage,
-                                        reset: data.reset
-                                    })
-                                }}
-                                actions={this.props.fromDashboard?[]:this.state.selectionMode && this.state.menuOptions[this.state.selectionMode].actions ?
-                                    this.state.menuOptions[this.state.selectionMode].actions : ["edit", "view","link"]}
-                                checkboxSelection={(this.state.selectionMode !== "Issues") && !this.state.selectAll}
-                                setMultipleSelectFlag={this.setMultipleSelectFlag}
-                                actionCallback={this.actionCallback}
-                                data={this.state.queryData}
-                                initialFilter={this.state.initialFilter}
-                                loadingMore={this.state.loadingMore}
-
-                            >
-                                {!this.props.fromDashboard &&  <div className="row  d-flex align-items-center">
-                                    {this.state.selectedRows.length === 0 && !this.state.selectAll ? <>
-                                        {/*<div className="col-md-2 btn-rows">*/}
-                                        {/*   */}
-                                        {/*</div>*/}
-                                        {/*    <div className="row">*/}
-                                                <div className="col-12">
-                                                    <BlueSmallBtn
-                                                        classAdd="mb-1"
-                                                        title={"Add Product"}
-                                                        onClick={() => this.showProductSelection()}
-                                                    />
-                                                </div>
-                                            {/*</div>*/}
-                                        <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
-
-
-
-                                            {!this.props.skipDropdown? <MenuDropdown
-                                                maxWidth={"200px"}
-                                                initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
-                                                setSelection={this.setSelection}
-                                                options={["Products", "Service", "Requests","Records", "Track", "Issues", "Archive"]}
-                                            />:<></>}
-                                            {!this.props.skipDropdown &&this.state.selectionMode !== "Issues" &&
-                                                <>
-                                                    <div className="me-2">
-                                                        <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
-
-                                                            <BlueSmallBtn
-                                                                classAdd="mb-1"
-                                                                title={"Download Open Cyclecodes"}
-                                                                onClick={() => this.toggleDownloadQrCodes()}
-                                                            >
-
-                                                            </BlueSmallBtn>
-                                                        </CustomPopover>
-                                                    </div>
-                                                    {/*<div className="me-2">*/}
-                                                    {/*    <CustomPopover text={"Export all products to csv."}>*/}
-                                                    {/*        <BlueSmallBtn*/}
-                                                    {/*            classAdd="mb-1"*/}
-                                                    {/*            title={"Export To CSV"}*/}
-                                                    {/*            // disabled={this.state.downloadAllLoading}*/}
-                                                    {/*            // progressLoading={this.state.downloadAllLoading}*/}
-                                                    {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
-                                                    {/*            // onClick={()=>this.downloadAll(0,100)}*/}
-                                                    {/*            onClick={this.fieldSelection}*/}
-                                                    {/*        >*/}
-
-                                                    {/*        </BlueSmallBtn>*/}
-                                                    {/*    </CustomPopover>*/}
-                                                    {/*</div>*/}
-                                                    <div className="me-2">
-                                                        <CustomPopover text={"Add Product Lines"}>
-                                                            <BlueSmallBtn
-                                                                classAdd="mb-1"
-                                                                onClick={this.addProductLine}>
-                                                                Product Lines
-                                                            </BlueSmallBtn>
-                                                        </CustomPopover>
-                                                    </div>
-                                                </>}
-                                        </div>
-                                    </> :
-
-                                        <div className="col-md-12 d-flex ">
-                                            {this.state.selectAll ?
-                                                <>{this.state.count} selected
-                                                    <span onClick={() => this.selectAll()} className="ms-1 click-item text-bold text-underline">Clear Selection</span>
-                                                </> : <></>}
-                                            {!this.state.selectAll &&
-                                                <BlueSmallBtn
-                                                    classAdd={'ms-2  '}
-                                                    title={`${!this.state.selectAll ? "Select All (" + this.state.count + ")" : "Unselect All (" + this.state.count + ")"}`}
-                                                    onClick={() => this.selectAll()}
-                                                >
-                                                </BlueSmallBtn>}
+                                    className="float-right me-1 p-3"
+                                    style={{
+                                        width: "240px",
+                                        maxWidth: "300px",
+                                        height: "auto",
+                                        boxShadow: "0 2px 30px 0 rgba(0,0,0,.15)",
+                                        backgroundColor: "#fff",
+                                    }}>
+                                    <div
+                                        className="row no-gutters mb-2 pb-2 "
+                                        style={{ borderBottom: "1px solid #70707062" }}>
+                                        <div className="col-12  ">
+                                            <a
+                                                href
+                                                onClick={this.getSitesForProducts}
+                                                className=" btn-sm btn-gray-border  me-2">
+                                                {/*<MapIcon style={{fontSize:"20px"}} /> */}
+                                                Locations
+                                            </a>
 
 
                                             <BlueSmallBtn
-                                                classAdd={'ms-2 align-items-center d-flex'}
-                                                onClick={() => {
-                                                    if (this.state.selectAll) {
-                                                        this.downloadAll(0, 100, [], "location")
-                                                    } else {
-                                                        this.getSitesForProducts()
-                                                    }
-                                                }}
-                                                title={this.state.downloadAllLoading ? "Loading.. " : " Locations"}
+                                                title={"CSV"}
+
+                                                onClick={() => this.fieldSelection()}
+
                                             >
-                                                {!this.state.downloadAllLoading ? <MapIcon style={{ fontSize: "20px" }} /> : <><CircularProgressWithLabel textSize={10} size={24} value={this.state.downloadAllLoading ? ((this.state.allDownloadItems.length / this.state.count) * 100) : 0} /></>}
-                                            </BlueSmallBtn>
-
-                                            <BlueSmallBtn
-                                                classAdd={'ms-2'}
-                                                title={"Export To CSV"}
-                                                onClick={() => this.fieldSelection()}>
                                                 <DownloadIcon style={{ fontSize: "20px" }} />
                                             </BlueSmallBtn>
 
+
                                         </div>
-                                    }
+                                    </div>
+                                    <div className="row  no-gutters mb-1">
+                                        <div className="col blue-text">Selected Products</div>
+                                        <button
+                                            className=" btn-pink "
+                                            onClick={() => this.setState({ selectedProducts: [] })}>
+                                            <>Clear</>
+                                        </button>
+                                    </div>
 
-                                </div>}
+                                    <div
+                                        className="row"
+                                        style={{ overflowY: "auto", maxHeight: "250px" }}>
+                                        <div className="col">
+                                            {this.state.selectedProducts.map((product, index) => (
+                                                <div
+                                                    key={index}
+                                                    onClick={() =>
+                                                        this.removeFromSelectedProducts(index)
+                                                    }
+                                                    style={{
+                                                        cursor: "pointer",
+                                                        textOverflow: "ellipsis",
+                                                        whiteSpace: "nowrap",
+                                                        overflow: "hidden",
+                                                    }}>
+                                                    <IndeterminateCheckBoxIcon
+                                                        style={{ opacity: "0.5" }}
+                                                        className={"text-blue"}
+                                                    />
+                                                    {product.Product.name}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
 
-                            </PaginationGrid>
-                        </ErrorBoundary>
+                        <div className={`container ${this.props.fromDashboard ? "" : " mb-150"}  pb-4 pt-4`}>
+                            {!this.props.skipPageHeader ? <PageHeader
 
-                    </div>
-                </>
+                                pageIcon={CubeBlue}
+                                pageTitle={this.state.selectionMode}
+                                subTitle="All your added products can be found here"
+                            /> : <></>}
 
-            </Layout>
+                            <ErrorBoundary>
+                                <PaginationGrid
+                                    fromCollections={this.props.fromCollections}
+                                    fromDashboard={this.props.fromDashboard}
+
+                                    entityType={"Product"}
+                                    count={this.state.count}
+                                    resetSelection={this.state.resetSelection}
+                                    items={this.state.items}
+                                    pageSize={this.state.pageSize}
+                                    offset={this.state.offset}
+                                    visibleCount={this.state.items.length}
+                                    // loading={this.state.loadingResults}
+                                    lastPageReached={this.state.lastPageReached}
+                                    currentPage={this.state.queryData.page ? this.state.queryData.page : 0}
+                                    loadMore={(data) => {
+                                        this.setQueryData({
+                                            type: this.state.selectionMode,
+                                            filter: data.searchFilter,
+                                            keyword: data.searchValue,
+                                            sort: data.sort,
+                                            page: data.newPage,
+                                            reset: data.reset
+                                        })
+                                    }}
+                                    actions={this.props.fromDashboard ? [] : this.state.selectionMode && this.state.menuOptions[this.state.selectionMode].actions ?
+                                        this.state.menuOptions[this.state.selectionMode].actions : ["edit", "view", "link"]}
+                                    checkboxSelection={(this.state.selectionMode !== "Issues") && !this.state.selectAll}
+                                    setMultipleSelectFlag={this.setMultipleSelectFlag}
+                                    actionCallback={this.actionCallback}
+                                    data={this.state.queryData}
+                                    initialFilter={this.state.initialFilter}
+                                    loadingMore={this.state.loadingMore}
+
+                                >
+                                    {!this.props.fromDashboard && <div className="row  d-flex align-items-center">
+                                        {this.state.selectedRows.length === 0 && !this.state.selectAll ? <>
+                                            {/*<div className="col-md-2 btn-rows">*/}
+                                            {/*   */}
+                                            {/*</div>*/}
+                                            {/*    <div className="row">*/}
+                                            <div className="col-12">
+                                                <BlueSmallBtn
+                                                    classAdd="mb-1"
+                                                    title={"Add Product"}
+                                                    onClick={() => this.showProductSelection()}
+                                                />
+                                            </div>
+                                            {/*</div>*/}
+                                            <div className="col-md-12 col-12 d-flex " style={{ flexFlow: "wrap" }}>
+
+
+
+                                                {!this.props.skipDropdown ? <MenuDropdown
+                                                    maxWidth={"200px"}
+                                                    initialValue={this.state.initialFilter.type ? this.state.initialFilter.type : null}
+                                                    setSelection={this.setSelection}
+                                                    options={["Products", "Service", "Requests", "Records", "Track", "Issues", "Archive"]}
+                                                /> : <></>}
+                                                {!this.props.skipDropdown && this.state.selectionMode !== "Issues" &&
+                                                    <>
+                                                        <div className="me-2">
+                                                            <CustomPopover text=" Cyclecode is a unique product’s ID. An open Cyclecode isn’t attached to a specific product yet, allowing you to print multiple stickers before assigning them to products.">
+
+                                                                <BlueSmallBtn
+                                                                    classAdd="mb-1"
+                                                                    title={"Download Open Cyclecodes"}
+                                                                    onClick={() => this.toggleDownloadQrCodes()}
+                                                                >
+
+                                                                </BlueSmallBtn>
+                                                            </CustomPopover>
+                                                        </div>
+                                                        {/*<div className="me-2">*/}
+                                                        {/*    <CustomPopover text={"Export all products to csv."}>*/}
+                                                        {/*        <BlueSmallBtn*/}
+                                                        {/*            classAdd="mb-1"*/}
+                                                        {/*            title={"Export To CSV"}*/}
+                                                        {/*            // disabled={this.state.downloadAllLoading}*/}
+                                                        {/*            // progressLoading={this.state.downloadAllLoading}*/}
+                                                        {/*            // progressValue={this.state.downloadAllLoading?((this.state.allDownloadItems.length/this.state.count)*100):0}*/}
+                                                        {/*            // onClick={()=>this.downloadAll(0,100)}*/}
+                                                        {/*            onClick={this.fieldSelection}*/}
+                                                        {/*        >*/}
+
+                                                        {/*        </BlueSmallBtn>*/}
+                                                        {/*    </CustomPopover>*/}
+                                                        {/*</div>*/}
+                                                        <div className="me-2">
+                                                            <CustomPopover text={"Add Product Lines"}>
+                                                                <BlueSmallBtn
+                                                                    classAdd="mb-1"
+                                                                    onClick={this.addProductLine}>
+                                                                    Product Lines
+                                                                </BlueSmallBtn>
+                                                            </CustomPopover>
+                                                        </div>
+                                                    </>}
+                                            </div>
+                                        </> :
+
+                                            <div className="col-md-12 d-flex ">
+                                                {this.state.selectAll ?
+                                                    <>{this.state.count} selected
+                                                        <span onClick={() => this.selectAll()} className="ms-1 click-item text-bold text-underline">Clear Selection</span>
+                                                    </> : <></>}
+                                                {!this.state.selectAll &&
+                                                    <BlueSmallBtn
+                                                        classAdd={'ms-2  '}
+                                                        title={`${!this.state.selectAll ? "Select All (" + this.state.count + ")" : "Unselect All (" + this.state.count + ")"}`}
+                                                        onClick={() => this.selectAll()}
+                                                    >
+                                                    </BlueSmallBtn>}
+
+
+                                                <BlueSmallBtn
+                                                    classAdd={'ms-2 align-items-center d-flex'}
+                                                    onClick={() => {
+                                                        if (this.state.selectAll) {
+                                                            this.downloadAll(0, 100, [], "location")
+                                                        } else {
+                                                            this.getSitesForProducts()
+                                                        }
+                                                    }}
+                                                    title={this.state.downloadAllLoading ? "Loading.. " : " Locations"}
+                                                >
+                                                    {!this.state.downloadAllLoading ? <MapIcon style={{ fontSize: "20px" }} /> : <><CircularProgressWithLabel textSize={10} size={24} value={this.state.downloadAllLoading ? ((this.state.allDownloadItems.length / this.state.count) * 100) : 0} /></>}
+                                                </BlueSmallBtn>
+
+                                                <BlueSmallBtn
+                                                    classAdd={'ms-2'}
+                                                    title={"Export To CSV"}
+                                                    onClick={() => this.fieldSelection()}>
+                                                    <DownloadIcon style={{ fontSize: "20px" }} />
+                                                </BlueSmallBtn>
+
+                                            </div>
+                                        }
+
+                                    </div>}
+
+                                </PaginationGrid>
+                            </ErrorBoundary>
+
+                        </div>
+                    </>
+
+                </Layout>
 
 
                 <GlobalDialog
@@ -1722,13 +1721,13 @@ class ProductsNew extends Component {
                             <div className="col-12">
                                 {this.state.viewSiteSelected && this.state.viewSiteSelected.geo_codes && this.state.viewSiteSelected.geo_codes.length > 0 &&
                                     <GoogleMap searchLocation
-                                               siteId={this.state.viewSiteSelected._key}
-                                               width={"100%"} height={"300px"}
-                                               location={{
-                                                   name: `${this.state.viewSiteSelected.name}`,
-                                                   location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
-                                                   isCenter: true
-                                               }} />}
+                                        siteId={this.state.viewSiteSelected._key}
+                                        width={"100%"} height={"300px"}
+                                        location={{
+                                            name: `${this.state.viewSiteSelected.name}`,
+                                            location: this.state.viewSiteSelected.geo_codes[0].address_info.geometry.location,
+                                            isCenter: true
+                                        }} />}
                             </div>
                         }
                     </div>
@@ -1772,135 +1771,135 @@ class ProductsNew extends Component {
                     {this.state.showProductKindRequestPopUp ?
                         <> <div className={"row "}>
 
-                        {!this.state.productKindRequestSuccess &&
+                            {!this.state.productKindRequestSuccess &&
 
-                            <>
-                                <div className={"col-12 mt-3 "}>
-                                    <div style={{position:"relative"}} className="text_fild ">
-                                        <div
-                                            className="custom-label text-bold ellipsis-end text-blue mb-0">Search company
-                                        </div>
-                                        <AutocompleteCustom
-                                            filterOrgs={[{_id:this.props.userDetail.orgId}]}
-                                            orgs={true}
-                                            companies={true}
-                                            suggestions={this.state.orgNames}
-                                            selectedCompany={(action) =>
-                                                this.companyDetails(action)}
-                                        />
-                                        { this.state.errors["company"] &&<span style={{color: "rgb(244, 67, 54)"}} className="text-danger">Required</span>}
-                                    </div>
-                                </div>
-
-                                <div className={"col-12 "}>
-                            <form onSubmit={this.createLinkProductKindRequest}>
-                                <div className={"row justify-content-center "}>
-                                    <div className={"col-12  "}>
-                                     <p style={{ marginTop: "10px" }}>
-
-                                        <span
-                                            onClick={()=>this.setState({
-                                                addEmail:!this.state.addEmail
-                                            })}
-                                            className={" forgot-password-link ellipsis-end"}>{this.state.addEmail?"Hide email" : "Add email"}
-                                                    </span>
-                                    </p>
-                                    </div>
-                                    {this.state.addEmail&&
-                                        <div className={"col-12 mt-3 "}>
-                                        <TextFieldWrapper
-                                            onChange={(value) => this.handleChangeRequest(value,"email", )}
-                                            error={this.state.errors["email"]}
-                                            name="email"
-                                            title="Email"
-                                        />
-                                    </div>}
-                                    <div className={"col-12 text-center mt-2"}>
-                                        <div className={"row no-gutters justify-content-center"}>
-                                            <div className={"col-12 text-center "}>
-                                                <input
-                                                    className={"d-none"}
-                                                    value={this.state.org_id}
-                                                    name={"org"}
-                                                />
+                                <>
+                                    <div className={"col-12 mt-3 "}>
+                                        <div style={{ position: "relative" }} className="text_fild ">
+                                            <div
+                                                className="custom-label text-bold ellipsis-end text-blue mb-0">Search company
                                             </div>
-                                            {this.state.errorRequest && (
-                                                <div
-                                                    className={
-                                                        "row justify-content-center"
-                                                    }>
-                                                    <div
-                                                        className={"col-12 mt-4 mb-4"}
-                                                        style={{ textAlign: "center" }}>
-                                                        <Alert
-                                                            key={"alert"}
-                                                            variant={"danger"}>
-                                                            {this.state.errorRequest}
-                                                        </Alert>
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                                <div
-                                                    className={
-                                                        "col-12 justify-content-center mt-3 "
-                                                    }>
-                                                    <div
-                                                        className={
-                                                            "row justify-content-center"
-                                                        }>
-                                                        <div
-                                                            className={"col-6"}
-                                                            style={{
-                                                                textAlign: "center",
-                                                            }}>
-
-                                                                <BlueButton
-                                                                    disabled={this.state.btnLoading}
-                                                                    loading={this.state.btnLoading}
-                                                                    fullWidth
-                                                                    title={"Submit"}
-                                                                    type={"submit"}>
-
-                                                                </BlueButton>
-                                                        </div>
-                                                        <div
-                                                            className={"col-6 "}
-                                                            style={{
-                                                                textAlign: "center",
-                                                            }}>
-                                                            <BlueBorderButton
-                                                                type="button"
-                                                                fullWidth
-                                                                title={"Cancel"}
-                                                                onClick={this.toggleProductKindRequestPopUp}
-                                                            >
-                                                            </BlueBorderButton>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
+                                            <AutocompleteCustom
+                                                filterOrgs={[{ _id: this.props.userDetail.orgId }]}
+                                                orgs={true}
+                                                companies={true}
+                                                suggestions={this.state.orgNames}
+                                                selectedCompany={(action) =>
+                                                    this.companyDetails(action)}
+                                            />
+                                            {this.state.errors["company"] && <span style={{ color: "rgb(244, 67, 54)" }} className="text-danger">Required</span>}
                                         </div>
                                     </div>
+
+                                    <div className={"col-12 "}>
+                                        <form onSubmit={this.createLinkProductKindRequest}>
+                                            <div className={"row justify-content-center "}>
+                                                <div className={"col-12  "}>
+                                                    <p style={{ marginTop: "10px" }}>
+
+                                                        <span
+                                                            onClick={() => this.setState({
+                                                                addEmail: !this.state.addEmail
+                                                            })}
+                                                            className={" forgot-password-link ellipsis-end"}>{this.state.addEmail ? "Hide email" : "Add email"}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                {this.state.addEmail &&
+                                                    <div className={"col-12 mt-3 "}>
+                                                        <TextFieldWrapper
+                                                            onChange={(value) => this.handleChangeRequest(value, "email",)}
+                                                            error={this.state.errors["email"]}
+                                                            name="email"
+                                                            title="Email"
+                                                        />
+                                                    </div>}
+                                                <div className={"col-12 text-center mt-2"}>
+                                                    <div className={"row no-gutters justify-content-center"}>
+                                                        <div className={"col-12 text-center "}>
+                                                            <input
+                                                                className={"d-none"}
+                                                                value={this.state.org_id}
+                                                                name={"org"}
+                                                            />
+                                                        </div>
+                                                        {this.state.errorRequest && (
+                                                            <div
+                                                                className={
+                                                                    "row justify-content-center"
+                                                                }>
+                                                                <div
+                                                                    className={"col-12 mt-4 mb-4"}
+                                                                    style={{ textAlign: "center" }}>
+                                                                    <Alert
+                                                                        key={"alert"}
+                                                                        variant={"danger"}>
+                                                                        {this.state.errorRequest}
+                                                                    </Alert>
+                                                                </div>
+                                                            </div>
+                                                        )}
+
+                                                        <div
+                                                            className={
+                                                                "col-12 justify-content-center mt-3 "
+                                                            }>
+                                                            <div
+                                                                className={
+                                                                    "row justify-content-center"
+                                                                }>
+                                                                <div
+                                                                    className={"col-6"}
+                                                                    style={{
+                                                                        textAlign: "center",
+                                                                    }}>
+
+                                                                    <BlueButton
+                                                                        disabled={this.state.btnLoading}
+                                                                        loading={this.state.btnLoading}
+                                                                        fullWidth
+                                                                        title={"Submit"}
+                                                                        type={"submit"}>
+
+                                                                    </BlueButton>
+                                                                </div>
+                                                                <div
+                                                                    className={"col-6 "}
+                                                                    style={{
+                                                                        textAlign: "center",
+                                                                    }}>
+                                                                    <BlueBorderButton
+                                                                        type="button"
+                                                                        fullWidth
+                                                                        title={"Cancel"}
+                                                                        onClick={this.toggleProductKindRequestPopUp}
+                                                                    >
+                                                                    </BlueBorderButton>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </>
+                            }
+
+                            {this.state.productKindRequestSuccess && (
+                                <div className={"row justify-content-center"}>
+                                    <div className={"col-12 mt-4 mb-3 text-center"}>
+                                        <Alert key={"alert"} variant={"success"}>
+                                            Your product kind request has been submitted successfully. Thanks
+                                        </Alert>
+                                    </div>
                                 </div>
-                            </form>
+                            )}
+
+
                         </div>
-                        </>
-                        }
-
-                        {this.state.productKindRequestSuccess && (
-                            <div className={"row justify-content-center"}>
-                                <div className={"col-12 mt-4 mb-3 text-center"}>
-                                    <Alert key={"alert"} variant={"success"}>
-                                        Your product kind request has been submitted successfully. Thanks
-                                    </Alert>
-                                </div>
-                            </div>
-                        )}
-
-
-                    </div>
-                    </>:<></>}
+                        </> : <></>}
 
                 </GlobalDialog>
                 <GlobalDialog
@@ -1909,41 +1908,41 @@ class ProductsNew extends Component {
                     hide={this.toggleLinkProductKindPopUp}
                     show={this.state.showLinkProductKindPopUp}
                     heading={"Link Product Kind"}>
-                    {this.state.showLinkProductKindPopUp&&<>
-                    <form onSubmit={this.approveLinkProductKindRequest}>
+                    {this.state.showLinkProductKindPopUp && <>
+                        <form onSubmit={this.approveLinkProductKindRequest}>
 
-                        <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12 ">
+                            <div className="col-lg-12 col-md-6 col-sm-12 col-xs-12 ">
 
-                            <DynamicSelectArrayWrapper
-                                editMode
-                                // onChange={(value)=>this.handleChangeProduct(value,`deliver`)}
-                                api={""}
-                                error={this.state.errors[`product-kind`]}
-                                name={`product-kind`}
-                                // options={this.props.siteList}
-                                apiUrl={baseUrl+"seek?name=ProductKind&no_parent=true"}
-                                option={"ProductKind"}
-                                subOption={"name"}
-                                searchKey={"name"}
-                                valueKey={"ProductKind"}
-                                subValueKey={"_key"}
-                                title="Select Product Kind"
+                                <DynamicSelectArrayWrapper
+                                    editMode
+                                    // onChange={(value)=>this.handleChangeProduct(value,`deliver`)}
+                                    api={""}
+                                    error={this.state.errors[`product-kind`]}
+                                    name={`product-kind`}
+                                    // options={this.props.siteList}
+                                    apiUrl={baseUrl + "seek?name=ProductKind&no_parent=true"}
+                                    option={"ProductKind"}
+                                    subOption={"name"}
+                                    searchKey={"name"}
+                                    valueKey={"ProductKind"}
+                                    subValueKey={"_key"}
+                                    title="Select Product Kind"
                                 // details="Select product’s location from the existing sites or add new address below"
                                 // initialValue={this.state.selectedSite?this.state.selectedSite._key: this.props.item?this.props.item.site._key:null}
                                 // initialValueTextbox={this.state.selectedSite?this.state.selectedSite.name:this.props.item?this.props.item.site.name:""}
-                            />
-                        </div>
-                        <div
-                            className={"col-12 justify-content-center mt-3 "}>
+                                />
+                            </div>
                             <div
-                                className={
-                                    "row justify-content-center"
-                                }>
+                                className={"col-12 justify-content-center mt-3 "}>
                                 <div
-                                    className={"col-6"}
-                                    style={{
-                                        textAlign: "center",
-                                    }}>
+                                    className={
+                                        "row justify-content-center"
+                                    }>
+                                    <div
+                                        className={"col-6"}
+                                        style={{
+                                            textAlign: "center",
+                                        }}>
 
                                         <BlueButton
                                             fullWidth
@@ -1952,25 +1951,25 @@ class ProductsNew extends Component {
                                             disabled={this.state.btnLoading}
                                             loading={this.state.btnLoading}
                                         </BlueButton>
-                                </div>
-                                <div
-                                    className={"col-6 "}
-                                    style={{
-                                        textAlign: "center",
-                                    }}>
-                                    <BlueBorderButton
-                                        type="button"
-                                        fullWidth
-                                        title={"Cancel"}
-                                        onClick={this.toggleLinkProductKindPopUp}
-                                    >
-                                    </BlueBorderButton>
+                                    </div>
+                                    <div
+                                        className={"col-6 "}
+                                        style={{
+                                            textAlign: "center",
+                                        }}>
+                                        <BlueBorderButton
+                                            type="button"
+                                            fullWidth
+                                            title={"Cancel"}
+                                            onClick={this.toggleLinkProductKindPopUp}
+                                        >
+                                        </BlueBorderButton>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </form>
-                        </>}
+                        </form>
+                    </>}
                 </GlobalDialog>
 
                 <GlobalDialog

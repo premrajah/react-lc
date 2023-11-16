@@ -38,6 +38,7 @@ const EmbodiedCarbon = (props) => {
             formData.append('file', file);
             const config = {
                 responseType: 'blob', 
+                timeout: 300000,
                 headers: { 'content-type': 'multipart/form-data' }
             }
 

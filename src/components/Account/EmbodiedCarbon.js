@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { baseUrl } from "../../Util/Constants";
 import axios from "axios/index";
@@ -6,10 +6,10 @@ import PageHeader from "../../components/PageHeader";
 import * as actionCreator from "../../store/actions/actions";
 import { Download, UploadFile } from "@mui/icons-material";
 import { cleanFilename, fetchErrorMessage } from "../../Util/GlobalFunctions";
-import { Box, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 import PropTypes from 'prop-types';
 import CalculateCarbon from "./CalculateCarbon";
-import {Spinner} from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import TextFieldWrapper from '../FormsUI/ProductForm/TextField';
 
 const EmbodiedCarbon = (props) => {
